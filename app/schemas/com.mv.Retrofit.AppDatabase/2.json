@@ -1,0 +1,156 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "96a6d1945e0b3c985e1d006d66e76e81",
+    "entities": [
+      {
+        "tableName": "table_community",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`community_id` TEXT, `community_name` TEXT, `timestamp` TEXT, `unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT)",
+        "fields": [
+          {
+            "fieldPath": "Id",
+            "columnName": "community_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Name",
+            "columnName": "community_name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Time",
+            "columnName": "timestamp",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Unique_Id",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_content",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `UserId` TEXT, `CommunityId` TEXT, `District` TEXT, `taluka` TEXT, `likeCount` INTEGER, `commentCount` INTEGER, `isLike` INTEGER, `Issue_Type` TEXT, `Report_Type` TEXT, `Priority` TEXT, `Title` TEXT, `Description` TEXT, `TemplateId` TEXT, `userAttachmentId` TEXT, `CreatedDate` TEXT, `isbroadcast` TEXT, `attachmentId` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "Unique_Id",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "user_id",
+            "columnName": "UserId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "community_id",
+            "columnName": "CommunityId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "district",
+            "columnName": "District",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "taluka",
+            "columnName": "taluka",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "likeCount",
+            "columnName": "likeCount",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "commentCount",
+            "columnName": "commentCount",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "isLike",
+            "columnName": "isLike",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "issue_type",
+            "columnName": "Issue_Type",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "reporting_type",
+            "columnName": "Report_Type",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "issue_priority",
+            "columnName": "Priority",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "Title",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "Description",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "template",
+            "columnName": "TemplateId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "userAttachmentId",
+            "columnName": "userAttachmentId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "time",
+            "columnName": "CreatedDate",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isBroadcast",
+            "columnName": "isbroadcast",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "attachmentId",
+            "columnName": "attachmentId",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"96a6d1945e0b3c985e1d006d66e76e81\")"
+    ]
+  }
+}

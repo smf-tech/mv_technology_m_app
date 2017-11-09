@@ -1,0 +1,129 @@
+<resources>
+    <string name="app_name">मुल्यवर्धन 2.0</string>
+
+    <string name="progress_loading">लोडिंग</string>
+    <string name="progress_please_wait">कृपया थांबा</string>
+    <string name="error_something_went_wrong">काहीतरी चूक झाली, कृपया पुन्हा प्रयत्न करा</string>
+    <string name="error_no_internet">कृपया आपले इंटरनेट कनेक्शन तपासा</string>
+    <string name="error_login">चुकीची माहिती.</string>
+
+    <string name="text_choosepicture">चित्र निवडा</string>
+    <string name="text_choosevideo">व्हिडिओ निवडा</string>
+    <string name="text_gallary">गॅलरी</string>
+    <string name="text_camera">कॅमेरा</string>
+    <string name="error_offline_share_post">आपण ऑफलाइन पोस्ट करू शकत नाही</string>
+    <string name="error_offline_like_post">आपण ऑफलाइन लाईक करू शकत नाही</string>
+     <string name="ok">ओके </string>
+
+    <!--Home Acitivty-->
+    <string name="intro_about_header">अबाऊट</string>
+    <string name="intro_about_description">मुल्यवर्धन (एमव्ही) एक सक्षम शैक्षणिक कार्यक्रम आहे ज्यामुळे मुले सक्षम लोकशाही मूल्यांचा, दृष्टिकोन आणि कौशल्यांना सक्षम बनवू शकतात. हा कार्यक्रम महाराष्ट्रातील बीड जिल्ह्यातील 2 तालुक्यांमध्ये महाराष्ट्र शासनाच्या प्राथमिक शाळांमधील शासकीय प्राथमिक शाळांमध्ये (एमव्ही-बीड) शासकीय प्राथमिक शाळा चालवत आहे, गोवा राज्यातील सरकारी प्राथमिक शाळांची निवड ), आणि विद्या भारती, जी खाजगी शाळा संस्था (एमव्ही-वीबी) यांनी गोव्यामध्ये चालविलेले शाळा. अधिक माहितीसाठी www.mulyavardhan.com ला भेट द्या</string>
+    <string name="intro_mv_training_events_header">एमव्ही ट्रेनिंग</string>
+    <string name="fragment_intro_about">मुल्यवर्धन बद्दल</string>
+    <string name="fragment_intro_training">एमव्ही ट्रेनिंग</string>
+    <string name="fragment_intro_events">एमव्ही कार्यक्रम</string>
+
+    <!--Registration Activity-->
+    <string name="name">पहिले नाव</string>
+    <string name="mobile_no">मोबाइल नंबर</string>
+    <string name="email">ई - मेल आयडी</string>
+    <string name="password">पासवर्ड</string>
+    <string name="confirm_password">पासवर्डची पुष्टी करा</string>
+        <string name="role">भूमिका</string>
+    <string name="organization">संघटना</string>
+    <string name="disrict">जिल्हा</string>
+    <string name="taluka">तालुका</string>
+    <string name="cluster">क्लस्टर</string>
+    <string name="village">गाव</string>
+    <string name="school_name">शाळेचे नाव</string>
+    <string name="school_code">शाळा कोड</string>
+    <string name="district">जिल्हा</string>
+    <string name="state">राज्य</string>
+    <string name="profile_pic">प्रोफाइल चित्र जोडा</string>
+    <!--IssueTemplate Activity-->
+    <string name="issue">समस्या प्रकार</string>
+    <string name="priority">Priority</string>
+    <string name="item_title">पॅलेस गार्नर</string>
+    <string name="item_desc">आम्ही अनुप्रयोग लाँच पासून तो एक आश्चर्यकारक प्रथम महिने चाललंय! आपण त्यांना गमावल्यास येथे काही सर्वोत्तम क्षण आहेत!</string>
+
+    <!--ReportingTemplate Activity-->
+    <string name="reporting">अहवाल प्रकार</string>
+    <string name="question_5">प्रश्न 5</string>
+    <string name="hoy">होय</string>
+    <string name="nahi">नाही</string>
+    <string name="question_4">प्रश्न 4</string>
+    <string name="msg_enter_mobile">प्रारंभ करण्यासाठी आपला मोबाईल नंबर प्रविष्ट करा!</string>
+    <string name="msg_manual_otp">(आम्ही स्वयंचलितपणे SMS शोधण्यात अयशस्वी झाल्यास खालील OTP प्रविष्ट करा)</string>
+    <string name="resend"> <u>OTP पुन्हा पाठवा</u></string>
+    <string name="check_otp">कृपया OTP तपासा</string>
+
+    <string name="Submit"> सबमिट</string>
+    <string name="backExit"> बाहेर पडण्यासाठी कृपया पुन्हा क्लिक करा </string>
+    <string name="select_lang"> भाषा निवडा</string>
+    <string name="broadcast">ब्रॉडकास्ट</string>
+    <string name="community">माय \n कॅम्युनिटी </string>
+    <string name="programme_management">प्रोग्रॅम \n मॅनेजमेंट </string>
+    <string name="training_content">ट्रेनींग \n कन्टेन्ट </string>
+
+
+    <string name="seconds_remaining">उर्वरित सेकंद </string>
+    <string name="back_string">बाहेर पडण्यासाठी कृपया पुन्हा क्लिक करा </string>
+    <string name="please_enter">कृपया प्रविष्ट करा </string>
+    <string name="digit"> अंक </string>
+    <string name="logout_string">आपण लॉगआउट करू इच्छिता? </string>
+
+    <string name="class_observation">क्लास ऑबसेर्व्हशन </string>
+    <string name="training_responsiblity">"ट्रेनिंगला जाण्यापुर्वीच्या जबाबदाऱ्या"</string>
+    <string name="loading_comment">लोडींग  कंमेंट्स </string>
+    <string name="please_comment">कृपया  कंमेंट प्रविष्ट करा...</string>
+    <string name="comment_add"> कंमेंट यशस्वीरित्या जोडले..</string>
+    <string name="likes">लाईक्स </string>
+    <string name="comments"> कंमेंट </string>
+    <string name="share_post">शेरिंग पोस्ट ...</string>
+    <string name="post_share_successfully">पोस्ट शेरिंग यशस्वीरित्या...</string>
+
+        <string name="select_one">एक समुदाय निवडा</string>
+        <string name="comunity_detail">समुदाय तपशील</string>
+    <string name="template_type">टेम्पलेट प्रकार</string>
+    <string name="description">डिस्क्रिप्शन </string>
+    <string name="title">शीर्षक</string>
+    <string name="loading_chats">चॅट्स लोड करत आहे</string>
+    <string name="loading_template">चॅट्स लोड करत आहे</string>
+    <string name="home">होम </string>
+    <string name="forgot_password">पासवर्ड विसरला</string>
+    <string name="select_temp">कृपया टेम्पलेट प्रकार निवडा...</string>
+    <string name="img_template">इमेज टेम्पलेट</string>
+    <string name="loding_district">जिल्हे लोड करीत आहे</string>
+    <string name="loding_taluka">तालुका लोड करीत आहे</string>
+
+    <string name="loding_cluster">क्लस्टर लोड करीत आहे</string>
+    <string name="loding_school">शाळा लोड होत आहे</string>
+    <string name="loding_village">गाव लोड होत आहे</string>
+
+    <string name="issue_template">समस्या टेम्पलेट</string>
+    <string name="issue_submit">समस्या यशस्वीरित्या सबमिट केली...</string>
+    <string name="Process_Detail">प्रक्रिया तपशील</string>
+
+    <string name="Task_List">कार्य सूची</string>
+    <string name="Loading_Process">प्रक्रिया लोड करीत आहे</string>
+    <string name="No_Task">कोणतेही कार्य उपलब्ध नाही</string>
+    <string name="Loading_Roles">भूमिका लोड करत आहे</string>
+    <string name="Please_Enter_Name">कृपया नाव प्रविष्ट करा</string>
+    <string name="Please_Enter_Mobile_Number">कृपया मोबाइल नंबर प्रविष्ट करा</string>
+    <string name="mobile_numer_enter">कृपया 10 अंकी मोबाइल नंबर प्रविष्ट करा</string>
+    <string name="Please_select_Role">भूमिका निवडा</string>
+    <string name="Please_Enter_valid_email_address">कृपया वैध ईमेल पत्ता प्रविष्ट करा</string>
+    <string name="Please_select_State">कृपया राज्य निवडा</string>
+    <string name="Please_select_district">कृपया जिल्हा निवडा</string>
+    <string name="Please_select_taluka">कृपया तालुका निवडा</string>
+    <string name="Please_select_custer">कृपया कॅल्स्टर  निवडा</string>
+    <string name="Please_select_village">कृपया गाव निवडा</string>
+    <string name="Please_select_school">कृपया शाळा निवडा</string>
+
+    <string name="MV_training">एमव्ही ट्रेनिंग</string>
+    <string name="Video_template">व्हिडीओ टेम्प्लेट </string>
+
+    <string name="Templates">टेम्प्लेट</string>
+    <string name="Schedule_training">वेळापत्रक प्रशिक्षण</string>
+    <string name="Registration">रेजिस्ट्रेशन </string>
+</resources>

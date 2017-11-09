@@ -1,0 +1,135 @@
+<resources>
+    <string name="app_name">Mulyavardhan 2.0</string>
+
+    <string name="progress_loading">Loding</string>
+    <string name="progress_please_wait">Please wait</string>
+    <string name="error_something_went_wrong">Something went wrong, Please try again</string>
+    <string name="error_no_internet">Please check your internet connection</string>
+    <string name="error_login">Incorrect credentials.</string>
+
+    <string name="text_choosepicture">Choose Picture</string>
+    <string name="text_choosevideo">Choose Video</string>
+    <string name="text_gallary">Gallary</string>
+    <string name="text_camera">Camera</string>
+    <string name="error_offline_share_post">You cannot share offline post</string>
+    <string name="error_offline_like_post">You cannot like offline post</string>
+    <string name="ok">OK</string>
+    <!--Home Acitivty-->
+    <string name="intro_about_header">About</string>
+    <string name="intro_about_description">Mulyavardhan (MV) is a value education programme to help children imbibe democratic values, attitudes and skills in an enabling school climate. The programme is running in select government primary schools across 34 districts of Maharashtra (MV-GoM), government primary schools in two tehsils of Beed district of Maharashtra (MV-Beed), select government primary schools in the state of Goa (MV-GoG), and schools run in Goa by Vidya Bharti, a private school body (MV-VB).  Visit www.mulyavardhan.com for more info</string>
+    <string name="intro_mv_training_events_header">MV Trainings</string>
+    <string name="fragment_intro_about">About mulyawardhan</string>
+    <string name="fragment_intro_training">MV Trainings</string>
+    <string name="fragment_intro_events">MV Events</string>
+
+    <!--Registration Activity-->
+    <string name="name">First Name</string>
+    <string name="mobile_no">Mobile Number</string>
+    <string name="email">Email Id</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="role">Role</string>
+    <string name="organization">Organization</string>
+    <string name="disrict">District</string>
+    <string name="taluka">Taluka</string>
+    <string name="cluster">Cluster</string>
+    <string name="village">Village</string>
+    <string name="school_name">School Name</string>
+    <string name="school_code">School Code</string>
+    <string name="district">District</string>
+    <string name="state">State</string>
+    <string name="profile_pic">Add Profile Picture</string>
+    <!--IssueTemplate Activity-->
+    <string name="issue">Issue Type</string>
+    <string name="priority">Priority</string>
+    <string name="item_title">Palais Garnier</string>
+    <string name="item_desc">It’s been an amazing first months since we launched the App! Here are some of the best moments in case you missed them!</string>
+
+    <!--ReportingTemplate Activity-->
+    <string name="reporting">Reporting Type</string>
+    <string name="question_5">Question 5</string>
+    <string name="hoy">Yes</string>
+    <string name="nahi">No</string>
+    <string name="question_4">Question 4</string>
+    <string name="msg_enter_mobile">Enter your mobile number to get started!</string>
+    <string name="msg_manual_otp">(Enter the OTP below in case if we fail to detect the SMS automatically)</string>
+    <string name="resend"> <u>Resend OTP</u></string>
+    <string name="check_otp">Please Check OTP</string>
+
+    <string name="Submit"> Submit</string>
+    <string name="backExit">Please click BACK again to exit </string>
+    <string name="select_lang"> Select Language</string>
+    <string name="broadcast">Broadcast</string>
+    <string name="community">My\nCommunity</string>
+    <string name="programme_management">Programme\nManagement</string>
+    <string name="training_content">Training\nContent</string>
+
+
+    <string name="seconds_remaining">Seconds remaining </string>
+    <string name="back_string">Please click BACK again to exit </string>
+    <string name="please_enter">Please enter </string>
+    <string name="digit"> digit </string>
+    <string name="logout_string">Do you want to Logout? </string>
+
+    <string name="class_observation">Class Observation</string>
+    <string name="training_responsiblity">"ट्रेनिंगला जाण्यापुर्वीच्या जबाबदाऱ्या"</string>
+    <string name="loading_comment">Loading Comments</string>
+    <string name="please_comment">Please Enter Comment...</string>
+    <string name="comment_add">Comment Added Successfully...</string>
+    <string name="likes">Likes</string>
+    <string name="comments">Comments</string>
+    <string name="share_post">Sharing Post...</string>
+    <string name="post_share_successfully">Post Share Successfully...</string>
+
+    <string name="select_one">Select One Community</string>
+    <string name="comunity_detail">Community Details</string>
+    <string name="template_type">Template Type</string>
+    <string name="description">Description</string>
+    <string name="title">Title</string>
+    <string name="loading_chats">Loading Chats</string>
+    <string name="loading_template">Loading Template</string>
+    <string name="home">Home</string>
+    <string name="forgot_password">Forgot Password</string>
+    <string name="select_temp">Please select template type...</string>
+    <string name="img_template">Image Template</string>
+    <string name="loding_district">Loading Districts</string>
+    <string name="loding_taluka">Loading Taluka</string>
+
+    <string name="loding_cluster">Loading Cluster</string>
+    <string name="loding_school">Loading School</string>
+    <string name="loding_village">Loading Village</string>
+
+    <string name="issue_template">Issue Template</string>
+    <string name="issue_submit">Issue submitted successfully...</string>
+    <string name="Process_Detail">Process Detail</string>
+
+    <string name="Task_List">Task List</string>
+    <string name="Loading_Process">Loading Process</string>
+    <string name="No_Task">No Task Available</string>
+    <string name="Loading_Roles">Loading Roles</string>
+    <string name="Please_Enter_Name">Please Enter Name</string>
+    <string name="Please_Enter_Mobile_Number">Please Enter Mobile Number</string>
+    <string name="mobile_numer_enter">Please Enter 10 digit mobile number</string>
+    <string name="Please_select_Role">Please select Role</string>
+    <string name="Please_Enter_valid_email_address">Please Enter valid email address</string>
+    <string name="Please_select_State">Please select State</string>
+    <string name="Please_select_district">Please select District</string>
+    <string name="Please_select_taluka">Please select Taluka</string>
+    <string name="Please_select_custer">Please select Cluster</string>
+    <string name="Please_select_village">Please select Village</string>
+    <string name="Please_select_school">Please select School</string>
+
+    <string name="MV_training">MV  Training</string>
+    <string name="Video_template">Video Template</string>
+
+    <string name="Templates">Templates</string>
+    <string name="Schedule_training">Schedule Training</string>
+    <string name="Registration">Registration</string>
+
+
+    <string name="lang">Change Language</string>
+    <string name="profile">Update Profile</string>
+    <string name="logout">Logout</string>
+
+
+</resources>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.mv.Activity.HomeActivity" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/app_bg"
+        android:orientation="vertical">
+
+        <!-- <include
+             android:id="@+id/toolbar"
+             layout="@layout/toolbar"
+             android:visibility="gone" />-->
+
+        <com.mv.Widgets.CustomTabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/custom_actionbar"
+            android:background="@color/colorPrimary"
+            ads:tabSelectedTextColor="@color/colorPink"
+
+            ads:tabTextColor="@color/white"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/colorPink"
+            app:tabIndicatorHeight="@dimen/dimen_5dp"
+            app:tabMaxWidth="0dp"
+            app:tabMode="scrollable" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_below="@id/tab_layout" />
+    </LinearLayout>
+</layout>

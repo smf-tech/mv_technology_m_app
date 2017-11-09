@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@android:color/transparent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/tv_progress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/medium_text"
+        android:layout_margin="@dimen/dimen_20dp"
+        android:gravity="center"
+        android:layout_toRightOf="@+id/image"/>
+
+        <ImageView
+            android:id="@+id/img_progress"
+            android:layout_width="100dp"
+            android:layout_gravity="center"
+            android:layout_height="100dp" />
+
+</LinearLayout>
