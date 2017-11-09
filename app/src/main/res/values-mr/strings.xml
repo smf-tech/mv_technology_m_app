@@ -126,4 +126,8 @@
     <string name="Templates">टेम्प्लेट</string>
     <string name="Schedule_training">वेळापत्रक प्रशिक्षण</string>
     <string name="Registration">रेजिस्ट्रेशन </string>
+
+    <string name="lang">भाषा बदला</string>
+    <string name="profile">अपडेट  प्रोफाइल </string>
+    <string name="logout">बाहेर पडणे</string>
 </resources>
