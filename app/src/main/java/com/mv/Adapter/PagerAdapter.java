@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 
 import com.mv.Fragment.CommunityHomeFragment;
 import com.mv.Fragment.GroupsFragment;
+import com.mv.Fragment.IndicatorFragment;
 import com.mv.Fragment.ProgrammeManagmentFragment;
 import com.mv.Fragment.TrainingFragment;
 
@@ -37,6 +38,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
             case 3:
                 TrainingFragment tab3 = new TrainingFragment();
                 return tab3;
+            case 4:
+                IndicatorFragment tab5= new IndicatorFragment();
+                return tab5;
             default:
                 return null;
         }
