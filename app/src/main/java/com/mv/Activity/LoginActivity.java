@@ -85,17 +85,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onLoginClick() {
         // binding.tvUser.setText("(Enter the OTP below in case if we fail to detect the SMS automatically)");
         // slideOut(binding.edtOtp,binding.edtUsername);
-
         if (binding.edtUsername.isShown() && isValidate(binding.edtUsername, 10, getString(R.string.mobile_no))) {
-
-
             if (Utills.isConnected(this)) {
                 slideOut(binding.edtOtp, binding.edtUsername, getString(R.string.msg_manual_otp));
                 loginToSalesforce();
             } else {
                 Utills.showInternetPopUp(this);
             }
-
         } else if (binding.edtOtp.isShown() && isValidate(binding.edtOtp, 6, "OTP")) {
             if (user.getPassword().trim().equals(binding.edtOtp.getText().toString().trim())) {
                 yourCountDownTimer.cancel();
@@ -365,9 +361,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private boolean isValidate(EditText view, int charlimit, String errorMEssage) {
         msg = "";
         if (view.getText().toString().trim().length() == 0) {
-            msg = getString(R.string.please_enter) +""+ errorMEssage;
+            msg = getString(R.string.please_enter) + "" + errorMEssage;
         } else if (view.getText().toString().trim().length() != charlimit) {
-            msg = getString(R.string.please_enter)+" " + charlimit + getString(R.string.digit) + errorMEssage;
+            msg = getString(R.string.please_enter) + " " + charlimit + getString(R.string.digit) + errorMEssage;
         }
         if (TextUtils.isEmpty(msg))
             return true;
@@ -530,10 +526,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         @Override
         public View makeView() {
-
             // Create a new TextView
             TextView t = new TextView(getApplicationContext());
-
             t.setTextAppearance(getApplicationContext(), android.R.style.TextAppearance_Medium);
             t.setTextColor(getApplicationContext().getResources().getColor(R.color.black));
             return t;

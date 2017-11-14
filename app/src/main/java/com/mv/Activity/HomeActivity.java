@@ -184,6 +184,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.action_logout:
                 showLogoutPopUp();
                 return true;
+            case R.id.action_notification:
+                showNotificationDialog();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -306,12 +309,39 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void showNotificationDialog() {
+
+        final String[] items = {"On", "Off"};
+        final ArrayList seletedItems = new ArrayList();
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.notification))
+                .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        ListView lw = ((AlertDialog) dialog).getListView();
+                        if (lw.getCheckedItemPosition() == 0) {
+                            preferenceHelper.insertBoolean(PreferenceHelper.NOTIFICATION, true);
+                        } else {
+                            preferenceHelper.insertBoolean(PreferenceHelper.NOTIFICATION, false);
+                        }
+                        dialog.dismiss();
+
+                    }
+
+                }).create();
+        dialog.setCancelable(false);
+        dialog.show();
+    }
+
     private void showDialog() {
 
         final String[] items = {"English", "मराठी"};
-
-
-// arraylist to keep the selected items
         final ArrayList seletedItems = new ArrayList();
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.select_lang))
@@ -324,11 +354,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                      /*  Intent intent;
-                            intent = new Intent(LoginActivity.this, LoginActivity.class);
-
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);*/
                         ListView lw = ((AlertDialog) dialog).getListView();
 
                         if (lw.getCheckedItemPosition() == 0) {
@@ -341,7 +366,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         dialog.dismiss();
                         finish();
                         startActivity(getIntent());
-
 
                     }
 

@@ -154,28 +154,28 @@
                         android:textSize="@dimen/medium_text" />
                 </android.support.design.widget.TextInputLayout>
 
-                <RadioGroup
-                    android:id="@+id/roleOrganisation"
-                    android:layout_width="match_parent"
+                <com.mv.Widgets.MyTextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:orientation="horizontal">
+                    android:text="@string/organization"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/small_text" />
 
-                    <RadioButton
-                        android:id="@+id/smf"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="SMF" />
-
-                    <RadioButton
-                        android:id="@+id/gov"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/dimen_20dp"
-                        android:text="Goverment" />
-                </RadioGroup>
+                <Spinner
+                    android:id="@+id/spinner_organization"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/grey_box"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:prompt="@string/organization"
+                    android:spinnerMode="dialog" />
 
 
                 <com.mv.Widgets.MyTextView
@@ -227,7 +227,7 @@
 
 
                 <com.mv.Widgets.MyTextView
-
+                    android:id="@+id/txt_district"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -245,7 +245,6 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
-
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
                     android:prompt="@string/disrict"
@@ -359,6 +358,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
+                    android:visibility="gone"
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 

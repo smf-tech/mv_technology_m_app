@@ -17,6 +17,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.mv.Activity.SplashScreenActivity;
 import com.mv.R;
+import com.mv.Utils.PreferenceHelper;
 
 /**
  * Created by Belal on 5/27/2016.
@@ -25,6 +26,7 @@ import com.mv.R;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
+    private PreferenceHelper preferenceHelper;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -32,8 +34,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //It is optional
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
-
             try {
+                preferenceHelper = new PreferenceHelper(getApplicationContext());
                 sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -55,7 +57,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
-        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultSoundUri = null;
+        if (preferenceHelper != null) {
+            if (preferenceHelper.getBoolean(PreferenceHelper.NOTIFICATION)) {
+                defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            }
+        } else {
+            defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        }
+
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_stat_name)
                 .setContentTitle(messageTitle)

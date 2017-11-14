@@ -11,6 +11,10 @@
         android:id="@+id/action_profile"
         android:icon="@drawable/like_n"
         android:title="@string/profile" />
+    <item
+        android:id="@+id/action_notification"
+        android:icon="@drawable/like_n"
+        android:title="@string/notification" />
 
     <item
         android:id="@+id/action_logout"

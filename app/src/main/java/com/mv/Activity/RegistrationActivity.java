@@ -37,6 +37,7 @@ import com.google.gson.JsonParser;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
+import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
@@ -68,11 +69,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private Button btn_submit;
     private ActivityRegistrationBinding binding;
     private EditText edit_text_midle_name, edit_text_last_name, edit_text_name, edit_text_mobile_number, edit_text_school_code, edit_text_email;
-    private Spinner spinner_role, spinner_state, spinner_district, spinner_taluka, spinner_cluster, spinner_village, spinner_school_name;
-    private int mSelectRole = 0, mSelectState = 0, mSelectDistrict = 0, mSelectTaluka = 0, mSelectCluster = 0, mSelectVillage = 0, mSelectSchoolName = 0;
-    private ArrayList<String> mListState, mListDistrict, mListTaluka, mListCluster, mListVillage, mListSchoolName;
-    private List<String> mListRoleName, mListCode, mListRoleId;
-    private TextView txt_taluka, txt_cluster, txt_village, txt_school;
+    private Spinner spinner_organization, spinner_role, spinner_state, spinner_district, spinner_taluka, spinner_cluster, spinner_village, spinner_school_name;
+    private int mSelectOrganization = 0, mSelectRole = 0, mSelectState = 0, mSelectDistrict = 0, mSelectTaluka = 0, mSelectCluster = 0, mSelectVillage = 0, mSelectSchoolName = 0;
+    private ArrayList<String> mListOrganization, mListState, mListDistrict, mListTaluka, mListCluster, mListVillage, mListSchoolName;
+    private List<String> mListRoleName, mListCode, mListRoleId, mListRoleJuridiction;
+    private TextView txt_district, txt_taluka, txt_cluster, txt_village, txt_school;
     private TextInputLayout input_school_code;
     private ArrayAdapter<String> state_adapter, district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, role_adapter, organization_adapter;
     private PreferenceHelper preferenceHelper;
@@ -81,7 +82,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private Uri outputUri = null;
     private String imageFilePath;
     private Boolean isAdd;
-    private boolean isStateSet = false, isDistrictSet = false, isTalukaSet = false, isClusterSet = false, isVillageSet = false, isSchoolSet = false, isRollSet = false;
+    private boolean isOrganizationSet = false, isStateSet = false, isDistrictSet = false, isTalukaSet = false, isClusterSet = false, isVillageSet = false, isSchoolSet = false, isRollSet = false;
 
 
     @Override
@@ -93,7 +94,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         initViews();
         if (Utills.isConnected(this)) {
             getState();
-            getRole();
+            getOrganization();
         } else {
             showPopUp();
         }
@@ -104,7 +105,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/data/v36.0/query/?q=select+Id,Name+from+MV_Role__c";
+                + "/services/data/v36.0/query/?q=select+Id,Juridictions__c,Name+from+MV_Role__c+where+Organisation__c='" + mListOrganization.get(mSelectOrganization) + "'";
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -114,12 +115,15 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     JSONArray jsonArray = obj.getJSONArray("records");
                     mListRoleName.clear();
                     mListRoleId.clear();
+                    mListRoleJuridiction.clear();
                     mListRoleName.add("Select");
                     mListRoleId.add("");
+                    mListRoleJuridiction.add("");
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
                         mListRoleName.add(jsonObject.getString("Name"));
                         mListRoleId.add(jsonObject.getString("Id"));
+                        mListRoleJuridiction.add(jsonObject.getString("Juridictions__c"));
                     }
                     role_adapter.notifyDataSetChanged();
                     if (!isAdd && !isRollSet) {
@@ -127,6 +131,48 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         for (int i = 0; i < mListRoleName.size(); i++) {
                             if (mListRoleName.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getRoll())) {
                                 binding.spinnerRole.setSelection(i);
+                                break;
+                            }
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
+    }
+
+    private void getOrganization() {
+        Utills.showProgressDialog(this, "Loading Organization", getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + "/services/apexrest/getOrganization";
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    JSONArray jsonArray = new JSONArray(response.body().string());
+                    mListOrganization.clear();
+                    mListOrganization.add("Select");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        mListOrganization.add(jsonArray.getString(i));
+                    }
+                    organization_adapter.notifyDataSetChanged();
+                    if (!isAdd && !isOrganizationSet) {
+                        isOrganizationSet = true;
+                        for (int i = 0; i < mListOrganization.size(); i++) {
+                            if (mListOrganization.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getOrganisation())) {
+                                spinner_organization.setSelection(i);
                                 break;
                             }
                         }
@@ -178,10 +224,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         // Showing Alert Message
         alertDialog.show();
     }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
+
     private void getState() {
 
         Utills.showProgressDialog(this, "Loading States", getString(R.string.progress_please_wait));
@@ -290,6 +338,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         spinner_cluster = (Spinner) findViewById(R.id.spinner_cluster);
         spinner_village = (Spinner) findViewById(R.id.spinner_village);
         spinner_school_name = (Spinner) findViewById(R.id.spinner_school_name);
+        spinner_organization = (Spinner) findViewById(R.id.spinner_organization);
+        spinner_organization.setOnItemSelectedListener(this);
         spinner_role.setOnItemSelectedListener(this);
         spinner_state.setOnItemSelectedListener(this);
         spinner_district.setOnItemSelectedListener(this);
@@ -301,12 +351,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         mListState = new ArrayList<String>();
         mListRoleName = new ArrayList<String>();
         mListRoleId = new ArrayList<String>();
+        mListRoleJuridiction = new ArrayList<String>();
         mListDistrict = new ArrayList<String>();
         mListTaluka = new ArrayList<String>();
         mListCluster = new ArrayList<String>();
         mListVillage = new ArrayList<String>();
         mListSchoolName = new ArrayList<String>();
         mListCode = new ArrayList<String>();
+        mListOrganization = new ArrayList<String>();
 
         mListState.add("Select");
         mListDistrict.add("Select");
@@ -315,17 +367,23 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         mListVillage.add("Select");
         mListSchoolName.add("Select");
         mListCode.add("Select");
-
+        mListOrganization.add("Select");
+        mListRoleName.add("Select");
 
         input_school_code = (TextInputLayout) findViewById(R.id.input_school_code);
         edit_text_school_code = (EditText) findViewById(R.id.edit_text_school_code);
+
+        organization_adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, mListOrganization);
+        organization_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_organization.setAdapter(organization_adapter);
 
         role_adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, mListRoleName);
         role_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_role.setAdapter(role_adapter);
 
-
+        txt_district = (TextView) findViewById(R.id.txt_district);
         txt_taluka = (TextView) findViewById(R.id.txt_taluka);
         txt_cluster = (TextView) findViewById(R.id.txt_cluster);
         txt_village = (TextView) findViewById(R.id.txt_village);
@@ -370,12 +428,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 binding.editTextMobileNumber.setText(User.getCurrentUser(this).getPhone());
                 binding.editTextName.setText(User.getCurrentUser(this).getName());
 
-                if (User.getCurrentUser(this).getRoll().equalsIgnoreCase("HM")
-                        && User.getCurrentUser(this).getRoll().equalsIgnoreCase("CRC") && User.getCurrentUser(this).getRoll().equalsIgnoreCase("DEO") && User.getCurrentUser(this).getRoll().equalsIgnoreCase("BEO") && User.getCurrentUser(this).getRoll().equalsIgnoreCase("Teacher")) {
-                    binding.roleOrganisation.check(R.id.gov);
-                } else {
-                    binding.roleOrganisation.check(R.id.smf);
-                }
+
                 if (User.getCurrentUser(this).getImageId() != null && !(User.getCurrentUser(this).getImageId().equalsIgnoreCase("null"))) {
                     Glide.with(this)
                             .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + User.getCurrentUser(this).getImageId() + "/Body"))
@@ -446,15 +499,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             user.setVillage(mListVillage.get(mSelectVillage));
             user.setSchool_Code(edit_text_school_code.getText().toString().trim());
             user.setSchool_Name(mListSchoolName.get(mSelectSchoolName));
-           /* Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-            String json = gson.toJson(user);*/
-           /* {
-                "name":"pravin12",
-                    "":"test1",  "":"pune","":"pravin.joshi@nanostuffs","":"123","":"123456789","":"developer",
-                    "":"new technology",
-                    "":"4545","":"haveli","":"dhankawadi"
 
-            }*/
             JSONObject jsonObject1 = new JSONObject();
             JSONObject jsonObject2 = new JSONObject();
             try {
@@ -515,7 +560,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 JSONObject object1 = array.getJSONObject(i);
                                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                                 try {
-
+                                    if (!isAdd) {
+                                        AppDatabase.getAppDatabase(RegistrationActivity.this).userDao().clearTableCommunity();
+                                    }
                                     preferenceHelper.insertString(PreferenceHelper.UserData, object1.toString());
                                     preferenceHelper.insertString(PreferenceHelper.UserRole, user.getRoll());
                                     Utills.showToast("Registration Successful...", RegistrationActivity.this);
@@ -561,28 +608,55 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         if (edit_text_name.getText().toString().trim().length() == 0) {
             msg = getString(R.string.Please_Enter_Name);
         } else if (edit_text_mobile_number.getText().toString().trim().length() == 0) {
-            msg =getString(R.string.Please_Enter_Mobile_Number);
+            msg = getString(R.string.Please_Enter_Mobile_Number);
         } else if (edit_text_mobile_number.getText().toString().trim().length() != 10) {
-            msg =getString(R.string.mobile_numer_enter);
+            msg = getString(R.string.mobile_numer_enter);
         } else if (mSelectRole == 0) {
-            msg =getString(R.string.Please_select_Role);
+            msg = getString(R.string.Please_select_Role);
         } else if (edit_text_email.getText().toString().trim().length() != 0 && !android.util.Patterns.EMAIL_ADDRESS.matcher(edit_text_email.getText().toString().trim()).matches()) {
-            msg =getString(R.string.Please_Enter_valid_email_address);
+            msg = getString(R.string.Please_Enter_valid_email_address);
         } else if (mSelectState == 0) {
-            msg =getString(R.string.Please_select_State);
-        } else if (mSelectDistrict == 0) {
-            msg =getString(R.string.Please_select_district);
-        } else if ((mListRoleName.get(mSelectRole).equalsIgnoreCase("HM") || mListRoleName.get(mSelectRole).equalsIgnoreCase("CRC")
-                || mListRoleName.get(mSelectRole).equalsIgnoreCase("BEO") || mListRoleName.get(mSelectRole).equalsIgnoreCase("BEO")
-                || mListRoleName.get(mSelectRole).equalsIgnoreCase("MT") || mListRoleName.get(mSelectRole).equalsIgnoreCase("TC"))
-                && (mSelectTaluka == 0)) {
-            msg =getString(R.string.Please_select_taluka);
-        } else if ((mListRoleName.get(mSelectRole).equalsIgnoreCase("HM") || mListRoleName.get(mSelectRole).equalsIgnoreCase("CRC")) && (mSelectCluster == 0)) {
-            msg =getString(R.string.Please_select_custer);
-        } else if (mListRoleName.get(mSelectRole).equalsIgnoreCase("HM") && (mSelectVillage == 0)) {
-            msg =getString(R.string.Please_select_village);
-        } else if (mListRoleName.get(mSelectRole).equalsIgnoreCase("HM") && (mSelectSchoolName == 0)) {
-            msg =getString(R.string.Please_select_school);
+            msg = getString(R.string.Please_select_State);
+        } else if ((mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("District"))) {
+            if (mSelectDistrict == 0) {
+                msg = getString(R.string.Please_select_district);
+            }
+        } else if ((mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("Taluka"))) {
+            if (mSelectDistrict == 0) {
+                msg = getString(R.string.Please_select_district);
+            } else if (mSelectTaluka == 0) {
+                msg = getString(R.string.Please_select_taluka);
+            }
+        } else if ((mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("Cluster"))) {
+            if (mSelectDistrict == 0) {
+                msg = getString(R.string.Please_select_district);
+            } else if (mSelectTaluka == 0) {
+                msg = getString(R.string.Please_select_taluka);
+            } else if (mSelectCluster == 0) {
+                msg = getString(R.string.Please_select_taluka);
+            }
+        } else if ((mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("Village"))) {
+            if (mSelectDistrict == 0) {
+                msg = getString(R.string.Please_select_district);
+            } else if (mSelectTaluka == 0) {
+                msg = getString(R.string.Please_select_taluka);
+            } else if (mSelectCluster == 0) {
+                msg = getString(R.string.Please_select_taluka);
+            } else if (mSelectVillage == 0) {
+                msg = getString(R.string.Please_select_village);
+            }
+        } else if ((mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("School"))) {
+            if (mSelectDistrict == 0) {
+                msg = getString(R.string.Please_select_district);
+            } else if (mSelectTaluka == 0) {
+                msg = getString(R.string.Please_select_taluka);
+            } else if (mSelectCluster == 0) {
+                msg = getString(R.string.Please_select_taluka);
+            } else if (mSelectVillage == 0) {
+                msg = getString(R.string.Please_select_village);
+            } else if (mSelectSchoolName == 0) {
+                msg = getString(R.string.Please_select_school);
+            }
         }
         if (TextUtils.isEmpty(msg))
             return true;
@@ -601,69 +675,95 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         switch (adapterView.getId()) {
+            case R.id.spinner_organization:
+                mSelectOrganization = i;
+                if (mSelectOrganization != 0) {
+                    getRole();
+                }
+                mListRoleId.clear();
+                mListRoleName.clear();
+                mListRoleJuridiction.clear();
+                mListRoleName.add("Select");
+                mListRoleJuridiction.add("");
+                mListRoleId.add("");
+                role_adapter.notifyDataSetChanged();
+                break;
             case R.id.spinner_role:
                 mSelectRole = i;
-                if (mListRoleName.get(i).equalsIgnoreCase("HM")) {
-                    spinner_taluka.setVisibility(View.VISIBLE);
-                    txt_taluka.setVisibility(View.VISIBLE);
-                    spinner_cluster.setVisibility(View.VISIBLE);
-                    txt_cluster.setVisibility(View.VISIBLE);
-                    spinner_village.setVisibility(View.VISIBLE);
-                    txt_village.setVisibility(View.VISIBLE);
-                    spinner_school_name.setVisibility(View.VISIBLE);
-                    txt_school.setVisibility(View.VISIBLE);
-                    input_school_code.setVisibility(View.VISIBLE);
-                }
-                if (mListRoleName.get(i).equalsIgnoreCase("CRC")) {
-                    spinner_taluka.setVisibility(View.VISIBLE);
-                    txt_taluka.setVisibility(View.VISIBLE);
-                    spinner_cluster.setVisibility(View.VISIBLE);
-                    txt_cluster.setVisibility(View.VISIBLE);
-                    spinner_village.setVisibility(View.GONE);
-                    txt_village.setVisibility(View.GONE);
-                    spinner_school_name.setVisibility(View.GONE);
-                    txt_school.setVisibility(View.GONE);
-                    input_school_code.setVisibility(View.GONE);
-                } else if (mListRoleName.get(i).equalsIgnoreCase("BEO")) {
-                    spinner_taluka.setVisibility(View.VISIBLE);
-                    txt_taluka.setVisibility(View.VISIBLE);
-                    spinner_cluster.setVisibility(View.GONE);
-                    txt_cluster.setVisibility(View.GONE);
-                    spinner_village.setVisibility(View.GONE);
-                    txt_village.setVisibility(View.GONE);
-                    spinner_school_name.setVisibility(View.GONE);
-                    txt_school.setVisibility(View.GONE);
-                    input_school_code.setVisibility(View.GONE);
-                } else if (mListRoleName.get(i).equalsIgnoreCase("DEO")) {
-                    spinner_taluka.setVisibility(View.GONE);
-                    txt_taluka.setVisibility(View.GONE);
-                    spinner_cluster.setVisibility(View.GONE);
-                    txt_cluster.setVisibility(View.GONE);
-                    spinner_village.setVisibility(View.GONE);
-                    txt_village.setVisibility(View.GONE);
-                    spinner_school_name.setVisibility(View.GONE);
-                    txt_school.setVisibility(View.GONE);
-                    input_school_code.setVisibility(View.GONE);
-                } else if (mListRoleName.get(i).equalsIgnoreCase("MT")) {
-                    spinner_taluka.setVisibility(View.VISIBLE);
-                    txt_taluka.setVisibility(View.VISIBLE);
-                    spinner_cluster.setVisibility(View.GONE);
-                    txt_cluster.setVisibility(View.GONE);
-                    spinner_village.setVisibility(View.GONE);
-                    txt_village.setVisibility(View.GONE);
-                    spinner_school_name.setVisibility(View.GONE);
-                    txt_school.setVisibility(View.GONE);
-                    input_school_code.setVisibility(View.GONE);
-                } else if (mListRoleName.get(i).equalsIgnoreCase("TC")) {
-                    spinner_taluka.setVisibility(View.VISIBLE);
-                    txt_taluka.setVisibility(View.VISIBLE);
-                    spinner_cluster.setVisibility(View.GONE);
-                    txt_cluster.setVisibility(View.GONE);
-                    spinner_village.setVisibility(View.GONE);
-                    txt_village.setVisibility(View.GONE);
-                    spinner_school_name.setVisibility(View.GONE);
-                    txt_school.setVisibility(View.GONE);
-                    input_school_code.setVisibility(View.GONE);
+                if (mSelectRole != 0) {
+                    if (mListRoleJuridiction.get(i).equalsIgnoreCase("School")) {
+                        spinner_district.setVisibility(View.VISIBLE);
+                        txt_district.setVisibility(View.VISIBLE);
+                        spinner_taluka.setVisibility(View.VISIBLE);
+                        txt_taluka.setVisibility(View.VISIBLE);
+                        spinner_cluster.setVisibility(View.VISIBLE);
+                        txt_cluster.setVisibility(View.VISIBLE);
+                        spinner_village.setVisibility(View.VISIBLE);
+                        txt_village.setVisibility(View.VISIBLE);
+                        spinner_school_name.setVisibility(View.VISIBLE);
+                        txt_school.setVisibility(View.VISIBLE);
+                       // input_school_code.setVisibility(View.VISIBLE);
+                    } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("Village")) {
+                        spinner_district.setVisibility(View.VISIBLE);
+                        txt_district.setVisibility(View.VISIBLE);
+                        spinner_taluka.setVisibility(View.VISIBLE);
+                        txt_taluka.setVisibility(View.VISIBLE);
+                        spinner_cluster.setVisibility(View.VISIBLE);
+                        txt_cluster.setVisibility(View.VISIBLE);
+                        spinner_village.setVisibility(View.VISIBLE);
+                        txt_village.setVisibility(View.VISIBLE);
+                        spinner_school_name.setVisibility(View.GONE);
+                        txt_school.setVisibility(View.GONE);
+                      //  input_school_code.setVisibility(View.GONE);
+                    } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("Cluster")) {
+                        spinner_district.setVisibility(View.VISIBLE);
+                        txt_district.setVisibility(View.VISIBLE);
+                        spinner_taluka.setVisibility(View.VISIBLE);
+                        txt_taluka.setVisibility(View.VISIBLE);
+                        spinner_cluster.setVisibility(View.VISIBLE);
+                        txt_cluster.setVisibility(View.VISIBLE);
+                        spinner_village.setVisibility(View.GONE);
+                        txt_village.setVisibility(View.GONE);
+                        spinner_school_name.setVisibility(View.GONE);
+                        txt_school.setVisibility(View.GONE);
+                      //  input_school_code.setVisibility(View.GONE);
+                    } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("Taluka")) {
+                        spinner_district.setVisibility(View.VISIBLE);
+                        txt_district.setVisibility(View.VISIBLE);
+                        spinner_taluka.setVisibility(View.VISIBLE);
+                        txt_taluka.setVisibility(View.VISIBLE);
+                        spinner_cluster.setVisibility(View.GONE);
+                        txt_cluster.setVisibility(View.GONE);
+                        spinner_village.setVisibility(View.GONE);
+                        txt_village.setVisibility(View.GONE);
+                        spinner_school_name.setVisibility(View.GONE);
+                        txt_school.setVisibility(View.GONE);
+                      //  input_school_code.setVisibility(View.GONE);
+                    } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("District")) {
+                        spinner_district.setVisibility(View.VISIBLE);
+                        txt_district.setVisibility(View.VISIBLE);
+                        spinner_taluka.setVisibility(View.GONE);
+                        txt_taluka.setVisibility(View.GONE);
+                        spinner_cluster.setVisibility(View.GONE);
+                        txt_cluster.setVisibility(View.GONE);
+                        spinner_village.setVisibility(View.GONE);
+                        txt_village.setVisibility(View.GONE);
+                        spinner_school_name.setVisibility(View.GONE);
+                        txt_school.setVisibility(View.GONE);
+                     //   input_school_code.setVisibility(View.GONE);
+                    } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("State")) {
+                        spinner_district.setVisibility(View.GONE);
+                        txt_district.setVisibility(View.GONE);
+                        spinner_taluka.setVisibility(View.GONE);
+                        txt_taluka.setVisibility(View.GONE);
+                        spinner_cluster.setVisibility(View.GONE);
+                        txt_cluster.setVisibility(View.GONE);
+                        spinner_village.setVisibility(View.GONE);
+                        txt_village.setVisibility(View.GONE);
+                        spinner_school_name.setVisibility(View.GONE);
+                        txt_school.setVisibility(View.GONE);
+                      //  input_school_code.setVisibility(View.GONE);
+                    }
                 }
                 break;
             case R.id.spinner_state:

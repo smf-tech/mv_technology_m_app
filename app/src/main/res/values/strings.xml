@@ -64,7 +64,7 @@
     <string name="programme_management">Programme\nManagement</string>
     <string name="training_content">Training\nContent</string>
     <string name="indicator">Indicator</string>
-
+    <string name="notification">Notification</string>
 
     <string name="seconds_remaining">Seconds remaining </string>
     <string name="back_string">Please click BACK again to exit </string>
