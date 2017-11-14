@@ -3,6 +3,8 @@ package com.mv.Utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Map;
+
 /**
  * Created by acer on 8/9/2017.
  */
@@ -60,8 +62,14 @@ public class PreferenceHelper {
     }
 
     public void clearPrefrences() {
-        editor.clear();
-        editor.commit();
+        Map<String, ?> prefs = pref.getAll();
+        for (Map.Entry<String, ?> prefToReset : prefs.entrySet()) {
+            if (prefToReset.getKey().equalsIgnoreCase(PreferenceHelper.TOKEN)) {
+            } else {
+                editor.remove(prefToReset.getKey()).commit();
+            }
+
+        }
     }
 
 }

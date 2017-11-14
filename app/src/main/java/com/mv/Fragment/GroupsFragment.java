@@ -23,6 +23,8 @@ import android.view.ViewGroup;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mv.Activity.CommunityHomeActivity;
+import com.mv.Activity.IssueTemplateActivity;
+import com.mv.Activity.ReportingTemplateActivity;
 import com.mv.Adapter.GroupAdapter;
 import com.mv.Model.Community;
 import com.mv.Model.User;
@@ -128,17 +130,19 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
                 Utills.hideProgressDialog();
                 binding.swiperefresh.setRefreshing(false);
                 try {
-                    String str = response.body().string();
-                    if (str != null && str.length() > 0) {
-                        JSONArray jsonArray = new JSONArray(str);
-                        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                        List<Community> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Community[].class));
-                        for (int i = 0; i < temp.size(); i++) {
-                            communityList.add(temp.get(i));
-                            replicaCommunityList.add(temp.get(i));
-                            AppDatabase.getAppDatabase(getActivity()).userDao().insertCommunities(temp.get(i));
+                    if (response.body() != null) {
+                        String str = response.body().string();
+                        if (str != null && str.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(str);
+                            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                            List<Community> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Community[].class));
+                            for (int i = 0; i < temp.size(); i++) {
+                                communityList.add(temp.get(i));
+                                replicaCommunityList.add(temp.get(i));
+                                AppDatabase.getAppDatabase(getActivity()).userDao().insertCommunities(temp.get(i));
+                            }
+                            mAdapter.notifyDataSetChanged();
                         }
-                        mAdapter.notifyDataSetChanged();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -241,19 +245,35 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
 
 
     public void onLayoutGroupClick(int position) {
-        preferenceHelper.insertString(PreferenceHelper.COMMUNITYID, communityList.get(position).getId());
-        List<Community> list = new ArrayList<Community>();
-        for (int i = 0; i < communityList.size(); i++) {
-            list.add(communityList.get(i));
+        if (Constants.shareUri != null) {
+            Intent intent;
+            if (communityList.get(position).getName().equalsIgnoreCase("HO Support")) {
+                preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Issue");
+                preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, Constants.ISSUEID);
+                intent = new Intent(getActivity(), IssueTemplateActivity.class);
+                getActivity().startActivity(intent);
+            } else {
+                preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Report");
+                preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, Constants.REPORTID);
+                intent = new Intent(getActivity(), ReportingTemplateActivity.class);
+                getActivity().startActivity(intent);
+            }
+        } else {
+            preferenceHelper.insertString(PreferenceHelper.COMMUNITYID, communityList.get(position).getId());
+            List<Community> list = new ArrayList<Community>();
+            for (int i = 0; i < communityList.size(); i++) {
+                list.add(communityList.get(i));
+            }
+            list.remove(position);
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            String json = gson.toJson(list);
+            Intent intent;
+            intent = new Intent(getActivity(), CommunityHomeActivity.class);
+            intent.putExtra(Constants.TITLE, communityList.get(position).getName());
+            intent.putExtra(Constants.LIST, json);
+            startActivity(intent);
         }
-        list.remove(position);
-        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-        String json = gson.toJson(list);
-        Intent intent;
-        intent = new Intent(getActivity(), CommunityHomeActivity.class);
-        intent.putExtra(Constants.TITLE, communityList.get(position).getName());
-        intent.putExtra(Constants.LIST, json);
-        startActivity(intent);
+
     }
 
 }

@@ -231,6 +231,14 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                 android.R.layout.simple_spinner_item, mListTaluka);
         taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerTaluka.setAdapter(taluka_adapter);
+        if (Constants.shareUri != null) {
+            Glide.with(this)
+                    .load(Constants.shareUri)
+                    .skipMemoryCache(true)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .into(binding.addImage);
+            Constants.shareUri = null;
+        }
     }
 
     private void setActionbar(String Title) {

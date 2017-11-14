@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
@@ -12,6 +14,8 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +47,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -65,6 +72,9 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
     private ArrayList<Content> mDataList;
     private PreferenceHelper preferenceHelper;
     private int mPosition;
+    private boolean[] mSelection = null;
+    private String value;
+    private JSONArray jsonArrayAttchment = new JSONArray();
 
     public ContentAdapter(Context context, ArrayList<Content> chatList) {
         Resources resources = context.getResources();
@@ -104,10 +114,13 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 */
         if (TextUtils.isEmpty(mDataList.get(position).getAttachmentId())) {
             holder.picture.setVisibility(View.GONE);
+            holder.layout_download.setVisibility(View.GONE);
         } else if (mDataList.get(position).getAttachmentId().equalsIgnoreCase("null")) {
             holder.picture.setVisibility(View.GONE);
+            holder.layout_download.setVisibility(View.GONE);
         } else {
             holder.picture.setVisibility(View.VISIBLE);
+            holder.layout_download.setVisibility(View.VISIBLE);
             // holder.picture.setImageDrawable(mPlacePictures[position % mPlacePictures.length]);
             if (mDataList.get(position).getSynchStatus() != null
                     && mDataList.get(position).getSynchStatus().equalsIgnoreCase(Constants.STATUS_LOCAL)) {
@@ -148,7 +161,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             holder.txt_template_type.setText("Template Type : " + mDataList.get(position).getTemplateName());
         else
             holder.txt_template_type.setText("Template Type : " + mDataList.get(position).getTemplate());*/
-        holder.txt_template_type.setText(""+mDataList.get(position).getUserName());
+        holder.txt_template_type.setText("" + mDataList.get(position).getUserName());
         holder.txt_desc.setText("Description : " + mDataList.get(position).getDescription());
         holder.txt_time.setText(mDataList.get(position).getTime().toString());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");
@@ -180,7 +193,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
     public void showGroupDialog(final int position) {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(mContext);
         builderSingle.setIcon(R.drawable.logomulya);
-        builderSingle.setTitle("Select One Community");
+        builderSingle.setTitle("Select Communities");
 
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(mContext, android.R.layout.select_dialog_singlechoice);
         for (int i = 0; i < mActivity.communityList.size(); i++) {
@@ -197,13 +210,70 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                sendShareRecord(mDataList.get(position).getId(), mActivity.communityList.get(which).getId());
+
             }
         });
         builderSingle.show();
     }
 
-    private void sendShareRecord(String contentId, String communityId) {
+    private void showDialog(final int position) {
+        final String[] items = new String[mActivity.communityList.size()];
+        for (int i = 0; i < mActivity.communityList.size(); i++) {
+            items[i] = mActivity.communityList.get(i).getName();
+        }
+        mSelection = new boolean[items.length];
+        Arrays.fill(mSelection, false);
+
+// arraylist to keep the selected items
+        final ArrayList seletedItems = new ArrayList();
+        android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(mContext)
+                .setTitle("Select Communities")
+                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (mSelection != null && which < mSelection.length) {
+                            mSelection[which] = isChecked;
+                            value = buildSelectedItemString(items);
+
+                        } else {
+                            throw new IllegalArgumentException(
+                                    "Argument 'which' is out of bounds.");
+                        }
+                    }
+                })
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        sendShareRecord(mDataList.get(position).getId());
+                        Log.i("value", "value");
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Your code when user clicked on Cancel
+                    }
+                }).create();
+        dialog.show();
+    }
+
+    private String buildSelectedItemString(String[] items) {
+        StringBuilder sb = new StringBuilder();
+        boolean foundOne = false;
+        jsonArrayAttchment = new JSONArray();
+        for (int i = 0; i < items.length; ++i) {
+            if (mSelection[i]) {
+                if (foundOne) {
+                    sb.append(", ");
+                }
+                foundOne = true;
+                jsonArrayAttchment.put(mActivity.communityList.get(i).getId());
+                sb.append(i);
+            }
+        }
+        return sb.toString();
+    }
+
+    private void sendShareRecord(String contentId) {
         if (Utills.isConnected(mContext)) {
             try {
 
@@ -214,9 +284,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 jsonObject1.put("userId", User.getCurrentUser(mContext).getId());
                 jsonObject1.put("contentId", contentId);
 
-                JSONArray jsonArrayAttchment = new JSONArray();
 
-                jsonArrayAttchment.put(communityId);
+                //  jsonArrayAttchment.put(communityId);
                 // jsonObject1.put("MV_User", User.getCurrentUser(mContext).getId());
                 jsonObject1.put("grId", jsonArrayAttchment);
 
@@ -264,7 +333,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         public ImageView picture, userImage, imgLike;
         public CardView card_view;
         public TextView txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount;
-        public LinearLayout layout_like, layout_comment, layout_share;
+        public LinearLayout layout_like, layout_comment, layout_share, layout_download;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
@@ -298,8 +367,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                         Utills.showToast(mContext.getString(R.string.error_offline_share_post), mContext);
                     } else {
                         if (Utills.isConnected(mContext)) {
-
-                            showGroupDialog(getAdapterPosition());
+                            showDialog(getAdapterPosition());
+                            // showGroupDialog(getAdapterPosition());
                         } else {
                             Utills.showToast(mContext.getString(R.string.error_no_internet), mContext);
                         }
@@ -307,7 +376,13 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
                 }
             });
-
+            layout_download = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download);
+            layout_download.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    downloadImage(getAdapterPosition());
+                }
+            });
             layout_like = (LinearLayout) itemLayoutView.findViewById(R.id.layout_like);
             layout_like.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -351,6 +426,63 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         }
 
 
+    }
+
+    private void downloadImage(final int adapterPosition) {
+       /**/
+
+        if (Utills.isConnected(mContext)) {
+
+            Utills.showProgressDialog(mContext, "Please wait", "Loading Image");
+
+            ServiceRequest apiService =
+                    ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
+            String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                    + "/services/apexrest/getAttachmentBody/" + mDataList.get(adapterPosition).getAttachmentId();
+            apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                    try {
+                        String str = response.body().string();
+                        byte[] decodedString = Base64.decode(str, Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        Intent i = new Intent(Intent.ACTION_SEND);
+                        i.setType("image*//**//*");
+                        i.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(adapterPosition).getTitle() + "\n\nDescription : " + mDataList.get(adapterPosition).getDescription());
+                        i.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(decodedByte, adapterPosition));
+                        Utills.hideProgressDialog();
+                        mContext.startActivity(Intent.createChooser(i, "Share Post"));
+                    } catch (Exception e) {
+                        Utills.hideProgressDialog();
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Utills.hideProgressDialog();
+                    Utills.showToast(mContext.getString(R.string.error_something_went_wrong), mContext);
+                }
+            });
+        } else {
+            Utills.showInternetPopUp(mContext);
+        }
+
+    }
+
+    public Uri getLocalBitmapUri(Bitmap bmp, int mPosition) {
+        Uri bmpUri = null;
+        try {
+            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(mPosition).getId() + ".png");
+            FileOutputStream out = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.close();
+            bmpUri = Uri.fromFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bmpUri;
     }
 
     private void sendDisLikeAPI(String cotentId, boolean isLike) {

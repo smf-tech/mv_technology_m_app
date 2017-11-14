@@ -95,7 +95,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
+        holder.layout_download.setVisibility(View.GONE);
        /* Glide.with(mContext)
                 .load(getUrlWithHeaders(new PreferenceHelper(mContext).getString(PreferenceHelper.InstanceUrl)+"services/data/v20.0/sobjects/Attachment/"+mDataList.get(position).getId()))
                 .skipMemoryCache(true)
@@ -220,7 +220,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
         public ImageView picture, userImage, imgLike;
         public CardView card_view;
         public TextView txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount;
-        public LinearLayout layout_like, layout_comment, layout_share;
+        public LinearLayout layout_like, layout_comment, layout_share, layout_download;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
@@ -263,7 +263,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                     }
                 }
             });
-
+            layout_download = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download);
             layout_like = (LinearLayout) itemLayoutView.findViewById(R.id.layout_like);
             layout_like.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -304,41 +304,39 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
     private void downloadImage(final int adapterPosition) {
        /**/
 
+        if (Utills.isConnected(mContext)) {
 
-        Utills.showProgressDialog(mContext, "Please wait", "Loading Image");
+            Utills.showProgressDialog(mContext, "Please wait", "Loading Image");
 
-        ServiceRequest apiService =
-                ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getAttachmentBody/" + mDataList.get(adapterPosition).getAttachmentId();
-        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            ServiceRequest apiService =
+                    ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
+            String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                    + "/services/apexrest/getAttachmentBody/" + mDataList.get(adapterPosition).getAttachmentId();
+            apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
 
-                try {
-                    String str = response.body().string();
-                    byte[] decodedString = Base64.decode(str, Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-
-                    Intent i = new Intent(Intent.ACTION_SEND);
-                    i.setType("image*//**//*");
-                    i.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(adapterPosition).getTitle() + "\n\nDescription : " + mDataList.get(adapterPosition).getDescription());
-                    i.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(decodedByte));
-                    Utills.hideProgressDialog();
-                    mContext.startActivity(Intent.createChooser(i, "Share Post"));
-                } catch (Exception e) {
-                    Utills.hideProgressDialog();
-                    e.printStackTrace();
+                    try {
+                        String str = response.body().string();
+                        byte[] decodedString = Base64.decode(str, Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        getLocalBitmapUri(decodedByte);
+                        Utills.showToast("Image Downloaded Successfully...", mContext);
+                    } catch (Exception e) {
+                        Utills.hideProgressDialog();
+                        e.printStackTrace();
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Utills.hideProgressDialog();
-                Utills.showToast(mContext.getString(R.string.error_something_went_wrong), mContext);
-            }
-        });
-
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Utills.hideProgressDialog();
+                    Utills.showToast(mContext.getString(R.string.error_something_went_wrong), mContext);
+                }
+            });
+        } else {
+            Utills.showInternetPopUp(mContext);
+        }
 
     }
 

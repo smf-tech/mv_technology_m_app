@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
@@ -83,6 +84,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initViews() {
+        Intent receivedIntent = getIntent();
+
         setActionbar(getString(R.string.home));
         preferenceHelper = new PreferenceHelper(this);
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -132,7 +135,22 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         });
-
+        String receivedAction = receivedIntent.getAction();
+        String receivedType = receivedIntent.getType();
+        //make sure it's an action and type we can handle
+        if (receivedAction != null && receivedAction.equals(Intent.ACTION_SEND)) {
+            viewPager.setCurrentItem(1);
+            if (receivedType.startsWith("text/")) {
+                //handle sent text
+            } else if (receivedType.startsWith("image/")) {
+                //handle sent image
+                Constants.shareUri = (Uri) receivedIntent.getParcelableExtra(Intent.EXTRA_STREAM);
+            }
+            //content is being shared
+        } else {
+            //app has been launched directly, not from share list
+            Constants.shareUri = null;
+        }
 
     }
 
@@ -174,7 +192,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private void setActionbar(String Title) {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-           // actionBar.setTitle(Title);
+            // actionBar.setTitle(Title);
             getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
             getSupportActionBar().setDisplayShowCustomEnabled(true);
             getSupportActionBar().setCustomView(R.layout.toolbar);

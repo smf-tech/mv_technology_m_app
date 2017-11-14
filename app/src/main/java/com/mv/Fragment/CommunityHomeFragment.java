@@ -110,17 +110,20 @@ public class CommunityHomeFragment extends Fragment implements View.OnClickListe
                 Utills.hideProgressDialog();
                 binding.swipeRefreshLayout.setRefreshing(false);
                 try {
-                    String str = response.body().string();
-                    if (str != null && str.length() > 0) {
-                        JSONArray jsonArray = new JSONArray(str);
-                        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                        List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));
-                        for (int i = 0; i < temp.size(); i++) {
-                            chatList.add(temp.get(i));
-                            AppDatabase.getAppDatabase(getActivity()).userDao().insertChats(temp.get(i));
+                    if (response.body() != null) {
+                        String str = response.body().string();
+                        if (str != null && str.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(str);
+                            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                            List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));
+                            for (int i = 0; i < temp.size(); i++) {
+                                chatList.add(temp.get(i));
+                                AppDatabase.getAppDatabase(getActivity()).userDao().insertChats(temp.get(i));
+                            }
+                            adapter.notifyDataSetChanged();
                         }
-                        adapter.notifyDataSetChanged();
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

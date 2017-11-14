@@ -28,6 +28,7 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
         PreferenceHelper preferenceHelper = new PreferenceHelper(getApplicationContext());
         preferenceHelper.insertString(PreferenceHelper.TOKEN, refreshedToken);
         //Displaying token on logcat
+
         Log.d(TAG, "Refreshed token: " + refreshedToken);
 
     }

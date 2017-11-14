@@ -1,5 +1,7 @@
 package com.mv.Utils;
 
+import android.net.Uri;
+
 /**
  * Created by User on 6/1/2017.
  */
@@ -16,12 +18,11 @@ public class Constants {
     //Sandbox
     public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
-    public static String REPORTID  = "a1G0k000000522K";
-    public static String ISSUEID  = "a1G0k000000522F";
+    public static String REPORTID = "a1G0k000000522K";
+    public static String ISSUEID = "a1G0k000000522F";
 
 
-
-
+    public static Uri shareUri = null;
 
     public static String ID = "ID";
     public static String PASSWORD = "Nano4545";
@@ -35,7 +36,7 @@ public class Constants {
     public static String CONTENT = "content";
 
     public static final String TABLE_TASK = "table_task";
-    public static final String TABLE_PROCESS= "table_process";
+    public static final String TABLE_PROCESS = "table_process";
     public static final String TABLE_CONTAINER = "table_container";
     public static final String TABLE_LOCATION = "table_location";
     public static String ACTION = "action";
@@ -57,8 +58,8 @@ public class Constants {
     public static String PROCESS_NAME = "PRocessName";
     public static String TEMPLATE_ISSUE = "Issue";
     public static String IS_EDITABLE = "isEditable";
-    public static String IS_LOCATION= "isEditableLocation";
-    public static String STATE_LOCATION_LEVEL= "locationTest";
+    public static String IS_LOCATION = "isEditableLocation";
+    public static String STATE_LOCATION_LEVEL = "locationTest";
 
 
     public static final String TASK_TEXT = "Text";
@@ -80,7 +81,7 @@ public class Constants {
     public static String SCHOOL = "School";
 
     public static String TASK_ANSWER = "answer";
-    public static String TASK_QUESTION="question";
+    public static String TASK_QUESTION = "question";
     public static final String STATUS_LOCAL = "status_local";
     public static final String TEMPLATES = "templates";
     public static final String UNIQUE = "UNIQUE";
