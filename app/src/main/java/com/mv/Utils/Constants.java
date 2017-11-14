@@ -86,5 +86,7 @@ public class Constants {
     public static final String TEMPLATES = "templates";
     public static final String UNIQUE = "UNIQUE";
 
+    public static String INDICATOR_TASK = "indicator_task";
+
 
 }

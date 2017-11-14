@@ -38,10 +38,7 @@
         <activity
             android:name=".Activity.CommunityHomeActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan">
-
-        </activity>
-
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".Activity.RegistrationActivity"
             android:screenOrientation="portrait"
@@ -65,6 +62,7 @@
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:mimeType="image/*" />
@@ -143,23 +141,25 @@
             android:name=".receiver.InternetConnector_Receiver"
             android:enabled="true">
             <intent-filter>
+
                 <!-- Intent filters for broadcast receiver -->
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
                 <action android:name="android.net.wifi.STATE_CHANGE" />
             </intent-filter>
         </receiver>
+
         <service
             android:name=".Service.LocationService"
             android:exported="false" />
-        <activity android:name=".Activity.LocationSelectionActity"></activity>
+
+        <activity android:name=".Activity.LocationSelectionActity" />
 
         <service android:name=".Service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service android:name=".Service.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
@@ -169,6 +169,9 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="c734e0db3c7d600be0137fb7588a9c13b453227b" />
+
+        <activity android:name=".Activity.IndicatorTaskList" />
+        <activity android:name=".Activity.PiachartActivity"></activity>
     </application>
 
 </manifest>

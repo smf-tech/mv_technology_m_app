@@ -19,7 +19,9 @@ import android.widget.TextView;
 import com.bumptech.glide.util.Util;
 import com.mv.Activity.GroupsActivity;
 import com.mv.Activity.HomeActivity;
+import com.mv.Activity.IndicatorTaskList;
 import com.mv.Activity.LocationSelectionActity;
+import com.mv.Activity.PiachartActivity;
 import com.mv.Activity.ProcessDeatailActivity;
 import com.mv.Activity.ProcessListActivity;
 import com.mv.Activity.ProgrammeManagmentActivity;
@@ -118,6 +120,13 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.MyView
                             Utills.showToast("No Task Available ", mContext);
                         }
                     }
+                    else if (mContext instanceof IndicatorTaskList) {
+                        Intent openClass = new Intent(mContext, PiachartActivity.class);
+                        openClass.putExtra(Constants.INDICATOR_TASK,teplateList.get(getAdapterPosition()).getName());
+                        mContext.startActivity(openClass);
+                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    }
+
                 }
             });
         }

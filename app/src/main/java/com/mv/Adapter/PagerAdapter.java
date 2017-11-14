@@ -4,9 +4,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.mv.Activity.IndicatorTaskList;
 import com.mv.Fragment.CommunityHomeFragment;
 import com.mv.Fragment.GroupsFragment;
 import com.mv.Fragment.IndicatorFragment;
+import com.mv.Fragment.IndicatorListFragmet;
 import com.mv.Fragment.ProgrammeManagmentFragment;
 import com.mv.Fragment.TrainingFragment;
 
@@ -39,7 +41,7 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 TrainingFragment tab3 = new TrainingFragment();
                 return tab3;
             case 4:
-                IndicatorFragment tab5= new IndicatorFragment();
+                IndicatorListFragmet tab5= new IndicatorListFragmet();
                 return tab5;
             default:
                 return null;

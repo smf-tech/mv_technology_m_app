@@ -60,7 +60,7 @@
                     android:background="@drawable/grey_box"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
-                    android:prompt="@string/role"
+                    android:prompt="@string/state"
                     android:spinnerMode="dialog" />
 
 
