@@ -20,6 +20,8 @@ public class PreferenceHelper {
     public static final String TOKEN = "Token";
     public static final String CONTENTISSYNCHED = "CONTENTISSYNCHED";
 
+    public static final String NOTIFICATION = "notification";
+
     public static final String UserData = "UserData";
     public static final String UserRole = "UserRole";
     public static final String AccessToken = "AccessToken";
@@ -64,7 +66,8 @@ public class PreferenceHelper {
     public void clearPrefrences() {
         Map<String, ?> prefs = pref.getAll();
         for (Map.Entry<String, ?> prefToReset : prefs.entrySet()) {
-            if (prefToReset.getKey().equalsIgnoreCase(PreferenceHelper.TOKEN)) {
+            if (prefToReset.getKey().equalsIgnoreCase(PreferenceHelper.TOKEN)
+                    || prefToReset.getKey().equalsIgnoreCase(PreferenceHelper.InstanceUrl)) {
             } else {
                 editor.remove(prefToReset.getKey()).commit();
             }

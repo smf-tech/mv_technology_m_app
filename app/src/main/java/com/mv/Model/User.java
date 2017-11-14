@@ -86,6 +86,17 @@ public class User {
     @SerializedName("ImageId__c")
     @Expose
     private String ImageId;
+    @SerializedName("Role_Organization__c")
+    @Expose
+    private String Organisation;
+
+    public String getOrganisation() {
+        return Organisation;
+    }
+
+    public void setOrganisation(String organisation) {
+        Organisation = organisation;
+    }
 
     public String getImageId() {
         return ImageId;

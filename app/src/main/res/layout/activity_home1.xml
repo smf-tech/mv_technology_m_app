@@ -29,8 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/custom_actionbar"
             android:background="@color/colorPrimary"
-            ads:tabSelectedTextColor="@color/colorPink"
-
+            ads:tabSelectedTextColor="@color/white"
             ads:tabTextColor="@color/white"
             app:tabGravity="fill"
             app:tabIndicatorColor="@color/colorPink"
