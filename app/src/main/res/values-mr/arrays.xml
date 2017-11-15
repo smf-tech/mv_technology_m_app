@@ -9,7 +9,9 @@
         <item>MT</item>
         <item>TC</item>
     </string-array>
-
+    <string-array name="array_of_indicator">
+        <item> Trainee Feedback </item>
+    </string-array>
     <string-array name="array_of_training">
         <item>मूल्यवर्धन कार्यक्रमाची ओळख</item>
         <item>मूल्यवर्धन कार्यक्रमाचा आराखडा</item>

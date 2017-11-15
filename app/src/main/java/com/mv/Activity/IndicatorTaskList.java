@@ -58,8 +58,7 @@ public class IndicatorTaskList extends AppCompatActivity implements View.OnClick
 
     private void initViews() {
         preferenceHelper = new PreferenceHelper(this);
-        setActionbar(getString(R.string.programme_management));
-
+        setActionbar(getString(R.string.indicator));
         mAdapter = new TemplateAdapter(programManagementProcessLists, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         binding.recyclerView.setLayoutManager(mLayoutManager);
@@ -87,7 +86,6 @@ public class IndicatorTaskList extends AppCompatActivity implements View.OnClick
 
     private void setActionbar(String Title) {
         mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        mToolBar.setVisibility(View.GONE);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         toolbar_title.setText(Title);
         img_back = (ImageView) findViewById(R.id.img_back);
