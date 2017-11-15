@@ -1,8 +1,11 @@
 package com.mv.Activity;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -36,7 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class IndicatorTaskList extends AppCompatActivity implements View.OnClickListener {
+public class IndicatorTaskList extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private ActivityNewTemplateBinding binding;
     private ImageView img_back, img_list, img_logout;
@@ -53,12 +56,14 @@ public class IndicatorTaskList extends AppCompatActivity implements View.OnClick
         binding = DataBindingUtil.setContentView(this, R.layout.activity_new_template);
         binding.setVariable(BR.vm, new ParentViewModel());
         initViews();
+
     }
 
 
     private void initViews() {
         preferenceHelper = new PreferenceHelper(this);
         setActionbar(getString(R.string.indicator));
+        binding.swiperefresh.setOnRefreshListener(this);
         mAdapter = new TemplateAdapter(programManagementProcessLists, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         binding.recyclerView.setLayoutManager(mLayoutManager);
@@ -66,6 +71,8 @@ public class IndicatorTaskList extends AppCompatActivity implements View.OnClick
         binding.recyclerView.setAdapter(mAdapter);
         if (Utills.isConnected(this))
             getAllIndicatorTask();
+        else
+            showPopUp();
     }
 
     public void onLayoutScheduleTraining() {
@@ -125,6 +132,7 @@ public class IndicatorTaskList extends AppCompatActivity implements View.OnClick
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
+                binding.swiperefresh.setRefreshing(false);
                 try {
                     JSONArray jsonArray = new JSONArray(response.body().string());
                     programManagementProcessLists.clear();
@@ -145,8 +153,48 @@ public class IndicatorTaskList extends AppCompatActivity implements View.OnClick
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utills.hideProgressDialog();
-
+                binding.swiperefresh.setRefreshing(false);
             }
         });
+    }
+    private void showPopUp() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(IndicatorTaskList.this).create();
+
+        // Setting Dialog Title
+        alertDialog.setTitle(getString(R.string.app_name));
+
+        // Setting Dialog Message
+        alertDialog.setMessage("Internet connection is required");
+
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.drawable.logomulya);
+
+        // Setting CANCEL Button
+        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+                finish();
+               overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            }
+        });
+        // Setting OK Button
+        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+                finish();
+               overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+    @Override
+    public void onRefresh() {
+        binding.swiperefresh.setRefreshing(false);
+        if (Utills.isConnected(this))
+            getAllIndicatorTask();
+        else
+            showPopUp();
     }
 }

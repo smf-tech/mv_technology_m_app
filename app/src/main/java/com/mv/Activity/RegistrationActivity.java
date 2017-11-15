@@ -567,7 +567,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                     preferenceHelper.insertString(PreferenceHelper.UserRole, user.getRoll());
                                     Utills.showToast("Registration Successful...", RegistrationActivity.this);
                                     User.clearUser();
-                                    finish();
+                                        finish();
                                     overridePendingTransition(R.anim.left_in, R.anim.right_out);
                                 } catch (Exception e) {
                                     e.printStackTrace();

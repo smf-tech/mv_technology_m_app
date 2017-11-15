@@ -64,7 +64,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
         binding.setActivity(this);
-        initViews();
+
 
 
     }
@@ -77,7 +77,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-
+        initViews();
         Intent intent = new Intent(this, LocationService.class);
         // add infos for the service which file to download and where to store
         startService(intent);
@@ -107,10 +107,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.removeAllTabs();
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.broadcast)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.community)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.programme_management)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.training_content)));
+        if(User.getCurrentUser(getApplicationContext()).getRoll().equals("TC"))
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.indicator)));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 

@@ -112,7 +112,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         l.setYOffset(0f);
 
         // entry label styling
-        mChart.setEntryLabelColor(Color.WHITE);
+        mChart.setEntryLabelColor(Color.BLACK);
         //  mChart.setEntryLabelTypeface(mTfRegular);
         mChart.setEntryLabelTextSize(12f);
     }
@@ -175,7 +175,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         PieData data = new PieData(dataSet);
         data.setValueFormatter(new PercentFormatter());
         data.setValueTextSize(11f);
-        data.setValueTextColor(Color.WHITE);
+        data.setValueTextColor(Color.BLACK);
         //  data.setValueTypeface(mTfLight);
         mChart.setData(data);
 
@@ -226,10 +226,21 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                     entries=new ArrayList<>();
                     for(int i=0;i<jsonArray.length();i++) {
                         entries.add(new PieEntry(Float.valueOf(jsonArray.getJSONObject(i).getString("value")),jsonArray.getJSONObject(i).getString("key")));
-                        key.add(jsonArray.getJSONObject(i).getString("key"));
-
+                        if(!jsonArray.getJSONObject(i).getString("value").equals("0.0"))
+                        key.add(jsonArray.getJSONObject(i).getString("value"));
                     }
-                    setData(entries);
+                    if(key.size()>0)
+                    {
+                        setData(entries);
+                        binding.swipeRefreshLayout.setVisibility(View.VISIBLE);
+                        binding.tvPiaNoDataAvailable.setVisibility(View.GONE);
+                    }
+
+                    else
+                    {
+                        binding.swipeRefreshLayout.setVisibility(View.GONE);
+                        binding.tvPiaNoDataAvailable.setVisibility(View.VISIBLE);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
