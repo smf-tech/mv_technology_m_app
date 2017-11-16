@@ -8,22 +8,21 @@ import android.net.Uri;
 
 public class Constants {
 
-    /*Production*/
-/*  */  public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
+    /*Production
+    public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com";
-    public static String REPORTID  = "a1L7F000000YNK4";
-    public static String ISSUEID  = "a1L7F000000YNJz";
+    public static String REPORTID = "a1L7F000000YNK4";
+    public static String ISSUEID = "a1L7F000000YNJz";*/
 
-
-    //Sandbox
-   /* public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
+    /* Sandbox*/
+    public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
     public static String REPORTID = "a1G0k000000522K";
-    public static String ISSUEID = "a1G0k000000522F";*/
+    public static String ISSUEID = "a1G0k000000522F";
 
 
     public static Uri shareUri = null;
-
+    public static final int ISROLECHANGE = 1;
     public static String ID = "ID";
     public static String PASSWORD = "Nano4545";
     public static String CLIENT_ID = "3MVG9d8..z.hDcPJhCvdazzxmwecKJ839UtvRRCnGEbq5p_PT49tZaftCOG4eti.6aI2v98zkYM0KQvaOWmTP";

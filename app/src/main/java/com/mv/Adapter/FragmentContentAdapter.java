@@ -128,8 +128,9 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                     .into(holder.userImage);
         }
         Log.i("URL for position : " + position, "" + mDataList.get(position).getUserAttachmentId());
-        holder.txt_title.setText("Title : " + mDataList.get(position).getTitle());
-        holder.txt_template_type.setText("Template Type : " + mDataList.get(position).getTemplate());
+        holder.txt_title.setVisibility(View.GONE);
+       // holder.txt_title.setText("Title : " + mDataList.get(position).getTitle());
+        holder.txt_template_type.setText("Title : " + mDataList.get(position).getTitle());
         holder.txt_desc.setText("Description : " + mDataList.get(position).getDescription());
         holder.txt_time.setText(mDataList.get(position).getTime().toString());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");

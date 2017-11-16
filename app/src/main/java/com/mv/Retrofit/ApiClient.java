@@ -68,11 +68,24 @@ public class ApiClient {
                     return chain.proceed(request);
                 }
             };
+
+
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            Interceptor interceptor2 = new Interceptor() {
+                @Override
+                public Response intercept(Chain chain) throws IOException {
+                    Request request = chain.request();
+                    Response response = chain.proceed(request);
+                    if (response.code() == 403) {
+                        // handleForbiddenResponse();
+                    }
+                    return response;
+                }
+            };
             OkHttpClient client = null;
             try {
-                client = new OkHttpClient.Builder().sslSocketFactory(new TLSSocketFactory()).addInterceptor(interceptor).addInterceptor(interceptor1).build();
+                client = new OkHttpClient.Builder().sslSocketFactory(new TLSSocketFactory()).addInterceptor(interceptor).addInterceptor(interceptor2).addInterceptor(interceptor1).build();
             } catch (KeyManagementException e) {
                 e.printStackTrace();
             } catch (NoSuchAlgorithmException e) {
@@ -80,6 +93,7 @@ public class ApiClient {
             } catch (KeyStoreException e) {
                 e.printStackTrace();
             }
+
 
             retrofitWithHeader = new Retrofit.Builder()
                     .baseUrl(new PreferenceHelper(context).getString(PreferenceHelper.InstanceUrl))

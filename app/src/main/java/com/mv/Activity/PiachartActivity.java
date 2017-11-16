@@ -2,12 +2,15 @@ package com.mv.Activity;
 
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.SpannableString;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.PieChart;
@@ -21,9 +24,6 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
-import com.mv.BR;
-import com.mv.Model.ParentViewModel;
-import com.mv.Model.Template;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -31,7 +31,6 @@ import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
-import com.mv.databinding.ActivityProcessListBinding;
 import com.mv.databinding.FragmentIndicaorBinding;
 
 import org.json.JSONArray;
@@ -45,26 +44,50 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class PiachartActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener,OnChartValueSelectedListener {
+public class PiachartActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, OnChartValueSelectedListener {
     private FragmentIndicaorBinding binding;
     private PreferenceHelper preferenceHelper;
     private PieChart mChart;
-    ArrayList<String>key=new ArrayList<>();
-    ArrayList<String>value=new ArrayList<>();
+    ArrayList<String> key = new ArrayList<>();
+    ArrayList<String> value = new ArrayList<>();
     ArrayList<PieEntry> entries;
     String task;
+    private ImageView img_back, img_list, img_logout;
+    private TextView toolbar_title;
+    private RelativeLayout mToolBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.fragment_indicaor);
         binding.swipeRefreshLayout.setOnRefreshListener(this);
-        task=getIntent().getExtras().getString(Constants.INDICATOR_TASK);
+        task = getIntent().getExtras().getString(Constants.INDICATOR_TASK);
         initViews();
         if (Utills.isConnected(this))
             getAllIndicatorTask();
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+    }
+
+    private void setActionbar(String Title) {
+        mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        toolbar_title.setText(Title);
+        img_back = (ImageView) findViewById(R.id.img_back);
+        img_back.setVisibility(View.VISIBLE);
+        img_back.setOnClickListener(this);
+        img_logout = (ImageView) findViewById(R.id.img_logout);
+        img_logout.setVisibility(View.GONE);
+        img_logout.setOnClickListener(this);
+    }
+
     private void initViews() {
+        setActionbar(task);
         preferenceHelper = new PreferenceHelper(PiachartActivity.this);
         mChart = (PieChart) findViewById(R.id.chart1);
         mChart.setUsePercentValues(true);
@@ -116,6 +139,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         //  mChart.setEntryLabelTypeface(mTfRegular);
         mChart.setEntryLabelTextSize(12f);
     }
+
     private SpannableString generateCenterSpannableText() {
 
         SpannableString s = new SpannableString(getString(R.string.app_name));
@@ -127,9 +151,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length() - 14, s.length(), 0);*/
         return s;
     }
+
     private void setData(ArrayList<PieEntry> entries) {
-
-
 
 
         // NOTE: The order of the entries when being added to the entries array determines their position around the center of
@@ -184,6 +207,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
         mChart.invalidate();
     }
+
     @Override
     public void onRefresh() {
         binding.swipeRefreshLayout.setRefreshing(false);
@@ -191,7 +215,12 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
-
+        switch (v.getId()) {
+            case R.id.img_back:
+                finish();
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                break;
+        }
     }
 
     @Override
@@ -214,7 +243,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getDashboardData?userId="+ User.getCurrentUser(PiachartActivity.this).getId()+"&qustionArea="+task;
+                + "/services/apexrest/getDashboardData?userId=" + User.getCurrentUser(PiachartActivity.this).getId() + "&qustionArea=" + task;
 
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
@@ -223,21 +252,17 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 Utills.hideProgressDialog();
                 try {
                     JSONArray jsonArray = new JSONArray(response.body().string());
-                    entries=new ArrayList<>();
-                    for(int i=0;i<jsonArray.length();i++) {
-                        entries.add(new PieEntry(Float.valueOf(jsonArray.getJSONObject(i).getString("value")),jsonArray.getJSONObject(i).getString("key")));
-                        if(!jsonArray.getJSONObject(i).getString("value").equals("0.0"))
-                        key.add(jsonArray.getJSONObject(i).getString("value"));
+                    entries = new ArrayList<>();
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        entries.add(new PieEntry(Float.valueOf(jsonArray.getJSONObject(i).getString("value")), jsonArray.getJSONObject(i).getString("key")));
+                        if (!jsonArray.getJSONObject(i).getString("value").equals("0.0"))
+                            key.add(jsonArray.getJSONObject(i).getString("value"));
                     }
-                    if(key.size()>0)
-                    {
+                    if (key.size() > 0) {
                         setData(entries);
                         binding.swipeRefreshLayout.setVisibility(View.VISIBLE);
                         binding.tvPiaNoDataAvailable.setVisibility(View.GONE);
-                    }
-
-                    else
-                    {
+                    } else {
                         binding.swipeRefreshLayout.setVisibility(View.GONE);
                         binding.tvPiaNoDataAvailable.setVisibility(View.VISIBLE);
                     }

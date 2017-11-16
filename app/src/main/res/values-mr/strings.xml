@@ -57,15 +57,15 @@
     <string name="resend"> <u>OTP पुन्हा पाठवा</u></string>
     <string name="check_otp">कृपया OTP तपासा</string>
 
-    <string name="Submit"> सबमिट</string>
-    <string name="backExit"> बाहेर पडण्यासाठी कृपया पुन्हा क्लिक करा </string>
-    <string name="select_lang"> भाषा निवडा</string>
+    <string name="Submit">सबमिट</string>
+    <string name="backExit">बाहेर पडण्यासाठी कृपया पुन्हा क्लिक करा </string>
+    <string name="select_lang">भाषा निवडा</string>
     <string name="broadcast">ब्रॉडकास्ट</string>
-    <string name="community">माय \n कॅम्युनिटी </string>
-    <string name="programme_management">प्रोग्रॅम \n मॅनेजमेंट </string>
-    <string name="training_content">ट्रेनींग \n कन्टेन्ट </string>
-    <string name="indicator">Indicator</string>
-    <string name="notification">Notification</string>
+    <string name="community">माय\nकॅम्युनिटी </string>
+    <string name="programme_management">प्रोग्रॅम\nमॅनेजमेंट </string>
+    <string name="training_content">ट्रेनींग\nकन्टेन्ट </string>
+    <string name="indicator">माय\nरिपोर्ट्स </string>
+    <string name="notification">नोटिफिकेशन </string>
     <string name="seconds_remaining">उर्वरित सेकंद </string>
     <string name="back_string">बाहेर पडण्यासाठी कृपया पुन्हा क्लिक करा </string>
     <string name="please_enter">कृपया प्रविष्ट करा </string>
