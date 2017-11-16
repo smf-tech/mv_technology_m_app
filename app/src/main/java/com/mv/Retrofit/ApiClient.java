@@ -61,7 +61,9 @@ public class ApiClient {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
                     final Request request = chain.request().newBuilder()
-                            .addHeader("Authorization", "OAuth " + new PreferenceHelper(context).getString(PreferenceHelper.AccessToken))
+                           // .addHeader("Authorization", "OAuth " + new PreferenceHelper(context).getString(PreferenceHelper.AccessToken))
+                            .addHeader("Authorization", "OAuth " + "00D0l0000000Q7W!AQoAQHEqkkzY2eqBoG7.cdnNvxNQfuaMRIr.PcTybD6Lx7skg5Ihk_8GL6sHWxLrUlPaO_nWpUj4p5Al2Kdmt71Xyk8iThMM")
+                            .addHeader("Content-Type", "application/json")
                             .addHeader("Content-Type", "application/json")
                             .build();
 
