@@ -10,6 +10,7 @@ import com.mv.Fragment.GroupsFragment;
 
 import com.mv.Fragment.IndicatorListFragmet;
 import com.mv.Fragment.ProgrammeManagmentFragment;
+import com.mv.Fragment.TeamManagementFragment;
 import com.mv.Fragment.TrainingFragment;
 
 /**
@@ -43,6 +44,9 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
             case 4:
                 IndicatorListFragmet tab5= new IndicatorListFragmet();
                 return tab5;
+            case 5:
+                TeamManagementFragment tab6=new TeamManagementFragment();
+                return tab6;
             default:
                 return null;
         }
