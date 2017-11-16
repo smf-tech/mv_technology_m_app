@@ -64,7 +64,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
         binding.setActivity(this);
-        initViews();
+        preferenceHelper = new PreferenceHelper(this);
+        if(User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false"))
+        {
+            showApprovedDilaog();
+        }
+        else
+        {
+            initViews();
+        }
+
 
     }
 
@@ -86,7 +95,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         Intent receivedIntent = getIntent();
 
         setActionbar(getString(R.string.home));
-        preferenceHelper = new PreferenceHelper(this);
+
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
@@ -484,7 +493,33 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         // Showing Alert Message
         alertDialog.show();
     }
+    private void showApprovedDilaog() {
+        final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
 
+        // Setting Dialog Title
+        alertDialog.setTitle(getString(R.string.app_name));
+
+        // Setting Dialog Message
+        alertDialog.setMessage("You are not approved yet ");
+
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.drawable.logomulya);
+
+        // Setting CANCEL Button
+
+        // Setting OK Button
+        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+                finish();
+                sendLogOutRequest();
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
     boolean doubleBackToExitPressedOnce = false;
 
     @Override

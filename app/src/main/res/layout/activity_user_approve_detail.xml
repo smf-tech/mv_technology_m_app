@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:my_font="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.mv.Activity.UserApproveDetail" />
+    </data>
+
+    <LinearLayout
+
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/app_bg"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/app_bg"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_username"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_view1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                     <com.mv.Widgets.MyEditTextView
+                        android:enabled="false"
+                        android:id="@+id/edit_text_name"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="@string/name"
+                        android:inputType="textPersonName"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_midle_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_view1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                     <com.mv.Widgets.MyEditTextView
+                        android:enabled="false"
+                        android:id="@+id/edit_text_midle_name"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="Middle Name"
+                        android:inputType="textPersonName"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_last_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_view1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                     <com.mv.Widgets.MyEditTextView
+                        android:enabled="false"
+                        android:id="@+id/edit_text_last_name"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="Last Name"
+                        android:inputType="textPersonName"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_mobile_number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_view1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                     <com.mv.Widgets.MyEditTextView
+                        android:enabled="false"
+                        android:id="@+id/edit_text_mobile_number"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:digits="0123456789"
+                        android:hint="@string/mobile_no"
+                        android:inputType="phone"
+                        android:maxLength="10"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_view1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                     <com.mv.Widgets.MyEditTextView
+                        android:enabled="false"
+                        android:id="@+id/edit_text_email"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="@string/email"
+                        android:inputType="textEmailAddress"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
+                <com.mv.Widgets.MyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/organization"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/small_text" />
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_view1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                     <com.mv.Widgets.MyEditTextView
+                        android:enabled="false"
+                        android:id="@+id/edit_organization"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+
+                        android:inputType="textPersonName"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
+                <com.mv.Widgets.MyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/role"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/small_text" />
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_role"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                     <com.mv.Widgets.MyEditTextView
+                        android:enabled="false"
+                        android:id="@+id/edit_role"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+
+                        android:inputType="textPersonName"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
+
+                <com.mv.Widgets.MyTextView
+                    android:id="@+id/txt_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"
+                    android:text="@string/state"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/small_text" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/lay_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_view1"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                     <com.mv.Widgets.MyEditTextView
+                        android:enabled="false"
+                        android:id="@+id/edit_state"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+
+                        android:inputType="textPersonName"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
+
+
+
+                <com.mv.Widgets.MyTextView
+                    android:id="@+id/txt_district"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/disrict"
+                    android:visibility="gone"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/small_text" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_view1"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/lay_district"
+                    android:visibility="gone"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                     <com.mv.Widgets.MyEditTextView
+                        android:enabled="false"
+                        android:id="@+id/edit_district"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+
+                        android:inputType="textPersonName"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
+                <com.mv.Widgets.MyTextView
+                    android:id="@+id/txt_taluka"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/taluka"
+                    android:visibility="gone"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/small_text" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lay_taluka"
+                    android:visibility="gone"
+                    android:layout_below="@+id/txt_view1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                     <com.mv.Widgets.MyEditTextView
+                        android:enabled="false"
+
+                        android:id="@+id/edit_taluka"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+
+                        android:inputType="textPersonName"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
+                <com.mv.Widgets.MyTextView
+                    android:id="@+id/txt_cluster"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:visibility="gone"
+                    android:text="@string/cluster"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/small_text" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lay_cluster"
+                    android:visibility="gone"
+                    android:layout_below="@+id/txt_view1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                     <com.mv.Widgets.MyEditTextView
+                        android:enabled="false"
+                        android:id="@+id/edit_cluster"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+
+                        android:inputType="textPersonName"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
+                <com.mv.Widgets.MyTextView
+                    android:id="@+id/txt_village"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/village"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/small_text" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:id="@+id/lay_village"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_below="@+id/txt_view1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                     <com.mv.Widgets.MyEditTextView
+                        android:enabled="false"
+                        android:id="@+id/edit_village"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+
+                        android:inputType="textPersonName"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
+                <com.mv.Widgets.MyTextView
+                    android:id="@+id/txt_school"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:visibility="gone"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/school_name"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/small_text" />
+
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lay_school"
+                    android:layout_below="@+id/txt_view1"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                     <com.mv.Widgets.MyEditTextView
+                        android:enabled="false"
+                        android:id="@+id/edit_school"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+
+                        android:inputType="textPersonName"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
+
+
+                <ImageView
+                    android:id="@+id/addImage"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="10dp"
+
+                    android:src="@drawable/add" />
+
+
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:id="@+id/butt_lay"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_5dp"
+            android:orientation="horizontal"
+            android:weightSum="10"
+            android:layout_alignParentBottom="true">
+
+            <com.mv.Widgets.MyFontButton
+                android:id="@+id/accept"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_5dp"
+                android:layout_weight="5"
+                android:background="@color/colorPink"
+                android:text="@string/accept"
+
+                android:textColor="#ffffff"
+                android:textSize="22sp" />
+            <com.mv.Widgets.MyFontButton
+                android:id="@+id/reject"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_5dp"
+                android:layout_weight="5"
+                android:background="@color/colorPink"
+                android:text="@string/reject"
+
+                android:textColor="#ffffff"
+                android:textSize="22sp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

@@ -171,7 +171,8 @@
             android:value="c734e0db3c7d600be0137fb7588a9c13b453227b" />
 
         <activity android:name=".Activity.IndicatorTaskList" />
-        <activity android:name=".Activity.PiachartActivity"></activity>
+        <activity android:name=".Activity.PiachartActivity" />
+        <activity android:name=".Activity.UserApproveDetail"></activity>
     </application>
 
 </manifest>

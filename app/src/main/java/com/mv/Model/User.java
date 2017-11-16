@@ -89,6 +89,18 @@ public class User {
     @SerializedName("Role_Organization__c")
     @Expose
     private String Organisation;
+    @SerializedName("Is_Approved__c")
+    @Expose
+    private String isApproved;
+    public String getIsApproved() {
+        return isApproved;
+    }
+
+    public void setIsApproved(String isApproved) {
+        this.isApproved = isApproved;
+    }
+
+
 
     public String getOrganisation() {
         return Organisation;
