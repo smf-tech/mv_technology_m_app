@@ -8,7 +8,7 @@ import android.net.Uri;
 
 public class Constants {
 
-    /*Production
+    /* Production
     public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com";
     public static String REPORTID = "a1L7F000000YNK4";

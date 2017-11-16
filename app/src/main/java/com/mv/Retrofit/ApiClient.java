@@ -4,7 +4,6 @@ package com.mv.Retrofit;
 import android.content.Context;
 import android.util.Log;
 
-import com.mv.Activity.LoginActivity;
 import com.mv.BuildConfig;
 import com.mv.R;
 import com.mv.Utils.Constants;
@@ -39,6 +38,7 @@ public class ApiClient {
     private static Retrofit retrofit = null;
     private static Retrofit retrofitWithHeader = null;
 
+
     public static Retrofit getClient() {
         if (retrofit == null) {
 
@@ -69,14 +69,13 @@ public class ApiClient {
     public static Retrofit getClientWitHeader(final Context context) {
 
         if (retrofitWithHeader == null) {
-           final PreferenceHelper preferenceHelper = new PreferenceHelper(context);
-            final Context  mContext = context;
+            final PreferenceHelper preferenceHelper = new PreferenceHelper(context);
+            final Context mContext = context;
             Interceptor interceptor1 = new Interceptor() {
                 @Override
                 public Response intercept(Chain chain) throws IOException {
                     final Request request = chain.request().newBuilder()
-                           // .addHeader("Authorization", "OAuth " + new PreferenceHelper(context).getString(PreferenceHelper.AccessToken))
-                            .addHeader("Authorization", "OAuth " + "00D0l0000000Q7W!AQoAQHEqkkzY2eqBoG7.cdnNvxNQfuaMRIr.PcTybD6Lx7skg5Ihk_8GL6sHWxLrUlPaO_nWpUj4p5Al2Kdmt71Xyk8iThMM")
+                            .addHeader("Authorization", "OAuth " + new PreferenceHelper(context).getString(PreferenceHelper.AccessToken))
                             .addHeader("Content-Type", "application/json")
                             .addHeader("Content-Type", "application/json")
                             .build();
@@ -94,8 +93,7 @@ public class ApiClient {
                     Request request = chain.request();
                     Response response = chain.proceed(request);
                     if (response.code() == 401) {
-                        // handleForbiddenResponse();
-                        loginToSalesforce(mContext,preferenceHelper);
+                        loginToSalesforce(mContext, preferenceHelper);
                     }
                     return response;
                 }
@@ -120,17 +118,16 @@ public class ApiClient {
         }
         return retrofitWithHeader;
     }
-    private static void loginToSalesforce(final Context context,final PreferenceHelper preferenceHelper) {
+
+    private static void loginToSalesforce(final Context context, final PreferenceHelper preferenceHelper) {
 
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
-
         apiService.loginSalesforce(Constants.LOGIN_URL, Constants.USERNAME, Constants.PASSWORD, Constants.CLIENT_SECRET
                 , Constants.CLIENT_ID, Constants.GRANT_TYPE, Constants.RESPONSE_TYPE).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
-
                 try {
                     JSONObject obj = new JSONObject(response.body().string());
                     String access_token = obj.getString("access_token");
@@ -143,10 +140,7 @@ public class ApiClient {
                     preferenceHelper.insertString(PreferenceHelper.SalesforceUserId, str_id);
                     preferenceHelper.insertString(PreferenceHelper.SalesforceUsername, Constants.USERNAME);
                     preferenceHelper.insertString(PreferenceHelper.SalesforcePassword, Constants.PASSWORD);
-
-
-
-                   /* */
+                    Utills.showToast("Please try again...", context);
                 } catch (Exception e) {
 
                 }
@@ -154,7 +148,6 @@ public class ApiClient {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Utills.hideProgressDialog();
                 Logger.doToast(context.getString(R.string.error_something_went_wrong), context);
             }
         });

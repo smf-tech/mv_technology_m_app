@@ -13,8 +13,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -153,10 +153,8 @@ public class Utills {
      *
      * @param cntxt
      */
-    public static void showProgressDialog(Activity cntxt) {
+    public static void showProgressDialog(Context cntxt) {
         if (pgDialog == null) {
-            LayoutInflater inflater = cntxt.getLayoutInflater();
-
             pgDialog = new Dialog(cntxt);
             pgDialog.setContentView(R.layout.custome_progress_dialog);
             pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -199,6 +197,10 @@ public class Utills {
             pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
             TextView text = (TextView) pgDialog.findViewById(R.id.tv_progress);
             text.setText(Msg);
+            TextView tv_desc = (TextView) pgDialog.findViewById(R.id.tv_desc);
+            if (Title != null && !TextUtils.isEmpty(Title))
+                tv_desc.setVisibility(View.VISIBLE);
+            tv_desc.setText(Title);
             ImageView proImg = (ImageView) pgDialog.findViewById(R.id.img_progress);
             proImg.setBackgroundResource(R.drawable.progress_dialog);
 
@@ -281,6 +283,7 @@ public class Utills {
         // Showing Alert Message
         alertDialog.show();
     }
+
     /**
      * method to check if internet connectivity is fast or slow
      *
@@ -297,10 +300,12 @@ public class Utills {
         return gson.toJson(arrayList);
 
     }
+
     public static ArrayList<Task> convertStringToArrayList(String jsonstring) {
         Gson gson = new Gson();
-        Type listType = new TypeToken<ArrayList<Task>>() {}.getType();
-        return  gson.fromJson(jsonstring, listType);
+        Type listType = new TypeToken<ArrayList<Task>>() {
+        }.getType();
+        return gson.fromJson(jsonstring, listType);
     }
 
     public static void saveUriToPath(Context context, Uri uri, File file) {
