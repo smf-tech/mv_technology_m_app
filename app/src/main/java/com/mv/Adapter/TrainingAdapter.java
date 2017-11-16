@@ -16,7 +16,9 @@ import android.widget.TextView;
 import com.mv.Activity.ActivityWebView;
 import com.mv.R;
 import com.mv.Utils.Constants;
+import com.mv.Utils.Utills;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -69,12 +71,16 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
                 public void onClick(View v) {
                    /* Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("file:///" + Environment.getExternalStorageDirectory().getPath() + "/MV_e-learning_Mar/Modules/1/story_html5.html"));
                     mContext.startActivity(browserIntent);*/
-                    String url = "file:///" + Environment.getExternalStorageDirectory().getPath() + "/MV_e-learning_Mar/Modules/" + (getAdapterPosition() + 1) + "/story_html5.html";
+                    String url = Environment.getExternalStorageDirectory().getPath() + "/MV_e-learning_Mar/Modules/" + 1 + "/story_html5.html";
+                    if (new File(url).exists()) {
+                        Intent intent = new Intent(mContext, ActivityWebView.class);
+                        intent.putExtra(Constants.URL, "file:///" + url);
+                        intent.putExtra(Constants.TITLE, name.get(getAdapterPosition()));
+                        mContext.startActivity(intent);
+                    } else {
+                        Utills.showToast("File is not present",mContext);
+                    }
 
-                    Intent intent = new Intent(mContext, ActivityWebView.class);
-                    intent.putExtra(Constants.URL, url);
-                    intent.putExtra(Constants.TITLE, name.get(getAdapterPosition()));
-                    mContext.startActivity(intent);
                 }
             });
             txtName = (TextView) itemLayoutView.findViewById(R.id.txtName);
