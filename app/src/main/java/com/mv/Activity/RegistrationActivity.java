@@ -208,6 +208,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
+                setResult(RESULT_CANCELED);
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
@@ -216,6 +217,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
+                setResult(RESULT_CANCELED);
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
@@ -468,7 +470,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
-
+                setResult(RESULT_CANCELED);
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
@@ -567,7 +569,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                     preferenceHelper.insertString(PreferenceHelper.UserRole, user.getRoll());
                                     Utills.showToast("Registration Successful...", RegistrationActivity.this);
                                     User.clearUser();
-                                        finish();
+                                    setResult(RESULT_OK);
+                                    finish();
                                     overridePendingTransition(R.anim.left_in, R.anim.right_out);
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -667,7 +670,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onBackPressed() {
-
+        setResult(RESULT_CANCELED);
         finish();
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
@@ -702,7 +705,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         txt_village.setVisibility(View.VISIBLE);
                         spinner_school_name.setVisibility(View.VISIBLE);
                         txt_school.setVisibility(View.VISIBLE);
-                       // input_school_code.setVisibility(View.VISIBLE);
+                        // input_school_code.setVisibility(View.VISIBLE);
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("Village")) {
                         spinner_district.setVisibility(View.VISIBLE);
                         txt_district.setVisibility(View.VISIBLE);
@@ -714,7 +717,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         txt_village.setVisibility(View.VISIBLE);
                         spinner_school_name.setVisibility(View.GONE);
                         txt_school.setVisibility(View.GONE);
-                      //  input_school_code.setVisibility(View.GONE);
+                        //  input_school_code.setVisibility(View.GONE);
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("Cluster")) {
                         spinner_district.setVisibility(View.VISIBLE);
                         txt_district.setVisibility(View.VISIBLE);
@@ -726,7 +729,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         txt_village.setVisibility(View.GONE);
                         spinner_school_name.setVisibility(View.GONE);
                         txt_school.setVisibility(View.GONE);
-                      //  input_school_code.setVisibility(View.GONE);
+                        //  input_school_code.setVisibility(View.GONE);
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("Taluka")) {
                         spinner_district.setVisibility(View.VISIBLE);
                         txt_district.setVisibility(View.VISIBLE);
@@ -738,7 +741,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         txt_village.setVisibility(View.GONE);
                         spinner_school_name.setVisibility(View.GONE);
                         txt_school.setVisibility(View.GONE);
-                      //  input_school_code.setVisibility(View.GONE);
+                        //  input_school_code.setVisibility(View.GONE);
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("District")) {
                         spinner_district.setVisibility(View.VISIBLE);
                         txt_district.setVisibility(View.VISIBLE);
@@ -750,7 +753,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         txt_village.setVisibility(View.GONE);
                         spinner_school_name.setVisibility(View.GONE);
                         txt_school.setVisibility(View.GONE);
-                     //   input_school_code.setVisibility(View.GONE);
+                        //   input_school_code.setVisibility(View.GONE);
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("State")) {
                         spinner_district.setVisibility(View.GONE);
                         txt_district.setVisibility(View.GONE);
@@ -762,7 +765,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         txt_village.setVisibility(View.GONE);
                         spinner_school_name.setVisibility(View.GONE);
                         txt_school.setVisibility(View.GONE);
-                      //  input_school_code.setVisibility(View.GONE);
+                        //  input_school_code.setVisibility(View.GONE);
                     }
                 }
                 break;

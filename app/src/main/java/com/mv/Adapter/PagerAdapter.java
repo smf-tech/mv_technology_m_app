@@ -42,11 +42,12 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
                 TrainingFragment tab3 = new TrainingFragment();
                 return tab3;
             case 4:
-                IndicatorListFragmet tab5= new IndicatorListFragmet();
-                return tab5;
-            case 5:
                 TeamManagementFragment tab6=new TeamManagementFragment();
                 return tab6;
+
+            case 5:
+                IndicatorListFragmet tab5= new IndicatorListFragmet();
+                return tab5;
             default:
                 return null;
         }

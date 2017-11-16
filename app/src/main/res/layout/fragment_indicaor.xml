@@ -14,23 +14,30 @@
         android:layout_height="match_parent"
         android:background="@drawable/app_bg"
         android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
         <TextView
             android:id="@+id/tv_pia_no_data_available"
             android:layout_width="match_parent"
-            android:visibility="gone"
             android:layout_height="match_parent"
             android:gravity="center"
+            android:text="No data available"
             android:textSize="25sp"
-            android:text="No data available"/>
-    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/swipe_refresh_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/chart1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/seekBar1" />
-    </android.support.v4.widget.SwipeRefreshLayout>
-</LinearLayout>
-    </layout>
+            android:visibility="gone" />
+
+        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/swipe_refresh_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.github.mikephil.charting.charts.PieChart
+                android:id="@+id/chart1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/seekBar1" />
+        </android.support.v4.widget.SwipeRefreshLayout>
+    </LinearLayout>
+</layout>

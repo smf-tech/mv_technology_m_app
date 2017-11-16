@@ -23,6 +23,7 @@ import com.mv.Model.Template;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -47,8 +48,9 @@ public class IndicatorTaskList extends AppCompatActivity implements View.OnClick
     private RelativeLayout mToolBar;
     //private ActivityProgrammeManagmentBinding binding;
     private PreferenceHelper preferenceHelper;
-    ArrayList<Template> programManagementProcessLists=new ArrayList<>();
+    ArrayList<Template> programManagementProcessLists = new ArrayList<>();
     private TemplateAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,7 +64,7 @@ public class IndicatorTaskList extends AppCompatActivity implements View.OnClick
 
     private void initViews() {
         preferenceHelper = new PreferenceHelper(this);
-        setActionbar(getString(R.string.indicator));
+        setActionbar(getIntent().getExtras().getString(Constants.TITLE));
         binding.swiperefresh.setOnRefreshListener(this);
         mAdapter = new TemplateAdapter(programManagementProcessLists, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -112,15 +114,18 @@ public class IndicatorTaskList extends AppCompatActivity implements View.OnClick
                 break;
         }
     }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
+
     @Override
     public void onBackPressed() {
         finish();
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
+
     private void getAllIndicatorTask() {
         Utills.showProgressDialog(this, "Loading Data", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
@@ -136,11 +141,11 @@ public class IndicatorTaskList extends AppCompatActivity implements View.OnClick
                 try {
                     JSONArray jsonArray = new JSONArray(response.body().string());
                     programManagementProcessLists.clear();
-                    for(int i=0;i<jsonArray.length();i++) {
+                    for (int i = 0; i < jsonArray.length(); i++) {
                         Template processList = new Template();
 
                         processList.setName(jsonArray.getString(i));
-                              programManagementProcessLists.add(processList);
+                        programManagementProcessLists.add(processList);
                     }
                     mAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
@@ -157,6 +162,7 @@ public class IndicatorTaskList extends AppCompatActivity implements View.OnClick
             }
         });
     }
+
     private void showPopUp() {
         final AlertDialog alertDialog = new AlertDialog.Builder(IndicatorTaskList.this).create();
 
@@ -174,7 +180,7 @@ public class IndicatorTaskList extends AppCompatActivity implements View.OnClick
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
                 finish();
-               overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
         });
         // Setting OK Button
@@ -182,13 +188,14 @@ public class IndicatorTaskList extends AppCompatActivity implements View.OnClick
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
                 finish();
-               overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
         });
 
         // Showing Alert Message
         alertDialog.show();
     }
+
     @Override
     public void onRefresh() {
         binding.swiperefresh.setRefreshing(false);

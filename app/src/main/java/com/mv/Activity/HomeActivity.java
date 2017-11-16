@@ -64,8 +64,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
         binding.setActivity(this);
-
-
+        initViews();
 
     }
 
@@ -77,7 +76,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        initViews();
+
         Intent intent = new Intent(this, LocationService.class);
         // add infos for the service which file to download and where to store
         startService(intent);
@@ -112,8 +111,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.community)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.programme_management)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.training_content)));
-        if(User.getCurrentUser(getApplicationContext()).getRoll().equals("TC"))
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.indicator)));
+        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC"))
+            tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.indicator)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.team_management)));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
@@ -182,7 +181,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent;
                 intent = new Intent(this, RegistrationActivity.class);
                 intent.putExtra(Constants.ACTION, Constants.ACTION_EDIT);
-                startActivity(intent);
+                startActivityForResult(intent, Constants.ISROLECHANGE);
                 return true;
             case R.id.action_logout:
                 showLogoutPopUp();
@@ -304,11 +303,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 Intent intent;
                 intent = new Intent(this, RegistrationActivity.class);
                 intent.putExtra(Constants.ACTION, Constants.ACTION_EDIT);
-                startActivity(intent);
+                startActivityForResult(intent, Constants.ISROLECHANGE);
                 break;
             case R.id.img_lang:
                 showDialog();
                 break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == Constants.ISROLECHANGE && resultCode == RESULT_OK) {
+            initViews();
         }
     }
 
