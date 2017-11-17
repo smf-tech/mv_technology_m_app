@@ -3,12 +3,16 @@ package com.mv.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
@@ -38,12 +42,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserApproveDetail extends AppCompatActivity {
+public class UserApproveDetail extends AppCompatActivity implements View.OnClickListener {
     private ActivityUserApproveDetailBinding binding;
     private PreferenceHelper preferenceHelper;
     String userId,comment;
     String isSave;
-
+    private ImageView img_back, img_list, img_logout;
+    private TextView toolbar_title;
+    private RelativeLayout mToolBar;
     User mUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +64,17 @@ public class UserApproveDetail extends AppCompatActivity {
         }
 
     }
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.img_back:
+                finish();
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                break;
 
+
+        }
+    }
     private void getState() {
 
         Utills.showProgressDialog(this, "Loading Data", getString(R.string.progress_please_wait));
@@ -196,6 +212,18 @@ public class UserApproveDetail extends AppCompatActivity {
     }
 
 
+
+    private void setActionbar(String Title) {
+        mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        toolbar_title.setText(Title);
+        img_back = (ImageView) findViewById(R.id.img_back);
+        img_back.setVisibility(View.VISIBLE);
+        img_back.setOnClickListener(this);
+        img_logout = (ImageView) findViewById(R.id.img_logout);
+        img_logout.setVisibility(View.GONE);
+        img_logout.setOnClickListener(this);
+    }
     public void showDialog() {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(UserApproveDetail.this);
