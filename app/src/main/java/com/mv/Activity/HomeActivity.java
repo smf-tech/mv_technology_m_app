@@ -65,12 +65,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
         binding.setActivity(this);
         preferenceHelper = new PreferenceHelper(this);
-        if(User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false"))
-        {
+        if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             showApprovedDilaog();
-        }
-        else
-        {
+        } else {
             initViews();
         }
 
@@ -324,7 +321,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.ISROLECHANGE && resultCode == RESULT_OK) {
-            initViews();
+            if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
+                showApprovedDilaog();
+            } else {
+                initViews();
+            }
         }
     }
 
@@ -493,6 +494,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         // Showing Alert Message
         alertDialog.show();
     }
+
     private void showApprovedDilaog() {
         final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
 
@@ -520,6 +522,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         // Showing Alert Message
         alertDialog.show();
     }
+
     boolean doubleBackToExitPressedOnce = false;
 
     @Override
