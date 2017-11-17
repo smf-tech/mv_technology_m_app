@@ -1,9 +1,7 @@
 package com.mv.Activity;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -28,7 +26,6 @@ import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
-import com.mv.databinding.ActivityRegistrationBinding;
 import com.mv.databinding.ActivityUserApproveDetailBinding;
 
 import org.json.JSONArray;
@@ -59,8 +56,9 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
         binding.setActivity(this);
         userId=getIntent().getExtras().getString(Constants.ID);
         preferenceHelper = new PreferenceHelper(this);
+        setActionbar("User Approval");
         if (Utills.isConnected(this)) {
-            getState();
+            getApprovedUserData();
         }
 
     }
@@ -75,7 +73,7 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
 
         }
     }
-    private void getState() {
+    private void getApprovedUserData() {
 
         Utills.showProgressDialog(this, "Loading Data", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
@@ -178,7 +176,7 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
                     if (!isAdd && !isStateSet) {
                         isStateSet = true;
                         for (int i = 0; i < mListState.size(); i++) {
-                            if (mListState.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getState())) {
+                            if (mListState.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getApprovedUserData())) {
                                 binding.spinnerState.setSelection(i);
                                 break;
                             }

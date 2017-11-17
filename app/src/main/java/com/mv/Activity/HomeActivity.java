@@ -324,7 +324,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.ISROLECHANGE && resultCode == RESULT_OK) {
-            initViews();
+            if(User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false"))
+            {
+                showApprovedDilaog();
+            }
+            else
+            {
+                initViews();
+            }
+           // initViews();
         }
     }
 
@@ -498,6 +506,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         // Setting Dialog Title
         alertDialog.setTitle(getString(R.string.app_name));
+        alertDialog.setCancelable(false);
 
         // Setting Dialog Message
         alertDialog.setMessage("You are not approved yet ");
@@ -516,7 +525,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
         });
-
+        alertDialog.setButton2(getString(R.string.update_profile), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent;
+                intent = new Intent(HomeActivity.this, RegistrationActivity.class);
+                intent.putExtra(Constants.ACTION, Constants.ACTION_EDIT);
+                startActivityForResult(intent, Constants.ISROLECHANGE);
+            }
+        });
         // Showing Alert Message
         alertDialog.show();
     }

@@ -36,6 +36,7 @@
     <string name="disrict">जिल्हा</string>
     <string name="taluka">तालुका</string>
     <string name="cluster">क्लस्टर</string>
+    <string name="update_profile">Update Profile</string>
     <string name="village">गाव</string>
     <string name="school_name">शाळेचे नाव</string>
     <string name="school_code">शाळा कोड</string>
