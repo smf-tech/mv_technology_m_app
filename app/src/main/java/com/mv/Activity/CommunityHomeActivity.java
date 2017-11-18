@@ -73,6 +73,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
         getChats(true);
     }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
@@ -86,7 +87,6 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
             else
                 showPopUp();
         } else {
-            chatList.clear();
             chatList.clear();
             for (int i = 0; i < temp.size(); i++) {
                 chatList.add(temp.get(i));
@@ -119,10 +119,27 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                     JSONArray jsonArray = new JSONArray(response.body().string());
                     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                     List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));
+                    List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
+
                     for (int i = 0; i < temp.size(); i++) {
-                        chatList.add(temp.get(i));
-                        temp.get(i).setCommunity_id(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
-                        AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().insertChats(temp.get(i));
+                        int j;
+                        boolean isPresent = false;
+                        for (j = 0; j < contentList.size(); j++) {
+                            if (contentList.get(j).getId().equalsIgnoreCase(temp.get(i).getId())) {
+                                temp.get(i).setUnique_Id(contentList.get(j).getUnique_Id());
+                                temp.get(i).setCommunity_id(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
+                                isPresent = true;
+                                break;
+                            }
+                        }
+                        if (isPresent) {
+                            chatList.set(j, temp.get(i));
+                            AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().updateContent(temp.get(i));
+                        } else {
+                            chatList.add(temp.get(i));
+                            temp.get(i).setCommunity_id(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
+                            AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().insertChats(temp.get(i));
+                        }
                     }
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {

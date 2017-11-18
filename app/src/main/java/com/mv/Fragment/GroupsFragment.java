@@ -120,7 +120,7 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
         if (isTimePresent)
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(getActivity()).getId()
-                    + "&timestamp=" + communityList.get(communityList.size() - 1).getTime();
+                    + "&timestamp=" + communityList.get(0).getTime();
         else
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(getActivity()).getId();
@@ -136,10 +136,26 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
                             JSONArray jsonArray = new JSONArray(str);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<Community> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Community[].class));
+                            List<Community> list = AppDatabase.getAppDatabase(getActivity()).userDao().getAllCommunities();
                             for (int i = 0; i < temp.size(); i++) {
-                                communityList.add(temp.get(i));
-                                replicaCommunityList.add(temp.get(i));
-                                AppDatabase.getAppDatabase(getActivity()).userDao().insertCommunities(temp.get(i));
+                                int j;
+                                boolean isPresent = false;
+                                for (j = 0; j < list.size(); j++) {
+                                    if (list.get(j).getId().equalsIgnoreCase(temp.get(i).getId())) {
+                                        temp.get(i).setUnique_Id(list.get(j).getUnique_Id());
+                                        isPresent = true;
+                                        break;
+                                    }
+                                }
+                                if (isPresent) {
+                                    communityList.set(j, temp.get(i));
+                                    replicaCommunityList.set(j, temp.get(i));
+                                    AppDatabase.getAppDatabase(getActivity()).userDao().updateCommunities(temp.get(i));
+                                } else {
+                                    communityList.add(temp.get(i));
+                                    replicaCommunityList.add(temp.get(i));
+                                    AppDatabase.getAppDatabase(getActivity()).userDao().insertCommunities(temp.get(i));
+                                }
                             }
                             mAdapter.notifyDataSetChanged();
                         }

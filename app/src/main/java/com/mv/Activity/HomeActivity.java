@@ -117,9 +117,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.community)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.programme_management)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.training_content)));
+        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.team_management)));
         if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC"))
             tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.indicator)));
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.team_management)));
+
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);

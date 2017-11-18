@@ -116,9 +116,24 @@ public class CommunityHomeFragment extends Fragment implements View.OnClickListe
                             JSONArray jsonArray = new JSONArray(str);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));
+                            List<Content> contentList = AppDatabase.getAppDatabase(getActivity()).userDao().getAllBroadcastChats();
                             for (int i = 0; i < temp.size(); i++) {
-                                chatList.add(temp.get(i));
-                                AppDatabase.getAppDatabase(getActivity()).userDao().insertChats(temp.get(i));
+                                int j;
+                                boolean isPresent = false;
+                                for (j = 0; j < contentList.size(); j++) {
+                                    if (contentList.get(j).getId().equalsIgnoreCase(temp.get(i).getId())) {
+                                        temp.get(i).setUnique_Id(contentList.get(j).getUnique_Id());
+                                        isPresent = true;
+                                        break;
+                                    }
+                                }
+                                if (isPresent) {
+                                    chatList.set(j, temp.get(i));
+                                    AppDatabase.getAppDatabase(getActivity()).userDao().updateContent(temp.get(i));
+                                } else {
+                                    chatList.add(temp.get(i));
+                                    AppDatabase.getAppDatabase(getActivity()).userDao().insertChats(temp.get(i));
+                                }
                             }
                             adapter.notifyDataSetChanged();
                         }

@@ -44,7 +44,6 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
             case 4:
                 TeamManagementFragment tab6=new TeamManagementFragment();
                 return tab6;
-
             case 5:
                 IndicatorListFragmet tab5= new IndicatorListFragmet();
                 return tab5;

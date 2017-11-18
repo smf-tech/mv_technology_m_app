@@ -1,7 +1,6 @@
 package com.mv.Retrofit;
 
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
@@ -9,14 +8,11 @@ import android.arch.persistence.room.Update;
 
 import com.mv.Model.Community;
 import com.mv.Model.Content;
-
 import com.mv.Model.LocationModel;
-import com.mv.Model.Task;
 import com.mv.Model.TaskContainerModel;
 import com.mv.Model.Template;
 import com.mv.Utils.Constants;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,46 +23,54 @@ import java.util.List;
 public interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    long[] insertTask(List<TaskContainerModel>tasks);
+    long[] insertTask(List<TaskContainerModel> tasks);
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    long[] insertLoaction(List<LocationModel>locationModels);
+    long[] insertLoaction(List<LocationModel> locationModels);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertTask(TaskContainerModel task);
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertProcess(List<Template> tasks);
 
     @Update
-    public void updateTask(TaskContainerModel...  task);
+    public void updateTask(TaskContainerModel... task);
+
+    @Update
+    public void updateCommunities(Community... communities);
 
     @Insert
     void insertCommunities(Community... communities);
 
-    @Query("SELECT * FROM "+ Constants.TABLE_CONTAINER + " where  MV_Process__c = :processId AND TaskType = :questionType" )
-    TaskContainerModel getQuestion(String processId,String questionType);
+    @Query("SELECT * FROM " + Constants.TABLE_CONTAINER + " where  MV_Process__c = :processId AND TaskType = :questionType")
+    TaskContainerModel getQuestion(String processId, String questionType);
 
-    @Query("DELETE FROM  "+ Constants.TABLE_CONTAINER + " where  MV_Process__c = :processId AND TaskType = :questionType" )
-    int deleteQuestion(String processId,String questionType);
+    @Query("DELETE FROM  " + Constants.TABLE_CONTAINER + " where  MV_Process__c = :processId AND TaskType = :questionType")
+    int deleteQuestion(String processId, String questionType);
 
-    @Query("DELETE FROM " + Constants.TABLE_CONTAINER + " where  MV_Process__c = :processId AND isSave = :issave" )
-    void    deleteTask(String issave,String processId);
+    @Query("DELETE FROM " + Constants.TABLE_CONTAINER + " where  MV_Process__c = :processId AND isSave = :issave")
+    void deleteTask(String issave, String processId);
 
-    @Query("DELETE FROM " + Constants.TABLE_CONTAINER + " where  unique_Id = :uniqueId AND  MV_Process__c = :processId" )
-    void    deleteSingleTask(String uniqueId,String processId);
-    @Query("DELETE FROM " + Constants.TABLE_PROCESS )
+    @Query("DELETE FROM " + Constants.TABLE_CONTAINER + " where  unique_Id = :uniqueId AND  MV_Process__c = :processId")
+    void deleteSingleTask(String uniqueId, String processId);
+
+    @Query("DELETE FROM " + Constants.TABLE_PROCESS)
     void deleteTable();
 
-    @Query("SELECT * FROM " + Constants.TABLE_COMMUNITY)
-    List<Community> getAllCommunities();
+
 
     @Insert
     void insertChats(Content... contents);
 
     @Update
-    void updateContent(Content... contents);
-    @Query("SELECT * FROM " + Constants.TABLE_CONTAINER + " where MV_Process__c = :processId AND  TaskType = :questionType")
-    List<TaskContainerModel> getTask(String processId,String questionType);
+    public void updateChats(Content content);
 
+    @Update
+    void updateContent(Content... contents);
+
+    @Query("SELECT * FROM " + Constants.TABLE_CONTAINER + " where MV_Process__c = :processId AND  TaskType = :questionType")
+    List<TaskContainerModel> getTask(String processId, String questionType);
 
 
     @Query("SELECT * FROM " + Constants.TABLE_PROCESS)
@@ -89,6 +93,8 @@ public interface UserDao {
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where isBroadcast = 'true' order by CreatedDate desc")
     List<Content> getAllBroadcastChats();
 
+    @Query("SELECT * FROM " + Constants.TABLE_COMMUNITY + " order by timestamp desc")
+    List<Community> getAllCommunities();
 
     @Query("SELECT DISTINCT State FROM " + Constants.TABLE_LOCATION)
     List<String> getState();
@@ -132,7 +138,5 @@ public interface UserDao {
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where synchStatus = '" + Constants.STATUS_LOCAL + "' order by CreatedDate desc")
     List<Content> getAllASynchChats();
 
-    @Update
-    public void updateContent(Content content);
 
 }
