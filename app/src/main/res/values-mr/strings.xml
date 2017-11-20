@@ -75,6 +75,7 @@
     <string name="please_enter">कृपया प्रविष्ट करा </string>
     <string name="digit"> अंक </string>
     <string name="logout_string">आपण लॉगआउट करू इच्छिता? </string>
+    <string name="delete_task_string">Do you want Delete? </string>
 
     <string name="class_observation">क्लास ऑबसेर्व्हशन </string>
     <string name="training_responsiblity">"ट्रेनिंगला जाण्यापुर्वीच्या जबाबदाऱ्या"</string>

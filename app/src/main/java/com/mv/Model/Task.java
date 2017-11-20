@@ -110,7 +110,7 @@ public class Task implements Parcelable {
         this.validation = validation;
     }
     @ColumnInfo(name = "validation")
-    @SerializedName("validation ")
+    @SerializedName("Validaytion_on_text__c ")
     @Expose
     private String validation;
 
