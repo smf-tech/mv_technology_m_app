@@ -71,13 +71,15 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         initViews();
     }
 
-
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
+    }
     private void initViews() {
         preferenceHelper = new PreferenceHelper(this);
+        //storing process Id to preference to use later
         preferenceHelper.insertString(Constants.PROCESS_ID, proceesId);
         setActionbar(Processname);
-
-
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         binding.rvProcess.setLayoutManager(mLayoutManager);
         binding.rvProcess.setItemAnimator(new DefaultItemAnimator());
@@ -90,17 +92,22 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     protected void onResume() {
         super.onResume();
         resultList.clear();
+        getAllProcessData();
+
+    }
+    public void getAllProcessData()
+    {
         if (Utills.isConnected(this))
             getAllProcess();
         else {
-
+            //offline
+            //show in process list only type is answer(exclude question)
             resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(proceesId, Constants.TASK_ANSWER);
 
             mAdapter = new ProcessListAdapter(resultList, ProcessListActivity.this);
             binding.rvProcess.setAdapter(mAdapter);
         }
     }
-
     private void setActionbar(String Title) {
         mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
@@ -124,15 +131,19 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void onAddClick() {
+        //plus button click
 
         if (Utills.isConnected(this))
+            //get latest question
             getAllTask();
         else {
+            //fill new forms
+            preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
             TaskContainerModel taskContainerModel = new TaskContainerModel();
+            //get  process list only type is question (exclude answer it would always 1 record for on process  )
             taskContainerModel = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getQuestion(proceesId, Constants.TASK_QUESTION);
             if (taskContainerModel != null) {
                 if (preferenceHelper.getBoolean(Constants.IS_LOCATION)) {
-                    preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
                     Intent openClass = new Intent(mContext, LocationSelectionActity.class);
                     openClass.putExtra(Constants.PROCESS_ID, taskList);
 
@@ -141,7 +152,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                     startActivity(openClass);
                     overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 } else {
-                    preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
+
                     Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
                     //openClass.putExtra(Constants.PROCESS_ID, taskList);
                     openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
@@ -165,13 +176,13 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
     }
 
-    private void getAllProcess() {
+    public void getAllProcess() {
         Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + "/services/apexrest/getprocessAnswerTask?processId=" + proceesId + "&UserId=" + User.getCurrentUser(this).getId();
-        // + "/services/apexrest/getprocessAnswerTask?processId=a1Q0k000000O6Ex&UserId=a100k000000KX6y";
+
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -179,10 +190,11 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                 try {
 
                     AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().deleteTask("false", proceesId);
+
                     resultList = new ArrayList<>();
                     resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(proceesId, Constants.TASK_ANSWER);
-                    idList=new ArrayList<>();
-                    for(int k=0;k<resultList.size();k++)
+                    idList = new ArrayList<>();
+                    for (int k = 0; k < resultList.size(); k++)
                         idList.add(resultList.get(k).getUnique_Id());
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     JSONArray resultArray = jsonObject.getJSONArray("tsk");
@@ -209,14 +221,15 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                             processList.setUnique_Id__c(jsonArray.getJSONObject(i).getString("Unique_Id__c"));
                             processList.setMTUser__c(jsonArray.getJSONObject(i).getString("MV_User__c"));
                             processList.setValidation(jsonArray.getJSONObject(i).getString("Validation_on_text__c"));
-                            processList.setIsSave("false");
+                            processList.setIsSave(Constants.PROCESS_STATE_SUBMIT);
                             taskList.add(processList);
 
                         }
 
 
                         taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
-                        taskContainerModel.setIsSave("false");
+                        taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
+                        //task is with answer
                         taskContainerModel.setTaskType(Constants.TASK_ANSWER);
                         taskContainerModel.setMV_Process__c(proceesId);
                         taskContainerModel.setUnique_Id(taskList.get(0).getId());
@@ -244,10 +257,9 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
             }
         });
     }
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(LocaleManager.setLocale(base));
-    }
+
+
+
     private void getAllTask() {
 
         Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
@@ -264,13 +276,14 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     JSONArray resultArray = jsonObject.getJSONArray("tsk");
+                    //list of task
                     taskContainerModel = new TaskContainerModel();
                     taskList = new ArrayList<>();
 
                     for (int i = 0; i < resultArray.length(); i++) {
                         JSONObject resultJsonObj = resultArray.getJSONObject(i);
 
-
+                        //task is each task detail
                         Task processList = new Task();
                         processList.setMV_Task__c_Id(resultJsonObj.getString("Id"));
                         processList.setName(resultJsonObj.getString("Name"));
@@ -282,7 +295,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                         processList.setTask_Text__c(resultJsonObj.getString("Task_Text__c"));
                         processList.setTask_type__c(resultJsonObj.getString("Task_type__c"));
                         processList.setValidation(resultJsonObj.getString("Validaytion_on_text__c"));
-                        processList.setIsSave("true");
+                        processList.setIsSave(Constants.PROCESS_STATE_SAVE);
                         // processList.setTimestamp__c(resultJsonObj.getString("Timestamp__c"));
                         // processList.setMTUser__c(resultJsonObj.getString("MTUser__c"));
 
@@ -290,12 +303,16 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
 
                     }
-
+                    // each task list  convert to String and stored in process task filled
                     taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
-                    taskContainerModel.setIsSave("true");
+
+                    taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
+                    //task without answer
                     taskContainerModel.setTaskType(Constants.TASK_QUESTION);
                     taskContainerModel.setMV_Process__c(proceesId);
+                    //delete old question
                     AppDatabase.getAppDatabase(getApplicationContext()).userDao().deleteQuestion(proceesId, Constants.TASK_QUESTION);
+                    //add new question
                     AppDatabase.getAppDatabase(getApplicationContext()).userDao().insertTask(taskContainerModel);
 
                     if (taskList.size() > 0) {

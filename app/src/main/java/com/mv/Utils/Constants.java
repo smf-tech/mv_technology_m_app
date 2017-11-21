@@ -87,5 +87,9 @@ public class Constants {
 
     public static String INDICATOR_TASK = "indicator_task";
 
+    public static final String PROCESS_STATE_SAVE = "true";
+    public static final String PROCESS_STATE_SUBMIT = "false";
+    public static final String PROCESS_STATE_MODIFIED = "modified";
+
 
 }

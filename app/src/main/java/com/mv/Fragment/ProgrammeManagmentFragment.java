@@ -44,7 +44,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProgrammeManagmentFragment extends Fragment {
+public class
+ProgrammeManagmentFragment extends Fragment {
     private PreferenceHelper preferenceHelper;
     List<Template> processAllList = new ArrayList<>();
     private TemplateAdapter mAdapter;

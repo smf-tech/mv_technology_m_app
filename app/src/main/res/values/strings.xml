@@ -76,7 +76,7 @@
     <string name="please_enter">Please enter </string>
     <string name="digit"> digit </string>
     <string name="logout_string">Do you want to Logout? </string>
-
+    <string name="delete_task_string">Do you want Delete? </string>
     <string name="class_observation">Class Observation</string>
     <string name="training_responsiblity">"ट्रेनिंगला जाण्यापुर्वीच्या जबाबदाऱ्या"</string>
     <string name="loading_comment">Loading Comments</string>

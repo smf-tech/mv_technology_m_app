@@ -34,8 +34,8 @@ android {
         applicationId "com.mv"
         minSdkVersion 17
         targetSdkVersion 22
-        versionCode 3
-        versionName "1.2"
+        versionCode 4
+        versionName "1.3"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "BASEURL", "\"http://demos.nanostuffs.com/mv_gov/index.php/\""
         multiDexEnabled true

@@ -48,26 +48,22 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProcessDeatailActivity extends AppCompatActivity implements View.OnClickListener {
-    private ActivityNewTemplateBinding binding;
-    private ImageView img_back, img_list, img_logout;
+
+    private ImageView img_back, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
-    String answer4, answer5;
+
     String msg;
     Boolean manditoryFlag = false;
     int i;
-    LinearLayout parentView;
-    //private ActivityProgrammeManagmentBinding binding;
     private PreferenceHelper preferenceHelper;
     ArrayList<Task> taskList = new ArrayList<>();
 
     String timestamp;
     Activity context;
-    EditText ques1, ques2, ques3;
-    RadioButton yes, no;
-    Spinner questio5;
+
     Button submit, save;
-    Template template;
+
     ProcessDetailAdapter adapter;
     RecyclerView rvProcessDetail;
 
@@ -129,8 +125,12 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 break;
             case R.id.btn_save:
 
+
                 for (int i = 0; i < taskList.size(); i++) {
-                    taskList.get(i).setIsSave("true");
+                /*    if(taskList.get(i).getIsSave().equals(Constants.PROCESS_STATE_SUBMIT))
+                    taskList.get(i).setIsSave(Constants.PROCESS_STATE_MODIFIED);
+                    else*/
+                        taskList.get(i).setIsSave(Constants.PROCESS_STATE_SAVE);
                     taskList.get(i).setTimestamp__c(timestamp);
                     taskList.get(i).setMTUser__c(User.getCurrentUser(context).getId());
                     if (preferenceHelper.getBoolean(Constants.NEW_PROCESS))
@@ -144,21 +144,23 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 taskContainerModel.setTaskListString(json);
 
                 taskContainerModel.setTaskType(Constants.TASK_ANSWER);
-                taskContainerModel.setIsSave("true");
+
+                taskContainerModel.setIsSave(Constants.PROCESS_STATE_SAVE);
                  taskContainerModel.setMV_Process__c(taskList.get(0).getMV_Process__c());
                  if(preferenceHelper.getBoolean(Constants.NEW_PROCESS)) {
 
+                     //if process is new  INSERT it with timestmap as id
                      taskContainerModel.setUnique_Id( String.valueOf(Calendar.getInstance().getTimeInMillis()));
                      AppDatabase.getAppDatabase(context).userDao().insertTask(taskContainerModel);
                  }
                  else {
+                     //if process is not new  UPDATE it with exiting id
                      taskContainerModel.setUnique_Id(preferenceHelper.getString(Constants.UNIQUE));
                      AppDatabase.getAppDatabase(context).userDao().updateTask(taskContainerModel);
                  }
 
                 finish();
 
-                //  callApiForSubmit(taskList);
 
                 break;
         }
@@ -175,7 +177,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         for (int i = 0; i < taskList.size(); i++) {
             taskList.get(i).setTimestamp__c(timestamp);
             taskList.get(i).setMTUser__c(User.getCurrentUser(context).getId());
-            taskList.get(i).setIsSave("false");
+            taskList.get(i).setIsSave(Constants.PROCESS_STATE_SUBMIT);
             if (preferenceHelper.getBoolean(Constants.NEW_PROCESS))
                 taskList.get(i).setId(null);
             if (taskList.get(i).getIs_Response_Mnadetory__c() && taskList.get(i).getTask_Response__c().equals("")) {
@@ -219,6 +221,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     Utills.hideProgressDialog();
                     try {
                         JSONObject response1 = new JSONObject(response.body().string());
+
                         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                         String json = gson.toJson(taskList);
                         TaskContainerModel taskContainerModel = new TaskContainerModel();
@@ -226,7 +229,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         taskContainerModel.setTaskType(Constants.TASK_ANSWER);
                         taskContainerModel.setUnique_Id(preferenceHelper.getString(Constants.UNIQUE));
 
-                        taskContainerModel.setIsSave("false");
+                        taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
                         taskContainerModel.setMV_Process__c(taskList.get(0).getMV_Process__c());
                             AppDatabase.getAppDatabase(context).userDao().deleteSingleTask(preferenceHelper.getString(Constants.UNIQUE),taskContainerModel.getMV_Process__c());
                        // AppDatabase.getAppDatabase(context).userDao().updateTask(taskContainerModel);
