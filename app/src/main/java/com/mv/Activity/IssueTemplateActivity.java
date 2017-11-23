@@ -167,12 +167,8 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
 
         Utills.showProgressDialog(this, getString(R.string.loding_taluka), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
-                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getTaluka_Name__c?DistrictName=" + mListDistrict.get(mSelectDistrict) + "&StateName=Maharashtra";
-
-
-        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+                ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getTaluka(User.getCurrentUser(IssueTemplateActivity.this).getState(), mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
