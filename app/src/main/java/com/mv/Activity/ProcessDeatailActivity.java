@@ -231,11 +231,11 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
                         taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
                         taskContainerModel.setMV_Process__c(taskList.get(0).getMV_Process__c());
-                            AppDatabase.getAppDatabase(context).userDao().deleteSingleTask(preferenceHelper.getString(Constants.UNIQUE),taskContainerModel.getMV_Process__c());
+                        AppDatabase.getAppDatabase(context).userDao().deleteSingleTask(preferenceHelper.getString(Constants.UNIQUE),taskContainerModel.getMV_Process__c());
                        // AppDatabase.getAppDatabase(context).userDao().updateTask(taskContainerModel);
                         finish();
 
-
+ 
                     } catch (Exception e) {
                         e.printStackTrace();
 

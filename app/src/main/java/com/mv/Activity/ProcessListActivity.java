@@ -104,6 +104,14 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
             //show in process list only type is answer(exclude question)
             resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(proceesId, Constants.TASK_ANSWER);
 
+            if(resultList.size()>0) {
+                if(preferenceHelper.getBoolean(Constants.IS_MULTIPLE)) {
+                    binding.fabAddProcess.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    binding.fabAddProcess.setVisibility(View.GONE);
+            }}
             mAdapter = new ProcessListAdapter(resultList, ProcessListActivity.this);
             binding.rvProcess.setAdapter(mAdapter);
         }
@@ -133,38 +141,43 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     public void onAddClick() {
         //plus button click
 
-        if (Utills.isConnected(this))
+
+
             //get latest question
-            getAllTask();
-        else {
-            //fill new forms
-            preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
-            TaskContainerModel taskContainerModel = new TaskContainerModel();
-            //get  process list only type is question (exclude answer it would always 1 record for on process  )
-            taskContainerModel = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getQuestion(proceesId, Constants.TASK_QUESTION);
-            if (taskContainerModel != null) {
-                if (preferenceHelper.getBoolean(Constants.IS_LOCATION)) {
-                    Intent openClass = new Intent(mContext, LocationSelectionActity.class);
-                    openClass.putExtra(Constants.PROCESS_ID, taskList);
+            if (Utills.isConnected(this))
+                getAllTask();
+            else {
+                //fill new forms
+                preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
+                TaskContainerModel taskContainerModel = new TaskContainerModel();
+                //get  process list only type is question (exclude answer it would always 1 record for on process  )
+                taskContainerModel = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getQuestion(proceesId, Constants.TASK_QUESTION);
+                if (taskContainerModel != null) {
+                    if (preferenceHelper.getBoolean(Constants.IS_LOCATION)) {
+                        Intent openClass = new Intent(mContext, LocationSelectionActity.class);
+                        openClass.putExtra(Constants.PROCESS_ID, taskList);
 
-                    openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
-                    //  openClass.putExtra("stock_list", resultList.get(getAdapterPosition()).get(0));
-                    startActivity(openClass);
-                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                        openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
+                        //  openClass.putExtra("stock_list", resultList.get(getAdapterPosition()).get(0));
+                        startActivity(openClass);
+                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    } else {
+
+                        Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
+                        //openClass.putExtra(Constants.PROCESS_ID, taskList);
+                        openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
+                        //  openClass.putExtra("stock_list", resultList.get(getAdapterPosition()).get(0));
+                        startActivity(openClass);
+                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    }
+
                 } else {
-
-                    Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
-                    //openClass.putExtra(Constants.PROCESS_ID, taskList);
-                    openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
-                    //  openClass.putExtra("stock_list", resultList.get(getAdapterPosition()).get(0));
-                    startActivity(openClass);
-                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
                 }
 
-            } else {
-                Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
-            }
+
         }
+
 
     }
 
@@ -236,11 +249,21 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                         if (!idList.contains(taskContainerModel.getUnique_Id()))
                             resultList.add(taskContainerModel);
 
+
+
+
                     }
 
 
                     AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().insertTask(resultList);
-
+                    if(resultList.size()>0) {
+                        if(preferenceHelper.getBoolean(Constants.IS_MULTIPLE)) {
+                            binding.fabAddProcess.setVisibility(View.VISIBLE);
+                        }
+                        else
+                        {
+                            binding.fabAddProcess.setVisibility(View.GONE);
+                        }}
                     mAdapter = new ProcessListAdapter(resultList, ProcessListActivity.this);
                     binding.rvProcess.setAdapter(mAdapter);
                 } catch (JSONException e) {
@@ -306,7 +329,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                     // each task list  convert to String and stored in process task filled
                     taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
 
-                    taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
+                    taskContainerModel.setIsSave(Constants.PROCESS_STATE_SAVE);
                     //task without answer
                     taskContainerModel.setTaskType(Constants.TASK_QUESTION);
                     taskContainerModel.setMV_Process__c(proceesId);

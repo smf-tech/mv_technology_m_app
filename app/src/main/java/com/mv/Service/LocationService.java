@@ -50,7 +50,8 @@ public class LocationService extends IntentService {
     protected void onHandleIntent(Intent workIntent) {
 
         // Gets data from the incoming Intent
-        locationModelArrayList= AppDatabase.getAppDatabase(getApplicationContext()).userDao().getLocation();
+        locationModelArrayList= AppDatabase.getAppDatabase(getApplicationContext()).userDao().getLocationOfDistrict(User.getCurrentUser(getApplicationContext()).getDistrict());
+        
         if(locationModelArrayList.size()==0)
         callLoationApi();
 
@@ -71,30 +72,30 @@ public class LocationService extends IntentService {
 
                 Gson gson = new Gson();
                 try {
-                    String data = response.body().string();
-                    //    Type listType = new TypeToken<ArrayList<LocationModel>>() {}.getType();
-                    JSONArray arrayData=new JSONArray(data);
-                   locationModelArrayList=new ArrayList<>();
+                    if(response.body()!=null) {
+                        String data = response.body().string();
+                        //    Type listType = new TypeToken<ArrayList<LocationModel>>() {}.getType();
+                        JSONArray arrayData = new JSONArray(data);
+                        locationModelArrayList = new ArrayList<>();
 
-                    for (int i=0;i<arrayData.length();i++)
-                    {
-                        LocationModel locationModel=new LocationModel();
-                        JSONObject object=arrayData.getJSONObject(i);
-                        locationModel.setState(object.getString("State"));
-                        locationModel.setDistrict(object.getString("District"));
-                        locationModel.setTaluka(object.getString("Taluka"));
-                        locationModel.setCluster(object.getString("Cluster"));
-                        locationModel.setSchoolName(object.getString("SchoolName"));
-                        locationModel.setSchoolCode(object.getString("SchoolName"));
-                        locationModel.setVillage(object.getString("Village"));
-                        locationModel.setCreatedDate(object.getString("createdDate"));
-                        locationModel.setId(object.getString("Id"));
-                        locationModelArrayList.add(locationModel);
+                        for (int i = 0; i < arrayData.length(); i++) {
+                            LocationModel locationModel = new LocationModel();
+                            JSONObject object = arrayData.getJSONObject(i);
+                            locationModel.setState(object.getString("State"));
+                            locationModel.setDistrict(object.getString("District"));
+                            locationModel.setTaluka(object.getString("Taluka"));
+                            locationModel.setCluster(object.getString("Cluster"));
+                            locationModel.setSchoolName(object.getString("SchoolName"));
+                            locationModel.setSchoolCode(object.getString("SchoolName"));
+                            locationModel.setVillage(object.getString("Village"));
+                            locationModel.setCreatedDate(object.getString("createdDate"));
+                            locationModel.setId(object.getString("Id"));
+                            locationModelArrayList.add(locationModel);
 
+                        }
+
+                        AppDatabase.getAppDatabase(getApplicationContext()).userDao().insertLoaction(locationModelArrayList);
                     }
-
-                    AppDatabase.getAppDatabase(getApplicationContext()).userDao().insertLoaction(locationModelArrayList);
-                    String Abc;
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {

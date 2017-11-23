@@ -79,6 +79,9 @@ public interface UserDao {
     @Query("SELECT * FROM " + Constants.TABLE_LOCATION)
     List<LocationModel> getLocation();
 
+    @Query("SELECT * FROM " + Constants.TABLE_LOCATION +" where District = :district")
+    List<LocationModel> getLocationOfDistrict(String district);
+
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId order by CreatedDate desc")
     List<Content> getAllChats(String communityId);
 

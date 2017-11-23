@@ -122,34 +122,37 @@ ProgrammeManagmentFragment extends Fragment {
                 Utills.hideProgressDialog();
                 binding.swiperefresh.setRefreshing(false);
                 try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    processAllList.clear();
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        Template processList = new Template();
+                    if (response.isSuccess()) {
+                        JSONArray jsonArray = new JSONArray(response.body().string());
+                        processAllList.clear();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            Template processList = new Template();
 
-                        processList.setType(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("type"));
-                        processList.setUrl(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("url"));
-                        processList.setId(jsonArray.getJSONObject(i).getString("Id"));
-                        processList.setName(jsonArray.getJSONObject(i).getString("Name"));
+                            processList.setType(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("type"));
+                            processList.setUrl(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("url"));
+                            processList.setId(jsonArray.getJSONObject(i).getString("Id"));
+                            processList.setName(jsonArray.getJSONObject(i).getString("Name"));
 
-                        processList.setIs_Editable__c(jsonArray.getJSONObject(i).getBoolean("Is_Editable__c"));
-                        processList.setIs_Multiple_Entry_Allowed__c(jsonArray.getJSONObject(i).getBoolean("Is_Multiple_Entry_Allowed__c"));
+                            processList.setIs_Editable__c(jsonArray.getJSONObject(i).getBoolean("Is_Editable__c"));
+                            processList.setIs_Multiple_Entry_Allowed__c(jsonArray.getJSONObject(i).getBoolean("Is_Multiple_Entry_Allowed__c"));
 
-                        processList.setLocation(jsonArray.getJSONObject(i).getBoolean("Location_Required__c"));
+                            processList.setLocation(jsonArray.getJSONObject(i).getBoolean("Location_Required__c"));
 
-                        if(jsonArray.getJSONObject(i).has("Location_Level__c"))
-                        processList.setLocationLevel(jsonArray.getJSONObject(i).getString("Location_Level__c"));
+                            if (jsonArray.getJSONObject(i).has("Location_Level__c"))
+                                processList.setLocationLevel(jsonArray.getJSONObject(i).getString("Location_Level__c"));
 
-                        processAllList.add(processList);
+                            processAllList.add(processList);
+                        }
+                        AppDatabase.getAppDatabase(getActivity()).userDao().deleteTable();
+                        AppDatabase.getAppDatabase(getActivity()).userDao().insertProcess(processAllList);
+                        mAdapter.notifyDataSetChanged();
                     }
-                    AppDatabase.getAppDatabase(getActivity()).userDao().deleteTable();
-                    AppDatabase.getAppDatabase(getActivity()).userDao().insertProcess(processAllList);
-                    mAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+
             }
 
             @Override

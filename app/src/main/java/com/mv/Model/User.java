@@ -92,6 +92,31 @@ public class User {
     @SerializedName("Is_Approved__c")
     @Expose
     private String isApproved;
+    @SerializedName("Mobile_Tab_Name_c__c")
+    @Expose
+    private String tabName;
+
+    @SerializedName("Approval_Role_c__c")
+    @Expose
+    private String approval_role;
+
+    public String getTabName() {
+        return tabName;
+    }
+
+    public void setTabName(String tabName) {
+        this.tabName = tabName;
+    }
+
+    public String getApproval_role() {
+        return approval_role;
+    }
+
+    public void setApproval_role(String approval_role) {
+        this.approval_role = approval_role;
+    }
+
+
     public String getIsApproved() {
         return isApproved;
     }

@@ -75,50 +75,16 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.MyView
                     else if (mContext instanceof HomeActivity) {
                         preferenceHelper.insertBoolean(Constants.IS_EDITABLE, teplateList.get(getAdapterPosition()).getIs_Editable__c());
                         preferenceHelper.insertBoolean(Constants.IS_LOCATION, teplateList.get(getAdapterPosition()).getLocation());
+                        preferenceHelper.insertBoolean(Constants.IS_MULTIPLE, teplateList.get(getAdapterPosition()).getIs_Multiple_Entry_Allowed__c());
+
                         preferenceHelper.insertString(Constants.STATE_LOCATION_LEVEL, teplateList.get(getAdapterPosition()).getLocationLevel());
-                        if (teplateList.get(getAdapterPosition()).getIs_Multiple_Entry_Allowed__c()) {
+
                             Intent openClass = new Intent(mContext, ProcessListActivity.class);
                             openClass.putExtra(Constants.PROCESS_ID, teplateList.get(getAdapterPosition()).getId());
                             openClass.putExtra(Constants.PROCESS_NAME, teplateList.get(getAdapterPosition()).getName());
                             mContext.startActivity(openClass);
                             mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        } else {
-                            if (Utills.isConnected(mContext))
-                                getAllTask(teplateList.get(getAdapterPosition()).getId());
-                            else
-                            {
-                                TaskContainerModel taskContainerModel=new TaskContainerModel();
-                                taskContainerModel=AppDatabase.getAppDatabase(mContext).userDao().getQuestion(teplateList.get(getAdapterPosition()).getId(),Constants.TASK_QUESTION);
 
-                                preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
-                                if (preferenceHelper.getBoolean(Constants.IS_LOCATION)) {
-                                    preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
-                                    Intent openClass = new Intent(mContext, LocationSelectionActity.class);
-                                    // openClass.putExtra(Constants.PROCESS_ID, taskList);
-                                    openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
-                                    //  openClass.putExtra("stock_list", resultList.get(getAdapterPosition()).get(0));
-                                    mContext.startActivity(openClass);
-                                    mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                                } else {
-                                    Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
-                                    //  openClass.putExtra(Constants.PROCESS_ID, taskList);
-                                    openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
-                                    //  openClass.putExtra("stock_list", resultList.get(programManagementProcessLists()).get(0));
-                                    mContext.startActivity(openClass);
-                                    mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                                }
-                            }
-                        }
-                    } else if (mContext instanceof ProcessListActivity) {
-                        if (teplateList.size() > 0) {
-                            Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
-                            openClass.putExtra(Constants.PROCESS_ID, teplateList.get(getAdapterPosition()));
-
-                            mContext.startActivity(openClass);
-                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        } else {
-                            Utills.showToast("No Task Available ", mContext);
-                        }
                     }
                     else if (mContext instanceof IndicatorTaskList) {
                         Intent openClass = new Intent(mContext, PiachartActivity.class);

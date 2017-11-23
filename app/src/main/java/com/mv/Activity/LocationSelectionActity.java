@@ -11,11 +11,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.mv.Model.Task;
@@ -44,7 +47,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LocationSelectionActity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class LocationSelectionActity extends AppCompatActivity implements /*View.OnClickListener,*/ AdapterView.OnItemSelectedListener {
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
@@ -68,6 +71,8 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     private boolean isDistrictSet = false, isRollSet = false;
     Activity context;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,14 +84,44 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             taskList = getIntent().getParcelableArrayListExtra(Constants.PROCESS_ID);
         }
 
-        initViews();
+       // initViews();
+        setSpinner();
 
 
     }
 
+    private void setSpinner() {
+        List<String> spinnerArray=new ArrayList<>();
+        LinearLayout layout = (LinearLayout) findViewById(R.id.ll_loc);
+        spinnerArray = AppDatabase.getAppDatabase(context).userDao().getState();
+        Spinner spinner = new Spinner(this);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
+        spinner.setAdapter(spinnerArrayAdapter);
+        spinner.setOnItemSelectedListener(this);
+        layout.addView(spinner);
+        /*if(spinner.getParent()!=null)
+            ((ViewGroup)spinner.getParent()).removeView(spinner); */// <- fix
 
 
-    private void showPopUp() {
+
+
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+
+/*        switch ()*/
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+
+   /* private void showPopUp() {
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 
         // Setting Dialog Title
@@ -283,12 +318,12 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             binding.spinnerSchoolName.setVisibility(View.GONE);
             binding.tvSchool.setVisibility(View.GONE);
 
-            /*if (task.getTask_Response__c() != null)
-                holder.spinnerResponse.setSelection(myList.indexOf(task.getTask_Response__c().trim()));*/
+            *//*if (task.getTask_Response__c() != null)
+                holder.spinnerResponse.setSelection(myList.indexOf(task.getTask_Response__c().trim()));*//*
         }
         else   if(preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("School"))
         {
-    /*        if (taskList.get(0).getTask_Response__c() != null)
+    *//*        if (taskList.get(0).getTask_Response__c() != null)
                binding.spinnerState.setSelection(mStateList.indexOf(taskList.get(0).getTask_Response__c().trim()));
             if (taskList.get(1).getTask_Response__c() != null)
                 mListSchoolName.add(taskList.get(1).getTask_Response__c().trim());
@@ -304,7 +339,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                 binding.spinnerTaluka.setSelection(mListTaluka.indexOf(taskList.get(4).getTask_Response__c().trim()));
             if (taskList.get(5).getTask_Response__c() != null)
                 mListDistrict.add(taskList.get(5).getTask_Response__c().trim());
-                binding.spinnerDistrict.setSelection(mListDistrict.indexOf(taskList.get(5).getTask_Response__c().trim()));*/
+                binding.spinnerDistrict.setSelection(mListDistrict.indexOf(taskList.get(5).getTask_Response__c().trim()));*//*
         }
 
 
@@ -494,7 +529,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         switch (adapterView.getId()) {
-         /*   case R.id.spinner_state:
+         *//*   case R.id.spinner_state:
                 mSelectState = i;
 
                 if (mSelectState != 0) {
@@ -536,7 +571,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                 village_adapter.notifyDataSetChanged();
                 school_adapter.notifyDataSetChanged();
 
-                break;*/
+                break;*//*
             case R.id.spinner_taluka:
                 mSelectTaluka = i;
                 if (mSelectTaluka != 0) {
@@ -611,8 +646,8 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
                     }
                 }
-               /* mListSchoolName.clear();
-                mListSchoolName.add("Select");*/
+               *//* mListSchoolName.clear();
+                mListSchoolName.add("Select");*//*
              //   school_adapter.notifyDataSetChanged();
 
                 break;
@@ -759,7 +794,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
 
 
-
+*/
 
 
 

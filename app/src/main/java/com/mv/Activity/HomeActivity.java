@@ -10,6 +10,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +29,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.mv.Adapter.PagerAdapter;
+import com.mv.Fragment.CommunityHomeFragment;
+import com.mv.Fragment.GroupsFragment;
+import com.mv.Fragment.IndicatorListFragmet;
+import com.mv.Fragment.ProgrammeManagmentFragment;
+import com.mv.Fragment.TeamManagementFragment;
+import com.mv.Fragment.TrainingFragment;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -39,6 +48,7 @@ import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityHome1Binding;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -57,7 +67,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_UKRAINIAN = "mr";
     public static final String LANGUAGE = "language";
-
+    ViewPagerAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,11 +75,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
         binding.setActivity(this);
         preferenceHelper = new PreferenceHelper(this);
-        if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
-            showApprovedDilaog();
-        } else {
+
             initViews();
-        }
+
 
 
     }
@@ -112,7 +120,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.removeAllTabs();
+        /*tabLayout.removeAllTabs();
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.broadcast)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.community)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.programme_management)));
@@ -120,13 +128,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.team_management)));
         if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC"))
             tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.indicator)));
-
+*/
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        final PagerAdapter adapter = new PagerAdapter
-                (getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+            setupViewPager(viewPager);
+
+
+
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -159,6 +169,56 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             //app has been launched directly, not from share list
             Constants.shareUri = null;
+        }
+
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
+            adapter.addFrag(new ProgrammeManagmentFragment(), getString(R.string.programme_management));
+            adapter.addFrag(new TrainingFragment(), getString(R.string.training_content));
+            viewPager.setAdapter(adapter);
+            showApprovedDilaog();
+        } else {
+            adapter.addFrag(new CommunityHomeFragment(), getString(R.string.broadcast));
+            adapter.addFrag(new GroupsFragment(), getString(R.string.community));
+            adapter.addFrag(new ProgrammeManagmentFragment(), getString(R.string.programme_management));
+            adapter.addFrag(new TrainingFragment(), getString(R.string.training_content));
+            adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
+            adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
+            viewPager.setAdapter(adapter);
+        }
+
+
+
+    }
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFrag(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
         }
 
     }
@@ -322,11 +382,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.ISROLECHANGE && resultCode == RESULT_OK) {
-            if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
-                showApprovedDilaog();
-            } else {
+
                 initViews();
-            }
+
         }
     }
 
@@ -503,7 +561,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         alertDialog.setTitle(getString(R.string.app_name));
 
         // Setting Dialog Message
-        alertDialog.setMessage("You are not approved yet ");
+        alertDialog.setMessage("You are not approved yet");
 
         // Setting Icon to Dialog
         alertDialog.setIcon(R.drawable.logomulya);
@@ -514,9 +572,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
-                finish();
+                //initViews();
+             /*   finish();
                 sendLogOutRequest();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);*/
             }
         });
 
