@@ -235,11 +235,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private void getState() {
 
         Utills.showProgressDialog(this, "Loading States", getString(R.string.progress_please_wait));
+        Utills.showProgressDialog(this);
         ServiceRequest apiService =
-                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getStateName";
-        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+                ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getState().enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -278,11 +277,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private void getDistrict() {
 
         Utills.showProgressDialog(this, getString(R.string.loding_district), getString(R.string.progress_please_wait));
+
         ServiceRequest apiService =
-                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getDistrict_Name__c?StateName=" + mListState.get(mSelectState);
-        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+                ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getDistrict(mListState.get(mSelectState)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -852,10 +850,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 break;
             case R.id.spinner_school_name:
                 mSelectSchoolName = i;
-                if (mSelectSchoolName != 0)
+               /* if (mSelectSchoolName != 0)
                     edit_text_school_code.setText(mListCode.get(i));
                 else
-                    edit_text_school_code.setText("");
+                    edit_text_school_code.setText("");*/
                 break;
         }
     }
@@ -863,10 +861,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private void getCluster() {
         Utills.showProgressDialog(this, getString(R.string.loding_cluster), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
-                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getCluster_Name__c?StateName=Maharashtra&district=" + mListDistrict.get(mSelectDistrict) + "&taluka=" + mListTaluka.get(mSelectTaluka);
-        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+                ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getCluster(mListState.get(mSelectState), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -903,12 +899,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         Utills.showProgressDialog(this, getString(R.string.loding_taluka), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
-                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getTaluka_Name__c?DistrictName=" + mListDistrict.get(mSelectDistrict) + "&StateName=Maharashtra";
+                ApiClient.getClient().create(ServiceRequest.class);
 
-
-        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+        apiService.getTaluka(mListState.get(mSelectState), mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -944,12 +937,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private void getVillage() {
         Utills.showProgressDialog(this, getString(R.string.loding_village), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
-                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getVillage_Name__c?StateName=Maharashtra&district=" + mListDistrict.get(mSelectDistrict) + "&taluka=" + mListTaluka.get(mSelectTaluka) + "&Cluster=" + mListCluster.get(mSelectCluster);
+                ApiClient.getClient().create(ServiceRequest.class);
 
-
-        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+        apiService.getVillage(mListState.get(mSelectState), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -985,12 +975,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private void getSchool() {
         Utills.showProgressDialog(this, getString(R.string.loding_school), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
-                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getSchoolName?StateName=Maharashtra&district=" + mListDistrict.get(mSelectDistrict) + "&taluka=" + mListTaluka.get(mSelectTaluka) + "&Cluster=" + mListCluster.get(mSelectCluster) + "&Village=" + mListVillage.get(mSelectVillage);
-
-
-        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+                ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getSchool(mListState.get(mSelectState), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -1001,9 +987,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     mListCode.add("");
                     JSONArray jsonArr = new JSONArray(response.body().string());
                     for (int i = 0; i < jsonArr.length(); i++) {
-                        JSONObject jsonObject = jsonArr.getJSONObject(i);
+                       /* JSONObject jsonObject = jsonArr.getJSONObject(i);
                         mListSchoolName.add(jsonObject.getString("school_name"));
-                        mListCode.add(jsonObject.getString("school_code"));
+                        mListCode.add(jsonObject.getString("school_code"));*/
+                        mListSchoolName.add(jsonArr.getString(i));
                     }
                     school_adapter.notifyDataSetChanged();
                     if (!isAdd && !isSchoolSet) {

@@ -37,6 +37,7 @@
         <item>Content related</item>
         <item>Technology related</item>
         <item>HR related</item>
+        <item>Account related</item>
     </string-array>
 
     <string-array name="array_of_priority">

@@ -111,38 +111,38 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
                         }
                     });
 
-                    if(mUser.getState()!=null&&(! mUser.getState().isEmpty()||!mUser.getState().equalsIgnoreCase("Select")))
+                    if(mUser.getState()!=null&&!(! mUser.getState().isEmpty()||!mUser.getState().equalsIgnoreCase("Select")))
                     {
                         binding.editState.setText(mUser.getState());
                         binding.layState.setVisibility(View.VISIBLE);
                         binding.txtState.setVisibility(View.VISIBLE);
                     }
-                    if(mUser.getDistrict()!=null&&(! mUser.getDistrict().isEmpty()||!mUser.getDistrict().equalsIgnoreCase("Select")))
+                    if(mUser.getDistrict()!=null&&!(! mUser.getDistrict().isEmpty()||!mUser.getDistrict().equalsIgnoreCase("Select")))
                     {
                         binding.editDistrict.setText(mUser.getDistrict());
                         binding.layDistrict.setVisibility(View.VISIBLE);
                         binding.txtDistrict.setVisibility(View.VISIBLE);
                     }
-                    if(mUser.getTaluka()!=null&&(! mUser.getTaluka().isEmpty()||!mUser.getTaluka().equalsIgnoreCase("Select")))
+                    if(mUser.getTaluka()!=null&&!(! mUser.getTaluka().isEmpty()||!mUser.getTaluka().equalsIgnoreCase("Select")))
                     {
                         binding.editTaluka.setText(mUser.getTaluka());
                         binding.layTaluka.setVisibility(View.VISIBLE);
                         binding.txtTaluka.setVisibility(View.VISIBLE);
                     }
 
-                    if(mUser.getCluster()!=null&&(! mUser.getCluster().isEmpty()||!mUser.getCluster().equalsIgnoreCase("Select")))
+                    if(mUser.getCluster()!=null&&!(! mUser.getCluster().isEmpty()||!mUser.getCluster().equalsIgnoreCase("Select")))
                     {
                         binding.editCluster.setText(mUser.getCluster());
                         binding.layCluster.setVisibility(View.VISIBLE);
                         binding.txtCluster.setVisibility(View.VISIBLE);
                     }
-                    if(mUser.getVillage()!=null&&(! mUser.getVillage().isEmpty()||!mUser.getVillage().equalsIgnoreCase("Select")))
+                    if(mUser.getVillage()!=null&&!(! mUser.getVillage().isEmpty()||!mUser.getVillage().equalsIgnoreCase("Select")))
                     {
                         binding.editVillage.setText(mUser.getVillage());
                         binding.layVillage.setVisibility(View.VISIBLE);
                         binding.txtVillage.setVisibility(View.VISIBLE);
                     }
-                    if(mUser.getSchool_Name()!=null&&(! mUser.getSchool_Name().isEmpty()||!mUser.getSchool_Name().equalsIgnoreCase("Select")))
+                    if(mUser.getSchool_Name()!=null&&!(! mUser.getSchool_Name().isEmpty()||!mUser.getSchool_Name().equalsIgnoreCase("Select")))
                     {
                         binding.editSchool.setText(mUser.getSchool_Name());
                         binding.laySchool.setVisibility(View.VISIBLE);

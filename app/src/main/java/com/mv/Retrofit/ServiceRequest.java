@@ -32,8 +32,27 @@ public interface ServiceRequest {
     Call<ResponseBody> sendDataToSalesforce(@Url String url, @Body JsonObject object);
 
 
-    @POST("user/app_get_district")
-    Call<ResponseBody> getDistrict();
+    @POST("user/app_get_state")
+    Call<ResponseBody> getState();
+
+    @FormUrlEncoded
+    @POST("user/app_get_district_by_state")
+    Call<ResponseBody> getDistrict(@Field("state") String mState);
+
+    @FormUrlEncoded
+    @POST("user/app_get_taluka")
+    Call<ResponseBody> getTaluka(@Field("state") String mState, @Field("district") String mDistrict);
+
+    @FormUrlEncoded
+    @POST("user/app_get_cluster")
+    Call<ResponseBody> getCluster(@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka);
 
 
+    @FormUrlEncoded
+    @POST("user/app_get_village")
+    Call<ResponseBody> getVillage(@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster);
+
+    @FormUrlEncoded
+    @POST("user/app_get_school")
+    Call<ResponseBody> getSchool(@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster, @Field("village") String mVillage);
 }

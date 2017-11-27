@@ -30,7 +30,6 @@
             android:fillViewport="true">
 
             <LinearLayout
-                android:id="@+id/ll_loc"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
@@ -39,7 +38,6 @@
 
 
 
-<!--
 
                 <com.mv.Widgets.MyTextView
                     android:id="@+id/tv_state"
@@ -62,7 +60,7 @@
                     android:background="@drawable/grey_box"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
-                    android:prompt="@string/state"
+                    android:prompt="@string/role"
                     android:spinnerMode="dialog" />
 
 
@@ -191,7 +189,6 @@
                     android:prompt="@string/school_name"
                     android:spinnerMode="dialog" />
 
--->
 
 
             </LinearLayout>

@@ -92,20 +92,35 @@ public class User {
     @SerializedName("Is_Approved__c")
     @Expose
     private String isApproved;
+
     @SerializedName("Mobile_Tab_Name_c__c")
     @Expose
-    private String tabName;
+    private String tabNameApproved="";
+
+    @SerializedName("Before_Approved_Tab_Names__c")
+    @Expose
+    private String tabNameNoteApproved="";
 
     @SerializedName("Approval_Role_c__c")
     @Expose
     private String approval_role;
 
-    public String getTabName() {
-        return tabName;
+
+
+    public String getTabNameApproved() {
+        return tabNameApproved;
     }
 
-    public void setTabName(String tabName) {
-        this.tabName = tabName;
+    public void setTabNameApproved(String tabNameApproved) {
+        this.tabNameApproved = tabNameApproved;
+    }
+
+    public String getTabNameNoteApproved() {
+        return tabNameNoteApproved;
+    }
+
+    public void setTabNameNoteApproved(String tabNameNoteApproved) {
+        this.tabNameNoteApproved = tabNameNoteApproved;
     }
 
     public String getApproval_role() {
