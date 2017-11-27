@@ -36,6 +36,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             try {
                 preferenceHelper = new PreferenceHelper(getApplicationContext());
+
                 sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
             } catch (Exception e) {
                 e.printStackTrace();
