@@ -120,11 +120,10 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     private void getDistrict() {
 
         Utills.showProgressDialog(this, getString(R.string.loding_district), getString(R.string.progress_please_wait));
+
         ServiceRequest apiService =
-                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getDistrict_Name__c?StateName=Maharashtra";
-        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+                ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getDistrict(User.getCurrentUser(getApplicationContext()).getState()).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -151,7 +150,6 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             }
         });
     }
-
     private void initViews() {
         setActionbar("Select Location");
         Utills.setupUI(findViewById(R.id.layout_main), this);
@@ -185,15 +183,16 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         mListVillage.add("Select");
         mListSchoolName.add("Select");
         if (Utills.isConnected(this))
-            getTaluka();
+            getDistrict();
         else {
 
-            mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(User.getCurrentUser(context).getState(), User.getCurrentUser(context).getDistrict());
-            mListTaluka.add(0, "Select");
+            mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(User.getCurrentUser(context).getState());
+            mListDistrict.add(0, "Select");
         }
 
 
         mStateList = new ArrayList<String>(Arrays.asList(getColumnIdex((User.getCurrentUser(getApplicationContext()).getState()).split(","))));
+        mStateList.add(0, "Select");
         state_adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, mStateList);
         state_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -467,19 +466,36 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         switch (adapterView.getId()) {
-         /*   case R.id.spinner_state:
+            case R.id.spinner_state:
                 mSelectState = i;
 
                 if (mSelectState != 0) {
+                    if (Utills.isConnected(this))
+                        getDistrict();
+                    else {
 
-                    getDistrict();
+                        mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(User.getCurrentUser(context).getState());
+                        mListDistrict.add(0, "Select");
+                        district_adapter = new ArrayAdapter<String>(this,
+                                android.R.layout.simple_spinner_item, mListDistrict);
+                        district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        binding.spinnerDistrict.setAdapter(district_adapter);
+
+                    }
+
+                    //    mListDistrict.clear();
+
                 }
-                mListDistrict.clear();
+                else
+                {
+                    mListDistrict.clear();
+                    mListDistrict.add("Select");
+                }
                 mListTaluka.clear();
                 mListCluster.clear();
                 mListVillage.clear();
                 mListSchoolName.clear();
-                mListDistrict.add("Select");
+         ;
                 mListTaluka.add("Select");
                 mListCluster.add("Select");
                 mListVillage.add("Select");
@@ -494,13 +510,36 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             case R.id.spinner_district:
                 mSelectDistrict = i;
                 if (mSelectDistrict != 0) {
+                    if (Utills.isConnected(this))
                     getTaluka();
+                    else
+                    {
+
+
+                        mListTaluka.clear();
+
+                        mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict));
+                        mListTaluka.add(0, "Select");
+                        taluka_adapter = new ArrayAdapter<String>(this,
+                                android.R.layout.simple_spinner_item, mListTaluka);
+                        taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        binding.spinnerTaluka.setAdapter(taluka_adapter);
+
+
+
+                    }
+
                 }
-                mListTaluka.clear();
+                else
+                {
+                    mListTaluka.clear();
+                    mListTaluka.add("Select");
+
+                }
+
                 mListCluster.clear();
                 mListVillage.clear();
                 mListSchoolName.clear();
-                mListTaluka.add("Select");
                 mListCluster.add("Select");
                 mListVillage.add("Select");
                 mListSchoolName.add("Select");
@@ -508,8 +547,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                 cluster_adapter.notifyDataSetChanged();
                 village_adapter.notifyDataSetChanged();
                 school_adapter.notifyDataSetChanged();
-
-                break;*/
+                break;
             case R.id.spinner_taluka:
                 mSelectTaluka = i;
                 if (mSelectTaluka != 0) {
@@ -518,7 +556,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                     else {
                         mListCluster.clear();
                         mListCluster.add("Select");
-                        mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(User.getCurrentUser(context).getState(), User.getCurrentUser(context).getDistrict(), mListTaluka.get(mSelectTaluka));
+                        mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(User.getCurrentUser(context).getState(),  mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
                         mListCluster.add(0, "Select");
                         cluster_adapter = new ArrayAdapter<String>(this,
                                 android.R.layout.simple_spinner_item, mListCluster);
@@ -526,6 +564,11 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                         binding.spinnerCluster.setAdapter(cluster_adapter);
 
                     }
+                }
+                else
+                {
+                    mListCluster.clear();
+                    mListCluster.add("Select");
                 }
                 //  mListCluster.clear();
                 mListVillage.clear();
@@ -547,7 +590,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                         getVillage();
                     else {
                         mListVillage.clear();
-                        mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getState(), User.getCurrentUser(context).getDistrict(), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
+                        mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getState(),  mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
                         mListVillage.add(0, "Select");
                         village_adapter = new ArrayAdapter<String>(this,
                                 android.R.layout.simple_spinner_item, mListVillage);
@@ -556,6 +599,11 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
                     }
                     //   getVillage();
+                }
+                else
+                {
+                    mListVillage.clear();
+                    mListVillage.add("Select");
                 }
 
                 //  mListVillage.clear();
@@ -575,7 +623,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                     else {
                         mListSchoolName.clear();
                         mListSchoolName.add("Select");
-                        mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getState(), User.getCurrentUser(context).getDistrict(), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
+                        mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getState(),  mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
                         mListSchoolName.add(0, "Select");
                         school_adapter = new ArrayAdapter<String>(this,
                                 android.R.layout.simple_spinner_item, mListSchoolName);
@@ -600,7 +648,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         Utills.showProgressDialog(this, getString(R.string.loding_cluster), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getCluster(User.getCurrentUser(LocationSelectionActity.this).getState(), User.getCurrentUser(LocationSelectionActity.this).getDistrict(), mListTaluka.get(mSelectTaluka)).enqueue(new Callback<ResponseBody>() {
+        apiService.getCluster(User.getCurrentUser(LocationSelectionActity.this).getState(),  mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -630,7 +678,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
 
-        apiService.getTaluka(User.getCurrentUser(LocationSelectionActity.this).getState(), User.getCurrentUser(LocationSelectionActity.this).getDistrict()).enqueue(new Callback<ResponseBody>() {
+        apiService.getTaluka(User.getCurrentUser(getApplicationContext()).getState(), mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -658,7 +706,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         Utills.showProgressDialog(this, getString(R.string.loding_village), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getVillage(User.getCurrentUser(LocationSelectionActity.this).getState(), User.getCurrentUser(LocationSelectionActity.this).getDistrict(), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster)).enqueue(new Callback<ResponseBody>() {
+        apiService.getVillage(User.getCurrentUser(LocationSelectionActity.this).getState(),  mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -687,7 +735,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
 
-        apiService.getSchool(User.getCurrentUser(LocationSelectionActity.this).getState(), User.getCurrentUser(LocationSelectionActity.this).getDistrict(), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage)).enqueue(new Callback<ResponseBody>() {
+        apiService.getSchool(User.getCurrentUser(LocationSelectionActity.this).getState(),  mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();

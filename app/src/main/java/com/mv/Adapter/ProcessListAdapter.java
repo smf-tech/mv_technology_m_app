@@ -80,6 +80,8 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                     }
                     else
                     {
+
+
                         Utills.showToast("No Task Available ",mContext);
                     }
 
