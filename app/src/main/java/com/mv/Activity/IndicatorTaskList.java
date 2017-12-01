@@ -77,21 +77,6 @@ public class IndicatorTaskList extends AppCompatActivity implements View.OnClick
             showPopUp();
     }
 
-    public void onLayoutScheduleTraining() {
-        Intent intent;
-        intent = new Intent(IndicatorTaskList.this, ScheduleTrainingActivity.class);
-        startActivity(intent);
-    }
-
-    public void onLayoutClassObservation() {
-        Intent intent;
-        intent = new Intent(IndicatorTaskList.this, ClassObservationActivity.class);
-        startActivity(intent);
-    }
-
-    public void onLayoutOrganizeEvents() {
-
-    }
 
     private void setActionbar(String Title) {
         mToolBar = (RelativeLayout) findViewById(R.id.toolbar);

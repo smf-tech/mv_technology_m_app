@@ -207,6 +207,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llHeaderLay.setVisibility(View.GONE);
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
+                holder.questionResponse.setSingleLine(true);
                 holder.dateInpute.setVisibility(View.GONE);
                 // holder.questionResponse.setHint(task.getTask_Text__c());
                 if (task.getIs_Response_Mnadetory__c())
@@ -241,7 +242,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 dimen_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 holder.spinnerResponse.setPrompt(task.getTask_Text__c());
                 holder.spinnerResponse.setAdapter(dimen_adapter);
-                if (!preferenceHelper.getBoolean(Constants.NEW_PROCESS))
+          //      if (!preferenceHelper.getBoolean(Constants.NEW_PROCESS))
                     holder.spinnerResponse.setSelection(myList.indexOf(task.getTask_Response__c().trim()));
 
                 break;
@@ -252,15 +253,17 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llLayout.setVisibility(View.GONE);
                 holder.dateInpute.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
+
                 // holder.questionResponse.setHint(task.getTask_Text__c());
                 if (task.getIs_Response_Mnadetory__c())
                     holder.editHeader.setText("*" + task.getTask_Text__c());
                 else
                     holder.editHeader.setText(task.getTask_Text__c());
+                holder.questionResponse.setSingleLine(false);
                 holder.questionResponse.setMinLines(3);
                 holder.questionResponse.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
                 holder.questionResponse.setGravity(Gravity.LEFT | Gravity.TOP);
-                if (!preferenceHelper.getBoolean(Constants.NEW_PROCESS))
+      //          if (!preferenceHelper.getBoolean(Constants.NEW_PROCESS))
                     holder.questionResponse.setText(task.getTask_Response__c());
                 break;
             case Constants.HEADER:

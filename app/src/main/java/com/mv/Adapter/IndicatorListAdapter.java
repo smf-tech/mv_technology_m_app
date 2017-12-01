@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.mv.Activity.ActivityWebView;
 import com.mv.Activity.IndicatorTaskList;
+import com.mv.Model.DashaBoardListModel;
 import com.mv.R;
 import com.mv.Utils.Constants;
 
@@ -27,29 +28,31 @@ public class IndicatorListAdapter extends RecyclerView.Adapter<IndicatorListAdap
 
     private Context mContext;
     private Resources resources;
-    private List<String> name;
 
-    public IndicatorListAdapter(Context context) {
+    List<DashaBoardListModel> processAllLis;
+
+    public IndicatorListAdapter(Context context, List<DashaBoardListModel> processAllLis) {
         mContext = context;
         resources = context.getResources();
-        name = Arrays.asList(resources.getStringArray(R.array.array_of_indicator));
+        this.processAllLis = processAllLis;
+
     }
 
 
     @Override
-    public IndicatorListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemLayoutView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_trainging, parent, false);
 
         // create ViewHolder
-        IndicatorListAdapter.ViewHolder viewHolder = new IndicatorListAdapter.ViewHolder(itemLayoutView);
+        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
         return viewHolder;
     }
 
 
     @Override
     public int getItemCount() {
-        return name.size();
+        return processAllLis.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -73,9 +76,11 @@ public class IndicatorListAdapter extends RecyclerView.Adapter<IndicatorListAdap
                     intent.putExtra(Constants.URL, url);
                     intent.putExtra(Constants.TITLE, name.get(getAdapterPosition()));
                     mContext.startActivity(intent);*/
-                    Intent intent = new Intent(mContext, IndicatorTaskList.class);
-                    intent.putExtra(Constants.TITLE, name.get(getAdapterPosition()));
-                    mContext.startActivity(intent);
+                    if (getAdapterPosition() != 0) {
+                        Intent intent = new Intent(mContext, IndicatorTaskList.class);
+                        intent.putExtra(Constants.TITLE, processAllLis.get(getAdapterPosition()));
+                        mContext.startActivity(intent);
+                    }
                 }
             });
             txtName = (TextView) itemLayoutView.findViewById(R.id.txtName);
@@ -83,9 +88,9 @@ public class IndicatorListAdapter extends RecyclerView.Adapter<IndicatorListAdap
     }
 
     @Override
-    public void onBindViewHolder(IndicatorListAdapter.ViewHolder holder, int position) {
-      //  holder.txtCount.setText("" + (position ) + ". ");
-        holder.txtName.setText(name.get(position));
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        holder.txtCount.setText("" + (position + 1) + ". ");
+        holder.txtName.setText(processAllLis.get(position).getName());
     }
 
 

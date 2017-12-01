@@ -93,21 +93,9 @@ ProgrammeManagmentFragment extends Fragment {
         }
     }
 
-    public void onLayoutScheduleTraining() {
-        Intent intent;
-        intent = new Intent(getActivity(), ScheduleTrainingActivity.class);
-        startActivity(intent);
-    }
 
-    public void onLayoutClassObservation() {
-        Intent intent;
-        intent = new Intent(getActivity(), ClassObservationActivity.class);
-        startActivity(intent);
-    }
 
-    public void onLayoutOrganizeEvents() {
 
-    }
 
 
     private void getAllProcess() {
