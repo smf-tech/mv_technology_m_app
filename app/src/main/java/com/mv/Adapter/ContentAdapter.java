@@ -155,13 +155,13 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
         }
 
-        holder.txt_title.setText("Title : " + mDataList.get(position).getTitle());
+        holder.txt_title.setText("" + mDataList.get(position).getUserName());
        /* if (mDataList.get(position).getSynchStatus() != null
                 && mDataList.get(position).getSynchStatus().equalsIgnoreCase(Constants.STATUS_LOCAL))
             holder.txt_template_type.setText("Template Type : " + mDataList.get(position).getTemplateName());
         else
             holder.txt_template_type.setText("Template Type : " + mDataList.get(position).getTemplate());*/
-        holder.txt_template_type.setText("" + mDataList.get(position).getUserName());
+        holder.txt_template_type.setText("Title : " + mDataList.get(position).getTitle());
         holder.txt_desc.setText("Description : " + mDataList.get(position).getDescription());
         holder.txt_time.setText(mDataList.get(position).getTime().toString());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");

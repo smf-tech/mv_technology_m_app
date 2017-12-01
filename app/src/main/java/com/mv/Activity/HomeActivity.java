@@ -10,6 +10,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -25,7 +28,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.mv.Adapter.PagerAdapter;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mv.Fragment.CommunityHomeFragment;
+import com.mv.Fragment.GroupsFragment;
+import com.mv.Fragment.IndicatorListFragmet;
+import com.mv.Fragment.ProgrammeManagmentFragment;
+import com.mv.Fragment.TeamManagementFragment;
+import com.mv.Fragment.TrainingFragment;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -38,7 +48,10 @@ import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityHome1Binding;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -53,11 +66,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     private ActivityHome1Binding binding;
+
     private PreferenceHelper preferenceHelper;
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_UKRAINIAN = "mr";
     public static final String LANGUAGE = "language";
-
+    ViewPagerAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,11 +80,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         binding.setActivity(this);
         preferenceHelper = new PreferenceHelper(this);
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
-            showApprovedDilaog();
-        } else {
-            initViews();
+            if (Utills.isConnected(this))
+                getUserData();
+            else
+                initViews();
         }
-
+        else
+            initViews();
 
     }
 
@@ -111,8 +127,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         // binding.process.getLayoutParams().width = textWidth;
 
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        tabLayout.removeAllTabs();
+        TabLayout   tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        /*tabLayout.removeAllTabs();
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.broadcast)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.community)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.programme_management)));
@@ -120,13 +136,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.team_management)));
         if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC"))
             tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.indicator)));
-
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+*/
+  //      tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        final PagerAdapter adapter = new PagerAdapter
-                (getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+            setupViewPager(viewPager);
+
+
+
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -159,6 +177,81 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             //app has been launched directly, not from share list
             Constants.shareUri = null;
+        }
+
+    }
+
+    private void setupViewPager(ViewPager viewPager) {
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        List<String> allTab=new ArrayList<>();
+        if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
+            allTab= Arrays.asList(getColumnIdex( User.getCurrentUser(getApplicationContext()).getTabNameNoteApproved().split(";")));
+            ;
+            if(allTab.contains("Broadcast"))
+                adapter.addFrag(new CommunityHomeFragment(), getString(R.string.broadcast));
+            if(allTab.contains("My Community"))
+                adapter.addFrag(new GroupsFragment(), getString(R.string.community));
+            if(allTab.contains("Programme Management"))
+                adapter.addFrag(new ProgrammeManagmentFragment(), getString(R.string.programme_management));
+            if(allTab.contains("Training Content"))
+                adapter.addFrag(new TrainingFragment(), getString(R.string.training_content));
+            if(allTab.contains("Team Management"))
+                adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
+            if(allTab.contains("My Reports"))
+                adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
+
+
+            viewPager.setAdapter(adapter);
+
+            showApprovedDilaog();
+        } else {
+
+            allTab= Arrays.asList(getColumnIdex( User.getCurrentUser(getApplicationContext()).getTabNameApproved().split(";")));
+           ;
+            if(allTab.contains("Broadcast"))
+            adapter.addFrag(new CommunityHomeFragment(), getString(R.string.broadcast));
+            if(allTab.contains("My Community"))
+            adapter.addFrag(new GroupsFragment(), getString(R.string.community));
+            if(allTab.contains("Programme Management"))
+            adapter.addFrag(new ProgrammeManagmentFragment(), getString(R.string.programme_management));
+            if(allTab.contains("Training Content"))
+            adapter.addFrag(new TrainingFragment(), getString(R.string.training_content));
+            if(allTab.contains("Team Management"))
+            adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
+            if(allTab.contains("My Reports"))
+            adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
+            viewPager.setAdapter(adapter);
+        }
+
+
+
+    }
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFrag(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
         }
 
     }
@@ -322,11 +415,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.ISROLECHANGE && resultCode == RESULT_OK) {
-            if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
-                showApprovedDilaog();
-            } else {
-                initViews();
-            }
+
+        //    if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
+                if (Utills.isConnected(this))
+                    getUserData();
+                else
+                    initViews();
+    /*        }
+            else
+                initViews();*/
+
         }
     }
 
@@ -503,7 +601,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         alertDialog.setTitle(getString(R.string.app_name));
 
         // Setting Dialog Message
-        alertDialog.setMessage("You are not approved yet ");
+        alertDialog.setMessage("You are not approved yet");
 
         // Setting Icon to Dialog
         alertDialog.setIcon(R.drawable.logomulya);
@@ -514,9 +612,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
-                finish();
+                //initViews();
+             /*   finish();
                 sendLogOutRequest();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);*/
             }
         });
 
@@ -553,4 +652,67 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         }, 2000);
     }
+    public static String[] getColumnIdex(String[] value) {
+
+        for (int i = 0; i < value.length; i++) {
+            value[i] = value[i].trim();
+        }
+        return value;
+
+    }
+
+
+    private void getUserData() {
+
+        Utills.showProgressDialog(this, "Loading Data", getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + "/services/apexrest/getUserData?userId="+User.getCurrentUser(getApplicationContext()).getId();
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                try {
+                    String data=response.body().string();
+                    preferenceHelper.insertString(PreferenceHelper.UserData, data);
+                    User.clearUser();
+                    initViews();
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+             /*   try {
+                    JSONArray jsonArray = new JSONArray(response.body().string());
+                    mListState.clear();
+                    mListState.add("Select");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        mListState.add(jsonArray.getString(i));
+                    }
+                    state_adapter.notifyDataSetChanged();
+                    if (!isAdd && !isStateSet) {
+                        isStateSet = true;
+                        for (int i = 0; i < mListState.size(); i++) {
+                            if (mListState.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getApprovedUserData())) {
+                                binding.spinnerState.setSelection(i);
+                                break;
+                            }
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }*/
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
+    }
+
 }

@@ -2,8 +2,10 @@ package com.mv.Fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mv.Activity.BroadCastActivity;
 import com.mv.Adapter.FragmentContentAdapter;
 import com.mv.Model.Content;
 import com.mv.Model.User;
@@ -48,6 +51,7 @@ public class CommunityHomeFragment extends Fragment implements View.OnClickListe
     private ArrayList<Content> chatList = new ArrayList<Content>();
     private FragmentContentAdapter adapter;
     private View view;
+    private FloatingActionButton fab_add_broadcast;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -63,8 +67,15 @@ public class CommunityHomeFragment extends Fragment implements View.OnClickListe
         return view;
     }
 
+    public void onAddClick() {
+
+    }
+
     private void initViews() {
         preferenceHelper = new PreferenceHelper(getActivity());
+        fab_add_broadcast = (FloatingActionButton) view.findViewById(R.id.fab_add_broadcast);
+        fab_add_broadcast.setOnClickListener(this);
+        binding.fabAddBroadcast.setVisibility(View.VISIBLE);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         adapter = new FragmentContentAdapter(getActivity(), chatList);
         recyclerView.setAdapter(adapter);
@@ -189,7 +200,13 @@ public class CommunityHomeFragment extends Fragment implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-
+        switch (view.getId()) {
+            case R.id.fab_add_broadcast:
+                Intent intent;
+                intent = new Intent(getActivity(), BroadCastActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 
     /**

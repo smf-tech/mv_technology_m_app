@@ -30,8 +30,12 @@ public class SplashScreenActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private PreferenceHelper preference;
     private static int SPLASH_TIME_OUT = 2000;
-    public static final  String LANGUAGE_ENGLISH   = "en";
-    public static final  String LANGUAGE_UKRAINIAN = "mr";
+    public static final String LANGUAGE_ENGLISH = "en";
+    public static final String LANGUAGE_UKRAINIAN = "mr";
+
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,29 +46,33 @@ public class SplashScreenActivity extends AppCompatActivity {
         Utills.makedirs(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Video");
         Utills.makedirs(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image");
         Utills.makedirs(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download");
+        Utills.makedirs(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip");
+        Utills.makedirs(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/UnZip");
+
     }
+
+
 
     @Override
     protected void onResume() {
         super.onResume();
 
 
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    Intent intent;
-                    if (TextUtils.isEmpty(preference.getString(PreferenceHelper.UserRole)))
-                        intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                    else
-                        intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Intent intent;
+                if (TextUtils.isEmpty(preference.getString(PreferenceHelper.UserRole)))
+                    intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                else
+                    intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
 
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
 
-                }
-            }, SPLASH_TIME_OUT);
-      }
-
+            }
+        }, SPLASH_TIME_OUT);
+    }
 
 
     private void loginToSalesforce() {

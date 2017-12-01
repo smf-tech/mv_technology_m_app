@@ -8,12 +8,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -23,7 +19,6 @@ import com.google.gson.JsonParser;
 import com.mv.Adapter.ProcessDetailAdapter;
 import com.mv.Model.Task;
 import com.mv.Model.TaskContainerModel;
-import com.mv.Model.Template;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -33,7 +28,6 @@ import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
-import com.mv.databinding.ActivityNewTemplateBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -231,11 +225,11 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
                         taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
                         taskContainerModel.setMV_Process__c(taskList.get(0).getMV_Process__c());
-                            AppDatabase.getAppDatabase(context).userDao().deleteSingleTask(preferenceHelper.getString(Constants.UNIQUE),taskContainerModel.getMV_Process__c());
+                        AppDatabase.getAppDatabase(context).userDao().deleteSingleTask(preferenceHelper.getString(Constants.UNIQUE),taskContainerModel.getMV_Process__c());
                        // AppDatabase.getAppDatabase(context).userDao().updateTask(taskContainerModel);
                         finish();
 
-
+ 
                     } catch (Exception e) {
                         e.printStackTrace();
 

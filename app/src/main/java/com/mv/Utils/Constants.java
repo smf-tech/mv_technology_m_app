@@ -13,7 +13,6 @@ public class Constants {
     public static String USERNAME = "mulyavardhan.smf@gmail.com";
     public static String REPORTID = "a1L7F000000YNK4";
     public static String ISSUEID = "a1L7F000000YNJz";*/
-
     /* Sandbox*/
     public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
@@ -58,6 +57,7 @@ public class Constants {
     public static String TEMPLATE_ISSUE = "Issue";
     public static String IS_EDITABLE = "isEditable";
     public static String IS_LOCATION = "isEditableLocation";
+    public static String IS_MULTIPLE = "isMultiple";
     public static String STATE_LOCATION_LEVEL = "locationTest";
 
 

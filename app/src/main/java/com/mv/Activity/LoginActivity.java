@@ -72,6 +72,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_UKRAINIAN = "mr";
     public static final String LANGUAGE = "language";
+    final Handler handler = new Handler();
+    Timer swipeTimer = new Timer();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +83,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         binding.setActivity(this);
         initViews();
-    }
+     /*   DownloadFile downloadFile = new DownloadFile(this);
+        downloadFile.startDownload("http://mobileyougokidinformationdesk.com//denver123//videos//test0.zip","DownLoad1.zip");
+*/    }
 
     public void onLoginClick() {
         // binding.tvUser.setText("(Enter the OTP below in case if we fail to detect the SMS automatically)");
@@ -407,7 +412,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         indicator.setViewPager(mPager);
 
         // Auto start of viewpager
-        final Handler handler = new Handler();
+
         final Runnable Update = new Runnable() {
             public void run() {
                 if (currentPage == XMEN.length) {
@@ -416,7 +421,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 mPager.setCurrentItem(currentPage++, true);
             }
         };
-        Timer swipeTimer = new Timer();
+
         swipeTimer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -533,4 +538,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return t;
         }
     };
+
+
 }
