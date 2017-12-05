@@ -75,7 +75,7 @@ public class CommunityHomeFragment extends Fragment implements View.OnClickListe
         preferenceHelper = new PreferenceHelper(getActivity());
         fab_add_broadcast = (FloatingActionButton) view.findViewById(R.id.fab_add_broadcast);
         fab_add_broadcast.setOnClickListener(this);
-        binding.fabAddBroadcast.setVisibility(View.VISIBLE);
+        binding.fabAddBroadcast.setVisibility(View.GONE);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         adapter = new FragmentContentAdapter(getActivity(), chatList);
         recyclerView.setAdapter(adapter);

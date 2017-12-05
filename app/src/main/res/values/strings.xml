@@ -108,7 +108,10 @@
 
     <string name="issue_template">Issue Template</string>
     <string name="issue_submit">Issue submitted successfully...</string>
+    <string name="broadcast_submit">Broadcast submitted successfully...</string>
     <string name="Process_Detail">Process Detail</string>
+    <string name="fileNotPresent">File is not present. Please Press Download Button</string>
+
 
     <string name="Task_List">Task List</string>
     <string name="Loading_Process">Loading Process</string>

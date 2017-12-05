@@ -182,8 +182,6 @@ public class DownloadFile {
                     ZipEntry entry = (ZipEntry) e.nextElement();
                     unzipEntry(zipfile, entry, destinationPath);
                 }
-
-
                 UnzipUtil d = new UnzipUtil(StorezipFileLocation, DirectoryName);
                 d.unzip();
 

@@ -107,6 +107,11 @@
 
     <string name="issue_template">समस्या टेम्पलेट</string>
     <string name="issue_submit">समस्या यशस्वीरित्या सबमिट केली...</string>
+    <string name="broadcast_submit">ब्रॉडकास्ट यशस्वी रित्या सबमिट झाला ...</string>
+
+
+    <string name="fileNotPresent">फाईल उपलब्ध नाही. कृपया डाउनलोड बटण दाबा</string>
+
     <string name="Process_Detail">प्रक्रिया तपशील</string>
 
     <string name="Task_List">कार्य सूची</string>

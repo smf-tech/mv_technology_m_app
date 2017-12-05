@@ -21,7 +21,7 @@ public class PreferenceHelper {
     public static final String CONTENTISSYNCHED = "CONTENTISSYNCHED";
 
     public static final String NOTIFICATION = "notification";
-
+    public static final String TrainingContentData = "TrainingContentData";
     public static final String UserData = "UserData";
     public static final String UserRole = "UserRole";
     public static final String AccessToken = "AccessToken";

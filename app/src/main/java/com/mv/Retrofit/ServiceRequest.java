@@ -10,6 +10,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Streaming;
 import retrofit2.http.Url;
 
 /**
@@ -24,6 +25,10 @@ public interface ServiceRequest {
     Call<ResponseBody> loginSalesforce(@Url String url, @Field("username") String mUsername, @Field("password") String mPassword,
                                        @Field("client_secret") String mClientSecret, @Field("client_id") String ClientId,
                                        @Field("grant_type") String mGrantType, @Field("response_type") String mResponseType);
+
+    @GET("")
+    @Streaming
+    Call<ResponseBody> downloadFile(@Url String url);
 
     @GET("")
     Call<ResponseBody> getSalesForceData(@Url String url);
