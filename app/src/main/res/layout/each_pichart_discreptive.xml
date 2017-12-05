@@ -1,0 +1,55 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:my_font="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/dimen_5dp"
+    android:foreground="?attr/selectableItemBackground"
+
+    app:cardBackgroundColor="@color/white">
+
+
+        <LinearLayout
+            android:id="@+id/layoutTemplate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:weightSum="10">
+
+
+
+            <com.mv.Widgets.MyTextView
+                android:id="@+id/tv_piachart_number"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+
+                android:layout_alignParentLeft="true"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+
+                android:text=""
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/medium_text" />
+
+            <com.mv.Widgets.MyTextView
+                android:id="@+id/tv_piachart_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_margin="10dp"
+
+                android:layout_weight="9"
+                android:text=""
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/medium_text" />
+
+
+
+
+        </LinearLayout>
+
+</android.support.v7.widget.CardView>

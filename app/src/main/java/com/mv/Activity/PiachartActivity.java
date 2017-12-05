@@ -1,10 +1,13 @@
 package com.mv.Activity;
 
+import android.app.Activity;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.util.Log;
 import android.view.View;
@@ -24,6 +27,11 @@ import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.mv.Adapter.PichartDescriptiveListAdapter;
+import com.mv.Model.PiaChartModel;
+import com.mv.Model.Task;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -35,6 +43,7 @@ import com.mv.databinding.FragmentIndicaorBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,23 +58,37 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     private PreferenceHelper preferenceHelper;
     private PieChart mChart;
     ArrayList<String> key = new ArrayList<>();
-    ArrayList<String> value = new ArrayList<>();
+    ArrayList<PiaChartModel> piaChartModelArrayList = new ArrayList<>();
     ArrayList<PieEntry> entries;
-    String task;
+    Task task;
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
+    RecyclerView rvPiaChartDeatail;
+    PichartDescriptiveListAdapter adapter;
+    Activity context;
+    String title;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        context = this;
         binding = DataBindingUtil.setContentView(this, R.layout.fragment_indicaor);
         binding.swipeRefreshLayout.setOnRefreshListener(this);
-        task = getIntent().getExtras().getString(Constants.INDICATOR_TASK);
-        initViews();
-        if (Utills.isConnected(this))
-            getAllIndicatorTask();
+        task = getIntent().getParcelableExtra(Constants.INDICATOR_TASK);
+        title = getIntent().getExtras().getString(Constants.TITLE);
+
+        initPicahrtView();
+        if (task == null) {
+
+            if (Utills.isConnected(this))
+                getAllIndicatorTask();
+        } else {
+
+            if (Utills.isConnected(this))
+                getDashBoardData();
+        }
     }
 
     @Override
@@ -86,10 +109,12 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         img_logout.setOnClickListener(this);
     }
 
-    private void initViews() {
-        setActionbar(task);
+    private void initPicahrtView() {
+        //setActionbar(task);
+        setActionbar(title);
         preferenceHelper = new PreferenceHelper(PiachartActivity.this);
         mChart = (PieChart) findViewById(R.id.chart1);
+        mChart.setVisibility(View.VISIBLE);
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
         mChart.setExtraOffsets(5, 10, 5, 5);
@@ -138,6 +163,10 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         mChart.setEntryLabelColor(Color.BLACK);
         //  mChart.setEntryLabelTypeface(mTfRegular);
         mChart.setEntryLabelTextSize(12f);
+
+        rvPiaChartDeatail = (RecyclerView) findViewById(R.id.recycler_view);
+        rvPiaChartDeatail.setHasFixedSize(true);
+        rvPiaChartDeatail.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private SpannableString generateCenterSpannableText() {
@@ -206,6 +235,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         mChart.highlightValues(null);
 
         mChart.invalidate();
+
+
     }
 
     @Override
@@ -243,7 +274,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getDashboardData?userId=" + User.getCurrentUser(PiachartActivity.this).getId() + "&qustionArea=" + task;
+                + "/services/apexrest/getDashboardData?userId=" + User.getCurrentUser(PiachartActivity.this).getId() + "&qustionArea=" + title;
 
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
@@ -251,6 +282,10 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
+
+
+                    mChart.setVisibility(View.VISIBLE);
+                    rvPiaChartDeatail.setVisibility(View.GONE);
                     JSONArray jsonArray = new JSONArray(response.body().string());
                     entries = new ArrayList<>();
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -258,6 +293,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                         if (!jsonArray.getJSONObject(i).getString("value").equals("0.0"))
                             key.add(jsonArray.getJSONObject(i).getString("value"));
                     }
+
+
                     if (key.size() > 0) {
                         setData(entries);
                         binding.swipeRefreshLayout.setVisibility(View.VISIBLE);
@@ -279,5 +316,103 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
             }
         });
+    }
+
+
+    private void getDashBoardData() {
+        if (Utills.isConnected(this)) {
+            try {
+
+                Utills.showProgressDialog(this);
+
+                final JSONObject jsonObject = new JSONObject();
+
+                jsonObject.put("state", "Maharashtra");
+                jsonObject.put("district", User.getCurrentUser(getApplicationContext()).getDistrict());
+                jsonObject.put("taluka", "Select");
+                jsonObject.put("tskId", task.getId());
+
+
+                ServiceRequest apiService =
+                        ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+                JsonParser jsonParser = new JsonParser();
+                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/getchartData", gsonObject).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Utills.hideProgressDialog();
+                        try {
+                            JSONObject jsonObject1 = new JSONObject(response.body().string());
+                            JSONArray jsonArray = jsonObject1.getJSONArray("Records");
+                            if (jsonArray.length() > 0) {
+                                entries = new ArrayList<>();
+                                piaChartModelArrayList = new ArrayList<>();
+                                if (task.getTask_type__c().equals("Selection") || task.getTask_type__c().equals("Checkbox")) {
+
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+
+
+                                        entries.add(new PieEntry(Float.valueOf(jsonArray.getJSONObject(i).getString("value")), jsonArray.getJSONObject(i).getString("key")));
+                                        if (!jsonArray.getJSONObject(i).getString("value").equals("0.0"))
+                                            key.add(jsonArray.getJSONObject(i).getString("value"));
+
+
+                                    }
+
+
+                                    mChart.setVisibility(View.VISIBLE);
+                                    rvPiaChartDeatail.setVisibility(View.GONE);
+                                    if (key.size() > 0) {
+                                        setData(entries);
+                                        binding.swipeRefreshLayout.setVisibility(View.VISIBLE);
+                                        binding.tvPiaNoDataAvailable.setVisibility(View.GONE);
+                                    } else {
+                                        binding.swipeRefreshLayout.setVisibility(View.GONE);
+                                        binding.tvPiaNoDataAvailable.setVisibility(View.VISIBLE);
+                                    }
+                                } else {
+                                    for (int i = 0; i < jsonArray.length(); i++) {
+                                        PiaChartModel piaChartModel = new PiaChartModel();
+                                        piaChartModel.setState(jsonArray.getJSONObject(i).getString("state"));
+                                        piaChartModel.setDistrict(jsonArray.getJSONObject(i).getString("district"));
+                                        piaChartModel.setTaluka(jsonArray.getJSONObject(i).getString("taluka"));
+                                        piaChartModel.setName(jsonArray.getJSONObject(i).getString("fName") + " " + jsonArray.getJSONObject(i).getString("lName"));
+                                        piaChartModel.setDetail(jsonArray.getJSONObject(i).getString("feedbackdetail"));
+
+                                        piaChartModelArrayList.add(piaChartModel);
+                                    }
+                                    mChart.setVisibility(View.GONE);
+                                    rvPiaChartDeatail.setVisibility(View.VISIBLE);
+                                    adapter = new PichartDescriptiveListAdapter(context, piaChartModelArrayList);
+                                    rvPiaChartDeatail.setAdapter(adapter);
+
+                                }
+                            } else {
+
+                                binding.swipeRefreshLayout.setVisibility(View.GONE);
+                                binding.tvPiaNoDataAvailable.setVisibility(View.VISIBLE);
+                            }
+                        } catch (Exception e) {
+                            Utills.hideProgressDialog();
+                            Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Utills.hideProgressDialog();
+                        Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Utills.hideProgressDialog();
+                Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+
+            }
+        } else {
+            Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
+        }
+
     }
 }

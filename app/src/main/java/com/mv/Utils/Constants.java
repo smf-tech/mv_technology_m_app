@@ -66,18 +66,19 @@ public class Constants {
     public static final String MULTI_LINE = "Multi-Lines";
     public static final String HEADER = "Header";
     public static final String LOCATION = "Location";
+    public static final String POSITION = "position";
     public static final String DATE = "Date";
     public static final String TIME = "Time Picker";
     public static final String CHECK_BOX = "Checkbox";
     public static final String MULTI_SELECT = "Multi-select";
 
 
-    public static String State = "State";
-    public static String DISTRICT = "District";
-    public static String TALUKA = "Taluka";
-    public static String CLUSTER = "Cluster";
-    public static String VILlAGE = "Village";
-    public static String SCHOOL = "School";
+    public static final String State = "State";
+    public static final String DISTRICT = "District";
+    public static final String TALUKA = "Taluka";
+    public static final String CLUSTER = "Cluster";
+    public static final String VILlAGE = "Village";
+    public static final String SCHOOL = "School";
 
     public static String TASK_ANSWER = "answer";
     public static String TASK_QUESTION = "question";

@@ -37,6 +37,7 @@ import com.mv.Fragment.GroupsFragment;
 import com.mv.Fragment.IndicatorListFragmet;
 import com.mv.Fragment.ProgrammeManagmentFragment;
 import com.mv.Fragment.TeamManagementFragment;
+import com.mv.Fragment.TrainingCalender;
 import com.mv.Fragment.TrainingFragment;
 import com.mv.Model.User;
 import com.mv.R;
@@ -201,7 +202,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
             if(allTab.contains("My Reports"))
                 adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
-
+            adapter.addFrag(new TrainingCalender(), getString(R.string.indicator));
 
             viewPager.setAdapter(adapter);
 
@@ -222,6 +223,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
             if(allTab.contains("My Reports"))
             adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
+            adapter.addFrag(new TrainingCalender(), getString(R.string.indicator));
             viewPager.setAdapter(adapter);
         }
 

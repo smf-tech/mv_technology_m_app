@@ -32,12 +32,24 @@
             android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
 
+                android:scrollbars="vertical" />
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/chart1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:visibility="gone"
                 android:layout_above="@+id/seekBar1" />
+            </FrameLayout>
         </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 </layout>
