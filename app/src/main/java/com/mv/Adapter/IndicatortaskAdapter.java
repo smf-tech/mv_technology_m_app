@@ -9,9 +9,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.mv.Activity.UserApproveDetail;
+import com.mv.Activity.PiachartActivity;
 import com.mv.Model.Task;
-import com.mv.Model.Template;
 import com.mv.R;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
@@ -20,14 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by nanostuffs on 16-11-2017.
+ * Created by nanostuffs on 29-11-2017.
  */
 
-public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAdapter.MyViewHolder> {
+public class IndicatortaskAdapter extends RecyclerView.Adapter<IndicatortaskAdapter.MyViewHolder> {
 
-    private List<Template> teplateList;
+
     private Activity mContext;
-    ArrayList<Task> programManagementProcessLists = new ArrayList<>();
+    List<Task> indicatortaskList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -42,45 +41,40 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                 @Override
                 public void onClick(View view) {
 
-
-                    Intent openClass = new Intent(mContext, UserApproveDetail.class);
-                    openClass.putExtra(Constants.ID,teplateList.get(getAdapterPosition()).getId());
-                    //  openClass.putExtra(Constants.PROCESS_ID, taskList);
-                   // openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
-                    //  openClass.putExtra("stock_list", resultList.get(indicatortaskList()).get(0));
+                    Intent openClass = new Intent(mContext, PiachartActivity.class);
+                    openClass.putExtra(Constants.TITLE,indicatortaskList.get(getAdapterPosition()).getTask_Text__c());
+                    openClass.putExtra(Constants.INDICATOR_TASK,indicatortaskList.get(getAdapterPosition()));
                     mContext.startActivity(openClass);
                     mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 }
-
-
             });
         }
     }
 
 
-    public TeamManagementAdapter(List<Template> moviesList, Activity context) {
-        this.teplateList = moviesList;
+    public IndicatortaskAdapter(List<Task> moviesList, Activity context) {
+        this.indicatortaskList = moviesList;
         this.mContext = context;
         preferenceHelper = new PreferenceHelper(context);
     }
 
     @Override
-    public TeamManagementAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public IndicatortaskAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_template, parent, false);
 
-        return new TeamManagementAdapter.MyViewHolder(itemView);
+        return new IndicatortaskAdapter.MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(TeamManagementAdapter.MyViewHolder holder, int position) {
-        Template template = teplateList.get(position);
-        holder.txtCommunityName.setText(template.getName());
+    public void onBindViewHolder(IndicatortaskAdapter.MyViewHolder holder, int position) {
+
+        holder.txtCommunityName.setText(indicatortaskList.get(position).getTask_Text__c());
     }
 
     @Override
     public int getItemCount() {
-        return teplateList.size();
+        return indicatortaskList.size();
     }
 
 

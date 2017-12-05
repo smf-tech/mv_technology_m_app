@@ -123,6 +123,7 @@ public class TeamManagementFragment  extends Fragment {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 binding.swiperefresh.setRefreshing(false);
+                if(response.isSuccess())
                 try {
                     JSONArray jsonArray = new JSONArray(response.body().string());
                     processAllList.clear();

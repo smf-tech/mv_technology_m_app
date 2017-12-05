@@ -3,7 +3,6 @@ package com.mv.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -40,7 +39,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class IndicatorTaskList extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class IndicatorTrainingFeedBackTaskList extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     private ActivityNewTemplateBinding binding;
     private ImageView img_back, img_list, img_logout;
@@ -149,7 +148,7 @@ public class IndicatorTaskList extends AppCompatActivity implements View.OnClick
     }
 
     private void showPopUp() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(IndicatorTaskList.this).create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(IndicatorTrainingFeedBackTaskList.this).create();
 
         // Setting Dialog Title
         alertDialog.setTitle(getString(R.string.app_name));

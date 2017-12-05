@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.mv.Model.Task;
@@ -42,29 +43,27 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.POST;
 
 public class LocationSelectionActity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
-    private RelativeLayout mToolBar;
-    private Button btn_submit;
     private ActivityLoactionSelectionActityBinding binding;
-
-    private int mSelectRole = 0, mSelectState = 1, mSelectDistrict = 1, mSelectTaluka = 0, mSelectCluster = 0, mSelectVillage = 0, mSelectSchoolName = 0;
+    int position;
+    private String locationType;
+    private int  mSelectState = 1, mSelectDistrict = 1, mSelectTaluka = 0, mSelectCluster = 0, mSelectVillage = 0, mSelectSchoolName = 0;
     private List<String> mListDistrict, mListTaluka, mListCluster, mListVillage, mListSchoolName, mStateList;
-
 
     private ArrayAdapter<String> district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, state_adapter, organization_adapter;
     private PreferenceHelper preferenceHelper;
-    private User user;
-    private Uri FinalUri = null;
-    private Uri outputUri = null;
-    private String imageFilePath;
+    private RelativeLayout mToolBar;
+    private Spinner selectedSpinner;
     String msg = "";
     private int locationState;
-    private Boolean isAdd;
+
+
     ArrayList<Task> taskList = new ArrayList<>();
-    private boolean isDistrictSet = false, isRollSet = false;
+
     Activity context;
 
     @Override
@@ -75,6 +74,8 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         binding = DataBindingUtil.setContentView(this, R.layout.activity_loaction_selection_actity);
         binding.setActivity(this);
         if (getIntent().getSerializableExtra(Constants.PROCESS_ID) != null) {
+                position=getIntent().getExtras().getInt(Constants.POSITION);
+                locationType=getIntent().getExtras().getString(Constants.LOCATION);
             taskList = getIntent().getParcelableArrayListExtra(Constants.PROCESS_ID);
         }
 
@@ -84,82 +85,12 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     }
 
 
-    private void showPopUp() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 
-        // Setting Dialog Title
-        alertDialog.setTitle(getString(R.string.app_name));
 
-        // Setting Dialog Message
-        alertDialog.setMessage(getString(R.string.error_no_internet));
-
-        // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.logomulya);
-
-        // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
-        });
-        // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
-        });
-
-        // Showing Alert Message
-        alertDialog.show();
-    }
-
-    private void getDistrict() {
-
-        Utills.showProgressDialog(this, getString(R.string.loding_district), getString(R.string.progress_please_wait));
-
-        ServiceRequest apiService =
-                ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getDistrict(User.getCurrentUser(getApplicationContext()).getState()).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
-                try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    mListDistrict.clear();
-                    mListDistrict.add("Select");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        mListDistrict.add(jsonArray.getString(i));
-                    }
-                    district_adapter.notifyDataSetChanged();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Utills.hideProgressDialog();
-
-            }
-        });
-    }
     private void initViews() {
         setActionbar("Select Location");
         Utills.setupUI(findViewById(R.id.layout_main), this);
         preferenceHelper = new PreferenceHelper(this);
-//        if (Utills.isConnected(this))
-//            getState();
-//        else
-//        {
-//
-//        }
 
         binding.spinnerState.setOnItemSelectedListener(this);
         binding.spinnerDistrict.setOnItemSelectedListener(this);
@@ -224,7 +155,8 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         school_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerSchoolName.setAdapter(school_adapter);
 
-        if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("State")) {
+        if (locationType.equals("State")) {
+            locationState=1;
             binding.spinnerDistrict.setVisibility(View.GONE);
             binding.tvDistrict.setVisibility(View.GONE);
 
@@ -236,10 +168,12 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
             binding.spinnerVillage.setVisibility(View.GONE);
             binding.tvVillage.setVisibility(View.GONE);
+            selectedSpinner=binding.spinnerState;
 
             binding.spinnerSchoolName.setVisibility(View.GONE);
             binding.tvSchool.setVisibility(View.GONE);
-        } else if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("District")) {
+        } else if (locationType.equals("District")) {
+            locationState=2;
             binding.spinnerTaluka.setVisibility(View.GONE);
             binding.tvTaluka.setVisibility(View.GONE);
 
@@ -248,10 +182,12 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
             binding.spinnerVillage.setVisibility(View.GONE);
             binding.tvVillage.setVisibility(View.GONE);
+            selectedSpinner=binding.spinnerDistrict;
 
             binding.spinnerSchoolName.setVisibility(View.GONE);
             binding.tvSchool.setVisibility(View.GONE);
-        } else if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("Taluka")) {
+        } else if (locationType.equals("Taluka")) {
+            locationState=3;
             binding.spinnerCluster.setVisibility(View.GONE);
             binding.tvCluster.setVisibility(View.GONE);
 
@@ -260,36 +196,25 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
             binding.spinnerSchoolName.setVisibility(View.GONE);
             binding.tvSchool.setVisibility(View.GONE);
-        } else if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("Cluster")) {
+            selectedSpinner=binding.spinnerTaluka;
+        } else if (locationType.equals("Cluster")) {
+            locationState=4;
             binding.spinnerVillage.setVisibility(View.GONE);
             binding.tvVillage.setVisibility(View.GONE);
 
             binding.spinnerSchoolName.setVisibility(View.GONE);
             binding.tvSchool.setVisibility(View.GONE);
-        } else if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("Village")) {
+            selectedSpinner=binding.spinnerCluster;
+        } else if (locationType.equals("Village")) {
+            locationState=5;
             binding.spinnerSchoolName.setVisibility(View.GONE);
             binding.tvSchool.setVisibility(View.GONE);
-
+            selectedSpinner=binding.spinnerVillage;
             /*if (task.getTask_Response__c() != null)
                 holder.spinnerResponse.setSelection(myList.indexOf(task.getTask_Response__c().trim()));*/
-        } else if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("School")) {
-    /*        if (taskList.get(0).getTask_Response__c() != null)
-               binding.spinnerState.setSelection(mStateList.indexOf(taskList.get(0).getTask_Response__c().trim()));
-            if (taskList.get(1).getTask_Response__c() != null)
-                mListSchoolName.add(taskList.get(1).getTask_Response__c().trim());
-                binding.spinnerSchoolName.setSelection(mListSchoolName.indexOf(taskList.get(1).getTask_Response__c().trim()));
-            if (taskList.get(2).getTask_Response__c() != null)
-                mListVillage.add(taskList.get(2).getTask_Response__c().trim());
-                binding.spinnerVillage.setSelection(mListVillage.indexOf(taskList.get(2).getTask_Response__c().trim()));
-            if (taskList.get(3).getTask_Response__c() != null)
-                mListCluster.add(taskList.get(3).getTask_Response__c().trim());
-                binding.spinnerCluster.setSelection(mListCluster.indexOf(taskList.get(3).getTask_Response__c().trim()));
-            if (taskList.get(4).getTask_Response__c() != null)
-                mListTaluka.add(taskList.get(4).getTask_Response__c().trim());
-                binding.spinnerTaluka.setSelection(mListTaluka.indexOf(taskList.get(4).getTask_Response__c().trim()));
-            if (taskList.get(5).getTask_Response__c() != null)
-                mListDistrict.add(taskList.get(5).getTask_Response__c().trim());
-                binding.spinnerDistrict.setSelection(mListDistrict.indexOf(taskList.get(5).getTask_Response__c().trim()));*/
+        } else if (locationType.equals("School")) {
+            locationState=6;
+            selectedSpinner=binding.spinnerSchoolName;
         }
 
 
@@ -370,43 +295,9 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     }
 
     private void sendLocation() {
-        if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("State")) {
-            taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
-            locationState = 1;
-        } else if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("District")) {
-            locationState = 2;
-            taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
-            taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
-        } else if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("Taluka")) {
-            locationState = 3;
-            taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
-            taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
-            taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem().toString());
-        } else if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("Cluster")) {
-            locationState = 4;
-            taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
-            taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
-            taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem().toString());
-            taskList.get(3).setTask_Response__c(binding.spinnerCluster.getSelectedItem().toString());
 
-        } else if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("Village")) {
-            locationState = 5;
-            taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
-            taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
-            taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem().toString());
-            taskList.get(3).setTask_Response__c(binding.spinnerCluster.getSelectedItem().toString());
-            taskList.get(4).setTask_Response__c(binding.spinnerVillage.getSelectedItem().toString());
-
-        } else if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("School")) {
-            locationState = 6;
-            taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
-            taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
-            taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem().toString());
-            taskList.get(3).setTask_Response__c(binding.spinnerCluster.getSelectedItem().toString());
-            taskList.get(4).setTask_Response__c(binding.spinnerVillage.getSelectedItem().toString());
-            taskList.get(5).setTask_Response__c(binding.spinnerSchoolName.getSelectedItem().toString());
-        }
         msg = "";
+        taskList.get(position).setTask_Response__c(selectedSpinner.getSelectedItem().toString());
         for (int i = 0; i < locationState; i++) {
             if (taskList.get(i).getTask_Response__c().equals("Select")) {
                 msg = "Please Select " + taskList.get(i).getTask_Text__c();
@@ -416,10 +307,11 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         if (msg.isEmpty()) {
             preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
             Intent openClass = new Intent(context, ProcessDeatailActivity.class);
-            openClass.putExtra(Constants.PROCESS_ID, taskList);
+           // openClass.putExtra(Constants.PROCESS_ID, taskList);
             openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskList);
             //  openClass.putExtra("stock_list", resultList.get(getAdapterPosition()).get(0));
-            startActivity(openClass);
+            setResult(RESULT_OK,openClass);
+          //  startActivity(openClass);
             finish();
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
         } else {
@@ -430,26 +322,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     }
 
 
-    private boolean isValidate() {
-        String msg = "";
-        if (mSelectState == 0) {
-            msg = "Please select State";
-        } else if (mSelectDistrict == 0) {
-            msg = "Please select District";
-        } else if ((mSelectTaluka == 0)) {
-            msg = "Please select Taluka";
-        } else if ((mSelectCluster == 0)) {
-            msg = "Please select Cluster";
-        } else if (mSelectVillage == 0) {
-            msg = "Please select Village";
-        } else if (mSelectSchoolName == 0) {
-            msg = "Please select School";
-        }
-        if (TextUtils.isEmpty(msg))
-            return true;
-        Utills.showToast(msg, this);
-        return false;
-    }
+
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -765,5 +638,37 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
     }
 
+    private void getDistrict() {
 
+        Utills.showProgressDialog(this, getString(R.string.loding_district), getString(R.string.progress_please_wait));
+
+        ServiceRequest apiService =
+                ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getDistrict(User.getCurrentUser(getApplicationContext()).getState()).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    JSONArray jsonArray = new JSONArray(response.body().string());
+                    mListDistrict.clear();
+                    mListDistrict.add("Select");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        mListDistrict.add(jsonArray.getString(i));
+                    }
+                    district_adapter.notifyDataSetChanged();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
+    }
 }

@@ -6,6 +6,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -25,11 +26,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.mv.Activity.LocationSelectionActity;
 import com.mv.Activity.ProcessDeatailActivity;
 import com.mv.Model.Task;
 import com.mv.R;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
+import com.mv.Utils.Utills;
 import com.mv.Widgets.MultiSelectionSpinner;
 
 import java.util.ArrayList;
@@ -43,7 +46,7 @@ import java.util.List;
 
 public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdapter.MyViewHolder> {
 
-    private List<Task> taskList;
+    private ArrayList<Task> taskList;
     private Activity mContext;
     PreferenceHelper preferenceHelper;
     ArrayList<String> myList;
@@ -51,6 +54,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
     boolean[] mSelection = null;
     final String[] items = null;
     String value;
+    public static String state,village,taluka;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -111,6 +115,17 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
                     }
 
+                }
+            });
+
+            llLocation.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(mContext,LocationSelectionActity.class);
+                    intent.putExtra(Constants.LOCATION,taskList.get(getAdapterPosition()).getTask_Text__c());
+                    intent.putExtra(Constants.POSITION,getAdapterPosition());
+                    intent.putParcelableArrayListExtra(Constants.PROCESS_ID,taskList );
+                    mContext.startActivityForResult(intent, 1);
                 }
             });
             //text and multiline
@@ -176,7 +191,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
     }
 
 
-    public ProcessDetailAdapter(Activity context, List<Task> taskList) {
+    public ProcessDetailAdapter(Activity context, ArrayList<Task> taskList) {
         this.taskList = taskList;
         this.mContext = context;
         preferenceHelper = new PreferenceHelper(context);

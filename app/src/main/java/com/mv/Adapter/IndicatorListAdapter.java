@@ -3,7 +3,6 @@ package com.mv.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,13 +10,12 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.mv.Activity.ActivityWebView;
-import com.mv.Activity.IndicatorTaskList;
+import com.mv.Activity.IndicatorTask;
+import com.mv.Activity.IndicatorTrainingFeedBackTaskList;
 import com.mv.Model.DashaBoardListModel;
 import com.mv.R;
 import com.mv.Utils.Constants;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -68,17 +66,17 @@ public class IndicatorListAdapter extends RecyclerView.Adapter<IndicatorListAdap
             layoutMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   /* Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("file:///" + Environment.getExternalStorageDirectory().getPath() + "/MV_e-learning_Mar/Modules/1/story_html5.html"));
-                    mContext.startActivity(browserIntent);*/
-                    /*String url = "file:///" + Environment.getExternalStorageDirectory().getPath() + "/MV_e-learning_Mar/Modules/" + (getAdapterPosition() + 1) + "/story_html5.html";
 
-                    Intent intent = new Intent(mContext, ActivityWebView.class);
-                    intent.putExtra(Constants.URL, url);
-                    intent.putExtra(Constants.TITLE, name.get(getAdapterPosition()));
-                    mContext.startActivity(intent);*/
                     if (getAdapterPosition() != 0) {
-                        Intent intent = new Intent(mContext, IndicatorTaskList.class);
-                        intent.putExtra(Constants.TITLE, processAllLis.get(getAdapterPosition()));
+                        Intent intent = new Intent(mContext, IndicatorTask.class);
+                        intent.putParcelableArrayListExtra(Constants.PROCESS_ID, processAllLis.get(getAdapterPosition()).getTasksList());
+                        intent.putExtra(Constants.TITLE, processAllLis.get(getAdapterPosition()).getName());
+                        mContext.startActivity(intent);
+                    }
+                    else
+                    {
+                        Intent intent = new Intent(mContext, IndicatorTrainingFeedBackTaskList.class);
+                        intent.putExtra(Constants.TITLE, processAllLis.get(getAdapterPosition()).getName());
                         mContext.startActivity(intent);
                     }
                 }

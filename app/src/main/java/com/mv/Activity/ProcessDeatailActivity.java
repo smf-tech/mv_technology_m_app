@@ -1,7 +1,9 @@
 package com.mv.Activity;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
@@ -257,6 +259,19 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(resultCode == RESULT_OK){
+           // tvResult.setText(data.getIntExtra("result",-1)+"");
+            taskList=data.getParcelableArrayListExtra(Constants.PROCESS_ID);
+            adapter = new ProcessDetailAdapter(this, taskList);
+            rvProcessDetail.setAdapter(adapter);
+
+        }
+
     }
 
 }
