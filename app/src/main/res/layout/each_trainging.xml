@@ -14,7 +14,7 @@
         android:id="@+id/layoutMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="5dp">
+        android:padding="10dp">
 
         <TextView
             android:id="@+id/txtCount"
@@ -27,14 +27,24 @@
 
         <TextView
             android:id="@+id/txtName"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
+            android:layout_toLeftOf="@+id/imgDownload"
             android:layout_toRightOf="@+id/txtCount"
             android:gravity="left"
             android:text=""
             android:textColor="@color/dark_grey"
             android:textSize="@dimen/medium_text" />
+
+        <ImageView
+            android:id="@+id/imgDownload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/download" />
 
     </RelativeLayout>
 

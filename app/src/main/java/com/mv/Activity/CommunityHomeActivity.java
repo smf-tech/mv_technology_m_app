@@ -95,6 +95,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
             if (Utills.isConnected(this))
                 getAllChats(true, isDialogShow);
         }
+
     }
 
     private void getAllChats(boolean isTimePresent, boolean isDialogShow) {

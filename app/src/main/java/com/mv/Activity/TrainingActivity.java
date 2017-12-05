@@ -36,7 +36,7 @@ public class TrainingActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void setRecyclerView() {
-        adapter = new TrainingAdapter(this);
+        // adapter = new TrainingAdapter(this);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));

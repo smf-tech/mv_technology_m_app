@@ -11,13 +11,22 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mv.Activity.CommunityHomeActivity;
 import com.mv.Activity.SplashScreenActivity;
+import com.mv.Model.Community;
 import com.mv.R;
+import com.mv.Retrofit.AppDatabase;
+import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
+
+import java.util.List;
 
 /**
  * Created by Belal on 5/27/2016.
@@ -27,6 +36,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
     private PreferenceHelper preferenceHelper;
+    private String mId = "";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -36,6 +46,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
             try {
                 preferenceHelper = new PreferenceHelper(getApplicationContext());
+                mId = remoteMessage.getData().get("Id");
                 sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
             } catch (Exception e) {
                 e.printStackTrace();
@@ -53,16 +64,45 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     //This method is only generating push notification
     //It is same as we did in earlier posts
     private void sendNotification(String messageTitle, String messageBody) {
-        Intent intent = new Intent(this, SplashScreenActivity.class);
+        Intent intent = null;
+        if (mId == null) {
+            intent = new Intent(this, SplashScreenActivity.class);
+        } else if (TextUtils.isEmpty(mId)) {
+            intent = new Intent(this, SplashScreenActivity.class);
+        } else {
+            preferenceHelper.insertString(PreferenceHelper.COMMUNITYID, mId);
+            List<Community> list = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities();
+            int position = -1;
+            Community community = new Community();
+            for (int i = 0; i < list.size(); i++) {
+                if (list.get(i).getId().equalsIgnoreCase(mId)) {
+                    position = i;
+                    community = list.get(i);
+                    break;
+                }
+            }
+            if (position > 0)
+                list.remove(position);
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            String json = gson.toJson(list);
+            intent = new Intent(getApplicationContext(), CommunityHomeActivity.class);
+            intent.putExtra(Constants.TITLE, community.getName());
+            intent.putExtra(Constants.LIST, json);
+        }
+
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
         Uri defaultSoundUri = null;
-        if (preferenceHelper != null) {
+        if (preferenceHelper != null)
+
+        {
             if (preferenceHelper.getBoolean(PreferenceHelper.NOTIFICATION)) {
                 defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             }
-        } else {
+        } else
+
+        {
             defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         }
 

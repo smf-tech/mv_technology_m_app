@@ -14,6 +14,7 @@
     <string name="error_offline_share_post">You cannot share offline post</string>
     <string name="error_offline_like_post">You cannot like offline post</string>
     <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
     <!--Home Acitivty-->
     <string name="intro_about_header">About</string>
     <string name="intro_about_description">Mulyavardhan (MV) is a value education programme to help children imbibe democratic values, attitudes and skills in an enabling school climate. The programme is running in select government primary schools across 34 districts of Maharashtra (MV-GoM), government primary schools in two tehsils of Beed district of Maharashtra (MV-Beed), select government primary schools in the state of Goa (MV-GoG), and schools run in Goa by Vidya Bharti, a private school body (MV-VB).  Visit www.mulyavardhan.com for more info</string>
@@ -107,7 +108,10 @@
 
     <string name="issue_template">Issue Template</string>
     <string name="issue_submit">Issue submitted successfully...</string>
+    <string name="broadcast_submit">Broadcast submitted successfully...</string>
     <string name="Process_Detail">Process Detail</string>
+    <string name="fileNotPresent">File is not present. Please Press Download Button</string>
+
 
     <string name="Task_List">Task List</string>
     <string name="Loading_Process">Loading Process</string>

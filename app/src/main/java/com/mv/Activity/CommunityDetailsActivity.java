@@ -37,8 +37,6 @@ import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityCommunityDetailsBinding;
-import com.mv.databinding.ActivityCommunityHomeBinding;
-import com.mv.databinding.ActivityLoginBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -377,13 +375,13 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         binding.txtCommentCnt.setText(mContent.getCommentCount() + " "+getString(R.string.comments));
         binding.Title.setText(getString(R.string.title)+" : " + mContent.getTitle());
 
-        if (mContent.getSynchStatus() != null
+       /* if (mContent.getSynchStatus() != null
                 && mContent.getSynchStatus().equalsIgnoreCase(Constants.STATUS_LOCAL))
             binding.type.setText(getString(R.string.template_type)+" : " + mContent.getTemplateName());
         else
-            binding.type.setText(getString(R.string.template_type)+" : " + mContent.getTemplate());
+            binding.type.setText(getString(R.string.template_type)+" : " + mContent.getTemplate());*/
 
-
+        binding.type.setText("" + mContent.getUserName());
         binding.Description.setText(getString(R.string.description)+" : " + mContent.getDescription());
         binding.postDate.setText(mContent.getTime());
 

@@ -28,10 +28,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mv.Adapter.PagerAdapter;
 import com.mv.Fragment.CommunityHomeFragment;
 import com.mv.Fragment.GroupsFragment;
 import com.mv.Fragment.IndicatorListFragmet;

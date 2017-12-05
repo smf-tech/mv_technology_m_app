@@ -72,6 +72,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_UKRAINIAN = "mr";
     public static final String LANGUAGE = "language";
+    final Handler handler = new Handler();
+    Timer swipeTimer = new Timer();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -407,7 +410,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         indicator.setViewPager(mPager);
 
         // Auto start of viewpager
-        final Handler handler = new Handler();
+
         final Runnable Update = new Runnable() {
             public void run() {
                 if (currentPage == XMEN.length) {
@@ -416,7 +419,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 mPager.setCurrentItem(currentPage++, true);
             }
         };
-        Timer swipeTimer = new Timer();
+
         swipeTimer.schedule(new TimerTask() {
             @Override
             public void run() {
@@ -533,4 +536,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return t;
         }
     };
+
+
 }

@@ -284,6 +284,7 @@ public class Utills {
         alertDialog.show();
     }
 
+
     /**
      * method to check if internet connectivity is fast or slow
      *
