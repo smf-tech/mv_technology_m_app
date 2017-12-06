@@ -44,6 +44,7 @@ import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Service.LocationService;
 import com.mv.Utils.Constants;
+import com.mv.Utils.ForceUpdateChecker;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -60,7 +61,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener, ForceUpdateChecker.OnUpdateNeededListener {
 
 
     private ImageView img_back, img_list, img_logout, img_lang;
@@ -73,6 +74,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public static final String LANGUAGE_UKRAINIAN = "mr";
     public static final String LANGUAGE = "language";
     ViewPagerAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,13 +82,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
         binding.setActivity(this);
         preferenceHelper = new PreferenceHelper(this);
+        ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             if (Utills.isConnected(this))
                 getUserData();
             else
                 initViews();
-        }
-        else
+        } else
             initViews();
 
     }
@@ -128,7 +130,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         // binding.process.getLayoutParams().width = textWidth;
 
 
-        TabLayout   tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         /*tabLayout.removeAllTabs();
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.broadcast)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.community)));
@@ -138,12 +140,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC"))
             tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.indicator)));
 */
-  //      tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        //      tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
         final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         tabLayout.setupWithViewPager(viewPager);
-            setupViewPager(viewPager);
-
+        setupViewPager(viewPager);
 
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
@@ -184,53 +185,77 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        List<String> allTab=new ArrayList<>();
+        List<String> allTab = new ArrayList<>();
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
-            allTab= Arrays.asList(getColumnIdex( User.getCurrentUser(getApplicationContext()).getTabNameNoteApproved().split(";")));
+            allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameNoteApproved().split(";")));
             ;
-            if(allTab.contains("Broadcast"))
+            if (allTab.contains("Broadcast"))
                 adapter.addFrag(new CommunityHomeFragment(), getString(R.string.broadcast));
-            if(allTab.contains("My Community"))
+            if (allTab.contains("My Community"))
                 adapter.addFrag(new GroupsFragment(), getString(R.string.community));
-            if(allTab.contains("Programme Management"))
+            if (allTab.contains("Programme Management"))
                 adapter.addFrag(new ProgrammeManagmentFragment(), getString(R.string.programme_management));
-            if(allTab.contains("Training Content"))
+            if (allTab.contains("Training Content"))
                 adapter.addFrag(new TrainingFragment(), getString(R.string.training_content));
-            if(allTab.contains("Team Management"))
+            if (allTab.contains("Team Management"))
                 adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
-            if(allTab.contains("My Reports"))
+            if (allTab.contains("My Reports"))
                 adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
-            if(allTab.contains("Training Calendar"))
-            adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
+            adapter.addFrag(new TrainingCalender(), getString(R.string.indicator));
 
             viewPager.setAdapter(adapter);
 
             showApprovedDilaog();
         } else {
 
-            allTab= Arrays.asList(getColumnIdex( User.getCurrentUser(getApplicationContext()).getTabNameApproved().split(";")));
-           ;
-            if(allTab.contains("Broadcast"))
-            adapter.addFrag(new CommunityHomeFragment(), getString(R.string.broadcast));
-            if(allTab.contains("My Community"))
-            adapter.addFrag(new GroupsFragment(), getString(R.string.community));
-            if(allTab.contains("Programme Management"))
-            adapter.addFrag(new ProgrammeManagmentFragment(), getString(R.string.programme_management));
-            if(allTab.contains("Training Content"))
-            adapter.addFrag(new TrainingFragment(), getString(R.string.training_content));
-            if(allTab.contains("Team Management"))
-            adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
-            if(allTab.contains("My Reports"))
-            adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
-            if(allTab.contains("Training Calendar"))
-            adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
-
+            allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameApproved().split(";")));
+            ;
+            if (allTab.contains("Broadcast"))
+                adapter.addFrag(new CommunityHomeFragment(), getString(R.string.broadcast));
+            if (allTab.contains("My Community"))
+                adapter.addFrag(new GroupsFragment(), getString(R.string.community));
+            if (allTab.contains("Programme Management"))
+                adapter.addFrag(new ProgrammeManagmentFragment(), getString(R.string.programme_management));
+            if (allTab.contains("Training Content"))
+                adapter.addFrag(new TrainingFragment(), getString(R.string.training_content));
+            if (allTab.contains("Team Management"))
+                adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
+            if (allTab.contains("My Reports"))
+                adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
+            adapter.addFrag(new TrainingCalender(), getString(R.string.indicator));
             viewPager.setAdapter(adapter);
         }
 
 
-
     }
+
+    @Override
+    public void onUpdateNeeded(final String updateUrl) {
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("New version available")
+                .setMessage("Please, update app to new version to continue reposting.")
+                .setPositiveButton("Update",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                redirectStore(updateUrl);
+                            }
+                        }).setNegativeButton("No, thanks",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                finish();
+                            }
+                        }).create();
+        dialog.show();
+    }
+
+    private void redirectStore(String updateUrl) {
+        final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(updateUrl));
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
@@ -421,11 +446,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.ISROLECHANGE && resultCode == RESULT_OK) {
 
-        //    if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
-                if (Utills.isConnected(this))
-                    getUserData();
-                else
-                    initViews();
+            //    if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
+            if (Utills.isConnected(this))
+                getUserData();
+            else
+                initViews();
     /*        }
             else
                 initViews();*/
@@ -657,6 +682,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         }, 2000);
     }
+
     public static String[] getColumnIdex(String[] value) {
 
         for (int i = 0; i < value.length; i++) {
@@ -673,14 +699,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getUserData?userId="+User.getCurrentUser(getApplicationContext()).getId();
+                + "/services/apexrest/getUserData?userId=" + User.getCurrentUser(getApplicationContext()).getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 try {
-                    String data=response.body().string();
+                    String data = response.body().string();
                     preferenceHelper.insertString(PreferenceHelper.UserData, data);
                     User.clearUser();
                     initViews();

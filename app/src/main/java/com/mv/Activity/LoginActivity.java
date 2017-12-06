@@ -83,7 +83,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         binding.setActivity(this);
         initViews();
-    }
+     /*   DownloadFile downloadFile = new DownloadFile(this);
+        downloadFile.startDownload("http://mobileyougokidinformationdesk.com//denver123//videos//test0.zip","DownLoad1.zip");
+*/    }
 
     public void onLoginClick() {
         // binding.tvUser.setText("(Enter the OTP below in case if we fail to detect the SMS automatically)");
@@ -353,7 +355,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         };
         this.registerReceiver(mIntentReceiver, intentFilter);
     }
-
 
     @Override
     protected void onDestroy() {
