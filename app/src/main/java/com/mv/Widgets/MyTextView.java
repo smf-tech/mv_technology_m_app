@@ -10,8 +10,7 @@ import android.widget.TextView;
 import com.mv.R;
 
 
-public class
-MyTextView extends TextView {
+public class MyTextView extends TextView {
 
     public MyTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
