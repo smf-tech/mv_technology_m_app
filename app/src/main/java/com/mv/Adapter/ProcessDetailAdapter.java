@@ -301,6 +301,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     holder.locHeader.setText("* " + task.getTask_Text__c());
                 else
                     holder.locHeader.setText(task.getTask_Text__c());
+                if(task.getTask_Response__c().equals(""))
+                    holder.locText.setText("Select");
+                else
                 holder.locText.setText(task.getTask_Response__c());
                 break;
             case Constants.DATE:

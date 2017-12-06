@@ -122,6 +122,7 @@
             android:name=".Activity.ProcessListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+        <service android:name=".Service.DownloadService" />
         <activity
             android:name=".Activity.ProcessDeatailActivity"
             android:screenOrientation="portrait"
@@ -170,9 +171,18 @@
             android:name="io.fabric.ApiKey"
             android:value="c734e0db3c7d600be0137fb7588a9c13b453227b" />
 
-        <activity android:name=".Activity.IndicatorTaskList" />
-        <activity android:name=".Activity.PiachartActivity" />
-        <activity android:name=".Activity.UserApproveDetail"></activity>
+        <activity android:name=".Activity.IndicatorTrainingFeedBackTaskList"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity android:name=".Activity.PiachartActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity android:name=".Activity.UserApproveDetail"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity android:name=".Activity.IndicatorTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
     </application>
 
 </manifest>

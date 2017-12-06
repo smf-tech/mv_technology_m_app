@@ -1,4 +1,4 @@
-package com.mv.Utils;
+package com.mv.Service;
 
 /**
  * Created by Rohit Gujar on 05-12-2017.
@@ -18,6 +18,7 @@ import com.mv.Fragment.TrainingFragment;
 import com.mv.Model.Download;
 import com.mv.R;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Utils.UnzipUtil;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;

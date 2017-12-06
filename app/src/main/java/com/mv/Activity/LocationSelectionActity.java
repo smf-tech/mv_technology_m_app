@@ -60,6 +60,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     private Spinner selectedSpinner;
     String msg = "";
     private int locationState;
+    public static String selectedState,selectedDisrict,selectedTaluka,selectedCluster,selectedVillage,selectedSchool;
 
 
     ArrayList<Task> taskList = new ArrayList<>();
@@ -383,6 +384,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             case R.id.spinner_district:
                 mSelectDistrict = i;
                 if (mSelectDistrict != 0) {
+                    selectedDisrict=mListDistrict.get(mSelectDistrict);
                     if (Utills.isConnected(this))
                     getTaluka();
                     else
@@ -424,9 +426,11 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             case R.id.spinner_taluka:
                 mSelectTaluka = i;
                 if (mSelectTaluka != 0) {
+                    selectedTaluka= mListTaluka.get(mSelectTaluka);
                     if (Utills.isConnected(this))
                         getCluster();
                     else {
+
                         mListCluster.clear();
                         mListCluster.add("Select");
                         mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(User.getCurrentUser(context).getState(),  mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
@@ -458,7 +462,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             case R.id.spinner_cluster:
                 mSelectCluster = i;
                 if (mSelectCluster != 0) {
-
+                    selectedCluster=mListCluster.get(mSelectCluster);
                     if (Utills.isConnected(this))
                         getVillage();
                     else {
@@ -491,6 +495,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             case R.id.spinner_village:
                 mSelectVillage = i;
                 if (mSelectVillage != 0) {
+                    selectedVillage= mListVillage.get(mSelectVillage);
                     if (Utills.isConnected(this))
                         getSchool();
                     else {
@@ -512,7 +517,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                 break;
             case R.id.spinner_school_name:
                 mSelectSchoolName = i;
-
+                selectedSchool= mListSchoolName.get(mSelectSchoolName);
                 break;
         }
     }

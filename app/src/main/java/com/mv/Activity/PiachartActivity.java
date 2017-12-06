@@ -117,7 +117,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         mChart.setVisibility(View.VISIBLE);
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
-        mChart.setExtraOffsets(5, 10, 5, 5);
+      mChart.setExtraOffsets(5, 10, 5, 5);
 
         mChart.setDragDecelerationFrictionCoef(0.95f);
 
@@ -151,12 +151,14 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
 
         Legend l = mChart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
+         l.setWordWrapEnabled(true);
+        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        l.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         l.setDrawInside(false);
         l.setXEntrySpace(7f);
         l.setYEntrySpace(0f);
+
         l.setYOffset(0f);
 
         // entry label styling
@@ -329,7 +331,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
                 jsonObject.put("state", "Maharashtra");
                 jsonObject.put("district", User.getCurrentUser(getApplicationContext()).getDistrict());
-                jsonObject.put("taluka", "Select");
+                jsonObject.put("taluka", User.getCurrentUser(getApplicationContext()).getTaluka());
                 jsonObject.put("tskId", task.getId());
 
 

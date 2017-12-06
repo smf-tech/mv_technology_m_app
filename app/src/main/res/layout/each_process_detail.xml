@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
     <LinearLayout
         android:id="@+id/ll_edittext_layout"
         android:layout_width="match_parent"
@@ -11,8 +13,8 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/grey_box"
         android:gravity="center_vertical"
-        android:visibility="gone"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_edittext_question"
@@ -29,9 +31,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/txt_view1"
+            android:layout_marginBottom="@dimen/dimen_10dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:layout_marginBottom="@dimen/dimen_10dp"
             android:layout_marginTop="10dp"
 
             android:background="@drawable/lighter_grey_box"
@@ -42,8 +44,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:maxLength="255"
                 android:inputType="textPersonName"
+                android:maxLength="255"
                 android:singleLine="true"
                 android:textColor="@color/black"
 
@@ -60,11 +62,11 @@
         android:layout_below="@+id/txt_view1"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:visibility="gone"
         android:layout_marginTop="10dp"
-
         android:background="@drawable/lighter_grey_box"
-        android:padding="10dp">
+
+        android:padding="10dp"
+        android:visibility="gone">
 
         <com.mv.Widgets.MyEditTextView
             android:id="@+id/et_process_detail_date"
@@ -77,6 +79,7 @@
 
             android:textSize="@dimen/medium_text" />
     </android.support.design.widget.TextInputLayout>
+
     <LinearLayout
         android:id="@+id/ll_spinner_layout"
         android:layout_width="match_parent"
@@ -86,8 +89,8 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/grey_box"
         android:gravity="center_vertical"
-        android:visibility="gone"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_pd_question"
@@ -115,47 +118,48 @@
 
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/ll_headerr_lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:elevation="2dp"
-        android:visibility="gone"
-
         android:layout_marginTop="10dp"
         android:background="@drawable/grey_bg_sequre"
+
+        android:elevation="2dp"
         android:gravity="center_vertical"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="@dimen/dimen_10dp"
             android:layout_marginBottom="@dimen/dimen_5dp"
-            android:textSize="17sp"
             android:layout_marginLeft="5dp"
-            android:textColor="@color/black"
             android:layout_marginTop="@dimen/dimen_5dp"
-            android:text="@string/question_5" />
-
+            android:padding="@dimen/dimen_10dp"
+            android:text="@string/question_5"
+            android:textColor="@color/black"
+            android:textSize="17sp" />
 
 
     </LinearLayout>
+
     <LinearLayout
-            android:id="@+id/ll_location_layout"
+        android:id="@+id/ll_location_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:visibility="gone"
         android:layout_marginTop="10dp"
         android:background="@drawable/grey_box"
         android:gravity="center_vertical"
+        android:orientation="vertical"
 
-        android:orientation="vertical">
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_loc_hed"
@@ -178,40 +182,43 @@
             android:layout_marginTop="@dimen/dimen_10dp"
             android:background="@drawable/grey_box"
             android:minHeight="40dp"
+            android:text="Select"
             android:padding="@dimen/dimen_5dp"
             android:prompt="@string/question_5"
             android:spinnerMode="dialog" />
 
 
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/check_lay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:visibility="gone"
         android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
         android:background="@drawable/grey_box"
         android:gravity="center_vertical"
-
         android:orientation="horizontal"
+
+        android:visibility="gone"
         android:weightSum="8">
+
         <TextView
             android:id="@+id/check_header"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_5dp"
-            android:textSize="@dimen/medium_text"
+            android:layout_weight="8"
             android:textColor="@color/black"
-            android:layout_weight="8"/>
+            android:textSize="@dimen/medium_text" />
 
         <CheckBox
             android:id="@+id/detail_chk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/dimen_5dp"/>
+            android:layout_margin="@dimen/dimen_5dp" />
 
     </LinearLayout>
 </LinearLayout>

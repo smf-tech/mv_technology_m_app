@@ -200,7 +200,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
             if(allTab.contains("My Reports"))
                 adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
-            adapter.addFrag(new TrainingCalender(), getString(R.string.indicator));
+            if(allTab.contains("Training Calendar"))
+            adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
 
             viewPager.setAdapter(adapter);
 
@@ -221,7 +222,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
             if(allTab.contains("My Reports"))
             adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
-            adapter.addFrag(new TrainingCalender(), getString(R.string.indicator));
+            if(allTab.contains("Training Calendar"))
+            adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
+
             viewPager.setAdapter(adapter);
         }
 
