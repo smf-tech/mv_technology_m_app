@@ -32,13 +32,11 @@ import com.mv.Model.Task;
 import com.mv.R;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
-import com.mv.Utils.Utills;
-import com.mv.Widgets.MultiSelectionSpinner;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
+
 
 /**
  * Created by nanostuffs on 26-09-2017.
@@ -63,7 +61,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         EditText questionResponse, date;
         TextView question, header, locHeader, locText, checkText,editHeader;
         Spinner spinnerResponse;
-        MultiSelectionSpinner multiSelect;
+
         CheckBox checkBox;
 
         public MyViewHolder(View view) {
@@ -91,8 +89,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             date.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.DATE))
+                    if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.DATE)||taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.EVENT_DATE))
                         showDateDialog(mContext, getAdapterPosition());
                     else if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.MULTI_SELECT)) {
                         myList = new ArrayList<String>(Arrays.asList(getColumnIdex((taskList.get(getAdapterPosition()).getPicklist_Value__c()).split(","))));
@@ -375,6 +372,66 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.date.setFocusable(false);
                 holder.date.setClickable(true);
 
+                break;
+
+            case Constants.EVENT_MOBILE:
+                holder.llEdittext.setVisibility(View.VISIBLE);
+                holder.llLayout.setVisibility(View.GONE);
+                holder.llHeaderLay.setVisibility(View.GONE);
+                holder.llLocation.setVisibility(View.GONE);
+                holder.llCheck.setVisibility(View.GONE);
+                holder.questionResponse.setSingleLine(true);
+                holder.dateInpute.setVisibility(View.GONE);
+                // holder.questionResponse.setHint(task.getTask_Text__c());
+                if (task.getIs_Response_Mnadetory__c())
+                    holder.editHeader.setText("* " + task.getTask_Text__c());
+                else
+                    holder.editHeader.setText(task.getTask_Text__c());
+                if (!preferenceHelper.getBoolean(Constants.NEW_PROCESS))
+                    holder.questionResponse.setText(task.getTask_Response__c());
+                if (task.getValidation().equals("Alphabets")) {
+                    //  holder.questionResponse.setInputType();
+                    holder.questionResponse.setInputType(InputType.TYPE_CLASS_TEXT);
+                } else if (task.getValidation().equals("Number")) {
+                    holder.questionResponse.setInputType(InputType.TYPE_CLASS_NUMBER);
+                }
+                break;
+            case Constants.EVENT_DESCRIPTION:
+                holder.llEdittext.setVisibility(View.VISIBLE);
+                holder.llHeaderLay.setVisibility(View.GONE);
+                holder.llLocation.setVisibility(View.GONE);
+                holder.llLayout.setVisibility(View.GONE);
+                holder.dateInpute.setVisibility(View.GONE);
+                holder.llCheck.setVisibility(View.GONE);
+
+                // holder.questionResponse.setHint(task.getTask_Text__c());
+                if (task.getIs_Response_Mnadetory__c())
+                    holder.editHeader.setText("*" + task.getTask_Text__c());
+                else
+                    holder.editHeader.setText(task.getTask_Text__c());
+                holder.questionResponse.setSingleLine(false);
+                holder.questionResponse.setMinLines(3);
+                holder.questionResponse.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                holder.questionResponse.setGravity(Gravity.LEFT | Gravity.TOP);
+                //          if (!preferenceHelper.getBoolean(Constants.NEW_PROCESS))
+                holder.questionResponse.setText(task.getTask_Response__c());
+                break;
+            case Constants.EVENT_DATE:
+                holder.llEdittext.setVisibility(View.GONE);
+                holder.llLayout.setVisibility(View.GONE);
+                holder.llHeaderLay.setVisibility(View.GONE);
+                holder.llLocation.setVisibility(View.GONE);
+                holder.llCheck.setVisibility(View.GONE);
+                holder.dateInpute.setVisibility(View.VISIBLE);
+                // holder.questionResponse.setHint(task.getTask_Text__c());
+                if (task.getIs_Response_Mnadetory__c())
+                    holder.dateInpute.setHint("*" + task.getTask_Text__c());
+                else
+                    holder.dateInpute.setHint(task.getTask_Text__c());
+                holder.date.setText(task.getTask_Response__c());
+                holder.date.setTag(position);
+                holder.date.setFocusable(false);
+                holder.date.setClickable(true);
                 break;
             default:
                 holder.llHeaderLay.setVisibility(View.GONE);

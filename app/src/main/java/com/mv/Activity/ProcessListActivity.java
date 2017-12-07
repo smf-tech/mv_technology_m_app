@@ -76,6 +76,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
     private void initViews() {
+
+
         preferenceHelper = new PreferenceHelper(this);
         //storing process Id to preference to use later
         preferenceHelper.insertString(Constants.PROCESS_ID, proceesId);
@@ -92,6 +94,12 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     protected void onResume() {
         super.onResume();
         resultList.clear();
+        LocationSelectionActity.selectedState="";
+        LocationSelectionActity.selectedDisrict="";
+        LocationSelectionActity.selectedTaluka="";
+        LocationSelectionActity.selectedCluster="";
+        LocationSelectionActity.selectedVillage="";
+        LocationSelectionActity.selectedSchool="";
         getAllProcessData();
 
     }

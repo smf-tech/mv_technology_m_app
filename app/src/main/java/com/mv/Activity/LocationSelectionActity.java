@@ -51,7 +51,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     private ActivityLoactionSelectionActityBinding binding;
     int position;
     private String locationType;
-    private int  mSelectState = 1, mSelectDistrict = 1, mSelectTaluka = 0, mSelectCluster = 0, mSelectVillage = 0, mSelectSchoolName = 0;
+    private  int mSelectState = 1, mSelectDistrict = 1, mSelectTaluka = 0, mSelectCluster = 0, mSelectVillage = 0, mSelectSchoolName = 0;
     private List<String> mListDistrict, mListTaluka, mListCluster, mListVillage, mListSchoolName, mStateList;
 
     private ArrayAdapter<String> district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, state_adapter, organization_adapter;
@@ -60,7 +60,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     private Spinner selectedSpinner;
     String msg = "";
     private int locationState;
-    public static String selectedState,selectedDisrict,selectedTaluka,selectedCluster,selectedVillage,selectedSchool;
+    public static String selectedState="", selectedDisrict="", selectedTaluka="", selectedCluster="", selectedVillage="", selectedSchool="";
 
 
     ArrayList<Task> taskList = new ArrayList<>();
@@ -75,8 +75,8 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         binding = DataBindingUtil.setContentView(this, R.layout.activity_loaction_selection_actity);
         binding.setActivity(this);
         if (getIntent().getSerializableExtra(Constants.PROCESS_ID) != null) {
-                position=getIntent().getExtras().getInt(Constants.POSITION);
-                locationType=getIntent().getExtras().getString(Constants.LOCATION);
+            position = getIntent().getExtras().getInt(Constants.POSITION);
+            locationType = getIntent().getExtras().getString(Constants.LOCATION);
             taskList = getIntent().getParcelableArrayListExtra(Constants.PROCESS_ID);
         }
 
@@ -84,8 +84,6 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
 
     }
-
-
 
 
     private void initViews() {
@@ -101,63 +99,43 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         binding.spinnerSchoolName.setOnItemSelectedListener(this);
         binding.btnSubmit.setOnClickListener(this);
 
-
-        mListDistrict = new ArrayList<String>();
-        mListTaluka = new ArrayList<String>();
-        mListCluster = new ArrayList<String>();
-        mListVillage = new ArrayList<String>();
-        mListSchoolName = new ArrayList<String>();
-
         mStateList = new ArrayList<String>();
-        mListDistrict.add(User.getCurrentUser(context).getDistrict());
+        mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
+        mListDistrict = new ArrayList<String>();
+        mListDistrict.add("Select");
+
+        mListTaluka = new ArrayList<String>();
         mListTaluka.add("Select");
+        mListCluster = new ArrayList<String>();
         mListCluster.add("Select");
+        mListVillage = new ArrayList<String>();
         mListVillage.add("Select");
+
+        mListSchoolName = new ArrayList<String>();
         mListSchoolName.add("Select");
-        if (Utills.isConnected(this))
+
+
+      /*  if (Utills.isConnected(this))
             getDistrict();
         else {
 
             mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(User.getCurrentUser(context).getState());
             mListDistrict.add(0, "Select");
         }
-
-
-        mStateList = new ArrayList<String>(Arrays.asList(getColumnIdex((User.getCurrentUser(getApplicationContext()).getState()).split(","))));
-        mStateList.add(0, "Select");
-        state_adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, mStateList);
+        */
+        state_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mStateList);
         state_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerState.setAdapter(state_adapter);
+        setSpinnerAdapter(mListDistrict,district_adapter,binding.spinnerDistrict,selectedDisrict);
+        setSpinnerAdapter(mListTaluka,taluka_adapter,  binding.spinnerTaluka,selectedTaluka);
+        setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster,selectedCluster);
+        setSpinnerAdapter(mListVillage, village_adapter,  binding.spinnerVillage,selectedVillage);
+        setSpinnerAdapter(mListSchoolName, school_adapter,  binding.spinnerSchoolName,selectedSchool);
 
 
-        district_adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, mListDistrict);
-        district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerDistrict.setAdapter(district_adapter);
-
-        taluka_adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, mListTaluka);
-        taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerTaluka.setAdapter(taluka_adapter);
-
-        cluster_adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, mListCluster);
-        cluster_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerCluster.setAdapter(cluster_adapter);
-
-        village_adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, mListVillage);
-        village_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerVillage.setAdapter(village_adapter);
-
-        school_adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, mListSchoolName);
-        school_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerSchoolName.setAdapter(school_adapter);
 
         if (locationType.equals("State")) {
-            locationState=1;
+            locationState = 1;
             binding.spinnerDistrict.setVisibility(View.GONE);
             binding.tvDistrict.setVisibility(View.GONE);
 
@@ -169,12 +147,12 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
             binding.spinnerVillage.setVisibility(View.GONE);
             binding.tvVillage.setVisibility(View.GONE);
-            selectedSpinner=binding.spinnerState;
+            selectedSpinner = binding.spinnerState;
 
             binding.spinnerSchoolName.setVisibility(View.GONE);
             binding.tvSchool.setVisibility(View.GONE);
         } else if (locationType.equals("District")) {
-            locationState=2;
+            locationState = 2;
             binding.spinnerTaluka.setVisibility(View.GONE);
             binding.tvTaluka.setVisibility(View.GONE);
 
@@ -183,12 +161,12 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
             binding.spinnerVillage.setVisibility(View.GONE);
             binding.tvVillage.setVisibility(View.GONE);
-            selectedSpinner=binding.spinnerDistrict;
+            selectedSpinner = binding.spinnerDistrict;
 
             binding.spinnerSchoolName.setVisibility(View.GONE);
             binding.tvSchool.setVisibility(View.GONE);
         } else if (locationType.equals("Taluka")) {
-            locationState=3;
+            locationState = 3;
             binding.spinnerCluster.setVisibility(View.GONE);
             binding.tvCluster.setVisibility(View.GONE);
 
@@ -197,73 +175,30 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
             binding.spinnerSchoolName.setVisibility(View.GONE);
             binding.tvSchool.setVisibility(View.GONE);
-            selectedSpinner=binding.spinnerTaluka;
+            selectedSpinner = binding.spinnerTaluka;
         } else if (locationType.equals("Cluster")) {
-            locationState=4;
+            locationState = 4;
             binding.spinnerVillage.setVisibility(View.GONE);
             binding.tvVillage.setVisibility(View.GONE);
 
             binding.spinnerSchoolName.setVisibility(View.GONE);
             binding.tvSchool.setVisibility(View.GONE);
-            selectedSpinner=binding.spinnerCluster;
+            selectedSpinner = binding.spinnerCluster;
         } else if (locationType.equals("Village")) {
-            locationState=5;
+            locationState = 5;
             binding.spinnerSchoolName.setVisibility(View.GONE);
             binding.tvSchool.setVisibility(View.GONE);
-            selectedSpinner=binding.spinnerVillage;
+            selectedSpinner = binding.spinnerVillage;
             /*if (task.getTask_Response__c() != null)
                 holder.spinnerResponse.setSelection(myList.indexOf(task.getTask_Response__c().trim()));*/
         } else if (locationType.equals("School")) {
-            locationState=6;
-            selectedSpinner=binding.spinnerSchoolName;
+            locationState = 6;
+            selectedSpinner = binding.spinnerSchoolName;
         }
 
 
     }
 
-    private void getState() {
-
-        Utills.showProgressDialog(this, "Loading States", getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClientWitHeader(getApplicationContext()).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getStateName";
-        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
-                try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    mStateList.clear();
-                    mStateList.add("Select");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        mStateList.add(jsonArray.getString(i));
-                    }
-                    state_adapter.notifyDataSetChanged();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Utills.hideProgressDialog();
-
-            }
-        });
-    }
-
-    public static String[] getColumnIdex(String[] value) {
-
-        for (int i = 0; i < value.length; i++) {
-            value[i] = value[i].trim();
-        }
-        return value;
-
-    }
 
     private void setActionbar(String Title) {
         mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
@@ -308,11 +243,11 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         if (msg.isEmpty()) {
             preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
             Intent openClass = new Intent(context, ProcessDeatailActivity.class);
-           // openClass.putExtra(Constants.PROCESS_ID, taskList);
+            // openClass.putExtra(Constants.PROCESS_ID, taskList);
             openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskList);
             //  openClass.putExtra("stock_list", resultList.get(getAdapterPosition()).get(0));
-            setResult(RESULT_OK,openClass);
-          //  startActivity(openClass);
+            setResult(RESULT_OK, openClass);
+            //  startActivity(openClass);
             finish();
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
         } else {
@@ -323,222 +258,182 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     }
 
 
-
-
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(LocaleManager.setLocale(base));
-    }
-
-    @Override
-    public void onBackPressed() {
-
-        finish();
-        overridePendingTransition(R.anim.left_in, R.anim.right_out);
-    }
-
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         switch (adapterView.getId()) {
             case R.id.spinner_state:
                 mSelectState = i;
-
-                if (mSelectState != 0) {
+                if(binding.spinnerDistrict.isShown()) {
                     if (Utills.isConnected(this))
                         getDistrict();
                     else {
-
+                        mListDistrict = new ArrayList<>();
                         mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(User.getCurrentUser(context).getState());
                         mListDistrict.add(0, "Select");
-                        district_adapter = new ArrayAdapter<String>(this,
-                                android.R.layout.simple_spinner_item, mListDistrict);
-                        district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        binding.spinnerDistrict.setAdapter(district_adapter);
+                        setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
 
                     }
-
-                    //    mListDistrict.clear();
-
                 }
-                else
-                {
-                    mListDistrict.clear();
-                    mListDistrict.add("Select");
-                }
-                mListTaluka.clear();
-                mListCluster.clear();
-                mListVillage.clear();
-                mListSchoolName.clear();
-         ;
-                mListTaluka.add("Select");
-                mListCluster.add("Select");
-                mListVillage.add("Select");
-                mListSchoolName.add("Select");
-                district_adapter.notifyDataSetChanged();
-                taluka_adapter.notifyDataSetChanged();
-                cluster_adapter.notifyDataSetChanged();
-                village_adapter.notifyDataSetChanged();
-                school_adapter.notifyDataSetChanged();
+
+
+
+                setSpinnerAdapter(mListTaluka,taluka_adapter,  binding.spinnerTaluka,selectedTaluka);
+                setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster,selectedCluster);
+                setSpinnerAdapter(mListVillage, village_adapter,  binding.spinnerVillage,selectedVillage);
+                setSpinnerAdapter(mListSchoolName, school_adapter,  binding.spinnerSchoolName,selectedSchool);
+
+                //    mListDistrict.clear();
+
                 break;
 
-            case R.id.spinner_district:
+          case R.id.spinner_district:
                 mSelectDistrict = i;
                 if (mSelectDistrict != 0) {
-                    selectedDisrict=mListDistrict.get(mSelectDistrict);
-                    if (Utills.isConnected(this))
-                    getTaluka();
-                    else
-                    {
+                    selectedDisrict = mListDistrict.get(mSelectDistrict);
+                    if(binding.spinnerTaluka.isShown()) {
+                        if (Utills.isConnected(this))
+                            getTaluka();
+                        else {
+                            mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict));
+                            mListTaluka.add(0, "Select");
+                            setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
 
-
-                        mListTaluka.clear();
-
-                        mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict));
-                        mListTaluka.add(0, "Select");
-                        taluka_adapter = new ArrayAdapter<String>(this,
-                                android.R.layout.simple_spinner_item, mListTaluka);
-                        taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        binding.spinnerTaluka.setAdapter(taluka_adapter);
-
-
-
+                        }
                     }
-
-                }
-                else
-                {
+                } else {
                     mListTaluka.clear();
                     mListTaluka.add("Select");
+                    setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
 
                 }
 
-                mListCluster.clear();
-                mListVillage.clear();
-                mListSchoolName.clear();
-                mListCluster.add("Select");
-                mListVillage.add("Select");
-                mListSchoolName.add("Select");
-                taluka_adapter.notifyDataSetChanged();
-                cluster_adapter.notifyDataSetChanged();
-                village_adapter.notifyDataSetChanged();
-                school_adapter.notifyDataSetChanged();
+
+              setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster,selectedCluster);
+              setSpinnerAdapter(mListVillage, village_adapter,  binding.spinnerVillage,selectedVillage);
+              setSpinnerAdapter(mListSchoolName, school_adapter,  binding.spinnerSchoolName,selectedSchool);
                 break;
+
+
             case R.id.spinner_taluka:
                 mSelectTaluka = i;
                 if (mSelectTaluka != 0) {
-                    selectedTaluka= mListTaluka.get(mSelectTaluka);
-                    if (Utills.isConnected(this))
-                        getCluster();
-                    else {
+                    selectedTaluka = mListTaluka.get(mSelectTaluka);
+                    if(binding.spinnerCluster.isShown()) {
+                        if (Utills.isConnected(this))
+                            getCluster();
+                        else {
 
-                        mListCluster.clear();
-                        mListCluster.add("Select");
-                        mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(User.getCurrentUser(context).getState(),  mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
-                        mListCluster.add(0, "Select");
-                        cluster_adapter = new ArrayAdapter<String>(this,
-                                android.R.layout.simple_spinner_item, mListCluster);
-                        cluster_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        binding.spinnerCluster.setAdapter(cluster_adapter);
+                            mListCluster.clear();
 
+
+                            mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
+                            mListCluster.add(0, "Select");
+                            setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster, selectedCluster);
+                        }
                     }
-                }
-                else
-                {
+                } else {
                     mListCluster.clear();
                     mListCluster.add("Select");
-                }
-                //  mListCluster.clear();
-                mListVillage.clear();
-                mListSchoolName.clear();
-                //  mListTaluka.add("Select");
-                // mListCluster.add("Select");
-                mListVillage.add("Select");
-                mListSchoolName.add("Select");
+                    setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster, selectedCluster);
 
-                village_adapter.notifyDataSetChanged();
-                school_adapter.notifyDataSetChanged();
+                }
+                setSpinnerAdapter(mListVillage, village_adapter,  binding.spinnerVillage,selectedVillage);
+                setSpinnerAdapter(mListSchoolName, school_adapter,  binding.spinnerSchoolName,selectedSchool);
 
                 break;
+
             case R.id.spinner_cluster:
                 mSelectCluster = i;
                 if (mSelectCluster != 0) {
-                    selectedCluster=mListCluster.get(mSelectCluster);
-                    if (Utills.isConnected(this))
-                        getVillage();
-                    else {
-                        mListVillage.clear();
-                        mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getState(),  mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
-                        mListVillage.add(0, "Select");
-                        village_adapter = new ArrayAdapter<String>(this,
-                                android.R.layout.simple_spinner_item, mListVillage);
-                        village_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        binding.spinnerVillage.setAdapter(village_adapter);
-
+                    selectedCluster = mListCluster.get(mSelectCluster);
+                    if(binding.spinnerVillage.isShown()) {
+                        if (Utills.isConnected(this))
+                            getVillage();
+                        else {
+                            mListVillage.clear();
+                            mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
+                            mListVillage.add(0, "Select");
+                            setSpinnerAdapter(mListVillage, village_adapter, binding.spinnerVillage, selectedVillage);
+                        }
                     }
-                    //   getVillage();
-                }
-                else
-                {
+                } else {
                     mListVillage.clear();
                     mListVillage.add("Select");
+                    setSpinnerAdapter(mListVillage, village_adapter, binding.spinnerVillage, selectedVillage);
+
                 }
 
-                //  mListVillage.clear();
-                mListSchoolName.clear();
-
-                //  mListVillage.add("Select");
-                mListSchoolName.add("Select");
-                //  village_adapter.notifyDataSetChanged();
-                school_adapter.notifyDataSetChanged();
+                setSpinnerAdapter(mListSchoolName, school_adapter,  binding.spinnerSchoolName,selectedSchool);
 
                 break;
+
             case R.id.spinner_village:
                 mSelectVillage = i;
                 if (mSelectVillage != 0) {
-                    selectedVillage= mListVillage.get(mSelectVillage);
-                    if (Utills.isConnected(this))
-                        getSchool();
-                    else {
-                        mListSchoolName.clear();
-                        mListSchoolName.add("Select");
-                        mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getState(),  mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
-                        mListSchoolName.add(0, "Select");
-                        school_adapter = new ArrayAdapter<String>(this,
-                                android.R.layout.simple_spinner_item, mListSchoolName);
-                        school_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        binding.spinnerSchoolName.setAdapter(school_adapter);
-
+                    selectedVillage = mListVillage.get(mSelectVillage);
+                    if(binding.spinnerSchoolName.isShown()) {
+                        if (Utills.isConnected(this))
+                            getSchool();
+                        else {
+                            mListSchoolName.clear();
+                            mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
+                            mListSchoolName.add(0, "Select");
+                            setSpinnerAdapter(mListSchoolName, school_adapter, binding.spinnerSchoolName, selectedSchool);
+                        }
                     }
                 }
-               /* mListSchoolName.clear();
-                mListSchoolName.add("Select");*/
-                //   school_adapter.notifyDataSetChanged();
+                else {
+                    mListSchoolName.clear();
+                    mListSchoolName.add("Select");
+                    setSpinnerAdapter(mListSchoolName, school_adapter, binding.spinnerSchoolName, selectedSchool);
 
+
+                }
                 break;
             case R.id.spinner_school_name:
                 mSelectSchoolName = i;
-                selectedSchool= mListSchoolName.get(mSelectSchoolName);
+                selectedSchool = mListSchoolName.get(mSelectSchoolName);
                 break;
         }
     }
+    public void setSpinnerAdapter(List<String> itemList,ArrayAdapter<String> adapter,Spinner spinner,String selectedValue)
+    {
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, itemList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        if(!selectedValue.isEmpty()&&itemList.indexOf(selectedValue)>=0)
 
-    private void getCluster() {
-        Utills.showProgressDialog(this, getString(R.string.loding_cluster), getString(R.string.progress_please_wait));
+            spinner.setSelection(itemList.indexOf(selectedValue));
+    }
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        String abc;
+
+    }
+
+    private void getState() {
+
+        Utills.showProgressDialog(this, "Loading States", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
-                ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getCluster(User.getCurrentUser(LocationSelectionActity.this).getState(),  mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka)).enqueue(new Callback<ResponseBody>() {
+                ApiClient.getClientWitHeader(getApplicationContext()).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + "/services/apexrest/getStateName";
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    mListCluster.clear();
-                    mListCluster.add("Select");
-                    JSONArray jsonArr = new JSONArray(response.body().string());
-                    for (int i = 0; i < jsonArr.length(); i++) {
-                        mListCluster.add(jsonArr.getString(i));
+                    JSONArray jsonArray = new JSONArray(response.body().string());
+                    mStateList.clear();
+                    mStateList.add("Select");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        mStateList.add(jsonArray.getString(i));
                     }
-                    cluster_adapter.notifyDataSetChanged();
-                } catch (JSONException | IOException e) {
+                    state_adapter.notifyDataSetChanged();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -546,6 +441,41 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utills.hideProgressDialog();
+
+            }
+        });
+    }
+
+    private void getDistrict() {
+
+        Utills.showProgressDialog(this, getString(R.string.loding_district), getString(R.string.progress_please_wait));
+
+        ServiceRequest apiService =
+                ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getDistrict(User.getCurrentUser(getApplicationContext()).getState()).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    JSONArray jsonArray = new JSONArray(response.body().string());
+                    mListDistrict.clear();
+                    mListDistrict.add("Select");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        mListDistrict.add(jsonArray.getString(i));
+                    }
+                    setSpinnerAdapter(mListDistrict,district_adapter,binding.spinnerDistrict,selectedDisrict);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
             }
         });
     }
@@ -567,7 +497,36 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                     for (int i = 0; i < jsonArr.length(); i++) {
                         mListTaluka.add(jsonArr.getString(i));
                     }
-                    taluka_adapter.notifyDataSetChanged();
+                    setSpinnerAdapter(mListTaluka,taluka_adapter,  binding.spinnerTaluka,selectedTaluka);
+                   // taluka_adapter.notifyDataSetChanged();
+                } catch (JSONException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+            }
+        });
+    }
+
+    private void getCluster() {
+        Utills.showProgressDialog(this, getString(R.string.loding_cluster), getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getCluster(User.getCurrentUser(LocationSelectionActity.this).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka)).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    mListCluster.clear();
+                    mListCluster.add("Select");
+                    JSONArray jsonArr = new JSONArray(response.body().string());
+                    for (int i = 0; i < jsonArr.length(); i++) {
+                        mListCluster.add(jsonArr.getString(i));
+                    }
+                    setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster,selectedCluster);
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
@@ -584,7 +543,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         Utills.showProgressDialog(this, getString(R.string.loding_village), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getVillage(User.getCurrentUser(LocationSelectionActity.this).getState(),  mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster)).enqueue(new Callback<ResponseBody>() {
+        apiService.getVillage(User.getCurrentUser(LocationSelectionActity.this).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -595,7 +554,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                     for (int i = 0; i < jsonArr.length(); i++) {
                         mListVillage.add(jsonArr.getString(i));
                     }
-                    village_adapter.notifyDataSetChanged();
+                    setSpinnerAdapter(mListVillage, village_adapter,  binding.spinnerVillage,selectedVillage);
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
@@ -613,7 +572,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
 
-        apiService.getSchool(User.getCurrentUser(LocationSelectionActity.this).getState(),  mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage)).enqueue(new Callback<ResponseBody>() {
+        apiService.getSchool(User.getCurrentUser(LocationSelectionActity.this).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -625,7 +584,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                     for (int i = 0; i < jsonArr.length(); i++) {
                         mListSchoolName.add(jsonArr.getString(i));
                     }
-                    school_adapter.notifyDataSetChanged();
+                    setSpinnerAdapter(mListSchoolName, school_adapter,  binding.spinnerSchoolName,selectedSchool);
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
@@ -638,42 +597,26 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         });
     }
 
+
+    public static String[] getColumnIdex(String[] value) {
+
+        for (int i = 0; i < value.length; i++) {
+            value[i] = value[i].trim();
+        }
+        return value;
+
+    }
+
     @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
     }
 
-    private void getDistrict() {
+    @Override
+    public void onBackPressed() {
 
-        Utills.showProgressDialog(this, getString(R.string.loding_district), getString(R.string.progress_please_wait));
-
-        ServiceRequest apiService =
-                ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getDistrict(User.getCurrentUser(getApplicationContext()).getState()).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
-                try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    mListDistrict.clear();
-                    mListDistrict.add("Select");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        mListDistrict.add(jsonArray.getString(i));
-                    }
-                    district_adapter.notifyDataSetChanged();
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Utills.hideProgressDialog();
-
-            }
-        });
+        finish();
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
+
 }
