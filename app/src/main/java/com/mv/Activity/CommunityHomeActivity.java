@@ -354,6 +354,8 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         dialog.show();
     }
 
+
+
     @Override
     public void onBackPressed() {
         finish();

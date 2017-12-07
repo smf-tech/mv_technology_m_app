@@ -86,5 +86,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true;
     }
+    compile 'io.github.kobakei:ratethisapp:1.2.0'
+
 }
 apply plugin: 'com.google.gms.google-services'

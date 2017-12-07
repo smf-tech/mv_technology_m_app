@@ -28,7 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/custom_actionbar"
-            android:background="@color/colorPrimary"
+            android:background="@color/tab_background"
             ads:tabSelectedTextColor="@color/white"
             ads:tabTextColor="@color/white"
             app:tabGravity="fill"

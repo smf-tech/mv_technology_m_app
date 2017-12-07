@@ -2,6 +2,7 @@ package com.mv.Activity;
 
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,6 +31,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.kobakei.ratethisapp.RateThisApp;
 import com.mv.Fragment.CommunityHomeFragment;
 import com.mv.Fragment.GroupsFragment;
 import com.mv.Fragment.IndicatorListFragmet;
@@ -91,6 +93,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else
             initViews();
 
+
     }
 
     @Override
@@ -110,7 +113,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private void initViews() {
         Intent receivedIntent = getIntent();
 
-        setActionbar(getString(R.string.home));
+        setActionbar(getString(R.string.app_name));
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -320,6 +323,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
             case R.id.action_notification:
                 showNotificationDialog();
+                return true;
+            case  R.id.action_share:
+                ShareApp();
+                return true;
+            case  R.id.action_rate:
+
+                RateThisApp.showRateDialog(HomeActivity.this,R.style.Theme_AppCompat_Light_Dialog_Alert);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -747,5 +757,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
     }
+
+    private void ShareApp(){
+        try {
+            Intent i = new Intent(Intent.ACTION_SEND);
+            i.setType("text/plain");
+            i.putExtra(Intent.EXTRA_SUBJECT, "Mulyavardhan 2.0");
+            String shareurl = "\nLet me recommend you this application\n\n";
+            shareurl = shareurl + "https://play.google.com/store/apps/details?id=com.mv&hl=en \n\n";
+            i.putExtra(Intent.EXTRA_TEXT, shareurl);
+            startActivity(Intent.createChooser(i, "choose one"));
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

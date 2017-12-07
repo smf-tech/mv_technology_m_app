@@ -71,6 +71,8 @@
     <string name="indicator">My\nReports</string>
     <string name="training_calendar">Training\nCalendar</string>
     <string name="notification">Notification</string>
+    <string name="rate">Rate Us</string>
+    <string name="share">Share</string>
     <string name="team_management">Team\nManagement</string>
 
     <string name="seconds_remaining">Seconds remaining </string>
