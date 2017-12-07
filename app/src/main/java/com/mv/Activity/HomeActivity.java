@@ -298,15 +298,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 ShareApp();
                 return true;
             case  R.id.action_rate:
-                Uri uri = Uri.parse("market://details?id=" + getPackageName());
-                Intent myAppLinkToMarket = new Intent(Intent.ACTION_VIEW, uri);
-                try {
-                    startActivity(myAppLinkToMarket);
 
-                } catch (ActivityNotFoundException e) {
-                    Toast.makeText(this, " unable to find market app", Toast.LENGTH_LONG).show();
-                }
-                //RateThisApp.showRateDialog(HomeActivity.this,R.style.Theme_AppCompat_Light_Dialog_Alert);
+                RateThisApp.showRateDialog(HomeActivity.this,R.style.Theme_AppCompat_Light_Dialog_Alert);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
