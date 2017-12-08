@@ -70,8 +70,11 @@
     <string name="indicator">सूचक</string>
     <string name="training_calendar">प्रशिक्षण \n कॅलेंडर</string>
     <string name="team_management">संघ \n व्यवस्थापन</string>
-    <string name="notification">Notification</string>
+    <string name="notification">सूचना</string>
+    <string name="rate">रेट करा</string>
+    <string name="share">शेयर </string>
     <string name="seconds_remaining">उर्वरित सेकंद </string>
+
     <string name="back_string">बाहेर पडण्यासाठी कृपया पुन्हा क्लिक करा </string>
     <string name="please_enter">कृपया प्रविष्ट करा </string>
     <string name="digit"> अंक </string>
