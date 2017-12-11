@@ -157,7 +157,8 @@
         <activity android:name=".Activity.LocationSelectionActity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden"
-            />
+            android:theme="@style/AppCompatAlertDialog"
+        />
 
         <service android:name=".Service.MyFirebaseMessagingService">
             <intent-filter>

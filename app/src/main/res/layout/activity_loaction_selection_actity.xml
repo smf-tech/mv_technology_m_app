@@ -14,24 +14,25 @@
 
         android:id="@+id/layout_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/app_bg"
+        android:padding="@dimen/dimen_10dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
+            layout="@layout/toolbar"
+            android:visibility="gone"/>
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:background="@drawable/app_bg"
+            android:layout_height="wrap_content"
+
+
             android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical">
 
 
@@ -48,7 +49,7 @@
                     android:layout_marginTop="10dp"
                     android:text="State"
                     android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/small_text" />
+                    android:textSize="@dimen/medium_text" />
 
                 <Spinner
                     android:id="@+id/spinner_state"
@@ -73,7 +74,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/district"
                     android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/small_text" />
+                    android:textSize="@dimen/medium_text" />
 
                 <Spinner
                     android:id="@+id/spinner_district"
@@ -98,7 +99,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/taluka"
                     android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/small_text" />
+                    android:textSize="@dimen/medium_text" />
 
                 <Spinner
                     android:id="@+id/spinner_taluka"
@@ -123,7 +124,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/cluster"
                     android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/small_text" />
+                    android:textSize="@dimen/medium_text" />
 
                 <Spinner
                     android:id="@+id/spinner_cluster"
@@ -148,7 +149,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/village"
                     android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/small_text" />
+                    android:textSize="@dimen/medium_text" />
 
                 <Spinner
                     android:id="@+id/spinner_village"
@@ -173,7 +174,7 @@
                     android:layout_marginTop="10dp"
                     android:text="@string/school_name"
                     android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/small_text" />
+                    android:textSize="@dimen/medium_text" />
 
                 <Spinner
                     android:id="@+id/spinner_school_name"
@@ -198,11 +199,11 @@
             android:id="@+id/btn_submit"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="20dp"
             android:background="@color/colorPink"
-            android:text="Next"
+            android:text="@string/Submit"
 
             android:textColor="#ffffff"
-            android:textSize="22sp" />
+            android:textSize="17sp" />
     </LinearLayout>
 </layout>

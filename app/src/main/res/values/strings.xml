@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Mulyavardhan 2.0</string>
-
     <string name="progress_loading">Loding</string>
     <string name="progress_please_wait">Please wait</string>
     <string name="error_something_went_wrong">Something went wrong, Please try again</string>

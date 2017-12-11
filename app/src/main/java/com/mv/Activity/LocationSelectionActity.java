@@ -71,7 +71,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+     //   overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_loaction_selection_actity);
         binding.setActivity(this);
         if (getIntent().getSerializableExtra(Constants.PROCESS_ID) != null) {
@@ -616,7 +616,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     public void onBackPressed() {
 
         finish();
-        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+      //  overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
     }
 
 }
