@@ -45,7 +45,7 @@
             android:layout_centerVertical="true"
             android:visibility="gone"
             android:layout_marginRight="5dp"
-            android:src="@drawable/download" />
+            android:src="@drawable/download_file" />
 
     </RelativeLayout>
 

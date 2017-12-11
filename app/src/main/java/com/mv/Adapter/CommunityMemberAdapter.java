@@ -66,7 +66,7 @@ public class CommunityMemberAdapter extends RecyclerView.Adapter<CommunityMember
     public void onBindViewHolder(CommunityMemberAdapter.ViewHolder holder, int position) {
 
 
-        holder.txtCommunityMember.setText(position + " " +CommunityMemberList.get(position));
+        holder.txtCommunityMember.setText((position+1) + " " +CommunityMemberList.get(position));
 
 
     }

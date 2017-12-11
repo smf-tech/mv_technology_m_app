@@ -49,14 +49,15 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         initViews();
         preferenceHelper = new PreferenceHelper(this);
-        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
+
         GetCommunityMember();
 
 
     }
     private void initViews(){
+        recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText("Users");
+        toolbar_title.setText("Members");
         img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);

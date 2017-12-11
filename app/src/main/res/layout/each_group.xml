@@ -7,15 +7,12 @@
     android:layout_gravity="center"
     android:layout_margin="@dimen/dimen_5dp"
     android:foreground="?attr/selectableItemBackground"
-
     app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:id="@+id/layoutGroup"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-
-
         android:gravity="center_vertical"
         android:padding="5dp">
 

@@ -217,6 +217,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         img_list.setVisibility(View.VISIBLE);
         img_list.setOnClickListener(this);
         img_logout = (ImageView) findViewById(R.id.img_logout);
+        img_logout.setImageResource(R.drawable.group);
         img_logout.setVisibility(View.VISIBLE);
         img_logout.setOnClickListener(this);
         img_logout.setOnClickListener(new View.OnClickListener() {
