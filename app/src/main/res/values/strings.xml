@@ -98,6 +98,7 @@
     <string name="description">Description</string>
     <string name="title">Title</string>
     <string name="loading_chats">Loading Chats</string>
+    <string name="loading_members">Loading Members</string>
     <string name="loading_template">Loading Template</string>
     <string name="home">Home</string>
     <string name="forgot_password">Forgot Password</string>
@@ -144,7 +145,7 @@
     <string name="lang">Change Language</string>
     <string name="profile">Update Profile</string>
     <string name="logout">Logout</string>
-    <string name="project">Project</string>
+
 
 
 </resources>

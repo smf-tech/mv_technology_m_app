@@ -15,6 +15,9 @@
     <include
         android:id="@+id/toolbar"
         layout="@layout/toolbar" />
+        <include
+            layout="@layout/custom_searchbox"
+            android:id="@+id/searchbox"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recycler_view"
@@ -26,4 +29,15 @@
         android:paddingTop="@dimen/fab_margin"
         android:scrollbars="vertical" />
     </LinearLayout>
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/textNoData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+
+        android:text="No Data Available"
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/large_text" />
+
 </RelativeLayout>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.TextInputLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/input_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_view1"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/search_rounded"
+        android:padding="10dp">
+
+        <com.mv.Widgets.MyEditTextView
+            android:id="@+id/edit_text_email"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:drawableLeft="@drawable/search"
+            android:drawablePadding="10dp"
+            android:focusableInTouchMode="true"
+            android:hint="Search"
+            android:inputType="textEmailAddress"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/medium_text" />
+    </android.support.design.widget.TextInputLayout>
+
+
