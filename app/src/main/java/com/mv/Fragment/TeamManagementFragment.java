@@ -1,6 +1,5 @@
 package com.mv.Fragment;
 
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,10 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.mv.Activity.ClassObservationActivity;
-import com.mv.Activity.ScheduleTrainingActivity;
-import com.mv.Adapter.TeamManagementAdapter;
-import com.mv.Adapter.TemplateAdapter;
+import com.mv.Adapter.TeamManagementUserProfileAdapter;
 import com.mv.BR;
 import com.mv.Model.ParentViewModel;
 import com.mv.Model.Template;
@@ -48,7 +44,7 @@ import retrofit2.Response;
 public class TeamManagementFragment  extends Fragment {
     private PreferenceHelper preferenceHelper;
     List<Template> processAllList = new ArrayList<>();
-    private TeamManagementAdapter mAdapter;
+    private TeamManagementUserProfileAdapter mAdapter;
     private ActivityNewTemplateBinding binding;
     RecyclerView.LayoutManager mLayoutManager;
     @Override
@@ -71,86 +67,19 @@ public class TeamManagementFragment  extends Fragment {
 
     private void initViews() {
         preferenceHelper = new PreferenceHelper(getActivity());
-        binding.swiperefresh.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        if (Utills.isConnected(getActivity()))
-                            getAllProcess();
-                    }
-                }
-        );
 
 
-        mAdapter = new TeamManagementAdapter(processAllList, getActivity());
+        Template processList = new Template();
+        processList.setName("User Profile");
+        processAllList.clear();
+        processAllList.add(processList);
+        mAdapter = new TeamManagementUserProfileAdapter(processAllList, getActivity());
         mLayoutManager = new LinearLayoutManager(getActivity());
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(mAdapter);
-        if (Utills.isConnected(getActivity()))
-            getAllProcess();
-        else
-        {
-            Utills.showInternetPopUp(getActivity());
-        }
-    }
 
-    public void onLayoutScheduleTraining() {
-        Intent intent;
-        intent = new Intent(getActivity(), ScheduleTrainingActivity.class);
-        startActivity(intent);
-    }
-
-    public void onLayoutClassObservation() {
-        Intent intent;
-        intent = new Intent(getActivity(), ClassObservationActivity.class);
-        startActivity(intent);
-    }
-
-    public void onLayoutOrganizeEvents() {
 
     }
 
-
-    private void getAllProcess() {
-        Utills.showProgressDialog(getActivity(), "Loading Process", getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClientWitHeader(getActivity()).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getApprovalData?userId="+ User.getCurrentUser(getActivity()).getId();
-        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
-                binding.swiperefresh.setRefreshing(false);
-                if(response.isSuccess())
-                try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    processAllList.clear();
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        Template processList = new Template();
-
-
-                        processList.setId(jsonArray.getJSONObject(i).getString("Id"));
-                        processList.setName(jsonArray.getJSONObject(i).getString("username"));
-
-                        processAllList.add(processList);
-                    }
-                    AppDatabase.getAppDatabase(getActivity()).userDao().deleteTable();
-                    AppDatabase.getAppDatabase(getActivity()).userDao().insertProcess(processAllList);
-                    mAdapter.notifyDataSetChanged();
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Utills.hideProgressDialog();
-
-            }
-        });
-    }
 }

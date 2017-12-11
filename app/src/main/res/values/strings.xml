@@ -138,13 +138,13 @@
 
     <string name="Templates">Templates</string>
     <string name="Schedule_training">Schedule Training</string>
+    <string name="team_user_approval">User Approval</string>
     <string name="Registration">Registration</string>
 
 
     <string name="lang">Change Language</string>
     <string name="profile">Update Profile</string>
     <string name="logout">Logout</string>
-
 
 
 </resources>

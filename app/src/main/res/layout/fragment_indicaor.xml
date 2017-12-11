@@ -63,7 +63,7 @@
                         android:drawableLeft="@drawable/search"
                         android:drawablePadding="10dp"
                         android:focusableInTouchMode="true"
-                        android:hint="Search Comminities"
+                        android:hint="Search"
                         android:inputType="textEmailAddress"
 
                         android:singleLine="true"
