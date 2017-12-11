@@ -170,6 +170,12 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             holder.imgLike.setImageResource(R.drawable.like);
         else
             holder.imgLike.setImageResource(R.drawable.dislike);
+
+        if(mDataList.get(position).getCommentCount()==0){
+            holder.img_comment.setImageResource(R.drawable.no_comment);
+        }else {
+            holder.img_comment.setImageResource(R.drawable.comment);
+        }
     }
 
     @Override
@@ -330,7 +336,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView picture, userImage, imgLike;
+        public ImageView picture, userImage, imgLike,img_comment;
         public CardView card_view;
         public TextView txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount;
         public LinearLayout layout_like, layout_comment, layout_share, layout_download;
@@ -348,7 +354,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             card_view = (CardView) itemLayoutView.findViewById(R.id.card_view);
             imgLike = (ImageView) itemLayoutView.findViewById(R.id.imgLike);
             textViewLike = (TextView) itemLayoutView.findViewById(R.id.textViewLike);
-
+            img_comment=(ImageView) itemLayoutView.findViewById(R.id.img_comment);
             layout_comment = (LinearLayout) itemLayoutView.findViewById(R.id.layout_comment);
             layout_comment.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,6 +14,7 @@ import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
@@ -43,6 +46,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -87,7 +92,17 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                 startActivity(intent);
                 break;
             case R.id.layout_share:
-                showGroupDialog();
+               // showGroupDialog();
+                if (TextUtils.isEmpty(mContent.getAttachmentId())
+                        || mContent.getAttachmentId().equalsIgnoreCase("null")) {
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.setType("image*//**//*");
+                    i.putExtra(Intent.EXTRA_TEXT, "Title : " + mContent.getTitle() + "\n\nDescription : " + mContent.getDescription());
+                    Utills.hideProgressDialog();
+                    startActivity(Intent.createChooser(i, "Share Post"));
+                } else {
+                    downloadImage();
+                }
                 break;
             case R.id.layout_like:
                 if (!mContent.getIsLike()) {
@@ -405,6 +420,63 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
+    }
+    private void downloadImage() {
+       /**/
+
+        if (Utills.isConnected(getApplicationContext())) {
+
+            Utills.showProgressDialog(CommunityDetailsActivity.this, "Please wait", "Loading Image");
+
+            ServiceRequest apiService =
+                    ApiClient.getClientWitHeader(getApplicationContext()).create(ServiceRequest.class);
+            String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                    + "/services/apexrest/getAttachmentBody/" + mContent.getAttachmentId();
+            apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Utills.hideProgressDialog();
+                    try {
+                        String str = response.body().string();
+                        byte[] decodedString = Base64.decode(str, Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+
+                        Utills.showToast("Image Downloaded Successfully...", getApplicationContext());
+
+                        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        shareIntent.setType("text/html");
+                        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Title : "+mContent.getTitle()+"\n\nDescription : "+mContent.getDescription());
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(decodedByte));
+                        startActivity(Intent.createChooser(shareIntent, "Share Content"));
+                    } catch (Exception e) {
+                        Utills.hideProgressDialog();
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Utills.hideProgressDialog();
+                    Utills.showToast(getApplicationContext().getString(R.string.error_something_went_wrong), getApplicationContext());
+                }
+            });
+        } else {
+            Utills.showInternetPopUp(getApplicationContext());
+        }
+
+    }
+    public Uri getLocalBitmapUri(Bitmap bmp) {
+        Uri bmpUri = null;
+        try {
+            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/downloaded_share_image.png");
+            FileOutputStream out = new FileOutputStream(file);
+            bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.close();
+            bmpUri = Uri.fromFile(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return bmpUri;
     }
 
 

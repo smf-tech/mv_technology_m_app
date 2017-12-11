@@ -11,12 +11,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import com.mv.Activity.ClassObservationActivity;
 import com.mv.Activity.ScheduleTrainingActivity;
 import com.mv.Adapter.TeamManagementAdapter;
-import com.mv.Adapter.TemplateAdapter;
 import com.mv.BR;
 import com.mv.Model.ParentViewModel;
 import com.mv.Model.Template;
@@ -70,6 +70,7 @@ public class TeamManagementFragment  extends Fragment {
     }
 
     private void initViews() {
+
         preferenceHelper = new PreferenceHelper(getActivity());
         binding.swiperefresh.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
