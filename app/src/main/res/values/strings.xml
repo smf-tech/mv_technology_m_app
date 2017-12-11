@@ -30,6 +30,7 @@
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="role">Role</string>
+    <string name="project">Project</string>
     <string name="organization">Organization</string>
     <string name="disrict">District</string>
     <string name="taluka">Taluka</string>

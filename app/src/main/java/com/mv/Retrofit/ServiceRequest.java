@@ -1,6 +1,7 @@
 package com.mv.Retrofit;
 
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import okhttp3.ResponseBody;
@@ -36,6 +37,8 @@ public interface ServiceRequest {
     @POST("")
     Call<ResponseBody> sendDataToSalesforce(@Url String url, @Body JsonObject object);
 
+    @POST("")
+    Call<ResponseBody> sendImageToSalesforce(@Url String url, @Body JsonArray jsonArray);
 
     @POST("user/app_get_state")
     Call<ResponseBody> getState();
