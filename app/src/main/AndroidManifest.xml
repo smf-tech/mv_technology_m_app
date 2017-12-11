@@ -195,7 +195,6 @@
             android:name=".Activity.CommunityMemberNameActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".Activity.TeamManagementUserProfileActivity"></activity>
     </application>
 
 </manifest>

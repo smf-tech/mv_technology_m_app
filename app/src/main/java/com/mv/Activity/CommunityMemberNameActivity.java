@@ -93,31 +93,29 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
                 try {
                      CommunityMemberList = new ArrayList<>();
                      replicaCommunityList =new ArrayList<>();
-                    String strResponse = response.body().string();
-                    JSONArray jsonArray = new JSONArray(strResponse);
-                    if(jsonArray.length()!=0) {
+                     if(response.body()!=null) {
+                         String strResponse = response.body().string();
+                         JSONArray jsonArray = new JSONArray(strResponse);
+                         if (jsonArray.length() != 0) {
 
-                        for (int i = 0; i <= jsonArray.length(); i++) {
-                            CommunityMemberList.add(jsonArray.getString(i));
-
-
-
-                            adapter = new CommunityMemberAdapter(getApplicationContext(), CommunityMemberList);
-                            recyclerView.setAdapter(adapter);
-                            recyclerView.setHasFixedSize(true);
-                            recyclerView.setLayoutManager(new LinearLayoutManager(CommunityMemberNameActivity.this));
-                            replicaCommunityList.add(CommunityMemberList.get(i));
-                        }
-                        textNoData.setVisibility(View.GONE);
-                        adapter.notifyDataSetChanged();
-                    }else {
-                        textNoData.setVisibility(View.VISIBLE);
-                    }
+                             for (int i = 0; i <= jsonArray.length(); i++) {
+                                 CommunityMemberList.add(jsonArray.getString(i));
 
 
+                                 adapter = new CommunityMemberAdapter(getApplicationContext(), CommunityMemberList);
+                                 recyclerView.setAdapter(adapter);
+                                 recyclerView.setHasFixedSize(true);
+                                 recyclerView.setLayoutManager(new LinearLayoutManager(CommunityMemberNameActivity.this));
+                                 replicaCommunityList.add(CommunityMemberList.get(i));
+                             }
+                             textNoData.setVisibility(View.GONE);
+                             adapter.notifyDataSetChanged();
+                         } else {
+                             textNoData.setVisibility(View.VISIBLE);
+                         }
 
 
-
+                     }
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -170,7 +168,9 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
         for (int i = 0; i < list.size(); i++) {
             CommunityMemberList.add(list.get(i));
         }
-        adapter.notifyDataSetChanged();
+        if(CommunityMemberList.size()!=0) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
