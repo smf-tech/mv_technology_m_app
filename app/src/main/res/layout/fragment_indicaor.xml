@@ -32,17 +32,53 @@
             android:id="@+id/swipe_refresh_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/piachart_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:orientation="vertical">
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_view1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="15dp"
+
+                    android:background="@drawable/search_rounded"
+                    android:padding="10dp">
+
+                    <com.mv.Widgets.MyEditTextView
+                        android:id="@+id/edit_text_email"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:drawableLeft="@drawable/search"
+                        android:drawablePadding="10dp"
+                        android:focusableInTouchMode="true"
+                        android:hint="Search Comminities"
+                        android:inputType="textEmailAddress"
+
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="gone"
-
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
                 android:scrollbars="vertical" />
+                </LinearLayout>
             <com.github.mikephil.charting.charts.PieChart
                 android:id="@+id/chart1"
                 android:layout_width="match_parent"

@@ -177,6 +177,28 @@
                     android:prompt="@string/organization"
                     android:spinnerMode="dialog" />
 
+                <com.mv.Widgets.MyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/project"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/small_text" />
+
+                <Spinner
+                    android:id="@+id/spinner_project"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/grey_box"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:prompt="@string/project"
+                    android:spinnerMode="dialog" />
 
                 <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"
@@ -358,9 +380,9 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
-                    android:visibility="gone"
                     android:background="@drawable/lighter_grey_box"
-                    android:padding="10dp">
+                    android:padding="10dp"
+                    android:visibility="gone">
 
                     <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_school_code"

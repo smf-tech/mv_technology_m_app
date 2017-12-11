@@ -63,12 +63,12 @@
     <string name="Submit"> सबमिट</string>
     <string name="backExit"> बाहेर पडण्यासाठी कृपया पुन्हा क्लिक करा </string>
     <string name="select_lang"> भाषा निवडा</string>
-    <string name="broadcast">ब्रॉडकास्ट</string>
+    <string name="broadcast">ब्रॉडकास्ट \n मेसेज</string>
     <string name="community">माय \n कॅम्युनिटी </string>
     <string name="programme_management">प्रोग्रॅम \n मॅनेजमेंट </string>
     <string name="training_content">ट्रेनींग \n कन्टेन्ट </string>
     <string name="indicator">सूचक</string>
-    <string name="training_calendar">प्रशिक्षण \n कॅलेंडर</string>
+    <string name="training_calendar">माय \n कॅलेंडर</string>
     <string name="team_management">संघ \n व्यवस्थापन</string>
     <string name="notification">सूचना</string>
     <string name="rate">रेट करा</string>
@@ -144,4 +144,5 @@
     <string name="lang">भाषा बदला</string>
     <string name="profile">अपडेट  प्रोफाइल </string>
     <string name="logout">बाहेर पडणे</string>
+    <string name="project">पोजेक्ट</string>
 </resources>

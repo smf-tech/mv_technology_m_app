@@ -60,10 +60,11 @@ public class TrainingCalender extends Fragment implements OnDateSelectedListener
     private FragmentTrainigCalenderBinding binding;
     SimpleDateFormat formatter;
     ArrayList<CalendarDay> dates;
-    HashMap<CalendarDay,List<CalenderEvent>> eventMap=new HashMap<>();
+    HashMap<CalendarDay, List<CalenderEvent>> eventMap = new HashMap<>();
 
     PichartDescriptiveListAdapter adapter;
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(
@@ -71,19 +72,18 @@ public class TrainingCalender extends Fragment implements OnDateSelectedListener
         View view = binding.getRoot();
         preferenceHelper = new PreferenceHelper(getActivity());
 
-
         binding.recyclerView.setHasFixedSize(true);
-          binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         //here data must be an instance of the class MarsDataProvider
-        formatter =new SimpleDateFormat("yyyy-MM-dd");
+        formatter = new SimpleDateFormat("yyyy-MM-dd");
         binding.setClander(this);
   /*      RelativeLayout mToolBar = (RelativeLayout) view.findViewById(R.id.toolbar);
         mToolBar.setVisibility(View.GONE);*/
         binding.calendarView.setOnDateChangedListener(this);
-         binding.calendarView.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
+        binding.calendarView.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
 
         Calendar instance = Calendar.getInstance();
-         binding.calendarView.setSelectedDate(instance.getTime());
+        binding.calendarView.setSelectedDate(instance.getTime());
 
         Calendar instance1 = Calendar.getInstance();
         instance1.set(instance1.get(Calendar.YEAR), Calendar.JANUARY, 1);
@@ -91,12 +91,12 @@ public class TrainingCalender extends Fragment implements OnDateSelectedListener
         Calendar instance2 = Calendar.getInstance();
         instance2.set(instance2.get(Calendar.YEAR), Calendar.DECEMBER, 31);
 
-         binding.calendarView.state().edit()
+        binding.calendarView.state().edit()
                 .setMinimumDate(instance1.getTime())
                 .setMaximumDate(instance2.getTime())
                 .commit();
 
-         binding.calendarView.addDecorators(
+        binding.calendarView.addDecorators(
                 //new MySelectorDecorator(getActivity()),
                 new HighlightWeekendsDecorator(),
                 oneDayDecorator
@@ -112,26 +112,28 @@ public class TrainingCalender extends Fragment implements OnDateSelectedListener
     }
 
 
-
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-       if( dates.indexOf(date)>=0)
-           adapter = new PichartDescriptiveListAdapter(getActivity(), eventMap.get(date));
-        binding.recyclerView.setAdapter(adapter);
-
+        if( eventMap.get(date)!=null) {
+            adapter = new PichartDescriptiveListAdapter(getActivity(), eventMap.get(date));
+            binding.recyclerView.setAdapter(adapter);
+        }
+        else
+        {
+            adapter = new PichartDescriptiveListAdapter(getActivity(), new ArrayList<CalenderEvent>());
+            binding.recyclerView.setAdapter(adapter);
+        }
 
 
     }
 
 
-
-
-  private void getAllProcess() {
+    private void getAllProcess() {
         Utills.showProgressDialog(getActivity(), "Loading Process", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(getActivity()).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getCalenderData?userId="+User.getCurrentUser(getActivity()).getId();
+                + "/services/apexrest/getCalenderData?userId=" + User.getCurrentUser(getActivity()).getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -140,30 +142,30 @@ public class TrainingCalender extends Fragment implements OnDateSelectedListener
                 try {
                     JSONArray jsonArray = new JSONArray(response.body().string());
 
-                    eventMap=new HashMap<>();
+                    eventMap = new HashMap<>();
                     dates = new ArrayList<>();
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        CalenderEvent calenderEvent=new CalenderEvent();
+                        CalenderEvent calenderEvent = new CalenderEvent();
                         calenderEvent.setId(jsonArray.getJSONObject(i).getString("Id"));
                         calenderEvent.setDate(jsonArray.getJSONObject(i).getString("Date__c"));
                         calenderEvent.setDescription(jsonArray.getJSONObject(i).getString("Description__c"));
                         calenderEvent.setMV_User1__c(jsonArray.getJSONObject(i).getString("MV_User1__c"));
                         CalendarDay day = CalendarDay.from(formatter.parse(jsonArray.getJSONObject(i).getString("Date__c")));
-                        dateList=new ArrayList<>();
-                        if(eventMap.get(jsonArray.getJSONObject(i).getString("Date__c"))!=null)
-                        dateList=eventMap.get(jsonArray.getJSONObject(i).getString("Date__c"));
+                        dateList = new ArrayList<>();
+                        if (eventMap.get(jsonArray.getJSONObject(i).getString("Date__c")) != null)
+                            dateList = eventMap.get(jsonArray.getJSONObject(i).getString("Date__c"));
                         dateList.add(calenderEvent);
-                        eventMap.put(day,dateList);
+                        eventMap.put(day, dateList);
                         dates.add(day);
 
                     }
                     binding.calendarView.addDecorator(new EventDecorator(Color.RED, dates));
                     Calendar instance = Calendar.getInstance();
 
-
-
-        /*             adapter = new PichartDescriptiveListAdapter(getActivity(), eventMap.get(instance.getTime()));
-                      binding.recyclerView.setAdapter(adapter);*/
+                    if( eventMap.get(instance.getTime())!=null) {
+                        adapter = new PichartDescriptiveListAdapter(getActivity(), eventMap.get(instance.getTime()));
+                        binding.recyclerView.setAdapter(adapter);
+                    }
 
                 } catch (JSONException e) {
                     e.printStackTrace();

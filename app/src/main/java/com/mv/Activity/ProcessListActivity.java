@@ -206,8 +206,9 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                     resultList = new ArrayList<>();
                     resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(proceesId, Constants.TASK_ANSWER);
                     idList = new ArrayList<>();
-                    for (int k = 0; k < resultList.size(); k++)
+                    for (int k = 0; k < resultList.size(); k++) {
                         idList.add(resultList.get(k).getUnique_Id());
+                    }
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     JSONArray resultArray = jsonObject.getJSONArray("tsk");
                     for (int j = 0; j < resultArray.length(); j++) {

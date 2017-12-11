@@ -8,7 +8,9 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
 import android.text.SpannableString;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -30,6 +32,7 @@ import com.github.mikephil.charting.utils.MPPointF;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mv.Adapter.PichartDescriptiveListAdapter;
+import com.mv.Model.Community;
 import com.mv.Model.PiaChartModel;
 import com.mv.Model.Task;
 import com.mv.Model.User;
@@ -47,6 +50,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -59,6 +63,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     private PieChart mChart;
     ArrayList<String> key = new ArrayList<>();
     ArrayList<PiaChartModel> piaChartModelArrayList = new ArrayList<>();
+    ArrayList<PiaChartModel> repplicaCahart = new ArrayList<>();
     ArrayList<PieEntry> entries;
     Task task;
     private ImageView img_back, img_list, img_logout;
@@ -149,7 +154,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         mChart.animateY(1400, Easing.EasingOption.EaseInOutQuad);
         // mChart.spin(2000, 0, 360);
 
-
+        binding.editTextEmail.addTextChangedListener(watch);
         Legend l = mChart.getLegend();
          l.setWordWrapEnabled(true);
         l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
@@ -182,6 +187,47 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length() - 14, s.length(), 0);*/
         return s;
     }
+    TextWatcher watch = new TextWatcher() {
+
+        @Override
+        public void afterTextChanged(Editable arg0) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int a, int b, int c) {
+            // TODO Auto-generated method stub
+            setFilter(s.toString());
+
+        }
+    };
+    private void setFilter(String s) {
+        List<PiaChartModel> list = new ArrayList<>();
+        repplicaCahart.clear();
+        for (int i = 0; i < piaChartModelArrayList.size(); i++) {
+            repplicaCahart.add(piaChartModelArrayList.get(i));
+        }
+        for (int i = 0; i < repplicaCahart.size(); i++) {
+            if (repplicaCahart.get(i).getDetail().toLowerCase().contains(s.toLowerCase())) {
+                list.add(repplicaCahart.get(i));
+            }
+        }
+        repplicaCahart.clear();
+        for (int i = 0; i < list.size(); i++) {
+            repplicaCahart.add(list.get(i));
+        }
+        adapter = new PichartDescriptiveListAdapter(context, repplicaCahart);
+        rvPiaChartDeatail.setAdapter(adapter);
+    }
+
 
     private void setData(ArrayList<PieEntry> entries) {
 
@@ -287,7 +333,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
 
                     mChart.setVisibility(View.VISIBLE);
-                    rvPiaChartDeatail.setVisibility(View.GONE);
+                    binding.piachartRecyclerView.setVisibility(View.GONE);
                     JSONArray jsonArray = new JSONArray(response.body().string());
                     entries = new ArrayList<>();
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -363,7 +409,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
 
                                     mChart.setVisibility(View.VISIBLE);
-                                    rvPiaChartDeatail.setVisibility(View.GONE);
+                                    binding.piachartRecyclerView.setVisibility(View.GONE);
                                     if (key.size() > 0) {
                                         setData(entries);
                                         binding.swipeRefreshLayout.setVisibility(View.VISIBLE);
@@ -384,7 +430,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                                         piaChartModelArrayList.add(piaChartModel);
                                     }
                                     mChart.setVisibility(View.GONE);
-                                    rvPiaChartDeatail.setVisibility(View.VISIBLE);
+                                    binding.piachartRecyclerView.setVisibility(View.VISIBLE);
                                     adapter = new PichartDescriptiveListAdapter(context, piaChartModelArrayList);
                                     rvPiaChartDeatail.setAdapter(adapter);
 
