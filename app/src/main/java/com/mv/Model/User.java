@@ -41,6 +41,12 @@ public class User {
     @SerializedName("Id")
     @Expose
     private String Id;
+    @SerializedName("Project__c")
+    @Expose
+    private String Project__c;
+    @SerializedName("Project_Name__c")
+    @Expose
+    private String Project_Name__c;
     @SerializedName("Name")
     @Expose
     private String Name;
@@ -95,17 +101,32 @@ public class User {
 
     @SerializedName("Mobile_Tab_Name_c__c")
     @Expose
-    private String tabNameApproved="";
+    private String tabNameApproved = "";
 
     @SerializedName("Before_Approved_Tab_Names__c")
     @Expose
-    private String tabNameNoteApproved="";
+    private String tabNameNoteApproved = "";
 
     @SerializedName("Approval_Role_c__c")
     @Expose
     private String approval_role;
 
 
+    public String getProject__c() {
+        return Project__c;
+    }
+
+    public void setProject__c(String project__c) {
+        Project__c = project__c;
+    }
+
+    public String getProject_Name__c() {
+        return Project_Name__c;
+    }
+
+    public void setProject_Name__c(String project_Name__c) {
+        Project_Name__c = project_Name__c;
+    }
 
     public String getTabNameApproved() {
         return tabNameApproved;
@@ -139,7 +160,6 @@ public class User {
     public void setIsApproved(String isApproved) {
         this.isApproved = isApproved;
     }
-
 
 
     public String getOrganisation() {

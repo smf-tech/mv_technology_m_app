@@ -64,11 +64,12 @@
     <string name="Submit"> Submit</string>
     <string name="backExit">Please click BACK again to exit </string>
     <string name="select_lang"> Select Language</string>
-    <string name="broadcast">Broadcast</string>
+    <string name="broadcast">Broadcast \nMessage</string>
     <string name="community">My\nCommunity</string>
     <string name="programme_management">Programme\nManagement</string>
     <string name="training_content">Training\nContent</string>
     <string name="indicator">My\nReports</string>
+    <string name="training_calendar">My\nCalendar</string>
     <string name="notification">Notification</string>
     <string name="rate">Rate Us</string>
     <string name="share">Share</string>
@@ -142,6 +143,7 @@
     <string name="lang">Change Language</string>
     <string name="profile">Update Profile</string>
     <string name="logout">Logout</string>
+    <string name="project">Project</string>
 
 
 </resources>

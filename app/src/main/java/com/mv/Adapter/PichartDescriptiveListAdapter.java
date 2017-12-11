@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mv.Model.CalenderEvent;
 import com.mv.Model.PiaChartModel;
 import com.mv.Model.Task;
 import com.mv.R;
@@ -22,12 +23,12 @@ import java.util.List;
 
 public class PichartDescriptiveListAdapter extends RecyclerView.Adapter<PichartDescriptiveListAdapter.MyViewHolder> {
 
-    private List<PiaChartModel> piaChartModelsList;
+    private List<?> piaChartModelsList;
     private Activity mContext;
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView state,district,taluka,name,detail,index;
+        public TextView state, district, taluka, name, detail, index;
         public LinearLayout layout;
 
         public MyViewHolder(View view) {
@@ -43,7 +44,7 @@ public class PichartDescriptiveListAdapter extends RecyclerView.Adapter<PichartD
     }
 
 
-    public PichartDescriptiveListAdapter( Activity context,List<PiaChartModel> moviesList) {
+    public PichartDescriptiveListAdapter(Activity context, List<?> moviesList) {
         this.piaChartModelsList = moviesList;
         this.mContext = context;
 
@@ -64,8 +65,19 @@ public class PichartDescriptiveListAdapter extends RecyclerView.Adapter<PichartD
         holder.district.setText(piaChartModelsList.get(position).getDistrict());
         holder.taluka.setText(piaChartModelsList.get(position).getTaluka());
         holder.name.setText(piaChartModelsList.get(position).getName());*/
-      holder.index.setText(String.valueOf(position+1));
-        holder.detail.setText(piaChartModelsList.get(position).getDetail());
+        holder.index.setText(String.valueOf(position + 1));
+        if(piaChartModelsList.get(position)instanceof PiaChartModel)
+        {
+            PiaChartModel piaChartModel= (PiaChartModel) piaChartModelsList.get(position);
+            holder.detail.setText(piaChartModel.getDetail());
+        }
+        else
+        {
+            CalenderEvent piaChartModel= (CalenderEvent) piaChartModelsList.get(position);
+            holder.detail.setText(piaChartModel.getDescription());
+        }
+
+
 
     }
 

@@ -204,7 +204,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
             if (allTab.contains("My Reports"))
                 adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
-            adapter.addFrag(new TrainingCalender(), getString(R.string.indicator));
+            if(allTab.contains("My Calendar"))
+                adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
 
             viewPager.setAdapter(adapter);
 
@@ -225,7 +226,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
             if (allTab.contains("My Reports"))
                 adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
-            adapter.addFrag(new TrainingCalender(), getString(R.string.indicator));
+            if(allTab.contains("My Calendar"))
+                adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
             viewPager.setAdapter(adapter);
         }
 
@@ -342,8 +344,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             getSupportActionBar().setDisplayShowCustomEnabled(true);
             getSupportActionBar().setCustomView(R.layout.toolbar);
             View view = getSupportActionBar().getCustomView();
-            toolbar_title = (TextView) view.findViewById(R.id.toolbar_title);
-            toolbar_title.setText(Title);
+                toolbar_title = (TextView) view.findViewById(R.id.toolbar_title);
+             toolbar_title.setText(Title);
             img_back = (ImageView) findViewById(R.id.img_back);
             img_back.setVisibility(View.GONE);
             img_back.setOnClickListener(this);

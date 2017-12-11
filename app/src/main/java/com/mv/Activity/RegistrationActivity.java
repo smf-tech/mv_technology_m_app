@@ -69,20 +69,20 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private Button btn_submit;
     private ActivityRegistrationBinding binding;
     private EditText edit_text_midle_name, edit_text_last_name, edit_text_name, edit_text_mobile_number, edit_text_school_code, edit_text_email;
-    private Spinner spinner_organization, spinner_role, spinner_state, spinner_district, spinner_taluka, spinner_cluster, spinner_village, spinner_school_name;
-    private int mSelectOrganization = 0, mSelectRole = 0, mSelectState = 0, mSelectDistrict = 0, mSelectTaluka = 0, mSelectCluster = 0, mSelectVillage = 0, mSelectSchoolName = 0;
-    private ArrayList<String> mListOrganization, mListState, mListDistrict, mListTaluka, mListCluster, mListVillage, mListSchoolName;
+    private Spinner spinner_project, spinner_organization, spinner_role, spinner_state, spinner_district, spinner_taluka, spinner_cluster, spinner_village, spinner_school_name;
+    private int mSelectProject = 0, mSelectOrganization = 0, mSelectRole = 0, mSelectState = 0, mSelectDistrict = 0, mSelectTaluka = 0, mSelectCluster = 0, mSelectVillage = 0, mSelectSchoolName = 0;
+    private ArrayList<String> mListProjectId, mListProject, mListOrganization, mListState, mListDistrict, mListTaluka, mListCluster, mListVillage, mListSchoolName;
     private List<String> mListRoleName, mListCode, mListRoleId, mListRoleJuridiction;
     private TextView txt_district, txt_taluka, txt_cluster, txt_village, txt_school;
     private TextInputLayout input_school_code;
-    private ArrayAdapter<String> state_adapter, district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, role_adapter, organization_adapter;
+    private ArrayAdapter<String> state_adapter, district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, role_adapter, organization_adapter, project_adapter;
     private PreferenceHelper preferenceHelper;
     private User user;
     private Uri FinalUri = null;
     private Uri outputUri = null;
     private String imageFilePath;
     private Boolean isAdd;
-    private boolean isOrganizationSet = false, isStateSet = false, isDistrictSet = false, isTalukaSet = false, isClusterSet = false, isVillageSet = false, isSchoolSet = false, isRollSet = false;
+    private boolean isProjectSet = false, isOrganizationSet = false, isStateSet = false, isDistrictSet = false, isTalukaSet = false, isClusterSet = false, isVillageSet = false, isSchoolSet = false, isRollSet = false;
 
 
     @Override
@@ -95,9 +95,56 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         if (Utills.isConnected(this)) {
             getState();
             getOrganization();
+            getProject();
         } else {
             showPopUp();
         }
+    }
+
+    private void getProject() {
+        Utills.showProgressDialog(this, "Loading Projects", getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + "/services/apexrest/getProjectData";
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    JSONArray jsonArray = new JSONArray(response.body().string());
+                    mListProject.clear();
+                    mListProjectId.clear();
+                    mListProject.add("Select");
+                    mListProjectId.add("Select");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject object = jsonArray.getJSONObject(i);
+                        mListProject.add(object.getString("Project_Name__c"));
+                        mListProjectId.add(object.getString("Id"));
+                    }
+                    project_adapter.notifyDataSetChanged();
+                    if (!isAdd && !isProjectSet) {
+                        isProjectSet = true;
+                        for (int i = 0; i < mListProject.size(); i++) {
+                            if (mListProject.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getProject_Name__c())) {
+                                spinner_project.setSelection(i);
+                                break;
+                            }
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
     }
 
     private void getRole() {
@@ -339,6 +386,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         spinner_village = (Spinner) findViewById(R.id.spinner_village);
         spinner_school_name = (Spinner) findViewById(R.id.spinner_school_name);
         spinner_organization = (Spinner) findViewById(R.id.spinner_organization);
+        spinner_project = (Spinner) findViewById(R.id.spinner_project);
+        spinner_project.setOnItemSelectedListener(this);
         spinner_organization.setOnItemSelectedListener(this);
         spinner_role.setOnItemSelectedListener(this);
         spinner_state.setOnItemSelectedListener(this);
@@ -359,6 +408,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         mListSchoolName = new ArrayList<String>();
         mListCode = new ArrayList<String>();
         mListOrganization = new ArrayList<String>();
+        mListProject = new ArrayList<String>();
+        mListProjectId = new ArrayList<String>();
 
         mListState.add("Select");
         mListDistrict.add("Select");
@@ -369,9 +420,16 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         mListCode.add("Select");
         mListOrganization.add("Select");
         mListRoleName.add("Select");
+        mListProject.add("Select");
+        mListProjectId.add("Select");
 
         input_school_code = (TextInputLayout) findViewById(R.id.input_school_code);
         edit_text_school_code = (EditText) findViewById(R.id.edit_text_school_code);
+
+        project_adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, mListProject);
+        project_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner_project.setAdapter(project_adapter);
 
         organization_adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, mListOrganization);
@@ -518,7 +576,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 jsonObject2.put("User_Village__c", mListVillage.get(mSelectVillage));
                 jsonObject2.put("User_SchoolID__c", edit_text_school_code.getText().toString().trim());
                 jsonObject2.put("UserSchoolName__c", mListSchoolName.get(mSelectSchoolName));
-
+                if (mSelectProject > 0)
+                    jsonObject2.put("Project__c", mListProjectId.get(mSelectProject));
                 JSONObject jsonObject = new JSONObject();
                 JSONArray jsonArray = new JSONArray();
 
@@ -676,6 +735,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         switch (adapterView.getId()) {
+            case R.id.spinner_project:
+                mSelectProject = i;
+                break;
             case R.id.spinner_organization:
                 mSelectOrganization = i;
                 if (mSelectOrganization != 0) {
