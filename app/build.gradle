@@ -34,8 +34,8 @@ android {
         applicationId "com.mv"
         minSdkVersion 17
         targetSdkVersion 22
-        versionCode 6
-        versionName "1.5"
+        versionCode 7
+        versionName "1.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "BASEURL", "\"http://demos.nanostuffs.com/mv_gov/index.php/\""
         multiDexEnabled true
@@ -86,5 +86,7 @@ dependencies {
     compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
         transitive = true;
     }
+    compile 'io.github.kobakei:ratethisapp:1.2.0'
+
 }
 apply plugin: 'com.google.gms.google-services'

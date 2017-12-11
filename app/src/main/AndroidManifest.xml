@@ -154,7 +154,10 @@
             android:name=".Service.LocationService"
             android:exported="false" />
 
-        <activity android:name=".Activity.LocationSelectionActity" />
+        <activity android:name=".Activity.LocationSelectionActity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"
+            />
 
         <service android:name=".Service.MyFirebaseMessagingService">
             <intent-filter>
@@ -178,6 +181,9 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity android:name=".Activity.UserApproveDetail"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
+        <activity android:name=".Activity.IndicatorTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"/>
     </application>

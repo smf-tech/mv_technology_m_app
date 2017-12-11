@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimaryDark">#00796B</color>
-    <color name="colorPrimary">#00897B</color>
+    <color name="colorPrimaryDark">#23b1b0</color>
+    <color name="colorPrimary">#23b1b0</color>
     <color name="colorAccent">#009688</color>
     <color name="colorPink">#FF4081</color>
     <color name="white">#FFFFFF</color>
@@ -23,4 +23,7 @@
     <color name="red">#FF0000</color>
 
     <color name="blue">#1B4792</color>
+
+    <color name="tab_background">#23b1b0</color>
+
 </resources>

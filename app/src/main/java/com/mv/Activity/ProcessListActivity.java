@@ -76,6 +76,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
     private void initViews() {
+
+
         preferenceHelper = new PreferenceHelper(this);
         //storing process Id to preference to use later
         preferenceHelper.insertString(Constants.PROCESS_ID, proceesId);
@@ -92,6 +94,12 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     protected void onResume() {
         super.onResume();
         resultList.clear();
+        LocationSelectionActity.selectedState="";
+        LocationSelectionActity.selectedDisrict="";
+        LocationSelectionActity.selectedTaluka="";
+        LocationSelectionActity.selectedCluster="";
+        LocationSelectionActity.selectedVillage="";
+        LocationSelectionActity.selectedSchool="";
         getAllProcessData();
 
     }
@@ -198,8 +206,9 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                     resultList = new ArrayList<>();
                     resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(proceesId, Constants.TASK_ANSWER);
                     idList = new ArrayList<>();
-                    for (int k = 0; k < resultList.size(); k++)
+                    for (int k = 0; k < resultList.size(); k++) {
                         idList.add(resultList.get(k).getUnique_Id());
+                    }
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     JSONArray resultArray = jsonObject.getJSONArray("tsk");
                     for (int j = 0; j < resultArray.length(); j++) {

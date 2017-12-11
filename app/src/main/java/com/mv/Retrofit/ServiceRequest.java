@@ -63,4 +63,7 @@ public interface ServiceRequest {
     @FormUrlEncoded
     @POST("user/app_get_school")
     Call<ResponseBody> getSchool(@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster, @Field("village") String mVillage);
+
+
+
 }

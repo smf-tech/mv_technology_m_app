@@ -10,14 +10,14 @@
     app:cardBackgroundColor="@color/white">
 
     <LinearLayout
-        android:id="@+id/layoutGroup"
+        android:id="@+id/layoutCommunityMember"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
         android:padding="5dp">
 
         <TextView
-            android:id="@+id/txtCommunityName"
+            android:id="@+id/txtCommunityMember"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
@@ -33,15 +33,6 @@
             android:textSize="@dimen/medium_text" />
 
 
-        <ImageView
-            android:layout_width="15dp"
-
-            android:layout_height="20dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="5dp"
-            android:src="@drawable/arrow" />
 
     </LinearLayout>
 

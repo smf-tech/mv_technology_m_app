@@ -78,6 +78,8 @@ public class TrainingFragment extends Fragment {
             }
             adapter.notifyDataSetChanged();
         }
+
+
         return view;
     }
 
@@ -130,7 +132,7 @@ public class TrainingFragment extends Fragment {
                     if (response.body() != null) {
                         String str = response.body().string();
                         if (str != null && str.length() > 0) {
-                            preferenceHelper.insertString(PreferenceHelper.TrainingContentData, str);
+                             preferenceHelper.insertString(PreferenceHelper.TrainingContentData, str);
                             JSONArray jsonArray = new JSONArray(str);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<DownloadContent> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), DownloadContent[].class));
