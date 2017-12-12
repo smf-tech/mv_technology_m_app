@@ -68,7 +68,7 @@ public class TrainingFragment extends Fragment {
             if (Utills.isConnected(getActivity())) {
                 getData();
             } else {
-                showPopUp();
+                Utills.showInternetPopUp(getActivity());
             }
         } else {
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();

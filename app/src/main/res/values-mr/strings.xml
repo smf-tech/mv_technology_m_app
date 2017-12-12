@@ -14,6 +14,7 @@
     <string name="error_offline_share_post">आपण ऑफलाइन पोस्ट करू शकत नाही</string>
     <string name="error_offline_like_post">आपण ऑफलाइन लाईक करू शकत नाही</string>
      <string name="ok">ओके </string>
+    <string name="Setting">सेटिंग</string>
     <string name="cancel">रद्द करा</string>
     <!--Home Acitivty-->
     <string name="intro_about_header">अबाऊट</string>

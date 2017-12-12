@@ -567,15 +567,66 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 jsonObject2.put("User_Email__c", edit_text_email.getText().toString().trim());
                 jsonObject2.put("User_Mobile_No__c", edit_text_mobile_number.getText().toString().trim());
                 jsonObject2.put("MV_Role__c", mListRoleId.get(mSelectRole));
-                jsonObject2.put("User_State__c", mListState.get(mSelectState));
+
                 jsonObject2.put("Last_Name__c", edit_text_last_name.getText().toString().trim());
                 jsonObject2.put("Middle_Name__c", edit_text_midle_name.getText().toString().trim());
-                jsonObject2.put("User_Cluster__c", mListCluster.get(mSelectCluster));
-                jsonObject2.put("User_District__c", mListDistrict.get(mSelectDistrict));
-                jsonObject2.put("User_Taluka__c", mListTaluka.get(mSelectTaluka));
-                jsonObject2.put("User_Village__c", mListVillage.get(mSelectVillage));
-                jsonObject2.put("User_SchoolID__c", edit_text_school_code.getText().toString().trim());
-                jsonObject2.put("UserSchoolName__c", mListSchoolName.get(mSelectSchoolName));
+
+                jsonObject2.put("User_State__c", mListState.get(mSelectState));
+
+
+                if (mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("School")) {
+                    jsonObject2.put("User_Cluster__c", mListCluster.get(mSelectCluster));
+                    jsonObject2.put("User_District__c", mListDistrict.get(mSelectDistrict));
+                    jsonObject2.put("User_Taluka__c", mListTaluka.get(mSelectTaluka));
+                    jsonObject2.put("User_Village__c", mListVillage.get(mSelectVillage));
+                    jsonObject2.put("UserSchoolName__c", mListSchoolName.get(mSelectSchoolName));
+                } else if (mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("Village")) {
+                    jsonObject2.put("User_Cluster__c", mListCluster.get(mSelectCluster));
+                    jsonObject2.put("User_District__c", mListDistrict.get(mSelectDistrict));
+                    jsonObject2.put("User_Taluka__c", mListTaluka.get(mSelectTaluka));
+                    jsonObject2.put("User_Village__c", mListVillage.get(mSelectVillage));
+                    jsonObject2.put("UserSchoolName__c", "Select");
+                } else if (mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("Cluster")) {
+                    jsonObject2.put("User_Cluster__c", mListCluster.get(mSelectCluster));
+                    jsonObject2.put("User_District__c", mListDistrict.get(mSelectDistrict));
+                    jsonObject2.put("User_Taluka__c", mListTaluka.get(mSelectTaluka));
+                    jsonObject2.put("User_Village__c", "Select");
+                    jsonObject2.put("UserSchoolName__c", "Select");
+                } else if (mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("Taluka")) {
+                    jsonObject2.put("User_Cluster__c", "Select");
+                    jsonObject2.put("User_District__c", mListDistrict.get(mSelectDistrict));
+                    jsonObject2.put("User_Taluka__c", mListTaluka.get(mSelectTaluka));
+                    jsonObject2.put("User_Village__c", "Select");
+                    jsonObject2.put("UserSchoolName__c", "Select");
+                } else if (mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("District")) {
+                    jsonObject2.put("User_Cluster__c", "Select");
+                    jsonObject2.put("User_District__c", mListDistrict.get(mSelectDistrict));
+                    jsonObject2.put("User_Taluka__c", "Select");
+                    jsonObject2.put("User_Village__c", "Select");
+                    jsonObject2.put("UserSchoolName__c", "Select");
+                } else if (mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("State")) {
+                    jsonObject2.put("User_Cluster__c", "Select");
+                    jsonObject2.put("User_District__c", "Select");
+                    jsonObject2.put("User_Taluka__c", "Select");
+                    jsonObject2.put("User_Village__c", "Select");
+                    jsonObject2.put("UserSchoolName__c", "Select");
+                }
+                else {
+                    jsonObject2.put("User_Cluster__c", mListCluster.get(mSelectCluster));
+                    jsonObject2.put("User_District__c", mListDistrict.get(mSelectDistrict));
+                    jsonObject2.put("User_Taluka__c", mListTaluka.get(mSelectTaluka));
+                    jsonObject2.put("User_Village__c", mListVillage.get(mSelectVillage));
+                    jsonObject2.put("UserSchoolName__c", mListSchoolName.get(mSelectSchoolName));
+                }
+
+
+
+
+
+                jsonObject2.put("User_SchoolID__c", "Select");
+
+
+
                 if (mSelectProject > 0)
                     jsonObject2.put("Project__c", mListProjectId.get(mSelectProject));
                 JSONObject jsonObject = new JSONObject();

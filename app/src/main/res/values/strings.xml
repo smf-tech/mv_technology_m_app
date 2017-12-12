@@ -13,6 +13,7 @@
     <string name="error_offline_share_post">You cannot share offline post</string>
     <string name="error_offline_like_post">You cannot like offline post</string>
     <string name="ok">OK</string>
+    <string name="Setting">Setting</string>
     <string name="cancel">Cancel</string>
     <!--Home Acitivty-->
     <string name="intro_about_header">About</string>

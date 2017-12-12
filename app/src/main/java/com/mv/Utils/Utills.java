@@ -269,17 +269,21 @@ public class Utills {
 
         AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 
-        alertDialog.setCancelable(false);
+        alertDialog.setCancelable(true);
         alertDialog.setMessage(context.getString(R.string.error_no_internet));
         alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
-        alertDialog.setButton(context.getString(R.string.ok), new DialogInterface.OnClickListener() {
+        alertDialog.setButton(context.getString(R.string.Setting), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Intent settingsIntent = new Intent(Settings.ACTION_SETTINGS);
 
                 context.startActivity(settingsIntent);
             }
         });
-
+        alertDialog.setButton2(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
         // Showing Alert Message
         alertDialog.show();
     }

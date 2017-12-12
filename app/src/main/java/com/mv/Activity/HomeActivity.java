@@ -75,8 +75,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_UKRAINIAN = "mr";
     public static final String LANGUAGE = "language";
-    ViewPagerAdapter adapter;
-
+    private ViewPagerAdapter adapter;
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +86,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         binding.setActivity(this);
         preferenceHelper = new PreferenceHelper(this);
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
+        setActionbar(getString(R.string.app_name));
+         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+         viewPager = (ViewPager) findViewById(R.id.pager);
+
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             if (Utills.isConnected(this))
                 getUserData();
@@ -113,7 +118,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private void initViews() {
         Intent receivedIntent = getIntent();
 
-        setActionbar(getString(R.string.app_name));
+
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -133,7 +138,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         // binding.process.getLayoutParams().width = textWidth;
 
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+
         /*tabLayout.removeAllTabs();
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.broadcast)));
         tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.community)));
@@ -145,7 +150,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 */
         //      tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+
         tabLayout.setupWithViewPager(viewPager);
         setupViewPager(viewPager);
 
@@ -187,6 +192,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setupViewPager(ViewPager viewPager) {
+       List<Fragment> fragmentList =  getSupportFragmentManager().getFragments();
+       if(fragmentList != null && fragmentList.size()>0){
+           getSupportFragmentManager().getFragments().clear();
+       }
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         List<String> allTab = new ArrayList<>();
         adapter.clearFrag();
@@ -208,9 +217,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
             if(allTab.contains("My Calendar"))
                 adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
-            adapter.notifyDataSetChanged();
-            viewPager.setAdapter(adapter);
 
+
+            viewPager.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
             showApprovedDilaog();
         } else {
 
@@ -230,8 +240,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
             if(allTab.contains("My Calendar"))
                 adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
-            adapter.notifyDataSetChanged();
+
             viewPager.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         }
 
 
@@ -265,18 +276,22 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
+        private  List<Fragment> mFragmentList = new ArrayList<>();
+        private  List<String> mFragmentTitleList = new ArrayList<>();
 
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
+
         }
 
         @Override
         public Fragment getItem(int position) {
             return mFragmentList.get(position);
         }
-
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
         @Override
         public int getCount() {
             return mFragmentList.size();
