@@ -1,5 +1,8 @@
 package com.mv.Activity;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +26,7 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
+import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityCommentBinding;
@@ -56,17 +60,27 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community_member_name);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
-        initViews();
+        initViews(getString(R.string.Community_member));
         preferenceHelper = new PreferenceHelper(this);
-
-        GetCommunityMember();
-
-
+        if (Utills.isConnected(this))
+            GetCommunityMember();
+        else
+            Utills.showInternetPopUp(CommunityMemberNameActivity.this);
     }
-    private void initViews(){
+
+
+
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
+    }
+
+    private void initViews(String title){
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText("Members");
+        toolbar_title.setText(title);
+
         img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
@@ -188,4 +202,6 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
         finish();
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
+
+
 }
