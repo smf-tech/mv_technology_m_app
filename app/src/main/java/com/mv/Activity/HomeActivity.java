@@ -658,13 +658,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showApprovedDilaog() {
+        String message="";
         final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
 
         // Setting Dialog Title
         alertDialog.setTitle(getString(R.string.app_name));
 
         // Setting Dialog Message
-        alertDialog.setMessage("You are not approved yet");
+        if(User.getCurrentUser(getApplicationContext()).getApproval_role()!=null){
+          message =   "You are not approved yet." +  "\n " +"Your"+ " " +User.getCurrentUser(getApplicationContext()).getApproval_role() + " "+ "will approve you.";
+        }else {
+            message = "You are not approved yet." ;
+        }
+        alertDialog.setMessage(message);
 
         // Setting Icon to Dialog
         alertDialog.setIcon(R.drawable.logomulya);

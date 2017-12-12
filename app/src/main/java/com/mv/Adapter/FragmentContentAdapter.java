@@ -95,7 +95,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.layout_download.setVisibility(View.GONE);
+        holder.layout_share.setVisibility(View.GONE);
        /* Glide.with(mContext)
                 .load(getUrlWithHeaders(new PreferenceHelper(mContext).getString(PreferenceHelper.InstanceUrl)+"services/data/v20.0/sobjects/Attachment/"+mDataList.get(position).getId()))
                 .skipMemoryCache(true)
@@ -249,6 +249,10 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             img_comment=(ImageView) itemLayoutView.findViewById(R.id.img_comment);
             txt_forward =(TextView) itemLayoutView.findViewById(R.id.txt_forward);
             layout_comment = (LinearLayout) itemLayoutView.findViewById(R.id.layout_comment);
+            layout_download = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download);
+            layout_like = (LinearLayout) itemLayoutView.findViewById(R.id.layout_like);
+            layout_share = (LinearLayout) itemLayoutView.findViewById(R.id.layout_share);
+
             layout_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -258,8 +262,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                 }
             });
 
-            layout_share = (LinearLayout) itemLayoutView.findViewById(R.id.layout_share);
-            layout_share.setOnClickListener(new View.OnClickListener() {
+            layout_download.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //showGroupDialog(getAdapterPosition());
@@ -275,8 +278,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                     }
                 }
             });
-            layout_download = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download);
-            layout_like = (LinearLayout) itemLayoutView.findViewById(R.id.layout_like);
+
             layout_like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
