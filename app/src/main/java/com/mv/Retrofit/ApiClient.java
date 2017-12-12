@@ -37,7 +37,28 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiClient {
     private static Retrofit retrofit = null;
     private static Retrofit retrofitWithHeader = null;
+    private static Retrofit retrofitImageHeader = null;
 
+    public static Retrofit getImageClient() {
+        if (retrofitImageHeader == null) {
+            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+            interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+            OkHttpClient client = null;
+
+            try {
+                client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            retrofitImageHeader = new Retrofit.Builder()
+                    .baseUrl("https://api.github.com/")
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+        }
+        return retrofitImageHeader;
+    }
 
     public static Retrofit getClient() {
         if (retrofit == null) {
