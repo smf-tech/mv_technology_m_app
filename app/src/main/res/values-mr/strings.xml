@@ -98,6 +98,7 @@
     <string name="description">डिस्क्रिप्शन </string>
     <string name="title">शीर्षक</string>
     <string name="loading_chats">चॅट्स लोड करत आहे</string>
+    <string name="loading_members">सदस्य  लोड करत आहे</string>
     <string name="loading_template">चॅट्स लोड करत आहे</string>
     <string name="home">होम </string>
     <string name="forgot_password">पासवर्ड विसरला</string>
@@ -145,4 +146,5 @@
     <string name="lang">भाषा बदला</string>
     <string name="profile">अपडेट  प्रोफाइल </string>
     <string name="logout">बाहेर पडणे</string>
+
 </resources>

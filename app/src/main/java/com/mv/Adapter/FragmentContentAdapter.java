@@ -135,11 +135,20 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
         holder.txt_time.setText(mDataList.get(position).getTime().toString());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");
         holder.txtCommentCount.setText(mDataList.get(position).getCommentCount() + " Comments");
+        holder.img_share.setImageResource(R.drawable.download);
+        holder.txt_forward.setText("Share");
         if (mDataList.get(position).getIsLike())
             holder.imgLike.setImageResource(R.drawable.like);
         else
             holder.imgLike.setImageResource(R.drawable.dislike);
+
+        if(mDataList.get(position).getCommentCount()==0){
+            holder.img_comment.setImageResource(R.drawable.no_comment);
+        }else {
+            holder.img_comment.setImageResource(R.drawable.comment);
+        }
     }
+
 
     @Override
     public long getItemId(int position) {
@@ -218,9 +227,9 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView picture, userImage, imgLike;
+        public ImageView picture, userImage, imgLike,img_share,img_comment;
         public CardView card_view;
-        public TextView txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount;
+        public TextView txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount,txt_forward;
         public LinearLayout layout_like, layout_comment, layout_share, layout_download;
 
         public ViewHolder(View itemLayoutView) {
@@ -236,7 +245,9 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             card_view = (CardView) itemLayoutView.findViewById(R.id.card_view);
             imgLike = (ImageView) itemLayoutView.findViewById(R.id.imgLike);
             textViewLike = (TextView) itemLayoutView.findViewById(R.id.textViewLike);
-
+            img_share =(ImageView) itemLayoutView.findViewById(R.id.img_share);
+            img_comment=(ImageView) itemLayoutView.findViewById(R.id.img_comment);
+            txt_forward =(TextView) itemLayoutView.findViewById(R.id.txt_forward);
             layout_comment = (LinearLayout) itemLayoutView.findViewById(R.id.layout_comment);
             layout_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -316,13 +327,19 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
+                    Utills.hideProgressDialog();
                     try {
                         String str = response.body().string();
                         byte[] decodedString = Base64.decode(str, Base64.DEFAULT);
                         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                        getLocalBitmapUri(decodedByte);
+
                         Utills.showToast("Image Downloaded Successfully...", mContext);
+
+                        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        shareIntent.setType("text/html");
+                        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Title : "+mDataList.get(adapterPosition).getTitle()+"\n\nDescription : "+mDataList.get(adapterPosition).getDescription());
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(decodedByte));
+                        mContext.startActivity(Intent.createChooser(shareIntent, "Share Content"));
                     } catch (Exception e) {
                         Utills.hideProgressDialog();
                         e.printStackTrace();

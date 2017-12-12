@@ -69,7 +69,6 @@
                 <data android:mimeType="text/*" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Activity.ImageTemplateActivity"
             android:screenOrientation="portrait"
@@ -139,7 +138,6 @@
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
-        Rohit Gujar (rohit.gujar@nanostuffs.com, rohitgujar11@gmail.com)
         <receiver
             android:name=".receiver.InternetConnector_Receiver"
             android:enabled="true">
@@ -159,6 +157,7 @@
         <activity
             android:name=".Activity.LocationSelectionActity"
             android:screenOrientation="portrait"
+            android:theme="@style/AppCompatAlertDialog"
             android:windowSoftInputMode="stateHidden" />
 
         <service android:name=".Service.MyFirebaseMessagingService">
@@ -192,11 +191,10 @@
             android:name=".Activity.IndicatorTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-
         <activity
             android:name=".Activity.CommunityMemberNameActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden|adjustPan" />
     </application>
 
 </manifest>

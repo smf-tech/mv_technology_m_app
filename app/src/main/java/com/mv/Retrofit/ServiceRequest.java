@@ -65,5 +65,9 @@ public interface ServiceRequest {
     Call<ResponseBody> getSchool(@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster, @Field("village") String mVillage);
 
 
+    @FormUrlEncoded
+    @POST("")
+    Call<ResponseBody> getLoacationData(@Url String url,@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster, @Field("village") String mVillage);
+
 
 }

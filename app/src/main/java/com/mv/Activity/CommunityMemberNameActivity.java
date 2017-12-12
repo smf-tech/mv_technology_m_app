@@ -6,13 +6,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mv.Adapter.CommentAdapter;
 import com.mv.Adapter.CommunityMemberAdapter;
+import com.mv.Model.Community;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -27,6 +32,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -36,11 +42,14 @@ import retrofit2.Response;
 public class CommunityMemberNameActivity extends AppCompatActivity implements View.OnClickListener{
     private PreferenceHelper preferenceHelper;
     public ArrayList<String> CommunityMemberList;
+    public ArrayList<String> replicaCommunityList;
     CommunityMemberAdapter adapter;
     private CommunityMemberNameActivity binding;
     RecyclerView recyclerView;
-    private TextView toolbar_title;
+    private TextView toolbar_title,textNoData;
     private ImageView img_back, img_logout;
+    EditText edit_text_email;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,36 +72,50 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
         img_back.setOnClickListener(this);
         img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.INVISIBLE);
+        textNoData = (TextView) findViewById(R.id.textNoData);
+        edit_text_email = (EditText) findViewById(R.id.edit_text_email);
+        edit_text_email.addTextChangedListener(watch);
 
     }
 
     public void GetCommunityMember(){
-        Utills.showProgressDialog(this, getString(R.string.loading_chats), getString(R.string.progress_please_wait));
+        Utills.showProgressDialog(this, getString(R.string.loading_members), getString(R.string.progress_please_wait));
         String url = "";
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + "/services/apexrest/userdetails?communityId=" + preferenceHelper.getString(PreferenceHelper.COMMUNITYID);
-        Log.e("url",url);
-        Log.e("community id",preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
+
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
                      CommunityMemberList = new ArrayList<>();
-                    String strResponse = response.body().string();
-                    JSONArray jsonArray = new JSONArray(strResponse);
-                    for (int i=0;i<=jsonArray.length();i++){
-                        CommunityMemberList.add(jsonArray.getString(i));
+                     replicaCommunityList =new ArrayList<>();
+                     if(response.body()!=null) {
+                         String strResponse = response.body().string();
+                         JSONArray jsonArray = new JSONArray(strResponse);
+                         if (jsonArray.length() != 0) {
 
-                        Log.e("member",CommunityMemberList.get(i));
-                        adapter = new CommunityMemberAdapter(getApplicationContext(),CommunityMemberList);
-                        recyclerView.setAdapter(adapter);
-                        recyclerView.setHasFixedSize(true);
-                        recyclerView.setLayoutManager(new LinearLayoutManager(CommunityMemberNameActivity.this));
-                    }
+                             for (int i = 0; i <= jsonArray.length(); i++) {
+                                 CommunityMemberList.add(jsonArray.getString(i));
 
+
+                                 adapter = new CommunityMemberAdapter(getApplicationContext(), CommunityMemberList);
+                                 recyclerView.setAdapter(adapter);
+                                 recyclerView.setHasFixedSize(true);
+                                 recyclerView.setLayoutManager(new LinearLayoutManager(CommunityMemberNameActivity.this));
+                                 replicaCommunityList.add(CommunityMemberList.get(i));
+                             }
+                             textNoData.setVisibility(View.GONE);
+                             adapter.notifyDataSetChanged();
+                         } else {
+                             textNoData.setVisibility(View.VISIBLE);
+                         }
+
+
+                     }
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -107,6 +130,47 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
                 Utills.hideProgressDialog();
             }
         });
+    }
+    TextWatcher watch = new TextWatcher() {
+
+        @Override
+        public void afterTextChanged(Editable arg0) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int a, int b, int c) {
+            // TODO Auto-generated method stub
+            setFilter(s.toString());
+
+        }
+    };
+    private void setFilter(String s) {
+        List<String> list = new ArrayList<>();
+        CommunityMemberList.clear();
+        for (int i = 0; i < replicaCommunityList.size(); i++) {
+            CommunityMemberList.add(replicaCommunityList.get(i));
+        }
+        for (int i = 0; i < CommunityMemberList.size(); i++) {
+            if (CommunityMemberList.get(i).toLowerCase().contains(s.toLowerCase())) {
+                list.add(CommunityMemberList.get(i));
+            }
+        }
+        CommunityMemberList.clear();
+        for (int i = 0; i < list.size(); i++) {
+            CommunityMemberList.add(list.get(i));
+        }
+        if(CommunityMemberList.size()!=0) {
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
