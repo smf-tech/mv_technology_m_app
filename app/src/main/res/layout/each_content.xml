@@ -120,7 +120,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
-                    android:text="Forward"
+                    android:text="@string/Forward"
                     android:textColor="@color/medium_grey"
                     android:textSize="12dp"
                     my_font:typeface="Abel-Regular.ttf" />
@@ -146,7 +146,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
-                    android:text="Comment"
+                    android:text="@string/Comment"
                     android:textColor="@color/medium_grey"
                     android:textSize="12dp"
                     my_font:typeface="Abel-Regular.ttf" />
@@ -174,7 +174,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
-                    android:text="Like"
+                    android:text="@string/Like"
                     android:textColor="@color/medium_grey"
                     android:textSize="12dp"
                     my_font:typeface="Abel-Regular.ttf" />
@@ -201,7 +201,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
-                    android:text="Share"
+                    android:text="@string/Share"
                     android:textColor="@color/medium_grey"
                     android:textSize="12dp"
                     my_font:typeface="Abel-Regular.ttf" />

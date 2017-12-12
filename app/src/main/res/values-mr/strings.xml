@@ -115,6 +115,10 @@
     <string name="issue_submit">समस्या यशस्वीरित्या सबमिट केली...</string>
     <string name="broadcast_submit">ब्रॉडकास्ट यशस्वी रित्या सबमिट झाला ...</string>
 
+    <string name="Comment">टिप्पणी</string>
+    <string name="Forward">फॉरवर्ड </string>
+    <string name="Share">शेअर</string>
+    <string name="Like">पसंत</string>
 
     <string name="fileNotPresent">फाईल उपलब्ध नाही. कृपया डाउनलोड बटण दाबा</string>
 

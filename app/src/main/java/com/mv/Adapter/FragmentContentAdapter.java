@@ -136,7 +136,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");
         holder.txtCommentCount.setText(mDataList.get(position).getCommentCount() + " Comments");
         holder.img_share.setImageResource(R.drawable.download);
-        holder.txt_forward.setText("Share");
+        holder.txt_forward.setText(mContext.getString(R.string.Share));
         if (mDataList.get(position).getIsLike())
             holder.imgLike.setImageResource(R.drawable.like);
         else

@@ -189,6 +189,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private void setupViewPager(ViewPager viewPager) {
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         List<String> allTab = new ArrayList<>();
+        adapter.clearFrag();
+
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameNoteApproved().split(";")));
             ;
@@ -206,7 +208,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
             if(allTab.contains("My Calendar"))
                 adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
-
+            adapter.notifyDataSetChanged();
             viewPager.setAdapter(adapter);
 
             showApprovedDilaog();
@@ -228,6 +230,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
             if(allTab.contains("My Calendar"))
                 adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
+            adapter.notifyDataSetChanged();
             viewPager.setAdapter(adapter);
         }
 
@@ -283,7 +286,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
-
+        public void clearFrag() {
+            mFragmentList.clear();
+            mFragmentTitleList.clear();
+        }
         @Override
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);

@@ -62,7 +62,7 @@ public class TeamManagementUserProfileActivity extends AppCompatActivity impleme
     private void initViews() {
         preferenceHelper = new PreferenceHelper(context);
 
-        setActionbar(getString(R.string.Schedule_training));
+        setActionbar(getString(R.string.team_user_approval));
         binding.swiperefresh.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override

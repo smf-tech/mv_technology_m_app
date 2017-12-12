@@ -225,7 +225,7 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
     public void showDialog() {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(UserApproveDetail.this);
-        alertDialog.setTitle("Comment");
+        alertDialog.setTitle(getString(R.string.Comment));
         alertDialog.setMessage("Please Enter Comment");
 
         final EditText input = new EditText(UserApproveDetail.this);

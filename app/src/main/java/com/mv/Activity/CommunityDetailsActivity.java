@@ -386,6 +386,11 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
             binding.heart.setImageResource(R.drawable.like);
         else
             binding.heart.setImageResource(R.drawable.dislike);
+        if(mContent.getCommentCount()==0){
+            binding.imgComment.setImageResource(R.drawable.no_comment);
+        }else {
+            binding.imgComment.setImageResource(R.drawable.comment);
+        }
         binding.likeCount.setText(mContent.getLikeCount()+ " "+ getString(R.string.likes));
         binding.txtCommentCnt.setText(mContent.getCommentCount() + " "+getString(R.string.comments));
         binding.Title.setText(getString(R.string.title)+" : " + mContent.getTitle());
