@@ -80,7 +80,6 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         toolbar_title.setText(title);
-
         img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);

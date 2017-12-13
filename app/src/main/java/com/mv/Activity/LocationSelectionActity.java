@@ -598,25 +598,5 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     }
 
 
-    public static String[] getColumnIdex(String[] value) {
-
-        for (int i = 0; i < value.length; i++) {
-            value[i] = value[i].trim();
-        }
-        return value;
-
-    }
-
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(LocaleManager.setLocale(base));
-    }
-
-    @Override
-    public void onBackPressed() {
-
-        finish();
-      //  overridePendingTransition(R.anim.fade_out, R.anim.fade_in);
-    }
 
 }

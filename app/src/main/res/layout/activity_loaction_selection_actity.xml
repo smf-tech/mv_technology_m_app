@@ -197,12 +197,12 @@
 
         <com.mv.Widgets.MyFontButton
             android:id="@+id/btn_submit"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
             android:background="@color/colorPink"
             android:text="@string/Submit"
-
+            android:layout_weight="1"
             android:textColor="#ffffff"
             android:textSize="17sp" />
     </LinearLayout>
