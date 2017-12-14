@@ -124,6 +124,8 @@ public class IndicatorFragment extends Fragment {
                                 task.setTask_Text__c(tasklist.getJSONObject(j).getString("Task_Text__c"));
                             task.setTask_type__c(tasklist.getJSONObject(j).getString("Task_type__c"));
                             task.setMV_Process__c(tasklist.getJSONObject(j).getString("MV_Process__c"));
+                           if(tasklist.getJSONObject(j).has("Location_Level__c"))
+                               task.setLocationLevel(tasklist.getJSONObject(j).getString("Location_Level__c"));
                             processList.getTasksList().add(task);
 
 

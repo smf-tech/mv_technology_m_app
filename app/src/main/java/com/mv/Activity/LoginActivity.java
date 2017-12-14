@@ -287,6 +287,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (binding.edtOtp.isShown()) {
 
             slideOut(binding.edtUsername, binding.edtOtp, getString(R.string.msg_enter_mobile));
+            if(yourCountDownTimer!=null)
             yourCountDownTimer.cancel();
             binding.tvTimer.setVisibility(View.GONE);
             binding.tvResendOtp.setVisibility(View.GONE);

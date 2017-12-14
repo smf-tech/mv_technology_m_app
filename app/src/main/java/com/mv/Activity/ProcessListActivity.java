@@ -228,7 +228,10 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
                             if (jsonArray.getJSONObject(i).has("Answer__c"))
                                 processList.setTask_Response__c(jsonArray.getJSONObject(i).getString("Answer__c"));
+
                             processList.setMV_Process__c(jsonArray.getJSONObject(i).getString("MV_Process__c"));
+                            if (jsonArray.getJSONObject(i).has("Location_Level__c"))
+                                processList.setLocationLevel(jsonArray.getJSONObject(i).getString("Location_Level__c"));
                             processList.setMV_Task__c_Id(jsonArray.getJSONObject(i).getString("MV_Task__c"));
                             processList.setTimestamp__c(jsonArray.getJSONObject(i).getString("Timestamp__c"));
                             processList.setUnique_Id__c(jsonArray.getJSONObject(i).getString("Unique_Id__c"));
@@ -314,6 +317,10 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                         processList.setIs_Response_Mnadetory__c(resultJsonObj.getBoolean("Is_Response_Mnadetory__c"));
                         if (resultJsonObj.has("Picklist_Value__c"))
                             processList.setPicklist_Value__c(resultJsonObj.getString("Picklist_Value__c"));
+
+                        if (resultJsonObj.has("Location_Level__c"))
+                            processList.setLocationLevel(resultJsonObj.getString("Location_Level__c"));
+
                         processList.setMV_Process__c(resultJsonObj.getString("MV_Process__c"));
                         processList.setTask_Text__c(resultJsonObj.getString("Task_Text__c"));
                         processList.setTask_type__c(resultJsonObj.getString("Task_type__c"));

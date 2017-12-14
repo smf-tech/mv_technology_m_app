@@ -101,6 +101,18 @@ public class Task implements Parcelable {
     private String isSave;
 
 
+    public String getLocationLevel() {
+        return LocationLevel;
+    }
+
+    public void setLocationLevel(String locationLevel) {
+        LocationLevel = locationLevel;
+    }
+
+    @ColumnInfo(name = "Location_Level__c")
+    @SerializedName("Location_Level__c")
+    @Expose
+    private String LocationLevel;
 
     public String getValidation() {
         return validation;
@@ -230,6 +242,7 @@ public class Task implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.Unique_Id);
         dest.writeString(this.Id);
         dest.writeString(this.Name);
         dest.writeValue(this.Is_Completed__c);
@@ -244,10 +257,12 @@ public class Task implements Parcelable {
         dest.writeString(this.Unique_Id__c);
         dest.writeString(this.MTUser__c);
         dest.writeString(this.isSave);
+        dest.writeString(this.LocationLevel);
         dest.writeString(this.validation);
     }
 
     protected Task(Parcel in) {
+        this.Unique_Id = in.readInt();
         this.Id = in.readString();
         this.Name = in.readString();
         this.Is_Completed__c = (Boolean) in.readValue(Boolean.class.getClassLoader());
@@ -262,6 +277,7 @@ public class Task implements Parcelable {
         this.Unique_Id__c = in.readString();
         this.MTUser__c = in.readString();
         this.isSave = in.readString();
+        this.LocationLevel = in.readString();
         this.validation = in.readString();
     }
 
