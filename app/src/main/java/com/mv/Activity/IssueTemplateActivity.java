@@ -148,6 +148,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                         mListDistrict.add(jsonArray.getString(i));
                     }
                     district_adapter.notifyDataSetChanged();
+                    binding.spinnerDistrict.setSelection(mListDistrict.indexOf(User.getCurrentUser(IssueTemplateActivity.this).getProject_Name__c()));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -233,6 +234,12 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         binding.spinnerDistrict.setAdapter(district_adapter);
         binding.spinnerDistrict.setSelection(1);
         binding.spinnerDistrict.setEnabled(false);
+
+        if (Utills.isConnected(this)) {
+            binding.spinnerDistrict.setEnabled(true);
+            getDistrict();
+        }
+
         taluka_adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, mListTaluka);
         taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
