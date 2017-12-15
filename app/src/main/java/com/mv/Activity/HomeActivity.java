@@ -7,9 +7,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +21,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +33,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kobakei.ratethisapp.RateThisApp;
@@ -77,22 +87,32 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public static final String LANGUAGE = "language";
     ViewPagerAdapter adapter;
 
+    private FusedLocationProviderClient mFusedLocationClient;
+    private Location mLastLocation;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
         binding.setActivity(this);
         preferenceHelper = new PreferenceHelper(this);
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
-        if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
-            if (Utills.isConnected(this))
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if(User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")){
+            Utills.scheduleJob(getApplicationContext());
+        }
+                if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
+            if (Utills.isConnected(this)) {
                 getUserData();
+
+            }
             else
                 initViews();
         } else
             initViews();
-
 
     }
 
@@ -104,6 +124,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
+       // getAddress();
 
         Intent intent = new Intent(this, LocationService.class);
         // add infos for the service which file to download and where to store
@@ -784,5 +805,41 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void getAddress() {
+        mFusedLocationClient.getLastLocation()
 
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location == null) {
+                            Log.e("location","null");
+                            return;
+                        }
+
+                        mLastLocation = location;
+                        Log.e("lat", String.valueOf(mLastLocation.getLatitude()));
+                        Log.e("long", String.valueOf(mLastLocation.getLongitude()));
+                        Toast.makeText(getApplicationContext(),"latitude" +location.getLatitude() +"longitude" +location.getLongitude(),Toast.LENGTH_SHORT).show();
+                        if (!Geocoder.isPresent()) {
+                            return;
+                        }
+
+                        // If the user pressed the fetch address button before we had the location,
+                        // this will be set to true indicating that we should kick off the intent
+                        // service after fetching the location.
+                      /*  if (mAddressRequested) {
+                            startIntentService();
+                        }*/
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                       // Log.w(TAG, "getLastLocation:onFailure", e);
+                        Log.e("fail","unable to connect");
+                    }
+                });
+
+
+    }
 }

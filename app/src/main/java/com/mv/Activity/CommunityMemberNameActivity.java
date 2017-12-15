@@ -114,8 +114,6 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
 
                              for (int i = 0; i <= jsonArray.length(); i++) {
                                  CommunityMemberList.add(jsonArray.getString(i));
-
-
                                  adapter = new CommunityMemberAdapter(getApplicationContext(), CommunityMemberList);
                                  recyclerView.setAdapter(adapter);
                                  recyclerView.setHasFixedSize(true);
@@ -170,6 +168,7 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
     private void setFilter(String s) {
         List<String> list = new ArrayList<>();
         CommunityMemberList.clear();
+        replicaCommunityList.clear();
         for (int i = 0; i < replicaCommunityList.size(); i++) {
             CommunityMemberList.add(replicaCommunityList.get(i));
         }

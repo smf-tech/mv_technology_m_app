@@ -69,5 +69,8 @@ public interface ServiceRequest {
     @POST("")
     Call<ResponseBody> getLoacationData(@Url String url,@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster, @Field("village") String mVillage);
 
+    @FormUrlEncoded
+    @POST("")
+    Call<ResponseBody> getMapContent(@Url String url,@Field("id") String mId, @Field("lat") String mlat, @Field("lon") String mlon);
 
 }
