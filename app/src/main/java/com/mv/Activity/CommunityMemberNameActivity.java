@@ -20,7 +20,9 @@ import android.widget.Toast;
 
 import com.mv.Adapter.CommentAdapter;
 import com.mv.Adapter.CommunityMemberAdapter;
+import com.mv.Adapter.PichartDescriptiveListAdapter;
 import com.mv.Model.Community;
+import com.mv.Model.PiaChartModel;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -35,6 +37,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +48,8 @@ import retrofit2.Response;
 
 public class CommunityMemberNameActivity extends AppCompatActivity implements View.OnClickListener{
     private PreferenceHelper preferenceHelper;
-    public ArrayList<String> CommunityMemberList;
-    public ArrayList<String> replicaCommunityList;
+    public ArrayList<String> CommunityMemberList=new ArrayList<>();
+    ArrayList<String> repplicaCahart = new ArrayList<>();
     CommunityMemberAdapter adapter;
     private CommunityMemberNameActivity binding;
     RecyclerView recyclerView;
@@ -88,6 +91,8 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
         textNoData = (TextView) findViewById(R.id.textNoData);
         edit_text_email = (EditText) findViewById(R.id.edit_text_email);
         edit_text_email.addTextChangedListener(watch);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(CommunityMemberNameActivity.this));
 
     }
 
@@ -105,24 +110,20 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
                 Utills.hideProgressDialog();
                 try {
                      CommunityMemberList = new ArrayList<>();
-                     replicaCommunityList =new ArrayList<>();
+
                      if(response.body()!=null) {
                          String strResponse = response.body().string();
                          JSONArray jsonArray = new JSONArray(strResponse);
                          if (jsonArray.length() != 0) {
 
-                             for (int i = 0; i <= jsonArray.length(); i++) {
+                             final int numberOfItemsInResp = jsonArray.length();
+                             for (int i = 0; i < numberOfItemsInResp; i++) {
                                  CommunityMemberList.add(jsonArray.getString(i));
-
-
-                                 adapter = new CommunityMemberAdapter(getApplicationContext(), CommunityMemberList);
-                                 recyclerView.setAdapter(adapter);
-                                 recyclerView.setHasFixedSize(true);
-                                 recyclerView.setLayoutManager(new LinearLayoutManager(CommunityMemberNameActivity.this));
-                                 replicaCommunityList.add(CommunityMemberList.get(i));
                              }
+                             adapter = new CommunityMemberAdapter(getApplicationContext(), CommunityMemberList);
+                             recyclerView.setAdapter(adapter);
+
                              textNoData.setVisibility(View.GONE);
-                             adapter.notifyDataSetChanged();
                          } else {
                              textNoData.setVisibility(View.VISIBLE);
                          }
@@ -166,29 +167,40 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
 
         }
     };
+
     private void setFilter(String s) {
         List<String> list = new ArrayList<>();
-        CommunityMemberList.clear();
-        for (int i = 0; i < replicaCommunityList.size(); i++) {
-            CommunityMemberList.add(replicaCommunityList.get(i));
-        }
+        repplicaCahart.clear();
         for (int i = 0; i < CommunityMemberList.size(); i++) {
-            if (CommunityMemberList.get(i).toLowerCase().contains(s.toLowerCase())) {
-                list.add(CommunityMemberList.get(i));
+            repplicaCahart.add(CommunityMemberList.get(i));
+        }
+        for (int i = 0; i < repplicaCahart.size(); i++) {
+            if (repplicaCahart.get(i).toLowerCase().contains(s.toLowerCase())) {
+                list.add(repplicaCahart.get(i));
             }
         }
-        CommunityMemberList.clear();
+        repplicaCahart.clear();
         for (int i = 0; i < list.size(); i++) {
-            CommunityMemberList.add(list.get(i));
+            repplicaCahart.add(list.get(i));
         }
-        if(CommunityMemberList.size()!=0) {
-            adapter.notifyDataSetChanged();
+        adapter = new CommunityMemberAdapter(getApplicationContext(), repplicaCahart);
+        recyclerView.setAdapter(adapter);
+        if(repplicaCahart.size()==0)
+        {
+            textNoData.setVisibility(View.VISIBLE);
         }
+        else
+        {
+            textNoData.setVisibility(View.GONE);
+
+        }
+
+
     }
 
     @Override
     public void onClick(View view) {
-        Intent intent;
+
         switch (view.getId()) {
             case R.id.img_back:
                 finish();
