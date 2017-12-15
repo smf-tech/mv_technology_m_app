@@ -70,7 +70,7 @@ public class TeamManagementFragment  extends Fragment {
 
 
         Template processList = new Template();
-        processList.setName("User Profile");
+        processList.setName(getString(R.string.team_user_approval));
         processAllList.clear();
         processAllList.add(processList);
         mAdapter = new TeamManagementUserProfileAdapter(processAllList, getActivity());

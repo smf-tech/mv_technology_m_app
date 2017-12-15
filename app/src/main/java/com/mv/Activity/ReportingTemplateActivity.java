@@ -144,6 +144,8 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                         mListDistrict.add(jsonArray.getString(i));
                     }
                     district_adapter.notifyDataSetChanged();
+                    binding.spinnerDistrict.setSelection(mListDistrict.indexOf(User.getCurrentUser(ReportingTemplateActivity.this).getProject_Name__c()));
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -226,6 +228,10 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         binding.spinnerDistrict.setAdapter(district_adapter);
         binding.spinnerDistrict.setSelection(1);
         binding.spinnerDistrict.setEnabled(false);
+        if (Utills.isConnected(this)) {
+            binding.spinnerDistrict.setEnabled(true);
+            getDistrict();
+        }
         taluka_adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, mListTaluka);
         taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -342,12 +348,15 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                             if (array.length() > 0) {
                                 JSONObject object1 = array.getJSONObject(0);
                                 if (object1.has("Id") && FinalUri != null) {
-                                    JSONObject object2 = new JSONObject();
+                                  /*  JSONObject object2 = new JSONObject();
                                     object2.put("id", object1.getString("Id"));
                                     object2.put("img", img_str);
                                     JSONArray array1 = new JSONArray();
                                     array1.put(object2);
-                                    sendImageToServer(array1);
+                                    sendImageToServer(array1);*/
+                                   Utills.showToast("Report submitted successfully...", getApplicationContext());
+                                    finish();
+                                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
                                 } else {
                                     Utills.showToast("Report submitted successfully...", getApplicationContext());
                                     finish();
@@ -396,7 +405,6 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                 content.setAttachmentId(currentTime);
                 File mypath = new File(tempDir, current);
                 Utills.saveUriToPath(this, FinalUri, mypath);
-
             }
             AppDatabase.getAppDatabase(ReportingTemplateActivity.this).userDao().insertChats(content);
             Utills.showToast("Report submitted successfully...", getApplicationContext());
@@ -411,7 +419,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         JsonArray gsonObject = (JsonArray) jsonParser.parse(jsonArray.toString());
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
-        apiService.sendImageToSalesforce("http://mobileyougokidinformationdesk.com/denver123/videos/upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
+        apiService.sendImageToSalesforce("http://18.216.227.14/upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();

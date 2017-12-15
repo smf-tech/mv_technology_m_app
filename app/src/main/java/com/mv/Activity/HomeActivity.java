@@ -85,6 +85,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_UKRAINIAN = "mr";
     public static final String LANGUAGE = "language";
+
+    private TabLayout tabLayout;
+    private ViewPager viewPager;
     ViewPagerAdapter adapter;
 
     private FusedLocationProviderClient mFusedLocationClient;
@@ -100,6 +103,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         binding.setActivity(this);
         preferenceHelper = new PreferenceHelper(this);
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
+        setActionbar(getString(R.string.app_name));
+         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+         viewPager = (ViewPager) findViewById(R.id.pager);
+
+        if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
+            if (Utills.isConnected(this))
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if(User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")){
             Utills.scheduleJob(getApplicationContext());
@@ -107,12 +116,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             if (Utills.isConnected(this)) {
                 getUserData();
-
-            }
             else
                 initViews();
         } else
             initViews();
+
 
     }
 
@@ -124,7 +132,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-       // getAddress();
 
         Intent intent = new Intent(this, LocationService.class);
         // add infos for the service which file to download and where to store
@@ -149,24 +156,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         height = height - toolbarHeight;
         height = height - dpToPx(80);
         int textWidth = height / 3;
-        //  binding.community.getLayoutParams().width = textWidth;
-        // binding.content.getLayoutParams().width = textWidth;
-        // binding.process.getLayoutParams().width = textWidth;
 
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-        /*tabLayout.removeAllTabs();
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.broadcast)));
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.community)));
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.programme_management)));
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.training_content)));
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.team_management)));
-        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC"))
-            tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.indicator)));
-*/
-        //      tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         tabLayout.setupWithViewPager(viewPager);
         setupViewPager(viewPager);
 
@@ -208,6 +198,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setupViewPager(ViewPager viewPager) {
+       List<Fragment> fragmentList =  getSupportFragmentManager().getFragments();
+       if(fragmentList != null && fragmentList.size()>0){
+           getSupportFragmentManager().getFragments().clear();
+       }
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         List<String> allTab = new ArrayList<>();
         adapter.clearFrag();
@@ -229,9 +223,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
             if(allTab.contains("My Calendar"))
                 adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
-            adapter.notifyDataSetChanged();
-            viewPager.setAdapter(adapter);
 
+
+            viewPager.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
             showApprovedDilaog();
         } else {
 
@@ -251,8 +246,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
             if(allTab.contains("My Calendar"))
                 adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
-            adapter.notifyDataSetChanged();
+
             viewPager.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
         }
 
 
@@ -273,7 +269,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                finish();
+
                             }
                         }).create();
         dialog.show();
@@ -291,13 +287,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
+
         }
 
         @Override
         public Fragment getItem(int position) {
             return mFragmentList.get(position);
         }
-
+        @Override
+        public int getItemPosition(Object object) {
+            return POSITION_NONE;
+        }
         @Override
         public int getCount() {
             return mFragmentList.size();
@@ -387,53 +387,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             img_list.setVisibility(View.GONE);
             img_list.setOnClickListener(this);
         }
-       /* mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(Title);
-        img_back = (ImageView) findViewById(R.id.img_back);
-        img_back.setVisibility(View.VISIBLE);
-        img_back.setOnClickListener(this);
-        img_logout = (ImageView) findViewById(R.id.img_logout);
-        img_logout.setVisibility(View.VISIBLE);
-        img_logout.setOnClickListener(this);
-        img_list = (ImageView) findViewById(R.id.img_list);
-        img_lang = (ImageView) findViewById(R.id.img_lang);
-        img_lang.setVisibility(View.VISIBLE);
-        img_lang.setOnClickListener(this);
-        img_list.setImageResource(R.drawable.ic_account_circle_white_36dp);
-        img_list.setVisibility(View.VISIBLE);
-        img_list.setOnClickListener(this);*/
 
     }
 
-   /* public void onCommunityClick() {
-        Intent intent;
-        intent = new Intent(HomeActivity.this, GroupsActivity.class);
-        startActivity(intent);
-    }
 
-    public void onProcessClick() {
-       *//* Intent intent;
-        intent = new Intent(HomeActivity.this, WebViewActivity.class);
-        intent.putExtra(Constants.URL, "http://dev-mulyavardhan.cs57.force.com/");
-        intent.putExtra(Constants.TITLE, "New MT Training");
-        startActivity(intent);*//*
-        Intent intent;
-        intent = new Intent(HomeActivity.this, ProgrammeManagmentActivity.class);
-        startActivity(intent);
-    }
-
-    public void onContentClick() {
-        Intent intent;
-        String url = Environment.getExternalStorageDirectory().getPath() + "/MV_e-learning_Mar/Modules/" + 1 + "/story_html5.html";
-        if (new File(url).exists()) {
-            //btn_mv_trainings.setVisibility(View.VISIBLE);
-            intent = new Intent(HomeActivity.this, TrainingActivity.class);
-            startActivity(intent);
-        } else {
-            Utills.showToast("You don't have Training files...", this);
-        }
-    }*/
 
     @Override
     public void onClick(View view) {
@@ -672,7 +629,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         // Setting Dialog Message
         if(User.getCurrentUser(getApplicationContext()).getApproval_role()!=null){
-          message =   "You are not approved yet." +  "\n " +"Your"+ " " +User.getCurrentUser(getApplicationContext()).getApproval_role() + " "+ "will approve you.";
+          message =   "You are not approved yet." +  "\n"+"Your"+ " " +User.getCurrentUser(getApplicationContext()).getApproval_role() + " "+ "will approve you.";
         }else {
             message = "You are not approved yet." ;
         }
@@ -751,9 +708,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 Utills.hideProgressDialog();
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 try {
-                    String data = response.body().string();
-                    preferenceHelper.insertString(PreferenceHelper.UserData, data);
-                    User.clearUser();
+                    if(response.isSuccess()) {
+                        String data = response.body().string();
+                        preferenceHelper.insertString(PreferenceHelper.UserData, data);
+                        User.clearUser();
+
+
+                    }
                     initViews();
 
                 } catch (IOException e) {

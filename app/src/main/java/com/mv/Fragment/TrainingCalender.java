@@ -88,12 +88,10 @@ public class TrainingCalender extends Fragment implements OnDateSelectedListener
         Calendar instance1 = Calendar.getInstance();
         instance1.set(instance1.get(Calendar.YEAR), Calendar.JANUARY, 1);
 
-        Calendar instance2 = Calendar.getInstance();
-        instance2.set(instance2.get(Calendar.YEAR), Calendar.DECEMBER, 31);
+
 
         binding.calendarView.state().edit()
                 .setMinimumDate(instance1.getTime())
-                .setMaximumDate(instance2.getTime())
                 .commit();
 
         binding.calendarView.addDecorators(

@@ -68,7 +68,7 @@ public class TrainingFragment extends Fragment {
             if (Utills.isConnected(getActivity())) {
                 getData();
             } else {
-                showPopUp();
+                Utills.showInternetPopUp(getActivity());
             }
         } else {
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
@@ -132,10 +132,12 @@ public class TrainingFragment extends Fragment {
                     if (response.body() != null) {
                         String str = response.body().string();
                         if (str != null && str.length() > 0) {
-                             preferenceHelper.insertString(PreferenceHelper.TrainingContentData, str);
+
                             JSONArray jsonArray = new JSONArray(str);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<DownloadContent> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), DownloadContent[].class));
+                            if(temp.size()>0)
+                                preferenceHelper.insertString(PreferenceHelper.TrainingContentData, str);
                             for (DownloadContent content : temp) {
                                 mList.add(content);
                             }

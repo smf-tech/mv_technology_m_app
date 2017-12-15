@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -73,7 +75,7 @@ public class TeamManagementUserProfileActivity extends AppCompatActivity impleme
                 }
         );
 
-
+        binding.editTextEmail.addTextChangedListener(watch);
         mAdapter = new TeamManagementUserProfileAdapter(processAllList, context);
         mLayoutManager = new LinearLayoutManager(context);
         binding.recyclerView.setLayoutManager(mLayoutManager);
@@ -117,7 +119,7 @@ public class TeamManagementUserProfileActivity extends AppCompatActivity impleme
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 binding.swiperefresh.setRefreshing(false);
-                if(response.isSuccess())
+                if(response.isSuccess()) {
                     try {
                         JSONArray jsonArray = new JSONArray(response.body().string());
                         processAllList.clear();
@@ -138,6 +140,7 @@ public class TeamManagementUserProfileActivity extends AppCompatActivity impleme
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                }
             }
 
             @Override
@@ -146,8 +149,28 @@ public class TeamManagementUserProfileActivity extends AppCompatActivity impleme
 
             }
         });
-    }
+    } TextWatcher watch = new TextWatcher() {
 
+        @Override
+        public void afterTextChanged(Editable arg0) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int a, int b, int c) {
+            // TODO Auto-generated method stub
+            setFilter(s.toString());
+
+        }
+    };
     private void setFilter(String s) {
         List<Template> list = new ArrayList<>();
         repplicaCahart.clear();

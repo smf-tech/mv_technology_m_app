@@ -13,6 +13,7 @@
     <string name="error_offline_share_post">You cannot share offline post</string>
     <string name="error_offline_like_post">You cannot like offline post</string>
     <string name="ok">OK</string>
+    <string name="Setting">Setting</string>
     <string name="cancel">Cancel</string>
     <!--Home Acitivty-->
     <string name="intro_about_header">About</string>
@@ -72,7 +73,7 @@
     <string name="training_calendar">My\nCalendar</string>
     <string name="notification">Notification</string>
     <string name="rate">Rate Us</string>
-    <string name="share">Share</string>
+    <string name="share">Share App</string>
     <string name="team_management">Team\nManagement</string>
 
     <string name="seconds_remaining">Seconds remaining </string>
