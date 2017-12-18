@@ -263,7 +263,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                finish();
+
                             }
                         }).create();
         dialog.show();

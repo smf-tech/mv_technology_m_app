@@ -341,22 +341,22 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
                         try {
-                          /* */
+
                             String str = response.body().string();
                             JSONObject object = new JSONObject(str);
                             JSONArray array = object.getJSONArray("Records");
                             if (array.length() > 0) {
                                 JSONObject object1 = array.getJSONObject(0);
                                 if (object1.has("Id") && FinalUri != null) {
-                                  /*  JSONObject object2 = new JSONObject();
+                                    JSONObject object2 = new JSONObject();
                                     object2.put("id", object1.getString("Id"));
                                     object2.put("img", img_str);
                                     JSONArray array1 = new JSONArray();
                                     array1.put(object2);
-                                    sendImageToServer(array1);*/
-                                   Utills.showToast("Report submitted successfully...", getApplicationContext());
+                                    sendImageToServer(array1);
+                                   /* Utills.showToast("Report submitted successfully...", getApplicationContext());
                                     finish();
-                                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                                    overridePendingTransition(R.anim.left_in, R.anim.right_out);*/
                                 } else {
                                     Utills.showToast("Report submitted successfully...", getApplicationContext());
                                     finish();
@@ -419,7 +419,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         JsonArray gsonObject = (JsonArray) jsonParser.parse(jsonArray.toString());
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
-        apiService.sendImageToSalesforce("http://18.216.227.14/upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
+        apiService.sendImageToSalesforce("http://13.58.218.106/upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
