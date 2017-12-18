@@ -30,7 +30,6 @@ public class CommunityMemberAdapter extends RecyclerView.Adapter<CommunityMember
     private final Context mContext;
     private ArrayList<String> CommunityMemberList;
     private PreferenceHelper preferenceHelper;
-    private int mPosition;
 
     public CommunityMemberAdapter(Context context, ArrayList<String> CommunityMemberList) {
         Resources resources = context.getResources();
@@ -57,7 +56,6 @@ public class CommunityMemberAdapter extends RecyclerView.Adapter<CommunityMember
         View itemLayoutView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_community_member, parent, false);
 
-        // create ViewHolder
         CommunityMemberAdapter.ViewHolder viewHolder = new CommunityMemberAdapter.ViewHolder(itemLayoutView);
         return viewHolder;
     }
