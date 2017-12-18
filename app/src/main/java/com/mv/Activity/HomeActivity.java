@@ -133,23 +133,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         height = height - toolbarHeight;
         height = height - dpToPx(80);
         int textWidth = height / 3;
-        //  binding.community.getLayoutParams().width = textWidth;
-        // binding.content.getLayoutParams().width = textWidth;
-        // binding.process.getLayoutParams().width = textWidth;
-
-
-
-        /*tabLayout.removeAllTabs();
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.broadcast)));
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.community)));
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.programme_management)));
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.training_content)));
-        tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.team_management)));
-        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC"))
-            tabLayout.addTab(tabLayout.newTab().setText(getString(R.string.indicator)));
-*/
-        //      tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-
 
         tabLayout.setupWithViewPager(viewPager);
         setupViewPager(viewPager);
@@ -381,53 +364,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             img_list.setVisibility(View.GONE);
             img_list.setOnClickListener(this);
         }
-       /* mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(Title);
-        img_back = (ImageView) findViewById(R.id.img_back);
-        img_back.setVisibility(View.VISIBLE);
-        img_back.setOnClickListener(this);
-        img_logout = (ImageView) findViewById(R.id.img_logout);
-        img_logout.setVisibility(View.VISIBLE);
-        img_logout.setOnClickListener(this);
-        img_list = (ImageView) findViewById(R.id.img_list);
-        img_lang = (ImageView) findViewById(R.id.img_lang);
-        img_lang.setVisibility(View.VISIBLE);
-        img_lang.setOnClickListener(this);
-        img_list.setImageResource(R.drawable.ic_account_circle_white_36dp);
-        img_list.setVisibility(View.VISIBLE);
-        img_list.setOnClickListener(this);*/
 
     }
 
-   /* public void onCommunityClick() {
-        Intent intent;
-        intent = new Intent(HomeActivity.this, GroupsActivity.class);
-        startActivity(intent);
-    }
 
-    public void onProcessClick() {
-       *//* Intent intent;
-        intent = new Intent(HomeActivity.this, WebViewActivity.class);
-        intent.putExtra(Constants.URL, "http://dev-mulyavardhan.cs57.force.com/");
-        intent.putExtra(Constants.TITLE, "New MT Training");
-        startActivity(intent);*//*
-        Intent intent;
-        intent = new Intent(HomeActivity.this, ProgrammeManagmentActivity.class);
-        startActivity(intent);
-    }
-
-    public void onContentClick() {
-        Intent intent;
-        String url = Environment.getExternalStorageDirectory().getPath() + "/MV_e-learning_Mar/Modules/" + 1 + "/story_html5.html";
-        if (new File(url).exists()) {
-            //btn_mv_trainings.setVisibility(View.VISIBLE);
-            intent = new Intent(HomeActivity.this, TrainingActivity.class);
-            startActivity(intent);
-        } else {
-            Utills.showToast("You don't have Training files...", this);
-        }
-    }*/
 
     @Override
     public void onClick(View view) {
@@ -745,11 +685,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 Utills.hideProgressDialog();
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 try {
-                    String data = response.body().string();
-                    preferenceHelper.insertString(PreferenceHelper.UserData, data);
-                    User.clearUser();
-                    initViews();
+                    if(response.isSuccess()) {
+                        String data = response.body().string();
+                        preferenceHelper.insertString(PreferenceHelper.UserData, data);
+                        User.clearUser();
 
+
+                    }
+                    initViews();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

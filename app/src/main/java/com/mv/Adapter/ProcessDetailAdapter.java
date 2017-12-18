@@ -119,7 +119,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext,LocationSelectionActity.class);
-                    intent.putExtra(Constants.LOCATION,taskList.get(getAdapterPosition()).getTask_Text__c());
+                    intent.putExtra(Constants.LOCATION,taskList.get(getAdapterPosition()).getLocationLevel());
                     intent.putExtra(Constants.POSITION,getAdapterPosition());
                     intent.putParcelableArrayListExtra(Constants.PROCESS_ID,taskList );
                     mContext.startActivityForResult(intent, 1);

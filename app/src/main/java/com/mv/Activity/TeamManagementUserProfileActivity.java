@@ -119,7 +119,7 @@ public class TeamManagementUserProfileActivity extends AppCompatActivity impleme
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 binding.swiperefresh.setRefreshing(false);
-                if(response.isSuccess())
+                if(response.isSuccess()) {
                     try {
                         JSONArray jsonArray = new JSONArray(response.body().string());
                         processAllList.clear();
@@ -140,6 +140,7 @@ public class TeamManagementUserProfileActivity extends AppCompatActivity impleme
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+                }
             }
 
             @Override
