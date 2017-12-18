@@ -48,6 +48,7 @@ public class DownloadService extends IntentService {
     private String StorezipFileLocation = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/";
     private String fileName;
     private String DirectoryName = Environment.getExternalStorageDirectory() + "/MV/UnZip/";
+    private String filetype;
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -56,6 +57,7 @@ public class DownloadService extends IntentService {
 
         url = intent.getStringExtra("URL");
         fileName = intent.getStringExtra("FILENAME");
+        filetype = intent.getStringExtra("FILETYPE");
         StorezipFileLocation = StorezipFileLocation + fileName;
 
         notificationBuilder = new NotificationCompat.Builder(this)
@@ -156,7 +158,8 @@ public class DownloadService extends IntentService {
         notificationBuilder.setProgress(0, 0, false);
         notificationBuilder.setContentText(fileName + " Downloaded");
         notificationManager.notify(0, notificationBuilder.build());
-        startUnZipping();
+        if (filetype.equalsIgnoreCase("zip"))
+            startUnZipping();
     }
 
     private void startUnZipping() {
