@@ -104,26 +104,27 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         preferenceHelper = new PreferenceHelper(this);
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
         setActionbar(getString(R.string.app_name));
-         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-         viewPager = (ViewPager) findViewById(R.id.pager);
-
-        if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
-            if (Utills.isConnected(this))
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        viewPager = (ViewPager) findViewById(R.id.pager);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        if(User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")){
+        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
             Utills.scheduleJob(getApplicationContext());
         }
-                if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
-            if (Utills.isConnected(this)) {
+        if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
+            if (Utills.isConnected(this))
                 getUserData();
+
             else
                 initViews();
         } else
             initViews();
 
 
-    }
 
+
+
+
+    }
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
@@ -141,7 +142,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private void initViews() {
         Intent receivedIntent = getIntent();
 
-        setActionbar(getString(R.string.app_name));
+
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);

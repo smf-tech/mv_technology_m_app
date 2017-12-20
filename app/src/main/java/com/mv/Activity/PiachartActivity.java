@@ -251,8 +251,9 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         // add a lot of colors
 
         ArrayList<Integer> colors = new ArrayList<Integer>();
-
-        for (int c : ColorTemplate.VORDIPLOM_COLORS)
+        colors.add(Color.rgb(255,0,0));
+        colors.add(Color.rgb(0,0,255));
+        /*for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);
 
         for (int c : ColorTemplate.JOYFUL_COLORS)
@@ -267,7 +268,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         for (int c : ColorTemplate.PASTEL_COLORS)
             colors.add(c);
 
-        colors.add(ColorTemplate.getHoloBlue());
+        colors.add(ColorTemplate.getHoloBlue());*/
 
         dataSet.setColors(colors);
         //dataSet.setSelectionShift(0f);
