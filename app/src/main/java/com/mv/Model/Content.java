@@ -21,6 +21,13 @@ public class Content implements Serializable {
     @ColumnInfo(name = "unique_Id")
     private int Unique_Id;
 
+
+
+    @ColumnInfo(name = "isAttachmentPresent")
+    @SerializedName("isAttachmentPresent")
+    @Expose
+    String isAttachmentPresent;
+
     @ColumnInfo(name = "synchStatus")
     String synchStatus;
     @ColumnInfo(name = "Id")
@@ -102,6 +109,14 @@ public class Content implements Serializable {
     @SerializedName("userName")
     @Expose
     String userName;
+
+    public String getIsAttachmentPresent() {
+        return isAttachmentPresent;
+    }
+
+    public void setIsAttachmentPresent(String isAttachmentPresent) {
+        this.isAttachmentPresent = isAttachmentPresent;
+    }
 
     public String getUserName() {
         return userName;

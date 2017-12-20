@@ -46,7 +46,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -304,27 +303,23 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                 JSONObject jsonObject = new JSONObject();
                 JSONArray jsonArray = new JSONArray();
                 JSONObject jsonObject1 = new JSONObject(json);
+
                 JSONArray jsonArrayAttchment = new JSONArray();
                 if (FinalUri != null) {
 
                     try {
+                        jsonObject1.put("isAttachmentPresent", "true");
                         InputStream iStream = null;
                         iStream = getContentResolver().openInputStream(FinalUri);
                         img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
-                        JSONObject jsonObjectAttachment = new JSONObject();
+                      /*  JSONObject jsonObjectAttachment = new JSONObject();
                         jsonObjectAttachment.put("Body", img_str);
                         jsonObjectAttachment.put("Name", content.getTitle());
                         jsonObjectAttachment.put("ContentType", "image/png");
-
-
-                        jsonArrayAttchment.put(jsonObjectAttachment);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
+                        jsonArrayAttchment.put(jsonObjectAttachment);*/
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
-
-
                 }
                 /*JSONObject jsonObjectAttachment = new JSONObject();
                 jsonArrayAttchment.put(jsonObjectAttachment);*/

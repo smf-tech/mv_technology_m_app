@@ -1,43 +1,29 @@
 package com.mv.Activity;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.mv.Adapter.CommentAdapter;
 import com.mv.Adapter.CommunityMemberAdapter;
-import com.mv.Adapter.PichartDescriptiveListAdapter;
-import com.mv.Model.Community;
-import com.mv.Model.PiaChartModel;
-import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
-import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
-import com.mv.databinding.ActivityCommentBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
