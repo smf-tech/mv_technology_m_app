@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
@@ -51,6 +52,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -75,6 +77,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
     private boolean[] mSelection = null;
     private String value;
     private JSONArray jsonArrayAttchment = new JSONArray();
+    private Bitmap theBitmap;
 
     public ContentAdapter(Context context, ArrayList<Content> chatList) {
         Resources resources = context.getResources();
@@ -112,34 +115,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(holder.picture);
 */
-        if (TextUtils.isEmpty(mDataList.get(position).getAttachmentId())) {
-            holder.picture.setVisibility(View.GONE);
-            holder.layout_download.setVisibility(View.GONE);
-        } else if (mDataList.get(position).getAttachmentId().equalsIgnoreCase("null")) {
-            holder.picture.setVisibility(View.GONE);
-            holder.layout_download.setVisibility(View.GONE);
-        } else {
-            holder.picture.setVisibility(View.VISIBLE);
-            holder.layout_download.setVisibility(View.VISIBLE);
-            // holder.picture.setImageDrawable(mPlacePictures[position % mPlacePictures.length]);
-            if (mDataList.get(position).getSynchStatus() != null
-                    && mDataList.get(position).getSynchStatus().equalsIgnoreCase(Constants.STATUS_LOCAL)) {
-                File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image" + "/" + mDataList.get(position).getAttachmentId() + ".png");
-                if (file.exists()) {
-                    Glide.with(mContext)
-                            .load(Uri.fromFile(file))
-                            .skipMemoryCache(true)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
-                            .into(holder.picture);
-                }
 
-            } else {
-                Glide.with(mContext)
-                        .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(position).getAttachmentId() + "/Body"))
-                        .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
-                        .into(holder.picture);
-            }
-        }
         if (TextUtils.isEmpty(mDataList.get(position).getUserAttachmentId())) {
             holder.userImage.setImageResource(R.drawable.logomulya);
         } else if (mDataList.get(position).getAttachmentId().equalsIgnoreCase("null")) {
@@ -149,12 +125,45 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(position).getUserAttachmentId() + "/Body"))
                     .placeholder(mContext.getResources().getDrawable(R.drawable.logomulya))
                     .into(holder.userImage);
-
-
             // holder.picture.setImageDrawable(mPlacePictures[position % mPlacePictures.length]);
-
         }
+        if (mDataList.get(position).getIsAttachmentPresent() == null || TextUtils.isEmpty(mDataList.get(position).getIsAttachmentPresent()) || mDataList.get(position).getIsAttachmentPresent().equalsIgnoreCase("false")) {
+            if (TextUtils.isEmpty(mDataList.get(position).getAttachmentId())) {
+                holder.picture.setVisibility(View.GONE);
+                holder.layout_download.setVisibility(View.GONE);
+            } else if (mDataList.get(position).getAttachmentId().equalsIgnoreCase("null")) {
+                holder.picture.setVisibility(View.GONE);
+                holder.layout_download.setVisibility(View.GONE);
+            } else {
+                holder.picture.setVisibility(View.VISIBLE);
+                holder.layout_download.setVisibility(View.VISIBLE);
+                // holder.picture.setImageDrawable(mPlacePictures[position % mPlacePictures.length]);
+                if (mDataList.get(position).getSynchStatus() != null
+                        && mDataList.get(position).getSynchStatus().equalsIgnoreCase(Constants.STATUS_LOCAL)) {
+                    File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image" + "/" + mDataList.get(position).getAttachmentId() + ".png");
+                    if (file.exists()) {
+                        Glide.with(mContext)
+                                .load(Uri.fromFile(file))
+                                .skipMemoryCache(true)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .into(holder.picture);
+                    }
 
+                } else {
+                    Glide.with(mContext)
+                            .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(position).getAttachmentId() + "/Body"))
+                            .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
+                            .into(holder.picture);
+                }
+            }
+        } else {
+            holder.picture.setVisibility(View.VISIBLE);
+            holder.layout_download.setVisibility(View.VISIBLE);
+            Glide.with(mContext)
+                    .load("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png")
+                    .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
+                    .into(holder.picture);
+        }
         holder.txt_title.setText("" + mDataList.get(position).getUserName());
        /* if (mDataList.get(position).getSynchStatus() != null
                 && mDataList.get(position).getSynchStatus().equalsIgnoreCase(Constants.STATUS_LOCAL))
@@ -173,9 +182,9 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         else
             holder.imgLike.setImageResource(R.drawable.dislike);
 
-        if(mDataList.get(position).getCommentCount()==0){
+        if (mDataList.get(position).getCommentCount() == 0) {
             holder.img_comment.setImageResource(R.drawable.no_comment);
-        }else {
+        } else {
             holder.img_comment.setImageResource(R.drawable.comment);
         }
     }
@@ -338,7 +347,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView picture, userImage, imgLike,img_comment;
+        public ImageView picture, userImage, imgLike, img_comment;
         public CardView card_view;
         public TextView txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount,txt_type;
         public LinearLayout layout_like, layout_comment, layout_share, layout_download;
@@ -356,7 +365,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             card_view = (CardView) itemLayoutView.findViewById(R.id.card_view);
             imgLike = (ImageView) itemLayoutView.findViewById(R.id.imgLike);
             textViewLike = (TextView) itemLayoutView.findViewById(R.id.textViewLike);
-            img_comment=(ImageView) itemLayoutView.findViewById(R.id.img_comment);
+            img_comment = (ImageView) itemLayoutView.findViewById(R.id.img_comment);
             layout_comment = (LinearLayout) itemLayoutView.findViewById(R.id.layout_comment);
 
             txt_type = (TextView) itemLayoutView.findViewById(R.id.txt_type);
@@ -390,7 +399,51 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             layout_download.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    downloadImage(getAdapterPosition());
+                    if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent() == null
+                            || TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())
+                            || mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) {
+                        downloadImage(getAdapterPosition());
+                    } else {
+
+
+                        new AsyncTask<Void, Void, Void>() {
+                            @Override
+                            protected void onPreExecute() {
+                                theBitmap = null;
+                            }
+
+
+                            @Override
+
+                            protected Void doInBackground(Void... params) {
+                                try {
+                                    theBitmap = Glide.
+                                            with(mContext).
+                                            load("http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".png").
+                                            asBitmap().
+                                            into(200, 200).
+                                            get();
+                                } catch (final ExecutionException e) {
+
+                                } catch (final InterruptedException e) {
+
+                                }
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Void dummy) {
+                                if (theBitmap != null) {
+                                    Intent i = new Intent(Intent.ACTION_SEND);
+                                    i.setType("image*//**//*");
+                                    i.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
+                                    i.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(theBitmap, getAdapterPosition()));
+                                    Utills.hideProgressDialog();
+                                    mContext.startActivity(Intent.createChooser(i, "Share Post"));
+                                }
+                            }
+                        }.execute();
+                    }
                 }
             });
             layout_like = (LinearLayout) itemLayoutView.findViewById(R.id.layout_like);

@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mv.Model.Content;
@@ -80,6 +81,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
     private ArrayAdapter<String> district_adapter, taluka_adapter;
     private PreferenceHelper preferenceHelper;
     private Content content;
+    private String img_str;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -318,14 +320,15 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                 if (FinalUri != null) {
 
                     try {
+                        jsonObject1.put("isAttachmentPresent", "true");
                         InputStream iStream = null;
                         iStream = getContentResolver().openInputStream(FinalUri);
-                        String img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
-                        JSONObject jsonObjectAttachment = new JSONObject();
+                        img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
+                        /*JSONObject jsonObjectAttachment = new JSONObject();
                         jsonObjectAttachment.put("Body", img_str);
                         jsonObjectAttachment.put("Name", content.getTitle());
                         jsonObjectAttachment.put("ContentType", "image/png");
-                        jsonArrayAttchment.put(jsonObjectAttachment);
+                        jsonArrayAttchment.put(jsonObjectAttachment);*/
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -347,9 +350,31 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
                         try {
-                            Utills.showToast(getString(R.string.issue_submit), getApplicationContext());
-                            finish();
-                            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                            String str = response.body().string();
+                            JSONObject object = new JSONObject(str);
+                            JSONArray array = object.getJSONArray("Records");
+                            if (array.length() > 0) {
+                                JSONObject object1 = array.getJSONObject(0);
+                                if (object1.has("Id") && FinalUri != null) {
+                                    JSONObject object2 = new JSONObject();
+                                    object2.put("id", object1.getString("Id"));
+                                    object2.put("img", img_str);
+                                    JSONArray array1 = new JSONArray();
+                                    array1.put(object2);
+                                    sendImageToServer(array1);
+                                   /* Utills.showToast("Report submitted successfully...", getApplicationContext());
+                                    finish();
+                                    overridePendingTransition(R.anim.left_in, R.anim.right_out);*/
+                                } else {
+                                    Utills.showToast("Report submitted successfully...", getApplicationContext());
+                                    finish();
+                                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                                }
+                            } else {
+                                Utills.showToast("Report submitted successfully...", getApplicationContext());
+                                finish();
+                                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                            }
                         } catch (Exception e) {
                             Utills.hideProgressDialog();
                             Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
@@ -394,6 +419,40 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
             finish();
             overridePendingTransition(R.anim.left_in, R.anim.right_out);
         }
+    }
+
+    private void sendImageToServer(JSONArray jsonArray) {
+        Utills.showProgressDialog(this);
+        JsonParser jsonParser = new JsonParser();
+        JsonArray gsonObject = (JsonArray) jsonParser.parse(jsonArray.toString());
+        ServiceRequest apiService =
+                ApiClient.getImageClient().create(ServiceRequest.class);
+        apiService.sendImageToSalesforce("http://13.58.218.106/upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    String str = response.body().string();
+                    JSONObject object = new JSONObject(str);
+                    if (object.has("status")) {
+                        if (object.getString("status").equalsIgnoreCase("1")) {
+                            Utills.showToast("Report submitted successfully...", getApplicationContext());
+                            finish();
+                            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                        }
+                    }
+                } catch (Exception e) {
+                    Utills.hideProgressDialog();
+                    Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+                Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+            }
+        });
     }
 
     private boolean isValidate() {

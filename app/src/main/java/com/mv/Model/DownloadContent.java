@@ -14,6 +14,18 @@ public class DownloadContent {
     @Expose
     @SerializedName("URL__c")
     String url;
+    @Expose
+    @SerializedName("FileType__c")
+    String FileType;
+
+    public String getFileType() {
+        return FileType;
+    }
+
+    public void setFileType(String fileType) {
+        FileType = fileType;
+    }
+
 
     public String getName() {
         return Name;

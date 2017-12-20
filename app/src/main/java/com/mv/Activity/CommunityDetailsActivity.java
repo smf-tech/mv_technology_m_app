@@ -75,10 +75,12 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         binding.setActivity(this);
         initViews();
     }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -92,7 +94,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                 startActivity(intent);
                 break;
             case R.id.layout_share:
-               // showGroupDialog();
+                // showGroupDialog();
                 if (TextUtils.isEmpty(mContent.getAttachmentId())
                         || mContent.getAttachmentId().equalsIgnoreCase("null")) {
                     Intent i = new Intent(Intent.ACTION_SEND);
@@ -109,13 +111,13 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                     sendLikeAPI(mContent.getId(), !(mContent.getIsLike()));
                     mContent.setIsLike(!mContent.getIsLike());
                     mContent.setLikeCount((mContent.getLikeCount() + 1));
-                    binding.likeCount.setText(mContent.getLikeCount() + " "+getString(R.string.likes));
+                    binding.likeCount.setText(mContent.getLikeCount() + " " + getString(R.string.likes));
                     binding.heart.setImageResource(R.drawable.like);
                 } else {
                     sendDisLikeAPI(mContent.getId(), !mContent.getIsLike());
                     mContent.setIsLike(!mContent.getIsLike());
                     mContent.setLikeCount((mContent.getLikeCount() - 1));
-                    binding.likeCount.setText(mContent.getLikeCount() + " "+getString(R.string.likes));
+                    binding.likeCount.setText(mContent.getLikeCount() + " " + getString(R.string.likes));
                     binding.heart.setImageResource(R.drawable.dislike);
                 }
                 break;
@@ -353,47 +355,56 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                     .placeholder(getResources().getDrawable(R.drawable.logomulya))
                     .into(binding.userImage);
         }
+        if (mContent.getIsAttachmentPresent() == null || TextUtils.isEmpty(mContent.getIsAttachmentPresent()) || mContent.getIsAttachmentPresent().equalsIgnoreCase("false")) {
 
-        if (TextUtils.isEmpty(mContent.getAttachmentId())
-                ) {
-            binding.cardImagedetails.setVisibility(View.GONE);
+            if (TextUtils.isEmpty(mContent.getAttachmentId())
+                    ) {
+                binding.cardImagedetails.setVisibility(View.GONE);
 
 
-        } else if (mContent.getAttachmentId().equalsIgnoreCase("null")) {
-        } else {
-            binding.cardImagedetails.setVisibility(View.VISIBLE);
-            if (mContent.getSynchStatus() != null
-                    && mContent.getSynchStatus().equalsIgnoreCase(Constants.STATUS_LOCAL)) {
-                File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image" + "/" + mContent.getAttachmentId() + ".png");
-                if (file.exists()) {
+            } else if (mContent.getAttachmentId().equalsIgnoreCase("null")) {
+                binding.cardImagedetails.setVisibility(View.GONE);
+            } else {
+                binding.cardImagedetails.setVisibility(View.VISIBLE);
+                if (mContent.getSynchStatus() != null
+                        && mContent.getSynchStatus().equalsIgnoreCase(Constants.STATUS_LOCAL)) {
+                    File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image" + "/" + mContent.getAttachmentId() + ".png");
+                    if (file.exists()) {
+                        Glide.with(this)
+                                .load(Uri.fromFile(file))
+                                .skipMemoryCache(true)
+                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .into(binding.cardImagedetails);
+                    }
+
+                } else {
                     Glide.with(this)
-                            .load(Uri.fromFile(file))
-                            .skipMemoryCache(true)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mContent.getAttachmentId() + "/Body"))
+                            .placeholder(getResources().getDrawable(R.drawable.mulya_bg))
                             .into(binding.cardImagedetails);
                 }
+                // holder.picture.setImageDrawable(mPlacePictures[position % mPlacePictures.length]);
 
-            } else {
-                Glide.with(this)
-                        .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mContent.getAttachmentId() + "/Body"))
-                        .placeholder(getResources().getDrawable(R.drawable.mulya_bg))
-                        .into(binding.cardImagedetails);
             }
-            // holder.picture.setImageDrawable(mPlacePictures[position % mPlacePictures.length]);
+        } else {
 
+            Glide.with(this)
+                    .load("http://13.58.218.106/images/" + mContent.getId() + ".png")
+                    .placeholder(getResources().getDrawable(R.drawable.mulya_bg))
+                    .into(binding.cardImagedetails);
         }
         if (mContent.getIsLike())
             binding.heart.setImageResource(R.drawable.like);
         else
             binding.heart.setImageResource(R.drawable.dislike);
-        if(mContent.getCommentCount()==0){
+        if (mContent.getCommentCount() == 0) {
             binding.imgComment.setImageResource(R.drawable.no_comment);
-        }else {
+        } else {
             binding.imgComment.setImageResource(R.drawable.comment);
         }
-        binding.likeCount.setText(mContent.getLikeCount()+ " "+ getString(R.string.likes));
-        binding.txtCommentCnt.setText(mContent.getCommentCount() + " "+getString(R.string.comments));
-        binding.Title.setText(getString(R.string.title)+" : " + mContent.getTitle());
+        binding.likeCount.setText(mContent.getLikeCount() + " " + getString(R.string.likes));
+        binding.txtCommentCnt.setText(mContent.getCommentCount() + " " + getString(R.string.comments));
+        binding.Title.setText(getString(R.string.title) + " : " + mContent.getTitle());
 
        /* if (mContent.getSynchStatus() != null
                 && mContent.getSynchStatus().equalsIgnoreCase(Constants.STATUS_LOCAL))
@@ -402,7 +413,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
             binding.type.setText(getString(R.string.template_type)+" : " + mContent.getTemplate());*/
 
         binding.type.setText("" + mContent.getUserName());
-        binding.Description.setText(getString(R.string.description)+" : " + mContent.getDescription());
+        binding.Description.setText(getString(R.string.description) + " : " + mContent.getDescription());
         binding.postDate.setText(mContent.getTime());
 
         // binding.userName.setText(mContent.g);
@@ -426,6 +437,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
+
     private void downloadImage() {
        /**/
 
@@ -450,7 +462,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
 
                         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
                         shareIntent.setType("text/html");
-                        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Title : "+mContent.getTitle()+"\n\nDescription : "+mContent.getDescription());
+                        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Title : " + mContent.getTitle() + "\n\nDescription : " + mContent.getDescription());
                         shareIntent.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(decodedByte));
                         startActivity(Intent.createChooser(shareIntent, "Share Content"));
                     } catch (Exception e) {
@@ -470,6 +482,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         }
 
     }
+
     public Uri getLocalBitmapUri(Bitmap bmp) {
         Uri bmpUri = null;
         try {

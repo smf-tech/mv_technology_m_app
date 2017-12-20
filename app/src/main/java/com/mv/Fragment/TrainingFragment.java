@@ -73,6 +73,7 @@ public class TrainingFragment extends Fragment {
         } else {
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
             List<DownloadContent> temp = Arrays.asList(gson.fromJson(preferenceHelper.getString(PreferenceHelper.TrainingContentData), DownloadContent[].class));
+            mList.clear();
             for (DownloadContent content : temp) {
                 mList.add(content);
             }
@@ -136,8 +137,9 @@ public class TrainingFragment extends Fragment {
                             JSONArray jsonArray = new JSONArray(str);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<DownloadContent> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), DownloadContent[].class));
-                            if(temp.size()>0)
+                            if (temp.size() > 0)
                                 preferenceHelper.insertString(PreferenceHelper.TrainingContentData, str);
+                            mList.clear();
                             for (DownloadContent content : temp) {
                                 mList.add(content);
                             }
@@ -171,9 +173,20 @@ public class TrainingFragment extends Fragment {
         Utills.showToast("Downloading Started...", getActivity());
         Intent intent = new Intent(getActivity(), DownloadService.class);
         intent.putExtra("URL", mList.get(position).getUrl());
-        intent.putExtra("FILENAME", mList.get(position).getName() + ".zip");
+        if (mList.get(position).getFileType().equalsIgnoreCase("zip")) {
+            intent.putExtra("FILENAME", mList.get(position).getName() + ".zip");
+            intent.putExtra("FILETYPE", mList.get(position).getName() + "zip");
+        } else if (mList.get(position).getFileType().equalsIgnoreCase("pdf")) {
+            intent.putExtra("FILENAME", mList.get(position).getName() + ".pdf");
+            intent.putExtra("FILETYPE", mList.get(position).getName() + "pdf");
+        } else if (mList.get(position).getFileType().equalsIgnoreCase("audio")) {
+            intent.putExtra("FILENAME", mList.get(position).getName() + ".mp3");
+            intent.putExtra("FILETYPE", mList.get(position).getName() + "audio");
+        } else if (mList.get(position).getFileType().equalsIgnoreCase("video")) {
+            intent.putExtra("FILENAME", mList.get(position).getName() + ".mp4");
+            intent.putExtra("FILETYPE", mList.get(position).getName() + "video");
+        }
         getActivity().startService(intent);
-
     }
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
