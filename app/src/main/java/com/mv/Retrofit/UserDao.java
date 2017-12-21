@@ -144,4 +144,7 @@ public interface UserDao {
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  and ( Priority = :str or  Report_Type =:str) order by CreatedDate desc")
     List<Content> getAllChatsfilter(String communityId, String str);
 
+    @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  and Issue_Type =:str order by CreatedDate desc")
+    List<Content> getHoChatsfilter(String communityId, String str);
+
 }

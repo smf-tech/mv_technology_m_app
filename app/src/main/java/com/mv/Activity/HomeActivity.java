@@ -9,9 +9,11 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -21,6 +23,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -87,7 +90,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private ViewPagerAdapter adapter;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    ViewPagerAdapter adapter;
+
 
     private FusedLocationProviderClient mFusedLocationClient;
     private Location mLastLocation;
@@ -522,7 +525,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.select_lang))
-                .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(items, checkId, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -537,8 +540,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_ENGLISH);
                             preferenceHelper.insertString(LANGUAGE, LANGUAGE_ENGLISH);
                         } else {
-                            LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_UKRAINIAN);
-                            preferenceHelper.insertString(LANGUAGE, LANGUAGE_UKRAINIAN);
+                            LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_MARATHI);
+                            preferenceHelper.insertString(LANGUAGE, LANGUAGE_MARATHI);
                         }
                         dialog.dismiss();
                         finish();

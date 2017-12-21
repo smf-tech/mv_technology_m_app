@@ -251,8 +251,19 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         // add a lot of colors
 
         ArrayList<Integer> colors = new ArrayList<Integer>();
-        colors.add(Color.rgb(255,0,0));
-        colors.add(Color.rgb(0,0,255));
+        colors.add(Color.rgb(11,111,206));
+        colors.add(Color.rgb(120,201,83));
+        colors.add(Color.rgb(226,112,1));
+        colors.add(Color.rgb(168,69,220));
+        colors.add(Color.rgb(  113, 88, 143));
+        colors.add(Color.rgb(   170, 70, 67));
+        colors.add(Color.rgb(  65, 152, 175));
+        colors.add(Color.rgb(    147, 169, 207));
+        colors.add(Color.rgb( 209, 147, 146));
+        colors.add(Color.rgb(185, 205, 150));
+
+
+
         /*for (int c : ColorTemplate.VORDIPLOM_COLORS)
             colors.add(c);
 

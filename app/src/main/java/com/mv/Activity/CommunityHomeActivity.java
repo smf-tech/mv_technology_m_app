@@ -492,7 +492,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 switch(position){
                     case 1:
                         chatList.clear();
-                        List<Content> Trainingrelated = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),"Training related" );
+                        List<Content> Trainingrelated = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getHoChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),"Training related" );
                         for (int i=0;i<Trainingrelated.size();i++){
                             chatList.add(Trainingrelated.get(i));
                         }
@@ -501,7 +501,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                     case 2:
 
                         chatList.clear();
-                        List<Content>Contentrelated = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),"Content related" );
+                        List<Content>Contentrelated = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getHoChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),"Content related" );
                         for (int i=0;i<Contentrelated.size();i++){
                             chatList.add(Contentrelated.get(i));
                         }
@@ -510,7 +510,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                     case 3:
 
                         chatList.clear();
-                        List<Content>  Technologyrelated = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),"Technology related" );
+                        List<Content>  Technologyrelated = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getHoChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),"Technology related" );
                         for (int i=0;i<Technologyrelated.size();i++){
                             chatList.add(Technologyrelated.get(i));
                         }
@@ -520,7 +520,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                     case 4:
 
                         chatList.clear();
-                        List<Content>  HRrelated = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),"HR related" );
+                        List<Content>  HRrelated = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getHoChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),"HR related" );
                         for (int i=0;i<HRrelated.size();i++){
                             chatList.add(HRrelated.get(i));
                         }
@@ -530,7 +530,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                     case 5:
 
                         chatList.clear();
-                        List<Content>  Accountrelated = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),"Account related" );
+                        List<Content>  Accountrelated = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getHoChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),"Account related" );
                         for (int i=0;i<Accountrelated.size();i++){
                             chatList.add(Accountrelated.get(i));
                         }
