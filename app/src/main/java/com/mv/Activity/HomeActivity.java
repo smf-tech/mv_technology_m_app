@@ -9,9 +9,11 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -107,9 +109,27 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         viewPager = (ViewPager) findViewById(R.id.pager);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        final LocationManager manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE );
+
+
+
+
         if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
-            Utills.scheduleJob(getApplicationContext());
+
+            if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                LocationPopup();
+
+            }
         }
+
+        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
+
+            if ( manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                Utills.scheduleJob(getApplicationContext());
+
+            }
+        }
+
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             if (Utills.isConnected(this))
                 getUserData();
@@ -804,4 +824,29 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
+
+
+    private void LocationPopup(){
+        AlertDialog.Builder  dialog = new AlertDialog.Builder(HomeActivity.this);
+        dialog.setMessage("Gps_network_not_enabled");
+        dialog.setPositiveButton("Open Location", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                // TODO Auto-generated method stub
+                Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(myIntent);
+                //get gps
+            }
+        });
+        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+        dialog.show();
+    }
+
 }

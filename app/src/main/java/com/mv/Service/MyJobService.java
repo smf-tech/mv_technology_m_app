@@ -1,8 +1,14 @@
 package com.mv.Service;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
@@ -15,6 +21,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mv.Activity.HomeActivity;
 import com.mv.Model.User;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
@@ -45,7 +52,6 @@ public class MyJobService extends JobService {
     public boolean onStartJob(JobParameters job) {
         // Do some work> here
 
-        Toast.makeText(getApplicationContext(),"Service Called",Toast.LENGTH_LONG).show();
 
         getAddress();
 
@@ -82,10 +88,10 @@ public class MyJobService extends JobService {
                         String status = jsonObject.getString("status");
                         String message=      jsonObject.getString("msg");
                         if(status.equals("Success")){
-                            Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
+                           // Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
 
                         }else {
-                            Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
 
                         }
                     } catch (IOException e) {
@@ -114,6 +120,7 @@ public class MyJobService extends JobService {
    private void getAddress()
     {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
+
         mFusedLocationClient.getLastLocation()
 
                 .addOnSuccessListener( new OnSuccessListener<Location>() {
@@ -131,7 +138,7 @@ public class MyJobService extends JobService {
                        String longitude= String.valueOf(mLastLocation.getLongitude());
                         GetMapParameters(latitude,longitude);
                         if (!Geocoder.isPresent()) {
-                           Toast.makeText(getApplicationContext(),"No geocoder available",Toast.LENGTH_SHORT).show();
+                           //Toast.makeText(getApplicationContext(),"No geocoder available",Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -153,5 +160,8 @@ public class MyJobService extends JobService {
 
 
     }
+
+
+
 
 }
