@@ -9,11 +9,9 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -23,7 +21,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -85,9 +82,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private PreferenceHelper preferenceHelper;
     public static final String LANGUAGE_ENGLISH = "en";
-    public static final String LANGUAGE_UKRAINIAN = "mr";
+    public static final String LANGUAGE_MARATHI = "mr";
     public static final String LANGUAGE = "language";
-
+    private ViewPagerAdapter adapter;
     private TabLayout tabLayout;
     private ViewPager viewPager;
     ViewPagerAdapter adapter;
@@ -129,7 +126,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             }
         }
-
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             if (Utills.isConnected(this))
                 getUserData();
@@ -479,9 +475,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         final String[] items = {"On", "Off"};
         final ArrayList seletedItems = new ArrayList();
+        int checkedItem = 0;
+        if (preferenceHelper.getBoolean(PreferenceHelper.NOTIFICATION)) {
+            checkedItem = 0;
+        } else {
+            checkedItem = 1;
+        }
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.notification))
-                .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -509,6 +511,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         final String[] items = {"English", "मराठी"};
         final ArrayList seletedItems = new ArrayList();
+
+        int checkId = 0;
+        if (preferenceHelper.getString(LANGUAGE).equalsIgnoreCase(LANGUAGE_MARATHI)) {
+            checkId = 1;
+        } else {
+
+        }
+
+
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.select_lang))
                 .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {

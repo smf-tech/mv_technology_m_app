@@ -13,7 +13,7 @@ import java.util.Locale;
 public class LocaleManager {
 
     public static final String LANGUAGE_ENGLISH   = "en";
-    public static final String LANGUAGE_UKRAINIAN = "mr";
+    public static final String LANGUAGE_MARATHI = "mr";
     private static final String LANGUAGE_KEY       = "language_key";
 
     public static Context setLocale(Context c) {
