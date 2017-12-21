@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
@@ -31,9 +32,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     private PreferenceHelper preference;
     private static int SPLASH_TIME_OUT = 2000;
     public static final String LANGUAGE_ENGLISH = "en";
-    public static final String LANGUAGE_UKRAINIAN = "mr";
-
-
+    public static final String LANGUAGE_MARATHI = "mr";
 
 
     @Override
@@ -52,7 +51,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -62,10 +60,16 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent;
-                if (TextUtils.isEmpty(preference.getString(PreferenceHelper.UserRole)))
+                if (TextUtils.isEmpty(preference.getString(PreferenceHelper.UserRole))) {
                     intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
-                else
-                    intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
+                } else {
+                    if (User.getCurrentUser(SplashScreenActivity.this).getGender() == null || TextUtils.isEmpty(User.getCurrentUser(SplashScreenActivity.this).getGender())) {
+                        intent = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
+                        intent.putExtra(Constants.ACTION, Constants.ACTION_EDIT);
+                    } else {
+                        intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
+                    }
+                }
 
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);

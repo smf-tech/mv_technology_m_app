@@ -2,7 +2,6 @@ package com.mv.Activity;
 
 
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -73,11 +72,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private PreferenceHelper preferenceHelper;
     public static final String LANGUAGE_ENGLISH = "en";
-    public static final String LANGUAGE_UKRAINIAN = "mr";
+    public static final String LANGUAGE_MARATHI = "mr";
     public static final String LANGUAGE = "language";
     private ViewPagerAdapter adapter;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,8 +87,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         preferenceHelper = new PreferenceHelper(this);
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
         setActionbar(getString(R.string.app_name));
-         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-         viewPager = (ViewPager) findViewById(R.id.pager);
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        viewPager = (ViewPager) findViewById(R.id.pager);
 
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             if (Utills.isConnected(this))
@@ -117,7 +117,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initViews() {
         Intent receivedIntent = getIntent();
-
 
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -175,10 +174,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void setupViewPager(ViewPager viewPager) {
-       List<Fragment> fragmentList =  getSupportFragmentManager().getFragments();
-       if(fragmentList != null && fragmentList.size()>0){
-           getSupportFragmentManager().getFragments().clear();
-       }
+        List<Fragment> fragmentList = getSupportFragmentManager().getFragments();
+        if (fragmentList != null && fragmentList.size() > 0) {
+            getSupportFragmentManager().getFragments().clear();
+        }
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         List<String> allTab = new ArrayList<>();
         adapter.clearFrag();
@@ -198,7 +197,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
             if (allTab.contains("My Reports"))
                 adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
-            if(allTab.contains("My Calendar"))
+            if (allTab.contains("My Calendar"))
                 adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
 
 
@@ -221,7 +220,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
             if (allTab.contains("My Reports"))
                 adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
-            if(allTab.contains("My Calendar"))
+            if (allTab.contains("My Calendar"))
                 adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
 
             viewPager.setAdapter(adapter);
@@ -259,8 +258,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
-        private  List<Fragment> mFragmentList = new ArrayList<>();
-        private  List<String> mFragmentTitleList = new ArrayList<>();
+        private List<Fragment> mFragmentList = new ArrayList<>();
+        private List<String> mFragmentTitleList = new ArrayList<>();
 
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
@@ -271,10 +270,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         public Fragment getItem(int position) {
             return mFragmentList.get(position);
         }
+
         @Override
         public int getItemPosition(Object object) {
             return POSITION_NONE;
         }
+
         @Override
         public int getCount() {
             return mFragmentList.size();
@@ -284,10 +285,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }
+
         public void clearFrag() {
             mFragmentList.clear();
             mFragmentTitleList.clear();
         }
+
         @Override
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
@@ -328,12 +331,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.action_notification:
                 showNotificationDialog();
                 return true;
-            case  R.id.action_share:
+            case R.id.action_share:
                 ShareApp();
                 return true;
-            case  R.id.action_rate:
+            case R.id.action_rate:
 
-                RateThisApp.showRateDialog(HomeActivity.this,R.style.Theme_AppCompat_Light_Dialog_Alert);
+                RateThisApp.showRateDialog(HomeActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -348,8 +351,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             getSupportActionBar().setDisplayShowCustomEnabled(true);
             getSupportActionBar().setCustomView(R.layout.toolbar);
             View view = getSupportActionBar().getCustomView();
-                toolbar_title = (TextView) view.findViewById(R.id.toolbar_title);
-             toolbar_title.setText(Title);
+            toolbar_title = (TextView) view.findViewById(R.id.toolbar_title);
+            toolbar_title.setText(Title);
             img_back = (ImageView) findViewById(R.id.img_back);
             img_back.setVisibility(View.GONE);
             img_back.setOnClickListener(this);
@@ -366,7 +369,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
-
 
 
     @Override
@@ -435,9 +437,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         final String[] items = {"On", "Off"};
         final ArrayList seletedItems = new ArrayList();
+        int checkedItem = 0;
+        if (preferenceHelper.getBoolean(PreferenceHelper.NOTIFICATION)) {
+            checkedItem = 0;
+        } else {
+            checkedItem = 1;
+        }
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.notification))
-                .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -465,6 +473,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         final String[] items = {"English", "मराठी"};
         final ArrayList seletedItems = new ArrayList();
+
+        int checkId = 0;
+        if (preferenceHelper.getString(LANGUAGE).equalsIgnoreCase(LANGUAGE_MARATHI)) {
+            checkId = 1;
+        } else {
+
+        }
+
+
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.select_lang))
                 .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
@@ -482,8 +499,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_ENGLISH);
                             preferenceHelper.insertString(LANGUAGE, LANGUAGE_ENGLISH);
                         } else {
-                            LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_UKRAINIAN);
-                            preferenceHelper.insertString(LANGUAGE, LANGUAGE_UKRAINIAN);
+                            LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_MARATHI);
+                            preferenceHelper.insertString(LANGUAGE, LANGUAGE_MARATHI);
                         }
                         dialog.dismiss();
                         finish();
@@ -497,6 +514,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showLogoutPopUp() {
+
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 
         // Setting Dialog Title
@@ -598,17 +616,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showApprovedDilaog() {
-        String message="";
+        String message = "";
         final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
 
         // Setting Dialog Title
         alertDialog.setTitle(getString(R.string.app_name));
 
         // Setting Dialog Message
-        if(User.getCurrentUser(getApplicationContext()).getApproval_role()!=null){
-          message =   "You are not approved yet." +  "\n"+"Your"+ " " +User.getCurrentUser(getApplicationContext()).getApproval_role() + " "+ "will approve you.";
-        }else {
-            message = "You are not approved yet." ;
+        if (User.getCurrentUser(getApplicationContext()).getApproval_role() != null) {
+            message = "You are not approved yet." + "\n" + "Your" + " " + User.getCurrentUser(getApplicationContext()).getApproval_role() + " " + "will approve you.";
+        } else {
+            message = "You are not approved yet.";
         }
         alertDialog.setMessage(message);
 
@@ -685,7 +703,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 Utills.hideProgressDialog();
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 try {
-                    if(response.isSuccess()) {
+                    if (response.isSuccess()) {
                         String data = response.body().string();
                         preferenceHelper.insertString(PreferenceHelper.UserData, data);
                         User.clearUser();
@@ -728,7 +746,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void ShareApp(){
+    private void ShareApp() {
         try {
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("text/plain");
@@ -737,7 +755,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             shareurl = shareurl + "https://play.google.com/store/apps/details?id=com.mv&hl=en \n\n";
             i.putExtra(Intent.EXTRA_TEXT, shareurl);
             startActivity(Intent.createChooser(i, "choose one"));
-        } catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

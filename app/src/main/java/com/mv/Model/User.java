@@ -111,6 +111,17 @@ public class User {
     @Expose
     private String approval_role;
 
+    @SerializedName("Gender__c")
+    @Expose
+    private String gender;
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
     public String getProject__c() {
         return Project__c;

@@ -133,6 +133,7 @@
     <string name="Please_Enter_Mobile_Number">कृपया मोबाइल नंबर प्रविष्ट करा</string>
     <string name="mobile_numer_enter">कृपया 10 अंकी मोबाइल नंबर प्रविष्ट करा</string>
     <string name="Please_select_Role">भूमिका निवडा</string>
+    <string name="Please_select_Gender">लिंग निवडा</string>
     <string name="Please_Enter_valid_email_address">कृपया वैध ईमेल पत्ता प्रविष्ट करा</string>
     <string name="Please_select_State">कृपया राज्य निवडा</string>
     <string name="Please_select_district">कृपया जिल्हा निवडा</string>
@@ -140,6 +141,11 @@
     <string name="Please_select_custer">कृपया कॅल्स्टर  निवडा</string>
     <string name="Please_select_village">कृपया गाव निवडा</string>
     <string name="Please_select_school">कृपया शाळा निवडा</string>
+
+    <string name="gender">लिंग</string>
+    <string name="male">पुरुष</string>
+    <string name="female">स्त्री</string>
+    <string name="other">अन्य</string>
 
     <string name="MV_training">एमव्ही ट्रेनिंग</string>
     <string name="Video_template">व्हिडीओ टेम्प्लेट </string>

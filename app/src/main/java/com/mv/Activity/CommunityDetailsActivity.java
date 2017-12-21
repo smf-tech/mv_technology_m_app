@@ -103,6 +103,9 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                     Utills.hideProgressDialog();
                     startActivity(Intent.createChooser(i, "Share Post"));
                 } else {
+
+
+
                     downloadImage();
                 }
                 break;

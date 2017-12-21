@@ -126,6 +126,7 @@
     <string name="Please_Enter_Mobile_Number">Please Enter Mobile Number</string>
     <string name="mobile_numer_enter">Please Enter 10 digit mobile number</string>
     <string name="Please_select_Role">Please select Role</string>
+    <string name="Please_select_Gender">Please select Gender</string>
     <string name="Please_Enter_valid_email_address">Please Enter valid email address</string>
     <string name="Please_select_State">Please select State</string>
     <string name="Please_select_district">Please select District</string>
@@ -142,6 +143,12 @@
     <string name="Forward">Forward</string>
     <string name="Share">Share</string>
     <string name="Like">Like</string>
+
+
+    <string name="gender">Gender</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="other">Other</string>
 
     <string name="Templates">Templates</string>
     <string name="Schedule_training">Schedule Training</string>
