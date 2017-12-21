@@ -828,7 +828,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void LocationPopup(){
         AlertDialog.Builder  dialog = new AlertDialog.Builder(HomeActivity.this);
-        dialog.setMessage("Gps_network_not_enabled");
+        dialog.setMessage("Gps network not enabled");
         dialog.setPositiveButton("Open Location", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface paramDialogInterface, int paramInt) {
@@ -838,14 +838,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 //get gps
             }
         });
-        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+      /*  dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface paramDialogInterface, int paramInt) {
                 // TODO Auto-generated method stub
 
             }
-        });
+        });*/
         dialog.show();
     }
 
