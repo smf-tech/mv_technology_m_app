@@ -78,6 +78,8 @@ public class Task implements Parcelable {
     @Expose
     private String Timestamp__c;
 
+    @SerializedName("Unique_Id__c")
+    @Expose
     @ColumnInfo(name = "Unique_Id__c")
     private String Unique_Id__c;
 

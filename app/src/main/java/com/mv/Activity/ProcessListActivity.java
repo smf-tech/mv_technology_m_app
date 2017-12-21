@@ -48,7 +48,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     ArrayList<String> idList;
-    //private ActivityProgrammeManagmentBinding binding;
     private PreferenceHelper preferenceHelper;
     ArrayList<Task> taskList = new ArrayList<>();
     private ProcessListAdapter mAdapter;
@@ -81,6 +80,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         preferenceHelper = new PreferenceHelper(this);
         //storing process Id to preference to use later
         preferenceHelper.insertString(Constants.PROCESS_ID, proceesId);
+        preferenceHelper.insertString(Constants.PROCESS_TYPE, Constants.MANGEMENT_PROCESS);
+
         setActionbar(Processname);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         binding.rvProcess.setLayoutManager(mLayoutManager);

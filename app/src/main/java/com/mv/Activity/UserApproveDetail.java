@@ -56,7 +56,7 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
         binding.setActivity(this);
         userId=getIntent().getExtras().getString(Constants.ID);
         preferenceHelper = new PreferenceHelper(this);
-        setActionbar("User Approval");
+        setActionbar(getString(R.string.team_user_approval));
         if (Utills.isConnected(this)) {
             getApprovedUserData();
         }
@@ -225,8 +225,8 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
     public void showDialog() {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(UserApproveDetail.this);
-        alertDialog.setTitle(getString(R.string.Comment));
-        alertDialog.setMessage("Please Enter Comment");
+        alertDialog.setTitle(getString(R.string.comments));
+        alertDialog.setMessage(getString(R.string.enter_comment));
 
         final EditText input = new EditText(UserApproveDetail.this);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -235,7 +235,7 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
         input.setLayoutParams(lp);
         alertDialog.setView(input);
 
-        alertDialog.setPositiveButton("YES",
+        alertDialog.setPositiveButton("OK",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         isSave="false";
@@ -253,7 +253,7 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
 
                 });
 
-        alertDialog.setNegativeButton("NO",
+        alertDialog.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
@@ -290,7 +290,7 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
                         try {
-                            Utills.showToast(getString(R.string.post_share_successfully), UserApproveDetail.this);
+                            Utills.showToast(getString(R.string.submitted_successfully), UserApproveDetail.this);
                             finish();
                         } catch (Exception e) {
                             Utills.hideProgressDialog();

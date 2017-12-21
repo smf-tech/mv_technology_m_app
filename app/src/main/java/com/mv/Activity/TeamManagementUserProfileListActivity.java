@@ -15,15 +15,14 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.mv.Adapter.PichartDescriptiveListAdapter;
-import com.mv.Adapter.TeamManagementUserProfileAdapter;
-import com.mv.Model.PiaChartModel;
+import com.mv.Adapter.TeamManagementAdapter;
 import com.mv.Model.Template;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityTeamManagementUserProfileActivityBinding;
@@ -40,31 +39,45 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TeamManagementUserProfileActivity extends AppCompatActivity implements View.OnClickListener {
+public class TeamManagementUserProfileListActivity extends AppCompatActivity implements View.OnClickListener {
     private PreferenceHelper preferenceHelper;
     List<Template> processAllList = new ArrayList<>();
 
     ArrayList<Template> repplicaCahart = new ArrayList<>();
-    private TeamManagementUserProfileAdapter mAdapter;
+    private TeamManagementAdapter mAdapter;
     private ActivityTeamManagementUserProfileActivityBinding binding;
     RecyclerView.LayoutManager mLayoutManager;
     Activity context;
     private RelativeLayout mToolBar;
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
+    public static String approvalType,id,processTitle;
+    String url;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context=this;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_team_management_user_profile_activity);
         binding.setActivity(this);
+        approvalType=getIntent().getExtras().getString(Constants.APPROVAL_TYPE);
         initViews();
     }
 
     private void initViews() {
         preferenceHelper = new PreferenceHelper(context);
+        if(approvalType.equals(Constants.USER_APPROVAL)) {
+            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                    + "/services/apexrest/getApprovalData?userId=" + User.getCurrentUser(context).getId();
 
-        setActionbar(getString(R.string.team_user_approval));
+            setActionbar(getString(R.string.team_user_approval));
+        }else if(approvalType.equals(Constants.PROCESS_APPROVAL))
+        {
+            id=getIntent().getExtras().getString(Constants.ID);
+            processTitle= getIntent().getExtras().getString(Constants.TITLE);
+            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                  + "/services/apexrest/WS_getProcessAprovalUser?UserId="+ User.getCurrentUser(context).getId()+ "&processId="+id ;;
+            setActionbar(processTitle);
+        }
         binding.swiperefresh.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
@@ -76,7 +89,7 @@ public class TeamManagementUserProfileActivity extends AppCompatActivity impleme
         );
 
         binding.editTextEmail.addTextChangedListener(watch);
-        mAdapter = new TeamManagementUserProfileAdapter(processAllList, context);
+        mAdapter = new TeamManagementAdapter(processAllList, context);
         mLayoutManager = new LinearLayoutManager(context);
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -112,8 +125,8 @@ public class TeamManagementUserProfileActivity extends AppCompatActivity impleme
         Utills.showProgressDialog(context, "Loading Process", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getApprovalData?userId="+ User.getCurrentUser(context).getId();
+       // String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+         //       + "/services/apexrest/WS_getProcessAprovalUser?UserId="+ User.getCurrentUser(context).getId()+ "&processId=a1I7F000000VeJQUA0" ;;
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -128,8 +141,10 @@ public class TeamManagementUserProfileActivity extends AppCompatActivity impleme
 
 
                             processList.setId(jsonArray.getJSONObject(i).getString("Id"));
+                            if(jsonArray.getJSONObject(i).has("username"))
                             processList.setName(jsonArray.getJSONObject(i).getString("username"));
-
+                            else if(jsonArray.getJSONObject(i).has("name"))
+                                processList.setName(jsonArray.getJSONObject(i).getString("username"));
                             processAllList.add(processList);
                         }
                         AppDatabase.getAppDatabase(context).userDao().deleteTable();
@@ -186,7 +201,7 @@ public class TeamManagementUserProfileActivity extends AppCompatActivity impleme
         for (int i = 0; i < list.size(); i++) {
             repplicaCahart.add(list.get(i));
         }
-        mAdapter = new TeamManagementUserProfileAdapter( repplicaCahart,context);
+        mAdapter = new TeamManagementAdapter( repplicaCahart,context);
         binding.recyclerView.setAdapter(mAdapter);
     }
 }

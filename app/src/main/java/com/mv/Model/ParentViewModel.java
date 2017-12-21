@@ -1,6 +1,7 @@
 package com.mv.Model;
 
-import com.mv.Activity.ProgrammeManagmentActivity;
+
+import com.mv.Activity.ProcessApprovalActivity;
 import com.mv.Activity.TemplatesActivity;
 
 /**
@@ -9,5 +10,6 @@ import com.mv.Activity.TemplatesActivity;
 
 public class ParentViewModel {
     TemplatesActivity templatesActivity;
-    ProgrammeManagmentActivity programmeManagmentActivity;
+    ProcessApprovalActivity processApprovalActivity;
+
 }

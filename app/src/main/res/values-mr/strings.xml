@@ -6,7 +6,7 @@
     <string name="error_something_went_wrong">काहीतरी चूक झाली, कृपया पुन्हा प्रयत्न करा</string>
     <string name="error_no_internet">कृपया आपले इंटरनेट कनेक्शन तपासा</string>
     <string name="error_login">चुकीची माहिती.</string>
-
+    <string name="submitted_successfully">यशस्वीरित्या सबमिट केले...</string>
     <string name="text_choosepicture">चित्र निवडा</string>
     <string name="text_choosevideo">व्हिडिओ निवडा</string>
     <string name="text_gallary">गॅलरी</string>
@@ -24,7 +24,7 @@
     <string name="fragment_intro_training">एमव्ही ट्रेनिंग</string>
     <string name="fragment_intro_events">एमव्ही कार्यक्रम</string>
 
-    <string name="accept">स्वीकार करा</string>
+    <string name="approve">स्वीकार करा</string>
     <string name="reject">नाकारा</string>
     <!--Registration Activity-->
     <string name="name">पहिले नाव</string>
@@ -63,6 +63,7 @@
     <string name="check_otp">कृपया OTP तपासा</string>
 
     <string name="Submit"> सबमिट</string>
+    <string name="Save">जतन करा</string>
     <string name="backExit"> बाहेर पडण्यासाठी कृपया पुन्हा क्लिक करा </string>
     <string name="select_lang"> भाषा निवडा</string>
     <string name="broadcast">ब्रॉडकास्ट \n मेसेज</string>
@@ -115,7 +116,7 @@
     <string name="issue_template">समस्या टेम्पलेट</string>
     <string name="issue_submit">समस्या यशस्वीरित्या सबमिट केली...</string>
     <string name="broadcast_submit">ब्रॉडकास्ट यशस्वी रित्या सबमिट झाला ...</string>
-
+    <string name="enter_comment">कृपया टिप्पणी प्रविष्ट करा</string>
     <string name="Comment">टिप्पणी</string>
     <string name="Forward">फॉरवर्ड </string>
     <string name="Share">शेअर</string>
@@ -147,9 +148,10 @@
     <string name="Templates">टेम्प्लेट</string>
     <string name="Schedule_training">वेळापत्रक प्रशिक्षण</string>
     <string name="Registration">रेजिस्ट्रेशन </string>
-    <string name="team_user_approval">युजर्स प्रोफाइल</string>
+    <string name="team_user_approval">युजर्स मंजूरी</string>
+    <string name="team_form_approval">फॉर्म मंजूरी</string>
     <string name="lang">भाषा बदला</string>
     <string name="profile">अपडेट  प्रोफाइल </string>
     <string name="logout">बाहेर पडणे</string>
-
+    <string name="select_form">फॉर्म निवडा</string>
 </resources>

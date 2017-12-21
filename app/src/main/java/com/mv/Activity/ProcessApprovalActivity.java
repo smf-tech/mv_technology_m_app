@@ -13,15 +13,11 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.mv.Adapter.TemplateAdapter;
 import com.mv.BR;
-import com.mv.Model.Community;
 import com.mv.Model.ParentViewModel;
-import com.mv.Model.ProgramManagementProcessList;
 import com.mv.Model.Template;
+import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
@@ -29,16 +25,12 @@ import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityNewTemplateBinding;
-import com.mv.databinding.ActivityProgrammeManagmentBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -46,10 +38,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class ProgrammeManagmentActivity extends AppCompatActivity implements View.OnClickListener {
+public class ProcessApprovalActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ActivityNewTemplateBinding binding;
-    private ImageView img_back, img_list, img_logout;
+    private ImageView img_back, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     //private ActivityProgrammeManagmentBinding binding;
@@ -68,7 +60,7 @@ public class ProgrammeManagmentActivity extends AppCompatActivity implements Vie
 
     private void initViews() {
         preferenceHelper = new PreferenceHelper(this);
-        setActionbar(getString(R.string.programme_management));
+        setActionbar(getString(R.string.select_form));
 
         mAdapter = new TemplateAdapter(programManagementProcessLists, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
@@ -81,13 +73,13 @@ public class ProgrammeManagmentActivity extends AppCompatActivity implements Vie
 
     public void onLayoutScheduleTraining() {
         Intent intent;
-        intent = new Intent(ProgrammeManagmentActivity.this, ScheduleTrainingActivity.class);
+        intent = new Intent(ProcessApprovalActivity.this, ScheduleTrainingActivity.class);
         startActivity(intent);
     }
 
     public void onLayoutClassObservation() {
         Intent intent;
-        intent = new Intent(ProgrammeManagmentActivity.this, ClassObservationActivity.class);
+        intent = new Intent(ProcessApprovalActivity.this, ClassObservationActivity.class);
         startActivity(intent);
     }
 
@@ -97,7 +89,6 @@ public class ProgrammeManagmentActivity extends AppCompatActivity implements Vie
 
     private void setActionbar(String Title) {
         mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        mToolBar.setVisibility(View.GONE);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         toolbar_title.setText(Title);
         img_back = (ImageView) findViewById(R.id.img_back);
@@ -126,12 +117,15 @@ public class ProgrammeManagmentActivity extends AppCompatActivity implements Vie
         finish();
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
+
+
+
     private void getAllProcess() {
         Utills.showProgressDialog(this, "Loading Process", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getProcess";
+                + "/services/apexrest/getApprovalProcess?userId=" + User.getCurrentUser(getApplicationContext()).getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -146,7 +140,6 @@ public class ProgrammeManagmentActivity extends AppCompatActivity implements Vie
                         processList.setUrl(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("url"));
                         processList.setId(jsonArray.getJSONObject(i).getString("Id"));
                         processList.setName(jsonArray.getJSONObject(i).getString("Name"));
-
                         processList.setIs_Editable__c(jsonArray.getJSONObject(i).getBoolean("Is_Editable__c"));
                         processList.setIs_Multiple_Entry_Allowed__c(jsonArray.getJSONObject(i).getBoolean("Is_Multiple_Entry_Allowed__c"));
                         programManagementProcessLists.add(processList);

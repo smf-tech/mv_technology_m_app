@@ -3,7 +3,6 @@ package com.mv.Fragment;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -12,30 +11,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
-import com.mv.Adapter.TeamManagementUserProfileAdapter;
+import com.mv.Adapter.TeamManagementAdapter;
 import com.mv.BR;
 import com.mv.Model.ParentViewModel;
 import com.mv.Model.Template;
-import com.mv.Model.User;
 import com.mv.R;
-import com.mv.Retrofit.ApiClient;
-import com.mv.Retrofit.AppDatabase;
-import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.PreferenceHelper;
-import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityNewTemplateBinding;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by nanostuffs on 16-11-2017.
@@ -44,7 +29,8 @@ import retrofit2.Response;
 public class TeamManagementFragment  extends Fragment {
     private PreferenceHelper preferenceHelper;
     List<Template> processAllList = new ArrayList<>();
-    private TeamManagementUserProfileAdapter mAdapter;
+    private TeamManagementAdapter mAdapter;
+    ArrayList<String>menuList;
     private ActivityNewTemplateBinding binding;
     RecyclerView.LayoutManager mLayoutManager;
     @Override
@@ -67,13 +53,16 @@ public class TeamManagementFragment  extends Fragment {
 
     private void initViews() {
         preferenceHelper = new PreferenceHelper(getActivity());
-
-
-        Template processList = new Template();
-        processList.setName(getString(R.string.team_user_approval));
+        menuList = new ArrayList<>();
+        menuList.add(getString(R.string.team_user_approval));
+        menuList.add(getString(R.string.team_form_approval));
         processAllList.clear();
-        processAllList.add(processList);
-        mAdapter = new TeamManagementUserProfileAdapter(processAllList, getActivity());
+        for (int i = 0; i < menuList.size(); i++) {
+            Template processList = new Template();
+            processList.setName(menuList.get(i));
+            processAllList.add(processList);
+        }
+        mAdapter = new TeamManagementAdapter(processAllList, getActivity());
         mLayoutManager = new LinearLayoutManager(getActivity());
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());

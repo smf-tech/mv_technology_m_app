@@ -94,5 +94,11 @@ public class Constants {
     public static final String PROCESS_STATE_SUBMIT = "false";
     public static final String PROCESS_STATE_MODIFIED = "modified";
 
+    public static final String APPROVAL_TYPE = "approval_type";
+    public static final String USER_APPROVAL = "user_approval";
+    public static final String PROCESS_APPROVAL = "process_approval";
 
+    public static final String PROCESS_TYPE = "process_type";
+    public static final String MANGEMENT_PROCESS = "managenment_approval";
+    public static final String APPROVAL_PROCESS = "approval_process";
 }
