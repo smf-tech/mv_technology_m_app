@@ -7,9 +7,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,6 +23,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +35,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kobakei.ratethisapp.RateThisApp;
@@ -73,34 +85,65 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private PreferenceHelper preferenceHelper;
     public static final String LANGUAGE_ENGLISH = "en";
-    public static final String LANGUAGE_UKRAINIAN = "mr";
+    public static final String LANGUAGE_MARATHI = "mr";
     public static final String LANGUAGE = "language";
     private ViewPagerAdapter adapter;
     private TabLayout tabLayout;
     private ViewPager viewPager;
+
+
+    private FusedLocationProviderClient mFusedLocationClient;
+    private Location mLastLocation;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
         binding.setActivity(this);
         preferenceHelper = new PreferenceHelper(this);
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
         setActionbar(getString(R.string.app_name));
-         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-         viewPager = (ViewPager) findViewById(R.id.pager);
+        tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        final LocationManager manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE );
 
+
+
+
+        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
+
+            if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                LocationPopup();
+
+            }
+        }
+
+        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
+
+            if ( manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                Utills.scheduleJob(getApplicationContext());
+
+            }
+        }
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             if (Utills.isConnected(this))
                 getUserData();
+
             else
                 initViews();
         } else
             initViews();
 
 
-    }
 
+
+
+
+    }
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
@@ -259,8 +302,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
-        private  List<Fragment> mFragmentList = new ArrayList<>();
-        private  List<String> mFragmentTitleList = new ArrayList<>();
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
 
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
@@ -435,9 +478,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         final String[] items = {"On", "Off"};
         final ArrayList seletedItems = new ArrayList();
+        int checkedItem = 0;
+        if (preferenceHelper.getBoolean(PreferenceHelper.NOTIFICATION)) {
+            checkedItem = 0;
+        } else {
+            checkedItem = 1;
+        }
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.notification))
-                .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(items, checkedItem, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -465,9 +514,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         final String[] items = {"English", "मराठी"};
         final ArrayList seletedItems = new ArrayList();
+
+        int checkId = 0;
+        if (preferenceHelper.getString(LANGUAGE).equalsIgnoreCase(LANGUAGE_MARATHI)) {
+            checkId = 1;
+        } else {
+
+        }
+
+
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.select_lang))
-                .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(items, checkId, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -482,8 +540,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_ENGLISH);
                             preferenceHelper.insertString(LANGUAGE, LANGUAGE_ENGLISH);
                         } else {
-                            LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_UKRAINIAN);
-                            preferenceHelper.insertString(LANGUAGE, LANGUAGE_UKRAINIAN);
+                            LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_MARATHI);
+                            preferenceHelper.insertString(LANGUAGE, LANGUAGE_MARATHI);
                         }
                         dialog.dismiss();
                         finish();
@@ -693,6 +751,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                     }
                     initViews();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -742,5 +801,66 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void getAddress() {
+        mFusedLocationClient.getLastLocation()
+
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location == null) {
+                            Log.e("location","null");
+                            return;
+                        }
+
+                        mLastLocation = location;
+                        Log.e("lat", String.valueOf(mLastLocation.getLatitude()));
+                        Log.e("long", String.valueOf(mLastLocation.getLongitude()));
+                        Toast.makeText(getApplicationContext(),"latitude" +location.getLatitude() +"longitude" +location.getLongitude(),Toast.LENGTH_SHORT).show();
+                        if (!Geocoder.isPresent()) {
+                            return;
+                        }
+
+                        // If the user pressed the fetch address button before we had the location,
+                        // this will be set to true indicating that we should kick off the intent
+                        // service after fetching the location.
+                      /*  if (mAddressRequested) {
+                            startIntentService();
+                        }*/
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                       // Log.w(TAG, "getLastLocation:onFailure", e);
+                        Log.e("fail","unable to connect");
+                    }
+                });
+
+
+    }
+
+
+    private void LocationPopup(){
+        AlertDialog.Builder  dialog = new AlertDialog.Builder(HomeActivity.this);
+        dialog.setMessage("Gps network not enabled");
+        dialog.setPositiveButton("Open Location", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                // TODO Auto-generated method stub
+                Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(myIntent);
+                //get gps
+            }
+        });
+      /*  dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                // TODO Auto-generated method stub
+
+            }
+        });*/
+        dialog.show();
+    }
 
 }

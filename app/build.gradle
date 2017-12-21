@@ -35,9 +35,9 @@ android {
         minSdkVersion 17
         targetSdkVersion 22
         versionCode 9
-        versionName "1.7"
+        versionName "1.8"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "BASEURL", "\"http://demos.nanostuffs.com/mv_gov/index.php/\""
+        buildConfigField "String", "BASEURL", "\"http://13.58.218.106/mv_gov/index.php/\""
         multiDexEnabled true
         javaCompileOptions {
             annotationProcessorOptions {
@@ -87,6 +87,9 @@ dependencies {
         transitive = true;
     }
     compile 'io.github.kobakei:ratethisapp:1.2.0'
+    compile 'com.google.android.gms:play-services-location:11.4.2'
+    compile 'com.firebase:firebase-jobdispatcher:0.8.5'
+
 
 }
 apply plugin: 'com.google.gms.google-services'

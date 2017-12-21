@@ -47,7 +47,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             try {
                 preferenceHelper = new PreferenceHelper(getApplicationContext());
                 mId = remoteMessage.getData().get("Id");
-                sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
+                if (preferenceHelper != null) {
+                    if (preferenceHelper.getBoolean(PreferenceHelper.NOTIFICATION)) {
+                        sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
+                    }
+                } else {
+                    sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
+                }
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -94,20 +101,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
         Uri defaultSoundUri = null;
-        if (preferenceHelper != null)
+        defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
-        {
-            if (preferenceHelper.getBoolean(PreferenceHelper.NOTIFICATION)) {
-                defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-            }
-        } else
-
-        {
-            defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        }
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_stat_name)
+                .setSmallIcon(R.drawable.notification_icon)
                 .setContentTitle(messageTitle)
                 .setContentText(messageBody)
                 .setAutoCancel(true)

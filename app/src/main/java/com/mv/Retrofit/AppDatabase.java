@@ -8,7 +8,6 @@ import android.content.Context;
 import com.mv.Model.Community;
 import com.mv.Model.Content;
 import com.mv.Model.LocationModel;
-import com.mv.Model.Task;
 import com.mv.Model.TaskContainerModel;
 import com.mv.Model.Template;
 
@@ -17,7 +16,7 @@ import com.mv.Model.Template;
  * Created by Rohit Gujar on 23-10-2017.
  */
 
-@Database(entities = { Community.class, Content.class, Template.class, TaskContainerModel.class, LocationModel.class}, version = 1)
+@Database(entities = { Community.class, Content.class, Template.class, TaskContainerModel.class, LocationModel.class}, version = 2)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;

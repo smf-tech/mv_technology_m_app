@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -78,12 +79,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private ArrayAdapter<String> state_adapter, district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, role_adapter, organization_adapter, project_adapter;
     private PreferenceHelper preferenceHelper;
     private User user;
+    private String mGenderSelect = "";
     private Uri FinalUri = null;
     private Uri outputUri = null;
     private String imageFilePath;
     private Boolean isAdd;
     private boolean isProjectSet = false, isOrganizationSet = false, isStateSet = false, isDistrictSet = false, isTalukaSet = false, isClusterSet = false, isVillageSet = false, isSchoolSet = false, isRollSet = false;
-
+    private RadioGroup radioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -368,6 +370,19 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         Utills.setupUI(findViewById(R.id.layout_main), this);
         preferenceHelper = new PreferenceHelper(this);
 
+        radioGroup = (RadioGroup) findViewById(R.id.gender_group);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+                if (checkedId == R.id.gender_male)
+                    mGenderSelect = "Male";
+                else if (checkedId == R.id.gender_female)
+                    mGenderSelect = "Female";
+                else if (checkedId == R.id.gender_other)
+                    mGenderSelect = "Other";
+            }
+        });
+
         edit_text_name = (EditText) findViewById(R.id.edit_text_name);
         edit_text_midle_name = (EditText) findViewById(R.id.edit_text_midle_name);
         edit_text_last_name = (EditText) findViewById(R.id.edit_text_last_name);
@@ -441,6 +456,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         role_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_role.setAdapter(role_adapter);
 
+
         txt_district = (TextView) findViewById(R.id.txt_district);
         txt_taluka = (TextView) findViewById(R.id.txt_taluka);
         txt_cluster = (TextView) findViewById(R.id.txt_cluster);
@@ -486,6 +502,18 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 binding.editTextMobileNumber.setText(User.getCurrentUser(this).getPhone());
                 binding.editTextName.setText(User.getCurrentUser(this).getName());
 
+                if (User.getCurrentUser(this).getGender() != null && !TextUtils.isEmpty(User.getCurrentUser(this).getGender())) {
+                    if (User.getCurrentUser(this).getGender().equalsIgnoreCase("Male")) {
+                        radioGroup.check(R.id.gender_male);
+                        mGenderSelect = "Male";
+                    } else if (User.getCurrentUser(this).getGender().equalsIgnoreCase("Female")) {
+                        radioGroup.check(R.id.gender_female);
+                        mGenderSelect = "Female";
+                    } else if (User.getCurrentUser(this).getGender().equalsIgnoreCase("Other")) {
+                        radioGroup.check(R.id.gender_other);
+                        mGenderSelect = "Other";
+                    }
+                }
 
                 if (User.getCurrentUser(this).getImageId() != null && !(User.getCurrentUser(this).getImageId().equalsIgnoreCase("null"))) {
                     Glide.with(this)
@@ -573,6 +601,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                 jsonObject2.put("User_State__c", mListState.get(mSelectState));
 
+                jsonObject2.put("Gender__c", mGenderSelect);
 
                 if (mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("School")) {
                     jsonObject2.put("User_Cluster__c", mListCluster.get(mSelectCluster));
@@ -610,8 +639,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     jsonObject2.put("User_Taluka__c", "Select");
                     jsonObject2.put("User_Village__c", "Select");
                     jsonObject2.put("UserSchoolName__c", "Select");
-                }
-                else {
+                } else {
                     jsonObject2.put("User_Cluster__c", mListCluster.get(mSelectCluster));
                     jsonObject2.put("User_District__c", mListDistrict.get(mSelectDistrict));
                     jsonObject2.put("User_Taluka__c", mListTaluka.get(mSelectTaluka));
@@ -620,11 +648,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 }
 
 
-
-
-
                 jsonObject2.put("User_SchoolID__c", "Select");
-
 
 
                 if (mSelectProject > 0)
@@ -726,6 +750,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             msg = getString(R.string.Please_select_Role);
         } else if (edit_text_email.getText().toString().trim().length() != 0 && !android.util.Patterns.EMAIL_ADDRESS.matcher(edit_text_email.getText().toString().trim()).matches()) {
             msg = getString(R.string.Please_Enter_valid_email_address);
+        } else if (mGenderSelect.length() == 0) {
+            msg = getString(R.string.Please_select_Gender);
         } else if (mSelectState == 0) {
             msg = getString(R.string.Please_select_State);
         } else if ((mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("District"))) {

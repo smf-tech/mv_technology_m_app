@@ -91,6 +91,17 @@
             android:textSize="@dimen/article_subheading"
             my_font:typeface="Abel-Regular.ttf" />
 
+        <com.mv.Widgets.MyTextView
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/article_subheading"
+            my_font:typeface="Abel-Regular.ttf"
+            android:layout_margin="@dimen/dimen_10dp"
+            android:id="@+id/txt_type"
+            android:text=""/>
+
 
         <LinearLayout
             style="?android:attr/borderlessButtonStyle"

@@ -70,7 +70,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final Integer[] XMEN = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e};
     private ArrayList<Integer> XMENArray = new ArrayList<Integer>();
     public static final String LANGUAGE_ENGLISH = "en";
-    public static final String LANGUAGE_UKRAINIAN = "mr";
+    public static final String LANGUAGE_MARATHI = "mr";
     public static final String LANGUAGE = "language";
     final Handler handler = new Handler();
     Timer swipeTimer = new Timer();
@@ -217,8 +217,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_ENGLISH);
                             preferenceHelper.insertString(LANGUAGE, LANGUAGE_ENGLISH);
                         } else {
-                            LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_UKRAINIAN);
-                            preferenceHelper.insertString(LANGUAGE, LANGUAGE_UKRAINIAN);
+                            LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_MARATHI);
+                            preferenceHelper.insertString(LANGUAGE, LANGUAGE_MARATHI);
                         }
                         dialog.dismiss();
                         finish();
