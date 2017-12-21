@@ -12,6 +12,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,11 +28,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.jobdispatcher.Constraint;
+import com.firebase.jobdispatcher.FirebaseJobDispatcher;
+import com.firebase.jobdispatcher.GooglePlayDriver;
+import com.firebase.jobdispatcher.Job;
+import com.firebase.jobdispatcher.Lifetime;
+import com.firebase.jobdispatcher.RetryStrategy;
+import com.firebase.jobdispatcher.Trigger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.mv.Model.Task;
 import com.mv.R;
+import com.mv.Service.MyJobService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -259,6 +268,42 @@ public class Utills {
      *
      * @return
      */
+
+
+    public static void scheduleJob(Context context)
+    {
+
+        FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
+
+        Job myJob = dispatcher.newJobBuilder()
+                // the JobService that will be called
+                .setService(MyJobService.class)
+
+                // uniquely identifies the job
+                .setTag("my-unique-tag")
+                // one-off job
+                .setRecurring(true)
+                // don't persist past a device reboot
+                .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
+                .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
+                // start between 0 and 60 seconds from now
+                .setTrigger(Trigger.executionWindow(0, 120))
+                // don't overwrite an existing job with the same tag
+                .setReplaceCurrent(false)
+
+                // retry with exponential backoff
+                .setRetryStrategy(RetryStrategy.DEFAULT_EXPONENTIAL)
+                // constraints that need to be satisfied for the job to run
+                .setConstraints(
+                        // only run on an unmetered network
+                        Constraint.ON_UNMETERED_NETWORK,
+                        // only run when the device is charging
+                        Constraint.DEVICE_CHARGING
+                )
+                .build();
+
+        dispatcher.mustSchedule(myJob);
+    }
     public static boolean isConnected(Context cntxt) {
         NetworkInfo activeNetwork = getNetworkInfo(cntxt);
         return activeNetwork != null

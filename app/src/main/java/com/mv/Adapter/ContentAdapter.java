@@ -175,6 +175,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         holder.txt_time.setText(mDataList.get(position).getTime().toString());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");
         holder.txtCommentCount.setText(mDataList.get(position).getCommentCount() + " Comments");
+
+        holder.txt_type.setText(mDataList.get(position).getIssue_priority());
         if (mDataList.get(position).getIsLike())
             holder.imgLike.setImageResource(R.drawable.like);
         else
@@ -347,7 +349,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView picture, userImage, imgLike, img_comment;
         public CardView card_view;
-        public TextView txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount;
+        public TextView txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount,txt_type;
         public LinearLayout layout_like, layout_comment, layout_share, layout_download;
 
         public ViewHolder(View itemLayoutView) {
@@ -365,6 +367,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             textViewLike = (TextView) itemLayoutView.findViewById(R.id.textViewLike);
             img_comment = (ImageView) itemLayoutView.findViewById(R.id.img_comment);
             layout_comment = (LinearLayout) itemLayoutView.findViewById(R.id.layout_comment);
+
+            txt_type = (TextView) itemLayoutView.findViewById(R.id.txt_type);
             layout_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -141,5 +141,7 @@ public interface UserDao {
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where synchStatus = '" + Constants.STATUS_LOCAL + "' order by CreatedDate desc")
     List<Content> getAllASynchChats();
 
+    @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  and Priority = :issuetype order by CreatedDate desc")
+    List<Content> getAllChatsfilter(String communityId, String issuetype);
 
 }
