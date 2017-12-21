@@ -287,7 +287,7 @@ public class Utills {
                 .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
                 .setLifetime(Lifetime.UNTIL_NEXT_BOOT)
                 // start between 0 and 60 seconds from now
-                .setTrigger(Trigger.executionWindow(0, 120))
+                .setTrigger(Trigger.executionWindow(0, 36000))
                 // don't overwrite an existing job with the same tag
                 .setReplaceCurrent(false)
 

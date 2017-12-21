@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -295,11 +296,18 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
             }
         });
         img_filter = (ImageView) findViewById(R.id.img_filter);
+        if(getIntent().getExtras().getString(Constants.TITLE).equalsIgnoreCase("HO Support")){
+
+            img_logout.setVisibility(View.INVISIBLE);
+        }else {
+            img_logout.setVisibility(View.VISIBLE);
+        }
         img_filter.setVisibility(View.VISIBLE);
         img_filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(getIntent().getExtras().getString(Constants.TITLE).equalsIgnoreCase("HO Support")){
+
                     HoSupportFilter();
                 }else {
                     OtherFilter();
@@ -590,5 +598,6 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
         b.show();
     }
+
     }
 

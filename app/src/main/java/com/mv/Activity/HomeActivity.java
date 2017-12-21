@@ -2,13 +2,17 @@ package com.mv.Activity;
 
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -28,6 +32,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.kobakei.ratethisapp.RateThisApp;
@@ -86,6 +96,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
         binding.setActivity(this);
@@ -95,20 +106,41 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         viewPager = (ViewPager) findViewById(R.id.pager);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        final LocationManager manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE );
+
+
+
+
         if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
-            Utills.scheduleJob(getApplicationContext());
+
+            if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                LocationPopup();
+
+            }
+        }
+
+        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
+
+            if ( manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                Utills.scheduleJob(getApplicationContext());
+
+            }
         }
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             if (Utills.isConnected(this))
                 getUserData();
+
             else
                 initViews();
         } else
             initViews();
 
 
-    }
 
+
+
+
+    }
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
@@ -267,8 +299,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     class ViewPagerAdapter extends FragmentPagerAdapter {
-        private  List<Fragment> mFragmentList = new ArrayList<>();
-        private  List<String> mFragmentTitleList = new ArrayList<>();
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
 
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
@@ -716,6 +748,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                     }
                     initViews();
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -802,4 +835,29 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
+
+
+    private void LocationPopup(){
+        AlertDialog.Builder  dialog = new AlertDialog.Builder(HomeActivity.this);
+        dialog.setMessage("Gps_network_not_enabled");
+        dialog.setPositiveButton("Open Location", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                // TODO Auto-generated method stub
+                Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(myIntent);
+                //get gps
+            }
+        });
+        dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
+                // TODO Auto-generated method stub
+
+            }
+        });
+        dialog.show();
+    }
+
 }
