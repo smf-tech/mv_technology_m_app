@@ -200,7 +200,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     public void showDialog() {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(ProcessDeatailActivity.this);
-        alertDialog.setTitle(getString(R.string.Comment));
+        alertDialog.setTitle(getString(R.string.comments));
         alertDialog.setMessage("Please Enter Comment");
 
         final EditText input = new EditText(ProcessDeatailActivity.this);
