@@ -3,6 +3,7 @@ package com.mv.Fragment;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.mv.Model.ParentViewModel;
 import com.mv.Model.Template;
 import com.mv.R;
 import com.mv.Utils.PreferenceHelper;
+import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityNewTemplateBinding;
 
 import java.util.ArrayList;
@@ -67,7 +69,15 @@ public class TeamManagementFragment  extends Fragment {
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(mAdapter);
-
+        binding.swiperefresh.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        binding.swiperefresh.setRefreshing(false);
+                    }
+                }
+        );
+        binding.swiperefresh.setRefreshing(false);
 
     }
 

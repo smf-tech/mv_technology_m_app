@@ -87,10 +87,7 @@
             android:name=".Activity.IssueTemplateActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
-            android:name=".Activity.ProgrammeManagmentActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+
         <activity
             android:name=".Activity.ScheduleTrainingActivity"
             android:screenOrientation="portrait"

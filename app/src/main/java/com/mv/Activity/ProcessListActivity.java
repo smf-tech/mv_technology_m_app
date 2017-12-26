@@ -237,6 +237,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                             processList.setTimestamp__c(jsonArray.getJSONObject(i).getString("Timestamp__c"));
                             processList.setUnique_Id__c(jsonArray.getJSONObject(i).getString("Unique_Id__c"));
                             processList.setMTUser__c(jsonArray.getJSONObject(i).getString("MV_User__c"));
+                            processList.setIsApproved__c(jsonArray.getJSONObject(i).getString("IsApproved__c"));
                             processList.setValidation(jsonArray.getJSONObject(i).getString("Validation_on_text__c"));
                             processList.setIsSave(Constants.PROCESS_STATE_SUBMIT);
                             taskList.add(processList);

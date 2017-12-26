@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -69,6 +70,16 @@ public class ProcessApprovalActivity extends AppCompatActivity implements View.O
         binding.recyclerView.setAdapter(mAdapter);
         if (Utills.isConnected(this))
             getAllProcess();
+        binding.swiperefresh.setOnRefreshListener(
+                new SwipeRefreshLayout.OnRefreshListener() {
+                    @Override
+                    public void onRefresh() {
+                        if (Utills.isConnected(getApplicationContext()))
+                            getAllProcess();
+                    }
+                }
+        );
+        binding.swiperefresh.setRefreshing(false);
     }
 
     public void onLayoutScheduleTraining() {
@@ -130,6 +141,7 @@ public class ProcessApprovalActivity extends AppCompatActivity implements View.O
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
+                binding.swiperefresh.setRefreshing(false);
                 try {
                     JSONArray jsonArray = new JSONArray(response.body().string());
                     programManagementProcessLists.clear();
