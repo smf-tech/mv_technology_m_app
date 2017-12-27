@@ -44,7 +44,7 @@ import retrofit2.Response;
 public class ProcessListApproval extends AppCompatActivity implements View.OnClickListener {
 
     private ActivityProcessListApprovalBinding binding;
-    private ImageView img_back, img_list, img_logout;
+    private ImageView img_back, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
 
