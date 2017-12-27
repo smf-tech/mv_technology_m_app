@@ -356,7 +356,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 } else {
                     preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Report");
                     preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, Constants.REPORTID);
-                    intent = new Intent(CommunityHomeActivity.this, ReportingTemplateActivity.class);
+                    intent = new Intent(CommunityHomeActivity.this, AddThetSavadActivity.class);
                     startActivity(intent);
                 }
 

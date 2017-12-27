@@ -96,6 +96,9 @@ public interface UserDao {
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where isBroadcast = 'true' order by CreatedDate desc")
     List<Content> getAllBroadcastChats();
 
+    @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where isTheatMessage = 'true' order by CreatedDate desc")
+    List<Content> getThetSavandChats();
+
     @Query("SELECT * FROM " + Constants.TABLE_COMMUNITY + " order by timestamp desc")
     List<Community> getAllCommunities();
 
