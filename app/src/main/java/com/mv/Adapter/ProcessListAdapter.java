@@ -121,9 +121,9 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         holder.txtCommunityName.setText(Utills.getDate(Long.valueOf(tasks.get(0).getTimestamp__c()), "dd/MM/yyyy hh:mm:ss.SSS"));
         if (tasks.get(0).getIsSave().equals("false")) {
             if(tasks.get(0).getIsApproved__c().equals("false"))
-            holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
+            holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.orange));
             else
-                holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.orange));
+                holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
             holder.deleteRecord.setImageResource(R.drawable.arrow);
         } else {
             holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.red));

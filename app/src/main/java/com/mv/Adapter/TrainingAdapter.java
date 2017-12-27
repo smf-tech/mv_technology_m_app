@@ -194,26 +194,28 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
     }
 
     private boolean isFileAvalible(int position) {
-        if (mDataList.get(position).getFileType().equalsIgnoreCase("zip")) {
-            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/UnZip/" + mDataList.get(position).getName();
-            if (new File(filePath).exists())
-                return true;
-            return false;
-        } else if (mDataList.get(position).getFileType().equalsIgnoreCase("pdf")) {
-            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getName() + ".pdf";
-            if (new File(filePath).exists())
-                return true;
-            return false;
-        } else if (mDataList.get(position).getFileType().equalsIgnoreCase("video")) {
-            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getName() + ".mp4";
-            if (new File(filePath).exists())
-                return true;
-            return false;
-        } else if (mDataList.get(position).getFileType().equalsIgnoreCase("audio")) {
-            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getName() + ".mp3";
-            if (new File(filePath).exists())
-                return true;
-            return false;
+        if (mDataList.get(position).getFileType() != null) {
+            if (mDataList.get(position).getFileType().equalsIgnoreCase("zip")) {
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/UnZip/" + mDataList.get(position).getName();
+                if (new File(filePath).exists())
+                    return true;
+                return false;
+            } else if (mDataList.get(position).getFileType().equalsIgnoreCase("pdf")) {
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getName() + ".pdf";
+                if (new File(filePath).exists())
+                    return true;
+                return false;
+            } else if (mDataList.get(position).getFileType().equalsIgnoreCase("video")) {
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getName() + ".mp4";
+                if (new File(filePath).exists())
+                    return true;
+                return false;
+            } else if (mDataList.get(position).getFileType().equalsIgnoreCase("audio")) {
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getName() + ".mp3";
+                if (new File(filePath).exists())
+                    return true;
+                return false;
+            }
         }
         return false;
     }

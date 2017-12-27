@@ -2,12 +2,10 @@ package com.mv.Activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -286,7 +284,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
             JsonParser jsonParser = new JsonParser();
             JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
-            apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/ApproveCommentforProcess", gsonObject).enqueue(new Callback<ResponseBody>() {
+            apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertAnswer", gsonObject).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Utills.hideProgressDialog();

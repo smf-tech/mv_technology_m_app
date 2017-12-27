@@ -114,26 +114,35 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    mListProject.clear();
-                    mListProjectId.clear();
-                    mListProject.add("Select");
-                    mListProjectId.add("Select");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject object = jsonArray.getJSONObject(i);
-                        mListProject.add(object.getString("Project_Name__c"));
-                        mListProjectId.add(object.getString("Id"));
-                    }
-                    project_adapter.notifyDataSetChanged();
-                    if (!isAdd && !isProjectSet) {
-                        isProjectSet = true;
-                        for (int i = 0; i < mListProject.size(); i++) {
-                            if (mListProject.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getProject_Name__c())) {
-                                spinner_project.setSelection(i);
-                                break;
-                            }
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+
+                                JSONArray jsonArray = null;
+                                jsonArray = new JSONArray(data);
+                                mListProject.clear();
+                                mListProjectId.clear();
+                                mListProject.add("Select");
+                                mListProjectId.add("Select");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject object = jsonArray.getJSONObject(i);
+                                    mListProject.add(object.getString("Project_Name__c"));
+                                    mListProjectId.add(object.getString("Id"));
+                                }
+                                project_adapter.notifyDataSetChanged();
+                                if (!isAdd && !isProjectSet) {
+                                    isProjectSet = true;
+                                    for (int i = 0; i < mListProject.size(); i++) {
+                                        if (mListProject.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getProject_Name__c())) {
+                                            spinner_project.setSelection(i);
+                                            break;
+                                        }
+                                    }
+                                }
+
                         }
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -160,30 +169,39 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    JSONObject obj = new JSONObject(response.body().string());
-                    JSONArray jsonArray = obj.getJSONArray("records");
-                    mListRoleName.clear();
-                    mListRoleId.clear();
-                    mListRoleJuridiction.clear();
-                    mListRoleName.add("Select");
-                    mListRoleId.add("");
-                    mListRoleJuridiction.add("");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        mListRoleName.add(jsonObject.getString("Name"));
-                        mListRoleId.add(jsonObject.getString("Id"));
-                        mListRoleJuridiction.add(jsonObject.getString("Juridictions__c"));
-                    }
-                    role_adapter.notifyDataSetChanged();
-                    if (!isAdd && !isRollSet) {
-                        isRollSet = true;
-                        for (int i = 0; i < mListRoleName.size(); i++) {
-                            if (mListRoleName.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getRoll())) {
-                                binding.spinnerRole.setSelection(i);
-                                break;
-                            }
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+
+
+                                JSONObject obj = new JSONObject(data);
+                                JSONArray jsonArray = obj.getJSONArray("records");
+                                mListRoleName.clear();
+                                mListRoleId.clear();
+                                mListRoleJuridiction.clear();
+                                mListRoleName.add("Select");
+                                mListRoleId.add("");
+                                mListRoleJuridiction.add("");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                    mListRoleName.add(jsonObject.getString("Name"));
+                                    mListRoleId.add(jsonObject.getString("Id"));
+                                    mListRoleJuridiction.add(jsonObject.getString("Juridictions__c"));
+                                }
+                                role_adapter.notifyDataSetChanged();
+                                if (!isAdd && !isRollSet) {
+                                    isRollSet = true;
+                                    for (int i = 0; i < mListRoleName.size(); i++) {
+                                        if (mListRoleName.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getRoll())) {
+                                            binding.spinnerRole.setSelection(i);
+                                            break;
+                                        }
+                                    }
+                                }
+
                         }
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -210,22 +228,28 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    mListOrganization.clear();
-                    mListOrganization.add("Select");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        mListOrganization.add(jsonArray.getString(i));
-                    }
-                    organization_adapter.notifyDataSetChanged();
-                    if (!isAdd && !isOrganizationSet) {
-                        isOrganizationSet = true;
-                        for (int i = 0; i < mListOrganization.size(); i++) {
-                            if (mListOrganization.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getOrganisation())) {
-                                spinner_organization.setSelection(i);
-                                break;
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(data);
+                            mListOrganization.clear();
+                            mListOrganization.add("Select");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                mListOrganization.add(jsonArray.getString(i));
+                            }
+                            organization_adapter.notifyDataSetChanged();
+                            if (!isAdd && !isOrganizationSet) {
+                                isOrganizationSet = true;
+                                for (int i = 0; i < mListOrganization.size(); i++) {
+                                    if (mListOrganization.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getOrganisation())) {
+                                        spinner_organization.setSelection(i);
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -292,22 +316,28 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    mListState.clear();
-                    mListState.add("Select");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        mListState.add(jsonArray.getString(i));
-                    }
-                    state_adapter.notifyDataSetChanged();
-                    if (!isAdd && !isStateSet) {
-                        isStateSet = true;
-                        for (int i = 0; i < mListState.size(); i++) {
-                            if (mListState.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getState())) {
-                                binding.spinnerState.setSelection(i);
-                                break;
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(data);
+                            mListState.clear();
+                            mListState.add("Select");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                mListState.add(jsonArray.getString(i));
+                            }
+                            state_adapter.notifyDataSetChanged();
+                            if (!isAdd && !isStateSet) {
+                                isStateSet = true;
+                                for (int i = 0; i < mListState.size(); i++) {
+                                    if (mListState.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getState())) {
+                                        binding.spinnerState.setSelection(i);
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -334,22 +364,28 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    mListDistrict.clear();
-                    mListDistrict.add("Select");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        mListDistrict.add(jsonArray.getString(i));
-                    }
-                    district_adapter.notifyDataSetChanged();
-                    if (!isAdd && !isDistrictSet) {
-                        isDistrictSet = true;
-                        for (int i = 0; i < mListDistrict.size(); i++) {
-                            if (mListDistrict.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getDistrict())) {
-                                binding.spinnerDistrict.setSelection(i);
-                                break;
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(data);
+                            mListDistrict.clear();
+                            mListDistrict.add("Select");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                mListDistrict.add(jsonArray.getString(i));
+                            }
+                            district_adapter.notifyDataSetChanged();
+                            if (!isAdd && !isDistrictSet) {
+                                isDistrictSet = true;
+                                for (int i = 0; i < mListDistrict.size(); i++) {
+                                    if (mListDistrict.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getDistrict())) {
+                                        binding.spinnerDistrict.setSelection(i);
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -687,34 +723,36 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
                         try {
-                            String data = response.body().string();
-                            JSONObject object = new JSONObject(data);
-                            JSONArray array = object.getJSONArray("Records");
-                            for (int i = 0; i < array.length(); i++) {
-                                JSONObject object1 = array.getJSONObject(i);
-                                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                                try {
-                                    if (!isAdd) {
-                                        AppDatabase.getAppDatabase(RegistrationActivity.this).userDao().clearTableCommunity();
-                                    }
-                                    preferenceHelper.insertString(PreferenceHelper.UserData, object1.toString());
-                                    preferenceHelper.insertString(PreferenceHelper.UserRole, user.getRoll());
-                                    Utills.showToast("Registration Successful...", RegistrationActivity.this);
-                                    User.clearUser();
-                                    setResult(RESULT_OK);
-                                    finish();
-                                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                break;
-                            }
 
+                            if (response.body() != null) {
+                                String data = response.body().string();
+                                if (data != null && data.length() > 0) {
+                                    JSONObject object = new JSONObject(data);
+                                    JSONArray array = object.getJSONArray("Records");
+                                    for (int i = 0; i < array.length(); i++) {
+                                        JSONObject object1 = array.getJSONObject(i);
+                                        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                                        try {
+                                            if (!isAdd) {
+                                                AppDatabase.getAppDatabase(RegistrationActivity.this).userDao().clearTableCommunity();
+                                            }
+                                            preferenceHelper.insertString(PreferenceHelper.UserData, object1.toString());
+                                            preferenceHelper.insertString(PreferenceHelper.UserRole, user.getRoll());
+                                            Utills.showToast("Registration Successful...", RegistrationActivity.this);
+                                            User.clearUser();
+                                            setResult(RESULT_OK);
+                                            finish();
+                                            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
                             /*JSONObject response1 = new JSONObject(response.body().string());
                             if (response1.getBoolean("success")) {
                                 // user.setId(response1.getString("id"));
-
-
                             } else {
                                 Utills.showToast(response1.getString("Message"), RegistrationActivity.this);
                             }*/
@@ -1006,23 +1044,31 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    mListCluster.clear();
-                    mListCluster.add("Select");
-                    JSONArray jsonArr = new JSONArray(response.body().string());
-                    for (int i = 0; i < jsonArr.length(); i++) {
-                        mListCluster.add(jsonArr.getString(i));
-                    }
-                    cluster_adapter.notifyDataSetChanged();
-                    if (!isAdd && !isClusterSet) {
-                        isClusterSet = true;
-                        for (int i = 0; i < mListCluster.size(); i++) {
-                            if (mListCluster.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getCluster())) {
-                                binding.spinnerCluster.setSelection(i);
-                                break;
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            mListCluster.clear();
+                            mListCluster.add("Select");
+                            JSONArray jsonArr = new JSONArray(data);
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                mListCluster.add(jsonArr.getString(i));
+                            }
+                            cluster_adapter.notifyDataSetChanged();
+                            if (!isAdd && !isClusterSet) {
+                                isClusterSet = true;
+                                for (int i = 0; i < mListCluster.size(); i++) {
+                                    if (mListCluster.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getCluster())) {
+                                        binding.spinnerCluster.setSelection(i);
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
-                } catch (JSONException | IOException e) {
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -1045,23 +1091,31 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    mListTaluka.clear();
-                    mListTaluka.add("Select");
-                    JSONArray jsonArr = new JSONArray(response.body().string());
-                    for (int i = 0; i < jsonArr.length(); i++) {
-                        mListTaluka.add(jsonArr.getString(i));
-                    }
-                    taluka_adapter.notifyDataSetChanged();
-                    if (!isAdd && !isTalukaSet) {
-                        isTalukaSet = true;
-                        for (int i = 0; i < mListTaluka.size(); i++) {
-                            if (mListTaluka.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getTaluka())) {
-                                binding.spinnerTaluka.setSelection(i);
-                                break;
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            mListTaluka.clear();
+                            mListTaluka.add("Select");
+                            JSONArray jsonArr = new JSONArray(data);
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                mListTaluka.add(jsonArr.getString(i));
+                            }
+                            taluka_adapter.notifyDataSetChanged();
+                            if (!isAdd && !isTalukaSet) {
+                                isTalukaSet = true;
+                                for (int i = 0; i < mListTaluka.size(); i++) {
+                                    if (mListTaluka.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getTaluka())) {
+                                        binding.spinnerTaluka.setSelection(i);
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
-                } catch (JSONException | IOException e) {
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -1083,23 +1137,31 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    mListVillage.clear();
-                    mListVillage.add("Select");
-                    JSONArray jsonArr = new JSONArray(response.body().string());
-                    for (int i = 0; i < jsonArr.length(); i++) {
-                        mListVillage.add(jsonArr.getString(i));
-                    }
-                    village_adapter.notifyDataSetChanged();
-                    if (!isAdd && !isVillageSet) {
-                        isVillageSet = true;
-                        for (int i = 0; i < mListVillage.size(); i++) {
-                            if (mListVillage.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getVillage())) {
-                                binding.spinnerVillage.setSelection(i);
-                                break;
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            mListVillage.clear();
+                            mListVillage.add("Select");
+                            JSONArray jsonArr = new JSONArray(data);
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                mListVillage.add(jsonArr.getString(i));
+                            }
+                            village_adapter.notifyDataSetChanged();
+                            if (!isAdd && !isVillageSet) {
+                                isVillageSet = true;
+                                for (int i = 0; i < mListVillage.size(); i++) {
+                                    if (mListVillage.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getVillage())) {
+                                        binding.spinnerVillage.setSelection(i);
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
-                } catch (JSONException | IOException e) {
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -1120,28 +1182,36 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    mListSchoolName.clear();
-                    mListCode.clear();
-                    mListSchoolName.add("Select");
-                    mListCode.add("");
-                    JSONArray jsonArr = new JSONArray(response.body().string());
-                    for (int i = 0; i < jsonArr.length(); i++) {
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            mListSchoolName.clear();
+                            mListCode.clear();
+                            mListSchoolName.add("Select");
+                            mListCode.add("");
+                            JSONArray jsonArr = new JSONArray(data);
+                            for (int i = 0; i < jsonArr.length(); i++) {
                        /* JSONObject jsonObject = jsonArr.getJSONObject(i);
                         mListSchoolName.add(jsonObject.getString("school_name"));
                         mListCode.add(jsonObject.getString("school_code"));*/
-                        mListSchoolName.add(jsonArr.getString(i));
-                    }
-                    school_adapter.notifyDataSetChanged();
-                    if (!isAdd && !isSchoolSet) {
-                        isSchoolSet = true;
-                        for (int i = 0; i < mListSchoolName.size(); i++) {
-                            if (mListSchoolName.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getSchool_Name())) {
-                                binding.spinnerSchoolName.setSelection(i);
-                                break;
+                                mListSchoolName.add(jsonArr.getString(i));
+                            }
+                            school_adapter.notifyDataSetChanged();
+                            if (!isAdd && !isSchoolSet) {
+                                isSchoolSet = true;
+                                for (int i = 0; i < mListSchoolName.size(); i++) {
+                                    if (mListSchoolName.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getSchool_Name())) {
+                                        binding.spinnerSchoolName.setSelection(i);
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
-                } catch (JSONException | IOException e) {
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
                     e.printStackTrace();
                 }
             }

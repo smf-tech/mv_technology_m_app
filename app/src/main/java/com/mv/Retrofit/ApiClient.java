@@ -98,7 +98,6 @@ public class ApiClient {
                     final Request request = chain.request().newBuilder()
                             .addHeader("Authorization", "OAuth " + new PreferenceHelper(context).getString(PreferenceHelper.AccessToken))
                             .addHeader("Content-Type", "application/json")
-
                             .build();
 
                     return chain.proceed(request);
