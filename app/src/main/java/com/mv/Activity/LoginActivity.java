@@ -85,7 +85,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         initViews();
      /*   DownloadFile downloadFile = new DownloadFile(this);
         downloadFile.startDownload("http://mobileyougokidinformationdesk.com//denver123//videos//test0.zip","DownLoad1.zip");
-*/    }
+*/
+    }
 
     public void onLoginClick() {
         // binding.tvUser.setText("(Enter the OTP below in case if we fail to detect the SMS automatically)");
@@ -155,24 +156,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
-
                 try {
-                    JSONObject obj = new JSONObject(response.body().string());
-                    String access_token = obj.getString("access_token");
-                    String instance_url = obj.getString("instance_url");
-                    String id = obj.getString("id");
-                    String str_id = id.substring(id.lastIndexOf("/") + 1, id.length());
-                    Log.e("$$$$$$$$$$", str_id);
-                    preferenceHelper.insertString(PreferenceHelper.AccessToken, access_token);
-                    preferenceHelper.insertString(PreferenceHelper.InstanceUrl, instance_url);
-                    preferenceHelper.insertString(PreferenceHelper.SalesforceUserId, str_id);
-                    preferenceHelper.insertString(PreferenceHelper.SalesforceUsername, Constants.USERNAME);
-                    preferenceHelper.insertString(PreferenceHelper.SalesforcePassword, Constants.PASSWORD);
-                    if (Utills.isConnected(LoginActivity.this))
-                        getLoginOTP();
-                    else {
-                        Utills.showInternetPopUp(getApplicationContext());
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            JSONObject obj = new JSONObject(data);
+                            String access_token = obj.getString("access_token");
+                            String instance_url = obj.getString("instance_url");
+                            String id = obj.getString("id");
+                            String str_id = id.substring(id.lastIndexOf("/") + 1, id.length());
+                            Log.e("$$$$$$$$$$", str_id);
+                            preferenceHelper.insertString(PreferenceHelper.AccessToken, access_token);
+                            preferenceHelper.insertString(PreferenceHelper.InstanceUrl, instance_url);
+                            preferenceHelper.insertString(PreferenceHelper.SalesforceUserId, str_id);
+                            preferenceHelper.insertString(PreferenceHelper.SalesforceUsername, Constants.USERNAME);
+                            preferenceHelper.insertString(PreferenceHelper.SalesforcePassword, Constants.PASSWORD);
+                            if (Utills.isConnected(LoginActivity.this))
+                                getLoginOTP();
+                            else {
+                                Utills.showInternetPopUp(getApplicationContext());
+                            }
+                        }
                     }
+
 
                    /* */
                 } catch (Exception e) {
@@ -244,13 +250,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
-
-                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 try {
-                    String data = response.body().string();
-                    preferenceHelper.insertString(PreferenceHelper.UserData, data);
-                    user = gson.fromJson(data, User.class);
-                    setTimer();
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                            preferenceHelper.insertString(PreferenceHelper.UserData, data);
+                            user = gson.fromJson(data, User.class);
+                            setTimer();
+                        }
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -287,8 +296,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (binding.edtOtp.isShown()) {
 
             slideOut(binding.edtUsername, binding.edtOtp, getString(R.string.msg_enter_mobile));
-            if(yourCountDownTimer!=null)
-            yourCountDownTimer.cancel();
+            if (yourCountDownTimer != null)
+                yourCountDownTimer.cancel();
             binding.tvTimer.setVisibility(View.GONE);
             binding.tvResendOtp.setVisibility(View.GONE);
         } else {

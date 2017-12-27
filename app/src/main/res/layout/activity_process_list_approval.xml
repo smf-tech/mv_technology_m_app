@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="processlistApprove"
+            type="com.mv.Activity.ProcessListApproval" />
+    </data>
+
+    <RelativeLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/app_bg"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_process"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_below="@+id/toolbar"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="15dp"
+            android:scrollbars="vertical" />
+
+    </RelativeLayout>
+</layout>

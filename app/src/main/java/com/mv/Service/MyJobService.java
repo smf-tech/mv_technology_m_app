@@ -1,14 +1,7 @@
 package com.mv.Service;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.location.Geocoder;
 import android.location.Location;
-import android.location.LocationManager;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
@@ -21,19 +14,16 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mv.Activity.HomeActivity;
 import com.mv.Model.User;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.PreferenceHelper;
-import com.mv.Utils.Utills;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.concurrent.Executor;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -48,6 +38,7 @@ public class MyJobService extends JobService {
     private PreferenceHelper preferenceHelper;
     private FusedLocationProviderClient mFusedLocationClient;
     private Location mLastLocation;
+
     @Override
     public boolean onStartJob(JobParameters job) {
         // Do some work> here
@@ -62,7 +53,8 @@ public class MyJobService extends JobService {
     public boolean onStopJob(JobParameters job) {
         return false; // Answers the question: "Should this job be retried?"
     }
-    private void GetMapParameters(String latitude,String longitude){
+
+    private void GetMapParameters(String latitude, String longitude) {
 
         try {
 
@@ -83,17 +75,20 @@ public class MyJobService extends JobService {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     try {
-                        String strResponse = response.body().string();
-                        JSONObject jsonObject = new JSONObject(strResponse);
-                        String status = jsonObject.getString("status");
-                        String message=      jsonObject.getString("msg");
-                        if(status.equals("Success")){
-                           // Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
-
-                        }else {
-                            //Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
-
+                        if (response.body() != null) {
+                            String data = response.body().string();
+                            if (data != null && data.length() > 0) {
+                                JSONObject jsonObject = new JSONObject(data);
+                                String status = jsonObject.getString("status");
+                                String message = jsonObject.getString("msg");
+                                if (status.equals("Success")) {
+                                    // Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
+                                } else {
+                                    //Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
+                                }
+                            }
                         }
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (JSONException e) {
@@ -103,7 +98,7 @@ public class MyJobService extends JobService {
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(),"something went wrong",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "something went wrong", Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -113,32 +108,29 @@ public class MyJobService extends JobService {
         }
 
 
-
-
-
     }
-   private void getAddress()
-    {
+
+    private void getAddress() {
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
 
         mFusedLocationClient.getLastLocation()
 
-                .addOnSuccessListener( new OnSuccessListener<Location>() {
+                .addOnSuccessListener(new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
                         if (location == null) {
-                            Log.e("location","null");
+                            Log.e("location", "null");
                             return;
                         }
 
                         mLastLocation = location;
                         Log.e("lat", String.valueOf(mLastLocation.getLatitude()));
                         Log.e("long", String.valueOf(mLastLocation.getLongitude()));
-                       String latitude = String.valueOf(mLastLocation.getLatitude());
-                       String longitude= String.valueOf(mLastLocation.getLongitude());
-                        GetMapParameters(latitude,longitude);
+                        String latitude = String.valueOf(mLastLocation.getLatitude());
+                        String longitude = String.valueOf(mLastLocation.getLongitude());
+                        GetMapParameters(latitude, longitude);
                         if (!Geocoder.isPresent()) {
-                           //Toast.makeText(getApplicationContext(),"No geocoder available",Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(),"No geocoder available",Toast.LENGTH_SHORT).show();
                             return;
                         }
 
@@ -150,18 +142,16 @@ public class MyJobService extends JobService {
                         }*/
                     }
                 })
-                .addOnFailureListener( new OnFailureListener() {
+                .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         // Log.w(TAG, "getLastLocation:onFailure", e);
-                        Log.e("fail","unable to connect");
+                        Log.e("fail", "unable to connect");
                     }
                 });
 
 
     }
-
-
 
 
 }

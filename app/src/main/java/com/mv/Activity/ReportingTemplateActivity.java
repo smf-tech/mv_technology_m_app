@@ -285,7 +285,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             content.setTitle(binding.editTextContent.getText().toString().trim());
             content.setDistrict(mListDistrict.get(mSelectDistrict));
             content.setTaluka(mListTaluka.get(mSelectTaluka));
-            content.setIssue_priority(mListReportingType.get(mSelectReportingType));
+            content.setReporting_type(mListReportingType.get(mSelectReportingType));
             content.setUser_id(User.getCurrentUser(this).getId());
             content.setCommunity_id(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
             content.setTemplate(preferenceHelper.getString(PreferenceHelper.TEMPLATEID));

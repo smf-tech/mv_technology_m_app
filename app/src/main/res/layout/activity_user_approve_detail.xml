@@ -489,7 +489,7 @@
                 android:layout_margin="@dimen/dimen_5dp"
                 android:layout_weight="5"
                 android:background="@color/colorPink"
-                android:text="@string/accept"
+                android:text="@string/approve"
 
                 android:textColor="#ffffff"
                 android:textSize="22sp" />

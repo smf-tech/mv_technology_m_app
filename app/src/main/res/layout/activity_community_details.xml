@@ -176,7 +176,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="10dp"
-                                android:text="@string/Comment"
+                                android:text="@string/comments"
                                 android:textColor="@color/medium_grey"
                                 android:textSize="12dp"
                                 my_font:typeface="Abel-Regular.ttf" />

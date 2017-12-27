@@ -78,6 +78,8 @@ public class Task implements Parcelable {
     @Expose
     private String Timestamp__c;
 
+    @SerializedName("Unique_Id__c")
+    @Expose
     @ColumnInfo(name = "Unique_Id__c")
     private String Unique_Id__c;
 
@@ -101,6 +103,18 @@ public class Task implements Parcelable {
     private String isSave;
 
 
+    public String getIsApproved__c() {
+        return IsApproved__c;
+    }
+
+    public void setIsApproved__c(String isApproved__c) {
+        IsApproved__c = isApproved__c;
+    }
+
+    @ColumnInfo(name = "IsApproved__c")
+    @SerializedName("IsApproved__c")
+    @Expose
+    private String IsApproved__c;
     public String getLocationLevel() {
         return LocationLevel;
     }
@@ -257,6 +271,7 @@ public class Task implements Parcelable {
         dest.writeString(this.Unique_Id__c);
         dest.writeString(this.MTUser__c);
         dest.writeString(this.isSave);
+        dest.writeString(this.IsApproved__c);
         dest.writeString(this.LocationLevel);
         dest.writeString(this.validation);
     }
@@ -277,6 +292,7 @@ public class Task implements Parcelable {
         this.Unique_Id__c = in.readString();
         this.MTUser__c = in.readString();
         this.isSave = in.readString();
+        this.IsApproved__c = in.readString();
         this.LocationLevel = in.readString();
         this.validation = in.readString();
     }

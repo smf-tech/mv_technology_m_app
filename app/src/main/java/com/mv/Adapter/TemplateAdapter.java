@@ -18,38 +18,24 @@ import com.mv.Activity.HomeActivity;
 import com.mv.Activity.IndicatorTrainingFeedBackTaskList;
 
 import com.mv.Activity.PiachartActivity;
-import com.mv.Activity.ProcessDeatailActivity;
+import com.mv.Activity.ProcessApprovalActivity;
 import com.mv.Activity.ProcessListActivity;
+import com.mv.Activity.TeamManagementUserProfileListActivity;
 import com.mv.Activity.TemplatesActivity;
-import com.mv.Model.Task;
-import com.mv.Model.TaskContainerModel;
 import com.mv.Model.Template;
 import com.mv.R;
-import com.mv.Retrofit.ApiClient;
-import com.mv.Retrofit.AppDatabase;
-import com.mv.Retrofit.ServiceRequest;
+
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
-import com.mv.Utils.Utills;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.MyViewHolder> {
 
     private List<Template> teplateList;
     private Activity mContext;
-    ArrayList<Task> programManagementProcessLists = new ArrayList<>();
+
     private PreferenceHelper preferenceHelper;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -67,22 +53,34 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.MyView
                         ((TemplatesActivity) mContext).onLayoutTemplateClick(getAdapterPosition());
 
                     else if (mContext instanceof HomeActivity) {
+
+
                         preferenceHelper.insertBoolean(Constants.IS_EDITABLE, teplateList.get(getAdapterPosition()).getIs_Editable__c());
                         preferenceHelper.insertBoolean(Constants.IS_LOCATION, teplateList.get(getAdapterPosition()).getLocation());
                         preferenceHelper.insertBoolean(Constants.IS_MULTIPLE, teplateList.get(getAdapterPosition()).getIs_Multiple_Entry_Allowed__c());
 
                         preferenceHelper.insertString(Constants.STATE_LOCATION_LEVEL, teplateList.get(getAdapterPosition()).getLocationLevel());
 
-                            Intent openClass = new Intent(mContext, ProcessListActivity.class);
-                            openClass.putExtra(Constants.PROCESS_ID, teplateList.get(getAdapterPosition()).getId());
-                            openClass.putExtra(Constants.PROCESS_NAME, teplateList.get(getAdapterPosition()).getName());
-                            mContext.startActivity(openClass);
-                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                        Intent openClass = new Intent(mContext, ProcessListActivity.class);
+                        openClass.putExtra(Constants.PROCESS_ID, teplateList.get(getAdapterPosition()).getId());
+                        openClass.putExtra(Constants.PROCESS_NAME, teplateList.get(getAdapterPosition()).getName());
+                        mContext.startActivity(openClass);
+                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
-                    }
-                    else if (mContext instanceof IndicatorTrainingFeedBackTaskList) {
+                    } else if (mContext instanceof IndicatorTrainingFeedBackTaskList) {
+
+                            //my reports
                         Intent openClass = new Intent(mContext, PiachartActivity.class);
-                        openClass.putExtra(Constants.TITLE,teplateList.get(getAdapterPosition()).getName());
+                        openClass.putExtra(Constants.TITLE, teplateList.get(getAdapterPosition()).getName());
+                        mContext.startActivity(openClass);
+                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    } else if (mContext instanceof ProcessApprovalActivity) {
+                        //PROCESS Approval
+                        Intent openClass = new Intent(mContext, TeamManagementUserProfileListActivity.class);
+                        openClass.putExtra(Constants.APPROVAL_TYPE, Constants.PROCESS_APPROVAL);
+                        openClass.putExtra(Constants.TITLE, teplateList.get(getAdapterPosition()).getName());
+                        openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
+
                         mContext.startActivity(openClass);
                         mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
                     }
@@ -117,12 +115,6 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.MyView
     public int getItemCount() {
         return teplateList.size();
     }
-
-
-
-
-
-
 
 
 }

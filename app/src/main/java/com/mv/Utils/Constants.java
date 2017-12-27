@@ -8,18 +8,17 @@ import android.net.Uri;
 
 public class Constants {
 
-    /* Production
+    // Production
     public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com";
     public  static String REPORTID = "a1L7F000000YNK4";
-    public static String ISSUEID = "a1L7F000000YNJz";*/
+    public static String ISSUEID = "a1L7F000000YNJz";
     /* Sandbox*/
 
-    public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
+    /*public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
     public static String REPORTID = "a1G0k000000522K";
-    public static String ISSUEID = "a1G0k000000522F";
-
+    public static String ISSUEID = "a1G0k000000522F";*/
 
     public static Uri shareUri = null;
     public static final int ISROLECHANGE = 1;
@@ -95,5 +94,11 @@ public class Constants {
     public static final String PROCESS_STATE_SUBMIT = "false";
     public static final String PROCESS_STATE_MODIFIED = "modified";
 
+    public static final String APPROVAL_TYPE = "approval_type";
+    public static final String USER_APPROVAL = "user_approval";
+    public static final String PROCESS_APPROVAL = "process_approval";
 
+    public static final String PROCESS_TYPE = "process_type";
+    public static final String MANGEMENT_PROCESS = "managenment_approval";
+    public static final String APPROVAL_PROCESS = "approval_process";
 }

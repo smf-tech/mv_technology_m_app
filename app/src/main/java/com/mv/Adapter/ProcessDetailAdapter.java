@@ -206,9 +206,13 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Task task = taskList.get(position);
-        if (!preferenceHelper.getBoolean(Constants.IS_EDITABLE) && !preferenceHelper.getBoolean(Constants.NEW_PROCESS)) {
+        if (!preferenceHelper.getBoolean(Constants.IS_EDITABLE) ) {
             holder.questionResponse.setEnabled(false);
             holder.spinnerResponse.setEnabled(false);
+            holder.llLocation.setEnabled(false);
+            holder.date.setEnabled(false);
+            holder.checkBox.setEnabled(false);
+            holder.dateInpute.setEnabled(false);
         }
 
         switch (task.getTask_type__c().trim()) {

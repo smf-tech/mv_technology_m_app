@@ -35,15 +35,17 @@ import java.util.List;
 
 public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.MyViewHolder> {
 
-    private final List<TaskContainerModel>resultList;
-    ArrayList<ArrayList<Task>> taskArrayList=new ArrayList<>();
+    private final List<TaskContainerModel> resultList;
+    ArrayList<ArrayList<Task>> taskArrayList = new ArrayList<>();
     PreferenceHelper preferenceHelper;
-    private ProcessListActivity mContext;
+    private Activity mContext;
+
     Gson gson;
     Type listType;
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView txtCommunityName,textViewColor;
-        public LinearLayout layout,deleteLay;
+        public TextView txtCommunityName, textViewColor;
+        public LinearLayout layout, deleteLay;
         ImageView deleteRecord;
 
 
@@ -53,13 +55,20 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
             textViewColor = (TextView) view.findViewById(R.id.temp_color);
             layout = (LinearLayout) view.findViewById(R.id.layoutTemplate);
             deleteLay = (LinearLayout) view.findViewById(R.id.lay_delete);
-            deleteRecord= (ImageView) view.findViewById(R.id.row_img);
+            deleteRecord = (ImageView) view.findViewById(R.id.row_img);
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(taskArrayList.size()>0) {
-                        preferenceHelper.insertString(Constants.UNIQUE,resultList.get(getAdapterPosition()).getUnique_Id());
-                        if(preferenceHelper.getBoolean(Constants.IS_LOCATION)) {
+                    if (taskArrayList.size() > 0) {
+                        preferenceHelper.insertString(Constants.UNIQUE, resultList.get(getAdapterPosition()).getUnique_Id());
+                        if (preferenceHelper.getBoolean(Constants.IS_LOCATION)) {
+                            preferenceHelper.insertBoolean(Constants.NEW_PROCESS, false);
+                            Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
+                            openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskArrayList.get(getAdapterPosition()));
+                            //  openClass.putExtra("stock_list", resultList.get(getAdapterPosition()).get(0));
+                            mContext.startActivity(openClass);
+                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                        } else {
                             preferenceHelper.insertBoolean(Constants.NEW_PROCESS, false);
                             Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
                             openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskArrayList.get(getAdapterPosition()));
@@ -67,39 +76,29 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                             mContext.startActivity(openClass);
                             mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
                         }
-                        else
-                        {
-                            preferenceHelper.insertBoolean(Constants.NEW_PROCESS, false);
-                            Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
-                            openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskArrayList.get(getAdapterPosition()));
-                            //  openClass.putExtra("stock_list", resultList.get(getAdapterPosition()).get(0));
-                            mContext.startActivity(openClass);
-                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        }
 
-                    }
-                    else
-                    {
+                    } else {
 
 
-                        Utills.showToast("No Task Available ",mContext);
+                        Utills.showToast("No Task Available ", mContext);
                     }
 
                 }
             });
 
 
-
         }
     }
 
 
-    public ProcessListAdapter(List<TaskContainerModel>  resultList, Activity context) {
+    public ProcessListAdapter(List<TaskContainerModel> resultList, Activity context) {
         this.resultList = resultList;
-        this.mContext = (ProcessListActivity) context;
+
+            this.mContext =  context;
         this.preferenceHelper = new PreferenceHelper(context);
-         gson = new Gson();
-     listType = new TypeToken<ArrayList<Task>>() {}.getType();
+        gson = new Gson();
+        listType = new TypeToken<ArrayList<Task>>() {
+        }.getType();
     }
 
     @Override
@@ -114,29 +113,30 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
 
-
         ArrayList<Task> tasks = gson.fromJson(resultList.get(position).getTaskListString(), listType);
         taskArrayList.add(tasks);
 
         //Task template = tasks.get(0);
-        Log.d("pos",String.valueOf(position));
-        holder.txtCommunityName.setText(Utills.getDate(Long.valueOf(tasks.get(0).getTimestamp__c()),"dd/MM/yyyy hh:mm:ss.SSS"));
-      if(tasks.get(0).getIsSave().equals("false")) {
-          holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
-          holder.deleteRecord.setImageResource(R.drawable.arrow);
-      }
-         else {
-          holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.red));
-          holder.deleteRecord.setImageResource(R.drawable.form_delete);
-          holder.deleteLay.setOnClickListener(new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
+        Log.d("pos", String.valueOf(position));
+        holder.txtCommunityName.setText(Utills.getDate(Long.valueOf(tasks.get(0).getTimestamp__c()), "dd/MM/yyyy hh:mm:ss.SSS"));
+        if (tasks.get(0).getIsSave().equals("false")) {
+            if(tasks.get(0).getIsApproved__c().equals("false"))
+            holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.orange));
+            else
+                holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
+            holder.deleteRecord.setImageResource(R.drawable.arrow);
+        } else {
+            holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.red));
+            holder.deleteRecord.setImageResource(R.drawable.form_delete);
+            holder.deleteLay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
-                  showLogoutPopUp(position);
-              }
-          });
-      }
-      //  holder.txtCommunityName.setText(String.valueOf(position));
+                    showLogoutPopUp(position);
+                }
+            });
+        }
+        //  holder.txtCommunityName.setText(String.valueOf(position));
     }
 
     @Override
@@ -168,8 +168,9 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         // Setting OK Button
         alertDialog.setButton(mContext.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(resultList.get(postion).getUnique_Id(),resultList.get(postion).getMV_Process__c());
-            mContext.getAllProcessData();
+                AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(resultList.get(postion).getUnique_Id(), resultList.get(postion).getMV_Process__c());
+
+                ( (ProcessListActivity) mContext).getAllProcessData();
             }
         });
 

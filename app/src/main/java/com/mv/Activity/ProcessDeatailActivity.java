@@ -1,17 +1,19 @@
 package com.mv.Activity;
 
 import android.app.Activity;
-import android.app.Dialog;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -49,7 +51,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private ImageView img_back, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
-
+    String comment;
+    String isSave;
     String msg;
     Boolean manditoryFlag = false;
     int i;
@@ -59,7 +62,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     String timestamp;
     Activity context;
 
-    Button submit, save;
+    Button submit, save,approve,reject;
 
     ProcessDetailAdapter adapter;
     RecyclerView rvProcessDetail;
@@ -96,6 +99,26 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
         save = (Button) findViewById(R.id.btn_save);
         save.setOnClickListener(this);
+
+        approve = (Button) findViewById(R.id.btn_approve);
+        approve.setOnClickListener(this);
+
+        reject = (Button) findViewById(R.id.btn_reject);
+        reject.setOnClickListener(this);
+        if(preferenceHelper.getString(Constants.PROCESS_TYPE).equals(Constants.APPROVAL_PROCESS))
+        {
+            approve.setVisibility(View.VISIBLE);
+            reject.setVisibility(View.VISIBLE);
+            submit.setVisibility(View.GONE);
+            save.setVisibility(View.GONE);
+
+        }else if(preferenceHelper.getString(Constants.PROCESS_TYPE).equals(Constants.MANGEMENT_PROCESS))
+        {
+            approve.setVisibility(View.GONE);
+            reject.setVisibility(View.GONE);
+            submit.setVisibility(View.VISIBLE);
+            save.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setActionbar(String Title) {
@@ -160,9 +183,58 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
 
                 break;
+
+            case R.id.btn_approve:
+                comment="";
+                isSave="true";
+                sendApprovedData();
+                break;
+            case R.id.btn_reject:
+                showDialog();
+                break;
+
         }
     }
+    public void showDialog() {
 
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(ProcessDeatailActivity.this);
+        alertDialog.setTitle(getString(R.string.comments));
+        alertDialog.setMessage("Please Enter Comment");
+
+        final EditText input = new EditText(ProcessDeatailActivity.this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        alertDialog.setView(input);
+
+        alertDialog.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        isSave="false";
+                        comment = input.getText().toString();
+                        if(!comment.isEmpty())
+                        {
+                            sendApprovedData();
+                        }
+                        else
+                        {
+                            Utills.showToast("Please Enter Comment",ProcessDeatailActivity.this);
+                        }
+
+                    }
+
+                });
+
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.show();
+    }
     public void saveDataToList(Task answer, int position) {
         taskList.set(position, answer);
     }
@@ -273,5 +345,54 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
 
     }
+    private void sendApprovedData() {
+        if (Utills.isConnected(this)) {
+            try {
 
+
+                Utills.showProgressDialog(this, getString(R.string.share_post), getString(R.string.progress_please_wait));
+                JSONObject jsonObject1 = new JSONObject();
+
+                jsonObject1.put("uniqueId", taskList.get(0).getUnique_Id__c());
+                jsonObject1.put("ApprovedBy", User.getCurrentUser(getApplicationContext()).getId());
+
+                JSONArray jsonArrayAttchment = new JSONArray();
+
+                // jsonObject1.put("MV_User", User.getCurrentUser(mContext).getId());
+                jsonObject1.put("isApproved", isSave);
+                jsonObject1.put("comment", comment);
+
+                ServiceRequest apiService =
+                        ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+                JsonParser jsonParser = new JsonParser();
+                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject1.toString());
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/ApproveCommentforProcess", gsonObject).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Utills.hideProgressDialog();
+                        try {
+                            Utills.showToast(getString(R.string.submitted_successfully), ProcessDeatailActivity.this);
+                            finish();
+                        } catch (Exception e) {
+                            Utills.hideProgressDialog();
+                            Utills.showToast(getString(R.string.error_something_went_wrong), ProcessDeatailActivity.this);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Utills.hideProgressDialog();
+                        Utills.showToast(getString(R.string.error_something_went_wrong), ProcessDeatailActivity.this);
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Utills.hideProgressDialog();
+                Utills.showToast(getString(R.string.error_something_went_wrong), ProcessDeatailActivity.this);
+
+            }
+        } else {
+            Utills.showToast(getString(R.string.error_no_internet), ProcessDeatailActivity.this);
+        }
+    }
 }

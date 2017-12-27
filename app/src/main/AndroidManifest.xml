@@ -87,10 +87,7 @@
             android:name=".Activity.IssueTemplateActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
-            android:name=".Activity.ProgrammeManagmentActivity"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+
         <activity
             android:name=".Activity.ScheduleTrainingActivity"
             android:screenOrientation="portrait"
@@ -198,7 +195,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.TeamManagementUserProfileActivity"
+            android:name=".Activity.TeamManagementUserProfileListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <service
@@ -208,6 +205,12 @@
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE"/>
             </intent-filter>
         </service>
+        <activity android:name=".Activity.ProcessListApproval"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity android:name=".Activity.ProcessApprovalActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
     </application>
 
 </manifest>

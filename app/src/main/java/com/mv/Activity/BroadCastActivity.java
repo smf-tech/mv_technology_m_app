@@ -122,7 +122,6 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
-        // Showing Alert Message
         alertDialog.show();
     }
 
