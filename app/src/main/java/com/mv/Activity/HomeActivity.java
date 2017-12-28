@@ -49,6 +49,7 @@ import com.mv.Fragment.GroupsFragment;
 import com.mv.Fragment.IndicatorListFragmet;
 import com.mv.Fragment.ProgrammeManagmentFragment;
 import com.mv.Fragment.TeamManagementFragment;
+import com.mv.Fragment.ThetSavandFragment;
 import com.mv.Fragment.TrainingCalender;
 import com.mv.Fragment.TrainingFragment;
 import com.mv.Model.User;
@@ -225,7 +226,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         List<String> allTab = new ArrayList<>();
         adapter.clearFrag();
-
+        adapter.addFrag(new ThetSavandFragment(),getString(R.string.thet_savnd));
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameNoteApproved().split(";")));
             ;

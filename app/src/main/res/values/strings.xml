@@ -43,7 +43,7 @@
     <string name="profile_pic">Add Profile Picture</string>
     <string name="approve">Approve</string>
     <string name="reject">Reject</string>
-
+    <string name="thet_savnd">Direct Communication</string>
     <string name="update_profile">Update Profile</string>
     <!--IssueTemplate Activity-->
     <string name="issue">Issue Type</string>
@@ -165,7 +165,6 @@
     <string name="profile">Update Profile</string>
     <string name="logout">Logout</string>
     <string name="select_form">Select Form</string>
-
 
 
 </resources>

@@ -110,6 +110,32 @@ public class Content implements Serializable {
     @Expose
     String userName;
 
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public String getIsTheatMessage() {
+        return isTheatMessage;
+    }
+
+    public void setIsTheatMessage(String isTheatMessage) {
+        this.isTheatMessage = isTheatMessage;
+    }
+
+    @ColumnInfo(name = "contentType")
+    @SerializedName("contentType")
+    @Expose
+    String contentType;
+
+    @ColumnInfo(name = "isTheatMessage")
+    @SerializedName("isTheatMessage")
+    @Expose
+    String isTheatMessage;
     public String getIsAttachmentPresent() {
         return isAttachmentPresent;
     }

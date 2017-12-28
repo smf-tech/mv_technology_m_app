@@ -1,17 +1,16 @@
 package com.mv.Activity;
 
-
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
-import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
@@ -38,6 +37,7 @@ import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
+import com.mv.databinding.ActivityAddThetSavadBinding;
 import com.mv.databinding.ActivityReportingTemplateBinding;
 import com.soundcloud.android.crop.Crop;
 
@@ -59,14 +59,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
-public class ReportingTemplateActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class AddThetSavadActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
 
 
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
-    private ActivityReportingTemplateBinding binding;
+    private ActivityAddThetSavadBinding binding;
     private Uri FinalUri = null;
     private Uri outputUri = null;
     private String imageFilePath;
@@ -84,7 +83,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_reporting_template);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_add_thet_savad);
         binding.setActivity(this);
         initViews();
 
@@ -143,7 +142,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                         mListDistrict.add(jsonArray.getString(i));
                     }
                     district_adapter.notifyDataSetChanged();
-                    binding.spinnerDistrict.setSelection(mListDistrict.indexOf(User.getCurrentUser(ReportingTemplateActivity.this).getProject_Name__c()));
+                    binding.spinnerDistrict.setSelection(mListDistrict.indexOf(User.getCurrentUser(AddThetSavadActivity.this).getProject_Name__c()));
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -165,7 +164,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         Utills.showProgressDialog(this, "Loading Talukas", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getTaluka(User.getCurrentUser(ReportingTemplateActivity.this).getState(), mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
+        apiService.getTaluka(User.getCurrentUser(AddThetSavadActivity.this).getState(), mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -305,10 +304,13 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                 JSONObject jsonObject1 = new JSONObject(json);
 
                 JSONArray jsonArrayAttchment = new JSONArray();
+                jsonObject1.put("isTheatMessage", "true");
                 if (FinalUri != null) {
 
                     try {
-                        jsonObject1.put("isAttachmentPresent", "true");
+                        jsonObject1.put("contentType", "Image");
+
+
                         jsonObject1.put("isAttachmentPresent", "true");
                         InputStream iStream = null;
                         iStream = getContentResolver().openInputStream(FinalUri);
@@ -382,30 +384,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                 Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
             }
         } else {
-            Calendar c = Calendar.getInstance();
-            SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String formattedDate1 = df1.format(c.getTime());
-            content.setTemplateName(preferenceHelper.getString(PreferenceHelper.TEMPLATENAME));
-            content.setSynchStatus(Constants.STATUS_LOCAL);
-            content.setTime(formattedDate1);
-            content.setLikeCount(0);
-            content.setUserName(User.getCurrentUser(this).getName());
-            content.setUserAttachmentId(User.getCurrentUser(this).getImageId());
-            content.setCommentCount(0);
-            content.setIsLike(false);
-            if (FinalUri != null) {
-                String tempDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image" + "/";
-                String currentTime = "" + System.currentTimeMillis();
-                String current = currentTime + ".png";
-                Utills.makedirs(tempDir);
-                content.setAttachmentId(currentTime);
-                File mypath = new File(tempDir, current);
-                Utills.saveUriToPath(this, FinalUri, mypath);
-            }
-            AppDatabase.getAppDatabase(ReportingTemplateActivity.this).userDao().insertChats(content);
-            Utills.showToast("Report submitted successfully...", getApplicationContext());
-            finish();
-            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+           showPopUp();
         }
     }
 
@@ -447,11 +426,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
     private boolean isValidate() {
         String str = "";
 
-        if (mSelectDistrict == 0) {
-            str = "Please select district";
-        } else if (mSelectTaluka == 0) {
-            str = "Please select taluka";
-        } else if (mSelectReportingType == 0) {
+        if (mSelectReportingType == 0) {
             str = "Please select reporting type";
         } else if (binding.editTextContent.getText().toString().trim().length() == 0) {
             str = "Please enter Content";
@@ -461,7 +436,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         if (TextUtils.isEmpty(str)) {
             return true;
         }
-        Utills.showToast(str, ReportingTemplateActivity.this);
+        Utills.showToast(str, AddThetSavadActivity.this);
         return false;
     }
 
