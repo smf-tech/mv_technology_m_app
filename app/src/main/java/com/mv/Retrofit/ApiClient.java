@@ -103,8 +103,6 @@ public class ApiClient {
                     return chain.proceed(request);
                 }
             };
-
-
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             Interceptor interceptor2 = new Interceptor() {
