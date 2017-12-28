@@ -43,6 +43,6 @@
             android:layout_marginRight="@dimen/dimen_10dp"
 
             android:src="@android:drawable/ic_input_add"
-            android:visibility="gone" />
+            android:visibility="visible" />
     </RelativeLayout>
 </layout>

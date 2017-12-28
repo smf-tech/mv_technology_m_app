@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mv.Activity.AddThetSavadActivity;
 import com.mv.Activity.BroadCastActivity;
 import com.mv.Adapter.FragmentContentAdapter;
 import com.mv.Adapter.ThetSavandAdapter;
@@ -73,7 +74,7 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
         preferenceHelper = new PreferenceHelper(getActivity());
         fab_add_broadcast = (FloatingActionButton) view.findViewById(R.id.fab_add_broadcast);
         fab_add_broadcast.setOnClickListener(this);
-        binding.fabAddBroadcast.setVisibility(View.GONE);
+        binding.fabAddBroadcast.setVisibility(View.VISIBLE);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         adapter = new ThetSavandAdapter(getActivity(), chatList);
         recyclerView.setAdapter(adapter);
@@ -202,7 +203,7 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
         switch (view.getId()) {
             case R.id.fab_add_broadcast:
                 Intent intent;
-                intent = new Intent(getActivity(), BroadCastActivity.class);
+                intent = new Intent(getActivity(), AddThetSavadActivity.class);
                 startActivity(intent);
                 break;
         }

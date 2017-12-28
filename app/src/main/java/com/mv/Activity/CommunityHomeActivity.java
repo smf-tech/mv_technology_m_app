@@ -302,6 +302,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         });
         img_filter = (ImageView) findViewById(R.id.img_filter);
         if (Title.equalsIgnoreCase("HO Support")) {
+
             img_logout.setVisibility(View.GONE);
         } else {
             img_logout.setVisibility(View.VISIBLE);
@@ -356,7 +357,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 } else {
                     preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Report");
                     preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, Constants.REPORTID);
-                    intent = new Intent(CommunityHomeActivity.this, AddThetSavadActivity.class);
+                    intent = new Intent(CommunityHomeActivity.this, ReportingTemplateActivity.class);
                     startActivity(intent);
                 }
 
