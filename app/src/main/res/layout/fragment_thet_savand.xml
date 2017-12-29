@@ -43,7 +43,7 @@
             android:layout_above="@+id/lnr_filter"
             android:layout_marginRight="@dimen/dimen_10dp"
             android:src="@android:drawable/ic_input_add"
-            android:visibility="visible" />
+            />
 
 
         <LinearLayout

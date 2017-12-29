@@ -52,6 +52,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import okhttp3.ResponseBody;
@@ -70,7 +71,7 @@ public class ThetSavandAdapter extends  RecyclerView.Adapter<ThetSavandAdapter.V
     private final Drawable[] mPlacePictures;
     private final Context mContext;
 
-    private ArrayList<Content> mDataList;
+    private List<Content> mDataList;
     private PreferenceHelper preferenceHelper;
     private int mPosition;
     private boolean[] mSelection = null;
@@ -78,7 +79,7 @@ public class ThetSavandAdapter extends  RecyclerView.Adapter<ThetSavandAdapter.V
     private JSONArray jsonArrayAttchment = new JSONArray();
     private Bitmap theBitmap;
 
-    public ThetSavandAdapter(Context context, ArrayList<Content> chatList) {
+    public ThetSavandAdapter(Context context, List<Content> chatList) {
         Resources resources = context.getResources();
         mPlaces = resources.getStringArray(R.array.places);
 

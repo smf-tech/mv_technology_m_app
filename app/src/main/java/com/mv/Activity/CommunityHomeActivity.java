@@ -73,6 +73,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     RecyclerView recyclerView;
     Button btn_mypost,btn_allposts;
     LinearLayout lnr_filter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -224,46 +225,6 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-       /* recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy<-5 && (lnr_filter.getVisibility()==View.GONE))
-                    lnr_filter.setVisibility(View.VISIBLE);
-                else if(dy>5 && (lnr_filter.getVisibility()==View.VISIBLE))
-                    lnr_filter.setVisibility(View.GONE);
-            }
-        });
-*/
-     /*   btn_mypost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mypostlist.clear();
-
-                List<Content> temp = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
-
-                for (int i = 0; i < temp.size(); i++) {
-
-                    if(temp.get(i).getUser_id().equals(User.getCurrentUser(getApplicationContext()).getId())) {
-                        mypostlist.add(temp.get(i));
-                    }
-                }
-
-                adapter = new ContentAdapter(recyclerView.getContext(), mypostlist);
-                recyclerView.setAdapter(adapter);
-            }
-        });
-        btn_allposts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                adapter = new ContentAdapter(recyclerView.getContext(), chatList);
-                recyclerView.setAdapter(adapter);
-            }
-        });*/
 
     }
 
@@ -464,8 +425,10 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     public void onRefresh() {
 
         binding.swipeRefreshLayout.setRefreshing(false);
-        getChats(false);
+
+
     }
+    ///
 
     private void HoSupportFilter() {
         AlertDialog.Builder b = new AlertDialog.Builder(CommunityHomeActivity.this);
@@ -534,6 +497,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     }
 
     private void OtherFilter() {
+
         AlertDialog.Builder b = new AlertDialog.Builder(CommunityHomeActivity.this);
         String title = getIntent().getExtras().getString(Constants.TITLE);
 
