@@ -12,10 +12,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -56,18 +57,20 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
     private ArrayList<Content> mypostlist = new ArrayList<>();
     private ThetSavandAdapter adapter;
     private View view;
-    private Boolean mySelection=false;
+    private Boolean mySelection = false;
     private FloatingActionButton fab_add_broadcast;
     MediaPlayer mPlayer = new MediaPlayer();
-
-    Button btn_mypost,btn_allposts;
+    ThetSavandFragment fragment;
+    Button btn_mypost, btn_allposts;
     LinearLayout lnr_filter;
     RecyclerView recyclerView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_thet_savand, container, false);
         view = binding.getRoot();
+        fragment = this;
         //here data must be an instance of the class MarsDataProvider
         Utills.setupUI(view.findViewById(R.id.layout_main), getActivity());
         binding.swipeRefreshLayout.setOnRefreshListener(this);
@@ -85,17 +88,15 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
         fab_add_broadcast = (FloatingActionButton) view.findViewById(R.id.fab_add_broadcast);
         fab_add_broadcast.setOnClickListener(this);
         binding.fabAddBroadcast.setVisibility(View.VISIBLE);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
-        adapter = new ThetSavandAdapter(getActivity(), this, chatList);
-        recyclerView.setAdapter(adapter);
+        recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
 
-       recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
-        btn_allposts =(Button)view.findViewById(R.id.btn_allposts);
-        btn_mypost=(Button)view.findViewById(R.id.btn_mypost);
-        lnr_filter =(LinearLayout)view.findViewById(R.id.lnr_filter);
+
+        recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+        btn_allposts = (Button) view.findViewById(R.id.btn_allposts);
+        btn_mypost = (Button) view.findViewById(R.id.btn_mypost);
+        lnr_filter = (LinearLayout) view.findViewById(R.id.lnr_filter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-    }
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -104,12 +105,13 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy<-5 && ((lnr_filter.getVisibility()==View.GONE)  )  ) {
+                if (dy < -5 && ((lnr_filter.getVisibility() == View.GONE))) {
                     lnr_filter.setVisibility(View.VISIBLE);
-
-                }
-                else if(dy>5 && (lnr_filter.getVisibility()==View.VISIBLE) )
+                    fab_add_broadcast.setVisibility(View.VISIBLE);
+                } else if (dy > 5 && (lnr_filter.getVisibility() == View.VISIBLE)) {
                     lnr_filter.setVisibility(View.GONE);
+                    fab_add_broadcast.setVisibility(View.INVISIBLE);
+                }
 
             }
         });
@@ -117,21 +119,20 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
         btn_mypost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mySelection=true;
-
-                adapter = new ThetSavandAdapter(getActivity(), mypostlist);
+                mySelection = true;
+                adapter = new ThetSavandAdapter(getActivity(), fragment, mypostlist);
                 recyclerView.setAdapter(adapter);
             }
         });
         btn_allposts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mySelection=false;
-                adapter = new ThetSavandAdapter(getActivity(), chatList);
+                mySelection = false;
+                adapter = new ThetSavandAdapter(getActivity(), fragment, chatList);
                 recyclerView.setAdapter(adapter);
             }
         });
-
+    }
 
     public void stopAudio() {
         if (mPlayer != null && mPlayer.isPlaying()) {
@@ -174,14 +175,11 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
                 showPopUp();
         } else {
 
-            if(mySelection)
-            {
-                adapter = new ThetSavandAdapter(getActivity(), mypostlist);
+            if (mySelection) {
+                adapter = new ThetSavandAdapter(getActivity(), this, mypostlist);
                 recyclerView.setAdapter(adapter);
-            }
-            else
-            {
-                adapter = new ThetSavandAdapter(getActivity(), chatList);
+            } else {
+                adapter = new ThetSavandAdapter(getActivity(), this, chatList);
                 recyclerView.setAdapter(adapter);
             }
             if (Utills.isConnected(getActivity()))
@@ -240,19 +238,16 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
 
                             for (int i = 0; i < chatList.size(); i++) {
 
-                                if(chatList.get(i).getUser_id().equals(User.getCurrentUser(getActivity()).getId())) {
+                                if (chatList.get(i).getUser_id().equals(User.getCurrentUser(getActivity()).getId())) {
                                     mypostlist.add(chatList.get(i));
                                 }
                             }
 
-                            if(mySelection)
-                            {
-                                adapter = new ThetSavandAdapter(getActivity(), mypostlist);
+                            if (mySelection) {
+                                adapter = new ThetSavandAdapter(getActivity(), fragment, mypostlist);
                                 recyclerView.setAdapter(adapter);
-                            }
-                            else
-                            {
-                                adapter = new ThetSavandAdapter(getActivity(), chatList);
+                            } else {
+                                adapter = new ThetSavandAdapter(getActivity(), fragment, chatList);
                                 recyclerView.setAdapter(adapter);
                             }
                         }
@@ -326,10 +321,6 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
         binding.swipeRefreshLayout.setRefreshing(false);
         getChats(false);
     }
-    @Override
-    public void onResume() {
-        super.onResume();
 
 
-    }
 }

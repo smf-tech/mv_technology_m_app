@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -17,8 +16,10 @@ import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -28,7 +29,8 @@ import com.bumptech.glide.load.model.LazyHeaders;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mv.Activity.CommentActivity;
-import com.mv.Activity.CommunityDetailsActivity;
+import com.mv.Activity.VideoViewActivity;
+import com.mv.Fragment.ThetSavandFragment;
 import com.mv.Model.Content;
 import com.mv.Model.User;
 import com.mv.R;
@@ -46,7 +48,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -63,7 +65,6 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
     private final String[] mPlaceDesc;
     private final Drawable[] mPlacePictures;
     private final Context mContext;
-
     private List<Content> mDataList;
     private PreferenceHelper preferenceHelper;
     private int mPosition;
@@ -73,7 +74,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
     private Bitmap theBitmap;
     private ThetSavandFragment fragment;
 
-    public ThetSavandAdapter(Context context, ThetSavandFragment fragment, ArrayList<Content> chatList) {
+    public ThetSavandAdapter(Context context, ThetSavandFragment fragment, List<Content> chatList) {
         Resources resources = context.getResources();
         mPlaces = resources.getStringArray(R.array.places);
         this.fragment = fragment;
