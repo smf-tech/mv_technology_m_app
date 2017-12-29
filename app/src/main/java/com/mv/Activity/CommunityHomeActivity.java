@@ -17,7 +17,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -67,7 +69,10 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     private String type = "";
     private int position;
     private List<Template> templateList = new ArrayList<>();
-
+    private ArrayList<Content> mypostlist = new ArrayList<>();
+    RecyclerView recyclerView;
+    Button btn_mypost,btn_allposts;
+    LinearLayout lnr_filter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,73 +215,17 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         communityList = Arrays.asList(gson.fromJson(json, Community[].class));
         preferenceHelper = new PreferenceHelper(this);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        //  img_filter = (ImageView) findViewById(R.id.filter);
+         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        btn_allposts =(Button)findViewById(R.id.btn_allposts);
+        btn_mypost=(Button)findViewById(R.id.btn_mypost);
+        lnr_filter =(LinearLayout)findViewById(R.id.lnr_filter);
 
         adapter = new ContentAdapter(recyclerView.getContext(), chatList);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-      /*  img_filter.setVisibility(View.VISIBLE);
-        img_filter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                AlertDialog.Builder b = new AlertDialog.Builder(CommunityHomeActivity.this);
-              //  final String[] types = {"By Zip", "By Category"};
-                b.setItems(R.array.array_of_reporting_type, new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int position) {
-
-                        dialog.dismiss();
-                        switch(position){
-                            case 1:
-                                chatList.clear();
-                                List<Content> InformationSharing = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),"Information Sharing" );
-                                for (int i=0;i<InformationSharing.size();i++){
-                                    chatList.add(InformationSharing.get(i));
-                                }
-                                adapter.notifyDataSetChanged();
-                                break;
-                            case 2:
-
-                                chatList.clear();
-                                List<Content>EventsUpdate = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),"Events Update" );
-                                for (int i=0;i<EventsUpdate.size();i++){
-                                    chatList.add(EventsUpdate.get(i));
-                                }
-                                adapter.notifyDataSetChanged();
-                                break;
-                            case 3:
-
-                                chatList.clear();
-                                List<Content>  SuccessStories = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),"Success Stories" );
-                                for (int i=0;i<SuccessStories.size();i++){
-                                    chatList.add(SuccessStories.get(i));
-                                }
-                                adapter.notifyDataSetChanged();
-                                break;
-
-                            case 4:
-
-                                chatList.clear();
-                                List<Content>  PressCutting = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),"Press Cuttings" );
-                                for (int i=0;i<PressCutting.size();i++){
-                                    chatList.add(PressCutting.get(i));
-                                }
-                                adapter.notifyDataSetChanged();
-                                break;
-                        }
-                    }
-
-                });
-
-                b.show();
 
 
-            }
-        });*/
     }
 
     private void setActionbar(final String Title) {
@@ -476,8 +425,10 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     public void onRefresh() {
 
         binding.swipeRefreshLayout.setRefreshing(false);
-        getChats(false);
+
+
     }
+    ///
 
     private void HoSupportFilter() {
         AlertDialog.Builder b = new AlertDialog.Builder(CommunityHomeActivity.this);
@@ -546,6 +497,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     }
 
     private void OtherFilter() {
+
         AlertDialog.Builder b = new AlertDialog.Builder(CommunityHomeActivity.this);
         String title = getIntent().getExtras().getString(Constants.TITLE);
 
@@ -590,7 +542,9 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                         for (int i = 0; i < PressCutting.size(); i++) {
                             chatList.add(PressCutting.get(i));
                         }
-                        adapter.notifyDataSetChanged();
+                       // adapter.notifyDataSetChanged();
+                        adapter = new ContentAdapter(recyclerView.getContext(), chatList);
+                        recyclerView.setAdapter(adapter);
                         break;
                 }
             }
