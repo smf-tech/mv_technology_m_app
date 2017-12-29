@@ -33,6 +33,10 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Activity.VideoViewActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
             android:name=".Activity.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />

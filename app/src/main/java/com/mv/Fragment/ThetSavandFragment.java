@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -13,12 +15,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mv.Activity.AddThetSavadActivity;
-import com.mv.Activity.BroadCastActivity;
-import com.mv.Adapter.FragmentContentAdapter;
 import com.mv.Adapter.ThetSavandAdapter;
 import com.mv.Model.Content;
 import com.mv.Model.User;
@@ -54,6 +55,8 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
     private ThetSavandAdapter adapter;
     private View view;
     private FloatingActionButton fab_add_broadcast;
+    MediaPlayer mPlayer = new MediaPlayer();
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -66,6 +69,7 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
         getChats(true);
         return view;
     }
+
     public void onAddClick() {
 
     }
@@ -76,11 +80,41 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
         fab_add_broadcast.setOnClickListener(this);
         binding.fabAddBroadcast.setVisibility(View.VISIBLE);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
-        adapter = new ThetSavandAdapter(getActivity(), chatList);
+        adapter = new ThetSavandAdapter(getActivity(), this, chatList);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+    }
 
+    public void stopAudio() {
+        if (mPlayer != null && mPlayer.isPlaying()) {
+            mPlayer.stop();
+        }
+    }
+
+    public void startAudio(String url) {
+        if (mPlayer == null)
+            mPlayer = new MediaPlayer();
+        mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        try {
+            mPlayer.setDataSource(url);
+        } catch (IllegalArgumentException e) {
+            Toast.makeText(getContext(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+        } catch (SecurityException e) {
+            Toast.makeText(getContext(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+        } catch (IllegalStateException e) {
+            Toast.makeText(getContext(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            mPlayer.prepare();
+        } catch (IllegalStateException e) {
+            Toast.makeText(getContext(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            Toast.makeText(getContext(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+        }
+        mPlayer.start();
     }
 
     private void getChats(boolean isDialogShow) {

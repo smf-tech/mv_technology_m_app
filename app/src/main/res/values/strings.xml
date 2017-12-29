@@ -6,6 +6,17 @@
     <string name="error_no_internet">Please check your internet connection</string>
     <string name="error_login">Incorrect credentials.</string>
 
+    <string name="text_mediatype">Select Media Type</string>
+    <string name="text_image">Image</string>
+    <string name="text_audio">Audio</string>
+    <string name="text_video">Video</string>
+
+    <string name="text_record">Record Audio</string>
+    <string name="text_select_audio">Select Audio</string>
+    <string name="text_chooseaudio">Choose Audio</string>
+
+    <string name="text_size_exceed">File Size Cannot Be Greater than 5 MB</string>
+
     <string name="text_choosepicture">Choose Picture</string>
     <string name="text_choosevideo">Choose Video</string>
     <string name="text_gallary">Gallary</string>
