@@ -448,7 +448,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                         }
                     }
                     Intent i = new Intent(Intent.ACTION_SEND);
-                    i.setType("image*//**//*");
+                    i.setType("text/html");
                     i.putExtra(Intent.EXTRA_TEXT, str);
                     Utills.hideProgressDialog();
                     mContext.startActivity(Intent.createChooser(i, "Share Post"));

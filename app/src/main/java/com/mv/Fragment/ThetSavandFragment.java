@@ -75,8 +75,8 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
         //here data must be an instance of the class MarsDataProvider
         Utills.setupUI(view.findViewById(R.id.layout_main), getActivity());
         binding.swipeRefreshLayout.setOnRefreshListener(this);
-        initViews();
-        getChats(true);
+       /* initViews();
+        getChats(true);*/
         return view;
     }
 
@@ -166,6 +166,13 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        initViews();
+        getChats(true);
+    }
+
     private void getAllChats(boolean isTimePresent, boolean isDialogShow) {
         if (isDialogShow)
             Utills.showProgressDialog(getActivity(), "Loading Chats", getString(R.string.progress_please_wait));
@@ -207,7 +214,7 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
                                     chatList.set(j, temp.get(i));
                                     AppDatabase.getAppDatabase(getActivity()).userDao().updateContent(temp.get(i));
                                 } else {
-                                    chatList.add(temp.get(i));
+                                    chatList.add(0,temp.get(i));
                                     AppDatabase.getAppDatabase(getActivity()).userDao().insertChats(temp.get(i));
                                 }
                             }

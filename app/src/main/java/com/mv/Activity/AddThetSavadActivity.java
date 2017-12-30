@@ -216,7 +216,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void initViews() {
-        setActionbar("Reporting Template");
+        setActionbar(getString(R.string.thet_savnd));
 
         preferenceHelper = new PreferenceHelper(this);
         binding.spinnerDistrict.setOnItemSelectedListener(this);
@@ -698,6 +698,8 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
                     mp.pause();
                 }
                 stopClicked(v);
+                if(audioUri!=null)
+                binding.addImage.setImageResource(R.drawable.mic_audio);
                 dialogrecord.dismiss();
             }
         });
@@ -705,6 +707,8 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                audioUri=null;
+                binding.addImage.setImageResource(R.drawable.add);
                 dialogrecord.dismiss();
             }
         });
@@ -757,11 +761,14 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
 
 // dialogrecord.dismiss();
             } else {
-                mediaPlayer.release();
-                mediaPlayer = null;
-                audioUri = Uri.fromFile(new File(audioFilePath));
+                if(mediaPlayer!=null) {
+                    mediaPlayer.release();
+                    mediaPlayer = null;
+                    audioUri = Uri.fromFile(new File(audioFilePath));
+                }
+
             }
-            binding.addImage.setImageResource(R.drawable.mic);
+
         } catch (Exception e) {
 
         }
@@ -806,8 +813,8 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
     private boolean isValidate() {
         String str = "";
 
-        if (mSelectReportingType == 0) {
-            str = "Please select reporting type";
+        if (mSelectReportingType == 0&&!User.getCurrentUser(getApplicationContext()).getRoll().equals("President")) {
+            str = "Please select Category ";
         } else if (binding.editTextContent.getText().toString().trim().length() == 0) {
             str = "Please enter Content";
         } else if (binding.editTextDescription.getText().toString().trim().length() == 0) {
