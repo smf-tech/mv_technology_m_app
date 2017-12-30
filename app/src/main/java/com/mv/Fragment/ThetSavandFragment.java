@@ -29,6 +29,7 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Utils.MediaSongSingleToneClass;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.FragmentThetSavandBinding;
@@ -59,7 +60,7 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
     private View view;
     private Boolean mySelection = false;
     private FloatingActionButton fab_add_broadcast;
-    MediaPlayer mPlayer = new MediaPlayer();
+    MediaPlayer mPlayer =  MediaSongSingleToneClass.getInstance();
     ThetSavandFragment fragment;
     Button btn_mypost, btn_allposts;
     LinearLayout lnr_filter;
@@ -107,10 +108,10 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (dy < -5 && ((lnr_filter.getVisibility() == View.GONE))) {
                     lnr_filter.setVisibility(View.VISIBLE);
-                    fab_add_broadcast.setVisibility(View.VISIBLE);
+                    //fab_add_broadcast.setVisibility(View.VISIBLE);
                 } else if (dy > 5 && (lnr_filter.getVisibility() == View.VISIBLE)) {
                     lnr_filter.setVisibility(View.GONE);
-                    fab_add_broadcast.setVisibility(View.INVISIBLE);
+                   // fab_add_broadcast.setVisibility(View.INVISIBLE);
                 }
 
             }
@@ -140,30 +141,7 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    public void startAudio(String url) {
-        if (mPlayer == null)
-            mPlayer = new MediaPlayer();
-        mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        try {
-            mPlayer.setDataSource(url);
-        } catch (IllegalArgumentException e) {
-            Toast.makeText(getContext(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
-        } catch (SecurityException e) {
-            Toast.makeText(getContext(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
-        } catch (IllegalStateException e) {
-            Toast.makeText(getContext(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            mPlayer.prepare();
-        } catch (IllegalStateException e) {
-            Toast.makeText(getContext(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
-        } catch (IOException e) {
-            Toast.makeText(getContext(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
-        }
-        mPlayer.start();
-    }
+
 
     private void getChats(boolean isDialogShow) {
         chatList.clear();

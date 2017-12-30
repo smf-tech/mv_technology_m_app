@@ -42,6 +42,7 @@ public class VideoViewActivity extends Activity {
         // Set progressbar message
         pDialog.setMessage("Buffering...Please wait...");
         pDialog.setIndeterminate(false);
+        pDialog.setCanceledOnTouchOutside(false);
         // Show progressbar
         pDialog.show();
 

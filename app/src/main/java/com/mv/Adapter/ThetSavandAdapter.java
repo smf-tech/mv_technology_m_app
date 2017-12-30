@@ -7,20 +7,26 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -70,10 +76,12 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
     private int mPosition;
     private boolean[] mSelection = null;
     private String value;
+    private Handler mHandler = new Handler();
     private JSONArray jsonArrayAttchment = new JSONArray();
     private Bitmap theBitmap;
     private ThetSavandFragment fragment;
-
+    int temp=555500;
+    MediaPlayer mPlayer = new MediaPlayer();
     public ThetSavandAdapter(Context context, ThetSavandFragment fragment, List<Content> chatList) {
         Resources resources = context.getResources();
         mPlaces = resources.getStringArray(R.array.places);
@@ -102,7 +110,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
 
 
     @Override
-    public void onBindViewHolder(ThetSavandAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final ThetSavandAdapter.ViewHolder holder, final int position) {
 
        /* Glide.with(mContext)
                 .load(getUrlWithHeaders(new PreferenceHelper(mContext).getString(PreferenceHelper.InstanceUrl)+"services/data/v20.0/sobjects/Attachment/"+mDataList.get(position).getId()))
@@ -110,7 +118,15 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(holder.picture);
 */
-
+        if( mDataList.get(position).getMediaPlay())
+        {
+            holder.txt_audio_txt.setText("Stop Audio");
+            holder. play.setImageResource(R.drawable.pause_song);
+        }else
+        {
+            holder.txt_audio_txt.setText("Play Audio");
+            holder.play.setImageResource(R.drawable.play_song);
+        }
         if (TextUtils.isEmpty(mDataList.get(position).getUserAttachmentId())) {
             holder.userImage.setImageResource(R.drawable.logomulya);
         } else if (mDataList.get(position).getAttachmentId().equalsIgnoreCase("null")) {
@@ -180,8 +196,92 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 holder.picture.setVisibility(View.GONE);
                 holder.audioLayout.setVisibility(View.VISIBLE);
                 holder.layout_Video.setVisibility(View.GONE);
+
+                holder.play.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.i("aaaatemp",temp+"");
+                        Log.i("aaaaposition",position+"");
+                      /*  holder.songProgressBar.setProgress(0);
+                        holder.songProgressBar.setMax(100);
+
+                      Runnable mUpdateTimeTask = new Runnable() {
+                            public void run() {
+                                long totalDuration = mPlayer.getDuration();
+                                long currentDuration = mPlayer.getCurrentPosition();
+
+                                // Displaying Total Duration time
+                               *//* songTotalDurationLabel.setText(""+utils.milliSecondsToTimer(totalDuration));
+                                // Displaying time completed playing
+                                songCurrentDurationLabel.setText(""+utils.milliSecondsToTimer(currentDuration));
+*//*
+                                // Updating progress bar
+                                int progress = (int)(Utills.getProgressPercentage(currentDuration, totalDuration));
+                                //Log.d("Progress", ""+progress);
+                                holder.songProgressBar.setProgress(progress);
+
+                                // Running this thread after 100 milliseconds
+                                mHandler.postDelayed(this, 100);
+                            }
+                        };
+                        mHandler.removeCallbacks(mUpdateTimeTask);
+                        mHandler.postDelayed(mUpdateTimeTask, 100);*/
+                        if(temp==555500) {
+                            temp = position;
+
+                            startAudio("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp3");
+                            holder. play.setImageResource(R.drawable.pause_song);
+                            holder.txt_audio_txt.setText("Stop Audio");
+                           // notifyItemChanged(position);
+                        }
+                        else if(temp==position)
+                        {
+
+                            if(mPlayer.isPlaying())
+                            {
+
+
+                                mPlayer.pause();
+                                holder. play.setImageResource(R.drawable.play_song);
+                                holder.txt_audio_txt.setText("Play Audio");
+                            }
+                            else
+                            {
+                                holder. play.setImageResource(R.drawable.pause_song);
+                                holder.txt_audio_txt.setText("Stop Audio");
+                                mPlayer.start();
+                            }
+                          //  notifyItemChanged(position);
+                        }
+                        else
+                        {
+
+                            startAudio("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp3");
+                            mDataList.get(position).setMediaPlay(true);
+                            mDataList.get(temp).setMediaPlay(false);
+                            notifyItemChanged(position);
+                            notifyItemChanged(temp);
+                            temp = position;
+                        }
+                        mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            @Override
+                            public void onCompletion(MediaPlayer mp) {
+                                mDataList.get(temp).setMediaPlay(false);
+                                notifyItemChanged(temp);
+                            }
+                        });
+
+
+
+
+
+
+                    }
+                });
             }
         }
+
+
         holder.txt_title.setText("" + mDataList.get(position).getUserName());
        /* if (mDataList.get(position).getSynchStatus() != null
                 && mDataList.get(position).getSynchStatus().equalsIgnoreCase(Constants.STATUS_LOCAL))
@@ -285,15 +385,17 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView picture, userImage, imgLike, img_comment, imageThumbnail;
         public CardView card_view;
-        public TextView txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type;
-        public LinearLayout audioLayout, mediaLayout, layout_like, layout_comment, layout_share, layout_download;
-        public RelativeLayout layout_Video;
-        public Button play;
+        public TextView txt_audio_txt,txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type;
+        public LinearLayout  mediaLayout, layout_like, layout_comment, layout_share, layout_download;
+        public RelativeLayout audioLayout,layout_Video;
+        public ImageView play;
+        public ProgressBar songProgressBar;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
             txt_title = (TextView) itemLayoutView.findViewById(R.id.txt_title);
             txt_template_type = (TextView) itemLayoutView.findViewById(R.id.txt_template_type);
+            txt_audio_txt = (TextView) itemLayoutView.findViewById(R.id.audio_text);
             txt_desc = (TextView) itemLayoutView.findViewById(R.id.txt_desc);
             txt_time = (TextView) itemLayoutView.findViewById(R.id.txt_time);
             txtLikeCount = (TextView) itemLayoutView.findViewById(R.id.txtLikeCount);
@@ -301,6 +403,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             userImage = (ImageView) itemLayoutView.findViewById(R.id.userImage);
             picture = (ImageView) itemLayoutView.findViewById(R.id.card_image);
             card_view = (CardView) itemLayoutView.findViewById(R.id.card_view);
+           // songProgressBar = (ProgressBar) itemLayoutView.findViewById(R.id.songProgressBar);
             imgLike = (ImageView) itemLayoutView.findViewById(R.id.imgLike);
             textViewLike = (TextView) itemLayoutView.findViewById(R.id.textViewLike);
             img_comment = (ImageView) itemLayoutView.findViewById(R.id.img_comment);
@@ -315,15 +418,9 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                     mContext.startActivity(intent);
                 }
             });
-            play = (Button) itemLayoutView.findViewById(R.id.play);
-            play.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    fragment.startAudio("http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".mp3");
-                }
-            });
+      ;
 
-            audioLayout = (LinearLayout) itemLayoutView.findViewById(R.id.audioLayout);
+            audioLayout = (RelativeLayout) itemLayoutView.findViewById(R.id.audioLayout);
             mediaLayout = (LinearLayout) itemLayoutView.findViewById(R.id.mediaLayout);
             layout_share = (LinearLayout) itemLayoutView.findViewById(R.id.layout_share);
             layout_share.setOnClickListener(new View.OnClickListener() {
@@ -333,7 +430,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
 
                 }
             });
-
+            play = (ImageView) itemLayoutView.findViewById(R.id.play);
             layout_Video = (RelativeLayout) itemLayoutView.findViewById(R.id.layout_Video);
             layout_Video.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -608,6 +705,38 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         } else {
             Utills.showToast(mContext.getString(R.string.error_no_internet), mContext);
         }
+    }
+
+    public void startAudio(String url) {
+        if (mPlayer == null)
+            mPlayer = new MediaPlayer();
+
+        if(mPlayer.isPlaying())
+        {
+            mPlayer.pause();
+
+        }
+        mPlayer.reset();
+        mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        try {
+            mPlayer.setDataSource(url);
+        } catch (IllegalArgumentException e) {
+            Toast.makeText(mContext, "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+        } catch (SecurityException e) {
+            Toast.makeText(mContext, "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+        } catch (IllegalStateException e) {
+            Toast.makeText(mContext, "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            mPlayer.prepare();
+        } catch (IllegalStateException e) {
+            Toast.makeText(mContext, "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+        } catch (IOException e) {
+            Toast.makeText(mContext, "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
+        }
+        mPlayer.start();
     }
 }
 
