@@ -662,6 +662,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             message = getString(R.string.approve_profile) ;
         }
         alertDialog.setMessage(message);
+
         // Setting Icon to Dialog
         alertDialog.setIcon(R.drawable.logomulya);
 

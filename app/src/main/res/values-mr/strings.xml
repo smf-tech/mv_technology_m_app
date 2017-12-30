@@ -96,7 +96,8 @@
     <string name="digit"> अंक </string>
     <string name="logout_string">आपण लॉगआउट करू इच्छिता? </string>
     <string name="delete_task_string">Do you want Delete? </string>
-
+    <string name="approve_profile"> तुम्ही अँप्रूव्ह नाही. </string>
+    <string name="approve_profile2">यांना संपर्क साधा.</string>
     <string name="class_observation">क्लास ऑबसेर्व्हशन </string>
     <string name="training_responsiblity">"ट्रेनिंगला जाण्यापुर्वीच्या जबाबदाऱ्या"</string>
     <string name="loading_comment">लोडींग  कंमेंट्स </string>
