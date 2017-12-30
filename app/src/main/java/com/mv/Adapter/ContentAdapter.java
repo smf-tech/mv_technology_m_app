@@ -482,6 +482,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
                     intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
+                    intent.putExtra("flag", "forward_flag");
                     mContext.startActivity(intent);
                 }
             });

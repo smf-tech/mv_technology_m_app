@@ -15,6 +15,7 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -622,6 +624,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
             public void onClick(View v) {
                 if (isRecording) {
                     record.setBackgroundResource(R.drawable.blue_box_mic_radius);
+
                     stopClicked(v);
 
 
@@ -679,6 +682,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
 
         rectext = (TextView) dialogrecord.findViewById(R.id.rectext);
         TextView done = (TextView) dialogrecord.findViewById(R.id.done);
+        TextView cancel = (TextView) dialogrecord.findViewById(R.id.cancel);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -690,6 +694,12 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogrecord.dismiss();
+            }
+        });
 
         dialogrecord.show();
 

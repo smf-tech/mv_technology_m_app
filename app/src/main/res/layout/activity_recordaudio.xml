@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#000000"
+    android:background="@color/white"
 
     android:orientation="vertical"
     android:padding="15dp">
@@ -13,13 +13,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:gravity="center_horizontal"
-
         android:text="Tap 'start' to record your sound"
-        android:textColor="#ffffff"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/black"
         android:textSize="20sp" />
 
 
     <LinearLayout
+
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -28,7 +29,9 @@
         android:layout_centerVertical="true"
         android:background="@android:color/transparent"
         android:gravity="center_horizontal"
+        android:id="@+id/lnr_audio"
         android:orientation="vertical">
+
 
 
         <LinearLayout
@@ -52,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="Start"
-                android:textColor="#ffffff"
+                android:textColor="@color/black"
                 android:textSize="20sp" />
 
 
@@ -66,15 +69,40 @@
            android:layout_marginTop="10dp"
             android:src="@drawable/play" />
 
+    </LinearLayout>
+    <LinearLayout
+        android:layout_below="@+id/lnr_audio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
         <com.mv.Widgets.MyTextView
-            android:layout_width="wrap_content"
+            android:background="@drawable/lighter_grey_box"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="DONE"
+            android:text="Cancel"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/cancel"
+            android:gravity="center"
+            android:textColor="@color/black"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:textSize="22sp" />
+
+        <com.mv.Widgets.MyTextView
+            android:background="@drawable/lighter_grey_box"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Attached"
             android:layout_marginBottom="10dp"
             android:id="@+id/done"
-            android:gravity="center_horizontal"
-            android:textColor="#ffffff"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:padding="5dp"
+            android:layout_weight="1"
             android:textSize="22sp" />
+
+
     </LinearLayout>
 
 
