@@ -56,7 +56,8 @@
     <string name="reject">Reject</string>
     <string name="thet_savnd">\"Thet Sanwand\" with\nMr.Shantilal Muttha</string>
     <string name="update_profile">Update Profile</string>
-    <string name="approve_profile"> तुम्ही अँप्रूव्ह नाही  यांना संपर्क साधा </string>
+    <string name="approve_profile"> You are not approved yet. </string>
+    <string name="approve_profile2">will approve you.</string>
     <!--IssueTemplate Activity-->
     <string name="issue">Issue Type</string>
     <string name="priority">Priority</string>
