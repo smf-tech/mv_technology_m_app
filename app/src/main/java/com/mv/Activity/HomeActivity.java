@@ -112,9 +112,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         final LocationManager manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE );
 
-
-
-
         if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
 
             if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
