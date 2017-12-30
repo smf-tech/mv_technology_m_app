@@ -104,11 +104,11 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
 */
         if (TextUtils.isEmpty(mDataList.get(position).getAttachmentId())
                 || mDataList.get(position).getAttachmentId().equalsIgnoreCase("null")) {
-            holder.picture.setVisibility(View.GONE);
+            holder.mediaLayout.setVisibility(View.GONE);
 
 
         } else {
-            holder.picture.setVisibility(View.VISIBLE);
+            holder.mediaLayout.setVisibility(View.VISIBLE);
 
             // holder.picture.setImageDrawable(mPlacePictures[position % mPlacePictures.length]);
             Glide.with(mContext)
@@ -129,7 +129,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
         }
         Log.i("URL for position : " + position, "" + mDataList.get(position).getUserAttachmentId());
         holder.txt_title.setVisibility(View.GONE);
-       // holder.txt_title.setText("Title : " + mDataList.get(position).getTitle());
+        // holder.txt_title.setText("Title : " + mDataList.get(position).getTitle());
         holder.txt_template_type.setText("Title : " + mDataList.get(position).getTitle());
         holder.txt_desc.setText("Description : " + mDataList.get(position).getDescription());
         holder.txt_time.setText(mDataList.get(position).getTime().toString());
@@ -142,9 +142,9 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
         else
             holder.imgLike.setImageResource(R.drawable.dislike);
 
-        if(mDataList.get(position).getCommentCount()==0){
+        if (mDataList.get(position).getCommentCount() == 0) {
             holder.img_comment.setImageResource(R.drawable.no_comment);
-        }else {
+        } else {
             holder.img_comment.setImageResource(R.drawable.comment);
         }
     }
@@ -227,10 +227,10 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView picture, userImage, imgLike,img_share,img_comment;
+        public ImageView picture, userImage, imgLike, img_share, img_comment;
         public CardView card_view;
-        public TextView txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount,txt_forward;
-        public LinearLayout layout_like, layout_comment, layout_share, layout_download;
+        public TextView txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_forward;
+        public LinearLayout layout_like, mediaLayout, layout_comment, layout_share, layout_download;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
@@ -245,14 +245,14 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             card_view = (CardView) itemLayoutView.findViewById(R.id.card_view);
             imgLike = (ImageView) itemLayoutView.findViewById(R.id.imgLike);
             textViewLike = (TextView) itemLayoutView.findViewById(R.id.textViewLike);
-            img_share =(ImageView) itemLayoutView.findViewById(R.id.img_share);
-            img_comment=(ImageView) itemLayoutView.findViewById(R.id.img_comment);
-            txt_forward =(TextView) itemLayoutView.findViewById(R.id.txt_forward);
+            img_share = (ImageView) itemLayoutView.findViewById(R.id.img_share);
+            img_comment = (ImageView) itemLayoutView.findViewById(R.id.img_comment);
+            txt_forward = (TextView) itemLayoutView.findViewById(R.id.txt_forward);
             layout_comment = (LinearLayout) itemLayoutView.findViewById(R.id.layout_comment);
             layout_download = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download);
             layout_like = (LinearLayout) itemLayoutView.findViewById(R.id.layout_like);
             layout_share = (LinearLayout) itemLayoutView.findViewById(R.id.layout_share);
-
+            mediaLayout = (LinearLayout) itemLayoutView.findViewById(R.id.mediaLayout);
             layout_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -339,7 +339,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
 
                         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
                         shareIntent.setType("text/html");
-                        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Title : "+mDataList.get(adapterPosition).getTitle()+"\n\nDescription : "+mDataList.get(adapterPosition).getDescription());
+                        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Title : " + mDataList.get(adapterPosition).getTitle() + "\n\nDescription : " + mDataList.get(adapterPosition).getDescription());
                         shareIntent.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(decodedByte));
                         mContext.startActivity(Intent.createChooser(shareIntent, "Share Content"));
                     } catch (Exception e) {

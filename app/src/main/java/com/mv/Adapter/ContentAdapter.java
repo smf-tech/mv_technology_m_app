@@ -129,13 +129,13 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         }
         if (mDataList.get(position).getIsAttachmentPresent() == null || TextUtils.isEmpty(mDataList.get(position).getIsAttachmentPresent()) || mDataList.get(position).getIsAttachmentPresent().equalsIgnoreCase("false")) {
             if (TextUtils.isEmpty(mDataList.get(position).getAttachmentId())) {
-                holder.picture.setVisibility(View.GONE);
+                holder.mediaLayout.setVisibility(View.GONE);
                 holder.layout_download.setVisibility(View.GONE);
             } else if (mDataList.get(position).getAttachmentId().equalsIgnoreCase("null")) {
-                holder.picture.setVisibility(View.GONE);
+                holder.mediaLayout.setVisibility(View.GONE);
                 holder.layout_download.setVisibility(View.GONE);
             } else {
-                holder.picture.setVisibility(View.VISIBLE);
+                holder.mediaLayout.setVisibility(View.VISIBLE);
                 holder.layout_download.setVisibility(View.VISIBLE);
                 // holder.picture.setImageDrawable(mPlacePictures[position % mPlacePictures.length]);
                 if (mDataList.get(position).getSynchStatus() != null
@@ -157,7 +157,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 }
             }
         } else {
-            holder.picture.setVisibility(View.VISIBLE);
+            holder.mediaLayout.setVisibility(View.VISIBLE);
             holder.layout_download.setVisibility(View.VISIBLE);
             Glide.with(mContext)
                     .load("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png")
@@ -349,8 +349,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView picture, userImage, imgLike, img_comment;
         public CardView card_view;
-        public TextView txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount,txt_type;
-        public LinearLayout layout_like, layout_comment, layout_share, layout_download;
+        public TextView txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type;
+        public LinearLayout layout_like, mediaLayout, layout_comment, layout_share, layout_download;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
@@ -367,7 +367,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             textViewLike = (TextView) itemLayoutView.findViewById(R.id.textViewLike);
             img_comment = (ImageView) itemLayoutView.findViewById(R.id.img_comment);
             layout_comment = (LinearLayout) itemLayoutView.findViewById(R.id.layout_comment);
-
+            mediaLayout = (LinearLayout) itemLayoutView.findViewById(R.id.mediaLayout);
             txt_type = (TextView) itemLayoutView.findViewById(R.id.txt_type);
             layout_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -404,7 +404,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                             || mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) {
                         downloadImage(getAdapterPosition());
                     } else {
-
 
                         new AsyncTask<Void, Void, Void>() {
                             @Override

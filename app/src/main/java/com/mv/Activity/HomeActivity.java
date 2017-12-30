@@ -136,11 +136,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else
             initViews();
 
-
-
-
-
-
     }
     @Override
     protected void attachBaseContext(Context base) {

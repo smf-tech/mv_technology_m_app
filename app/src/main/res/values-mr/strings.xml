@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">मुल्यवर्धन 2.0</string>
 
+    <string name="text_mediatype">मीडिया प्रकार निवडा</string>
+    <string name="text_image">ईमेज</string>
+    <string name="text_audio">ऑडिओ</string>
+    <string name="text_video">व्हिडिओ</string>
+
+    <string name="text_record">Record Audio</string>
+    <string name="text_select_audio">Select Audio</string>
+    <string name="text_chooseaudio">Choose Audio</string>
+
     <string name="progress_loading">लोडिंग</string>
     <string name="progress_please_wait">कृपया थांबा</string>
     <string name="error_something_went_wrong">काहीतरी चूक झाली, कृपया पुन्हा प्रयत्न करा</string>
@@ -13,7 +22,7 @@
     <string name="text_camera">कॅमेरा</string>
     <string name="error_offline_share_post">आपण ऑफलाइन पोस्ट करू शकत नाही</string>
     <string name="error_offline_like_post">आपण ऑफलाइन लाईक करू शकत नाही</string>
-     <string name="ok">ओके </string>
+    <string name="ok">ओके </string>
     <string name="Setting">सेटिंग</string>
     <string name="cancel">रद्द करा</string>
     <!--Home Acitivty-->
@@ -32,7 +41,7 @@
     <string name="email">ई - मेल आयडी</string>
     <string name="password">पासवर्ड</string>
     <string name="confirm_password">पासवर्डची पुष्टी करा</string>
-        <string name="role">भूमिका</string>
+    <string name="role">भूमिका</string>
     <string name="organization">संघटना</string>
     <string name="project">प्रोजेक्ट </string>
     <string name="disrict">जिल्हा</string>
@@ -95,8 +104,8 @@
     <string name="share_post">शेरिंग पोस्ट ...</string>
     <string name="post_share_successfully">पोस्ट शेरिंग यशस्वीरित्या...</string>
 
-        <string name="select_one">एक समुदाय निवडा</string>
-        <string name="comunity_detail">समुदाय तपशील</string>
+    <string name="select_one">एक समुदाय निवडा</string>
+    <string name="comunity_detail">समुदाय तपशील</string>
     <string name="template_type">टेम्पलेट प्रकार</string>
     <string name="description">डिस्क्रिप्शन </string>
     <string name="title">शीर्षक</string>
