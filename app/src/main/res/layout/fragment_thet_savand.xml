@@ -16,7 +16,6 @@
         android:orientation="vertical">
 
         <android.support.v4.widget.SwipeRefreshLayout
-            android:layout_above="@+id/lnr_filter"
             android:id="@+id/swipe_refresh_layout"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -31,6 +30,14 @@
                 android:paddingTop="@dimen/fab_margin"
                 android:scrollbars="vertical" />
         </android.support.v4.widget.SwipeRefreshLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_alignParentBottom="true">
+
+
 
         <android.support.design.widget.FloatingActionButton
 
@@ -71,6 +78,8 @@
                 android:text="All Posts"
                 android:textColor="@color/colorPrimary"
                 android:textSize="15sp" />
+
+        </LinearLayout>
 
         </LinearLayout>
     </RelativeLayout>

@@ -92,17 +92,21 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+              //  fab_add_broadcast.show();
                 super.onScrollStateChanged(recyclerView, newState);
             }
 
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy<-5 && ((lnr_filter.getVisibility()==View.GONE)  )  ) {
+                if (dy<-5 && ((lnr_filter.getVisibility()==View.GONE))) {
                     lnr_filter.setVisibility(View.VISIBLE);
+                //  fab_add_broadcast.show();
 
                 }
-                else if(dy>5 && (lnr_filter.getVisibility()==View.VISIBLE) )
+                else if(dy>5 && (lnr_filter.getVisibility()==View.VISIBLE) ) {
                     lnr_filter.setVisibility(View.GONE);
+                     // fab_add_broadcast.hide();
+                }
 
             }
         });
