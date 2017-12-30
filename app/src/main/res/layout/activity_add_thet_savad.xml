@@ -127,7 +127,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
-                    android:entries="@array/array_of_reporting_type"
+                    android:entries="@array/array_of_thet_savad"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
                     android:prompt="@string/reporting"

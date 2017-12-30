@@ -16,7 +16,7 @@ import com.mv.Model.Template;
  * Created by Rohit Gujar on 23-10-2017.
  */
 
-@Database(entities = { Community.class, Content.class, Template.class, TaskContainerModel.class, LocationModel.class}, version = 3)
+@Database(entities = { Community.class, Content.class, Template.class, TaskContainerModel.class, LocationModel.class}, version = 4)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;

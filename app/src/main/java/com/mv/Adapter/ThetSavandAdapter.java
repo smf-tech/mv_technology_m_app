@@ -35,6 +35,7 @@ import com.bumptech.glide.load.model.LazyHeaders;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mv.Activity.CommentActivity;
+import com.mv.Activity.CommunityDetailsActivity;
 import com.mv.Activity.VideoViewActivity;
 import com.mv.Fragment.ThetSavandFragment;
 import com.mv.Model.Content;
@@ -80,8 +81,9 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
     private JSONArray jsonArrayAttchment = new JSONArray();
     private Bitmap theBitmap;
     private ThetSavandFragment fragment;
-    int temp=555500;
+    int temp = 555500;
     MediaPlayer mPlayer = new MediaPlayer();
+
     public ThetSavandAdapter(Context context, ThetSavandFragment fragment, List<Content> chatList) {
         Resources resources = context.getResources();
         mPlaces = resources.getStringArray(R.array.places);
@@ -118,12 +120,10 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(holder.picture);
 */
-        if( mDataList.get(position).getMediaPlay())
-        {
+        if (mDataList.get(position).getMediaPlay()) {
             holder.txt_audio_txt.setText("Stop Audio");
-            holder. play.setImageResource(R.drawable.pause_song);
-        }else
-        {
+            holder.play.setImageResource(R.drawable.pause_song);
+        } else {
             holder.txt_audio_txt.setText("Play Audio");
             holder.play.setImageResource(R.drawable.play_song);
         }
@@ -141,10 +141,10 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         if (mDataList.get(position).getIsAttachmentPresent() == null || TextUtils.isEmpty(mDataList.get(position).getIsAttachmentPresent()) || mDataList.get(position).getIsAttachmentPresent().equalsIgnoreCase("false")) {
             if (TextUtils.isEmpty(mDataList.get(position).getAttachmentId())) {
                 holder.mediaLayout.setVisibility(View.GONE);
-                holder.layout_download.setVisibility(View.GONE);
+                holder.layout_download.setVisibility(View.VISIBLE);
             } else if (mDataList.get(position).getAttachmentId().equalsIgnoreCase("null")) {
                 holder.mediaLayout.setVisibility(View.GONE);
-                holder.layout_download.setVisibility(View.GONE);
+                holder.layout_download.setVisibility(View.VISIBLE);
             } else {
                 holder.mediaLayout.setVisibility(View.VISIBLE);
                 holder.layout_download.setVisibility(View.VISIBLE);
@@ -200,8 +200,8 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 holder.play.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        Log.i("aaaatemp",temp+"");
-                        Log.i("aaaaposition",position+"");
+                        Log.i("aaaatemp", temp + "");
+                        Log.i("aaaaposition", position + "");
                       /*  holder.songProgressBar.setProgress(0);
                         holder.songProgressBar.setMax(100);
 
@@ -226,35 +226,28 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                         };
                         mHandler.removeCallbacks(mUpdateTimeTask);
                         mHandler.postDelayed(mUpdateTimeTask, 100);*/
-                        if(temp==555500) {
+                        if (temp == 555500) {
                             temp = position;
 
                             startAudio("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp3");
-                            holder. play.setImageResource(R.drawable.pause_song);
+                            holder.play.setImageResource(R.drawable.pause_song);
                             holder.txt_audio_txt.setText("Stop Audio");
-                           // notifyItemChanged(position);
-                        }
-                        else if(temp==position)
-                        {
+                            // notifyItemChanged(position);
+                        } else if (temp == position) {
 
-                            if(mPlayer.isPlaying())
-                            {
+                            if (mPlayer.isPlaying()) {
 
 
                                 mPlayer.pause();
-                                holder. play.setImageResource(R.drawable.play_song);
+                                holder.play.setImageResource(R.drawable.play_song);
                                 holder.txt_audio_txt.setText("Play Audio");
-                            }
-                            else
-                            {
-                                holder. play.setImageResource(R.drawable.pause_song);
+                            } else {
+                                holder.play.setImageResource(R.drawable.pause_song);
                                 holder.txt_audio_txt.setText("Stop Audio");
                                 mPlayer.start();
                             }
-                          //  notifyItemChanged(position);
-                        }
-                        else
-                        {
+                            //  notifyItemChanged(position);
+                        } else {
 
                             startAudio("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp3");
                             mDataList.get(position).setMediaPlay(true);
@@ -272,16 +265,12 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                         });
 
 
-
-
-
-
                     }
                 });
             }
         }
 
-
+        holder.layout_share.setVisibility(View.GONE);
         holder.txt_title.setText("" + mDataList.get(position).getUserName());
        /* if (mDataList.get(position).getSynchStatus() != null
                 && mDataList.get(position).getSynchStatus().equalsIgnoreCase(Constants.STATUS_LOCAL))
@@ -293,7 +282,8 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         holder.txt_time.setText(mDataList.get(position).getTime().toString());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");
         holder.txtCommentCount.setText(mDataList.get(position).getCommentCount() + " Comments");
-        holder.layout_share.setVisibility(View.GONE);
+
+
         holder.txt_type.setText(mDataList.get(position).getIssue_priority());
         if (mDataList.get(position).getIsLike())
             holder.imgLike.setImageResource(R.drawable.like);
@@ -385,9 +375,9 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView picture, userImage, imgLike, img_comment, imageThumbnail;
         public CardView card_view;
-        public TextView txt_audio_txt,txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type;
-        public LinearLayout  mediaLayout, layout_like, layout_comment, layout_share, layout_download;
-        public RelativeLayout audioLayout,layout_Video;
+        public TextView txt_audio_txt, txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type;
+        public LinearLayout mediaLayout, layout_like, layout_comment, layout_share, layout_download;
+        public RelativeLayout audioLayout, layout_Video;
         public ImageView play;
         public ProgressBar songProgressBar;
 
@@ -403,7 +393,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             userImage = (ImageView) itemLayoutView.findViewById(R.id.userImage);
             picture = (ImageView) itemLayoutView.findViewById(R.id.card_image);
             card_view = (CardView) itemLayoutView.findViewById(R.id.card_view);
-           // songProgressBar = (ProgressBar) itemLayoutView.findViewById(R.id.songProgressBar);
+            // songProgressBar = (ProgressBar) itemLayoutView.findViewById(R.id.songProgressBar);
             imgLike = (ImageView) itemLayoutView.findViewById(R.id.imgLike);
             textViewLike = (TextView) itemLayoutView.findViewById(R.id.textViewLike);
             img_comment = (ImageView) itemLayoutView.findViewById(R.id.img_comment);
@@ -418,7 +408,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                     mContext.startActivity(intent);
                 }
             });
-      ;
+            ;
 
             audioLayout = (RelativeLayout) itemLayoutView.findViewById(R.id.audioLayout);
             mediaLayout = (LinearLayout) itemLayoutView.findViewById(R.id.mediaLayout);
@@ -542,6 +532,17 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             {
                 @Override
                 public void onClick(View view) {
+                    if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())) {
+                        Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
+                        intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
+                        intent.putExtra("flag", "not_forward_flag");
+                        mContext.startActivity(intent);
+                    } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("null")) {
+                        Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
+                        intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
+                        intent.putExtra("flag", "not_forward_flag");
+                        mContext.startActivity(intent);
+                    }
                    /* Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
                     intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
                     mContext.startActivity(intent);*/
@@ -711,8 +712,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         if (mPlayer == null)
             mPlayer = new MediaPlayer();
 
-        if(mPlayer.isPlaying())
-        {
+        if (mPlayer.isPlaying()) {
             mPlayer.pause();
 
         }

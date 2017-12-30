@@ -54,15 +54,16 @@
     <string name="profile_pic">Add Profile Picture</string>
     <string name="approve">Approve</string>
     <string name="reject">Reject</string>
-    <string name="thet_savnd">\"Thet Sanwand\" with\nMr.Shantilal Muttha</string>
+    <string name="thet_savnd">Direct Comminication\nwith Shantilal Muttha</string>
     <string name="update_profile">Update Profile</string>
-    <string name="approve_profile"> तुम्ही अँप्रूव्ह नाही  यांना संपर्क साधा </string>
+
     <!--IssueTemplate Activity-->
     <string name="issue">Issue Type</string>
     <string name="priority">Priority</string>
     <string name="item_title">Palais Garnier</string>
     <string name="item_desc">It’s been an amazing first months since we launched the App! Here are some of the best moments in case you missed them!</string>
-
+    <string name="approve_profile"> You are not approved yet. </string>
+    <string name="approve_profile2">will approve you.</string>
     <!--ReportingTemplate Activity-->
     <string name="reporting">Reporting Type</string>
     <string name="question_5">Question 5</string>

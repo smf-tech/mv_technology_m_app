@@ -5,12 +5,15 @@ package com.mv.Activity;
  */
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.widget.MediaController;
 import android.widget.VideoView;
 
@@ -44,6 +47,19 @@ public class VideoViewActivity extends Activity {
         pDialog.setIndeterminate(false);
         pDialog.setCanceledOnTouchOutside(false);
         // Show progressbar
+        pDialog.setOnKeyListener(new Dialog.OnKeyListener() {
+
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK) {
+                    finish();
+                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                }
+                return false;
+            }
+
+
+        });
         pDialog.show();
 
         try {
@@ -72,4 +88,9 @@ public class VideoViewActivity extends Activity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        finish();
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+    }
 }
