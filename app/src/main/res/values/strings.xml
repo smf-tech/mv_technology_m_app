@@ -54,8 +54,9 @@
     <string name="profile_pic">Add Profile Picture</string>
     <string name="approve">Approve</string>
     <string name="reject">Reject</string>
-    <string name="thet_savnd">\"Thet Savand\" with\nMr.Shantilal Muttha</string>
+    <string name="thet_savnd">\"Thet Sanwand\" with\nMr.Shantilal Muttha</string>
     <string name="update_profile">Update Profile</string>
+    <string name="approve_profile"> तुम्ही अँप्रूव्ह नाही  यांना संपर्क साधा </string>
     <!--IssueTemplate Activity-->
     <string name="issue">Issue Type</string>
     <string name="priority">Priority</string>
