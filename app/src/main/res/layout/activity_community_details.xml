@@ -153,6 +153,33 @@
                         android:layout_centerHorizontal="true"
                         android:orientation="horizontal">
 
+                        <LinearLayout
+                            android:visibility="gone"
+                            android:id="@+id/layout_forward"
+                            style="?android:attr/borderlessButtonStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/imgforward"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/share" />
+
+                            <com.mv.Widgets.MyTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp"
+                                android:text="@string/Forward"
+                                android:textColor="@color/medium_grey"
+                                android:textSize="12dp"
+                                my_font:typeface="Abel-Regular.ttf" />
+                        </LinearLayout>
 
 
                         <LinearLayout

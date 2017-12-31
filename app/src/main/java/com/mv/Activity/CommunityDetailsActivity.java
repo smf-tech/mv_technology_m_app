@@ -15,9 +15,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -66,7 +68,11 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
     private Content mContent;
     private PreferenceHelper preferenceHelper;
     private List<Community> communityList = new ArrayList<>();
+    LinearLayout layout_forward;
+    private boolean[] mSelection = null;
+    String value;
 
+    private JSONArray jsonArrayAttchment = new JSONArray();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,9 +130,24 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                     binding.heart.setImageResource(R.drawable.dislike);
                 }
                 break;
+            case R.id.layout_forward:
+                if (!TextUtils.isEmpty(mContent.getSynchStatus()) && mContent.getSynchStatus().equalsIgnoreCase(Constants.STATUS_LOCAL)) {
+                    Utills.showToast(getString(R.string.error_offline_share_post), CommunityDetailsActivity.this);
+                } else {
+                    if (Utills.isConnected(CommunityDetailsActivity.this)) {
+                        showDialog();
+                        // showGroupDialog(getAdapterPosition());
+                    } else {
+                        Utills.showToast(getString(R.string.error_no_internet), CommunityDetailsActivity.this);
+                    }
+                }
+
+
+
         }
     }
 
+/*
     private void sendShareRecord(String contentId, String communityId) {
         if (Utills.isConnected(this)) {
             try {
@@ -177,6 +198,56 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
             Utills.showToast(getString(R.string.error_no_internet), CommunityDetailsActivity.this);
         }
     }
+*/
+private void sendShareRecord(String contentId) {
+    if (Utills.isConnected(this)) {
+        try {
+
+
+            Utills.showProgressDialog(this, "Sharing Post...", "Please wait");
+            JSONObject jsonObject1 = new JSONObject();
+
+            jsonObject1.put("userId", User.getCurrentUser(getApplicationContext()).getId());
+            jsonObject1.put("contentId", contentId);
+
+
+            //  jsonArrayAttchment.put(communityId);
+            // jsonObject1.put("MV_User", User.getCurrentUser(mContext).getId());
+            jsonObject1.put("grId", jsonArrayAttchment);
+
+
+            ServiceRequest apiService =
+                    ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+            JsonParser jsonParser = new JsonParser();
+            JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject1.toString());
+            apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/sharedRecords", gsonObject).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Utills.hideProgressDialog();
+                    try {
+                        Utills.showToast("Post Share Successfully...", CommunityDetailsActivity.this);
+                    } catch (Exception e) {
+                        Utills.hideProgressDialog();
+                        Utills.showToast(getString(R.string.error_something_went_wrong), CommunityDetailsActivity.this);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Utills.hideProgressDialog();
+                    Utills.showToast(getString(R.string.error_something_went_wrong), CommunityDetailsActivity.this);
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+            Utills.hideProgressDialog();
+            Utills.showToast(getString(R.string.error_something_went_wrong), CommunityDetailsActivity.this);
+
+        }
+    } else {
+        Utills.showToast(getString(R.string.error_no_internet), CommunityDetailsActivity.this);
+    }
+}
 
     public void showGroupDialog() {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
@@ -198,7 +269,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                sendShareRecord(mContent.getId(), communityList.get(which).getId());
+                sendShareRecord(mContent.getId());
             }
         });
         builderSingle.show();
@@ -337,6 +408,17 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
 
 
         setActionbar(getString(R.string.comunity_detail));
+        layout_forward = (LinearLayout) findViewById(R.id.layout_forward);
+
+        if(getIntent().getExtras().getString("flag").equalsIgnoreCase("forward_flag") ){
+            layout_forward.setVisibility(View.VISIBLE);
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                 String   json = getIntent().getExtras().getString(Constants.LIST);
+            communityList = Arrays.asList(gson.fromJson(json, Community[].class));
+        }else {
+            layout_forward.setVisibility(View.GONE);
+        }
+        layout_forward.setOnClickListener(this);
         String json;
         json = getIntent().getExtras().getString(Constants.LIST);
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
@@ -499,6 +581,60 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         }
         return bmpUri;
     }
+    private void showDialog() {
+        final String[] items = new String[communityList.size()];
+        for (int i = 0; i < communityList.size(); i++) {
+            items[i] = communityList.get(i).getName();
+        }
+        mSelection = new boolean[items.length];
+        Arrays.fill(mSelection, false);
 
+        final ArrayList seletedItems = new ArrayList();
+        android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(CommunityDetailsActivity.this)
+                .setTitle("Select Communities")
+                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (mSelection != null && which < mSelection.length) {
+                            mSelection[which] = isChecked;
+                            value = buildSelectedItemString(items);
+
+                        } else {
+                            throw new IllegalArgumentException(
+                                    "Argument 'which' is out of bounds.");
+                        }
+                    }
+                })
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        sendShareRecord(mContent.getId());
+                        Log.i("value", "value");
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Your code when user clicked on Cancel
+                    }
+                }).create();
+        dialog.show();
+    }
+
+    private String buildSelectedItemString(String[] items) {
+        StringBuilder sb = new StringBuilder();
+        boolean foundOne = false;
+        jsonArrayAttchment = new JSONArray();
+        for (int i = 0; i < items.length; ++i) {
+            if (mSelection[i]) {
+                if (foundOne) {
+                    sb.append(", ");
+                }
+                foundOne = true;
+                jsonArrayAttchment.put(communityList.get(i).getId());
+                sb.append(i);
+            }
+        }
+        return sb.toString();
+    }
 
 }

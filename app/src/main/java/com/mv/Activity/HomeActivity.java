@@ -657,9 +657,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         // Setting Dialog Message
         if(User.getCurrentUser(getApplicationContext()).getApproval_role()!=null){
-          message =   "You are not approved yet." +  "\n"+"Your"+ " " +User.getCurrentUser(getApplicationContext()).getApproval_role() + " "+ "will approve you.";
+            message = getString(R.string.approve_profile)+ "\n" +User.getCurrentUser(getApplicationContext()).getApproval_role() + " "+ getString(R.string.approve_profile2);
         }else {
-            message = "You are not approved yet." ;
+            message = getString(R.string.approve_profile) ;
         }
         alertDialog.setMessage(message);
 

@@ -110,6 +110,18 @@ public class Content implements Serializable {
     @Expose
     String userName;
 
+    public Boolean getMediaPlay() {
+        return mediaPlay;
+    }
+
+    public void setMediaPlay(Boolean mediaPlay) {
+        this.mediaPlay = mediaPlay;
+    }
+
+    @ColumnInfo(name = "isMediaPlay")
+    @SerializedName("isMediaPlay")
+    @Expose
+    Boolean mediaPlay=false;
 
     public String getContentType() {
         return contentType;

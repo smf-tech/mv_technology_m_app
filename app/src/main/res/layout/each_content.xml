@@ -74,7 +74,7 @@
 
         <LinearLayout
             android:id="@+id/mediaLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/card_image_height"
             android:orientation="vertical">
 
@@ -83,13 +83,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/card_image_height"
                 android:scaleType="centerCrop"
+
                 tools:src="@drawable/a" />
 
             <RelativeLayout
                 android:id="@+id/layout_Video"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/card_image_height"
-                android:visibility="gone">
+                android:visibility="gone"
+               >
 
                 <ImageView
                     android:id="@+id/card_Thumbnail"
@@ -104,37 +106,63 @@
                     android:background="#80000000" />
 
                 <View
+                    android:id="@+id/view_1"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_centerInParent="true"
-                    android:background="@drawable/play" />
+                    android:background="@drawable/play_song" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="@dimen/medium_text"
+                    android:textColor="@color/white"
+                    android:layout_margin="@dimen/dimen_5dp"
+                    android:layout_below="@+id/view_1"
+                    android:text="Play Video"/>
 
             </RelativeLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/audioLayout"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/card_image_height"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:animateLayoutChanges="true"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/card_image_height">
 
-                <TextView
-                    android:id="@+id/textView1"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:gravity="center"
-                    android:text="Playing Music from SD Card"
-                    android:textSize="20dp" />
+                <ImageView
 
-                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/card_image_height"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/mulya_bg" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/card_image_height"
+                    android:background="#80000000" />
+
+                <ImageView
                     android:id="@+id/play"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dip"
-                    android:text="Play" />
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
 
-            </LinearLayout>
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/play_song" />
+                <TextView
+                    android:id="@+id/audio_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="@dimen/medium_text"
+                    android:textColor="@color/white"
+                    android:layout_margin="@dimen/dimen_5dp"
+                    android:layout_below="@+id/play"
+                    android:text="Play Video"/>
+
+            </RelativeLayout>
+
+
         </LinearLayout>
 
         <com.mv.Widgets.MyTextView

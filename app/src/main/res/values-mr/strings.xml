@@ -32,9 +32,11 @@
     <string name="fragment_intro_about">मुल्यवर्धन बद्दल</string>
     <string name="fragment_intro_training">एमव्ही ट्रेनिंग</string>
     <string name="fragment_intro_events">एमव्ही कार्यक्रम</string>
-
+    <string name="add_the_sanvad">पोस्ट जोडा</string>
     <string name="approve">स्वीकार करा</string>
     <string name="reject">नाकारा</string>
+
+    <string name="text_size_exceed">File Size Cannot Be Greater than 5 MB</string>
     <!--Registration Activity-->
     <string name="name">पहिले नाव</string>
     <string name="mobile_no">मोबाइल नंबर</string>
@@ -46,7 +48,7 @@
     <string name="project">प्रोजेक्ट </string>
     <string name="disrict">जिल्हा</string>
     <string name="taluka">तालुका</string>
-    <string name="thet_savnd"> श्री शांतीलाल मुथ्था\nयांच्याशी "थेट संवाद" </string>
+    <string name="thet_savnd"> श्री  शांतीलाल  मुथ्था\nयांच्याशी \"थेट संवाद\" </string>
     <string name="cluster">क्लस्टर</string>
     <string name="update_profile">Update Profile</string>
     <string name="village">गाव</string>
@@ -93,7 +95,8 @@
     <string name="digit"> अंक </string>
     <string name="logout_string">आपण लॉगआउट करू इच्छिता? </string>
     <string name="delete_task_string">Do you want Delete? </string>
-
+    <string name="approve_profile"> तुम्ही अँप्रूव्ह नाही. </string>
+    <string name="approve_profile2">यांना संपर्क साधा.</string>
     <string name="class_observation">क्लास ऑबसेर्व्हशन </string>
     <string name="training_responsiblity">"ट्रेनिंगला जाण्यापुर्वीच्या जबाबदाऱ्या"</string>
     <string name="loading_comment">लोडींग  कंमेंट्स </string>
@@ -169,4 +172,5 @@
     <string name="profile">अपडेट  प्रोफाइल </string>
     <string name="logout">बाहेर पडणे</string>
     <string name="select_form">फॉर्म निवडा</string>
+    <string name="catagory">Categories</string>
 </resources>

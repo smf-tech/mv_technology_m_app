@@ -12,7 +12,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +29,7 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Utils.MediaSongSingleToneClass;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.FragmentThetSavandBinding;
@@ -60,7 +60,7 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
     private View view;
     private Boolean mySelection = false;
     private FloatingActionButton fab_add_broadcast;
-    MediaPlayer mPlayer = new MediaPlayer();
+    MediaPlayer mPlayer =  MediaSongSingleToneClass.getInstance();
     ThetSavandFragment fragment;
     Button btn_mypost, btn_allposts;
     LinearLayout lnr_filter;
@@ -75,8 +75,8 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
         //here data must be an instance of the class MarsDataProvider
         Utills.setupUI(view.findViewById(R.id.layout_main), getActivity());
         binding.swipeRefreshLayout.setOnRefreshListener(this);
-        initViews();
-        getChats(true);
+       /* initViews();
+        getChats(true);*/
         return view;
     }
 
@@ -108,10 +108,10 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (dy < -5 && ((lnr_filter.getVisibility() == View.GONE))) {
                     lnr_filter.setVisibility(View.VISIBLE);
-                    // fab_add_broadcast.setVisibility(View.VISIBLE);
+                    //fab_add_broadcast.setVisibility(View.VISIBLE);
                 } else if (dy > 5 && (lnr_filter.getVisibility() == View.VISIBLE)) {
                     lnr_filter.setVisibility(View.GONE);
-                    // fab_add_broadcast.setVisibility(View.INVISIBLE);
+                   // fab_add_broadcast.setVisibility(View.INVISIBLE);
                 }
 
             }
@@ -141,32 +141,7 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
         }
     }
 
-    public void startAudio(String url) {
-        if (mPlayer == null)
-            mPlayer = new MediaPlayer();
-        mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        try {
-            mPlayer.setDataSource(url);
-            Log.i("Time", "" + mPlayer.getDuration());
 
-        } catch (IllegalArgumentException e) {
-            Toast.makeText(getContext(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
-        } catch (SecurityException e) {
-            Toast.makeText(getContext(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
-        } catch (IllegalStateException e) {
-            Toast.makeText(getContext(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            mPlayer.prepare();
-        } catch (IllegalStateException e) {
-            Toast.makeText(getContext(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
-        } catch (IOException e) {
-            Toast.makeText(getContext(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
-        }
-        mPlayer.start();
-    }
 
     private void getChats(boolean isDialogShow) {
         chatList.clear();
@@ -189,6 +164,13 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
                 getAllChats(true, isDialogShow);
         }
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initViews();
+        getChats(true);
     }
 
     private void getAllChats(boolean isTimePresent, boolean isDialogShow) {
@@ -232,7 +214,7 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
                                     chatList.set(j, temp.get(i));
                                     AppDatabase.getAppDatabase(getActivity()).userDao().updateContent(temp.get(i));
                                 } else {
-                                    chatList.add(temp.get(i));
+                                    chatList.add(0,temp.get(i));
                                     AppDatabase.getAppDatabase(getActivity()).userDao().insertChats(temp.get(i));
                                 }
                             }
