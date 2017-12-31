@@ -12,6 +12,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,10 +108,10 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 if (dy < -5 && ((lnr_filter.getVisibility() == View.GONE))) {
                     lnr_filter.setVisibility(View.VISIBLE);
-                    fab_add_broadcast.setVisibility(View.VISIBLE);
+                    // fab_add_broadcast.setVisibility(View.VISIBLE);
                 } else if (dy > 5 && (lnr_filter.getVisibility() == View.VISIBLE)) {
                     lnr_filter.setVisibility(View.GONE);
-                    fab_add_broadcast.setVisibility(View.INVISIBLE);
+                    // fab_add_broadcast.setVisibility(View.INVISIBLE);
                 }
 
             }
@@ -146,6 +147,8 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
         mPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         try {
             mPlayer.setDataSource(url);
+            Log.i("Time", "" + mPlayer.getDuration());
+
         } catch (IllegalArgumentException e) {
             Toast.makeText(getContext(), "You might not set the URI correctly!", Toast.LENGTH_LONG).show();
         } catch (SecurityException e) {
