@@ -71,7 +71,6 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
     LinearLayout layout_forward;
     private boolean[] mSelection = null;
     String value;
-
     private JSONArray jsonArrayAttchment = new JSONArray();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -410,14 +409,11 @@ private void sendShareRecord(String contentId) {
         setActionbar(getString(R.string.comunity_detail));
         layout_forward = (LinearLayout) findViewById(R.id.layout_forward);
 
-        if(getIntent().getExtras().getString("flag").equalsIgnoreCase("forward_flag") ){
+        /*if(getIntent().getExtras().getString("flag") !=null ){
             layout_forward.setVisibility(View.VISIBLE);
-            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                 String   json = getIntent().getExtras().getString(Constants.LIST);
-            communityList = Arrays.asList(gson.fromJson(json, Community[].class));
         }else {
             layout_forward.setVisibility(View.GONE);
-        }
+        }*/
         layout_forward.setOnClickListener(this);
         String json;
         json = getIntent().getExtras().getString(Constants.LIST);
@@ -598,7 +594,6 @@ private void sendShareRecord(String contentId) {
                         if (mSelection != null && which < mSelection.length) {
                             mSelection[which] = isChecked;
                             value = buildSelectedItemString(items);
-                            Log.e("items", String.valueOf(items));
 
                         } else {
                             throw new IllegalArgumentException(

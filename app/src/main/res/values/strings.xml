@@ -54,7 +54,7 @@
     <string name="profile_pic">Add Profile Picture</string>
     <string name="approve">Approve</string>
     <string name="reject">Reject</string>
-    <string name="thet_savnd">Direct Comminication\nwith Shantilal Muttha</string>
+    <string name="thet_savnd">\"Thet Sanwand\" with\nMr.Shantilal Muttha</string>
     <string name="update_profile">Update Profile</string>
     <string name="approve_profile"> You are not approved yet. </string>
     <string name="approve_profile2">will approve you.</string>
@@ -104,8 +104,6 @@
     <string name="comment_add">Comment Added Successfully...</string>
     <string name="likes">Likes</string>
     <string name="comments">Comments</string>
-    <string name="add_the_sanvad">Add post</string>
-
     <string name="enter_comment">Please Enter Comment</string>
 
     <string name="share_post">Sharing Post...</string>
@@ -180,7 +178,6 @@
     <string name="profile">Update Profile</string>
     <string name="logout">Logout</string>
     <string name="select_form">Select Form</string>
-    <string name="catagory">Categories</string>
 
 
 </resources>
