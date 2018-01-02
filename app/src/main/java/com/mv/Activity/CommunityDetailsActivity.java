@@ -71,6 +71,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
     LinearLayout layout_forward;
     private boolean[] mSelection = null;
     String value;
+
     private JSONArray jsonArrayAttchment = new JSONArray();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,21 +147,62 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         }
     }
 
-/*
-    private void sendShareRecord(String contentId, String communityId) {
+    /*
+        private void sendShareRecord(String contentId, String communityId) {
+            if (Utills.isConnected(this)) {
+                try {
+                    Utills.showProgressDialog(this, getString(R.string.share_post), getString(R.string.progress_please_wait));
+                    JSONObject jsonObject1 = new JSONObject();
+                    jsonObject1.put("userId", User.getCurrentUser(this).getId());
+                    jsonObject1.put("contentId", contentId);
+                    JSONArray jsonArrayAttchment = new JSONArray();
+                    jsonArrayAttchment.put(communityId);
+                    // jsonObject1.put("MV_User", User.getCurrentUser(mContext).getId());
+                    jsonObject1.put("grId", jsonArrayAttchment);
+                    ServiceRequest apiService =
+                            ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+                    JsonParser jsonParser = new JsonParser();
+                    JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject1.toString());
+                    apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/sharedRecords", gsonObject).enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            Utills.hideProgressDialog();
+                            try {
+                                Utills.showToast(getString(R.string.post_share_successfully), CommunityDetailsActivity.this);
+                            } catch (Exception e) {
+                                Utills.hideProgressDialog();
+                                Utills.showToast(getString(R.string.error_something_went_wrong), CommunityDetailsActivity.this);
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
+                            Utills.hideProgressDialog();
+                            Utills.showToast(getString(R.string.error_something_went_wrong), CommunityDetailsActivity.this);
+                        }
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Utills.hideProgressDialog();
+                    Utills.showToast(getString(R.string.error_something_went_wrong), CommunityDetailsActivity.this);
+                }
+            } else {
+                Utills.showToast(getString(R.string.error_no_internet), CommunityDetailsActivity.this);
+            }
+        }
+    */
+    private void sendShareRecord(String contentId) {
         if (Utills.isConnected(this)) {
             try {
 
 
-                Utills.showProgressDialog(this, getString(R.string.share_post), getString(R.string.progress_please_wait));
+                Utills.showProgressDialog(this, "Sharing Post...", "Please wait");
                 JSONObject jsonObject1 = new JSONObject();
 
-                jsonObject1.put("userId", User.getCurrentUser(this).getId());
+                jsonObject1.put("userId", User.getCurrentUser(getApplicationContext()).getId());
                 jsonObject1.put("contentId", contentId);
 
-                JSONArray jsonArrayAttchment = new JSONArray();
 
-                jsonArrayAttchment.put(communityId);
+                //  jsonArrayAttchment.put(communityId);
                 // jsonObject1.put("MV_User", User.getCurrentUser(mContext).getId());
                 jsonObject1.put("grId", jsonArrayAttchment);
 
@@ -174,7 +216,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
                         try {
-                            Utills.showToast(getString(R.string.post_share_successfully), CommunityDetailsActivity.this);
+                            Utills.showToast("Post Share Successfully...", CommunityDetailsActivity.this);
                         } catch (Exception e) {
                             Utills.hideProgressDialog();
                             Utills.showToast(getString(R.string.error_something_went_wrong), CommunityDetailsActivity.this);
@@ -197,56 +239,6 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
             Utills.showToast(getString(R.string.error_no_internet), CommunityDetailsActivity.this);
         }
     }
-*/
-private void sendShareRecord(String contentId) {
-    if (Utills.isConnected(this)) {
-        try {
-
-
-            Utills.showProgressDialog(this, "Sharing Post...", "Please wait");
-            JSONObject jsonObject1 = new JSONObject();
-
-            jsonObject1.put("userId", User.getCurrentUser(getApplicationContext()).getId());
-            jsonObject1.put("contentId", contentId);
-
-
-            //  jsonArrayAttchment.put(communityId);
-            // jsonObject1.put("MV_User", User.getCurrentUser(mContext).getId());
-            jsonObject1.put("grId", jsonArrayAttchment);
-
-
-            ServiceRequest apiService =
-                    ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-            JsonParser jsonParser = new JsonParser();
-            JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject1.toString());
-            apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/sharedRecords", gsonObject).enqueue(new Callback<ResponseBody>() {
-                @Override
-                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                    Utills.hideProgressDialog();
-                    try {
-                        Utills.showToast("Post Share Successfully...", CommunityDetailsActivity.this);
-                    } catch (Exception e) {
-                        Utills.hideProgressDialog();
-                        Utills.showToast(getString(R.string.error_something_went_wrong), CommunityDetailsActivity.this);
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Utills.hideProgressDialog();
-                    Utills.showToast(getString(R.string.error_something_went_wrong), CommunityDetailsActivity.this);
-                }
-            });
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Utills.hideProgressDialog();
-            Utills.showToast(getString(R.string.error_something_went_wrong), CommunityDetailsActivity.this);
-
-        }
-    } else {
-        Utills.showToast(getString(R.string.error_no_internet), CommunityDetailsActivity.this);
-    }
-}
 
     public void showGroupDialog() {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
@@ -409,11 +401,14 @@ private void sendShareRecord(String contentId) {
         setActionbar(getString(R.string.comunity_detail));
         layout_forward = (LinearLayout) findViewById(R.id.layout_forward);
 
-        /*if(getIntent().getExtras().getString("flag") !=null ){
+        if(getIntent().getExtras().getString("flag").equalsIgnoreCase("forward_flag") ){
             layout_forward.setVisibility(View.VISIBLE);
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            String   json = getIntent().getExtras().getString(Constants.LIST);
+            communityList = Arrays.asList(gson.fromJson(json, Community[].class));
         }else {
             layout_forward.setVisibility(View.GONE);
-        }*/
+        }
         layout_forward.setOnClickListener(this);
         String json;
         json = getIntent().getExtras().getString(Constants.LIST);
