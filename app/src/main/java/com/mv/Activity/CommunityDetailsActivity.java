@@ -594,6 +594,7 @@ private void sendShareRecord(String contentId) {
                         if (mSelection != null && which < mSelection.length) {
                             mSelection[which] = isChecked;
                             value = buildSelectedItemString(items);
+                            Log.e("items", String.valueOf(items));
 
                         } else {
                             throw new IllegalArgumentException(
