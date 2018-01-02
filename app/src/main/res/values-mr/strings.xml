@@ -32,9 +32,11 @@
     <string name="fragment_intro_about">मुल्यवर्धन बद्दल</string>
     <string name="fragment_intro_training">एमव्ही ट्रेनिंग</string>
     <string name="fragment_intro_events">एमव्ही कार्यक्रम</string>
-
+    <string name="add_the_sanvad">पोस्ट जोडा</string>
     <string name="approve">स्वीकार करा</string>
     <string name="reject">नाकारा</string>
+
+    <string name="text_size_exceed">File Size Cannot Be Greater than 5 MB</string>
     <!--Registration Activity-->
     <string name="name">पहिले नाव</string>
     <string name="mobile_no">मोबाइल नंबर</string>
@@ -170,4 +172,5 @@
     <string name="profile">अपडेट  प्रोफाइल </string>
     <string name="logout">बाहेर पडणे</string>
     <string name="select_form">फॉर्म निवडा</string>
+    <string name="catagory">Categories</string>
 </resources>

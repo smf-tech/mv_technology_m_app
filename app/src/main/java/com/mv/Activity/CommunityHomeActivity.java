@@ -71,9 +71,10 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     private List<Template> templateList = new ArrayList<>();
     private ArrayList<Content> filterlist = new ArrayList<>();
     RecyclerView recyclerView;
-    Button btn_mypost,btn_allposts;
+    Button btn_mypost, btn_allposts;
     LinearLayout lnr_filter;
-    private boolean filter=false;
+    private boolean filter = false;
+    public String json;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,16 +211,16 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
     private void initViews() {
         setActionbar(getIntent().getExtras().getString(Constants.TITLE));
-        String json = getIntent().getExtras().getString(Constants.LIST);
+        json = getIntent().getExtras().getString(Constants.LIST);
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
         communityList = Arrays.asList(gson.fromJson(json, Community[].class));
         preferenceHelper = new PreferenceHelper(this);
 
-         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        btn_allposts =(Button)findViewById(R.id.btn_allposts);
-        btn_mypost=(Button)findViewById(R.id.btn_mypost);
-        lnr_filter =(LinearLayout)findViewById(R.id.lnr_filter);
+        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        btn_allposts = (Button) findViewById(R.id.btn_allposts);
+        btn_mypost = (Button) findViewById(R.id.btn_mypost);
+        lnr_filter = (LinearLayout) findViewById(R.id.lnr_filter);
 
         adapter = new ContentAdapter(recyclerView.getContext(), chatList);
         recyclerView.setAdapter(adapter);
@@ -251,17 +252,20 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
             }
         });
         img_filter = (ImageView) findViewById(R.id.img_filter);
-        if (Title.equalsIgnoreCase("HO Support")) {
+        if (Title != null) {
+            if (Title.equalsIgnoreCase("HO Support")) {
 
-            img_logout.setVisibility(View.GONE);
-        } else {
-            img_logout.setVisibility(View.VISIBLE);
+                img_logout.setVisibility(View.GONE);
+            } else {
+                img_logout.setVisibility(View.VISIBLE);
+            }
         }
+
         img_filter.setVisibility(View.VISIBLE);
         img_filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                filter =true;
+                filter = true;
                 if (Title.equalsIgnoreCase("HO Support")) {
                     HoSupportFilter();
                 } else {
@@ -427,7 +431,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     public void onRefresh() {
 
         binding.swipeRefreshLayout.setRefreshing(false);
-          getChats(false);
+        getChats(false);
 
     }
     ///
@@ -503,13 +507,14 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
         b.show();
     }
-    private void setFilter(String filtertype){
+
+    private void setFilter(String filtertype) {
         chatList.clear();
         List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filtertype);
         for (int i = 0; i < contentList.size(); i++) {
             chatList.add(contentList.get(i));
         }
-       adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
     }
 
 }

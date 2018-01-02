@@ -96,7 +96,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
     private Dialog dialogrecord;
     private TextView rectext;
     private static File auxFile, auxFileAudio, imgGallaery;
-    private boolean isplaying = false;
+    private boolean isplaying = false, isFirstTime = false;
     private MediaPlayer mp;
     private static MediaRecorder mediaRecorder;
     private boolean isRecording = false;
@@ -216,7 +216,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void initViews() {
-        setActionbar("Reporting Template");
+        setActionbar(getString(R.string.thet_savnd));
 
         preferenceHelper = new PreferenceHelper(this);
         binding.spinnerDistrict.setOnItemSelectedListener(this);
@@ -227,7 +227,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         mListTaluka = new ArrayList<String>();
         mListReportingType = new ArrayList<String>();
 
-        mListReportingType = Arrays.asList(getResources().getStringArray(R.array.array_of_reporting_type));
+        mListReportingType = Arrays.asList(getResources().getStringArray(R.array.array_of_thet_savad));
 
 
         mListDistrict.add("Select");
@@ -647,27 +647,35 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
             public void onClick(View v) {
 
                 if (auxFileAudio != null) {
-
-                    mp = new MediaPlayer();
+                    if (mp == null)
+                        mp = new MediaPlayer();
                     mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                         @Override
                         public void onCompletion(MediaPlayer mp) {
                             isplaying = false;
+                            isFirstTime = false;
                             mp.stop();
-                            play.setImageResource(R.drawable.play);
+                            play.setImageResource(R.drawable.play_song);
                         }
                     });
                     try {
                         if (isplaying) {
                             isplaying = false;
                             mp.pause();
-                            play.setImageResource(R.drawable.play);
+                            play.setImageResource(R.drawable.play_song);
                         } else {
                             isplaying = true;
-                            mp.setDataSource(audioFilePath);//Write your location here
-                            mp.prepare();
-                            mp.start();
-                            play.setImageResource(R.drawable.pause);
+                            play.setImageResource(R.drawable.pause_song);
+                            if (!isFirstTime) {
+                                isFirstTime = true;
+                                mp.reset();
+                                mp.setDataSource(audioFilePath);//Write your location here
+                                mp.prepare();
+                                mp.start();
+                            }else{
+                                mp.start();
+                            }
+
                         }
 
                     } catch (Exception e) {
@@ -690,6 +698,8 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
                     mp.pause();
                 }
                 stopClicked(v);
+                if(audioUri!=null)
+                binding.addImage.setImageResource(R.drawable.mic_audio);
                 dialogrecord.dismiss();
             }
         });
@@ -697,6 +707,8 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                audioUri=null;
+                binding.addImage.setImageResource(R.drawable.add);
                 dialogrecord.dismiss();
             }
         });
@@ -749,11 +761,14 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
 
 // dialogrecord.dismiss();
             } else {
-                mediaPlayer.release();
-                mediaPlayer = null;
-                audioUri = Uri.fromFile(new File(audioFilePath));
+                if(mediaPlayer!=null) {
+                    mediaPlayer.release();
+                    mediaPlayer = null;
+                    audioUri = Uri.fromFile(new File(audioFilePath));
+                }
+
             }
-            binding.addImage.setImageResource(R.drawable.mic);
+
         } catch (Exception e) {
 
         }
@@ -798,8 +813,8 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
     private boolean isValidate() {
         String str = "";
 
-        if (mSelectReportingType == 0) {
-            str = "Please select reporting type";
+        if (mSelectReportingType == 0&&!User.getCurrentUser(getApplicationContext()).getRoll().equals("President")) {
+            str = "Please select Category ";
         } else if (binding.editTextContent.getText().toString().trim().length() == 0) {
             str = "Please enter Content";
         } else if (binding.editTextDescription.getText().toString().trim().length() == 0) {

@@ -130,10 +130,10 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         if (mDataList.get(position).getIsAttachmentPresent() == null || TextUtils.isEmpty(mDataList.get(position).getIsAttachmentPresent()) || mDataList.get(position).getIsAttachmentPresent().equalsIgnoreCase("false")) {
             if (TextUtils.isEmpty(mDataList.get(position).getAttachmentId())) {
                 holder.mediaLayout.setVisibility(View.GONE);
-                holder.layout_download.setVisibility(View.GONE);
+                holder.layout_download.setVisibility(View.VISIBLE);
             } else if (mDataList.get(position).getAttachmentId().equalsIgnoreCase("null")) {
                 holder.mediaLayout.setVisibility(View.GONE);
-                holder.layout_download.setVisibility(View.GONE);
+                holder.layout_download.setVisibility(View.VISIBLE);
             } else {
                 holder.mediaLayout.setVisibility(View.VISIBLE);
                 holder.layout_download.setVisibility(View.VISIBLE);
@@ -399,7 +399,21 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             layout_download.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent() == null
+                    if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getAttachmentId())) {
+                        Intent i = new Intent(Intent.ACTION_SEND);
+                        i.setType("image*//**//*");
+                        i.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
+
+                        mContext.startActivity(Intent.createChooser(i, "Share Post"));
+
+                    } else if (mDataList.get(getAdapterPosition()).getAttachmentId().equalsIgnoreCase("null")) {
+                        Intent i = new Intent(Intent.ACTION_SEND);
+                        i.setType("image*//**//*");
+                        i.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
+
+                        mContext.startActivity(Intent.createChooser(i, "Share Post"));
+
+                    } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent() == null
                             || TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())
                             || mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) {
                         downloadImage(getAdapterPosition());
@@ -483,6 +497,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
                     intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
                     intent.putExtra("flag", "forward_flag");
+                    intent.putExtra(Constants.LIST, mActivity.json);
                     mContext.startActivity(intent);
                 }
             });

@@ -15,7 +15,7 @@
         android:gravity="center_horizontal"
         android:text="Tap 'start' to record your sound"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/black"
+        android:textColor="@color/colorPrimary"
         android:textSize="20sp" />
 
 
@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="Start"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="20sp" />
 
 
@@ -67,7 +67,8 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
            android:layout_marginTop="10dp"
-            android:src="@drawable/play" />
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/play_song" />
 
     </LinearLayout>
     <LinearLayout
@@ -84,7 +85,7 @@
             android:layout_marginBottom="10dp"
             android:id="@+id/cancel"
             android:gravity="center"
-            android:textColor="@color/black"
+            android:textColor="@color/colorPrimary"
             android:layout_weight="1"
             android:padding="5dp"
             android:textSize="22sp" />
@@ -93,10 +94,10 @@
             android:background="@drawable/lighter_grey_box"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Attached"
+            android:text="Attach"
             android:layout_marginBottom="10dp"
             android:id="@+id/done"
-            android:textColor="@color/black"
+            android:textColor="@color/colorPrimary"
             android:gravity="center"
             android:padding="5dp"
             android:layout_weight="1"

@@ -61,7 +61,19 @@
         <item>Success Stories</item>
         <item>Press Cuttings</item>
     </string-array>
-
+    <string-array name="array_of_thet_savad">
+        <item>Select</item>
+        <item>Teaching Learning Material</item>
+        <item>About Value Education</item>
+        <item>Pedagogy Related</item>
+        <item>Activity Creation</item>
+        <item>Behavioural Changes In Student</item>
+        <item>Training Related</item>
+        <item>Suggestion</item>
+        <item>Feedback</item>
+        <item>Issues</item>
+        <item>Other</item>
+    </string-array>
 
     <string-array name="array_of_district">
         <item></item>
