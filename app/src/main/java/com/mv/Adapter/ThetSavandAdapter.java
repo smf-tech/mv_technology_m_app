@@ -1,11 +1,13 @@
 package com.mv.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -19,6 +21,7 @@ import android.text.util.Linkify;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -47,6 +50,7 @@ import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
+import com.mv.Widgets.TouchImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -139,6 +143,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             Glide.with(mContext)
                     .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(position).getUserAttachmentId() + "/Body"))
                     .placeholder(mContext.getResources().getDrawable(R.drawable.logomulya))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.userImage);
             // holder.picture.setImageDrawable(mPlacePictures[position % mPlacePictures.length]);
         }
@@ -164,13 +169,14 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                             Glide.with(mContext)
                                     .load(Uri.fromFile(file))
                                     .skipMemoryCache(true)
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .into(holder.picture);
                         }
                     } else {
                         Glide.with(mContext)
                                 .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(position).getAttachmentId() + "/Body"))
                                 .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(holder.picture);
                     }
                 }
@@ -186,6 +192,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 Glide.with(mContext)
                         .load("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png")
                         .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.picture);
             } else if (mDataList.get(position).getContentType() != null
                     && mDataList.get(position).getContentType().equalsIgnoreCase("Video")) {
@@ -553,7 +560,34 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                     mContext.startActivity(intent);*/
                 }
             });
+
+            picture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utills.showImageZoomInDialog(v.getContext(),mDataList.get(getAdapterPosition()).getId());
+
+                 /*   LayoutInflater inflater = LayoutInflater.from(v.getContext());
+                    final View view = inflater.inflate(R.layout.image_zoom_dialog, null);
+
+                    TouchImageView img_post=(TouchImageView) view.findViewById(R.id.img_post);
+                    RelativeLayout rel_dialog =(RelativeLayout)view.findViewById(R.id.rel_dialog);
+                    Glide.with(mContext)
+                            .load("http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".png")
+                            .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(img_post);
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
+                    alertDialog.setView(view);
+                    final AlertDialog alertD = alertDialog.create();
+
+                    alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    alertD.show();*/
+
+
+                }
+            });
         }
+
 
 
     }

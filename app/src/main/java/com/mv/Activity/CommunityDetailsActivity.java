@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.text.util.Linkify;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -53,6 +54,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -71,8 +73,11 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
     LinearLayout layout_forward;
     private boolean[] mSelection = null;
     String value;
-
     private JSONArray jsonArrayAttchment = new JSONArray();
+    private static final Pattern urlPattern = Pattern.compile( "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
+            + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
+            + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -490,6 +495,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
 
         binding.type.setText("" + mContent.getUserName());
         binding.Description.setText(getString(R.string.description) + " : " + mContent.getDescription());
+        Linkify.addLinks(binding.Description,urlPattern,mContent.getDescription());
         binding.postDate.setText(mContent.getTime());
 
         // binding.userName.setText(mContent.g);

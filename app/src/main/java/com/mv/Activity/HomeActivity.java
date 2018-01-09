@@ -2,7 +2,6 @@ package com.mv.Activity;
 
 
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -36,13 +35,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.kobakei.ratethisapp.RateThisApp;
 import com.mv.Fragment.CommunityHomeFragment;
 import com.mv.Fragment.GroupsFragment;
@@ -65,9 +64,14 @@ import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityHome1Binding;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -111,22 +115,41 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         viewPager = (ViewPager) findViewById(R.id.pager);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         final LocationManager manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE );
+        Date date = new Date(System.currentTimeMillis());
+        Log.e("date", String.valueOf(date));
+        Log.e("hrs day-->", String.valueOf(date.getMinutes()));
+        preferenceHelper.insetLong(PreferenceHelper.CURRENTTIME, date.getTime());
+
 
         if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
 
             if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
                 LocationPopup();
 
+
+            }else {
+                if ( manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+
+
+                 long dateee=preferenceHelper.getLong(PreferenceHelper.CURRENTTIME);
+                 long apidate = preferenceHelper.getLong(PreferenceHelper.APICALLTIME);
+                 long diff = dateee - apidate;
+                 int d = (int) ((diff)/(1000*60*60));
+                 int t= (int)((dateee)/(1000*60*60));
+
+                 Log.e("date diff in two dATE", String.valueOf(t));
+                 if(d>=120000 ){
+                     getAddress();
+
+                 }
+
+                 //Utills.scheduleJob(getApplicationContext());
+
+                }
             }
         }
 
-        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
 
-            if ( manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-                Utills.scheduleJob(getApplicationContext());
-
-            }
-        }
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             if (Utills.isConnected(this))
                 getUserData();
@@ -801,14 +824,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onSuccess(Location location) {
                         if (location == null) {
-                            Log.e("location","null");
+
                             return;
                         }
 
                         mLastLocation = location;
-                        Log.e("lat", String.valueOf(mLastLocation.getLatitude()));
-                        Log.e("long", String.valueOf(mLastLocation.getLongitude()));
-                        Toast.makeText(getApplicationContext(),"latitude" +location.getLatitude() +"longitude" +location.getLongitude(),Toast.LENGTH_SHORT).show();
+                        GetMapParameters(String.valueOf(mLastLocation.getLatitude()),String.valueOf(mLastLocation.getLongitude()));
                         if (!Geocoder.isPresent()) {
                             return;
                         }
@@ -855,5 +876,63 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         });*/
         dialog.show();
     }
+    private void GetMapParameters(String latitude, String longitude) {
+
+        try {
+
+            preferenceHelper = new PreferenceHelper(getApplicationContext());
+
+            JSONArray jsonArray = new JSONArray();
+            JSONObject jsonObject = new JSONObject();
+
+            jsonObject.put("lat", latitude);
+            jsonObject.put("lon", longitude);
+            jsonObject.put("id", User.getCurrentUser(this).getId());
+            JsonParser jsonParser = new JsonParser();
+            JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
+
+            ServiceRequest apiService =
+                    ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+            apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/MapParameters", gsonObject).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    try {
+                        if (response.body() != null) {
+                            String data = response.body().string();
+                            if (data != null && data.length() > 0) {
+                                JSONObject jsonObject = new JSONObject(data);
+                                String status = jsonObject.getString("status");
+                                String message = jsonObject.getString("msg");
+                                Log.e("status",status);
+                                if (status.equals("Success")) {
+                                    Date date = new Date(System.currentTimeMillis());
+                                   // preferenceHelper.insetLong(PreferenceHelper.APICALLTIME, date.getTime());
+                                } else {
+                                    //Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "something went wrong", Toast.LENGTH_LONG).show();
+                }
+            });
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
 
 }

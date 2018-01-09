@@ -24,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Date;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -82,7 +83,8 @@ public class MyJobService extends JobService {
                                 String status = jsonObject.getString("status");
                                 String message = jsonObject.getString("msg");
                                 if (status.equals("Success")) {
-                                    // Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
+                                    Date date = new Date(System.currentTimeMillis());
+                                    preferenceHelper.insetLong(PreferenceHelper.APICALLTIME,date.getTime());
                                 } else {
                                     //Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
                                 }
@@ -124,9 +126,7 @@ public class MyJobService extends JobService {
                         }
 
                         mLastLocation = location;
-                        Log.e("lat", String.valueOf(mLastLocation.getLatitude()));
-                        Log.e("long", String.valueOf(mLastLocation.getLongitude()));
-                        String latitude = String.valueOf(mLastLocation.getLatitude());
+                       String latitude = String.valueOf(mLastLocation.getLatitude());
                         String longitude = String.valueOf(mLastLocation.getLongitude());
                         GetMapParameters(latitude, longitude);
                         if (!Geocoder.isPresent()) {

@@ -15,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.text.util.Linkify;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -52,7 +53,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Pattern;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -71,15 +74,18 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
     private final Drawable[] mPlacePictures;
     private final Context mContext;
     private CommunityHomeActivity mActivity;
-    private ArrayList<Content> mDataList;
+    private List<Content> mDataList;
     private PreferenceHelper preferenceHelper;
     private int mPosition;
     private boolean[] mSelection = null;
     private String value;
     private JSONArray jsonArrayAttchment = new JSONArray();
     private Bitmap theBitmap;
+    private static final Pattern urlPattern = Pattern.compile( "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
+            + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
+            + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
 
-    public ContentAdapter(Context context, ArrayList<Content> chatList) {
+    public ContentAdapter(Context context, List<Content> chatList) {
         Resources resources = context.getResources();
         mPlaces = resources.getStringArray(R.array.places);
         mActivity = (CommunityHomeActivity) context;
@@ -124,6 +130,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             Glide.with(mContext)
                     .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(position).getUserAttachmentId() + "/Body"))
                     .placeholder(mContext.getResources().getDrawable(R.drawable.logomulya))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.userImage);
             // holder.picture.setImageDrawable(mPlacePictures[position % mPlacePictures.length]);
         }
@@ -145,7 +152,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                         Glide.with(mContext)
                                 .load(Uri.fromFile(file))
                                 .skipMemoryCache(true)
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(holder.picture);
                     }
 
@@ -153,6 +160,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     Glide.with(mContext)
                             .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(position).getAttachmentId() + "/Body"))
                             .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .into(holder.picture);
                 }
             }
@@ -162,6 +170,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             Glide.with(mContext)
                     .load("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png")
                     .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.picture);
         }
         holder.txt_title.setText("" + mDataList.get(position).getUserName());
@@ -172,6 +181,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             holder.txt_template_type.setText("Template Type : " + mDataList.get(position).getTemplate());*/
         holder.txt_template_type.setText("Title : " + mDataList.get(position).getTitle());
         holder.txt_desc.setText("Description : " + mDataList.get(position).getDescription());
+        Linkify.addLinks(holder.txt_desc,urlPattern,mDataList.get(position).getDescription());
         holder.txt_time.setText(mDataList.get(position).getTime().toString());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");
         holder.txtCommentCount.setText(mDataList.get(position).getCommentCount() + " Comments");
@@ -433,6 +443,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                                     theBitmap = Glide.
                                             with(mContext).
                                             load("http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".png").
+
                                             asBitmap().
                                             into(200, 200).
                                             get();
@@ -499,6 +510,13 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     intent.putExtra("flag", "forward_flag");
                     intent.putExtra(Constants.LIST, mActivity.json);
                     mContext.startActivity(intent);
+                }
+            });
+
+            picture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utills.showImageZoomInDialog(v.getContext(),mDataList.get(getAdapterPosition()).getId());
                 }
             });
         }
