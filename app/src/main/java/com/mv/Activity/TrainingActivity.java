@@ -26,6 +26,7 @@ public class TrainingActivity extends AppCompatActivity implements View.OnClickL
 
     private TrainingAdapter adapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +49,7 @@ public class TrainingActivity extends AppCompatActivity implements View.OnClickL
     private void initialize() {
         setActionbar(getString(R.string.MV_training));
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+
     }
 
     /**

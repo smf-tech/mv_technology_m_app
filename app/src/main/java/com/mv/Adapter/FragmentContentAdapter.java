@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.text.util.Linkify;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +34,7 @@ import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Service.DownloadService;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -45,6 +47,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -66,7 +69,9 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
     private ArrayList<Content> mDataList;
     private PreferenceHelper preferenceHelper;
     private int mPosition;
-
+    private static final Pattern urlPattern = Pattern.compile( "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
+            + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
+            + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
     public FragmentContentAdapter(Context context, ArrayList<Content> chatList) {
         Resources resources = context.getResources();
         mPlaces = resources.getStringArray(R.array.places);
@@ -132,6 +137,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
         // holder.txt_title.setText("Title : " + mDataList.get(position).getTitle());
         holder.txt_template_type.setText("Title : " + mDataList.get(position).getTitle());
         holder.txt_desc.setText("Description : " + mDataList.get(position).getDescription());
+        Linkify.addLinks(holder.txt_desc, urlPattern, mDataList.get(position).getDescription());
         holder.txt_time.setText(mDataList.get(position).getTime().toString());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");
         holder.txtCommentCount.setText(mDataList.get(position).getCommentCount() + " Comments");
@@ -147,8 +153,25 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
         } else {
             holder.img_comment.setImageResource(R.drawable.comment);
         }
-    }
 
+
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(position).getAttachmentId() + ".png";
+        Log.e("bitmap file", filePath);
+        if (TextUtils.isEmpty(mDataList.get(position).getAttachmentId()) || mDataList.get(position).getAttachmentId() == null
+                || mDataList.get(position).getAttachmentId().equalsIgnoreCase("null") || isFileAvalible(position) ) {
+
+           /* if (isFileAvalible(position)) {*/
+            holder.layout_download.setVisibility(View.VISIBLE);
+            holder.layout_download_file.setVisibility(View.GONE);
+           /* } else {*/
+        }else {
+            holder.layout_download.setVisibility(View.GONE);
+            holder.layout_download_file.setVisibility(View.VISIBLE);
+        }
+
+
+
+}
 
     @Override
     public long getItemId(int position) {
@@ -230,7 +253,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
         public ImageView picture, userImage, imgLike, img_share, img_comment;
         public CardView card_view;
         public TextView txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_forward;
-        public LinearLayout layout_like, mediaLayout, layout_comment, layout_share, layout_download;
+        public LinearLayout layout_like, mediaLayout, layout_comment, layout_share, layout_download,layout_download_file;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
@@ -253,6 +276,8 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             layout_like = (LinearLayout) itemLayoutView.findViewById(R.id.layout_like);
             layout_share = (LinearLayout) itemLayoutView.findViewById(R.id.layout_share);
             mediaLayout = (LinearLayout) itemLayoutView.findViewById(R.id.mediaLayout);
+            layout_download_file = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download_file);
+
             layout_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -262,19 +287,37 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                 }
             });
 
+            layout_download_file.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    downloadImage(getAdapterPosition());
+
+                }
+            });
+
             layout_download.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     //showGroupDialog(getAdapterPosition());
-                    if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getAttachmentId())
+                    if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getAttachmentId()) ||mDataList.get(getAdapterPosition()).getAttachmentId()==null
                             || mDataList.get(getAdapterPosition()).getAttachmentId().equalsIgnoreCase("null")) {
+
                         Intent i = new Intent(Intent.ACTION_SEND);
                         i.setType("image*//**//*");
                         i.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
                         Utills.hideProgressDialog();
                         mContext.startActivity(Intent.createChooser(i, "Share Post"));
-                    } else {
-                        downloadImage(getAdapterPosition());
+                    }else {
+                        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId()+".png";
+
+            Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+            shareIntent.setType( "application/*");
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
+
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+            mContext.startActivity(Intent.createChooser(shareIntent, "Share Content"));
+
+
                     }
                 }
             });
@@ -312,6 +355,13 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                     mContext.startActivity(intent);
                 }
             });
+
+            picture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utills.showImagewithheaderZoomDialog(v.getContext(),getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(getAdapterPosition()).getAttachmentId() + "/Body"));
+                }
+            });
         }
 
 
@@ -337,13 +387,23 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                         byte[] decodedString = Base64.decode(str, Base64.DEFAULT);
                         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-                        Utills.showToast("Image Downloaded Successfully...", mContext);
+                        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" +mDataList.get(adapterPosition).getAttachmentId()+".png");
+                        FileOutputStream out = new FileOutputStream(file);
+                        decodedByte.compress(Bitmap.CompressFormat.PNG, 90, out);
+                        out.close();
 
+                     /*   Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        shareIntent.setType("text/html");
+                        shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Title : "+mDataList.get(adapterPosition).getTitle()+"\n\nDescription : "+mDataList.get(adapterPosition).getDescription());
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(decodedByte));
+                        mContext.startActivity(Intent.createChooser(shareIntent, "Share Content"));*/
+                        //getLocalBitmapUri(decodedByte,adapterPosition);
+/*
                         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
                         shareIntent.setType("text/html");
                         shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Title : " + mDataList.get(adapterPosition).getTitle() + "\n\nDescription : " + mDataList.get(adapterPosition).getDescription());
                         shareIntent.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(decodedByte));
-                        mContext.startActivity(Intent.createChooser(shareIntent, "Share Content"));
+                        mContext.startActivity(Intent.createChooser(shareIntent, "Share Content"));*/
                     } catch (Exception e) {
                         Utills.hideProgressDialog();
                         e.printStackTrace();
@@ -363,7 +423,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
     }
 
 
-    public Uri getLocalBitmapUri(Bitmap bmp) {
+    public Uri  getLocalBitmapUri(Bitmap bmp) {
         Uri bmpUri = null;
         try {
             File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/downloaded_share_image.png");
@@ -474,5 +534,21 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             Utills.showToast(mContext.getString(R.string.error_no_internet), mContext);
         }
     }
-}
+
+    private boolean isFileAvalible(int position) {
+        if (mDataList.get(position).getAttachmentId() != null) {
+           // if (mDataList.get(position).getFileType().equalsIgnoreCase("zip")) {
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(position).getAttachmentId()+".png";
+                if (new File(filePath).exists())
+                    return true;
+                return false;
+            //}
+        }
+        return false;
+    }
+
+
+
+
+        }
 

@@ -119,10 +119,10 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             llLocation.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(mContext,LocationSelectionActity.class);
-                    intent.putExtra(Constants.LOCATION,taskList.get(getAdapterPosition()).getLocationLevel());
-                    intent.putExtra(Constants.POSITION,getAdapterPosition());
-                    intent.putParcelableArrayListExtra(Constants.PROCESS_ID,taskList );
+                    Intent intent = new Intent(mContext, LocationSelectionActity.class);
+                    intent.putExtra(Constants.LOCATION, taskList.get(getAdapterPosition()).getLocationLevel());
+                    intent.putExtra(Constants.POSITION, getAdapterPosition());
+                    intent.putParcelableArrayListExtra(Constants.PROCESS_ID, taskList);
                     mContext.startActivityForResult(intent, 1);
                 }
             });
@@ -227,7 +227,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
                 holder.questionResponse.setSingleLine(true);
-                holder.llDate.setVisibility(View.GONE);
+                holder.dateInpute.setVisibility(View.GONE);
                 // holder.questionResponse.setHint(task.getTask_Text__c());
                 if (task.getIs_Response_Mnadetory__c())
                     holder.editHeader.setText("* " + task.getTask_Text__c());
@@ -359,7 +359,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     holder.checkText.setText("*" + task.getTask_Text__c());
                 else
                     holder.checkText.setText(task.getTask_Text__c());
-                    holder.checkBox.setChecked(Boolean.valueOf(task.getTask_Response__c()));
+                holder.checkBox.setChecked(Boolean.valueOf(task.getTask_Response__c()));
 
                 break;
             case Constants.MULTI_SELECT:
@@ -439,6 +439,14 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.date.setTag(position);
                 holder.date.setFocusable(false);
                 holder.date.setClickable(true);
+                break;
+            case Constants.IMAGE:
+                holder.llHeaderLay.setVisibility(View.GONE);
+                holder.llEdittext.setVisibility(View.GONE);
+                holder.llLocation.setVisibility(View.GONE);
+                holder.llLayout.setVisibility(View.GONE);
+                holder.dateInpute.setVisibility(View.GONE);
+                holder.llCheck.setVisibility(View.GONE);
                 break;
             default:
                 holder.llHeaderLay.setVisibility(View.GONE);

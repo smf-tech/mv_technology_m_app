@@ -55,7 +55,7 @@ public class GroupsActivity extends AppCompatActivity implements View.OnClickLis
     private List<Community> communityList = new ArrayList<>();
     private List<Community> replicaCommunityList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
-
+    TextView textNoData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,11 +85,16 @@ public class GroupsActivity extends AppCompatActivity implements View.OnClickLis
                     communityList.clear();
                     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                     List<Community> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Community[].class));
-                    for (int i = 0; i < temp.size(); i++) {
-                        communityList.add(temp.get(i));
-                        replicaCommunityList.add(temp.get(i));
+                    if (temp.size()!=0) {
+                        for (int i = 0; i < temp.size(); i++) {
+                            communityList.add(temp.get(i));
+                            replicaCommunityList.add(temp.get(i));
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        textNoData.setVisibility(View.GONE);
+                    }else {
+                        textNoData.setVisibility(View.VISIBLE);
                     }
-                    mAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -158,6 +163,7 @@ public class GroupsActivity extends AppCompatActivity implements View.OnClickLis
         setActionbar("My Communities");
 
         binding.editTextEmail.addTextChangedListener(watch);
+        textNoData = (TextView) findViewById(R.id.textNoData);
 
         preferenceHelper = new PreferenceHelper(this);
       /*  mAdapter = new GroupAdapter(communityList, this);

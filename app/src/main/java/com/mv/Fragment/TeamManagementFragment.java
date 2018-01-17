@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.mv.Adapter.TeamManagementAdapter;
 import com.mv.BR;
@@ -35,11 +36,13 @@ public class TeamManagementFragment  extends Fragment {
     ArrayList<String>menuList;
     private ActivityNewTemplateBinding binding;
     RecyclerView.LayoutManager mLayoutManager;
+    TextView textNoData;
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.activity_new_template, container, false);
-        View view = binding.getRoot();
+         view = binding.getRoot();
         binding.setVariable(BR.vm, new ParentViewModel());
         RelativeLayout mToolBar = (RelativeLayout) view.findViewById(R.id.toolbar);
         mToolBar.setVisibility(View.GONE);
@@ -54,6 +57,7 @@ public class TeamManagementFragment  extends Fragment {
     }
 
     private void initViews() {
+        textNoData = (TextView) view.findViewById(R.id.textNoData);
         preferenceHelper = new PreferenceHelper(getActivity());
         menuList = new ArrayList<>();
         menuList.add(getString(R.string.team_user_approval));

@@ -14,6 +14,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.mv.Fragment.ThetSavandFragment;
 import com.mv.Fragment.TrainingFragment;
 import com.mv.Model.Download;
 import com.mv.R;
@@ -44,12 +45,12 @@ public class DownloadService extends IntentService {
     private NotificationCompat.Builder notificationBuilder;
     private NotificationManager notificationManager;
     private int totalFileSize;
-    private String url;
+    private String url,fragment_flag;
     private String StorezipFileLocation = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/";
     private String fileName;
     private String DirectoryName = Environment.getExternalStorageDirectory() + "/MV/UnZip/";
     private String filetype;
-
+    Intent intent;
     @Override
     protected void onHandleIntent(Intent intent) {
 
@@ -58,6 +59,7 @@ public class DownloadService extends IntentService {
         url = intent.getStringExtra("URL");
         fileName = intent.getStringExtra("FILENAME");
         filetype = intent.getStringExtra("FILETYPE");
+        fragment_flag = intent.getStringExtra("fragment_flag");
         StorezipFileLocation = StorezipFileLocation + fileName;
 
         notificationBuilder = new NotificationCompat.Builder(this)
@@ -80,6 +82,7 @@ public class DownloadService extends IntentService {
         ServiceRequest retrofitInterface = retrofit.create(ServiceRequest.class);
 
         Call<ResponseBody> request = retrofitInterface.downloadFile(url);
+        Log.e("url",url);
         try {
 
             downloadFile(request.execute().body());
@@ -96,43 +99,46 @@ public class DownloadService extends IntentService {
 
         int count;
         byte data[] = new byte[1024 * 4];
-        long fileSize = body.contentLength();
-        InputStream bis = new BufferedInputStream(body.byteStream(), 1024 * 8);
-        File outputFile = new File(StorezipFileLocation);
-        Log.i("outputFile", outputFile.getAbsolutePath());
-        if (outputFile.exists())
-            outputFile.delete();
-        OutputStream output = new FileOutputStream(outputFile);
-        long total = 0;
-        long startTime = System.currentTimeMillis();
-        int timeCount = 1;
-        while ((count = bis.read(data)) != -1) {
+        if(body!=null) {
+            long fileSize = body.contentLength();
 
-            total += count;
-            totalFileSize = (int) (fileSize / (Math.pow(1024, 2)));
-            double current = Math.round(total / (Math.pow(1024, 2)));
+            InputStream bis = new BufferedInputStream(body.byteStream(), 1024 * 8);
+            File outputFile = new File(StorezipFileLocation);
+            Log.i("outputFile", outputFile.getAbsolutePath());
+            if (outputFile.exists())
+                outputFile.delete();
+            OutputStream output = new FileOutputStream(outputFile);
+            long total = 0;
+            long startTime = System.currentTimeMillis();
+            int timeCount = 1;
+            while ((count = bis.read(data)) != -1) {
 
-            int progress = (int) ((total * 100) / fileSize);
+                total += count;
+                totalFileSize = (int) (fileSize / (Math.pow(1024, 2)));
+                double current = Math.round(total / (Math.pow(1024, 2)));
 
-            long currentTime = System.currentTimeMillis() - startTime;
+                int progress = (int) ((total * 100) / fileSize);
 
-            Download download = new Download();
-            download.setTotalFileSize(totalFileSize);
+                long currentTime = System.currentTimeMillis() - startTime;
 
-            if (currentTime > 1000 * timeCount) {
+                Download download = new Download();
+                download.setTotalFileSize(totalFileSize);
 
-                download.setCurrentFileSize((int) current);
-                download.setProgress(progress);
-                sendNotification(download);
-                timeCount++;
+                if (currentTime > 1000 * timeCount) {
+
+                    download.setCurrentFileSize((int) current);
+                    download.setProgress(progress);
+                    sendNotification(download);
+                    timeCount++;
+                }
+
+                output.write(data, 0, count);
             }
-
-            output.write(data, 0, count);
+            onDownloadComplete();
+            output.flush();
+            output.close();
+            bis.close();
         }
-        onDownloadComplete();
-        output.flush();
-        output.close();
-        bis.close();
     }
 
     private void sendNotification(Download download) {
@@ -145,9 +151,18 @@ public class DownloadService extends IntentService {
 
     private void sendIntent(Download download) {
 
-        Intent intent = new Intent(TrainingFragment.MESSAGE_PROGRESS);
-        intent.putExtra("download", download);
-        LocalBroadcastManager.getInstance(DownloadService.this).sendBroadcast(intent);
+        if (fragment_flag!=null){
+            if(fragment_flag.equalsIgnoreCase("ThetSanvad_Fragment")) {
+                 intent = new Intent(ThetSavandFragment.MESSAGE_PROGRESS);
+            }else if (fragment_flag.equalsIgnoreCase("Training_Fragment")){
+                 intent = new Intent(TrainingFragment.MESSAGE_PROGRESS);
+
+            }
+            intent.putExtra("download", download);
+
+            LocalBroadcastManager.getInstance(DownloadService.this).sendBroadcast(intent);
+        }
+
     }
 
     private void onDownloadComplete() {

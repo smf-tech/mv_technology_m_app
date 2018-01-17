@@ -143,7 +143,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                         mListDistrict.add(jsonArray.getString(i));
                     }
                     district_adapter.notifyDataSetChanged();
-                    binding.spinnerDistrict.setSelection(mListDistrict.indexOf(User.getCurrentUser(ReportingTemplateActivity.this).getProject_Name__c()));
+                    binding.spinnerDistrict.setSelection(mListDistrict.indexOf(User.getCurrentUser(ReportingTemplateActivity.this).getDistrict()));
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -214,7 +214,6 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             if (list.size() == 0) {
                 showPopUp();
             } else {
-
                 for (int k = 0; k < list.size(); k++) {
                     mListTaluka.add(list.get(k));
                 }
@@ -443,15 +442,10 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         });
     }
 
-
     private boolean isValidate() {
         String str = "";
 
-        if (mSelectDistrict == 0) {
-            str = "Please select district";
-        } else if (mSelectTaluka == 0) {
-            str = "Please select taluka";
-        } else if (mSelectReportingType == 0) {
+        if (mSelectReportingType == 0) {
             str = "Please select reporting type";
         } else if (binding.editTextContent.getText().toString().trim().length() == 0) {
             str = "Please enter Content";

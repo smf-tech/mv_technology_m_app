@@ -10,9 +10,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -51,9 +53,10 @@ public class CommunityHomeFragment extends Fragment implements View.OnClickListe
     private PreferenceHelper preferenceHelper;
     private ArrayList<Content> chatList = new ArrayList<Content>();
     private FragmentContentAdapter adapter;
+    TextView textNoData;
     private View view;
     private FloatingActionButton fab_add_broadcast;
-
+    RecyclerView recyclerView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -75,6 +78,7 @@ public class CommunityHomeFragment extends Fragment implements View.OnClickListe
     private void initViews() {
         preferenceHelper = new PreferenceHelper(getActivity());
         fab_add_broadcast = (FloatingActionButton) view.findViewById(R.id.fab_add_broadcast);
+        textNoData = (TextView) view.findViewById(R.id.textNoData);
         fab_add_broadcast.setOnClickListener(this);
         binding.fabAddBroadcast.setVisibility(View.GONE);
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
@@ -127,28 +131,39 @@ public class CommunityHomeFragment extends Fragment implements View.OnClickListe
                         String str = response.body().string();
                         if (str != null && str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
-                            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                            List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));
-                            List<Content> contentList = AppDatabase.getAppDatabase(getActivity()).userDao().getAllBroadcastChats();
-                            for (int i = 0; i < temp.size(); i++) {
-                                int j;
-                                boolean isPresent = false;
-                                for (j = 0; j < contentList.size(); j++) {
-                                    if (contentList.get(j).getId().equalsIgnoreCase(temp.get(i).getId())) {
-                                        temp.get(i).setUnique_Id(contentList.get(j).getUnique_Id());
-                                        isPresent = true;
-                                        break;
+
+                                Log.e("array length,", String.valueOf(jsonArray.length()));
+                                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                                List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));
+
+                                List<Content> contentList = AppDatabase.getAppDatabase(getActivity()).userDao().getAllBroadcastChats();
+                            if ((temp.size() != 0) || (contentList.size()!=0)) {
+
+                                for (int i = 0; i < temp.size(); i++) {
+                                    int j;
+                                    boolean isPresent = false;
+                                    for (j = 0; j < contentList.size(); j++) {
+                                        if (contentList.get(j).getId().equalsIgnoreCase(temp.get(i).getId())) {
+                                            temp.get(i).setUnique_Id(contentList.get(j).getUnique_Id());
+                                            isPresent = true;
+                                            break;
+                                        }
+                                    }
+                                    if (isPresent) {
+                                        chatList.set(j, temp.get(i));
+                                        AppDatabase.getAppDatabase(getActivity()).userDao().updateContent(temp.get(i));
+                                    } else {
+                                        chatList.add(temp.get(i));
+                                        AppDatabase.getAppDatabase(getActivity()).userDao().insertChats(temp.get(i));
                                     }
                                 }
-                                if (isPresent) {
-                                    chatList.set(j, temp.get(i));
-                                    AppDatabase.getAppDatabase(getActivity()).userDao().updateContent(temp.get(i));
-                                } else {
-                                    chatList.add(temp.get(i));
-                                    AppDatabase.getAppDatabase(getActivity()).userDao().insertChats(temp.get(i));
-                                }
+                                adapter.notifyDataSetChanged();
+                                textNoData.setVisibility(View.GONE);
+                            }else {
+                                     Log.e("temp size", String.valueOf(temp.size()));
+                                     adapter.notifyDataSetChanged();
+                                textNoData.setVisibility(View.VISIBLE);
                             }
-                            adapter.notifyDataSetChanged();
                         }
                     }
 

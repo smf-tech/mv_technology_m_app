@@ -19,6 +19,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -57,13 +58,14 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
     private List<Community> communityList = new ArrayList<>();
     private List<Community> replicaCommunityList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
-
+    TextView textNoData;
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.activity_group, container, false);
-        View view = binding.getRoot();
+         view = binding.getRoot();
         //here data must be an instance of the class MarsDataProvider
         Utills.setupUI(view.findViewById(R.id.layout_main), getActivity());
         binding.setFragment(this);
@@ -94,6 +96,7 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
 
 
     private void initViews() {
+        textNoData = (TextView) view.findViewById(R.id.textNoData);
         binding.editTextEmail.addTextChangedListener(watch);
         binding.swiperefresh.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
@@ -109,6 +112,7 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(mAdapter);
+
     }
 
     private void getAllCommunities(boolean isTimePresent, boolean isDialogShow) {
@@ -134,30 +138,35 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
                         String str = response.body().string();
                         if (str != null && str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
-                            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                            List<Community> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Community[].class));
-                            List<Community> list = AppDatabase.getAppDatabase(getActivity()).userDao().getAllCommunities();
-                            for (int i = 0; i < temp.size(); i++) {
-                                int j;
-                                boolean isPresent = false;
-                                for (j = 0; j < list.size(); j++) {
-                                    if (list.get(j).getId().equalsIgnoreCase(temp.get(i).getId())) {
-                                        temp.get(i).setUnique_Id(list.get(j).getUnique_Id());
-                                        isPresent = true;
-                                        break;
+                                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                                List<Community> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Community[].class));
+                                List<Community> list = AppDatabase.getAppDatabase(getActivity()).userDao().getAllCommunities();
+                            if((temp.size()!=0) || (list.size()!=0)) {
+                                for (int i = 0; i < temp.size(); i++) {
+                                    int j;
+                                    boolean isPresent = false;
+                                    for (j = 0; j < list.size(); j++) {
+                                        if (list.get(j).getId().equalsIgnoreCase(temp.get(i).getId())) {
+                                            temp.get(i).setUnique_Id(list.get(j).getUnique_Id());
+                                            isPresent = true;
+                                            break;
+                                        }
+                                    }
+                                    if (isPresent) {
+                                        communityList.set(j, temp.get(i));
+                                        replicaCommunityList.set(j, temp.get(i));
+                                        AppDatabase.getAppDatabase(getActivity()).userDao().updateCommunities(temp.get(i));
+                                    } else {
+                                        communityList.add(temp.get(i));
+                                        replicaCommunityList.add(temp.get(i));
+                                        AppDatabase.getAppDatabase(getActivity()).userDao().insertCommunities(temp.get(i));
                                     }
                                 }
-                                if (isPresent) {
-                                    communityList.set(j, temp.get(i));
-                                    replicaCommunityList.set(j, temp.get(i));
-                                    AppDatabase.getAppDatabase(getActivity()).userDao().updateCommunities(temp.get(i));
-                                } else {
-                                    communityList.add(temp.get(i));
-                                    replicaCommunityList.add(temp.get(i));
-                                    AppDatabase.getAppDatabase(getActivity()).userDao().insertCommunities(temp.get(i));
-                                }
+                                mAdapter.notifyDataSetChanged();
+                                textNoData.setVisibility(View.GONE);
+                            }else {
+                                textNoData.setVisibility(View.VISIBLE);
                             }
-                            mAdapter.notifyDataSetChanged();
                         }
                     }
                 } catch (JSONException e) {

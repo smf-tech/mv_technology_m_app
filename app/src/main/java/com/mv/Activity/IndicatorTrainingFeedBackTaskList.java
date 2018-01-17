@@ -49,7 +49,7 @@ public class IndicatorTrainingFeedBackTaskList extends AppCompatActivity impleme
     private PreferenceHelper preferenceHelper;
     ArrayList<Template> programManagementProcessLists = new ArrayList<>();
     private TemplateAdapter mAdapter;
-
+    TextView textNoData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,6 +63,7 @@ public class IndicatorTrainingFeedBackTaskList extends AppCompatActivity impleme
 
     private void initViews() {
         preferenceHelper = new PreferenceHelper(this);
+        textNoData = (TextView) findViewById(R.id.textNoData);
         setActionbar(getIntent().getExtras().getString(Constants.TITLE));
         binding.swiperefresh.setOnRefreshListener(this);
         mAdapter = new TemplateAdapter(programManagementProcessLists, this);
@@ -124,14 +125,19 @@ public class IndicatorTrainingFeedBackTaskList extends AppCompatActivity impleme
                 binding.swiperefresh.setRefreshing(false);
                 try {
                     JSONArray jsonArray = new JSONArray(response.body().string());
-                    programManagementProcessLists.clear();
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        Template processList = new Template();
+                    if (jsonArray.length()!=0) {
+                        programManagementProcessLists.clear();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            Template processList = new Template();
 
-                        processList.setName(jsonArray.getString(i));
-                        programManagementProcessLists.add(processList);
+                            processList.setName(jsonArray.getString(i));
+                            programManagementProcessLists.add(processList);
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        textNoData.setVisibility(View.GONE);
+                    } else {
+                        textNoData.setVisibility(View.VISIBLE);
                     }
-                    mAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

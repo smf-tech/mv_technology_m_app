@@ -53,6 +53,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
     private TextView toolbar_title;
     public static String approvalType,id,processTitle;
     String url;
+    TextView textNoData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +65,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
     }
 
     private void initViews() {
+        textNoData = (TextView) findViewById(R.id.textNoData);
         preferenceHelper = new PreferenceHelper(context);
         if(approvalType.equals(Constants.USER_APPROVAL)) {
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -135,21 +137,28 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
                 if(response.isSuccess()) {
                     try {
                         JSONArray jsonArray = new JSONArray(response.body().string());
-                        processAllList.clear();
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            Template processList = new Template();
+                        if (jsonArray.length() != 0) {
 
 
-                            processList.setId(jsonArray.getJSONObject(i).getString("Id"));
-                            if(jsonArray.getJSONObject(i).has("username"))
-                            processList.setName(jsonArray.getJSONObject(i).getString("username"));
-                            else if(jsonArray.getJSONObject(i).has("name"))
-                                processList.setName(jsonArray.getJSONObject(i).getString("username"));
-                            processAllList.add(processList);
+                            processAllList.clear();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                Template processList = new Template();
+
+
+                                processList.setId(jsonArray.getJSONObject(i).getString("Id"));
+                                if (jsonArray.getJSONObject(i).has("username"))
+                                    processList.setName(jsonArray.getJSONObject(i).getString("username"));
+                                else if (jsonArray.getJSONObject(i).has("name"))
+                                    processList.setName(jsonArray.getJSONObject(i).getString("username"));
+                                processAllList.add(processList);
+                            }
+                            AppDatabase.getAppDatabase(context).userDao().deleteTable();
+                            AppDatabase.getAppDatabase(context).userDao().insertProcess(processAllList);
+                            mAdapter.notifyDataSetChanged();
+                            textNoData.setVisibility(View.GONE);
+                        }else {
+                            textNoData.setVisibility(View.VISIBLE);
                         }
-                        AppDatabase.getAppDatabase(context).userDao().deleteTable();
-                        AppDatabase.getAppDatabase(context).userDao().insertProcess(processAllList);
-                        mAdapter.notifyDataSetChanged();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (IOException e) {

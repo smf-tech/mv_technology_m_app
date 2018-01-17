@@ -15,6 +15,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.text.util.Linkify;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -48,11 +49,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Pattern;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -71,15 +75,18 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
     private final Drawable[] mPlacePictures;
     private final Context mContext;
     private CommunityHomeActivity mActivity;
-    private ArrayList<Content> mDataList;
+    private List<Content> mDataList;
     private PreferenceHelper preferenceHelper;
     private int mPosition;
     private boolean[] mSelection = null;
     private String value;
     private JSONArray jsonArrayAttchment = new JSONArray();
     private Bitmap theBitmap;
+    private static final Pattern urlPattern = Pattern.compile( "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
+            + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
+            + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
 
-    public ContentAdapter(Context context, ArrayList<Content> chatList) {
+    public ContentAdapter(Context context, List<Content> chatList) {
         Resources resources = context.getResources();
         mPlaces = resources.getStringArray(R.array.places);
         mActivity = (CommunityHomeActivity) context;
@@ -124,19 +131,20 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             Glide.with(mContext)
                     .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(position).getUserAttachmentId() + "/Body"))
                     .placeholder(mContext.getResources().getDrawable(R.drawable.logomulya))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.userImage);
             // holder.picture.setImageDrawable(mPlacePictures[position % mPlacePictures.length]);
         }
         if (mDataList.get(position).getIsAttachmentPresent() == null || TextUtils.isEmpty(mDataList.get(position).getIsAttachmentPresent()) || mDataList.get(position).getIsAttachmentPresent().equalsIgnoreCase("false")) {
             if (TextUtils.isEmpty(mDataList.get(position).getAttachmentId())) {
                 holder.mediaLayout.setVisibility(View.GONE);
-                holder.layout_download.setVisibility(View.VISIBLE);
+                holder.layout_download.setVisibility(View.GONE);
             } else if (mDataList.get(position).getAttachmentId().equalsIgnoreCase("null")) {
                 holder.mediaLayout.setVisibility(View.GONE);
-                holder.layout_download.setVisibility(View.VISIBLE);
+                holder.layout_download.setVisibility(View.GONE);
             } else {
                 holder.mediaLayout.setVisibility(View.VISIBLE);
-                holder.layout_download.setVisibility(View.VISIBLE);
+                holder.layout_download.setVisibility(View.GONE);
                 // holder.picture.setImageDrawable(mPlacePictures[position % mPlacePictures.length]);
                 if (mDataList.get(position).getSynchStatus() != null
                         && mDataList.get(position).getSynchStatus().equalsIgnoreCase(Constants.STATUS_LOCAL)) {
@@ -145,7 +153,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                         Glide.with(mContext)
                                 .load(Uri.fromFile(file))
                                 .skipMemoryCache(true)
-                                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(holder.picture);
                     }
 
@@ -153,6 +161,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     Glide.with(mContext)
                             .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(position).getAttachmentId() + "/Body"))
                             .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
                             .into(holder.picture);
                 }
             }
@@ -162,6 +171,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             Glide.with(mContext)
                     .load("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png")
                     .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.picture);
         }
         holder.txt_title.setText("" + mDataList.get(position).getUserName());
@@ -172,6 +182,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             holder.txt_template_type.setText("Template Type : " + mDataList.get(position).getTemplate());*/
         holder.txt_template_type.setText("Title : " + mDataList.get(position).getTitle());
         holder.txt_desc.setText("Description : " + mDataList.get(position).getDescription());
+        Linkify.addLinks(holder.txt_desc,urlPattern,mDataList.get(position).getDescription());
         holder.txt_time.setText(mDataList.get(position).getTime().toString());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");
         holder.txtCommentCount.setText(mDataList.get(position).getCommentCount() + " Comments");
@@ -186,6 +197,16 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             holder.img_comment.setImageResource(R.drawable.no_comment);
         } else {
             holder.img_comment.setImageResource(R.drawable.comment);
+        }
+
+        if (mDataList.get(position).getIsAttachmentPresent() == null
+                || TextUtils.isEmpty(mDataList.get(position).getIsAttachmentPresent())
+                || mDataList.get(position).getIsAttachmentPresent().equalsIgnoreCase("false") || isFileAvalible(position)){
+            holder.layout_download_file.setVisibility(View.GONE);
+            holder.layout_download.setVisibility(View.VISIBLE);
+        }else {
+            holder.layout_download_file.setVisibility(View.VISIBLE);
+            holder.layout_download.setVisibility(View.GONE);
         }
     }
 
@@ -350,7 +371,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         public ImageView picture, userImage, imgLike, img_comment;
         public CardView card_view;
         public TextView txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type;
-        public LinearLayout layout_like, mediaLayout, layout_comment, layout_share, layout_download;
+        public LinearLayout layout_like, mediaLayout, layout_comment, layout_share, layout_download,layout_download_file;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
@@ -369,6 +390,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             layout_comment = (LinearLayout) itemLayoutView.findViewById(R.id.layout_comment);
             mediaLayout = (LinearLayout) itemLayoutView.findViewById(R.id.mediaLayout);
             txt_type = (TextView) itemLayoutView.findViewById(R.id.txt_type);
+            layout_download_file = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download_file);
             layout_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -399,65 +421,118 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             layout_download.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getAttachmentId())) {
+                    if(mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("true")){
+                        if (mDataList.get(getAdapterPosition()).getAttachmentId()==null){
+                            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" +mDataList.get(getAdapterPosition()).getId()+".png";
+                            Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                            shareIntent.setType( "application/*");
+                            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                            shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
+
+                            mContext.startActivity(Intent.createChooser(shareIntent, "Share Content"));
+                        }else {
+                            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" +mDataList.get(getAdapterPosition()).getAttachmentId()+".png";
+
+                            //String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId()+".png";
+
+                            Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                            shareIntent.setType( "application/*");
+                            shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
+
+                            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                            mContext.startActivity(Intent.createChooser(shareIntent, "Share Content"));
+                        }
+                    }else {
                         Intent i = new Intent(Intent.ACTION_SEND);
                         i.setType("image*//**//*");
                         i.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
-
                         mContext.startActivity(Intent.createChooser(i, "Share Post"));
 
-                    } else if (mDataList.get(getAdapterPosition()).getAttachmentId().equalsIgnoreCase("null")) {
-                        Intent i = new Intent(Intent.ACTION_SEND);
-                        i.setType("image*//**//*");
-                        i.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
-
-                        mContext.startActivity(Intent.createChooser(i, "Share Post"));
-
-                    } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent() == null
-                            || TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())
-                            || mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) {
-                        downloadImage(getAdapterPosition());
-                    } else {
-
-                        new AsyncTask<Void, Void, Void>() {
-                            @Override
-                            protected void onPreExecute() {
-                                theBitmap = null;
-                            }
+                    }
 
 
-                            @Override
 
-                            protected Void doInBackground(Void... params) {
-                                try {
-                                    theBitmap = Glide.
-                                            with(mContext).
-                                            load("http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".png").
-                                            asBitmap().
-                                            into(200, 200).
-                                            get();
-                                } catch (final ExecutionException e) {
 
-                                } catch (final InterruptedException e) {
 
+
+                }
+            });
+
+
+
+            layout_download_file.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if(mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("true")) {
+                        if (mDataList.get(getAdapterPosition()).getAttachmentId() == null) {
+                            new AsyncTask<Void, Void, Void>() {
+                                @Override
+                                protected void onPreExecute() {
+                                    Utills.showProgressDialog(mContext, "Downloading", mContext.getString(R.string.progress_please_wait));
+
+                                    theBitmap = null;
                                 }
-                                return null;
-                            }
 
-                            @Override
-                            protected void onPostExecute(Void dummy) {
-                                if (theBitmap != null) {
-                                    Intent i = new Intent(Intent.ACTION_SEND);
-                                    i.setType("image*//**//*");
+
+                                @Override
+
+                                protected Void doInBackground(Void... params) {
+                                    try {
+                                        theBitmap = Glide.
+                                                with(mContext).
+                                                load("http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".png").
+
+                                                asBitmap().
+                                                into(200, 200).
+                                                get();
+                                    } catch (final ExecutionException e) {
+
+                                    } catch (final InterruptedException e) {
+
+                                    }
+                                    return null;
+                                }
+
+                                @Override
+                                protected void onPostExecute(Void dummy) {
+                                    if (theBitmap != null) {
+                                        Utills.hideProgressDialog();
+
+
+                                        try {
+                                            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" +mDataList.get(getAdapterPosition()).getId()+".png");
+                                            FileOutputStream out = null;
+                                            out = new FileOutputStream(file);
+                                            theBitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+                                            out.close();
+                                            notifyDataSetChanged();
+
+                                        } catch (FileNotFoundException e) {
+                                            e.printStackTrace();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+
+
+                                   /* Intent i = new Intent(Intent.ACTION_SEND);
+                                    i.setType("image*//**//**//**//*");
                                     i.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
                                     i.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(theBitmap, getAdapterPosition()));
                                     Utills.hideProgressDialog();
-                                    mContext.startActivity(Intent.createChooser(i, "Share Post"));
+                                    mContext.startActivity(Intent.createChooser(i, "Share Post"));*/
+                                    }
                                 }
-                            }
-                        }.execute();
+                            }.execute();
+
+                        }else {
+                            downloadImage(getAdapterPosition());
+                        }
                     }
+
+
                 }
+
             });
             layout_like = (LinearLayout) itemLayoutView.findViewById(R.id.layout_like);
             layout_like.setOnClickListener(new View.OnClickListener() {
@@ -494,11 +569,18 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
+                  Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
                     intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
                     intent.putExtra("flag", "forward_flag");
                     intent.putExtra(Constants.LIST, mActivity.json);
                     mContext.startActivity(intent);
+                }
+            });
+
+            picture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utills.showImageZoomInDialog(v.getContext(),mDataList.get(getAdapterPosition()).getId());
                 }
             });
         }
@@ -525,12 +607,17 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                         String str = response.body().string();
                         byte[] decodedString = Base64.decode(str, Base64.DEFAULT);
                         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                        Intent i = new Intent(Intent.ACTION_SEND);
-                        i.setType("image*//**//*");
+
+                        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" +mDataList.get(adapterPosition).getAttachmentId()+".png");
+                        FileOutputStream out = new FileOutputStream(file);
+                        decodedByte.compress(Bitmap.CompressFormat.PNG, 90, out);
+                        out.close();
+                      /*  Intent i = new Intent(Intent.ACTION_SEND);
+                        i.setType("image*//**//**//**//*");
                         i.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(adapterPosition).getTitle() + "\n\nDescription : " + mDataList.get(adapterPosition).getDescription());
-                        i.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(decodedByte, adapterPosition));
+                        i.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(decodedByte, adapterPosition));*/
                         Utills.hideProgressDialog();
-                        mContext.startActivity(Intent.createChooser(i, "Share Post"));
+                        /*mContext.startActivity(Intent.createChooser(i, "Share Post"));*/
                     } catch (Exception e) {
                         Utills.hideProgressDialog();
                         e.printStackTrace();
@@ -659,6 +746,27 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         } else {
             Utills.showToast(mContext.getString(R.string.error_no_internet), mContext);
         }
+    }
+
+
+
+    private boolean isFileAvalible(int position) {
+        if (mDataList.get(position).getIsAttachmentPresent().equalsIgnoreCase("true")) {
+            if (mDataList.get(position).getAttachmentId() == null) {
+                String filepath = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(position).getId() + ".png");
+                if (new File(filepath).exists())
+                    return true;
+                return false;
+            }else {
+                String filepath = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(position).getAttachmentId() + ".png");
+                if (new File(filepath).exists())
+                    return true;
+                return false;
+            }
+
+
+        }
+return false;
     }
 }
 
