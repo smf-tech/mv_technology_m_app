@@ -52,7 +52,6 @@
                             android:src="@drawable/logomulya" />
 
                         <com.mv.Widgets.MyTextView
-                            android:textIsSelectable="true"
                             android:id="@+id/type"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -62,11 +61,11 @@
                             android:text="@string/app_name"
                             android:textAppearance="?attr/textAppearanceListItem"
                             android:textColor="@color/dark_grey"
+                            android:textIsSelectable="true"
                             android:textSize="@dimen/medium_text"
                             my_font:typeface="Abel-Regular.ttf" />
 
                         <com.mv.Widgets.MyTextView
-                            android:textIsSelectable="true"
                             android:id="@+id/postDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -78,6 +77,7 @@
                             android:text="3 Days"
                             android:textAppearance="?attr/textAppearanceListItem"
                             android:textColor="@color/light_grey"
+                            android:textIsSelectable="true"
                             android:textSize="@dimen/small_text"
                             my_font:typeface="Abel-Regular.ttf" />
                     </RelativeLayout>
@@ -92,7 +92,6 @@
                         android:src="@drawable/mulya_bg" />
 
                     <com.mv.Widgets.MyTextView
-                        android:textIsSelectable="true"
                         android:id="@+id/Title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -103,24 +102,24 @@
                         android:maxLines="3"
                         android:text="Content Title will get displayed"
                         android:textColor="@color/black"
+                        android:textIsSelectable="true"
                         android:textSize="14sp"
                         my_font:typeface="Abel-Regular.ttf" />
 
                     <com.mv.Widgets.MyTextView
-                        android:textIsSelectable="true"
                         android:id="@+id/Description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
+                        android:autoLink="web"
                         android:ellipsize="end"
                         android:ems="10"
-                        android:maxLines="3"
+                        android:linksClickable="true"
                         android:text="Sub Content Title will get displayed"
                         android:textColor="@color/black"
+                        android:textIsSelectable="true"
                         android:textSize="14sp"
-                        android:autoLink="web"
-                        android:linksClickable="true"
                         my_font:typeface="Abel-Regular.ttf" />
 
                     <View
@@ -160,14 +159,14 @@
                         android:orientation="horizontal">
 
                         <LinearLayout
-                            android:visibility="gone"
                             android:id="@+id/layout_forward"
                             style="?android:attr/borderlessButtonStyle"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:gravity="center"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:visibility="gone">
 
                             <ImageView
                                 android:id="@+id/imgforward"

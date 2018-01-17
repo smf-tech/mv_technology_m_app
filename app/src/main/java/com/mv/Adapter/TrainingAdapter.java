@@ -167,7 +167,7 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
                     trainingFragment.startDownload(getAdapterPosition());
                 }
             });
-
+            imgshare = (ImageView) itemLayoutView.findViewById(R.id.imgshare);
             imgshare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

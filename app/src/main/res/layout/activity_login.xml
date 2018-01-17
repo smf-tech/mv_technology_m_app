@@ -9,198 +9,202 @@
             type="com.mv.Activity.LoginActivity" />
     </data>
 
-    <LinearLayout
-        android:id="@+id/layout_main"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/app_bg"
-        android:orientation="vertical"
-        android:weightSum="1">
-
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar"
-            android:visibility="gone" />
-
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="75dp"
-            android:layout_height="75dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="15dp"
-            android:src="@drawable/logomulya" />
-
-        <com.mv.Widgets.MyTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginBottom="@dimen/dimen_10dp"
-            android:layout_marginTop="5dp"
-            android:text="@string/app_name"
-            android:textColor="@color/dark_grey"
-            android:textSize="20dp" />
-
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_margin="5dp"
-            android:layout_marginTop="@dimen/dimen_10dp"
-            android:layout_weight="0.4">
-
-            <android.support.v4.view.ViewPager
-                android:id="@+id/pager"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_alignParentTop="true" />
-
-            <me.relex.circleindicator.CircleIndicator
-                android:id="@+id/indicator"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_alignParentBottom="true" />
-        </RelativeLayout>
+        android:fillViewport="true">
 
         <LinearLayout
+            android:id="@+id/layout_main"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.6"
-            android:animateLayoutChanges="true"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_height="match_parent"
+            android:background="@drawable/app_bg"
+            android:orientation="vertical"
+            android:weightSum="1">
 
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar"
+                android:visibility="gone" />
 
-            <TextSwitcher
-                android:id="@+id/tv_user"
-                android:layout_width="match_parent"
+            <ImageView
+                android:id="@+id/logo"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/logomulya" />
+
+            <com.mv.Widgets.MyTextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:text="@string/msg_enter_mobile"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/app_name"
                 android:textColor="@color/dark_grey"
-                android:textSize="@dimen/medium_text" />
-
+                android:textSize="20dp" />
 
             <RelativeLayout
-                android:id="@+id/ll_login_mobile_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:layout_margin="5dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:layout_weight="0.4">
 
-
-                <com.mv.Widgets.MyEditTextView
-                    android:id="@+id/edt_username"
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/pager"
                     android:layout_width="fill_parent"
-                    android:layout_height="40dp"
-                    android:layout_margin="@dimen/dimen_10dp"
-                    android:background="@drawable/transparent_grey_box_radius"
-                    android:digits="0123456789"
-                    android:drawableLeft="@drawable/person"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:hint="@string/mobile_no"
-                    android:inputType="phone"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:singleLine="true"
-                    android:text=""
-                    android:textColor="@color/dark_grey"
-                    android:textColorHint="@color/dark_grey"
-                    android:textSize="@dimen/medium_text" />
+                    android:layout_height="fill_parent"
+                    android:layout_alignParentTop="true" />
 
-
-                <com.mv.Widgets.MyEditTextView
-                    android:id="@+id/edt_otp"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dp"
-                    android:layout_margin="@dimen/dimen_10dp"
-                    android:background="@drawable/transparent_grey_box_radius"
-                    android:digits="0123456789"
-                    android:drawableLeft="@drawable/person"
-                    android:drawablePadding="10dp"
-                    android:gravity="center_vertical"
-                    android:hint="______"
-                    android:inputType="phone"
-                    android:maxLength="6"
-                    android:letterSpacing="0.4"
-                    android:paddingLeft="10dp"
-                    android:paddingRight="10dp"
-                    android:singleLine="true"
-
-
-                    android:textColor="@color/dark_grey"
-
-                    android:textColorHint="@color/dark_grey"
-                    android:textSize="@dimen/medium_text"
-                    android:visibility="invisible" />
-
+                <me.relex.circleindicator.CircleIndicator
+                    android:id="@+id/indicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_alignParentBottom="true" />
             </RelativeLayout>
 
             <LinearLayout
-                android:id="@+id/ll_login_otp_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:layout_height="0dp"
+                android:layout_weight="0.6"
+                android:animateLayoutChanges="true"
+                android:gravity="center"
+                android:orientation="vertical">
 
-
-                <com.mv.Widgets.MyTextView
-                    android:id="@+id/txtForgotPassword"
+                <TextSwitcher
+                    android:id="@+id/tv_user"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="@string/msg_enter_mobile"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/medium_text" />
+
+                <RelativeLayout
+                    android:id="@+id/ll_login_mobile_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <com.mv.Widgets.MyEditTextView
+                        android:id="@+id/edt_username"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:background="@drawable/transparent_grey_box_radius"
+                        android:digits="0123456789"
+                        android:drawableLeft="@drawable/person"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:hint="@string/mobile_no"
+                        android:inputType="phone"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:singleLine="true"
+                        android:text=""
+                        android:textColor="@color/dark_grey"
+                        android:textColorHint="@color/dark_grey"
+                        android:textSize="@dimen/medium_text" />
+
+
+                    <com.mv.Widgets.MyEditTextView
+                        android:id="@+id/edt_otp"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:layout_margin="@dimen/dimen_10dp"
+                        android:background="@drawable/transparent_grey_box_radius"
+                        android:digits="0123456789"
+                        android:drawableLeft="@drawable/person"
+                        android:drawablePadding="10dp"
+                        android:gravity="center_vertical"
+                        android:hint="______"
+                        android:inputType="phone"
+                        android:letterSpacing="0.4"
+                        android:maxLength="6"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:singleLine="true"
+
+
+                        android:textColor="@color/dark_grey"
+
+                        android:textColorHint="@color/dark_grey"
+                        android:textSize="@dimen/medium_text"
+                        android:visibility="invisible" />
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:id="@+id/ll_login_otp_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+
+                    <com.mv.Widgets.MyTextView
+                        android:id="@+id/txtForgotPassword"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="15dp"
+                        android:gravity="center_horizontal"
+                        android:onClick="@{()->activity.onForgotClick()}"
+                        android:text="Forgot your Password?"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="@dimen/medium_text"
+                        android:visibility="gone" />
+
+
+                </LinearLayout>
+
+                <com.mv.Widgets.MyFontButton
+                    android:id="@+id/btn_login"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/colorPink"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:onClick="@{()->activity.onLoginClick()}"
+                    android:singleLine="true"
+                    android:text="@string/Submit"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/large_text" />
+
+                <com.mv.Widgets.MyTextView
+                    android:id="@+id/tv_timer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="15dp"
+                    android:drawableLeft="@drawable/alarm_clock"
+                    android:drawablePadding="@dimen/dimen_10dp"
                     android:gravity="center_horizontal"
-                    android:onClick="@{()->activity.onForgotClick()}"
-                    android:text="Forgot your Password?"
+                    android:text="timw"
                     android:textColor="@color/colorPrimaryDark"
                     android:textSize="@dimen/medium_text"
                     android:visibility="gone" />
 
+                <com.mv.Widgets.MyTextView
+                    android:id="@+id/tv_resend_otp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:background="@drawable/optpselector"
+                    android:gravity="center_horizontal"
+                    android:onClick="@{()->activity.onResendOtpClick()}"
+                    android:text="@string/resend"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/medium_text" />
 
             </LinearLayout>
 
-            <com.mv.Widgets.MyFontButton
-                android:id="@+id/btn_login"
-                android:layout_width="fill_parent"
-                android:layout_height="40dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginRight="30dp"
-                android:layout_marginTop="20dp"
-                android:background="@color/colorPink"
-                android:gravity="center_horizontal|center_vertical"
-                android:onClick="@{()->activity.onLoginClick()}"
-                android:singleLine="true"
-                android:text="@string/Submit"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                android:textSize="@dimen/large_text" />
-
-            <com.mv.Widgets.MyTextView
-                android:id="@+id/tv_timer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:drawableLeft="@drawable/alarm_clock"
-                android:drawablePadding="@dimen/dimen_10dp"
-                android:gravity="center_horizontal"
-                android:text="timw"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/medium_text"
-                android:visibility="gone" />
-
-            <com.mv.Widgets.MyTextView
-                android:id="@+id/tv_resend_otp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:background="@drawable/optpselector"
-                android:gravity="center_horizontal"
-                android:onClick="@{()->activity.onResendOtpClick()}"
-                android:text="@string/resend"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="@dimen/medium_text"
-                android:visibility="gone" />
         </LinearLayout>
-
-    </LinearLayout>
+    </ScrollView>
 </layout>
