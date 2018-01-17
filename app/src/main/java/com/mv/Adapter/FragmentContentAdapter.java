@@ -69,10 +69,9 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
     private ArrayList<Content> mDataList;
     private PreferenceHelper preferenceHelper;
     private int mPosition;
-    private static final Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
+    private static final Pattern urlPattern = Pattern.compile( "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
             + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
-
     public FragmentContentAdapter(Context context, ArrayList<Content> chatList) {
         Resources resources = context.getResources();
         mPlaces = resources.getStringArray(R.array.places);
@@ -313,8 +312,9 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
 
             Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
             shareIntent.setType( "application/*");
-            Log.e("filepath",filePath);
-            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
+
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
             mContext.startActivity(Intent.createChooser(shareIntent, "Share Content"));
 
 

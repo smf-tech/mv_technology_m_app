@@ -99,6 +99,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private FusedLocationProviderClient mFusedLocationClient;
     private Location mLastLocation;
     Date date;
+    int LocatonFlag;
 
 
     @Override
@@ -126,13 +127,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     LocationPopup();
+                    LocatonFlag =0;
 
                 } else {
                     if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
-                        Utills.scheduleJob(getApplicationContext());
+                       // Utills.scheduleJob(getApplicationContext());
+                        getAddress();
 
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
+                       /* SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
 
                         try {
                             Date CURRENTDATE = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
@@ -144,17 +147,23 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             // getAddress();
                             if (hrs >= 5) {
                                 getAddress();
-                            }/*else {
+                            }*//*else {
                            // Utills.scheduleJob(getApplicationContext());
                           Utills.showToast("less than 5",HomeActivity.this);
-                        }*/
+                        }*//*
 
 
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
+*/
 
-
+                    }else {
+                        if (LocatonFlag == 0) {
+                            if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                                getAddress();
+                            }
+                        }
                     }
                 }
             }
@@ -178,6 +187,55 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
+        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
+            if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("true")) {
+                final LocationManager manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE );
+
+
+                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    LocationPopup();
+                    LocatonFlag =0;
+
+                } else {
+                    if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+
+                        // Utills.scheduleJob(getApplicationContext());
+                        getAddress();
+
+                       /* SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
+
+                        try {
+                            Date CURRENTDATE = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
+
+                            long APICALLDATE = preferenceHelper.getLong(PreferenceHelper.APICALLTIME);
+                            long different = CURRENTDATE.getTime() - APICALLDATE;
+                            long hrs = (int) ((different / (1000 * 60 * 60)));
+
+                            // getAddress();
+                            if (hrs >= 5) {
+                                getAddress();
+                            }*//*else {
+                           // Utills.scheduleJob(getApplicationContext());
+                          Utills.showToast("less than 5",HomeActivity.this);
+                        }*//*
+
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+*/
+
+                    }else {
+                        if (LocatonFlag == 0) {
+                            if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                                getAddress();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
 
         Intent intent = new Intent(this, LocationService.class);
         // add infos for the service which file to download and where to store
@@ -865,7 +923,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
     private void LocationPopup(){
-        AlertDialog.Builder  dialog = new AlertDialog.Builder(HomeActivity.this);
+        final AlertDialog.Builder  dialog = new AlertDialog.Builder(HomeActivity.this);
         dialog.setMessage("Gps network not enabled");
         dialog.setPositiveButton("Open Location", new DialogInterface.OnClickListener() {
             @Override
@@ -873,9 +931,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 // TODO Auto-generated method stub
                 Intent myIntent = new Intent( Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(myIntent);
+
+
                 //get gps
             }
         });
+
       /*  dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
             @Override
@@ -913,13 +974,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                 JSONObject jsonObject = new JSONObject(data);
                                 String status = jsonObject.getString("status");
                                 String message = jsonObject.getString("msg");
-
+                               Utills.showToast(status,HomeActivity.this);
                                 if (status.equals("Success")) {
 
+
+
+
+/*
                                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
                                     Date APICALLDATE = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
 
                                     preferenceHelper.insetLong(PreferenceHelper.APICALLTIME,APICALLDATE.getTime());
+*/
 
 
                                 } else {
@@ -930,8 +996,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (JSONException e) {
-                        e.printStackTrace();
-                    } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }

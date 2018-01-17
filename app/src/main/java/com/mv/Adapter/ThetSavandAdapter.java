@@ -84,7 +84,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
     private ThetSavandFragment fragment;
     int temp = 555500;
     MediaPlayer mPlayer = new MediaPlayer();
-    private static final Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
+    private static final Pattern urlPattern = Pattern.compile( "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
             + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
 
@@ -286,7 +286,10 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             holder.txt_template_type.setText("Template Type : " + mDataList.get(position).getTemplate());*/
         holder.txt_template_type.setText("Title : " + mDataList.get(position).getTitle());
         holder.txt_desc.setText("Description : " + mDataList.get(position).getDescription());
-        Linkify.addLinks(holder.txt_desc, urlPattern, mDataList.get(position).getDescription());
+       // Linkify.addLinks(holder.txt_desc, urlPattern, mDataList.get(position).getDescription());
+      //  Linkify.addLinks(holder.txt_desc,Linkify.WEB_URLS);
+      //  android.util.Patterns.WEB_URL.matcher( mDataList.get(position).getDescription()).matches();
+
         holder.txt_time.setText(mDataList.get(position).getTime().toString());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");
         holder.txtCommentCount.setText(mDataList.get(position).getCommentCount() + " Comments");
@@ -491,7 +494,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                         intent.setAction(Intent.ACTION_SEND);
                         intent.setType("application/*");
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        Log.e("file path", filePath);
+
                         intent.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
 
                         intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
