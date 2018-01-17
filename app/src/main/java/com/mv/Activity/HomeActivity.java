@@ -974,7 +974,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                 JSONObject jsonObject = new JSONObject(data);
                                 String status = jsonObject.getString("status");
                                 String message = jsonObject.getString("msg");
-                               Utills.showToast(status,HomeActivity.this);
+                               //Utills.showToast(status,HomeActivity.this);
                                 if (status.equals("Success")) {
 
 
