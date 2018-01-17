@@ -10,11 +10,13 @@ import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.text.util.Linkify;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,7 +56,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-import com.mv.Widgets.TouchImageView;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
@@ -84,9 +85,10 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
     private ThetSavandFragment fragment;
     int temp = 555500;
     MediaPlayer mPlayer = new MediaPlayer();
-    private static final Pattern urlPattern = Pattern.compile( "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
+    private static final Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
             + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
+
     public ThetSavandAdapter(Context context, ThetSavandFragment fragment, List<Content> chatList) {
         Resources resources = context.getResources();
         mPlaces = resources.getStringArray(R.array.places);
@@ -285,7 +287,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             holder.txt_template_type.setText("Template Type : " + mDataList.get(position).getTemplate());*/
         holder.txt_template_type.setText("Title : " + mDataList.get(position).getTitle());
         holder.txt_desc.setText("Description : " + mDataList.get(position).getDescription());
-        Linkify.addLinks(holder.txt_desc,urlPattern,mDataList.get(position).getDescription());
+        Linkify.addLinks(holder.txt_desc, urlPattern, mDataList.get(position).getDescription());
         holder.txt_time.setText(mDataList.get(position).getTime().toString());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");
         holder.txtCommentCount.setText(mDataList.get(position).getCommentCount() + " Comments");
@@ -597,7 +599,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                         intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
                         intent.putExtra("flag", "not_forward_flag");
                         mContext.startActivity(intent);
-                    }else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image")) {
+                    } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image")) {
                         Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
                         intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
                         intent.putExtra("flag", "not_forward_flag");
@@ -612,7 +614,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             picture.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Utills.showImageZoomInDialog(v.getContext(),mDataList.get(getAdapterPosition()).getId());
+                    Utills.showImageZoomInDialog(v.getContext(), mDataList.get(getAdapterPosition()).getId());
 
                  /*   LayoutInflater inflater = LayoutInflater.from(v.getContext());
                     final View view = inflater.inflate(R.layout.image_zoom_dialog, null);
@@ -635,7 +637,6 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 }
             });
         }
-
 
 
     }
