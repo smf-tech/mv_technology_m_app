@@ -43,6 +43,7 @@ import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Service.DownloadService;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -55,9 +56,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
-import com.mv.Model.Download;
-import com.mv.Service.DownloadService;
-import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
 import okhttp3.ResponseBody;
