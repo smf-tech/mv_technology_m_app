@@ -1,6 +1,7 @@
 package com.mv.Adapter;
 
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -43,10 +44,12 @@ import com.mv.Activity.CommunityDetailsActivity;
 import com.mv.Activity.VideoViewActivity;
 import com.mv.Fragment.ThetSavandFragment;
 import com.mv.Model.Content;
+import com.mv.Model.Download;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Service.DownloadService;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -150,13 +153,13 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         if (mDataList.get(position).getIsAttachmentPresent() == null || TextUtils.isEmpty(mDataList.get(position).getIsAttachmentPresent()) || mDataList.get(position).getIsAttachmentPresent().equalsIgnoreCase("false")) {
             if (TextUtils.isEmpty(mDataList.get(position).getAttachmentId())) {
                 holder.mediaLayout.setVisibility(View.GONE);
-                holder.layout_download.setVisibility(View.VISIBLE);
+                holder.layout_download.setVisibility(View.GONE);
             } else if (mDataList.get(position).getAttachmentId().equalsIgnoreCase("null")) {
                 holder.mediaLayout.setVisibility(View.GONE);
-                holder.layout_download.setVisibility(View.VISIBLE);
+                holder.layout_download.setVisibility(View.GONE);
             } else {
                 holder.mediaLayout.setVisibility(View.VISIBLE);
-                holder.layout_download.setVisibility(View.VISIBLE);
+                holder.layout_download.setVisibility(View.GONE);
                 // holder.picture.setImageDrawable(mPlacePictures[position % mPlacePictures.length]);
                 if (mDataList.get(position).getContentType() != null
                         && mDataList.get(position).getContentType().equalsIgnoreCase("Image")) {
@@ -183,7 +186,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             }
         } else {
             holder.mediaLayout.setVisibility(View.VISIBLE);
-            holder.layout_download.setVisibility(View.VISIBLE);
+            holder.layout_download.setVisibility(View.GONE);
             if (mDataList.get(position).getContentType() != null
                     && mDataList.get(position).getContentType().equalsIgnoreCase("Image")) {
                 holder.picture.setVisibility(View.VISIBLE);
@@ -307,6 +310,23 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         } else {
             holder.img_comment.setImageResource(R.drawable.comment);
         }
+      /* if (mDataList.get(position).getIsAttachmentPresent().equalsIgnoreCase("false")){
+            holder.layout_download_file.setVisibility(View.GONE);
+            holder.layout_download.setVisibility(View.VISIBLE);
+       }else {
+           holder.layout_download_file.setVisibility(View.VISIBLE);
+       }*/
+
+        Log.i("Value", "Position " + position + " : " + isFileAvalible(position));
+        if (isFileAvalible(position) || mDataList.get(position).getIsAttachmentPresent().equalsIgnoreCase("false")) {
+            holder.layout_download_file.setVisibility(View.GONE);
+            holder.layout_download.setVisibility(View.VISIBLE);
+
+        }else {
+            holder.layout_download_file.setVisibility(View.VISIBLE);
+            holder.layout_download.setVisibility(View.GONE);
+
+        }
     }
 
     @Override
@@ -388,7 +408,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         public ImageView picture, userImage, imgLike, img_comment, imageThumbnail;
         public CardView card_view;
         public TextView txt_audio_txt, txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type;
-        public LinearLayout mediaLayout, layout_like, layout_comment, layout_share, layout_download;
+        public LinearLayout mediaLayout, layout_like, layout_comment, layout_share, layout_download, layout_download_file;
         public RelativeLayout audioLayout, layout_Video;
         public ImageView play;
         public ProgressBar songProgressBar;
@@ -412,6 +432,15 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             layout_comment = (LinearLayout) itemLayoutView.findViewById(R.id.layout_comment);
             imageThumbnail = (ImageView) itemLayoutView.findViewById(R.id.card_Thumbnail);
             txt_type = (TextView) itemLayoutView.findViewById(R.id.txt_type);
+            layout_download_file = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download_file);
+            layout_download_file.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utills.showToast("download",mContext);
+                    startDownload(getAdapterPosition());
+
+                }
+            });
             layout_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -420,7 +449,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                     mContext.startActivity(intent);
                 }
             });
-            ;
+
 
             audioLayout = (RelativeLayout) itemLayoutView.findViewById(R.id.audioLayout);
             mediaLayout = (LinearLayout) itemLayoutView.findViewById(R.id.mediaLayout);
@@ -428,7 +457,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             layout_share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    startDownload(getAdapterPosition());
 
                 }
             });
@@ -447,23 +476,40 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             layout_download.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    String str = "Title : " + mDataList.get(getAdapterPosition()).getTitle()
-                            + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription();
-                    if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent() != null
-                            && !(mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false"))) {
-                        if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image")) {
-                            str = str + "\n\nLink : http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".png";
-                        } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Video")) {
-                            str = str + "\n\nLink : http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".mp4";
-                        } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Audio")) {
-                            str = str + "\n\nLink : http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".mp3";
+                    if(mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("true")) {
+                        String filePath = "";
+
+                        if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("audio")) {
+                            filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".mp3";
+
+                        } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("video")) {
+                            filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".mp4";
+
+                        } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("pdf")) {
+                            filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".pdf";
+
+                        } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("zip")) {
+                            filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".zip";
+                        } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image")) {
+                            filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".png";
                         }
+
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_SEND);
+                        intent.setType("application/*");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        Log.e("file path", filePath);
+                        intent.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
+
+                        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                        mContext.startActivity(Intent.createChooser(intent, "Share Content"));
+                    }else {
+                        Intent i = new Intent(Intent.ACTION_SEND);
+                        i.setType("image*//**//*");
+                        i.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
+                        Utills.hideProgressDialog();
+                        mContext.startActivity(Intent.createChooser(i, "Share Post"));
                     }
-                    Intent i = new Intent(Intent.ACTION_SEND);
-                    i.setType("text/html");
-                    i.putExtra(Intent.EXTRA_TEXT, str);
-                    Utills.hideProgressDialog();
-                    mContext.startActivity(Intent.createChooser(i, "Share Post"));
                    /* if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent() == null
                             || TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())
                             || mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) {
@@ -566,22 +612,6 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 public void onClick(View v) {
                     Utills.showImageZoomInDialog(v.getContext(),mDataList.get(getAdapterPosition()).getId());
 
-                 /*   LayoutInflater inflater = LayoutInflater.from(v.getContext());
-                    final View view = inflater.inflate(R.layout.image_zoom_dialog, null);
-
-                    TouchImageView img_post=(TouchImageView) view.findViewById(R.id.img_post);
-                    RelativeLayout rel_dialog =(RelativeLayout)view.findViewById(R.id.rel_dialog);
-                    Glide.with(mContext)
-                            .load("http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".png")
-                            .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
-                            .diskCacheStrategy(DiskCacheStrategy.ALL)
-                            .into(img_post);
-                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
-                    alertDialog.setView(view);
-                    final AlertDialog alertD = alertDialog.create();
-
-                    alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-                    alertD.show();*/
 
 
                 }
@@ -777,5 +807,67 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         }
         mPlayer.start();
     }
+
+    public void startDownload(int position) {
+        Utills.showToast("Downloading Started...", mContext);
+        Intent intent = new Intent(mContext, DownloadService.class);
+        intent.putExtra("fragment_flag","ThetSanvad_Fragment");
+        if (mDataList.get(position).getContentType().equalsIgnoreCase("zip")) {
+            intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".zip");
+            intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "zip");
+            intent.putExtra("URL", "http://13.58.218.106/images/"+  mDataList.get(position).getId() +".zip");
+        } else if (mDataList.get(position).getContentType().equalsIgnoreCase("pdf")) {
+            intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".pdf");
+            intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "pdf");
+            intent.putExtra("URL", "http://13.58.218.106/images/"+  mDataList.get(position).getId() +".pdf");
+        } else if (mDataList.get(position).getContentType().equalsIgnoreCase("audio")) {
+            intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".mp3");
+            intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "audio");
+            intent.putExtra("URL", "http://13.58.218.106/images/"+  mDataList.get(position).getId() +".mp3");
+        } else if (mDataList.get(position).getContentType().equalsIgnoreCase("video")) {
+            intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".mp4");
+            intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "video");
+            intent.putExtra("URL", "http://13.58.218.106/images/"+  mDataList.get(position).getId() +".mp4");
+        } else if (mDataList.get(position).getContentType().equalsIgnoreCase("Image")){
+            intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".png");
+            intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "Image");
+            intent.putExtra("URL", "http://13.58.218.106/images/"+  mDataList.get(position).getId() +".png");
+        }
+        mContext.startService(intent);
+    }
+
+    private boolean isFileAvalible(int position) {
+        if (mDataList.get(position).getContentType() != null) {
+            if (mDataList.get(position).getContentType().equalsIgnoreCase("zip")) {
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/UnZip/" + mDataList.get(position).getTitle();
+                if (new File(filePath).exists())
+                    return true;
+                return false;
+            } else if (mDataList.get(position).getContentType().equalsIgnoreCase("pdf")) {
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getTitle() + ".pdf";
+                if (new File(filePath).exists())
+                    return true;
+                return false;
+            } else if (mDataList.get(position).getContentType().equalsIgnoreCase("video")) {
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getTitle() + ".mp4";
+                if (new File(filePath).exists())
+                    return true;
+                return false;
+            } else if (mDataList.get(position).getContentType().equalsIgnoreCase("audio")) {
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getTitle() + ".mp3";
+                if (new File(filePath).exists())
+                    return true;
+                return false;
+            }else if (mDataList.get(position).getContentType().equalsIgnoreCase("Image")) {
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getTitle() + ".png";
+              //   Log.e("Image path-->" +m)
+                if (new File(filePath).exists())
+                    return true;
+                return false;
+            }
+        }
+        return false;
+    }
+
 }
 

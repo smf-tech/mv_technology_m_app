@@ -66,7 +66,7 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgDownload;
+        ImageView imgDownload,imgshare;
         TextView txtCount, txtName;
         RelativeLayout layoutMain;
 
@@ -137,10 +137,40 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
                 }
             });
             imgDownload = (ImageView) itemLayoutView.findViewById(R.id.imgDownload);
+            imgshare = (ImageView) itemLayoutView.findViewById(R.id.imgshare);
             imgDownload.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     trainingFragment.startDownload(getAdapterPosition());
+                }
+            });
+
+            imgshare.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String filePath ="";
+
+                    if (mDataList.get(getAdapterPosition()).getFileType().equalsIgnoreCase("audio")) {
+                         filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getName() + ".mp3";
+
+                    } else if (mDataList.get(getAdapterPosition()).getFileType().equalsIgnoreCase("video")) {
+                         filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getName() + ".mp4";
+
+                    }  else if (mDataList.get(getAdapterPosition()).getFileType().equalsIgnoreCase("pdf")) {
+                     filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getName() + ".pdf";
+
+                } else if (mDataList.get(getAdapterPosition()).getFileType().equalsIgnoreCase("zip")) {
+                        filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getName() + ".zip";
+                    }
+
+                        Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_SEND);
+                    intent.setType( "application/*");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    Log.e("file path",filePath);
+
+                   intent.putExtra(Intent.EXTRA_STREAM,Uri.fromFile(new File(filePath)));
+                   mContext.startActivity(Intent.createChooser(intent, "Share Content"));
                 }
             });
 
@@ -188,8 +218,17 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
         Log.i("Value", "Position " + position + " : " + isFileAvalible(position));
         if (isFileAvalible(position)) {
             holder.imgDownload.setVisibility(View.GONE);
+            holder.imgshare.setVisibility(View.VISIBLE);
+
+            /* if (mDataList.get(position).getFileType().equalsIgnoreCase("pdf")){
+                 holder.imgshare.setVisibility(View.VISIBLE);
+            }else {
+                 holder.imgshare.setVisibility(View.GONE);
+             }
+*/
         } else {
             holder.imgDownload.setVisibility(View.VISIBLE);
+            holder.imgshare.setVisibility(View.GONE);
         }
     }
 

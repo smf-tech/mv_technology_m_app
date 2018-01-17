@@ -66,6 +66,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     private CommentAdapter adapter;
     private String conetentId;
     private PreferenceHelper preferenceHelper;
+    TextView textNoData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,12 +90,15 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
+
+
     }
 
     private void initUI() {
         setActionbar("Comments");
 
         Utills.setupUI(findViewById(R.id.layout_main), this);
+        textNoData = (TextView) findViewById(R.id.textNoData);
 
         preferenceHelper = new PreferenceHelper(this);
 
@@ -131,12 +135,17 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     commentList.clear();
                     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                     List<Comment> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Comment[].class));
-                    for (int i = 0; i < temp.size(); i++) {
-                        commentList.add(temp.get(i));
+                    if (temp.size()!=0) {
+                        for (int i = 0; i < temp.size(); i++) {
+                            commentList.add(temp.get(i));
+                        }
+                        if (temp.size() != 0)
+                            binding.textNoData.setVisibility(View.GONE);
+                        adapter.notifyDataSetChanged();
+                        textNoData.setVisibility(View.GONE);
+                    } else {
+                        textNoData.setVisibility(View.VISIBLE);
                     }
-                    if (temp.size() != 0)
-                        binding.textNoData.setVisibility(View.GONE);
-                    adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

@@ -144,13 +144,24 @@ public interface UserDao {
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where synchStatus = '" + Constants.STATUS_LOCAL + "' order by CreatedDate desc")
     List<Content> getAllASynchChats();
 
-    @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  and ( Priority = :str or  Issue_Type =:str) order by CreatedDate desc")
+    @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  and ( Priority = :str or  Report_Type =:str or Issue_Type =:str) order by CreatedDate desc")
     List<Content> getAllChatsfilter(String communityId, String str);
 
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  and Issue_Type =:str order by CreatedDate desc")
     List<Content> getHoChatsfilter(String communityId, String str);
 
-    @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  and ( Priority = :str or  Issue_Type =:str) and (UserId = :UserId) order by CreatedDate desc")
+   /* @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  and ( Priority = :str or  Issue_Type =:str) and (UserId = :UserId) order by CreatedDate desc")
     List<Content> getMyChatsfilter(String communityId, String str, String UserId);
+    */
+    @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  and (UserId = :UserId) and ( Priority = :str or  Report_Type =:str) order by CreatedDate desc")
+    List<Content> getMyChatsfilter(String communityId, String UserId, String str);
+
+
+    @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  and ( Priority = :str or  Report_Type =:str) and (taluka = :taluka) order by CreatedDate desc")
+    List<Content> getMyLocationChatsfilter(String communityId, String str, String taluka);
+
+    @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  and (Report_Type =:str or Priority = :str) and (taluka != :taluka) order by CreatedDate desc")
+    List<Content> getOtherChatsfilter(String communityId, String str,String taluka);
+
 
 }

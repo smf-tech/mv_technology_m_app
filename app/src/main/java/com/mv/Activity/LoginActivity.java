@@ -40,6 +40,7 @@ import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityLoginBinding;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -189,6 +190,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utills.hideProgressDialog();
+                Log.e("error",t.getLocalizedMessage());
                 Logger.doToast(getString(R.string.error_something_went_wrong), LoginActivity.this);
             }
         });
@@ -257,6 +259,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             preferenceHelper.insertString(PreferenceHelper.UserData, data);
                             user = gson.fromJson(data, User.class);
+                            Log.e("otp",user.getPassword());
                             setTimer();
                         }
                     }
@@ -268,7 +271,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utills.hideProgressDialog();
-                Utills.showToast(getString(R.string.error_something_went_wrong), LoginActivity.this);
+               // Log.e("error-->",t.getLocalizedMessage());
+              //  Utills.showToast("wrong",LoginActivity.this);
+               Utills.showToast(getString(R.string.error_something_went_wrong), LoginActivity.this);
             }
         });
     }

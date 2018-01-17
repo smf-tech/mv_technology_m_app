@@ -19,7 +19,7 @@ public class PreferenceHelper {
     public static final String COMMUNITYID = "communityid";
     public static final String TOKEN = "Token";
     public static final String CONTENTISSYNCHED = "CONTENTISSYNCHED";
-    public static final String CURRENTTIME = "TIME";
+
     public static final String APICALLTIME = "APICALLTIME";
 
     public static final String NOTIFICATION = "notification";
@@ -61,6 +61,7 @@ public class PreferenceHelper {
         return pref.getString(key, "");
     }
 
+
     public int getInt(String key) {
         return pref.getInt(key, 0);
     }
@@ -71,7 +72,9 @@ public class PreferenceHelper {
 
     public  long getLong(String key){return pref.getLong(key,0);}
 
-
+   /* public String getLongString(String key) {
+        return String.valueOf(Long.valueOf(pref.getString(key, "")));
+    }*/
 
     public void clearPrefrences() {
         Map<String, ?> prefs = pref.getAll();

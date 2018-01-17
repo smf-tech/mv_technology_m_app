@@ -46,6 +46,7 @@
                 android:scrollbars="vertical" />
         </android.support.v4.widget.SwipeRefreshLayout>
         <LinearLayout
+            android:id="@+id/lnr_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -77,7 +78,7 @@
                     android:layout_weight="1"
                     android:text="My \nPosts"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/small_text" />
                 <com.mv.Widgets.MyFontButton
                     android:id="@+id/btn_allposts"
                     android:layout_width="0dp"
@@ -86,7 +87,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:text="All \nPosts"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/small_text" />
                 <com.mv.Widgets.MyFontButton
                     android:id="@+id/btn_mylocation"
                     android:layout_width="0dp"
@@ -95,7 +96,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:text="My \nLocation"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/small_text" />
                 <com.mv.Widgets.MyFontButton
                     android:id="@+id/btn_otherlocation"
                     android:layout_width="0dp"
@@ -104,11 +105,20 @@
                     android:background="@drawable/lighter_grey_box"
                     android:text="Other \nLocation"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="15sp" />
+                    android:textSize="@dimen/small_text" />
 
 
         </LinearLayout>
     </LinearLayout>
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/textNoData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="No Data Available"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/large_text" />
 
 </RelativeLayout>
 </layout>

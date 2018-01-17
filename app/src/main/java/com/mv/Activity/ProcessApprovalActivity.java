@@ -49,6 +49,7 @@ public class ProcessApprovalActivity extends AppCompatActivity implements View.O
     private PreferenceHelper preferenceHelper;
     ArrayList<Template> programManagementProcessLists=new ArrayList<>();
     private TemplateAdapter mAdapter;
+    TextView textNoData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,9 +61,10 @@ public class ProcessApprovalActivity extends AppCompatActivity implements View.O
 
 
     private void initViews() {
+        //25023645110
         preferenceHelper = new PreferenceHelper(this);
         setActionbar(getString(R.string.select_form));
-
+        textNoData = (TextView) findViewById(R.id.textNoData);
         mAdapter = new TemplateAdapter(programManagementProcessLists, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         binding.recyclerView.setLayoutManager(mLayoutManager);
@@ -144,19 +146,24 @@ public class ProcessApprovalActivity extends AppCompatActivity implements View.O
                 binding.swiperefresh.setRefreshing(false);
                 try {
                     JSONArray jsonArray = new JSONArray(response.body().string());
-                    programManagementProcessLists.clear();
-                    for(int i=0;i<jsonArray.length();i++) {
-                        Template processList = new Template();
+                    if (jsonArray.length()!=0) {
+                        programManagementProcessLists.clear();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            Template processList = new Template();
 
-                        processList.setType(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("type"));
-                        processList.setUrl(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("url"));
-                        processList.setId(jsonArray.getJSONObject(i).getString("Id"));
-                        processList.setName(jsonArray.getJSONObject(i).getString("Name"));
-                        processList.setIs_Editable__c(jsonArray.getJSONObject(i).getBoolean("Is_Editable__c"));
-                        processList.setIs_Multiple_Entry_Allowed__c(jsonArray.getJSONObject(i).getBoolean("Is_Multiple_Entry_Allowed__c"));
-                        programManagementProcessLists.add(processList);
+                            processList.setType(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("type"));
+                            processList.setUrl(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("url"));
+                            processList.setId(jsonArray.getJSONObject(i).getString("Id"));
+                            processList.setName(jsonArray.getJSONObject(i).getString("Name"));
+                            processList.setIs_Editable__c(jsonArray.getJSONObject(i).getBoolean("Is_Editable__c"));
+                            processList.setIs_Multiple_Entry_Allowed__c(jsonArray.getJSONObject(i).getBoolean("Is_Multiple_Entry_Allowed__c"));
+                            programManagementProcessLists.add(processList);
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        textNoData.setVisibility(View.GONE);
+                    }else {
+                        textNoData.setVisibility(View.VISIBLE);
                     }
-                    mAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
