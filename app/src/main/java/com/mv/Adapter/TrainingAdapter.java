@@ -161,6 +161,7 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
                 }
             });
             imgDownload = (ImageView) itemLayoutView.findViewById(R.id.imgDownload);
+            imgshare = (ImageView) itemLayoutView.findViewById(R.id.imgshare);
             imgDownload.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -69,7 +69,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
     private ArrayList<Content> mDataList;
     private PreferenceHelper preferenceHelper;
     private int mPosition;
-    private static final Pattern urlPattern = Pattern.compile( "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
+    private static final Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
             + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
 
@@ -155,16 +155,25 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             holder.img_comment.setImageResource(R.drawable.comment);
         }
 
-        if (mDataList.get(position).getAttachmentId()==null  ) {
+
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(position).getAttachmentId() + ".png";
+        Log.e("bitmap file", filePath);
+        if (TextUtils.isEmpty(mDataList.get(position).getAttachmentId()) || mDataList.get(position).getAttachmentId() == null
+                || mDataList.get(position).getAttachmentId().equalsIgnoreCase("null") || isFileAvalible(position) ) {
+
+           /* if (isFileAvalible(position)) {*/
             holder.layout_download.setVisibility(View.VISIBLE);
             holder.layout_download_file.setVisibility(View.GONE);
+           /* } else {*/
         }else {
             holder.layout_download.setVisibility(View.GONE);
             holder.layout_download_file.setVisibility(View.VISIBLE);
         }
 
 
-    }
+
+}
+
     @Override
     public long getItemId(int position) {
         return position;
@@ -300,16 +309,12 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                         Utills.hideProgressDialog();
                         mContext.startActivity(Intent.createChooser(i, "Share Post"));
                     }else {
-                       String filepath = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/"+mDataList.get(getAdapterPosition()).getId()+".png");
-                        //FileOutputStream out = new FileOutputStream(file);
-                        // bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
-                        //out.close();
-                       // bmpUri = Uri.fromFile(file);
+                        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId()+".png";
 
             Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
             shareIntent.setType( "application/*");
-            Log.e("filepath",filepath);
-            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filepath)));
+            Log.e("filepath",filePath);
+            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
             mContext.startActivity(Intent.createChooser(shareIntent, "Share Content"));
 
 
@@ -381,11 +386,17 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                         String str = response.body().string();
                         byte[] decodedString = Base64.decode(str, Base64.DEFAULT);
                         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+
+                        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" +mDataList.get(adapterPosition).getAttachmentId()+".png");
+                        FileOutputStream out = new FileOutputStream(file);
+                        decodedByte.compress(Bitmap.CompressFormat.PNG, 90, out);
+                        out.close();
+
+                     /*   Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
                         shareIntent.setType("text/html");
                         shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Title : "+mDataList.get(adapterPosition).getTitle()+"\n\nDescription : "+mDataList.get(adapterPosition).getDescription());
                         shareIntent.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(decodedByte));
-                        mContext.startActivity(Intent.createChooser(shareIntent, "Share Content"));
+                        mContext.startActivity(Intent.createChooser(shareIntent, "Share Content"));*/
                         //getLocalBitmapUri(decodedByte,adapterPosition);
 /*
                         Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
@@ -522,6 +533,18 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
         } else {
             Utills.showToast(mContext.getString(R.string.error_no_internet), mContext);
         }
+    }
+
+    private boolean isFileAvalible(int position) {
+        if (mDataList.get(position).getAttachmentId() != null) {
+           // if (mDataList.get(position).getFileType().equalsIgnoreCase("zip")) {
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(position).getAttachmentId()+".png";
+                if (new File(filePath).exists())
+                    return true;
+                return false;
+            //}
+        }
+        return false;
     }
 
 
