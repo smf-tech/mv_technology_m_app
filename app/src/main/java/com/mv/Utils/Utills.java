@@ -16,6 +16,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +26,13 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.model.GlideUrl;
 import com.firebase.jobdispatcher.Constraint;
 import com.firebase.jobdispatcher.FirebaseJobDispatcher;
 import com.firebase.jobdispatcher.GooglePlayDriver;
@@ -41,6 +46,7 @@ import com.google.gson.reflect.TypeToken;
 import com.mv.Model.Task;
 import com.mv.R;
 import com.mv.Service.MyJobService;
+import com.mv.Widgets.TouchImageView;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -434,5 +440,45 @@ public class Utills {
 
         // return current duration in milliseconds
         return currentDuration * 1000;
+    }
+
+    public static void showImageZoomInDialog(Context context,String id){
+        LayoutInflater inflater = LayoutInflater.from(context);
+        final View view = inflater.inflate(R.layout.image_zoom_dialog, null);
+
+        TouchImageView img_post=(TouchImageView) view.findViewById(R.id.img_post);
+        RelativeLayout rel_dialog =(RelativeLayout)view.findViewById(R.id.rel_dialog);
+        Glide.with(context)
+                .load("http://13.58.218.106/images/" + id + ".png")
+                .placeholder(context.getResources().getDrawable(R.drawable.mulya_bg))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(img_post);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
+        alertDialog.setView(view);
+        final AlertDialog alertD = alertDialog.create();
+
+        alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        alertD.show();
+
+    }
+
+    public static void showImagewithheaderZoomDialog(Context context, GlideUrl url){
+        LayoutInflater inflater = LayoutInflater.from(context);
+        final View view = inflater.inflate(R.layout.image_zoom_dialog, null);
+
+        TouchImageView img_post=(TouchImageView) view.findViewById(R.id.img_post);
+        RelativeLayout rel_dialog =(RelativeLayout)view.findViewById(R.id.rel_dialog);
+        Glide.with(context)
+                .load(url)
+                .placeholder(context.getResources().getDrawable(R.drawable.mulya_bg))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(img_post);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
+        alertDialog.setView(view);
+        final AlertDialog alertD = alertDialog.create();
+
+        alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        alertD.show();
+
     }
 }

@@ -1,17 +1,23 @@
 package com.mv.Activity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,6 +27,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mv.Adapter.ContentAdapter;
+import com.mv.Adapter.ThetSavandAdapter;
 import com.mv.Model.Community;
 import com.mv.Model.Content;
 import com.mv.Model.Template;
@@ -54,8 +61,11 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     private ImageView img_back, img_list, img_logout, img_filter;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
+    private FloatingActionButton fab_add_list;
     private PreferenceHelper preferenceHelper;
-    private ArrayList<Content> chatList = new ArrayList<Content>();
+    private List<Content> chatList = new ArrayList<Content>();
+    private ArrayList<Content> mypostlist = new ArrayList<>();
+    private ArrayList<Content> mylocationlist = new ArrayList<>();
     private ContentAdapter adapter;
     private ActivityCommunityHomeBinding binding;
     public List<Community> communityList = new ArrayList<>();
@@ -64,11 +74,11 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     private List<Template> templateList = new ArrayList<>();
     private ArrayList<Content> filterlist = new ArrayList<>();
     RecyclerView recyclerView;
-    Button btn_mypost, btn_allposts;
+    Button btn_mypost, btn_allposts, btn_mylocation, btn_otherlcation;
     LinearLayout lnr_filter;
     private boolean filter = false;
     public String json;
-
+    private Boolean mySelection = false,myLocation = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +88,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         binding.setActivity(this);
         initViews();
         binding.swipeRefreshLayout.setOnRefreshListener(this);
+
         getChats(true);
     }
 
@@ -87,7 +98,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     }
 
     private void getChats(boolean isDialogShow) {
-        List<Content> temp = AppDatabase.getAppDatabase(this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
+       /* List<Content> temp = AppDatabase.getAppDatabase(this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
         if (temp.size() == 0) {
             if (Utills.isConnected(this))
                 getAllChats(false, isDialogShow);
@@ -99,6 +110,34 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 chatList.add(temp.get(i));
             }
             adapter.notifyDataSetChanged();
+            if (Utills.isConnected(this))
+                getAllChats(true, isDialogShow);
+        }*/
+
+        chatList.clear();
+        chatList =  AppDatabase.getAppDatabase(this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
+        if (chatList.size() == 0) {
+            if (Utills.isConnected(CommunityHomeActivity.this))
+                getAllChats(false, isDialogShow);
+            else
+                showPopUp();
+        } else {
+
+            if (mySelection) {
+                adapter = new ContentAdapter( this, mypostlist);
+                recyclerView.setAdapter(adapter);
+            } else {
+                adapter = new ContentAdapter( this, chatList);
+                recyclerView.setAdapter(adapter);
+            }
+
+            if (myLocation) {
+                adapter = new ContentAdapter( this, mylocationlist);
+                recyclerView.setAdapter(adapter);
+            } else {
+                adapter = new ContentAdapter( this, chatList);
+                recyclerView.setAdapter(adapter);
+            }
             if (Utills.isConnected(this))
                 getAllChats(true, isDialogShow);
         }
@@ -152,9 +191,39 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                                 }
 
                             }
-                            adapter.notifyDataSetChanged();
+
+                            mypostlist.clear();
+
+                            for (int i = 0; i < chatList.size(); i++) {
+
+                                if (chatList.get(i).getUser_id().equals(User.getCurrentUser(getApplicationContext()).getId())) {
+                                    mypostlist.add(chatList.get(i));
+                                }
+
+                                if(chatList.get(i).getTaluka().equals(User.getCurrentUser(getApplicationContext()).getTaluka())){
+                                    mylocationlist.add(chatList.get(i));
+                                }
+                            }
+
+                            if (mySelection) {
+                                adapter = new ContentAdapter(CommunityHomeActivity.this, mypostlist);
+                                recyclerView.setAdapter(adapter);
+                            } else {
+                                adapter = new ContentAdapter(CommunityHomeActivity.this, chatList);
+                                recyclerView.setAdapter(adapter);
+                            }
+
+                            if (myLocation){
+                                adapter = new ContentAdapter(CommunityHomeActivity.this, mylocationlist);
+                                recyclerView.setAdapter(adapter);
+                            }else {
+                                adapter = new ContentAdapter(CommunityHomeActivity.this, chatList);
+                                recyclerView.setAdapter(adapter);
+                            }
                         }
-                    }
+                            //adapter.notifyDataSetChanged();
+                        }
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -208,18 +277,72 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
         communityList = Arrays.asList(gson.fromJson(json, Community[].class));
         preferenceHelper = new PreferenceHelper(this);
-
+        fab_add_list = (FloatingActionButton) findViewById(R.id.fab_add_list);
+        fab_add_list.setOnClickListener(this);
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         btn_allposts = (Button) findViewById(R.id.btn_allposts);
         btn_mypost = (Button) findViewById(R.id.btn_mypost);
+        btn_mylocation = (Button) findViewById(R.id.btn_mylocation);
+        btn_otherlcation =(Button) findViewById(R.id.btn_otherlocation);
         lnr_filter = (LinearLayout) findViewById(R.id.lnr_filter);
 
-        adapter = new ContentAdapter(recyclerView.getContext(), chatList);
+       // adapter = new ContentAdapter(recyclerView.getContext(), chatList);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy < -5 && ((lnr_filter.getVisibility() == View.GONE))) {
+                    lnr_filter.setVisibility(View.VISIBLE);
+                    //fab_add_broadcast.setVisibility(View.VISIBLE);
+                } else if (dy > 5 && (lnr_filter.getVisibility() == View.VISIBLE)) {
+                    lnr_filter.setVisibility(View.GONE);
+                    // fab_add_broadcast.setVisibility(View.INVISIBLE);
+                }
+
+            }
+        });
+        btn_mypost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mySelection = true;
+                adapter = new ContentAdapter(CommunityHomeActivity.this, mypostlist);
+                recyclerView.setAdapter(adapter);
+            }
+        });
+        btn_allposts.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mySelection = false;
+                adapter = new ContentAdapter(CommunityHomeActivity.this,chatList);
+                recyclerView.setAdapter(adapter);
+            }
+        });
 
 
+        btn_mylocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myLocation = true;
+                adapter = new ContentAdapter(CommunityHomeActivity.this, mylocationlist);
+                recyclerView.setAdapter(adapter);
+            }
+        });
+
+        btn_otherlcation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                myLocation = false;
+                adapter = new ContentAdapter(CommunityHomeActivity.this,chatList);
+                recyclerView.setAdapter(adapter);
+            }
+        });
     }
 
     private void setActionbar(final String Title) {
@@ -230,7 +353,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
         img_list = (ImageView) findViewById(R.id.img_list);
-        img_list.setVisibility(View.VISIBLE);
+        img_list.setVisibility(View.GONE);
         img_list.setOnClickListener(this);
         img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setImageResource(R.drawable.group);
@@ -275,7 +398,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
-            case R.id.img_list:
+            case R.id.fab_add_list:
                /* if (Utills.isConnected(this)) {
                     getAllTemplates();
                 } else {
@@ -423,7 +546,10 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     public void onRefresh() {
 
         binding.swipeRefreshLayout.setRefreshing(false);
-        getChats(false);
+        if(filter =false){
+            getChats(false);
+        }
+
 
     }
     ///
@@ -441,6 +567,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 dialog.dismiss();
                 switch (position) {
                     case 1:
+
                         setFilter("Training related");
                         break;
 
@@ -480,17 +607,29 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 dialog.dismiss();
                 switch (position) {
                     case 1:
-                        setFilter("Information Sharing");
+                        filter =true;
+                        if(mySelection){
+                            mypostfilter("Information Sharing");
+                            Utills.showToast("Infooo",CommunityHomeActivity.this);
+                        }else {
+                            setFilter("Information Sharing");
+                        }
+                        filter=false;
                         break;
                     case 2:
+                        filter =true;
                         setFilter("Events Update");
                         break;
                     case 3:
+                        filter =true;
                         setFilter("Success Stories");
+                        filter=false;
                         break;
 
                     case 4:
+                        filter =true;
                         setFilter("Press Cuttings");
+                        filter=false;
                         break;
                 }
             }
@@ -501,12 +640,26 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     }
 
     private void setFilter(String filtertype) {
+
         chatList.clear();
         List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filtertype);
         for (int i = 0; i < contentList.size(); i++) {
             chatList.add(contentList.get(i));
         }
-        adapter.notifyDataSetChanged();
+        adapter = new ContentAdapter( this, chatList);
+        recyclerView.setAdapter(adapter);
+
+    }
+    private void mypostfilter(String filtertype) {
+
+        chatList.clear();
+        List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getMyChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filtertype,User.getCurrentUser(getApplicationContext()).getId());
+        for (int i = 0; i < contentList.size(); i++) {
+            chatList.add(contentList.get(i));
+        }
+        adapter = new ContentAdapter( this, chatList);
+        recyclerView.setAdapter(adapter);
+
     }
 
 }

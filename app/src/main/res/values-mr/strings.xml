@@ -39,6 +39,8 @@
     <string name="text_size_exceed">File Size Cannot Be Greater than 5 MB</string>
     <!--Registration Activity-->
     <string name="name">पहिले नाव</string>
+    <string name="middle_name">मधले नाव</string>
+    <string name="last_name">आडनाव</string>
     <string name="mobile_no">मोबाइल नंबर</string>
     <string name="email">ई - मेल आयडी</string>
     <string name="password">पासवर्ड</string>

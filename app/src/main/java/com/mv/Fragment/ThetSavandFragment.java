@@ -75,8 +75,8 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
         //here data must be an instance of the class MarsDataProvider
         Utills.setupUI(view.findViewById(R.id.layout_main), getActivity());
         binding.swipeRefreshLayout.setOnRefreshListener(this);
-       /* initViews();
-        getChats(true);*/
+        initViews();
+        getChats(true);
         return view;
     }
 

@@ -10,7 +10,6 @@ import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v7.widget.CardView;
@@ -55,7 +54,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import com.mv.Widgets.TouchImageView;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Pattern;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -83,7 +84,9 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
     private ThetSavandFragment fragment;
     int temp = 555500;
     MediaPlayer mPlayer = new MediaPlayer();
-
+    private static final Pattern urlPattern = Pattern.compile( "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
+            + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
+            + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
     public ThetSavandAdapter(Context context, ThetSavandFragment fragment, List<Content> chatList) {
         Resources resources = context.getResources();
         mPlaces = resources.getStringArray(R.array.places);
@@ -135,6 +138,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             Glide.with(mContext)
                     .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(position).getUserAttachmentId() + "/Body"))
                     .placeholder(mContext.getResources().getDrawable(R.drawable.logomulya))
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.userImage);
             // holder.picture.setImageDrawable(mPlacePictures[position % mPlacePictures.length]);
         }
@@ -160,13 +164,14 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                             Glide.with(mContext)
                                     .load(Uri.fromFile(file))
                                     .skipMemoryCache(true)
-                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                                     .into(holder.picture);
                         }
                     } else {
                         Glide.with(mContext)
                                 .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(position).getAttachmentId() + "/Body"))
                                 .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(holder.picture);
                     }
                 }
@@ -182,6 +187,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 Glide.with(mContext)
                         .load("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png")
                         .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.picture);
             } else if (mDataList.get(position).getContentType() != null
                     && mDataList.get(position).getContentType().equalsIgnoreCase("Video")) {
@@ -279,6 +285,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             holder.txt_template_type.setText("Template Type : " + mDataList.get(position).getTemplate());*/
         holder.txt_template_type.setText("Title : " + mDataList.get(position).getTitle());
         holder.txt_desc.setText("Description : " + mDataList.get(position).getDescription());
+        Linkify.addLinks(holder.txt_desc,urlPattern,mDataList.get(position).getDescription());
         holder.txt_time.setText(mDataList.get(position).getTime().toString());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");
         holder.txtCommentCount.setText(mDataList.get(position).getCommentCount() + " Comments");
@@ -601,7 +608,34 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                     mContext.startActivity(intent);*/
                 }
             });
+
+            picture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utills.showImageZoomInDialog(v.getContext(),mDataList.get(getAdapterPosition()).getId());
+
+                 /*   LayoutInflater inflater = LayoutInflater.from(v.getContext());
+                    final View view = inflater.inflate(R.layout.image_zoom_dialog, null);
+
+                    TouchImageView img_post=(TouchImageView) view.findViewById(R.id.img_post);
+                    RelativeLayout rel_dialog =(RelativeLayout)view.findViewById(R.id.rel_dialog);
+                    Glide.with(mContext)
+                            .load("http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".png")
+                            .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
+                            .diskCacheStrategy(DiskCacheStrategy.ALL)
+                            .into(img_post);
+                    AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
+                    alertDialog.setView(view);
+                    final AlertDialog alertD = alertDialog.create();
+
+                    alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                    alertD.show();*/
+
+
+                }
+            });
         }
+
 
 
     }

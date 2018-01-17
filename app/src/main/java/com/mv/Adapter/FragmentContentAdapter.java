@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.text.util.Linkify;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,6 +46,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -66,6 +68,9 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
     private ArrayList<Content> mDataList;
     private PreferenceHelper preferenceHelper;
     private int mPosition;
+    private static final Pattern urlPattern = Pattern.compile( "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
+            + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
+            + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
 
     public FragmentContentAdapter(Context context, ArrayList<Content> chatList) {
         Resources resources = context.getResources();
@@ -132,6 +137,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
         // holder.txt_title.setText("Title : " + mDataList.get(position).getTitle());
         holder.txt_template_type.setText("Title : " + mDataList.get(position).getTitle());
         holder.txt_desc.setText("Description : " + mDataList.get(position).getDescription());
+        Linkify.addLinks(holder.txt_desc,urlPattern,mDataList.get(position).getDescription());
         holder.txt_time.setText(mDataList.get(position).getTime().toString());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");
         holder.txtCommentCount.setText(mDataList.get(position).getCommentCount() + " Comments");
@@ -310,6 +316,13 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                     intent.putExtra("flag", "not_forward_flag");
 
                     mContext.startActivity(intent);
+                }
+            });
+
+            picture.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Utills.showImagewithheaderZoomDialog(v.getContext(),getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(getAdapterPosition()).getAttachmentId() + "/Body"));
                 }
             });
         }
