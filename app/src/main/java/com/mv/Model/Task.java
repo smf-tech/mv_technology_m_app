@@ -41,52 +41,71 @@ public class Task implements Parcelable {
 
     @ColumnInfo(name = "Is_Completed__c")
     private Boolean Is_Completed__c;
-    @SerializedName("Is_Response_Mnadetory__c")
+    @SerializedName("Is_Response_Mnadetory")
     @Expose
     @ColumnInfo(name = "Is_Response_Mnadetory__c")
     private Boolean Is_Response_Mnadetory__c;
 
     @ColumnInfo(name = "MV_Process__c")
-    @SerializedName("MV_Process__c")
+    @SerializedName("MV_Process")
     @Expose
     private String MV_Process__c;
 
     @ColumnInfo(name = "Task_Response__c")
-    @SerializedName("Answer__c")
+    @SerializedName("Answer")
     @Expose
     private String Task_Response__c="";
-    @SerializedName("Task_Text__c")
+    @SerializedName("Task_Text")
     @Expose
     @ColumnInfo(name = "Task_Text__c")
     private String Task_Text__c;
-    @SerializedName("Task_type__c")
+    @SerializedName("Task_type")
     @Expose
     @ColumnInfo(name = "Task_type__c")
     private String Task_type__c;
-    @SerializedName("Picklist_Value__c")
+    @SerializedName("Picklist_Value")
     @Expose
-    @ColumnInfo(name = "Picklist_Value__c")
+    @ColumnInfo(name = "Picklist_Value")
     private String Picklist_Value__c;
 
     @ColumnInfo(name = "MV_Task__c_Id")
-    @SerializedName("MV_Task__c")
+    @SerializedName("MV_Task")
     @Expose
     private String MV_Task__c_Id;
 
     @ColumnInfo(name = "Timestamp__c")
-    @SerializedName("Timestamp__c")
+    @SerializedName("Timestamp")
     @Expose
     private String Timestamp__c;
 
-    @SerializedName("Unique_Id__c")
+    @SerializedName("Unique_Idd")
     @Expose
     @ColumnInfo(name = "Unique_Id__c")
     private String Unique_Id__c;
 
     @ColumnInfo(name = "MTUser__c")
-    @SerializedName("MV_User__c")
+    @SerializedName("MV_User")
     @Expose
     private String MTUser__c;
+    @ColumnInfo(name = "isSave")
+    @SerializedName("isSave ")
+    @Expose
+    private String isSave;
+    @ColumnInfo(name = "IsApproved__c")
+    @SerializedName("IsApproved")
+    @Expose
+    private String IsApproved__c;
+    @ColumnInfo(name = "Location_Level__c")
+    @SerializedName("Location_Level")
+    @Expose
+    private String LocationLevel;
+    @ColumnInfo(name = "validation")
+    @SerializedName("Validaytion_on_text")
+    @Expose
+    private String validation;
+    @SerializedName("Section_Name")
+    @Expose
+    private String Section_Name__c;
 
 
     public String getIsSave() {
@@ -96,13 +115,6 @@ public class Task implements Parcelable {
     public void setIsSave(String isSave) {
         this.isSave = isSave;
     }
-
-    @ColumnInfo(name = "isSave")
-    @SerializedName("isSave ")
-    @Expose
-    private String isSave;
-
-
     public String getIsApproved__c() {
         return IsApproved__c;
     }
@@ -111,10 +123,7 @@ public class Task implements Parcelable {
         IsApproved__c = isApproved__c;
     }
 
-    @ColumnInfo(name = "IsApproved__c")
-    @SerializedName("IsApproved__c")
-    @Expose
-    private String IsApproved__c;
+
     public String getLocationLevel() {
         return LocationLevel;
     }
@@ -123,10 +132,6 @@ public class Task implements Parcelable {
         LocationLevel = locationLevel;
     }
 
-    @ColumnInfo(name = "Location_Level__c")
-    @SerializedName("Location_Level__c")
-    @Expose
-    private String LocationLevel;
 
     public String getValidation() {
         return validation;
@@ -135,10 +140,15 @@ public class Task implements Parcelable {
     public void setValidation(String validation) {
         this.validation = validation;
     }
-    @ColumnInfo(name = "validation")
-    @SerializedName("Validaytion_on_text__c ")
-    @Expose
-    private String validation;
+
+    public String getSection_Name__c() {
+        return Section_Name__c;
+    }
+
+    public void setSection_Name__c(String section_Name__c) {
+        Section_Name__c = section_Name__c;
+    }
+
 
     public String getPicklist_Value__c() {
         return Picklist_Value__c;
@@ -274,6 +284,7 @@ public class Task implements Parcelable {
         dest.writeString(this.IsApproved__c);
         dest.writeString(this.LocationLevel);
         dest.writeString(this.validation);
+        dest.writeString(this.Section_Name__c);
     }
 
     protected Task(Parcel in) {
@@ -295,6 +306,7 @@ public class Task implements Parcelable {
         this.IsApproved__c = in.readString();
         this.LocationLevel = in.readString();
         this.validation = in.readString();
+        this.Section_Name__c = in.readString();
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {

@@ -13,6 +13,17 @@ public class DashaBoardListModel implements Parcelable {
 
     private String Id;
     private String Name;
+
+    public String getMultiple_Role__c() {
+        return Multiple_Role__c;
+    }
+
+    public void setMultiple_Role__c(String multiple_Role__c) {
+        Multiple_Role__c = multiple_Role__c;
+    }
+
+    private String Multiple_Role__c;
+
     private ArrayList<Task> tasksList=new ArrayList<>();
 
     public String getId() {
@@ -40,6 +51,9 @@ public class DashaBoardListModel implements Parcelable {
     }
 
 
+    public DashaBoardListModel() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -49,19 +63,18 @@ public class DashaBoardListModel implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.Id);
         dest.writeString(this.Name);
+        dest.writeString(this.Multiple_Role__c);
         dest.writeTypedList(this.tasksList);
-    }
-
-    public DashaBoardListModel() {
     }
 
     protected DashaBoardListModel(Parcel in) {
         this.Id = in.readString();
         this.Name = in.readString();
+        this.Multiple_Role__c = in.readString();
         this.tasksList = in.createTypedArrayList(Task.CREATOR);
     }
 
-    public static final Parcelable.Creator<DashaBoardListModel> CREATOR = new Parcelable.Creator<DashaBoardListModel>() {
+    public static final Creator<DashaBoardListModel> CREATOR = new Creator<DashaBoardListModel>() {
         @Override
         public DashaBoardListModel createFromParcel(Parcel source) {
             return new DashaBoardListModel(source);

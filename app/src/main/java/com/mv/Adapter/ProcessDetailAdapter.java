@@ -57,9 +57,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextInputLayout  dateInpute;
-        LinearLayout llLayout, llHeaderLay, llLocation, llCheck, llMutiselect,llEdittext;
+        LinearLayout llLayout, llHeaderLay, llLocation, llCheck, llMutiselect,llEdittext,llDate;
         EditText questionResponse, date;
-        TextView question, header, locHeader, locText, checkText,editHeader;
+        TextView question, header, locHeader, locText, checkText,dateHeader,editHeader;
         Spinner spinnerResponse;
 
         CheckBox checkBox;
@@ -69,6 +69,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
             llLayout = (LinearLayout) view.findViewById(R.id.ll_spinner_layout);
             llEdittext = (LinearLayout) view.findViewById(R.id.ll_edittext_layout);
+            llDate = (LinearLayout) view.findViewById(R.id.ll_date_layout);
             llLocation = (LinearLayout) view.findViewById(R.id.ll_location_layout);
             llHeaderLay = (LinearLayout) view.findViewById(R.id.ll_headerr_lay);
             llCheck = (LinearLayout) view.findViewById(R.id.check_lay);
@@ -166,6 +167,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
                 }
             });
+            dateHeader = (TextView) view.findViewById(R.id.tv_date_question);
             checkText = (TextView) view.findViewById(R.id.check_header);
             checkBox = (CheckBox) view.findViewById(R.id.detail_chk);
             checkBox.setOnClickListener(new View.OnClickListener() {
@@ -225,7 +227,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
                 holder.questionResponse.setSingleLine(true);
-                holder.dateInpute.setVisibility(View.GONE);
+                holder.llDate.setVisibility(View.GONE);
                 // holder.questionResponse.setHint(task.getTask_Text__c());
                 if (task.getIs_Response_Mnadetory__c())
                     holder.editHeader.setText("* " + task.getTask_Text__c());
@@ -251,7 +253,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llEdittext.setVisibility(View.GONE);
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
-                holder.dateInpute.setVisibility(View.GONE);
+                holder.llDate.setVisibility(View.GONE);
                 holder.llLayout.setVisibility(View.VISIBLE);
 
                 myList = new ArrayList<String>(Arrays.asList(getColumnIdex(("Select," + task.getPicklist_Value__c()).split(","))));
@@ -270,7 +272,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
                 holder.questionResponse.setSingleLine(true);
-                holder.dateInpute.setVisibility(View.GONE);
+                holder.llDate.setVisibility(View.GONE);
                 // holder.questionResponse.setHint(task.getTask_Text__c());
                 if (task.getIs_Response_Mnadetory__c())
                     holder.editHeader.setText("* " + task.getTask_Text__c());
@@ -289,7 +291,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llEdittext.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
-                holder.dateInpute.setVisibility(View.GONE);
+                holder.llDate.setVisibility(View.GONE);
                 holder.header.setText(task.getTask_Text__c());
                 break;
             case Constants.LOCATION:
@@ -297,7 +299,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llEdittext.setVisibility(View.GONE);
                 holder.llLayout.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
-                holder.dateInpute.setVisibility(View.GONE);
+                holder.llDate.setVisibility(View.GONE);
                 holder.llLocation.setVisibility(View.VISIBLE);
                 if (task.getIs_Response_Mnadetory__c())
                     holder.locHeader.setText("* " + task.getTask_Text__c());
@@ -314,12 +316,12 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llHeaderLay.setVisibility(View.GONE);
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
-                holder.dateInpute.setVisibility(View.VISIBLE);
+                holder.llDate.setVisibility(View.VISIBLE);
                 // holder.questionResponse.setHint(task.getTask_Text__c());
                 if (task.getIs_Response_Mnadetory__c())
-                    holder.dateInpute.setHint("*" + task.getTask_Text__c());
+                    holder.dateHeader.setHint("*" + task.getTask_Text__c());
                 else
-                    holder.dateInpute.setHint(task.getTask_Text__c());
+                    holder.dateHeader.setHint(task.getTask_Text__c());
                 holder.date.setText(task.getTask_Response__c());
                 holder.date.setTag(position);
                 holder.date.setFocusable(false);
@@ -333,12 +335,12 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llHeaderLay.setVisibility(View.GONE);
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
-                holder.dateInpute.setVisibility(View.VISIBLE);
+                holder.llDate.setVisibility(View.VISIBLE);
                 // holder.questionResponse.setHint(task.getTask_Text__c());
                 if (task.getIs_Response_Mnadetory__c())
-                    holder.dateInpute.setHint("*" + task.getTask_Text__c());
+                    holder.dateHeader.setHint("*" + task.getTask_Text__c());
                 else
-                    holder.dateInpute.setHint(task.getTask_Text__c());
+                    holder.dateHeader.setHint(task.getTask_Text__c());
                 holder.date.setText(task.getTask_Response__c());
                 holder.date.setTag(position);
                 holder.date.setFocusable(false);
@@ -350,7 +352,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llLayout.setVisibility(View.GONE);
                 holder.llHeaderLay.setVisibility(View.GONE);
                 holder.llLocation.setVisibility(View.GONE);
-                holder.dateInpute.setVisibility(View.GONE);
+                holder.llDate.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.VISIBLE);
 
                 if (task.getIs_Response_Mnadetory__c())
@@ -365,13 +367,13 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llLayout.setVisibility(View.GONE);
                 holder.llHeaderLay.setVisibility(View.GONE);
                 holder.llLocation.setVisibility(View.GONE);
-                holder.dateInpute.setVisibility(View.VISIBLE);
+                holder.llDate.setVisibility(View.VISIBLE);
                 holder.llCheck.setVisibility(View.GONE);
                 // holder.questionResponse.setHint(task.getTask_Text__c());
                 if (task.getIs_Response_Mnadetory__c())
-                    holder.dateInpute.setHint("*" + task.getTask_Text__c());
+                    holder.dateHeader.setHint("*" + task.getTask_Text__c());
                 else
-                    holder.dateInpute.setHint(task.getTask_Text__c());
+                    holder.dateHeader.setHint(task.getTask_Text__c());
                 holder.date.setText(task.getTask_Response__c());
                 holder.date.setTag(position);
                 holder.date.setFocusable(false);
@@ -386,7 +388,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
                 holder.questionResponse.setSingleLine(true);
-                holder.dateInpute.setVisibility(View.GONE);
+                holder.llDate.setVisibility(View.GONE);
                 // holder.questionResponse.setHint(task.getTask_Text__c());
                 if (task.getIs_Response_Mnadetory__c())
                     holder.editHeader.setText("* " + task.getTask_Text__c());
@@ -406,7 +408,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llHeaderLay.setVisibility(View.GONE);
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llLayout.setVisibility(View.GONE);
-                holder.dateInpute.setVisibility(View.GONE);
+                holder.llDate.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
 
                 // holder.questionResponse.setHint(task.getTask_Text__c());
@@ -427,12 +429,12 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llHeaderLay.setVisibility(View.GONE);
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
-                holder.dateInpute.setVisibility(View.VISIBLE);
+                holder.llDate.setVisibility(View.VISIBLE);
                 // holder.questionResponse.setHint(task.getTask_Text__c());
                 if (task.getIs_Response_Mnadetory__c())
-                    holder.dateInpute.setHint("*" + task.getTask_Text__c());
+                    holder.dateHeader.setHint("*" + task.getTask_Text__c());
                 else
-                    holder.dateInpute.setHint(task.getTask_Text__c());
+                    holder.dateHeader.setHint(task.getTask_Text__c());
                 holder.date.setText(task.getTask_Response__c());
                 holder.date.setTag(position);
                 holder.date.setFocusable(false);
@@ -443,7 +445,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llEdittext.setVisibility(View.GONE);
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llLayout.setVisibility(View.GONE);
-                holder.dateInpute.setVisibility(View.GONE);
+                holder.llDate.setVisibility(View.GONE);
                 holder.llMutiselect.setVisibility(View.GONE);
         }
 

@@ -115,7 +115,7 @@ public class IndicatorTrainingFeedBackTaskList extends AppCompatActivity impleme
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getSessionData/";
+                + "/services/apexrest/getSessionDatademo/";
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override

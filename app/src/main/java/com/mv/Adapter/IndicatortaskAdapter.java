@@ -10,6 +10,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mv.Activity.PiachartActivity;
+import com.mv.Activity.ReportLocationSelectionActivity;
+import com.mv.Model.DashaBoardListModel;
+import com.mv.Model.LocationModel;
 import com.mv.Model.Task;
 import com.mv.R;
 import com.mv.Utils.Constants;
@@ -28,7 +31,8 @@ public class IndicatortaskAdapter extends RecyclerView.Adapter<IndicatortaskAdap
     private Activity mContext;
     List<Task> indicatortaskList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
-
+    private DashaBoardListModel moviesList;
+    LocationModel locationModel;
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView txtCommunityName;
         public LinearLayout layout;
@@ -41,9 +45,10 @@ public class IndicatortaskAdapter extends RecyclerView.Adapter<IndicatortaskAdap
                 @Override
                 public void onClick(View view) {
 
-                    Intent openClass = new Intent(mContext, PiachartActivity.class);
-                    openClass.putExtra(Constants.TITLE,indicatortaskList.get(getAdapterPosition()).getTask_Text__c());
+                    Intent openClass = new Intent(mContext, ReportLocationSelectionActivity.class);
+                    openClass.putExtra(Constants.TITLE,indicatortaskList.get(getAdapterPosition()).getSection_Name__c());
                     openClass.putExtra(Constants.INDICATOR_TASK,indicatortaskList.get(getAdapterPosition()));
+                    openClass.putExtra(Constants.INDICATOR_TASK_ROLE,moviesList.getMultiple_Role__c());
                     mContext.startActivity(openClass);
                     mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 }
@@ -52,9 +57,11 @@ public class IndicatortaskAdapter extends RecyclerView.Adapter<IndicatortaskAdap
     }
 
 
-    public IndicatortaskAdapter(List<Task> moviesList, Activity context) {
-        this.indicatortaskList = moviesList;
+    public IndicatortaskAdapter(DashaBoardListModel moviesList, Activity context) {
+        this.indicatortaskList = moviesList.getTasksList();
+        this.moviesList=moviesList;
         this.mContext = context;
+        this.locationModel=locationModel;
         preferenceHelper = new PreferenceHelper(context);
     }
 
@@ -69,7 +76,7 @@ public class IndicatortaskAdapter extends RecyclerView.Adapter<IndicatortaskAdap
     @Override
     public void onBindViewHolder(IndicatortaskAdapter.MyViewHolder holder, int position) {
 
-        holder.txtCommunityName.setText(indicatortaskList.get(position).getTask_Text__c());
+        holder.txtCommunityName.setText(indicatortaskList.get(position).getSection_Name__c());
     }
 
     @Override

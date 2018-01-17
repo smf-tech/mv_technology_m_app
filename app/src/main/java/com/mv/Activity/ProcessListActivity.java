@@ -95,12 +95,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     protected void onResume() {
         super.onResume();
         resultList.clear();
-        LocationSelectionActity.selectedState = "";
-        LocationSelectionActity.selectedDisrict = "";
-        LocationSelectionActity.selectedTaluka = "";
-        LocationSelectionActity.selectedCluster = "";
-        LocationSelectionActity.selectedVillage = "";
-        LocationSelectionActity.selectedSchool = "";
         getAllProcessData();
 
     }
@@ -193,7 +187,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getprocessAnswerTask?processId=" + proceesId + "&UserId=" + User.getCurrentUser(this).getId();
+                + "/services/apexrest/getprocessAnswerData?processId=" + proceesId + "&UserId=" + User.getCurrentUser(this).getId();
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -219,26 +213,26 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     Task processList = new Task();
                                     processList.setId(jsonArray.getJSONObject(i).getString("Id"));
-                                    processList.setName(jsonArray.getJSONObject(i).getString("Name"));
+                                   // processList.setName(jsonArray.getJSONObject(i).getString("Name"));
                                     //  processList.setIs_Completed__c(jsonArray.getJSONObject(i).getBoolean("Is_Completed__c"));
-                                    processList.setIs_Response_Mnadetory__c(jsonArray.getJSONObject(i).getBoolean("Is_Mandotory__c"));
-                                    processList.setTask_type__c(jsonArray.getJSONObject(i).getString("Task_Type__c"));
-                                    processList.setTask_Text__c(jsonArray.getJSONObject(i).getString("Question__c"));
-                                    if (jsonArray.getJSONObject(i).has("Picklist_Value__c"))
-                                        processList.setPicklist_Value__c(jsonArray.getJSONObject(i).getString("Picklist_Value__c"));
+                                    processList.setIs_Response_Mnadetory__c(jsonArray.getJSONObject(i).getBoolean("Is_Mandotory"));
+                                    processList.setTask_type__c(jsonArray.getJSONObject(i).getString("Task_Type"));
+                                    processList.setTask_Text__c(jsonArray.getJSONObject(i).getString("Question"));
+                                    if (jsonArray.getJSONObject(i).has("Picklist_Value"))
+                                        processList.setPicklist_Value__c(jsonArray.getJSONObject(i).getString("Picklist_Value"));
 
-                                    if (jsonArray.getJSONObject(i).has("Answer__c"))
-                                        processList.setTask_Response__c(jsonArray.getJSONObject(i).getString("Answer__c"));
+                                    if (jsonArray.getJSONObject(i).has("Answer"))
+                                        processList.setTask_Response__c(jsonArray.getJSONObject(i).getString("Answer"));
 
-                                    processList.setMV_Process__c(jsonArray.getJSONObject(i).getString("MV_Process__c"));
-                                    if (jsonArray.getJSONObject(i).has("Location_Level__c"))
-                                        processList.setLocationLevel(jsonArray.getJSONObject(i).getString("Location_Level__c"));
-                                    processList.setMV_Task__c_Id(jsonArray.getJSONObject(i).getString("MV_Task__c"));
-                                    processList.setTimestamp__c(jsonArray.getJSONObject(i).getString("Timestamp__c"));
-                                    processList.setUnique_Id__c(jsonArray.getJSONObject(i).getString("Unique_Id__c"));
-                                    processList.setMTUser__c(jsonArray.getJSONObject(i).getString("MV_User__c"));
-                                    processList.setIsApproved__c(jsonArray.getJSONObject(i).getString("IsApproved__c"));
-                                    processList.setValidation(jsonArray.getJSONObject(i).getString("Validation_on_text__c"));
+                                    processList.setMV_Process__c(jsonArray.getJSONObject(i).getString("MV_Process"));
+                                    if (jsonArray.getJSONObject(i).has("Location_Level"))
+                                        processList.setLocationLevel(jsonArray.getJSONObject(i).getString("Location_Level"));
+                                    processList.setMV_Task__c_Id(jsonArray.getJSONObject(i).getString("MV_Task"));
+                                    processList.setTimestamp__c(jsonArray.getJSONObject(i).getString("Timestamp"));
+                                    processList.setUnique_Id__c(jsonArray.getJSONObject(i).getString("Unique_Idd"));
+                                    processList.setMTUser__c(jsonArray.getJSONObject(i).getString("MV_User"));
+                                    processList.setIsApproved__c(jsonArray.getJSONObject(i).getString("IsApproved"));
+                                    processList.setValidation(jsonArray.getJSONObject(i).getString("Validation_on_text"));
                                     processList.setIsSave(Constants.PROCESS_STATE_SUBMIT);
                                     taskList.add(processList);
 
@@ -308,7 +302,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                             //list of task
                             taskContainerModel = new TaskContainerModel();
                             taskList = new ArrayList<>();
-
+                           User user= User.getCurrentUser(getApplicationContext());
                             for (int i = 0; i < resultArray.length(); i++) {
                                 JSONObject resultJsonObj = resultArray.getJSONObject(i);
 
@@ -321,9 +315,33 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 if (resultJsonObj.has("Picklist_Value__c"))
                                     processList.setPicklist_Value__c(resultJsonObj.getString("Picklist_Value__c"));
 
-                                if (resultJsonObj.has("Location_Level__c"))
+                                if (resultJsonObj.has("Location_Level__c")) {
                                     processList.setLocationLevel(resultJsonObj.getString("Location_Level__c"));
 
+                                    if (resultJsonObj.getString("Location_Level__c").equals("State")) {
+                                            processList.setTask_Response__c(user.getState());
+                                        LocationSelectionActity.selectedState = user.getState();
+
+                                    } else if (resultJsonObj.getString("Location_Level__c").equals("District")) {
+                                        LocationSelectionActity.selectedDisrict = user.getDistrict();
+
+                                        processList.setTask_Response__c(user.getDistrict());
+                                    } else if (resultJsonObj.getString("Location_Level__c").equals("Taluka")) {
+                                        processList.setTask_Response__c(user.getTaluka());
+                                        LocationSelectionActity.selectedTaluka = user.getTaluka();
+                                    } else if (resultJsonObj.getString("Location_Level__c").equals("Cluster")) {
+                                        LocationSelectionActity.selectedCluster = user.getCluster();
+                                        processList.setTask_Response__c(user.getCluster());
+                                    } else if (resultJsonObj.getString("Location_Level__c").equals("Village")) {
+                                        LocationSelectionActity.selectedVillage = user.getVillage();
+
+                                        processList.setTask_Response__c(user.getVillage());
+                                    } else if (resultJsonObj.getString("Location_Level__c").equals("School")) {
+                                        processList.setTask_Response__c(user.getSchool_Name());
+                                        LocationSelectionActity.selectedSchool = user.getSchool_Name();
+                                    }
+
+                                }
                                 processList.setMV_Process__c(resultJsonObj.getString("MV_Process__c"));
                                 processList.setTask_Text__c(resultJsonObj.getString("Task_Text__c"));
                                 processList.setTask_type__c(resultJsonObj.getString("Task_type__c"));

@@ -147,8 +147,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
 
                 for (int i = 0; i < taskList.size(); i++) {
-                /*    if(taskList.get(i).getIsSave().equals(Constants.PROCESS_STATE_SUBMIT))
-                    taskList.get(i).setIsSave(Constants.PROCESS_STATE_MODIFIED);
+                /*    if(dashaBoardListModel.get(i).getIsSave().equals(Constants.PROCESS_STATE_SUBMIT))
+                    dashaBoardListModel.get(i).setIsSave(Constants.PROCESS_STATE_MODIFIED);
                     else*/
                         taskList.get(i).setIsSave(Constants.PROCESS_STATE_SAVE);
                     taskList.get(i).setTimestamp__c(timestamp);
@@ -258,7 +258,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
         }
         if (!manditoryFlag) {
-            // AppDatabase.getAppDatabase(context).userDao().insertTask(taskList);
+            // AppDatabase.getAppDatabase(context).userDao().insertTask(dashaBoardListModel);
             if (Utills.isConnected(this))
             callApiForSubmit(taskList);
             else
@@ -284,7 +284,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
             JsonParser jsonParser = new JsonParser();
             JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
-            apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertAnswer", gsonObject).enqueue(new Callback<ResponseBody>() {
+            apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertAnswerForProcessAnswer", gsonObject).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Utills.hideProgressDialog();
