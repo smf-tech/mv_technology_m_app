@@ -73,9 +73,7 @@
             android:layout_height="wrap_content"
             android:background="@null"
             android:scrollbars="vertical"
-            android:singleLine="true"
             android:textColor="@color/black"
-
             android:textSize="@dimen/medium_text" />
     </android.support.design.widget.TextInputLayout>
 
@@ -181,10 +179,10 @@
             android:layout_marginTop="@dimen/dimen_10dp"
             android:background="@drawable/grey_box"
             android:minHeight="40dp"
-            android:text="Select"
             android:padding="@dimen/dimen_5dp"
             android:prompt="@string/question_5"
-            android:spinnerMode="dialog" />
+            android:spinnerMode="dialog"
+            android:text="Select" />
 
 
     </LinearLayout>

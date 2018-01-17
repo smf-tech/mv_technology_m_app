@@ -457,13 +457,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
 
     private boolean isValidate() {
         String str = "";
-        if (mSelectDistrict == 0) {
-            str = "Please select district";
-        } else if (mSelectTaluka == 0) {
-            str = "Please select taluka";
-        } else if (mSelectIssueType == 0) {
-            str = "Please select issue type";
-        } else if (mSelectIssuePriority == 0) {
+        if (mSelectIssuePriority == 0) {
             str = "Please select issue Priority ";
         } else if (binding.editTextContent.getText().toString().trim().length() == 0) {
             str = "Please enter Content";
