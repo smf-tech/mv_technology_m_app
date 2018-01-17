@@ -7,6 +7,7 @@ import com.google.gson.JsonObject;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -36,6 +37,10 @@ public interface ServiceRequest {
 
     @POST("")
     Call<ResponseBody> sendDataToSalesforce(@Url String url, @Body JsonObject object);
+
+
+    @DELETE("")
+    Call<ResponseBody> deleteDataFromSalesforce(@Url String url);
 
     @POST("")
     Call<ResponseBody> sendImageToSalesforce(@Url String url, @Body JsonArray jsonArray);

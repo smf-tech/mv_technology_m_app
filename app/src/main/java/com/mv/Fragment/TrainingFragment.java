@@ -78,6 +78,9 @@ public class TrainingFragment extends Fragment {
                 mList.add(content);
             }
             adapter.notifyDataSetChanged();
+            if (Utills.isConnected(getActivity())) {
+                getData();
+            }
         }
 
 
@@ -185,6 +188,9 @@ public class TrainingFragment extends Fragment {
         } else if (mList.get(position).getFileType().equalsIgnoreCase("video")) {
             intent.putExtra("FILENAME", mList.get(position).getName() + ".mp4");
             intent.putExtra("FILETYPE", mList.get(position).getName() + "video");
+        } else if (mList.get(position).getFileType().equalsIgnoreCase("ppt")) {
+            intent.putExtra("FILENAME", mList.get(position).getName() + ".ppt");
+            intent.putExtra("FILETYPE", mList.get(position).getName() + "ppt");
         }
         getActivity().startService(intent);
     }

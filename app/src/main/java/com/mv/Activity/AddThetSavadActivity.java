@@ -15,7 +15,6 @@ import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.SystemClock;
 import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -26,7 +25,6 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -92,7 +90,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
     private ArrayAdapter<String> district_adapter, taluka_adapter;
     private PreferenceHelper preferenceHelper;
     private Content content;
-
+    private String stringId = "";
     private Dialog dialogrecord;
     private TextView rectext;
     private static File auxFile, auxFileAudio, imgGallaery;
@@ -552,6 +550,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
                                 if (object1.has("Id") && (FinalUri != null || outputUri != null || audioUri != null)) {
                                     JSONObject object2 = new JSONObject();
                                     object2.put("id", object1.getString("Id"));
+                                    stringId = object1.getString("Id");
                                     if (FinalUri != null)
                                         object2.put("type", "png");
                                     else if (outputUri != null)
@@ -672,7 +671,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
                                 mp.setDataSource(audioFilePath);//Write your location here
                                 mp.prepare();
                                 mp.start();
-                            }else{
+                            } else {
                                 mp.start();
                             }
 
@@ -698,8 +697,8 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
                     mp.pause();
                 }
                 stopClicked(v);
-                if(audioUri!=null)
-                binding.addImage.setImageResource(R.drawable.mic_audio);
+                if (audioUri != null)
+                    binding.addImage.setImageResource(R.drawable.mic_audio);
                 dialogrecord.dismiss();
             }
         });
@@ -707,7 +706,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                audioUri=null;
+                audioUri = null;
                 binding.addImage.setImageResource(R.drawable.add);
                 dialogrecord.dismiss();
             }
@@ -761,7 +760,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
 
 // dialogrecord.dismiss();
             } else {
-                if(mediaPlayer!=null) {
+                if (mediaPlayer != null) {
                     mediaPlayer.release();
                     mediaPlayer = null;
                     audioUri = Uri.fromFile(new File(audioFilePath));
@@ -796,6 +795,34 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
                         }
                     }
                 } catch (Exception e) {
+                    deleteSalesforceData();
+                    Utills.hideProgressDialog();
+                    Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                deleteSalesforceData();
+                Utills.hideProgressDialog();
+                Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+            }
+        });
+    }
+
+    private void deleteSalesforceData() {
+        Utills.showProgressDialog(this);
+
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        apiService.getSalesForceData(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + "/services/apexrest/DeletePost/" + stringId).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    Utills.showToast("Please try again...", getApplicationContext());
+                } catch (Exception e) {
                     Utills.hideProgressDialog();
                     Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
                 }
@@ -809,11 +836,10 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
-
     private boolean isValidate() {
         String str = "";
 
-        if (mSelectReportingType == 0&&!User.getCurrentUser(getApplicationContext()).getRoll().equals("President")) {
+        if (mSelectReportingType == 0 && !User.getCurrentUser(getApplicationContext()).getRoll().equals("President")) {
             str = "Please select Category ";
         } else if (binding.editTextContent.getText().toString().trim().length() == 0) {
             str = "Please enter Content";

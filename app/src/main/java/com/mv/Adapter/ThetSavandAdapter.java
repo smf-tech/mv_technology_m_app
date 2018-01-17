@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v7.widget.CardView;
@@ -20,7 +21,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -54,8 +54,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -440,18 +440,66 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                     if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent() != null
                             && !(mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false"))) {
                         if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image")) {
-                            str = str + "\n\nLink : http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".png";
+                            new AsyncTask<Void, Void, Void>() {
+                                @Override
+                                protected void onPreExecute() {
+                                    theBitmap = null;
+                                }
+
+
+                                @Override
+
+                                protected Void doInBackground(Void... params) {
+                                    try {
+                                        theBitmap = Glide.
+                                                with(mContext).
+                                                load("http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".png").
+                                                asBitmap().
+                                                into(200, 200).
+                                                get();
+                                    } catch (final ExecutionException e) {
+
+                                    } catch (final InterruptedException e) {
+
+                                    }
+                                    return null;
+                                }
+
+                                @Override
+                                protected void onPostExecute(Void dummy) {
+                                    if (theBitmap != null) {
+                                        Intent i = new Intent(Intent.ACTION_SEND);
+                                        i.setType("image*//**//**//**//*");
+                                        i.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
+                                        i.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(theBitmap, getAdapterPosition()));
+                                        Utills.hideProgressDialog();
+                                        mContext.startActivity(Intent.createChooser(i, "Share Post"));
+                                    }
+                                }
+                            }.execute();
                         } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Video")) {
                             str = str + "\n\nLink : http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".mp4";
+                            Intent i = new Intent(Intent.ACTION_SEND);
+                            i.setType("text/html");
+                            i.putExtra(Intent.EXTRA_TEXT, str);
+                            Utills.hideProgressDialog();
+                            mContext.startActivity(Intent.createChooser(i, "Share Post"));
                         } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Audio")) {
                             str = str + "\n\nLink : http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".mp3";
+                            Intent i = new Intent(Intent.ACTION_SEND);
+                            i.setType("text/html");
+                            i.putExtra(Intent.EXTRA_TEXT, str);
+                            Utills.hideProgressDialog();
+                            mContext.startActivity(Intent.createChooser(i, "Share Post"));
                         }
+                    } else {
+                        Intent i = new Intent(Intent.ACTION_SEND);
+                        i.setType("text/html");
+                        i.putExtra(Intent.EXTRA_TEXT, str);
+                        Utills.hideProgressDialog();
+                        mContext.startActivity(Intent.createChooser(i, "Share Post"));
                     }
-                    Intent i = new Intent(Intent.ACTION_SEND);
-                    i.setType("text/html");
-                    i.putExtra(Intent.EXTRA_TEXT, str);
-                    Utills.hideProgressDialog();
-                    mContext.startActivity(Intent.createChooser(i, "Share Post"));
+
                    /* if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent() == null
                             || TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())
                             || mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) {
@@ -537,7 +585,12 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                         intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
                         intent.putExtra("flag", "not_forward_flag");
                         mContext.startActivity(intent);
-                    } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("null")) {
+                    } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) {
+                        Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
+                        intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
+                        intent.putExtra("flag", "not_forward_flag");
+                        mContext.startActivity(intent);
+                    }else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image")) {
                         Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
                         intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
                         intent.putExtra("flag", "not_forward_flag");

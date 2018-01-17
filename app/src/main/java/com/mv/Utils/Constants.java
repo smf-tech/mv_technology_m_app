@@ -8,17 +8,17 @@ import android.net.Uri;
 
 public class Constants {
 
-    /* Production*/
+    /* Production
     public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com";
     public static String REPORTID = "a1L7F000000YNK4";
-    public static String ISSUEID = "a1L7F000000YNJz";
-    /* Sandbox
+    public static String ISSUEID = "a1L7F000000YNJz";*/
 
+    /* Sandbox*/
     public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
     public static String REPORTID = "a1G0k000000522K";
-    public static String ISSUEID = "a1G0k000000522F";*/
+    public static String ISSUEID = "a1G0k000000522F";
 
     public static int SELECT_AUDIO = 501;
     public static Uri shareUri = null;
@@ -75,6 +75,7 @@ public class Constants {
     public static final String EVENT_MOBILE = "Event Mobile";
     public static final String EVENT_DATE = "Event Date";
     public static final String EVENT_DESCRIPTION = "Event Description";
+    public static final String IMAGE = "Image";
 
     public static final String State = "State";
     public static final String DISTRICT = "District";
