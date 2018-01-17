@@ -19,6 +19,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -53,14 +54,14 @@ public class TrainingFragment extends Fragment {
     private TrainingAdapter adapter;
     private PreferenceHelper preferenceHelper;
     private ArrayList<DownloadContent> mList = new ArrayList<DownloadContent>();
-
+    TextView textNoData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_training, container, false);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-
+        textNoData = (TextView) view.findViewById(R.id.textNoData);
         preferenceHelper = new PreferenceHelper(getActivity());
         registerReceiver();
         setRecyclerView();
@@ -140,13 +141,18 @@ public class TrainingFragment extends Fragment {
                             JSONArray jsonArray = new JSONArray(str);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<DownloadContent> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), DownloadContent[].class));
-                            if (temp.size() > 0)
-                                preferenceHelper.insertString(PreferenceHelper.TrainingContentData, str);
-                            mList.clear();
-                            for (DownloadContent content : temp) {
-                                mList.add(content);
-                            }
-                            adapter.notifyDataSetChanged();
+                             if (temp.size()!=0) {
+                                 if (temp.size() > 0)
+                                     preferenceHelper.insertString(PreferenceHelper.TrainingContentData, str);
+                                 mList.clear();
+                                 for (DownloadContent content : temp) {
+                                     mList.add(content);
+                                 }
+                                 adapter.notifyDataSetChanged();
+                                 textNoData.setVisibility(View.GONE);
+                             }else {
+                                 textNoData.setVisibility(View.VISIBLE);
+                             }
                         }
                     }
                 } catch (JSONException e) {
@@ -176,6 +182,7 @@ public class TrainingFragment extends Fragment {
         Utills.showToast("Downloading Started...", getActivity());
         Intent intent = new Intent(getActivity(), DownloadService.class);
         intent.putExtra("URL", mList.get(position).getUrl());
+        intent.putExtra("fragment_flag","Training_Fragment");
         if (mList.get(position).getFileType().equalsIgnoreCase("zip")) {
             intent.putExtra("FILENAME", mList.get(position).getName() + ".zip");
             intent.putExtra("FILETYPE", mList.get(position).getName() + "zip");

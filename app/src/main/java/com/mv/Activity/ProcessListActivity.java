@@ -52,6 +52,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     private ProcessListAdapter mAdapter;
     String proceesId, Processname;
     Context mContext;
+    TextView textNoData;
 
 
     TaskContainerModel taskContainerModel;
@@ -81,7 +82,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         //storing process Id to preference to use later
         preferenceHelper.insertString(Constants.PROCESS_ID, proceesId);
         preferenceHelper.insertString(Constants.PROCESS_TYPE, Constants.MANGEMENT_PROCESS);
-
+        textNoData = (TextView) findViewById(R.id.textNoData);
         setActionbar(Processname);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         binding.rvProcess.setLayoutManager(mLayoutManager);

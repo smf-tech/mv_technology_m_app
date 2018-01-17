@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.mv.Activity.ClassObservationActivity;
 import com.mv.Activity.ScheduleTrainingActivity;
@@ -51,11 +52,13 @@ ProgrammeManagmentFragment extends Fragment {
     private TemplateAdapter mAdapter;
     private ActivityNewTemplateBinding binding;
     RecyclerView.LayoutManager mLayoutManager;
+    TextView textNoData;
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.activity_new_template, container, false);
-        View view = binding.getRoot();
+         view = binding.getRoot();
         binding.setVariable(BR.vm, new ParentViewModel());
         RelativeLayout mToolBar = (RelativeLayout) view.findViewById(R.id.toolbar);
         mToolBar.setVisibility(View.GONE);
@@ -75,7 +78,7 @@ ProgrammeManagmentFragment extends Fragment {
                 }
         );
 
-
+        textNoData = (TextView) view.findViewById(R.id.textNoData);
         mAdapter = new TemplateAdapter(processAllList, getActivity());
          mLayoutManager = new LinearLayoutManager(getActivity());
         binding.recyclerView.setLayoutManager(mLayoutManager);
@@ -112,28 +115,33 @@ ProgrammeManagmentFragment extends Fragment {
                 try {
                     if (response.isSuccess()) {
                         JSONArray jsonArray = new JSONArray(response.body().string());
-                        processAllList.clear();
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            Template processList = new Template();
+                        if (jsonArray.length()!=0) {
+                            processAllList.clear();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                Template processList = new Template();
 
-                            processList.setType(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("type"));
-                            processList.setUrl(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("url"));
-                            processList.setId(jsonArray.getJSONObject(i).getString("Id"));
-                            processList.setName(jsonArray.getJSONObject(i).getString("Name"));
+                                processList.setType(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("type"));
+                                processList.setUrl(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("url"));
+                                processList.setId(jsonArray.getJSONObject(i).getString("Id"));
+                                processList.setName(jsonArray.getJSONObject(i).getString("Name"));
 
-                            processList.setIs_Editable__c(jsonArray.getJSONObject(i).getBoolean("Is_Editable__c"));
-                            processList.setIs_Multiple_Entry_Allowed__c(jsonArray.getJSONObject(i).getBoolean("Is_Multiple_Entry_Allowed__c"));
+                                processList.setIs_Editable__c(jsonArray.getJSONObject(i).getBoolean("Is_Editable__c"));
+                                processList.setIs_Multiple_Entry_Allowed__c(jsonArray.getJSONObject(i).getBoolean("Is_Multiple_Entry_Allowed__c"));
 
-                            processList.setLocation(jsonArray.getJSONObject(i).getBoolean("Location_Required__c"));
+                                processList.setLocation(jsonArray.getJSONObject(i).getBoolean("Location_Required__c"));
 
-                            if (jsonArray.getJSONObject(i).has("Location_Level__c"))
-                                processList.setLocationLevel(jsonArray.getJSONObject(i).getString("Location_Level__c"));
+                                if (jsonArray.getJSONObject(i).has("Location_Level__c"))
+                                    processList.setLocationLevel(jsonArray.getJSONObject(i).getString("Location_Level__c"));
 
-                            processAllList.add(processList);
+                                processAllList.add(processList);
+                            }
+                            AppDatabase.getAppDatabase(getActivity()).userDao().deleteTable();
+                            AppDatabase.getAppDatabase(getActivity()).userDao().insertProcess(processAllList);
+                            mAdapter.notifyDataSetChanged();
+                            textNoData.setVisibility(View.GONE);
+                        }else {
+                            textNoData.setVisibility(View.VISIBLE);
                         }
-                        AppDatabase.getAppDatabase(getActivity()).userDao().deleteTable();
-                        AppDatabase.getAppDatabase(getActivity()).userDao().insertProcess(processAllList);
-                        mAdapter.notifyDataSetChanged();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

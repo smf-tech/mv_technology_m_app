@@ -69,6 +69,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -87,7 +89,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     private ActivityHome1Binding binding;
-
     private PreferenceHelper preferenceHelper;
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
@@ -95,10 +96,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private ViewPagerAdapter adapter;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
-
     private FusedLocationProviderClient mFusedLocationClient;
     private Location mLastLocation;
+    Date date;
 
 
     @Override
@@ -115,40 +115,50 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         viewPager = (ViewPager) findViewById(R.id.pager);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         final LocationManager manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE );
-        Date date = new Date(System.currentTimeMillis());
-        Log.e("date", String.valueOf(date));
-        Log.e("hrs day-->", String.valueOf(date.getMinutes()));
-        preferenceHelper.insetLong(PreferenceHelper.CURRENTTIME, date.getTime());
+         date = new Date(System.currentTimeMillis());
+
+
 
 
         if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
-
-            if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-                LocationPopup();
+            if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("true")) {
 
 
-            }else {
-                if ( manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    LocationPopup();
+
+                } else {
+                    if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+
+                        Utills.scheduleJob(getApplicationContext());
+
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
+
+                        try {
+                            Date CURRENTDATE = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
+
+                            long APICALLDATE = preferenceHelper.getLong(PreferenceHelper.APICALLTIME);
+                            long different = CURRENTDATE.getTime() - APICALLDATE;
+                            long hrs = (int) ((different / (1000 * 60 * 60)));
+
+                            // getAddress();
+                            if (hrs >= 5) {
+                                getAddress();
+                            }/*else {
+                           // Utills.scheduleJob(getApplicationContext());
+                          Utills.showToast("less than 5",HomeActivity.this);
+                        }*/
 
 
-                 long dateee=preferenceHelper.getLong(PreferenceHelper.CURRENTTIME);
-                 long apidate = preferenceHelper.getLong(PreferenceHelper.APICALLTIME);
-                 long diff = dateee - apidate;
-                 int d = (int) ((diff)/(1000*60*60));
-                 int t= (int)((dateee)/(1000*60*60));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
 
-                 Log.e("date diff in two dATE", String.valueOf(t));
-                 if(d>=120000 ){
-                     getAddress();
 
-                 }
-
-                 //Utills.scheduleJob(getApplicationContext());
-
+                    }
                 }
             }
         }
-
 
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             if (Utills.isConnected(this))
@@ -903,12 +913,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                 JSONObject jsonObject = new JSONObject(data);
                                 String status = jsonObject.getString("status");
                                 String message = jsonObject.getString("msg");
-                                Log.e("status",status);
+
                                 if (status.equals("Success")) {
-                                    Date date = new Date(System.currentTimeMillis());
-                                   // preferenceHelper.insetLong(PreferenceHelper.APICALLTIME, date.getTime());
+
+                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
+                                    Date APICALLDATE = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
+
+                                    preferenceHelper.insetLong(PreferenceHelper.APICALLTIME,APICALLDATE.getTime());
+
+
                                 } else {
-                                    //Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
                                 }
                             }
                         }
@@ -917,11 +931,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         e.printStackTrace();
                     } catch (JSONException e) {
                         e.printStackTrace();
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
+
                     Toast.makeText(getApplicationContext(), "something went wrong", Toast.LENGTH_LONG).show();
                 }
             });
@@ -934,5 +951,4 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
-}
+   }

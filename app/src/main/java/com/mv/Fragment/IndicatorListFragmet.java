@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.mv.Activity.ClassObservationActivity;
 import com.mv.Activity.ScheduleTrainingActivity;
@@ -55,12 +56,13 @@ public class IndicatorListFragmet  extends Fragment {
     private IndicatorListAdapter mAdapter;
     private ActivityNewTemplateBinding binding;
     RecyclerView.LayoutManager mLayoutManager;
-
+    TextView textNoData;
+    View view;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.activity_new_template, container, false);
-        View view = binding.getRoot();
+         view = binding.getRoot();
         binding.setVariable(BR.vm, new ParentViewModel());
         RelativeLayout mToolBar = (RelativeLayout) view.findViewById(R.id.toolbar);
         mToolBar.setVisibility(View.GONE);
@@ -75,6 +77,7 @@ public class IndicatorListFragmet  extends Fragment {
     }
 
     private void initViews() {
+        textNoData = (TextView) view.findViewById(R.id.textNoData);
         preferenceHelper = new PreferenceHelper(getActivity());
         binding.swiperefresh.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
@@ -115,36 +118,41 @@ public class IndicatorListFragmet  extends Fragment {
                 binding.swiperefresh.setRefreshing(false);
                 try {
                     JSONArray jsonArray = new JSONArray(response.body().string());
-                    processAllList.clear();
-                    DashaBoardListModel processList = new DashaBoardListModel();
-                    if(User.getCurrentUser(getActivity()).getState().equals("Maharashtra")) {
-                        processList.setName("मूल्यवर्धन 4दिवसीय तालुका पातळी कार्यशाळा - प्रशिक्षणार्थी अभिप्राय");
-                        processAllList.add(processList);
-                    }
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        processList = new DashaBoardListModel();
-                        JSONObject jsonObject= jsonArray.getJSONObject(i);
-
-                        JSONObject processObj=jsonObject.getJSONObject("process");
-                        processList.setId(processObj.getString("Id"));
-                        processList.setName(processObj.getString("Name"));
-                        JSONArray tasklist=jsonObject.getJSONArray("taskList");
-                        for (int j = 0; j < tasklist.length(); j++) {
-                            Task task=new Task();
-                            task.setId(tasklist.getJSONObject(j).getString("Id"));
-                            task.setTask_Text__c(tasklist.getJSONObject(j).getString("Task_Text__c"));
-                            task.setTask_type__c(tasklist.getJSONObject(j).getString("Task_type__c"));
-                            if (tasklist.getJSONObject(j).has("Location_Level__c"))
-                                task.setLocationLevel(tasklist.getJSONObject(j).getString("Location_Level__c"));
-                            task.setMV_Process__c(tasklist.getJSONObject(j).getString("MV_Process__c"));
-                            processList.getTasksList().add(task);
-
-
+                    if (jsonArray.length()!=0) {
+                        processAllList.clear();
+                        DashaBoardListModel processList = new DashaBoardListModel();
+                        if (User.getCurrentUser(getActivity()).getState().equals("Maharashtra")) {
+                            processList.setName("मूल्यवर्धन 4दिवसीय तालुका पातळी कार्यशाळा - प्रशिक्षणार्थी अभिप्राय");
+                            processAllList.add(processList);
                         }
-                        processAllList.add(processList);
-                    }
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            processList = new DashaBoardListModel();
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
 
-                    mAdapter.notifyDataSetChanged();
+                            JSONObject processObj = jsonObject.getJSONObject("process");
+                            processList.setId(processObj.getString("Id"));
+                            processList.setName(processObj.getString("Name"));
+                            JSONArray tasklist = jsonObject.getJSONArray("taskList");
+                            for (int j = 0; j < tasklist.length(); j++) {
+                                Task task = new Task();
+                                task.setId(tasklist.getJSONObject(j).getString("Id"));
+                                task.setTask_Text__c(tasklist.getJSONObject(j).getString("Task_Text__c"));
+                                task.setTask_type__c(tasklist.getJSONObject(j).getString("Task_type__c"));
+                                if (tasklist.getJSONObject(j).has("Location_Level__c"))
+                                    task.setLocationLevel(tasklist.getJSONObject(j).getString("Location_Level__c"));
+                                task.setMV_Process__c(tasklist.getJSONObject(j).getString("MV_Process__c"));
+                                processList.getTasksList().add(task);
+
+
+                            }
+                            processAllList.add(processList);
+                        }
+
+                        mAdapter.notifyDataSetChanged();
+                        textNoData.setVisibility(View.GONE);
+                    } else {
+                        textNoData.setVisibility(View.VISIBLE);
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

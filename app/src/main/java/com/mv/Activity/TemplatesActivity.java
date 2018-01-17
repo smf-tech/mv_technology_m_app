@@ -53,6 +53,7 @@ public class TemplatesActivity extends AppCompatActivity implements View.OnClick
     private TemplateAdapter mAdapter;
     private List<Template> templateList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
+    TextView textNoData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,10 +84,15 @@ public class TemplatesActivity extends AppCompatActivity implements View.OnClick
                     templateList.clear();
                     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                     List<Template> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Template[].class));
-                    for (int i = 0; i < temp.size(); i++) {
-                        templateList.add(temp.get(i));
+                    if(temp.size()!=0) {
+                        for (int i = 0; i < temp.size(); i++) {
+                            templateList.add(temp.get(i));
+                        }
+                        mAdapter.notifyDataSetChanged();
+                        textNoData.setVisibility(View.GONE);
+                    }else {
+                        textNoData.setVisibility(View.VISIBLE);
                     }
-                    mAdapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -154,6 +160,7 @@ public class TemplatesActivity extends AppCompatActivity implements View.OnClick
     private void initViews() {
         setActionbar(getString(R.string.Templates));
         preferenceHelper = new PreferenceHelper(this);
+        textNoData = (TextView) findViewById(R.id.textNoData);
         mAdapter = new TemplateAdapter(templateList, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         binding.recyclerView.setLayoutManager(mLayoutManager);

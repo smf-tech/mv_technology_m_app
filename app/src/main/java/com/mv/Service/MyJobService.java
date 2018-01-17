@@ -18,12 +18,15 @@ import com.mv.Model.User;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.PreferenceHelper;
+import com.mv.Utils.Utills;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import okhttp3.ResponseBody;
@@ -83,10 +86,14 @@ public class MyJobService extends JobService {
                                 String status = jsonObject.getString("status");
                                 String message = jsonObject.getString("msg");
                                 if (status.equals("Success")) {
-                                    Date date = new Date(System.currentTimeMillis());
-                                    preferenceHelper.insetLong(PreferenceHelper.APICALLTIME,date.getTime());
+                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
+                                    Date APICALLDATE = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
+
+                                    preferenceHelper.insetLong(PreferenceHelper.APICALLTIME,APICALLDATE.getTime());
+
+
                                 } else {
-                                    //Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
+                                   // Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
                                 }
                             }
                         }
@@ -94,6 +101,8 @@ public class MyJobService extends JobService {
                     } catch (IOException e) {
                         e.printStackTrace();
                     } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (ParseException e) {
                         e.printStackTrace();
                     }
                 }
@@ -128,6 +137,7 @@ public class MyJobService extends JobService {
                         mLastLocation = location;
                        String latitude = String.valueOf(mLastLocation.getLatitude());
                         String longitude = String.valueOf(mLastLocation.getLongitude());
+
                         GetMapParameters(latitude, longitude);
                         if (!Geocoder.isPresent()) {
                             //Toast.makeText(getApplicationContext(),"No geocoder available",Toast.LENGTH_SHORT).show();
