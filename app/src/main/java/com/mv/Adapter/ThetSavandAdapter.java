@@ -17,7 +17,6 @@ import android.os.Handler;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.text.util.Linkify;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -91,7 +90,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
     private ThetSavandFragment fragment;
     int temp = 555500, deletePosition;
     MediaPlayer mPlayer = new MediaPlayer();
-    private static final Pattern urlPattern = Pattern.compile( "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
+    private static final Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
             + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
 
@@ -293,9 +292,9 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             holder.txt_template_type.setText("Template Type : " + mDataList.get(position).getTemplate());*/
         holder.txt_template_type.setText("Title : " + mDataList.get(position).getTitle());
         holder.txt_desc.setText("Description : " + mDataList.get(position).getDescription());
-       // Linkify.addLinks(holder.txt_desc, urlPattern, mDataList.get(position).getDescription());
-      //  Linkify.addLinks(holder.txt_desc,Linkify.WEB_URLS);
-      //  android.util.Patterns.WEB_URL.matcher( mDataList.get(position).getDescription()).matches();
+        // Linkify.addLinks(holder.txt_desc, urlPattern, mDataList.get(position).getDescription());
+        //  Linkify.addLinks(holder.txt_desc,Linkify.WEB_URLS);
+        //  android.util.Patterns.WEB_URL.matcher( mDataList.get(position).getDescription()).matches();
 
         holder.txt_time.setText(mDataList.get(position).getTime().toString());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");
@@ -474,7 +473,6 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             layout_download_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Utills.showToast("download", mContext);
                     startDownload(getAdapterPosition());
 
                 }

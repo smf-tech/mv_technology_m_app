@@ -77,7 +77,6 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
     private ArrayAdapter<String> district_adapter, taluka_adapter;
     private PreferenceHelper preferenceHelper;
     private Content content;
-
     private String img_str;
 
     @Override

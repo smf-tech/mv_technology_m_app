@@ -81,10 +81,10 @@
                 android:id="@+id/imgMore"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:visibility="gone"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:src="@drawable/ic_more_vert_black_24dp" />
+                android:src="@drawable/ic_more_vert_black_24dp"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <LinearLayout
@@ -187,9 +187,8 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:autoLink="web"
-            android:ellipsize="end"
-            android:maxLines="3"
             android:linksClickable="true"
+            android:maxLines="3"
             android:text="@string/item_desc"
             android:textColor="@color/dark_grey"
             android:textIsSelectable="true"

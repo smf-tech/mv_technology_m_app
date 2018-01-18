@@ -117,53 +117,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         date = new Date(System.currentTimeMillis());
 
 
-        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
-            if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("true")) {
 
-
-                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    LocationPopup();
-                    LocatonFlag =0;
-
-                } else {
-                    if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-
-                       // Utills.scheduleJob(getApplicationContext());
-                        getAddress();
-
-                       /* SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
-
-                        try {
-                            Date CURRENTDATE = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
-
-                            long APICALLDATE = preferenceHelper.getLong(PreferenceHelper.APICALLTIME);
-                            long different = CURRENTDATE.getTime() - APICALLDATE;
-                            long hrs = (int) ((different / (1000 * 60 * 60)));
-
-                            // getAddress();
-                            if (hrs >= 5) {
-                                getAddress();
-                            }*//*else {
-                           // Utills.scheduleJob(getApplicationContext());
-                          Utills.showToast("less than 5",HomeActivity.this);
-                        }*//*
-
-
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-*/
-
-                    }else {
-                        if (LocatonFlag == 0) {
-                            if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                                getAddress();
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             if (Utills.isConnected(this))

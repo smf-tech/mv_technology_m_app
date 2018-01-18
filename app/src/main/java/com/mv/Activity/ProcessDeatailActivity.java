@@ -368,13 +368,13 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         boolean isImagePresent = false;
                         for (int j = 0; j < resultArray.length(); j++) {
                             JSONObject object = resultArray.getJSONObject(j);
-                            if (object.has("Task_Type__c")) {
-                                if (object.getString("Task_Type__c").equalsIgnoreCase(Constants.IMAGE)) {
-                                    if (object.has("Answer__c")) {
-                                        if (object.getString("Answer__c").length() > 0) {
+                            if (object.has("Task_Type")) {
+                                if (object.getString("Task_Type").equalsIgnoreCase(Constants.IMAGE)) {
+                                    if (object.has("Answer")) {
+                                        if (object.getString("Answer").length() > 0) {
                                             isImagePresent = true;
-                                            imageId = object.getString("Answer__c");
-                                            uniqueId = object.getString("Unique_Id__c");
+                                            imageId = object.getString("Answer");
+                                            uniqueId = object.getString("Id");
                                         }
                                     }
                                 }

@@ -34,7 +34,6 @@ import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
-import com.mv.Service.DownloadService;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -391,7 +390,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                         FileOutputStream out = new FileOutputStream(file);
                         decodedByte.compress(Bitmap.CompressFormat.PNG, 90, out);
                         out.close();
-
+                        notifyDataSetChanged();
                      /*   Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
                         shareIntent.setType("text/html");
                         shareIntent.putExtra(android.content.Intent.EXTRA_TEXT, "Title : "+mDataList.get(adapterPosition).getTitle()+"\n\nDescription : "+mDataList.get(adapterPosition).getDescription());
