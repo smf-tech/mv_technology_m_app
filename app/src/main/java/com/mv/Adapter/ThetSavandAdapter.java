@@ -473,6 +473,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             layout_download_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                //    Utills.showToast("download",mContext);
                     startDownload(getAdapterPosition());
 
                 }
