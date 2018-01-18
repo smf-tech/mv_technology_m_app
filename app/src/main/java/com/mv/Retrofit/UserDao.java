@@ -59,6 +59,8 @@ public interface UserDao {
     void deleteTable();
 
 
+    @Query("DELETE FROM  " + Constants.TABLE_CONTENT + " where  Id = :postId")
+    int deletePost(String postId);
 
     @Insert
     void insertChats(Content... contents);
@@ -79,7 +81,7 @@ public interface UserDao {
     @Query("SELECT * FROM " + Constants.TABLE_LOCATION)
     List<LocationModel> getLocation();
 
-    @Query("SELECT * FROM " + Constants.TABLE_LOCATION +" where District = :district")
+    @Query("SELECT * FROM " + Constants.TABLE_LOCATION + " where District = :district")
     List<LocationModel> getLocationOfDistrict(String district);
 
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId order by CreatedDate desc")
@@ -150,9 +152,9 @@ public interface UserDao {
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  and Issue_Type =:str order by CreatedDate desc")
     List<Content> getHoChatsfilter(String communityId, String str);
 
-   /* @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  and ( Priority = :str or  Issue_Type =:str) and (UserId = :UserId) order by CreatedDate desc")
-    List<Content> getMyChatsfilter(String communityId, String str, String UserId);
-    */
+    /* @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  and ( Priority = :str or  Issue_Type =:str) and (UserId = :UserId) order by CreatedDate desc")
+     List<Content> getMyChatsfilter(String communityId, String str, String UserId);
+     */
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  and (UserId = :UserId) and ( Priority = :str or  Report_Type =:str) order by CreatedDate desc")
     List<Content> getMyChatsfilter(String communityId, String UserId, String str);
 
@@ -161,7 +163,7 @@ public interface UserDao {
     List<Content> getMyLocationChatsfilter(String communityId, String str, String taluka);
 
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  and (Report_Type =:str or Priority = :str) and (taluka != :taluka) order by CreatedDate desc")
-    List<Content> getOtherChatsfilter(String communityId, String str,String taluka);
+    List<Content> getOtherChatsfilter(String communityId, String str, String taluka);
 
 
 }

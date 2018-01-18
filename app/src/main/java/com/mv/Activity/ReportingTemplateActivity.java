@@ -77,7 +77,6 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
     private ArrayAdapter<String> district_adapter, taluka_adapter;
     private PreferenceHelper preferenceHelper;
     private Content content;
-
     private String img_str;
 
     @Override
@@ -444,7 +443,6 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
 
     private boolean isValidate() {
         String str = "";
-
         if (mSelectReportingType == 0) {
             str = "Please select reporting type";
         } else if (binding.editTextContent.getText().toString().trim().length() == 0) {

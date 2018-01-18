@@ -619,7 +619,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                     }
                 })
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         ListView lw = ((AlertDialog) dialog).getListView();
@@ -951,6 +951,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         });*/
         dialog.show();
     }
+
     private void GetMapParameters(String latitude, String longitude) {
 
         try {

@@ -7,7 +7,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -22,7 +21,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,7 +33,6 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
-import com.mv.Service.DownloadService;
 import com.mv.Utils.MediaSongSingleToneClass;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -67,13 +64,14 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
     private View view;
     private Boolean mySelection = false;
     private FloatingActionButton fab_add_broadcast;
-    MediaPlayer mPlayer =  MediaSongSingleToneClass.getInstance();
+    MediaPlayer mPlayer = MediaSongSingleToneClass.getInstance();
     ThetSavandFragment fragment;
     Button btn_mypost, btn_allposts;
     LinearLayout lnr_filter;
     RecyclerView recyclerView;
     TextView textNoData;
     public static final String MESSAGE_PROGRESS = "message_progress";
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -119,7 +117,7 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
                     //fab_add_broadcast.setVisibility(View.VISIBLE);
                 } else if (dy > 5 && (lnr_filter.getVisibility() == View.VISIBLE)) {
                     lnr_filter.setVisibility(View.GONE);
-                   // fab_add_broadcast.setVisibility(View.INVISIBLE);
+                    // fab_add_broadcast.setVisibility(View.INVISIBLE);
                 }
 
             }
@@ -128,6 +126,12 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
         btn_mypost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mypostlist.clear();
+                for (int i = 0; i < chatList.size(); i++) {
+                    if (chatList.get(i).getUser_id().equals(User.getCurrentUser(getActivity()).getId())) {
+                        mypostlist.add(chatList.get(i));
+                    }
+                }
                 mySelection = true;
                 adapter = new ThetSavandAdapter(getActivity(), fragment, mypostlist);
                 recyclerView.setAdapter(adapter);
@@ -149,7 +153,6 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
             mPlayer.stop();
         }
     }
-
 
 
     private void getChats(boolean isDialogShow) {
@@ -208,7 +211,7 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));
                             List<Content> contentList = AppDatabase.getAppDatabase(getActivity()).userDao().getThetSavandChats();
-                            if ((temp.size() != 0) || (contentList.size()!=0)) {
+                            if ((temp.size() != 0) || (contentList.size() != 0)) {
                                 for (int i = 0; i < temp.size(); i++) {
                                     int j;
                                     boolean isPresent = false;
@@ -245,9 +248,9 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
                                     adapter = new ThetSavandAdapter(getActivity(), fragment, chatList);
                                     recyclerView.setAdapter(adapter);
                                 }
-                              textNoData.setVisibility(View.GONE);
+                                textNoData.setVisibility(View.GONE);
                             }
-                        }else {
+                        } else {
                             textNoData.setVisibility(View.VISIBLE);
                         }
                     }
@@ -306,6 +309,7 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
             case R.id.fab_add_broadcast:
                 Intent intent;
                 intent = new Intent(getActivity(), AddThetSavadActivity.class);
+                intent.putExtra("EDIT", false);
                 startActivity(intent);
                 break;
         }
@@ -332,6 +336,7 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
             }
         }
     };
+
     private void registerReceiver() {
 
         LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(getActivity());

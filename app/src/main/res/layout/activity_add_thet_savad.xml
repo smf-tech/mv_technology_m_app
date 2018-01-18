@@ -130,7 +130,7 @@
                     android:entries="@array/array_of_thet_savad"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
-                    android:prompt="@string/reporting"
+                    android:prompt="@string/catagory"
                     android:spinnerMode="dialog" />
 
 
