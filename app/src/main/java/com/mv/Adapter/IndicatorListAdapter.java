@@ -27,12 +27,12 @@ public class IndicatorListAdapter extends RecyclerView.Adapter<IndicatorListAdap
     private Context mContext;
     private Resources resources;
 
-    List<DashaBoardListModel> processAllLis;
+    List<DashaBoardListModel> processAllList;
 
     public IndicatorListAdapter(Context context, List<DashaBoardListModel> processAllLis) {
         mContext = context;
         resources = context.getResources();
-        this.processAllLis = processAllLis;
+        this.processAllList = processAllLis;
 
     }
 
@@ -50,7 +50,7 @@ public class IndicatorListAdapter extends RecyclerView.Adapter<IndicatorListAdap
 
     @Override
     public int getItemCount() {
-        return processAllLis.size();
+        return processAllList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -69,14 +69,13 @@ public class IndicatorListAdapter extends RecyclerView.Adapter<IndicatorListAdap
 
                     if (getAdapterPosition() != 0) {
                         Intent intent = new Intent(mContext, IndicatorTask.class);
-                        intent.putParcelableArrayListExtra(Constants.PROCESS_ID, processAllLis.get(getAdapterPosition()).getTasksList());
-                        intent.putExtra(Constants.TITLE, processAllLis.get(getAdapterPosition()).getName());
+                        intent.putExtra(Constants.PROCESS_ID, processAllList.get(getAdapterPosition()));
                         mContext.startActivity(intent);
                     }
                     else
                     {
                         Intent intent = new Intent(mContext, IndicatorTrainingFeedBackTaskList.class);
-                        intent.putExtra(Constants.TITLE, processAllLis.get(getAdapterPosition()).getName());
+                        intent.putExtra(Constants.TITLE, processAllList.get(getAdapterPosition()).getName());
                         mContext.startActivity(intent);
                     }
                 }
@@ -87,8 +86,9 @@ public class IndicatorListAdapter extends RecyclerView.Adapter<IndicatorListAdap
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
+
         holder.txtCount.setText("" + (position + 1) + ". ");
-        holder.txtName.setText(processAllLis.get(position).getName());
+        holder.txtName.setText(processAllList.get(position).getName());
     }
 
 
