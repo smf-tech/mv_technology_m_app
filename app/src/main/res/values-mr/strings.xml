@@ -6,6 +6,9 @@
     <string name="text_audio">ऑडिओ</string>
     <string name="text_video">व्हिडिओ</string>
 
+    <string name="text_are_you_sure">Are you sure?</string>
+    <string name="text_delete">You really want to delete this post?</string>
+
     <string name="text_record">Record Audio</string>
     <string name="text_select_audio">Select Audio</string>
     <string name="text_chooseaudio">Choose Audio</string>
