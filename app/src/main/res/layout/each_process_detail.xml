@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:inputType="textPersonName"
-                android:maxLength="255"
+
                 android:textColor="@color/black"
 
                 android:textSize="@dimen/medium_text" />
@@ -54,29 +54,57 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_content_date"
+
+
+    <LinearLayout
+        android:id="@+id/ll_date_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/txt_view1"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/lighter_grey_box"
-
-        android:padding="10dp"
+        android:background="@drawable/grey_box"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
         android:visibility="gone">
 
-        <com.mv.Widgets.MyEditTextView
-            android:id="@+id/et_process_detail_date"
-            android:layout_width="fill_parent"
+        <TextView
+            android:id="@+id/tv_date_question"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@null"
-            android:scrollbars="vertical"
-            android:textColor="@color/black"
-            android:textSize="@dimen/medium_text" />
-    </android.support.design.widget.TextInputLayout>
+            android:layout_marginBottom="@dimen/dimen_5dp"
+            android:layout_marginLeft="5dp"
 
+            android:layout_marginTop="@dimen/dimen_5dp"
+            android:text="@string/question_5" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_content_date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_view1"
+            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+
+            android:background="@drawable/lighter_grey_box"
+            android:padding="10dp">
+
+            <com.mv.Widgets.MyEditTextView
+                android:id="@+id/et_process_detail_date"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:inputType="textPersonName"
+
+                android:textColor="@color/black"
+
+                android:textSize="@dimen/medium_text" />
+        </android.support.design.widget.TextInputLayout>
+
+
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/ll_spinner_layout"
         android:layout_width="match_parent"
@@ -179,10 +207,10 @@
             android:layout_marginTop="@dimen/dimen_10dp"
             android:background="@drawable/grey_box"
             android:minHeight="40dp"
+            android:text="Select"
             android:padding="@dimen/dimen_5dp"
             android:prompt="@string/question_5"
-            android:spinnerMode="dialog"
-            android:text="Select" />
+            android:spinnerMode="dialog" />
 
 
     </LinearLayout>

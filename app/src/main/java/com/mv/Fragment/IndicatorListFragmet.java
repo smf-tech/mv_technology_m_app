@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.mv.Activity.ClassObservationActivity;
 import com.mv.Activity.ScheduleTrainingActivity;
@@ -50,19 +49,18 @@ import retrofit2.Response;
  * Created by nanostuffs on 14-11-2017.
  */
 
-public class IndicatorListFragmet  extends Fragment {
+public class IndicatorListFragmet extends Fragment {
     private PreferenceHelper preferenceHelper;
     List<DashaBoardListModel> processAllList = new ArrayList<>();
     private IndicatorListAdapter mAdapter;
     private ActivityNewTemplateBinding binding;
     RecyclerView.LayoutManager mLayoutManager;
-    TextView textNoData;
-    View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.activity_new_template, container, false);
-         view = binding.getRoot();
+        View view = binding.getRoot();
         binding.setVariable(BR.vm, new ParentViewModel());
         RelativeLayout mToolBar = (RelativeLayout) view.findViewById(R.id.toolbar);
         mToolBar.setVisibility(View.GONE);
@@ -77,7 +75,6 @@ public class IndicatorListFragmet  extends Fragment {
     }
 
     private void initViews() {
-        textNoData = (TextView) view.findViewById(R.id.textNoData);
         preferenceHelper = new PreferenceHelper(getActivity());
         binding.swiperefresh.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
@@ -90,7 +87,7 @@ public class IndicatorListFragmet  extends Fragment {
         );
 
 
-        mAdapter = new IndicatorListAdapter( getActivity(),processAllList);
+        mAdapter = new IndicatorListAdapter(getActivity(), processAllList);
         mLayoutManager = new LinearLayoutManager(getActivity());
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -103,22 +100,20 @@ public class IndicatorListFragmet  extends Fragment {
     }
 
 
-
-
     private void getAllProcess() {
         Utills.showProgressDialog(getActivity(), "Loading Process", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(getActivity()).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getProcessDashBoardData?userId="+User.getCurrentUser(getActivity()).getId();
+                + "/services/apexrest/getProcessDashBoardDatademo?userId=" + User.getCurrentUser(getActivity()).getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 binding.swiperefresh.setRefreshing(false);
                 try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    if (jsonArray.length()!=0) {
+                    if (response.isSuccess()) {
+                        JSONArray jsonArray = new JSONArray(response.body().string());
                         processAllList.clear();
                         DashaBoardListModel processList = new DashaBoardListModel();
                         if (User.getCurrentUser(getActivity()).getState().equals("Maharashtra")) {
@@ -132,12 +127,14 @@ public class IndicatorListFragmet  extends Fragment {
                             JSONObject processObj = jsonObject.getJSONObject("process");
                             processList.setId(processObj.getString("Id"));
                             processList.setName(processObj.getString("Name"));
+                            processList.setMultiple_Role__c(processObj.getString("Multiple_Role__c"));
                             JSONArray tasklist = jsonObject.getJSONArray("taskList");
                             for (int j = 0; j < tasklist.length(); j++) {
                                 Task task = new Task();
                                 task.setId(tasklist.getJSONObject(j).getString("Id"));
                                 task.setTask_Text__c(tasklist.getJSONObject(j).getString("Task_Text__c"));
                                 task.setTask_type__c(tasklist.getJSONObject(j).getString("Task_type__c"));
+                                task.setSection_Name__c(tasklist.getJSONObject(j).getString("Section_Name__c"));
                                 if (tasklist.getJSONObject(j).has("Location_Level__c"))
                                     task.setLocationLevel(tasklist.getJSONObject(j).getString("Location_Level__c"));
                                 task.setMV_Process__c(tasklist.getJSONObject(j).getString("MV_Process__c"));
@@ -149,9 +146,6 @@ public class IndicatorListFragmet  extends Fragment {
                         }
 
                         mAdapter.notifyDataSetChanged();
-                        textNoData.setVisibility(View.GONE);
-                    } else {
-                        textNoData.setVisibility(View.VISIBLE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

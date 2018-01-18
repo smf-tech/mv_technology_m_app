@@ -3,6 +3,8 @@ package com.mv.Model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -12,7 +14,7 @@ import com.mv.Utils.Constants;
  * Created by nanostuffs on 30-10-2017.
  */
 @Entity(tableName = Constants.TABLE_LOCATION)
-public class LocationModel {
+public class LocationModel implements Parcelable {
     public String getId() {
         return Id;
     }
@@ -124,5 +126,48 @@ public class LocationModel {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.Id);
+        dest.writeString(this.village);
+        dest.writeString(this.taluka);
+        dest.writeString(this.state);
+        dest.writeString(this.schoolName);
+        dest.writeString(this.schoolCode);
+        dest.writeString(this.district);
+        dest.writeString(this.createdDate);
+        dest.writeString(this.cluster);
+    }
+
+    public LocationModel() {
+    }
+
+    protected LocationModel(Parcel in) {
+        this.Id = in.readString();
+        this.village = in.readString();
+        this.taluka = in.readString();
+        this.state = in.readString();
+        this.schoolName = in.readString();
+        this.schoolCode = in.readString();
+        this.district = in.readString();
+        this.createdDate = in.readString();
+        this.cluster = in.readString();
+    }
+
+    public static final Parcelable.Creator<LocationModel> CREATOR = new Parcelable.Creator<LocationModel>() {
+        @Override
+        public LocationModel createFromParcel(Parcel source) {
+            return new LocationModel(source);
+        }
+
+        @Override
+        public LocationModel[] newArray(int size) {
+            return new LocationModel[size];
+        }
+    };
 }

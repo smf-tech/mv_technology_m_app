@@ -1,8 +1,6 @@
 package com.mv.Activity;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -16,60 +14,45 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mv.Adapter.IndicatortaskAdapter;
-import com.mv.Adapter.TemplateAdapter;
-import com.mv.BR;
-import com.mv.Model.ParentViewModel;
-import com.mv.Model.Task;
-import com.mv.Model.Template;
+import com.mv.Model.DashaBoardListModel;
+import com.mv.Model.LocationModel;
 import com.mv.R;
-import com.mv.Retrofit.ApiClient;
-import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
-import com.mv.Utils.Utills;
-import com.mv.databinding.ActivityNewTemplateBinding;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.IOException;
-import java.util.ArrayList;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import com.mv.databinding.ActivityIndicatorTaskBinding;
 
 public class IndicatorTask extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
-    private ActivityNewTemplateBinding binding;
+    private ActivityIndicatorTaskBinding binding;
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
-    ArrayList<Task> taskList = new ArrayList<>();
+    DashaBoardListModel dashaBoardListModel;
     private RelativeLayout mToolBar;
     //private ActivityProgrammeManagmentBinding binding;
     private PreferenceHelper preferenceHelper;
 
     private IndicatortaskAdapter mAdapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_new_template);
-        binding.setVariable(BR.vm, new ParentViewModel());
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_indicator_task_);
+        binding.setActivity(this);
         initViews();
 
     }
 
 
     private void initViews() {
-        taskList = getIntent().getParcelableArrayListExtra(Constants.PROCESS_ID);
+        dashaBoardListModel = getIntent().getExtras().getParcelable(Constants.PROCESS_ID);
+
         preferenceHelper = new PreferenceHelper(this);
-        setActionbar(getIntent().getExtras().getString(Constants.TITLE));
+        setActionbar(dashaBoardListModel.getName());
         binding.swiperefresh.setOnRefreshListener(this);
-        mAdapter = new IndicatortaskAdapter(taskList, IndicatorTask.this);
+        mAdapter = new IndicatortaskAdapter(dashaBoardListModel, IndicatorTask.this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());

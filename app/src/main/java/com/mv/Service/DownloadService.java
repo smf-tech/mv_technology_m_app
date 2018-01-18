@@ -99,43 +99,46 @@ public class DownloadService extends IntentService {
 
         int count;
         byte data[] = new byte[1024 * 4];
-        long fileSize = body.contentLength();
-        InputStream bis = new BufferedInputStream(body.byteStream(), 1024 * 8);
-        File outputFile = new File(StorezipFileLocation);
-        Log.i("outputFile", outputFile.getAbsolutePath());
-        if (outputFile.exists())
-            outputFile.delete();
-        OutputStream output = new FileOutputStream(outputFile);
-        long total = 0;
-        long startTime = System.currentTimeMillis();
-        int timeCount = 1;
-        while ((count = bis.read(data)) != -1) {
+        if(body!=null) {
+            long fileSize = body.contentLength();
 
-            total += count;
-            totalFileSize = (int) (fileSize / (Math.pow(1024, 2)));
-            double current = Math.round(total / (Math.pow(1024, 2)));
+            InputStream bis = new BufferedInputStream(body.byteStream(), 1024 * 8);
+            File outputFile = new File(StorezipFileLocation);
+            Log.i("outputFile", outputFile.getAbsolutePath());
+            if (outputFile.exists())
+                outputFile.delete();
+            OutputStream output = new FileOutputStream(outputFile);
+            long total = 0;
+            long startTime = System.currentTimeMillis();
+            int timeCount = 1;
+            while ((count = bis.read(data)) != -1) {
 
-            int progress = (int) ((total * 100) / fileSize);
+                total += count;
+                totalFileSize = (int) (fileSize / (Math.pow(1024, 2)));
+                double current = Math.round(total / (Math.pow(1024, 2)));
 
-            long currentTime = System.currentTimeMillis() - startTime;
+                int progress = (int) ((total * 100) / fileSize);
 
-            Download download = new Download();
-            download.setTotalFileSize(totalFileSize);
+                long currentTime = System.currentTimeMillis() - startTime;
 
-            if (currentTime > 1000 * timeCount) {
+                Download download = new Download();
+                download.setTotalFileSize(totalFileSize);
 
-                download.setCurrentFileSize((int) current);
-                download.setProgress(progress);
-                sendNotification(download);
-                timeCount++;
+                if (currentTime > 1000 * timeCount) {
+
+                    download.setCurrentFileSize((int) current);
+                    download.setProgress(progress);
+                    sendNotification(download);
+                    timeCount++;
+                }
+
+                output.write(data, 0, count);
             }
-
-            output.write(data, 0, count);
+            onDownloadComplete();
+            output.flush();
+            output.close();
+            bis.close();
         }
-        onDownloadComplete();
-        output.flush();
-        output.close();
-        bis.close();
     }
 
     private void sendNotification(Download download) {

@@ -138,33 +138,34 @@ public class TrainingCalender extends Fragment implements OnDateSelectedListener
                 Utills.hideProgressDialog();
 
                 try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
+                    if(response.isSuccess()) {
+                        JSONArray jsonArray = new JSONArray(response.body().string());
 
-                    eventMap = new HashMap<>();
-                    dates = new ArrayList<>();
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        CalenderEvent calenderEvent = new CalenderEvent();
-                        calenderEvent.setId(jsonArray.getJSONObject(i).getString("Id"));
-                        calenderEvent.setDate(jsonArray.getJSONObject(i).getString("Date__c"));
-                        calenderEvent.setDescription(jsonArray.getJSONObject(i).getString("Description__c"));
-                        calenderEvent.setMV_User1__c(jsonArray.getJSONObject(i).getString("MV_User1__c"));
-                        CalendarDay day = CalendarDay.from(formatter.parse(jsonArray.getJSONObject(i).getString("Date__c")));
-                        dateList = new ArrayList<>();
-                        if (eventMap.get(jsonArray.getJSONObject(i).getString("Date__c")) != null)
-                            dateList = eventMap.get(jsonArray.getJSONObject(i).getString("Date__c"));
-                        dateList.add(calenderEvent);
-                        eventMap.put(day, dateList);
-                        dates.add(day);
+                        eventMap = new HashMap<>();
+                        dates = new ArrayList<>();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            CalenderEvent calenderEvent = new CalenderEvent();
+                            calenderEvent.setId(jsonArray.getJSONObject(i).getString("Id"));
+                            calenderEvent.setDate(jsonArray.getJSONObject(i).getString("Date__c"));
+                            calenderEvent.setDescription(jsonArray.getJSONObject(i).getString("Description__c"));
+                            calenderEvent.setMV_User1__c(jsonArray.getJSONObject(i).getString("MV_User1__c"));
+                            CalendarDay day = CalendarDay.from(formatter.parse(jsonArray.getJSONObject(i).getString("Date__c")));
+                            dateList = new ArrayList<>();
+                            if (eventMap.get(jsonArray.getJSONObject(i).getString("Date__c")) != null)
+                                dateList = eventMap.get(jsonArray.getJSONObject(i).getString("Date__c"));
+                            dateList.add(calenderEvent);
+                            eventMap.put(day, dateList);
+                            dates.add(day);
 
+                        }
+                        binding.calendarView.addDecorator(new EventDecorator(Color.RED, dates));
+                        Calendar instance = Calendar.getInstance();
+
+                        if (eventMap.get(instance.getTime()) != null) {
+                            adapter = new PichartDescriptiveListAdapter(getActivity(), eventMap.get(instance.getTime()));
+                            binding.recyclerView.setAdapter(adapter);
+                        }
                     }
-                    binding.calendarView.addDecorator(new EventDecorator(Color.RED, dates));
-                    Calendar instance = Calendar.getInstance();
-
-                    if( eventMap.get(instance.getTime())!=null) {
-                        adapter = new PichartDescriptiveListAdapter(getActivity(), eventMap.get(instance.getTime()));
-                        binding.recyclerView.setAdapter(adapter);
-                    }
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

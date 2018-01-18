@@ -217,8 +217,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 break;
             case R.id.btn_save:
                 for (int i = 0; i < taskList.size(); i++) {
-                /*    if(taskList.get(i).getIsSave().equals(Constants.PROCESS_STATE_SUBMIT))
-                    taskList.get(i).setIsSave(Constants.PROCESS_STATE_MODIFIED);
+                /*    if(dashaBoardListModel.get(i).getIsSave().equals(Constants.PROCESS_STATE_SUBMIT))
+                    dashaBoardListModel.get(i).setIsSave(Constants.PROCESS_STATE_MODIFIED);
                     else*/
                     taskList.get(i).setIsSave(Constants.PROCESS_STATE_SAVE);
                     taskList.get(i).setTimestamp__c(timestamp);
@@ -332,7 +332,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             }
         }
         if (!manditoryFlag) {
-            // AppDatabase.getAppDatabase(context).userDao().insertTask(taskList);
+            // AppDatabase.getAppDatabase(context).userDao().insertTask(dashaBoardListModel);
             if (Utills.isConnected(this))
                 callApiForSubmit(taskList);
             else
