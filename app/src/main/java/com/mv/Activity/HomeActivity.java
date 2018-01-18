@@ -309,25 +309,27 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
         List<String> allTab = new ArrayList<>();
         adapter.clearFrag();
-        adapter.addFrag(new ThetSavandFragment(),getString(R.string.thet_savnd));
+
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameNoteApproved().split(";")));
-            ;
-            if (allTab.contains("Broadcast"))
-                adapter.addFrag(new CommunityHomeFragment(), getString(R.string.broadcast));
-            if (allTab.contains("My Community"))
-                adapter.addFrag(new GroupsFragment(), getString(R.string.community));
-            if (allTab.contains("Programme Management"))
-                adapter.addFrag(new ProgrammeManagmentFragment(), getString(R.string.programme_management));
-            if (allTab.contains("Training Content"))
-                adapter.addFrag(new TrainingFragment(), getString(R.string.training_content));
-            if (allTab.contains("Team Management"))
-                adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
-            if (allTab.contains("My Reports"))
-                adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
-            if(allTab.contains("My Calendar"))
-                adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
-
+            for(int i=0;i<allTab.size();i++) {
+                if (allTab.get(i).equals(Constants.Thet_Sanvad))
+                    adapter.addFrag(new ThetSavandFragment(), getString(R.string.thet_savnd));
+                else if (allTab.get(i).equals(Constants.Broadcast))
+                    adapter.addFrag(new CommunityHomeFragment(), getString(R.string.broadcast));
+                else if (allTab.get(i).equals(Constants.My_Community))
+                    adapter.addFrag(new GroupsFragment(), getString(R.string.community));
+                else if (allTab.get(i).equals(Constants.Programme_Management))
+                    adapter.addFrag(new ProgrammeManagmentFragment(), getString(R.string.programme_management));
+                else if (allTab.get(i).equals(Constants.Training_Content))
+                    adapter.addFrag(new TrainingFragment(), getString(R.string.training_content));
+                else if (allTab.get(i).equals(Constants.Team_Management))
+                    adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
+                else if (allTab.get(i).equals(Constants.My_Reports))
+                    adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
+                else if (allTab.get(i).equals(Constants.My_Calendar))
+                    adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
+            }
 
             viewPager.setAdapter(adapter);
             adapter.notifyDataSetChanged();
@@ -335,22 +337,24 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else {
 
             allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameApproved().split(";")));
-            ;
-            if (allTab.contains("Broadcast"))
-                adapter.addFrag(new CommunityHomeFragment(), getString(R.string.broadcast));
-            if (allTab.contains("My Community"))
-                adapter.addFrag(new GroupsFragment(), getString(R.string.community));
-            if (allTab.contains("Programme Management"))
-                adapter.addFrag(new ProgrammeManagmentFragment(), getString(R.string.programme_management));
-            if (allTab.contains("Training Content"))
-                adapter.addFrag(new TrainingFragment(), getString(R.string.training_content));
-            if (allTab.contains("Team Management"))
-                adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
-            if (allTab.contains("My Reports"))
-                adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
-            if(allTab.contains("My Calendar"))
-                adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
-
+            for(int i=0;i<allTab.size();i++) {
+                if (allTab.get(i).equals(Constants.Thet_Sanvad))
+                    adapter.addFrag(new ThetSavandFragment(), getString(R.string.thet_savnd));
+                else if (allTab.get(i).equals(Constants.Broadcast))
+                    adapter.addFrag(new CommunityHomeFragment(), getString(R.string.broadcast));
+                else if (allTab.get(i).equals(Constants.My_Community))
+                    adapter.addFrag(new GroupsFragment(), getString(R.string.community));
+                else if (allTab.get(i).equals(Constants.Programme_Management))
+                    adapter.addFrag(new ProgrammeManagmentFragment(), getString(R.string.programme_management));
+                else if (allTab.get(i).equals(Constants.Training_Content))
+                    adapter.addFrag(new TrainingFragment(), getString(R.string.training_content));
+                else if (allTab.get(i).equals(Constants.Team_Management))
+                    adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
+                else if (allTab.get(i).equals(Constants.My_Reports))
+                    adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
+                else if (allTab.get(i).equals(Constants.My_Calendar))
+                    adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
+            }
             viewPager.setAdapter(adapter);
             adapter.notifyDataSetChanged();
         }

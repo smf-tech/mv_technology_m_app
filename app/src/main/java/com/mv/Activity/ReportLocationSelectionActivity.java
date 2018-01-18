@@ -222,6 +222,7 @@ public class ReportLocationSelectionActivity extends AppCompatActivity implement
         intent.putExtra(Constants.INDICATOR_TASK_ROLE,roleList);
         intent.putExtra(Constants.LOCATION, locationModel);
         startActivity(intent);
+        finish();
     }
 
 
@@ -260,6 +261,7 @@ public class ReportLocationSelectionActivity extends AppCompatActivity implement
                     //    mListDistrict.clear();
 
                 } else {
+                    locationModel.setState("Select");
                     mListDistrict.clear();
                     mListDistrict.add("Select");
                 }
@@ -293,7 +295,6 @@ public class ReportLocationSelectionActivity extends AppCompatActivity implement
 
 
                         mListTaluka.clear();
-
                         mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict));
                         mListTaluka.add(0, "Select");
                         taluka_adapter = new ArrayAdapter<String>(this,
@@ -305,6 +306,7 @@ public class ReportLocationSelectionActivity extends AppCompatActivity implement
                     }
 
                 } else {
+                    locationModel.setDistrict("Select");
                     mListTaluka.clear();
                     mListTaluka.add("Select");
 
@@ -342,6 +344,7 @@ public class ReportLocationSelectionActivity extends AppCompatActivity implement
 
                     }*/
                 } else {
+                    locationModel.setTaluka("Select");
                     mListCluster.clear();
                     mListCluster.add("Select");
                 }

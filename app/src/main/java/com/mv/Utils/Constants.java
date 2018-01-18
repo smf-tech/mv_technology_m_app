@@ -104,4 +104,16 @@ public class Constants {
     public static final String PROCESS_TYPE = "process_type";
     public static final String MANGEMENT_PROCESS = "managenment_approval";
     public static final String APPROVAL_PROCESS = "approval_process";
+
+    public static final String Thet_Sanvad = "Thet Sanvad";
+    public static final String Broadcast = "Broadcast";
+    public static final String My_Community = "My Community";
+    public static final String Programme_Management = "Programme Management";
+    public static final String Training_Content = "Training Content";
+    public static final String Team_Management = "Team Management";
+    public static final String My_Reports = "My Reports";
+    public static final String My_Calendar = "My Calendar";
+
+
+
 }

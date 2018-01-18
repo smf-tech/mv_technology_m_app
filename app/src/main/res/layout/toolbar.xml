@@ -57,7 +57,7 @@
 
 
         <ImageView
-            android:id="@+id/img_list"
+                android:id="@+id/img_list"
             android:layout_width="@dimen/dimen_25dp"
             android:layout_height="@dimen/dimen_25dp"
             android:layout_centerVertical="true"
