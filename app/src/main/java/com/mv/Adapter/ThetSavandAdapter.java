@@ -1,6 +1,8 @@
 package com.mv.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -19,10 +21,12 @@ import android.text.util.Linkify;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -34,6 +38,7 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mv.Activity.AddThetSavadActivity;
 import com.mv.Activity.CommentActivity;
 import com.mv.Activity.CommunityDetailsActivity;
 import com.mv.Activity.VideoViewActivity;
@@ -42,6 +47,7 @@ import com.mv.Model.Content;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
+import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Service.DownloadService;
 import com.mv.Utils.Constants;
@@ -81,8 +87,9 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
     private Handler mHandler = new Handler();
     private JSONArray jsonArrayAttchment = new JSONArray();
     private Bitmap theBitmap;
+    private String postId;
     private ThetSavandFragment fragment;
-    int temp = 555500;
+    int temp = 555500, deletePosition;
     MediaPlayer mPlayer = new MediaPlayer();
     private static final Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
@@ -315,11 +322,46 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             holder.layout_download_file.setVisibility(View.GONE);
             holder.layout_download.setVisibility(View.VISIBLE);
 
-        }else {
+        } else {
             holder.layout_download_file.setVisibility(View.VISIBLE);
             holder.layout_download.setVisibility(View.GONE);
 
         }
+
+        if (mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getId())) {
+            holder.imgMore.setVisibility(View.VISIBLE);
+            holder.imgMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PopupMenu popup = new PopupMenu(mContext, holder.imgMore);
+                    //Inflating the Popup using xml file
+                    popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
+
+                    //registering popup with OnMenuItemClickListener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            if (item.getTitle().toString().equalsIgnoreCase("Edit")) {
+                                Intent intent;
+                                intent = new Intent(mContext, AddThetSavadActivity.class);
+                                intent.putExtra("EDIT", true);
+                                intent.putExtra(Constants.CONTENT, mDataList.get(position));
+                                mContext.startActivity(intent);
+                            } else if (item.getTitle().toString().equalsIgnoreCase("Delete")) {
+                                postId = mDataList.get(position).getId();
+                                deletePosition = position;
+                                showDeletePopUp();
+                            }
+                            return true;
+                        }
+                    });
+
+                    popup.show();//showing popup menu
+                }
+            });
+        } else {
+            holder.imgMore.setVisibility(View.GONE);
+        }
+
     }
 
     @Override
@@ -403,7 +445,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         public TextView txt_audio_txt, txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type;
         public LinearLayout mediaLayout, layout_like, layout_comment, layout_share, layout_download, layout_download_file;
         public RelativeLayout audioLayout, layout_Video;
-        public ImageView play;
+        public ImageView play, imgMore;
         public ProgressBar songProgressBar;
 
         public ViewHolder(View itemLayoutView) {
@@ -429,11 +471,13 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             layout_download_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Utills.showToast("download",mContext);
+                    Utills.showToast("download", mContext);
                     startDownload(getAdapterPosition());
 
                 }
             });
+            imgMore = (ImageView) itemLayoutView.findViewById(R.id.imgMore);
+
             layout_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -469,7 +513,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             layout_download.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("true")) {
+                    if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("true")) {
                         String filePath = "";
 
                         if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("audio")) {
@@ -496,7 +540,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
 
                         intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
                         mContext.startActivity(Intent.createChooser(intent, "Share Content"));
-                    }else {
+                    } else {
                         Intent i = new Intent(Intent.ACTION_SEND);
                         i.setType("image*//**//*");
                         i.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
@@ -611,12 +655,72 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                     Utills.showImageZoomInDialog(v.getContext(), mDataList.get(getAdapterPosition()).getId());
 
 
-
                 }
             });
         }
 
 
+    }
+
+    private void showDeletePopUp() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
+
+        // Setting Dialog Title
+        alertDialog.setTitle(mContext.getString(R.string.text_are_you_sure));
+
+        // Setting Dialog Message
+        alertDialog.setMessage(mContext.getString(R.string.text_delete));
+
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.drawable.logomulya);
+
+        // Setting CANCEL Button
+        alertDialog.setButton2(mContext.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+                // Write your code here to execute after dialog closed
+              /*  listOfWrongQuestions.add(mPosition);
+                prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
+            }
+        });
+        // Setting OK Button
+        alertDialog.setButton(mContext.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                DeletePost();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
+    private void DeletePost() {
+        Utills.showProgressDialog(mContext);
+
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
+        apiService.getSalesForceData(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + "/services/apexrest/DeletePost/" + postId).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    AppDatabase.getAppDatabase(mContext).userDao().deletePost(postId);
+                    Utills.showToast("Post Deleted Successfully...", mContext);
+                    mDataList.remove(deletePosition);
+                    notifyItemRemoved(deletePosition);
+                } catch (Exception e) {
+                    Utills.hideProgressDialog();
+                    Utills.showToast(mContext.getString(R.string.error_something_went_wrong), mContext);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+                Utills.showToast(mContext.getString(R.string.error_something_went_wrong), mContext);
+            }
+        });
 
     }
 
@@ -809,27 +913,27 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
     public void startDownload(int position) {
         Utills.showToast("Downloading Started...", mContext);
         Intent intent = new Intent(mContext, DownloadService.class);
-        intent.putExtra("fragment_flag","ThetSanvad_Fragment");
+        intent.putExtra("fragment_flag", "ThetSanvad_Fragment");
         if (mDataList.get(position).getContentType().equalsIgnoreCase("zip")) {
             intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".zip");
             intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "zip");
-            intent.putExtra("URL", "http://13.58.218.106/images/"+  mDataList.get(position).getId() +".zip");
+            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".zip");
         } else if (mDataList.get(position).getContentType().equalsIgnoreCase("pdf")) {
             intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".pdf");
             intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "pdf");
-            intent.putExtra("URL", "http://13.58.218.106/images/"+  mDataList.get(position).getId() +".pdf");
+            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".pdf");
         } else if (mDataList.get(position).getContentType().equalsIgnoreCase("audio")) {
             intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".mp3");
             intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "audio");
-            intent.putExtra("URL", "http://13.58.218.106/images/"+  mDataList.get(position).getId() +".mp3");
+            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp3");
         } else if (mDataList.get(position).getContentType().equalsIgnoreCase("video")) {
             intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".mp4");
             intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "video");
-            intent.putExtra("URL", "http://13.58.218.106/images/"+  mDataList.get(position).getId() +".mp4");
-        } else if (mDataList.get(position).getContentType().equalsIgnoreCase("Image")){
+            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp4");
+        } else if (mDataList.get(position).getContentType().equalsIgnoreCase("Image")) {
             intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".png");
             intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "Image");
-            intent.putExtra("URL", "http://13.58.218.106/images/"+  mDataList.get(position).getId() +".png");
+            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png");
         }
         mContext.startService(intent);
     }
@@ -856,9 +960,9 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 if (new File(filePath).exists())
                     return true;
                 return false;
-            }else if (mDataList.get(position).getContentType().equalsIgnoreCase("Image")) {
+            } else if (mDataList.get(position).getContentType().equalsIgnoreCase("Image")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getTitle() + ".png";
-              //   Log.e("Image path-->" +m)
+                //   Log.e("Image path-->" +m)
                 if (new File(filePath).exists())
                     return true;
                 return false;
