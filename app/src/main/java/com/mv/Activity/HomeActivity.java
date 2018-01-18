@@ -121,53 +121,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
-            if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("true")) {
-
-
-                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    LocationPopup();
-                    LocatonFlag =0;
-
-                } else {
-                    if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-
-                       // Utills.scheduleJob(getApplicationContext());
-                        getAddress();
-
-                       /* SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
-
-                        try {
-                            Date CURRENTDATE = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
-
-                            long APICALLDATE = preferenceHelper.getLong(PreferenceHelper.APICALLTIME);
-                            long different = CURRENTDATE.getTime() - APICALLDATE;
-                            long hrs = (int) ((different / (1000 * 60 * 60)));
-
-                            // getAddress();
-                            if (hrs >= 5) {
-                                getAddress();
-                            }*//*else {
-                           // Utills.scheduleJob(getApplicationContext());
-                          Utills.showToast("less than 5",HomeActivity.this);
-                        }*//*
-
-
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
-*/
-
-                    }else {
-                        if (LocatonFlag == 0) {
-                            if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                                getAddress();
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             if (Utills.isConnected(this))
@@ -187,14 +140,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
+        if (User.getCurrentUser(getApplicationContext()).getRoll()!=null) {
+        if (User.getCurrentUser(getApplicationContext()).getRoll().equalsIgnoreCase("TC")) {
             if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("true")) {
-                final LocationManager manager = (LocationManager)getSystemService(Context.LOCATION_SERVICE );
+                final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 
                 if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     LocationPopup();
-                    LocatonFlag =0;
+
 
                 } else {
                     if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -225,15 +179,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         }
 */
 
-                    }else {
-                        if (LocatonFlag == 0) {
-                            if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                                getAddress();
-                            }
-                        }
                     }
                 }
             }
+        }
         }
 
 
@@ -615,7 +564,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                     }
                 })
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         ListView lw = ((AlertDialog) dialog).getListView();
@@ -660,7 +609,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+        alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 sendLogOutRequest();
             }
@@ -760,7 +709,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         // Setting CANCEL Button
 
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+        alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
                 //initViews();
@@ -937,14 +886,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-      /*  dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
-            @Override
-            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                // TODO Auto-generated method stub
-
-            }
-        });*/
         dialog.show();
     }
     private void GetMapParameters(String latitude, String longitude) {
@@ -974,7 +916,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                 JSONObject jsonObject = new JSONObject(data);
                                 String status = jsonObject.getString("status");
                                 String message = jsonObject.getString("msg");
-                               //Utills.showToast(status,HomeActivity.this);
+                              // Utills.showToast(status,HomeActivity.this);
                                 if (status.equals("Success")) {
 
 

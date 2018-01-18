@@ -3,11 +3,18 @@
     android:layout_width="match_parent"
     android:id="@+id/rel_dialog"
     android:layout_height="match_parent">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/cancel"
+        android:layout_alignParentRight="true"
+        android:padding="@dimen/dimen_10dp"
+        android:id="@+id/close_dialog"/>
     <com.mv.Widgets.TouchImageView
+        android:layout_below="@+id/close_dialog"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/img_post"
-
         android:layout_margin="@dimen/dimen_10dp"/>
 
 

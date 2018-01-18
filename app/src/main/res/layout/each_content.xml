@@ -175,7 +175,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
-            android:ellipsize="end"
             android:text="@string/item_desc"
             android:textColor="@color/dark_grey"
             android:textSize="@dimen/article_subheading"

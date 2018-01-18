@@ -448,6 +448,7 @@ public class Utills {
 
         TouchImageView img_post=(TouchImageView) view.findViewById(R.id.img_post);
         RelativeLayout rel_dialog =(RelativeLayout)view.findViewById(R.id.rel_dialog);
+        ImageView close_dialog  = (ImageView)view.findViewById(R.id.close_dialog);
         Glide.with(context)
                 .load("http://13.58.218.106/images/" + id + ".png")
                 .placeholder(context.getResources().getDrawable(R.drawable.mulya_bg))
@@ -458,6 +459,12 @@ public class Utills {
         final AlertDialog alertD = alertDialog.create();
 
         alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        close_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertD.dismiss();
+            }
+        });
         alertD.show();
 
     }
@@ -465,7 +472,7 @@ public class Utills {
     public static void showImagewithheaderZoomDialog(Context context, GlideUrl url){
         LayoutInflater inflater = LayoutInflater.from(context);
         final View view = inflater.inflate(R.layout.image_zoom_dialog, null);
-
+        final ImageView close_dialog  = (ImageView)view.findViewById(R.id.close_dialog);
         TouchImageView img_post=(TouchImageView) view.findViewById(R.id.img_post);
         RelativeLayout rel_dialog =(RelativeLayout)view.findViewById(R.id.rel_dialog);
         Glide.with(context)
@@ -478,6 +485,12 @@ public class Utills {
         final AlertDialog alertD = alertDialog.create();
 
         alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        close_dialog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertD.dismiss();
+            }
+        });
         alertD.show();
 
     }

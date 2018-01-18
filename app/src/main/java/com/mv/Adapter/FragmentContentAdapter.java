@@ -391,6 +391,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                         FileOutputStream out = new FileOutputStream(file);
                         decodedByte.compress(Bitmap.CompressFormat.PNG, 90, out);
                         out.close();
+                        notifyDataSetChanged();
 
                      /*   Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
                         shareIntent.setType("text/html");

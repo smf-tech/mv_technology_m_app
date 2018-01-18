@@ -82,7 +82,7 @@ public class DownloadService extends IntentService {
         ServiceRequest retrofitInterface = retrofit.create(ServiceRequest.class);
 
         Call<ResponseBody> request = retrofitInterface.downloadFile(url);
-        Log.e("url",url);
+
         try {
 
             downloadFile(request.execute().body());
