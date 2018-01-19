@@ -757,5 +757,10 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         }
         return false;
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initViews();
+    }
 
 }
