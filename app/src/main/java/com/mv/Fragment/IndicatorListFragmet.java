@@ -127,7 +127,7 @@ public class IndicatorListFragmet extends Fragment {
                             JSONObject processObj = jsonObject.getJSONObject("process");
                             processList.setId(processObj.getString("Id"));
                             processList.setName(processObj.getString("Name"));
-                            processList.setMultiple_Role__c(processObj.getString("Multiple_Role__c"));
+                            processList.setMultiple_Role__c(processObj.getString("Show_Role_In_Mobile_dashboard__c"));
                             JSONArray tasklist = jsonObject.getJSONArray("taskList");
                             for (int j = 0; j < tasklist.length(); j++) {
                                 Task task = new Task();

@@ -219,10 +219,11 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         img_logout.setVisibility(View.VISIBLE);
         img_logout.setOnClickListener(this);
 
-        location = (ImageView) findViewById(R.id.img_list);
-        location.setVisibility(View.VISIBLE);
-        location.setOnClickListener(this);
-        location.setImageResource(R.drawable.filter);
+        img_list = (ImageView) findViewById(R.id.img_list);
+        img_list.setVisibility(View.VISIBLE);
+        img_list.setOnClickListener(this);
+        img_list.setImageResource(R.drawable.filter);
+
         img_logout.setImageResource(R.drawable.share_report);
         llSpinner = (LinearLayout) findViewById(R.id.llrole_lay);
 
@@ -523,7 +524,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                         binding.swipeRefreshLayout.setVisibility(View.GONE);
                         binding.tvPiaNoDataAvailable.setVisibility(View.VISIBLE);
                         img_logout.setVisibility(View.GONE);
-                        img_list.setVisibility(View.GONE);
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -604,7 +605,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                                         img_list.setVisibility(View.VISIBLE);
                                     } else {
                                         img_logout.setVisibility(View.GONE);
-                                        img_list.setVisibility(View.GONE);
+
                                         binding.swipeRefreshLayout.setVisibility(View.GONE);
                                         binding.tvPiaNoDataAvailable.setVisibility(View.VISIBLE);
 
@@ -628,7 +629,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                                 }
                             } else {
                                 img_logout.setVisibility(View.GONE);
-                                img_list.setVisibility(View.GONE);
+
                                 binding.swipeRefreshLayout.setVisibility(View.GONE);
                                 binding.tvPiaNoDataAvailable.setVisibility(View.VISIBLE);
                             }
