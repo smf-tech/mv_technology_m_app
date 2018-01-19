@@ -204,7 +204,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         mListReportingType = new ArrayList<String>();
 
         mListReportingType = Arrays.asList(getResources().getStringArray(R.array.array_of_reporting_type));
-
+        binding.layoutMore.setOnClickListener(this);
 
         mListDistrict.add("Select");
         mListDistrict.add(User.getCurrentUser(this).getDistrict());
@@ -264,6 +264,13 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             case R.id.img_back:
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                break;
+            case R.id.layoutMore:
+                if (binding.layoutMoreDetail.getVisibility() == View.GONE) {
+                    binding.layoutMoreDetail.setVisibility(View.VISIBLE);
+                } else {
+                    binding.layoutMoreDetail.setVisibility(View.GONE);
+                }
                 break;
         }
     }
@@ -446,9 +453,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
 
     private boolean isValidate() {
         String str = "";
-        if (mSelectReportingType == 0) {
-            str = "Please select reporting type";
-        } else if (binding.editTextContent.getText().toString().trim().length() == 0) {
+        if (binding.editTextContent.getText().toString().trim().length() == 0) {
             str = "Please enter Content";
         } else if (binding.editTextDescription.getText().toString().trim().length() == 0) {
             str = "Please enter Description";
