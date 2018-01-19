@@ -14,6 +14,7 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -58,6 +59,8 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO;
 
 
 public class ReportingTemplateActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -272,7 +275,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
     }
 
     public void onAddImageClick() {
-        showPictureDialog();
+        showMediaDialog();
     }
 
 
@@ -578,5 +581,173 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 
+    }
+
+    private void showMediaDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(getString(R.string.text_mediatype));
+        String[] items = {getString(R.string.text_image),
+                getString(R.string.text_audio), getString(R.string.text_video)};
+
+        dialog.setItems(items, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                switch (which) {
+                    case 0:
+                        showPictureDialog();
+                        break;
+                    case 1:
+                        showAudioDialog();
+                        break;
+                    case 2:
+                        showVideoDialog();
+                        break;
+                }
+            }
+        });
+        dialog.show();
+    }
+    private void showAudioDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(getString(R.string.text_chooseaudio));
+        String[] items = {getString(R.string.text_record),
+                getString(R.string.text_select_audio)};
+
+        dialog.setItems(items, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                switch (which) {
+                    case 0:
+                       // showRecorDialog();
+                        break;
+                    case 1:
+                        showSelectRecorDialog();
+                        break;
+
+                }
+            }
+        });
+        dialog.show();
+    }
+
+    private void showSelectRecorDialog() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, Constants.SELECT_AUDIO);
+    }
+
+    private void showVideoDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(getString(R.string.text_choosevideo));
+        String[] items = {getString(R.string.text_gallary),
+                getString(R.string.text_camera)};
+
+        dialog.setItems(items, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                switch (which) {
+                    case 0:
+                        chooseVideoFromGallery();
+                        break;
+                    case 1:
+                        takeVideoFromCamera();
+                        break;
+
+                }
+            }
+        });
+        dialog.show();
+    }
+
+    private void chooseVideoFromGallery() {
+        Intent intent = new Intent();
+        intent.setType("video/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Video"), Constants.CHOOSE_VIDEO_FROM_GALLERY);
+    }
+
+    private void takeVideoFromCamera() {
+
+        try {
+           /* Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Video/video.mp4";
+            File imageFile = new File(imageFilePath);
+            outputUri = Uri.fromFile(imageFile); // convert path to Uri
+            Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+            takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 30);
+            takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageFilePath);
+            startActivityForResult(takeVideoIntent, Constants.CHOOSE_VIDEO_FROM_CAMERA);*/
+            Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+
+            // create a file to save the video
+            outputUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
+            // set the video duration
+            intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 30);
+            // set the image file name
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+            // set the video image quality to high
+            intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+
+            // start the Video Capture Intent
+            startActivityForResult(intent, Constants.CHOOSE_VIDEO_FROM_CAMERA);
+        } catch (ActivityNotFoundException anfe) {
+            String errorMessage = "Whoops - your device doesn't support capturing images!";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        }
+    }
+    /**
+     * Create a file Uri for saving an image or video
+     */
+    private Uri getOutputMediaFileUri(int type) {
+
+        return Uri.fromFile(getOutputMediaFile(type));
+    }
+
+    /**
+     * Create a File for saving an image or video
+     */
+    private File getOutputMediaFile(int type) {
+
+        // Check that the SDCard is mounted
+        File mediaStorageDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Video");
+
+
+        // Create the storage directory(MyCameraVideo) if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Toast.makeText(ReportingTemplateActivity.this, "Failed to create directory MyCameraVideo.",
+                        Toast.LENGTH_LONG).show();
+
+                Log.d("MyCameraVideo", "Failed to create directory MyCameraVideo.");
+                return null;
+            }
+        }
+
+
+        // Create a media file name
+
+        // For unique file name appending current timeStamp with file name
+        java.util.Date date = new java.util.Date();
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+                .format(date.getTime());
+
+        File mediaFile;
+
+        if (type == MEDIA_TYPE_VIDEO) {
+
+            // For unique video file name appending current timeStamp with file name
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                    "VID_" + timeStamp + ".mp4");
+
+        } else {
+            return null;
+        }
+
+        return mediaFile;
     }
 }
