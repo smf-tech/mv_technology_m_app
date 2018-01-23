@@ -127,6 +127,9 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
             @Override
             public void onClick(View v) {
                 mypostlist.clear();
+              btn_mypost.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
+              btn_allposts.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+
                 for (int i = 0; i < chatList.size(); i++) {
                     if (chatList.get(i).getUser_id().equals(User.getCurrentUser(getActivity()).getId())) {
                         mypostlist.add(chatList.get(i));
@@ -141,6 +144,9 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
             @Override
             public void onClick(View v) {
                 mySelection = false;
+               btn_allposts.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
+              btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+
                 adapter = new ThetSavandAdapter(getActivity(), fragment, chatList);
                 recyclerView.setAdapter(adapter);
             }

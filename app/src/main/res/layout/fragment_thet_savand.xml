@@ -59,24 +59,26 @@
                 android:orientation="horizontal">
 
                 <com.mv.Widgets.MyFontButton
-                    android:id="@+id/btn_mypost"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/lighter_grey_box"
-                    android:text="My Posts"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="15sp" />
-
-                <com.mv.Widgets.MyFontButton
                     android:id="@+id/btn_allposts"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/lighter_grey_box"
-                    android:text="All Posts"
-                    android:textColor="@color/colorPrimary"
+                    android:background="@drawable/selected_btn_background"
+                    android:text="@string/all_posts"
+                    android:textColor="@color/white"
                     android:textSize="15sp" />
+
+
+                <com.mv.Widgets.MyFontButton
+                    android:id="@+id/btn_mypost"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/light_grey_btn_background"
+                    android:text="@string/my_posts"
+                    android:textColor="@color/white"
+                    android:textSize="15sp" />
+
 
             </LinearLayout>
         </LinearLayout>

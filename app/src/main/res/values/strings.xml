@@ -184,5 +184,8 @@
     <string name="logout">Logout</string>
     <string name="select_form">Select Form</string>
 
-
+    <string name="all_posts">All \nPosts</string>
+    <string name="my_posts">My \nPosts</string>
+    <string name="my_location">My \n Location</string>
+    <string name="other_location">Other \nLocation</string>
 </resources>

@@ -75,18 +75,18 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/lighter_grey_box"
-                    android:text="All \nPosts"
-                    android:textColor="@color/colorPrimary"
+                    android:background="@drawable/selected_btn_background"
+                    android:text="@string/all_posts"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/small_text" />
                 <com.mv.Widgets.MyFontButton
                     android:id="@+id/btn_mypost"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/lighter_grey_box"
+                    android:background="@drawable/light_grey_btn_background"
                     android:layout_weight="1"
-                    android:text="My \nPosts"
-                    android:textColor="@color/colorPrimary"
+                    android:text="@string/my_posts"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/small_text" />
 
                 <com.mv.Widgets.MyFontButton
@@ -94,18 +94,18 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/lighter_grey_box"
-                    android:text="My \nLocation"
-                    android:textColor="@color/colorPrimary"
+                    android:background="@drawable/light_grey_btn_background"
+                    android:text="@string/my_location"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/small_text" />
                 <com.mv.Widgets.MyFontButton
                     android:id="@+id/btn_otherlocation"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:background="@drawable/lighter_grey_box"
-                    android:text="Other \nLocation"
-                    android:textColor="@color/colorPrimary"
+                    android:background="@drawable/light_grey_btn_background"
+                    android:text="@string/other_location"
+                    android:textColor="@color/white"
                     android:textSize="@dimen/small_text" />
 
 
