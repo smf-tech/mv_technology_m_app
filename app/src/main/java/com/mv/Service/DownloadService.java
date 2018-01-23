@@ -14,6 +14,7 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.mv.Activity.CommunityHomeActivity;
 import com.mv.Fragment.ThetSavandFragment;
 import com.mv.Fragment.TrainingFragment;
 import com.mv.Model.Download;
@@ -157,6 +158,8 @@ public class DownloadService extends IntentService {
             }else if (fragment_flag.equalsIgnoreCase("Training_Fragment")){
                  intent = new Intent(TrainingFragment.MESSAGE_PROGRESS);
 
+            }else if(fragment_flag.equalsIgnoreCase("My_Community")){
+                intent = new Intent(CommunityHomeActivity.MESSAGE_PROGRESS);
             }
             intent.putExtra("download", download);
 

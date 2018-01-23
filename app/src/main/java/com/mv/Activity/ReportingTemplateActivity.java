@@ -2,10 +2,17 @@ package com.mv.Activity;
 
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
+import android.media.MediaPlayer;
+import android.media.MediaRecorder;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,10 +21,13 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +46,7 @@ import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
+import com.mv.Utils.GetFilePathFromDevice;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityReportingTemplateBinding;
@@ -45,7 +56,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -58,6 +71,8 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.provider.MediaStore.Files.FileColumns.MEDIA_TYPE_VIDEO;
 
 
 public class ReportingTemplateActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
@@ -77,8 +92,22 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
     private ArrayAdapter<String> district_adapter, taluka_adapter;
     private PreferenceHelper preferenceHelper;
     private Content content;
+    private Dialog dialogrecord;
+    private static File auxFile, auxFileAudio, imgGallaery;
+    private boolean isplaying = false, isFirstTime = false;
+    private MediaPlayer mp;
+    private static MediaRecorder mediaRecorder;
+    private boolean isRecording = false;
+    private String audioFilePath =
+            Environment.getExternalStorageDirectory().getAbsolutePath()
+                    + "/coach/random.mp3";
+    private static MediaPlayer mediaPlayer;
     private String img_str;
-
+    private boolean isEdit;
+    private Content mContent;
+    private TextView rectext;
+    private Uri audioUri = null;
+    private String stringId = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -293,13 +322,14 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
     }
 
     public void onAddImageClick() {
-        showPictureDialog();
+        showMediaDialog();
     }
 
 
     public void onBtnSubmitClick() {
         if (isValidate()) {
             content = new Content();
+//            content.setId(mContent.getId());
             content.setDescription(binding.editTextDescription.getText().toString().trim());
             content.setTitle(binding.editTextContent.getText().toString().trim());
             content.setDistrict(mListDistrict.get(mSelectDistrict));
@@ -312,7 +342,6 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         }
 
     }
-
     private void setdDataToSalesForcce() {
         if (Utills.isConnected(this)) {
             try {
@@ -324,14 +353,53 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                 JSONObject jsonObject1 = new JSONObject(json);
 
                 JSONArray jsonArrayAttchment = new JSONArray();
+               // jsonObject1.put("isTheatMessage", "true");
                 if (FinalUri != null) {
-
                     try {
-                        jsonObject1.put("isAttachmentPresent", "true");
+                       /* if (checkSizeExceed(FinalUri)) {
+                            Utills.showToast("File Size Cannot Be Greater than 5 MB", this);
+                            return;
+                        }*/
+                        jsonObject1.put("contentType", "Image");
                         jsonObject1.put("isAttachmentPresent", "true");
                         InputStream iStream = null;
                         iStream = getContentResolver().openInputStream(FinalUri);
                         img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
+                      /*  JSONObject jsonObjectAttachment = new JSONObject();
+                        jsonObjectAttachment.put("Body", img_str);
+                        jsonObjectAttachment.put("Name", content.getTitle());
+                        jsonObjectAttachment.put("ContentType", "image/png");
+                        jsonArrayAttchment.put(jsonObjectAttachment);*/
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else if (outputUri != null) {
+                    try {
+                       /* if (checkSizeExceed(outputUri)) {
+                            Utills.showToast("File Size Cannot Be Greater than 5 MB", this);
+                            return;
+                        }*/
+                        jsonObject1.put("contentType", "Video");
+                        jsonObject1.put("isAttachmentPresent", "true");
+                        img_str = getVideoString(outputUri);
+                      /*  JSONObject jsonObjectAttachment = new JSONObject();
+                        jsonObjectAttachment.put("Body", img_str);
+                        jsonObjectAttachment.put("Name", content.getTitle());
+                        jsonObjectAttachment.put("ContentType", "image/png");
+                        jsonArrayAttchment.put(jsonObjectAttachment);*/
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else if (audioUri != null) {
+                    try {
+                       /* if (checkSizeExceed(audioUri)) {
+                            Utills.showToast("File Size Cannot Be Greater than 5 MB", this);
+                            return;
+                        }*/
+
+                        jsonObject1.put("contentType", "Audio");
+                        jsonObject1.put("isAttachmentPresent", "true");
+                        img_str = getVideoString(audioUri);
                       /*  JSONObject jsonObjectAttachment = new JSONObject();
                         jsonObjectAttachment.put("Body", img_str);
                         jsonObjectAttachment.put("Name", content.getTitle());
@@ -362,9 +430,17 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                             JSONArray array = object.getJSONArray("Records");
                             if (array.length() > 0) {
                                 JSONObject object1 = array.getJSONObject(0);
-                                if (object1.has("Id") && FinalUri != null) {
+                                if (object1.has("Id") && (FinalUri != null || outputUri != null || audioUri != null)) {
                                     JSONObject object2 = new JSONObject();
                                     object2.put("id", object1.getString("Id"));
+
+                                    stringId = object1.getString("Id");
+                                    if (FinalUri != null)
+                                        object2.put("type", "png");
+                                    else if (outputUri != null)
+                                        object2.put("type", "mp4");
+                                    else if (audioUri != null)
+                                        object2.put("type", "mp3");
                                     object2.put("img", img_str);
                                     JSONArray array1 = new JSONArray();
                                     array1.put(object2);
@@ -372,6 +448,107 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                                    /* Utills.showToast("Report submitted successfully...", getApplicationContext());
                                     finish();
                                     overridePendingTransition(R.anim.left_in, R.anim.right_out);*/
+                                } else {
+                                    Utills.showToast("Report submitted successfully...", getApplicationContext());
+                                    finish();
+                                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                                }
+                            } else {
+                                Utills.showToast("Report submitted successfully...", getApplicationContext());
+                                finish();
+                                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                            }
+
+                        } catch (Exception e) {
+                            Utills.hideProgressDialog();
+                            e.printStackTrace();
+                            Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Utills.hideProgressDialog();
+                        Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Utills.hideProgressDialog();
+                Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+            }
+        } else {
+            showPopUp();
+        }
+    }
+
+
+/*
+    private void setdDataToSalesForcce() {
+        if (Utills.isConnected(this)) {
+            try {
+                Utills.showProgressDialog(this);
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                String json = gson.toJson(content);
+                JSONObject jsonObject = new JSONObject();
+                JSONArray jsonArray = new JSONArray();
+                JSONObject jsonObject1 = new JSONObject(json);
+
+                JSONArray jsonArrayAttchment = new JSONArray();
+                if (FinalUri != null) {
+
+                    try {
+                        jsonObject1.put("isAttachmentPresent", "true");
+                        jsonObject1.put("isAttachmentPresent", "true");
+                        InputStream iStream = null;
+                        iStream = getContentResolver().openInputStream(FinalUri);
+                        img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
+                      */
+/*  JSONObject jsonObjectAttachment = new JSONObject();
+                        jsonObjectAttachment.put("Body", img_str);
+                        jsonObjectAttachment.put("Name", content.getTitle());
+                        jsonObjectAttachment.put("ContentType", "image/png");
+                        jsonArrayAttchment.put(jsonObjectAttachment);*//*
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                */
+/*JSONObject jsonObjectAttachment = new JSONObject();
+                jsonArrayAttchment.put(jsonObjectAttachment);*//*
+
+                jsonObject1.put("attachments", jsonArrayAttchment);
+                jsonArray.put(jsonObject1);
+                jsonObject.put("listVisitsData", jsonArray);
+
+                ServiceRequest apiService =
+                        ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+                JsonParser jsonParser = new JsonParser();
+                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/insertContent", gsonObject).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Utills.hideProgressDialog();
+                        try {
+
+                            String str = response.body().string();
+                            JSONObject object = new JSONObject(str);
+                            JSONArray array = object.getJSONArray("Records");
+                            if (array.length() > 0) {
+                                JSONObject object1 = array.getJSONObject(0);
+                                if (object1.has("Id") && FinalUri != null) {
+                                    JSONObject object2 = new JSONObject();
+                                    object2.put("id", object1.getString("Id"));
+                                    object2.put("img", img_str);
+                                    JSONArray array1 = new JSONArray();
+                                    array1.put(object2);
+                                    sendImageToServer(array1);
+                                   */
+/* Utills.showToast("Report submitted successfully...", getApplicationContext());
+                                    finish();
+                                    overridePendingTransition(R.anim.left_in, R.anim.right_out);*//*
+
                                 } else {
                                     Utills.showToast("Report submitted successfully...", getApplicationContext());
                                     finish();
@@ -427,6 +604,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             overridePendingTransition(R.anim.left_in, R.anim.right_out);
         }
     }
+*/
 
     private void sendImageToServer(JSONArray jsonArray) {
         Utills.showProgressDialog(this);
@@ -434,7 +612,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         JsonArray gsonObject = (JsonArray) jsonParser.parse(jsonArray.toString());
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
-        apiService.sendImageToSalesforce("http://13.58.218.106/upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
+        apiService.sendImageToSalesforce("http://13.58.218.106/new_upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -457,7 +635,8 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utills.hideProgressDialog();
-                Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                Utills.showToast("wrong",ReportingTemplateActivity.this);
+               // Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
             }
         });
     }
@@ -537,6 +716,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Bitmap bmThumbnail;
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
             try {
                 String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture_crop.jpg";
@@ -564,8 +744,97 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(binding.addImage);
+        }else if (requestCode == Constants.CHOOSE_VIDEO_FROM_CAMERA && resultCode == RESULT_OK) {
+            String selectedImagePath = getPath(outputUri);
+            if (checkSizeExceed(selectedImagePath)) {
+                outputUri = null;
+                Utills.showToast(getString(R.string.text_size_exceed), this);
+            } else {
+                bmThumbnail = ThumbnailUtils.createVideoThumbnail(outputUri.getPath(), MediaStore.Video.Thumbnails.MINI_KIND);
+                binding.addImage.setImageBitmap(bmThumbnail);
+            }
+        } else if (requestCode == Constants.CHOOSE_VIDEO_FROM_GALLERY && resultCode == RESULT_OK) {
+            outputUri = data.getData();
+            String selectedVideoFilePath = GetFilePathFromDevice.getPath(this, outputUri);
+
+            if (checkSizeExceed(selectedVideoFilePath)) {
+                outputUri = null;
+                Utills.showToast(getString(R.string.text_size_exceed), this);
+            } else {
+                if (selectedVideoFilePath != null) {
+                    binding.addImage.setImageBitmap(ThumbnailUtils.createVideoThumbnail(selectedVideoFilePath, MediaStore.Video.Thumbnails.FULL_SCREEN_KIND));
+                }
+            }
+        } else if (requestCode == Constants.SELECT_AUDIO && resultCode == RESULT_OK) {
+            audioUri = data.getData();
+            String dddd = getPath(audioUri);
+            Log.e("dddd", dddd);
+
+            if (checkSizeExceed(getPath(audioUri))) {
+                audioUri = null;
+                Utills.showToast(getString(R.string.text_size_exceed), this);
+            } else {
+                auxFileAudio = new File(getPath(audioUri));
+                binding.addImage.setImageResource(R.drawable.mic);
+            }
         }
     }
+    public String getPath(Uri uri) {
+        String[] projection = {MediaStore.Video.Media.DATA};
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            // HERE YOU WILL GET A NULLPOINTER IF CURSOR IS NULL
+            // THIS CAN BE, IF YOU USED OI FILE MANAGER FOR PICKING THE MEDIA
+            int column_index = cursor
+                    .getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } else
+            return null;
+    }
+
+    private boolean checkSizeExceed(String filePath) {
+        File f = new File(filePath);
+        // Get length of file in bytes
+        long fileSizeInBytes = f.length();
+        // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
+        long fileSizeInKB = fileSizeInBytes / 1024;
+        // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
+        long fileSizeInMB = fileSizeInKB / 1024;
+        if (fileSizeInMB > 5)
+            return true;
+        return false;
+    }
+    private String getVideoString(Uri selectedImageUri) {
+        InputStream inputStream = null;
+        try {
+            inputStream = getContentResolver().openInputStream(selectedImageUri);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int len = 0;
+        try {
+            while ((len = inputStream.read(buffer)) != -1) {
+                byteBuffer.write(buffer, 0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("converted!");
+        String videoData = "";
+        //Converting bytes into base64
+        videoData = Base64.encodeToString(byteBuffer.toByteArray(), Base64.DEFAULT);
+        Log.d("VideoData**>  ", videoData);
+        String sinSaltoFinal2 = videoData.trim();
+        String sinsinSalto2 = sinSaltoFinal2.replaceAll("\n", "");
+        Log.d("VideoData**>  ", sinsinSalto2);
+        String baseVideo = sinsinSalto2;
+        return baseVideo;
+    }
+
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -601,4 +870,334 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
     public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
+
+    private void showMediaDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(getString(R.string.text_mediatype));
+        String[] items = {getString(R.string.text_image),
+                getString(R.string.text_audio), getString(R.string.text_video)};
+
+        dialog.setItems(items, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                switch (which) {
+                    case 0:
+                        showPictureDialog();
+                        break;
+                    case 1:
+                        showAudioDialog();
+                        break;
+                    case 2:
+                        showVideoDialog();
+                        break;
+                }
+            }
+        });
+        dialog.show();
+    }
+    private void showAudioDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(getString(R.string.text_chooseaudio));
+        String[] items = {getString(R.string.text_record),
+                getString(R.string.text_select_audio)};
+
+        dialog.setItems(items, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                switch (which) {
+                    case 0:
+                        showRecorDialog();
+                        break;
+                    case 1:
+                        showSelectRecorDialog();
+                        break;
+
+                }
+            }
+        });
+        dialog.show();
+    }
+
+    private void showSelectRecorDialog() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(intent, Constants.SELECT_AUDIO);
+    }
+
+    private void showVideoDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(getString(R.string.text_choosevideo));
+        String[] items = {getString(R.string.text_gallary),
+                getString(R.string.text_camera)};
+
+        dialog.setItems(items, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                switch (which) {
+                    case 0:
+                        chooseVideoFromGallery();
+                        break;
+                    case 1:
+                        takeVideoFromCamera();
+                        break;
+
+                }
+            }
+        });
+        dialog.show();
+    }
+
+    private void chooseVideoFromGallery() {
+        Intent intent = new Intent();
+        intent.setType("video/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Video"), Constants.CHOOSE_VIDEO_FROM_GALLERY);
+    }
+
+    private void takeVideoFromCamera() {
+
+        try {
+           /* Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Video/video.mp4";
+            File imageFile = new File(imageFilePath);
+            outputUri = Uri.fromFile(imageFile); // convert path to Uri
+            Intent takeVideoIntent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+            takeVideoIntent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 30);
+            takeVideoIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageFilePath);
+            startActivityForResult(takeVideoIntent, Constants.CHOOSE_VIDEO_FROM_CAMERA);*/
+            Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
+
+            // create a file to save the video
+            outputUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
+            // set the video duration
+            intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 30);
+            // set the image file name
+            intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+            // set the video image quality to high
+            intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+
+            // start the Video Capture Intent
+            startActivityForResult(intent, Constants.CHOOSE_VIDEO_FROM_CAMERA);
+        } catch (ActivityNotFoundException anfe) {
+            String errorMessage = "Whoops - your device doesn't support capturing images!";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        }
+    }
+    /**
+     * Create a file Uri for saving an image or video
+     */
+    private Uri getOutputMediaFileUri(int type) {
+
+        return Uri.fromFile(getOutputMediaFile(type));
+    }
+
+    /**
+     * Create a File for saving an image or video
+     */
+    private File getOutputMediaFile(int type) {
+
+        // Check that the SDCard is mounted
+        File mediaStorageDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Video");
+
+
+        // Create the storage directory(MyCameraVideo) if it does not exist
+        if (!mediaStorageDir.exists()) {
+            if (!mediaStorageDir.mkdirs()) {
+                Toast.makeText(ReportingTemplateActivity.this, "Failed to create directory MyCameraVideo.",
+                        Toast.LENGTH_LONG).show();
+
+                Log.d("MyCameraVideo", "Failed to create directory MyCameraVideo.");
+                return null;
+            }
+        }
+
+
+        // Create a media file name
+
+        // For unique file name appending current timeStamp with file name
+        java.util.Date date = new java.util.Date();
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss")
+                .format(date.getTime());
+
+        File mediaFile;
+
+        if (type == MEDIA_TYPE_VIDEO) {
+
+            // For unique video file name appending current timeStamp with file name
+            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
+                    "VID_" + timeStamp + ".mp4");
+
+        } else {
+            return null;
+        }
+
+        return mediaFile;
+    }
+
+    private void showRecorDialog() {
+
+        dialogrecord = new Dialog(ReportingTemplateActivity.this);
+        dialogrecord.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialogrecord.setCancelable(true);
+        dialogrecord.setContentView(R.layout.activity_recordaudio);
+
+        final LinearLayout record = (LinearLayout) dialogrecord.findViewById(R.id.record);
+        record.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isRecording) {
+                    record.setBackgroundResource(R.drawable.blue_box_mic_radius);
+
+                    stopClicked(v);
+
+
+                } else {
+
+                    record.setBackgroundResource(R.drawable.red_box_mic_radius);
+                    try {
+                        if (hasMicrophone())
+                            recordAudio(v);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        final ImageView play = (ImageView) dialogrecord.findViewById(R.id.play);
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (auxFileAudio != null) {
+                    if (mp == null)
+                        mp = new MediaPlayer();
+                    mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mp) {
+                            isplaying = false;
+                            isFirstTime = false;
+                            mp.stop();
+                            play.setImageResource(R.drawable.play_song);
+                        }
+                    });
+                    try {
+                        if (isplaying) {
+                            isplaying = false;
+                            mp.pause();
+                            play.setImageResource(R.drawable.play_song);
+                        } else {
+                            isplaying = true;
+                            play.setImageResource(R.drawable.pause_song);
+                            if (!isFirstTime) {
+                                isFirstTime = true;
+                                mp.reset();
+                                mp.setDataSource(audioFilePath);//Write your location here
+                                mp.prepare();
+                                mp.start();
+                            } else {
+                                mp.start();
+                            }
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                } else {
+                    Toast.makeText(ReportingTemplateActivity.this, "Please record Audio", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
+        rectext = (TextView) dialogrecord.findViewById(R.id.rectext);
+        TextView done = (TextView) dialogrecord.findViewById(R.id.done);
+        TextView cancel = (TextView) dialogrecord.findViewById(R.id.cancel);
+        done.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mp != null) {
+                    mp.pause();
+                }
+                stopClicked(v);
+                if (audioUri != null)
+                    binding.addImage.setImageResource(R.drawable.mic_audio);
+                dialogrecord.dismiss();
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                audioUri = null;
+                binding.addImage.setImageResource(R.drawable.add);
+                dialogrecord.dismiss();
+            }
+        });
+
+        dialogrecord.show();
+
+    }
+    protected boolean hasMicrophone() {
+        PackageManager pmanager = getPackageManager();
+        return pmanager.hasSystemFeature(
+                PackageManager.FEATURE_MICROPHONE);
+    }
+
+    public void stopClicked(View view) {
+
+        try {
+            if (isRecording) {
+                rectext.setText("Start");
+                if (mediaRecorder != null)
+                    mediaRecorder.stop();
+                mediaRecorder.release();
+                mediaRecorder = null;
+                isRecording = false;
+                audioUri = Uri.fromFile(new File(audioFilePath));
+
+// dialogrecord.dismiss();
+            } else {
+                if (mediaPlayer != null) {
+                    mediaPlayer.release();
+                    mediaPlayer = null;
+                    audioUri = Uri.fromFile(new File(audioFilePath));
+                }
+
+            }
+
+        } catch (Exception e) {
+
+        }
+    }
+    public void recordAudio(View view) throws IOException {
+        isRecording = true;
+        rectext.setText("Done");
+
+        try {
+
+            File folder = new File(Environment.getExternalStorageDirectory() + "/coach");
+            if (!folder.exists()) {
+                folder.mkdir();
+            }
+            auxFileAudio = new File(audioFilePath);
+            mediaRecorder = new MediaRecorder();
+            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+            mediaRecorder.setOutputFile(audioFilePath);
+            mediaRecorder.prepare();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mediaRecorder.start();
+    }
+
 }

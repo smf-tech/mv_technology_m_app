@@ -302,7 +302,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
 
 
         holder.txt_type.setText(mDataList.get(position).getIssue_priority());
-        if (mDataList.get(position).getIsLike())
+        if ((mDataList.get(position).getIsLike()) && (mDataList.get(position).getUser_id().equalsIgnoreCase(User.getCurrentUser(mContext).getId())))
             holder.imgLike.setImageResource(R.drawable.like);
         else
             holder.imgLike.setImageResource(R.drawable.dislike);
