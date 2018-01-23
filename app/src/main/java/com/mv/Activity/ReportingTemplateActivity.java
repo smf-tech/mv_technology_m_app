@@ -205,7 +205,10 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
 
         mListDistrict.add("Select");
         mListDistrict.add(User.getCurrentUser(this).getDistrict());
-
+        if (User.getCurrentUser(ReportingTemplateActivity.this).getRoll().equalsIgnoreCase("TC")) {
+            binding.txtSpinner.setVisibility(View.VISIBLE);
+            binding.spinnerIssue.setVisibility(View.VISIBLE);
+        }
 
         mListTaluka.add("Select");
         if (!Utills.isConnected(this)) {
@@ -265,8 +268,19 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             case R.id.layoutMore:
                 if (binding.layoutMoreDetail.getVisibility() == View.GONE) {
                     binding.layoutMoreDetail.setVisibility(View.VISIBLE);
+                    if (User.getCurrentUser(ReportingTemplateActivity.this).getRoll().equalsIgnoreCase("TC")) {
+                    } else {
+                        binding.txtSpinner.setVisibility(View.VISIBLE);
+                        binding.spinnerIssue.setVisibility(View.VISIBLE);
+                    }
+
                 } else {
                     binding.layoutMoreDetail.setVisibility(View.GONE);
+                    if (User.getCurrentUser(ReportingTemplateActivity.this).getRoll().equalsIgnoreCase("TC")) {
+                    } else {
+                        binding.txtSpinner.setVisibility(View.GONE);
+                        binding.spinnerIssue.setVisibility(View.GONE);
+                    }
                 }
                 break;
         }
@@ -450,7 +464,10 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
 
     private boolean isValidate() {
         String str = "";
-        if (binding.editTextContent.getText().toString().trim().length() == 0) {
+        if (User.getCurrentUser(ReportingTemplateActivity.this).getRoll().equalsIgnoreCase("TC")
+                && mSelectReportingType == 0) {
+            str = "Please Select Reporting Type";
+        } else if (binding.editTextContent.getText().toString().trim().length() == 0) {
             str = "Please enter Content";
         } else if (binding.editTextDescription.getText().toString().trim().length() == 0) {
             str = "Please enter Description";
