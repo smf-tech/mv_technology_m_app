@@ -2,13 +2,16 @@ package com.mv.Activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -30,6 +33,7 @@ import com.mv.Adapter.ContentAdapter;
 import com.mv.Adapter.ThetSavandAdapter;
 import com.mv.Model.Community;
 import com.mv.Model.Content;
+import com.mv.Model.Download;
 import com.mv.Model.Template;
 import com.mv.Model.User;
 import com.mv.R;
@@ -83,6 +87,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     private Boolean mySelection = false,myLocation = false;
     int filterflag=0;
     TextView textNoData;
+    public static final String MESSAGE_PROGRESS = "message_progress";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +96,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         binding = DataBindingUtil.setContentView(this, R.layout.activity_community_home);
         binding.setActivity(this);
         initViews();
+        registerReceiver();
         binding.swipeRefreshLayout.setOnRefreshListener(this);
 
         getChats(true);
@@ -605,7 +611,6 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onRestart() {
         super.onRestart();
-
         getChats(false);
     }
 
@@ -741,6 +746,24 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
     }
 
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(MESSAGE_PROGRESS)) {
+                Download download = intent.getParcelableExtra("download");
+                if (adapter != null)
+                    adapter.notifyDataSetChanged();
+            }
+        }
+    };
 
+    private void registerReceiver() {
+
+        LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(CommunityHomeActivity.this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(MESSAGE_PROGRESS);
+        bManager.registerReceiver(broadcastReceiver, intentFilter);
+
+    }
 }
 
