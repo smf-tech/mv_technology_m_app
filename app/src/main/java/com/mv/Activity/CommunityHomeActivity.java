@@ -346,7 +346,10 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
             public void onClick(View v) {
                 mySelection = true;
                 filterflag = 1;
-
+                btn_mypost.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
+                btn_allposts.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_mylocation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 for (int i = 0; i < chatList.size(); i++) {
 
                     if (chatList.get(i).getUser_id().equals(User.getCurrentUser(getApplicationContext()).getId())) {
@@ -366,6 +369,10 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         btn_allposts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_allposts.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
+                btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_mylocation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 mySelection = false;
                 filterflag = 0;
                 chatList =  AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
@@ -380,15 +387,21 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         btn_mylocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_mylocation.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
+                btn_allposts.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 myLocation = true;
                 filterflag = 2;
                 chatList =  AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
                 for (int i = 0; i < chatList.size(); i++) {
 
+                     //Log.e("taluka",chatList.get(i).getTaluka());
+                    if (chatList.get(i).getTaluka()!=null) {
 
-
-                    if (chatList.get(i).getTaluka().equals(User.getCurrentUser(getApplicationContext()).getTaluka())) {
-                        mylocationlist.add(chatList.get(i));
+                        if (chatList.get(i).getTaluka().equalsIgnoreCase(User.getCurrentUser(getApplicationContext()).getTaluka())) {
+                            mylocationlist.add(chatList.get(i));
+                        }
                     }
 
                 }
@@ -401,15 +414,21 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         btn_otherlcation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
+                btn_allposts.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_mylocation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 myLocation = false;
                 filterflag = 3;
                 chatList =  AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
                 for (int i = 0; i < chatList.size(); i++) {
 
+                    if (chatList.get(i).getTaluka()!=null) {
 
-                    if (!chatList.get(i).getTaluka().equals(User.getCurrentUser(getApplicationContext()).getTaluka())) {
+                        if (!chatList.get(i).getTaluka().equals(User.getCurrentUser(getApplicationContext()).getTaluka())) {
 
-                        otherlocationlist.add(chatList.get(i));
+                            otherlocationlist.add(chatList.get(i));
+                        }
                     }
 
                 }
