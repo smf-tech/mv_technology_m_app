@@ -64,7 +64,6 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -108,6 +107,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
     private TextView rectext;
     private Uri audioUri = null;
     private String stringId = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -342,6 +342,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         }
 
     }
+
     private void setdDataToSalesForcce() {
         if (Utills.isConnected(this)) {
             try {
@@ -353,7 +354,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                 JSONObject jsonObject1 = new JSONObject(json);
 
                 JSONArray jsonArrayAttchment = new JSONArray();
-               // jsonObject1.put("isTheatMessage", "true");
+                // jsonObject1.put("isTheatMessage", "true");
                 if (FinalUri != null) {
                     try {
                        /* if (checkSizeExceed(FinalUri)) {
@@ -635,8 +636,8 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utills.hideProgressDialog();
-                Utills.showToast("wrong",ReportingTemplateActivity.this);
-               // Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                Utills.showToast("wrong", ReportingTemplateActivity.this);
+                // Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
             }
         });
     }
@@ -744,7 +745,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(binding.addImage);
-        }else if (requestCode == Constants.CHOOSE_VIDEO_FROM_CAMERA && resultCode == RESULT_OK) {
+        } else if (requestCode == Constants.CHOOSE_VIDEO_FROM_CAMERA && resultCode == RESULT_OK) {
             String selectedImagePath = getPath(outputUri);
             if (checkSizeExceed(selectedImagePath)) {
                 outputUri = null;
@@ -779,6 +780,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             }
         }
     }
+
     public String getPath(Uri uri) {
         String[] projection = {MediaStore.Video.Media.DATA};
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
@@ -805,6 +807,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             return true;
         return false;
     }
+
     private String getVideoString(Uri selectedImageUri) {
         InputStream inputStream = null;
         try {
@@ -897,6 +900,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         });
         dialog.show();
     }
+
     private void showAudioDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(getString(R.string.text_chooseaudio));
@@ -988,6 +992,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
         }
     }
+
     /**
      * Create a file Uri for saving an image or video
      */
@@ -1144,6 +1149,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         dialogrecord.show();
 
     }
+
     protected boolean hasMicrophone() {
         PackageManager pmanager = getPackageManager();
         return pmanager.hasSystemFeature(
@@ -1176,6 +1182,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
 
         }
     }
+
     public void recordAudio(View view) throws IOException {
         isRecording = true;
         rectext.setText("Done");
