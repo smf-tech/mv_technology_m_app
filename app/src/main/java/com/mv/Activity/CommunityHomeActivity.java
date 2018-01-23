@@ -1,14 +1,15 @@
 package com.mv.Activity;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +27,7 @@ import com.google.gson.GsonBuilder;
 import com.mv.Adapter.ContentAdapter;
 import com.mv.Model.Community;
 import com.mv.Model.Content;
+import com.mv.Model.Download;
 import com.mv.Model.Template;
 import com.mv.Model.User;
 import com.mv.R;
@@ -80,6 +82,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     int filterflag = 0;
     TextView textNoData;
     public static final String MESSAGE_PROGRESS = "message_progress";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -374,7 +377,6 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 filterflag = 2;
                 chatList = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
                 for (int i = 0; i < chatList.size(); i++) {
-
 
 
                     if (chatList.get(i).getTaluka().equals(User.getCurrentUser(getApplicationContext()).getTaluka())) {
