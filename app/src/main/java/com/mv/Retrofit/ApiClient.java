@@ -137,7 +137,7 @@ public class ApiClient {
         return retrofitWithHeader;
     }
 
-    private static void loginToSalesforce(final Context context, final PreferenceHelper preferenceHelper) {
+        private static void loginToSalesforce(final Context context, final PreferenceHelper preferenceHelper) {
 
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
