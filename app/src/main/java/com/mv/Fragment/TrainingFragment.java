@@ -4,6 +4,7 @@ package com.mv.Fragment;
  * Created by Rohit Gujar on 09-10-2017.
  */
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -11,14 +12,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -31,6 +37,7 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Service.DownloadService;
+import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 
@@ -47,29 +54,31 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TrainingFragment extends Fragment {
+public class TrainingFragment extends AppCompatActivity implements View.OnClickListener{
     public static final String MESSAGE_PROGRESS = "message_progress";
     private RecyclerView recyclerView;
-    private View view;
+
     private TrainingAdapter adapter;
     private PreferenceHelper preferenceHelper;
     private ArrayList<DownloadContent> mList = new ArrayList<DownloadContent>();
     TextView textNoData;
-
+    Activity context;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.activity_training, container, false);
-
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
-        textNoData = (TextView) view.findViewById(R.id.textNoData);
-        preferenceHelper = new PreferenceHelper(getActivity());
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_training);
+        context=this;
+        setActionbar(getString(R.string.training_content));
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        textNoData = (TextView) findViewById(R.id.textNoData);
+        preferenceHelper = new PreferenceHelper(context);
         registerReceiver();
         setRecyclerView();
         if (TextUtils.isEmpty(preferenceHelper.getString(PreferenceHelper.TrainingContentData))) {
-            if (Utills.isConnected(getActivity())) {
+            if (Utills.isConnected(context)) {
                 getData();
             } else {
-                Utills.showInternetPopUp(getActivity());
+                Utills.showInternetPopUp(context);
             }
         } else {
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
@@ -79,17 +88,40 @@ public class TrainingFragment extends Fragment {
                 mList.add(content);
             }
             adapter.notifyDataSetChanged();
-            if (Utills.isConnected(getActivity())) {
+            if (Utills.isConnected(context)) {
                 getData();
             }
         }
 
-
-        return view;
     }
 
+    private void setActionbar(String Title) {
+        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        toolbar_title.setText(Title);
+        ImageView img_back = (ImageView) findViewById(R.id.img_back);
+        img_back.setVisibility(View.VISIBLE);
+        img_back.setOnClickListener(this);
+        ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
+        img_logout.setVisibility(View.GONE);
+        img_logout.setOnClickListener(this);
+    }
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.img_back:
+                context.finish();
+                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                break;
+        }
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
+    }
     private void showPopUp() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 
         // Setting Dialog Title
         alertDialog.setTitle(getString(R.string.app_name));
@@ -104,16 +136,16 @@ public class TrainingFragment extends Fragment {
         alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                finish();
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
         });
         // Setting OK Button
         alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                finish();
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
         });
 
@@ -123,12 +155,12 @@ public class TrainingFragment extends Fragment {
 
 
     private void getData() {
-        Utills.showProgressDialog(getActivity(), "Loading Downloads", getString(R.string.progress_please_wait));
+        Utills.showProgressDialog(context, "Loading Downloads", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
-                ApiClient.getClientWitHeader(getActivity()).create(ServiceRequest.class);
+                ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = "";
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getdownloadContentData?userId=" + User.getCurrentUser(getActivity()).getId();
+                + "/services/apexrest/getdownloadContentData?userId=" + User.getCurrentUser(context).getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -171,7 +203,7 @@ public class TrainingFragment extends Fragment {
 
     private void registerReceiver() {
 
-        LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(getActivity());
+        LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(context);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(MESSAGE_PROGRESS);
         bManager.registerReceiver(broadcastReceiver, intentFilter);
@@ -179,8 +211,8 @@ public class TrainingFragment extends Fragment {
     }
 
     public void startDownload(int position) {
-        Utills.showToast("Downloading Started...", getActivity());
-        Intent intent = new Intent(getActivity(), DownloadService.class);
+        Utills.showToast("Downloading Started...", context);
+        Intent intent = new Intent(context, DownloadService.class);
         intent.putExtra("URL", mList.get(position).getUrl());
         intent.putExtra("fragment_flag","Training_Fragment");
         if (mList.get(position).getFileType().equalsIgnoreCase("zip")) {
@@ -199,7 +231,7 @@ public class TrainingFragment extends Fragment {
             intent.putExtra("FILENAME", mList.get(position).getName() + ".ppt");
             intent.putExtra("FILETYPE", mList.get(position).getName() + "ppt");
         }
-        getActivity().startService(intent);
+        context.startService(intent);
     }
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -214,9 +246,9 @@ public class TrainingFragment extends Fragment {
     };
 
     private void setRecyclerView() {
-        adapter = new TrainingAdapter(getActivity(), this, mList);
+        adapter = new TrainingAdapter(context, this, mList);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
     }
 }

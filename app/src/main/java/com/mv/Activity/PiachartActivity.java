@@ -493,7 +493,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getDashboardData?userId=" + User.getCurrentUser(PiachartActivity.this).getId() + "&qustionArea=" + title;
+                + "/services/apexrest/getDashboardDatademo?userId=" + User.getCurrentUser(PiachartActivity.this).getId() + "&qustionArea=" + title;
 
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {

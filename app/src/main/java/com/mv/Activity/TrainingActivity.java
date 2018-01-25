@@ -23,7 +23,6 @@ public class TrainingActivity extends AppCompatActivity implements View.OnClickL
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     private RecyclerView recyclerView;
-
     private TrainingAdapter adapter;
 
 

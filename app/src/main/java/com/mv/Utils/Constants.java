@@ -8,16 +8,16 @@ import android.net.Uri;
 
 public class Constants {
 
-    /* Production*/
-   public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
+    /* Production
+    public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com";
     public static String REPORTID = "a1L7F000000YNK4";
-    public static String ISSUEID = "a1L7F000000YNJz";
-    /* Sandbox
+    public static String ISSUEID = "a1L7F000000YNJz";*/
+    /* Sandbox*/
     public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
     public static String REPORTID = "a1G0k000000522K";
-    public static String ISSUEID = "a1G0k000000522F";*/
+    public static String ISSUEID = "a1G0k000000522F";
 
     public static int SELECT_AUDIO = 501;
     public static Uri shareUri = null;
@@ -33,6 +33,7 @@ public class Constants {
     public static String LIST = "list";
     public static String CONTENT = "content";
 
+    public static final String TABLE_CALANDER = "table_calender";
     public static final String TABLE_TASK = "table_task";
     public static final String TABLE_PROCESS = "table_process";
     public static final String TABLE_CONTAINER = "table_container";
@@ -112,7 +113,6 @@ public class Constants {
     public static final String Team_Management = "Team Management";
     public static final String My_Reports = "My Reports";
     public static final String My_Calendar = "My Calendar";
-
 
 
 }

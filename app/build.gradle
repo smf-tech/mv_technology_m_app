@@ -80,7 +80,7 @@ dependencies {
     compile 'com.google.firebase:firebase-config:11.4.2'
     compile 'com.prolificinteractive:material-calendarview:1.4.3'
     compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
-
+    compile 'com.google.android:flexbox:0.3.2'
     compile 'android.arch.persistence.room:runtime:' + rootProject.archRoomVersion;
     annotationProcessor 'android.arch.persistence.room:compiler:' + rootProject.archRoomVersion;
     compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
@@ -89,7 +89,6 @@ dependencies {
     compile 'io.github.kobakei:ratethisapp:1.2.0'
     compile 'com.google.android.gms:play-services-location:11.4.2'
     compile 'com.firebase:firebase-jobdispatcher:0.8.5'
-
 
 
 }

@@ -23,12 +23,13 @@
         android:layout_centerInParent="true"
         android:layout_toLeftOf="@+id/layoutList"
         android:layout_toRightOf="@+id/img_back"
-        android:ellipsize="marquee"
+
         android:gravity="center"
-        android:singleLine="true"
+        android:lines="2"
+
         android:text="Toolbar Title"
         android:textColor="@color/white"
-        android:textSize="@dimen/large_text" />
+        android:textSize="18dp" />
 
     <LinearLayout
         android:id="@+id/layoutList"
