@@ -1,23 +1,21 @@
 package com.mv.Activity;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,9 +25,9 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mv.Adapter.ContentAdapter;
-import com.mv.Adapter.ThetSavandAdapter;
 import com.mv.Model.Community;
 import com.mv.Model.Content;
+import com.mv.Model.Download;
 import com.mv.Model.Template;
 import com.mv.Model.User;
 import com.mv.R;
@@ -83,6 +81,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     private Boolean mySelection = false,myLocation = false;
     int filterflag=0;
     TextView textNoData;
+    public static final String MESSAGE_PROGRESS = "message_progress";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +90,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         binding = DataBindingUtil.setContentView(this, R.layout.activity_community_home);
         binding.setActivity(this);
         initViews();
+        registerReceiver();
         binding.swipeRefreshLayout.setOnRefreshListener(this);
 
         getChats(true);
@@ -340,7 +340,10 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
             public void onClick(View v) {
                 mySelection = true;
                 filterflag = 1;
-
+                btn_mypost.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
+                btn_allposts.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_mylocation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 for (int i = 0; i < chatList.size(); i++) {
 
                     if (chatList.get(i).getUser_id().equals(User.getCurrentUser(getApplicationContext()).getId())) {
@@ -360,6 +363,10 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         btn_allposts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_allposts.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
+                btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_mylocation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 mySelection = false;
                 filterflag = 0;
                 chatList =  AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
@@ -374,15 +381,21 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         btn_mylocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_mylocation.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
+                btn_allposts.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 myLocation = true;
                 filterflag = 2;
                 chatList =  AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
                 for (int i = 0; i < chatList.size(); i++) {
 
+                     //Log.e("taluka",chatList.get(i).getTaluka());
+                    if (chatList.get(i).getTaluka()!=null) {
 
-
-                    if (chatList.get(i).getTaluka().equals(User.getCurrentUser(getApplicationContext()).getTaluka())) {
-                        mylocationlist.add(chatList.get(i));
+                        if (chatList.get(i).getTaluka().equalsIgnoreCase(User.getCurrentUser(getApplicationContext()).getTaluka())) {
+                            mylocationlist.add(chatList.get(i));
+                        }
                     }
 
                 }
@@ -395,15 +408,21 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         btn_otherlcation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
+                btn_allposts.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_mylocation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 myLocation = false;
                 filterflag = 3;
                 chatList =  AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
                 for (int i = 0; i < chatList.size(); i++) {
 
+                    if (chatList.get(i).getTaluka()!=null) {
 
-                    if (!chatList.get(i).getTaluka().equals(User.getCurrentUser(getApplicationContext()).getTaluka())) {
+                        if (!chatList.get(i).getTaluka().equals(User.getCurrentUser(getApplicationContext()).getTaluka())) {
 
-                        otherlocationlist.add(chatList.get(i));
+                            otherlocationlist.add(chatList.get(i));
+                        }
                     }
 
                 }
@@ -605,7 +624,6 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onRestart() {
         super.onRestart();
-
         getChats(false);
     }
 
@@ -741,6 +759,24 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
     }
 
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(MESSAGE_PROGRESS)) {
+                Download download = intent.getParcelableExtra("download");
+                if (adapter != null)
+                    adapter.notifyDataSetChanged();
+            }
+        }
+    };
 
+    private void registerReceiver() {
+
+        LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(CommunityHomeActivity.this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(MESSAGE_PROGRESS);
+        bManager.registerReceiver(broadcastReceiver, intentFilter);
+
+    }
 }
 

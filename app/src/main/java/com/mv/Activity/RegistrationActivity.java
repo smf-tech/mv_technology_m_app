@@ -86,6 +86,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private Boolean isAdd;
     private boolean isProjectSet = false, isOrganizationSet = false, isStateSet = false, isDistrictSet = false, isTalukaSet = false, isClusterSet = false, isVillageSet = false, isSchoolSet = false, isRollSet = false;
     private RadioGroup radioGroup;
+    private RelativeLayout rel_district,rel_taluka,rel_cluster,rel_villgae,rel_school_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -438,6 +439,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         spinner_school_name = (Spinner) findViewById(R.id.spinner_school_name);
         spinner_organization = (Spinner) findViewById(R.id.spinner_organization);
         spinner_project = (Spinner) findViewById(R.id.spinner_project);
+
+        rel_district = (RelativeLayout) findViewById(R.id.rel_district);
+        rel_taluka = (RelativeLayout) findViewById(R.id.rel_taluka);
+        rel_cluster = (RelativeLayout) findViewById(R.id.rel_cluster);
+        rel_villgae = (RelativeLayout) findViewById(R.id.rel_villgae);
+        rel_school_name = (RelativeLayout) findViewById(R.id.rel_school_name);
+
         spinner_project.setOnItemSelectedListener(this);
         spinner_organization.setOnItemSelectedListener(this);
         spinner_role.setOnItemSelectedListener(this);
@@ -872,73 +880,103 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     if (mListRoleJuridiction.get(i).equalsIgnoreCase("School")) {
                         spinner_district.setVisibility(View.VISIBLE);
                         txt_district.setVisibility(View.VISIBLE);
+                        rel_district.setVisibility(View.VISIBLE);
                         spinner_taluka.setVisibility(View.VISIBLE);
                         txt_taluka.setVisibility(View.VISIBLE);
+                        rel_taluka.setVisibility(View.VISIBLE);
                         spinner_cluster.setVisibility(View.VISIBLE);
                         txt_cluster.setVisibility(View.VISIBLE);
+                        rel_cluster.setVisibility(View.VISIBLE);
                         spinner_village.setVisibility(View.VISIBLE);
                         txt_village.setVisibility(View.VISIBLE);
+                        rel_villgae.setVisibility(View.VISIBLE);
                         spinner_school_name.setVisibility(View.VISIBLE);
                         txt_school.setVisibility(View.VISIBLE);
+                        rel_school_name.setVisibility(View.VISIBLE);
                         // input_school_code.setVisibility(View.VISIBLE);
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("Village")) {
                         spinner_district.setVisibility(View.VISIBLE);
                         txt_district.setVisibility(View.VISIBLE);
+                        rel_district.setVisibility(View.VISIBLE);
                         spinner_taluka.setVisibility(View.VISIBLE);
                         txt_taluka.setVisibility(View.VISIBLE);
+                        rel_taluka.setVisibility(View.VISIBLE);
                         spinner_cluster.setVisibility(View.VISIBLE);
                         txt_cluster.setVisibility(View.VISIBLE);
+                        rel_cluster.setVisibility(View.VISIBLE);
                         spinner_village.setVisibility(View.VISIBLE);
                         txt_village.setVisibility(View.VISIBLE);
+                        rel_villgae.setVisibility(View.VISIBLE);
                         spinner_school_name.setVisibility(View.GONE);
+                        rel_school_name.setVisibility(View.GONE);
                         txt_school.setVisibility(View.GONE);
                         //  input_school_code.setVisibility(View.GONE);
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("Cluster")) {
                         spinner_district.setVisibility(View.VISIBLE);
                         txt_district.setVisibility(View.VISIBLE);
+                        rel_district.setVisibility(View.VISIBLE);
                         spinner_taluka.setVisibility(View.VISIBLE);
                         txt_taluka.setVisibility(View.VISIBLE);
+                        rel_taluka.setVisibility(View.VISIBLE);
                         spinner_cluster.setVisibility(View.VISIBLE);
                         txt_cluster.setVisibility(View.VISIBLE);
+                        rel_cluster.setVisibility(View.VISIBLE);
                         spinner_village.setVisibility(View.GONE);
+                        rel_villgae.setVisibility(View.GONE);
                         txt_village.setVisibility(View.GONE);
                         spinner_school_name.setVisibility(View.GONE);
+                        rel_school_name.setVisibility(View.GONE);
                         txt_school.setVisibility(View.GONE);
                         //  input_school_code.setVisibility(View.GONE);
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("Taluka")) {
                         spinner_district.setVisibility(View.VISIBLE);
                         txt_district.setVisibility(View.VISIBLE);
+                        rel_district.setVisibility(View.VISIBLE);
                         spinner_taluka.setVisibility(View.VISIBLE);
                         txt_taluka.setVisibility(View.VISIBLE);
+                        rel_taluka.setVisibility(View.VISIBLE);
                         spinner_cluster.setVisibility(View.GONE);
+                        rel_cluster.setVisibility(View.GONE);
                         txt_cluster.setVisibility(View.GONE);
                         spinner_village.setVisibility(View.GONE);
+                        rel_villgae.setVisibility(View.GONE);
                         txt_village.setVisibility(View.GONE);
                         spinner_school_name.setVisibility(View.GONE);
+                        rel_school_name.setVisibility(View.GONE);
                         txt_school.setVisibility(View.GONE);
                         //  input_school_code.setVisibility(View.GONE);
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("District")) {
                         spinner_district.setVisibility(View.VISIBLE);
                         txt_district.setVisibility(View.VISIBLE);
+                        rel_district.setVisibility(View.VISIBLE);
                         spinner_taluka.setVisibility(View.GONE);
+                        rel_taluka.setVisibility(View.GONE);
                         txt_taluka.setVisibility(View.GONE);
                         spinner_cluster.setVisibility(View.GONE);
+                        rel_cluster.setVisibility(View.GONE);
                         txt_cluster.setVisibility(View.GONE);
                         spinner_village.setVisibility(View.GONE);
                         txt_village.setVisibility(View.GONE);
+                        rel_villgae.setVisibility(View.GONE);
                         spinner_school_name.setVisibility(View.GONE);
                         txt_school.setVisibility(View.GONE);
+                        rel_school_name.setVisibility(View.GONE);
                         //   input_school_code.setVisibility(View.GONE);
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("State")) {
                         spinner_district.setVisibility(View.GONE);
+                        rel_district.setVisibility(View.GONE);
                         txt_district.setVisibility(View.GONE);
                         spinner_taluka.setVisibility(View.GONE);
+                        rel_taluka.setVisibility(View.GONE);
                         txt_taluka.setVisibility(View.GONE);
                         spinner_cluster.setVisibility(View.GONE);
+                        rel_cluster.setVisibility(View.GONE);
                         txt_cluster.setVisibility(View.GONE);
                         spinner_village.setVisibility(View.GONE);
                         txt_village.setVisibility(View.GONE);
+                        rel_villgae.setVisibility(View.GONE);
                         spinner_school_name.setVisibility(View.GONE);
+                        rel_school_name.setVisibility(View.GONE);
                         txt_school.setVisibility(View.GONE);
                         //  input_school_code.setVisibility(View.GONE);
                     }

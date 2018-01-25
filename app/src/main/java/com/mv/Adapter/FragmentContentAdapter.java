@@ -143,6 +143,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
         holder.img_share.setImageResource(R.drawable.download);
         holder.txt_forward.setText(mContext.getString(R.string.Share));
         if (mDataList.get(position).getIsLike())
+                //&& (mDataList.get(position).getUser_id().equalsIgnoreCase(User.getCurrentUser(mContext).getId())))
             holder.imgLike.setImageResource(R.drawable.like);
         else
             holder.imgLike.setImageResource(R.drawable.dislike);
