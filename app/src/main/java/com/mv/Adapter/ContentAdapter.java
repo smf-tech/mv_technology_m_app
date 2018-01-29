@@ -183,13 +183,17 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             }
         } else {
 
+
             holder.mediaLayout.setVisibility(View.VISIBLE);
             holder.layout_download.setVisibility(View.GONE);
+
+
             if (mDataList.get(position).getContentType() != null
                     && mDataList.get(position).getContentType().equalsIgnoreCase("Image")) {
                 holder.picture.setVisibility(View.VISIBLE);
                 holder.layout_Video.setVisibility(View.GONE);
                 holder.audioLayout.setVisibility(View.GONE);
+
 
                 Glide.with(mContext)
                         .load("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png")
@@ -281,6 +285,13 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
                     }
                 });
+            } else  if (mDataList.get(position).getId()!=null)
+            {
+                Glide.with(mContext)
+                        .load("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png")
+                        .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(holder.picture);
             }
         }
         holder.txt_title.setText("" + mDataList.get(position).getUserName());
