@@ -45,7 +45,7 @@ public class IndicatortaskAdapter extends RecyclerView.Adapter<IndicatortaskAdap
                 @Override
                 public void onClick(View view) {
 
-                    Intent openClass = new Intent(mContext, ReportLocationSelectionActivity.class);
+                    Intent openClass = new Intent(mContext, PiachartActivity.class);
                     openClass.putExtra(Constants.TITLE,indicatortaskList.get(getAdapterPosition()).getSection_Name__c());
                     openClass.putExtra(Constants.INDICATOR_TASK,indicatortaskList.get(getAdapterPosition()));
                     openClass.putExtra(Constants.INDICATOR_TASK_ROLE,moviesList.getMultiple_Role__c());

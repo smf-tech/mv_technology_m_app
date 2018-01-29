@@ -15,32 +15,38 @@
         android:id="@+id/layout_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:weightSum="10"
         android:background="@drawable/app_bg"
         android:orientation="vertical">
 
         <!-- <include
              android:id="@+id/toolbar"
              layout="@layout/toolbar"
-             android:visibility="gone" />-->
+             android:visibility="gone" />-->            <ImageView
+        android:id="@+id/iv_home_animate"
+        android:layout_width="80dp"
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:layout_gravity="center|right"
+        android:layout_marginRight="30dp"
+        android:layout_height="80dp" />
 
-        <com.mv.Widgets.CustomTabLayout
-            android:id="@+id/tab_layout"
+        <ImageView
+            android:id="@+id/iv_logo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/custom_actionbar"
-            android:background="@color/tab_background"
-            ads:tabSelectedTextColor="@color/white"
-            ads:tabTextColor="@color/white"
-            app:tabGravity="fill"
-            app:tabIndicatorColor="@color/colorPink"
-            app:tabIndicatorHeight="@dimen/dimen_5dp"
-            app:tabMaxWidth="0dp"
-            app:tabMode="scrollable" />
+            android:layout_gravity="center"
+            android:src="@drawable/mulya_image"/>
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/pager"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_below="@id/tab_layout" />
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+
+            android:layout_marginTop="5dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:padding="@dimen/recycler_view_margin"
+            android:layout_gravity="center"
+            android:scrollbars="vertical" />
     </LinearLayout>
 </layout>

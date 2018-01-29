@@ -95,7 +95,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     ImageView imageView;
     Bitmap mbitmap;
     String roleList;
-    private ImageView img_back, img_list, img_logout;
+    private ImageView img_back, img_list, img_logout,location;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     RecyclerView rvPiaChartDeatail;
@@ -119,6 +119,14 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         roleList = getIntent().getStringExtra(Constants.INDICATOR_TASK_ROLE);
         title = getIntent().getExtras().getString(Constants.TITLE);
         locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
+        if(locationModel==null)
+        {
+            locationModel=new LocationModel();
+            locationModel.setState(User.getCurrentUser(getApplicationContext()).getState());
+            locationModel.setDistrict(User.getCurrentUser(getApplicationContext()).getDistrict());
+            locationModel.setTaluka(User.getCurrentUser(getApplicationContext()).getTaluka());
+
+        }
 
         initPicahrtView();
         if (task == null) {
@@ -210,7 +218,13 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.VISIBLE);
         img_logout.setOnClickListener(this);
-        img_logout.setImageResource(R.drawable.ic_download);
+
+        img_list = (ImageView) findViewById(R.id.img_list);
+        img_list.setVisibility(View.VISIBLE);
+        img_list.setOnClickListener(this);
+        img_list.setImageResource(R.drawable.filter);
+
+        img_logout.setImageResource(R.drawable.share_report);
         llSpinner = (LinearLayout) findViewById(R.id.llrole_lay);
 
         img_logout.setOnClickListener(new View.OnClickListener() {
@@ -447,6 +461,15 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
+
+            case R.id.img_list:
+                Intent openClass = new Intent(PiachartActivity.this, ReportLocationSelectionActivity.class);
+                openClass.putExtra(Constants.TITLE,title);
+                openClass.putExtra(Constants.INDICATOR_TASK,task);
+                openClass.putExtra(Constants.INDICATOR_TASK_ROLE,roleList);
+                startActivity(openClass);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                break;
         }
     }
 
@@ -470,7 +493,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getDashboardData?userId=" + User.getCurrentUser(PiachartActivity.this).getId() + "&qustionArea=" + title;
+                + "/services/apexrest/getDashboardDatademo?userId=" + User.getCurrentUser(PiachartActivity.this).getId() + "&qustionArea=" + title;
 
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
@@ -495,9 +518,13 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                         setData(entries);
                         binding.swipeRefreshLayout.setVisibility(View.VISIBLE);
                         binding.tvPiaNoDataAvailable.setVisibility(View.GONE);
+                        img_logout.setVisibility(View.VISIBLE);
+                        img_list.setVisibility(View.VISIBLE);
                     } else {
                         binding.swipeRefreshLayout.setVisibility(View.GONE);
                         binding.tvPiaNoDataAvailable.setVisibility(View.VISIBLE);
+                        img_logout.setVisibility(View.GONE);
+
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -533,7 +560,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                         ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
                 JsonParser jsonParser = new JsonParser();
                 JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
-                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/getchartDatademo", gsonObject).enqueue(new Callback<ResponseBody>() {
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/getchartDatademoNew", gsonObject).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
@@ -574,9 +601,14 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
                                         binding.swipeRefreshLayout.setVisibility(View.VISIBLE);
                                         binding.tvPiaNoDataAvailable.setVisibility(View.GONE);
+                                        img_logout.setVisibility(View.VISIBLE);
+                                        img_list.setVisibility(View.VISIBLE);
                                     } else {
+                                        img_logout.setVisibility(View.GONE);
+
                                         binding.swipeRefreshLayout.setVisibility(View.GONE);
                                         binding.tvPiaNoDataAvailable.setVisibility(View.VISIBLE);
+
                                     }
                                 } else {
                                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -596,6 +628,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
                                 }
                             } else {
+                                img_logout.setVisibility(View.GONE);
 
                                 binding.swipeRefreshLayout.setVisibility(View.GONE);
                                 binding.tvPiaNoDataAvailable.setVisibility(View.VISIBLE);

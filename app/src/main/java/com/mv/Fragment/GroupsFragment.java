@@ -4,13 +4,18 @@ package com.mv.Fragment;
  * Created by Rohit Gujar on 09-10-2017.
  */
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,6 +24,8 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -34,6 +41,7 @@ import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
+import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityGroupBinding;
@@ -52,32 +60,39 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class GroupsFragment extends Fragment implements View.OnClickListener {
+public class GroupsFragment extends AppCompatActivity implements View.OnClickListener {
     private GroupAdapter mAdapter;
     private ActivityGroupBinding binding;
     private List<Community> communityList = new ArrayList<>();
     private List<Community> replicaCommunityList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
     TextView textNoData;
-    View view;
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+Activity context;
 
-        binding = DataBindingUtil.inflate(
-                inflater, R.layout.activity_group, container, false);
-         view = binding.getRoot();
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context=this;
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_group);
+        binding.setFragment(this);
+
         //here data must be an instance of the class MarsDataProvider
-        Utills.setupUI(view.findViewById(R.id.layout_main), getActivity());
+        Utills.setupUI(findViewById(R.id.layout_main),context);
         binding.setFragment(this);
         initViews();
         getCommunities(true);
-        return view;
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
     }
 
     private void getCommunities(boolean isDialogShow) {
-        List<Community> temp = AppDatabase.getAppDatabase(getActivity()).userDao().getAllCommunities();
+        List<Community> temp = AppDatabase.getAppDatabase(context).userDao().getAllCommunities();
         if (temp.size() == 0) {
-            if (Utills.isConnected(getActivity()))
+            if (Utills.isConnected(context))
                 getAllCommunities(false, isDialogShow);
             else
                 showPopUp();
@@ -89,14 +104,15 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
                 replicaCommunityList.add(temp.get(i));
             }
             mAdapter.notifyDataSetChanged();
-            if (Utills.isConnected(getActivity()))
+            if (Utills.isConnected(context))
                 getAllCommunities(true, isDialogShow);
         }
     }
 
 
     private void initViews() {
-        textNoData = (TextView) view.findViewById(R.id.textNoData);
+        setActionbar(getString(R.string.community));
+        textNoData = (TextView) findViewById(R.id.textNoData);
         binding.editTextEmail.addTextChangedListener(watch);
         binding.swiperefresh.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
@@ -106,28 +122,38 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
                     }
                 }
         );
-        preferenceHelper = new PreferenceHelper(getActivity());
-        mAdapter = new GroupAdapter(communityList, getActivity(), this);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        preferenceHelper = new PreferenceHelper(context);
+        mAdapter = new GroupAdapter(communityList,context, this);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(mAdapter);
 
     }
-
+    private void setActionbar(String Title) {
+        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        toolbar_title.setText(Title);
+        ImageView img_back = (ImageView) findViewById(R.id.img_back);
+        img_back.setVisibility(View.VISIBLE);
+        img_back.setOnClickListener(this);
+        ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
+        img_logout.setVisibility(View.GONE);
+        img_logout.setOnClickListener(this);
+    }
     private void getAllCommunities(boolean isTimePresent, boolean isDialogShow) {
         if (isDialogShow)
-            Utills.showProgressDialog(getActivity(), "Loading Communities", getString(R.string.progress_please_wait));
+            Utills.showProgressDialog(context, "Loading Communities", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
-                ApiClient.getClientWitHeader(getActivity()).create(ServiceRequest.class);
+                ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = "";
         if (isTimePresent)
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(getActivity()).getId()
+                    + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(context).getId()
                     + "&timestamp=" + communityList.get(0).getTime();
         else
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(getActivity()).getId();
+                    + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(context).getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -140,7 +166,7 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
                             JSONArray jsonArray = new JSONArray(str);
                                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                                 List<Community> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Community[].class));
-                                List<Community> list = AppDatabase.getAppDatabase(getActivity()).userDao().getAllCommunities();
+                                List<Community> list = AppDatabase.getAppDatabase(context).userDao().getAllCommunities();
                             if((temp.size()!=0) || (list.size()!=0)) {
                                 for (int i = 0; i < temp.size(); i++) {
                                     int j;
@@ -155,11 +181,11 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
                                     if (isPresent) {
                                         communityList.set(j, temp.get(i));
                                         replicaCommunityList.set(j, temp.get(i));
-                                        AppDatabase.getAppDatabase(getActivity()).userDao().updateCommunities(temp.get(i));
+                                        AppDatabase.getAppDatabase(context).userDao().updateCommunities(temp.get(i));
                                     } else {
                                         communityList.add(temp.get(i));
                                         replicaCommunityList.add(temp.get(i));
-                                        AppDatabase.getAppDatabase(getActivity()).userDao().insertCommunities(temp.get(i));
+                                        AppDatabase.getAppDatabase(context).userDao().insertCommunities(temp.get(i));
                                     }
                                 }
                                 mAdapter.notifyDataSetChanged();
@@ -185,7 +211,7 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
     }
 
     private void showPopUp() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 
         // Setting Dialog Title
         alertDialog.setTitle(getString(R.string.app_name));
@@ -200,16 +226,16 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
         alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.left_in, R.anim.right_out);
+               context.finish();
+               context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
         });
         // Setting OK Button
         alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.left_in, R.anim.right_out);
+               context.finish();
+               context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
         });
 
@@ -221,8 +247,8 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.left_in, R.anim.right_out);
+               context.finish();
+               context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
         }
     }
@@ -275,13 +301,13 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
             if (communityList.get(position).getName().equalsIgnoreCase("HO Support")) {
                 preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Issue");
                 preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, Constants.ISSUEID);
-                intent = new Intent(getActivity(), IssueTemplateActivity.class);
-                getActivity().startActivity(intent);
+                intent = new Intent(context, IssueTemplateActivity.class);
+               context.startActivity(intent);
             } else {
                 preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Report");
                 preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, Constants.REPORTID);
-                intent = new Intent(getActivity(), ReportingTemplateActivity.class);
-                getActivity().startActivity(intent);
+                intent = new Intent(context, ReportingTemplateActivity.class);
+               context.startActivity(intent);
             }
         } else {
             preferenceHelper.insertString(PreferenceHelper.COMMUNITYID, communityList.get(position).getId());
@@ -293,7 +319,7 @@ public class GroupsFragment extends Fragment implements View.OnClickListener {
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
             String json = gson.toJson(list);
             Intent intent;
-            intent = new Intent(getActivity(), CommunityHomeActivity.class);
+            intent = new Intent(context, CommunityHomeActivity.class);
             intent.putExtra(Constants.TITLE, communityList.get(position).getName());
             intent.putExtra(Constants.LIST, json);
             startActivity(intent);

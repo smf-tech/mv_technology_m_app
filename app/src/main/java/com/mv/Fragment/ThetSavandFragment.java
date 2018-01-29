@@ -1,5 +1,6 @@
 package com.mv.Fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -9,17 +10,22 @@ import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -33,6 +39,7 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Utils.LocaleManager;
 import com.mv.Utils.MediaSongSingleToneClass;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -55,13 +62,13 @@ import retrofit2.Response;
  * Created by Nanostuffs on 27-12-2017.
  */
 
-public class ThetSavandFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class ThetSavandFragment extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private FragmentThetSavandBinding binding;
     private PreferenceHelper preferenceHelper;
     private List<Content> chatList = new ArrayList<Content>();
     private ArrayList<Content> mypostlist = new ArrayList<>();
     private ThetSavandAdapter adapter;
-    private View view;
+
     private Boolean mySelection = false;
     private FloatingActionButton fab_add_broadcast;
     MediaPlayer mPlayer = MediaSongSingleToneClass.getInstance();
@@ -70,40 +77,44 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
     LinearLayout lnr_filter;
     RecyclerView recyclerView;
     TextView textNoData;
+    Activity context;
     public static final String MESSAGE_PROGRESS = "message_progress";
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_thet_savand, container, false);
-        view = binding.getRoot();
-        fragment = this;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context=this;
+        fragment=this;
+        binding = DataBindingUtil.setContentView(this, R.layout.fragment_thet_savand);
+        binding.setFragment(this);
+
         //here data must be an instance of the class MarsDataProvider
-        Utills.setupUI(view.findViewById(R.id.layout_main), getActivity());
+       // Utills.setupUI(view.findViewById(R.id.layout_main), context);
         binding.swipeRefreshLayout.setOnRefreshListener(this);
         initViews();
         getChats(true);
-        return view;
     }
-
-    public void onAddClick() {
-
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
     }
-
     private void initViews() {
-        preferenceHelper = new PreferenceHelper(getActivity());
-        fab_add_broadcast = (FloatingActionButton) view.findViewById(R.id.fab_add_broadcast);
-        fab_add_broadcast.setOnClickListener(this);
+        preferenceHelper = new PreferenceHelper(context);
+        setActionbar(getString(R.string.thet_savnd));
+        fab_add_broadcast = (FloatingActionButton) findViewById(R.id.fab_add_broadcast);
+        binding.fabAddBroadcast.setOnClickListener(this);
         binding.fabAddBroadcast.setVisibility(View.VISIBLE);
-        recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
+        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
-        textNoData = (TextView) view.findViewById(R.id.textNoData);
-        recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
-        btn_allposts = (Button) view.findViewById(R.id.btn_allposts);
-        btn_mypost = (Button) view.findViewById(R.id.btn_mypost);
-        lnr_filter = (LinearLayout) view.findViewById(R.id.lnr_filter);
+        textNoData = (TextView) findViewById(R.id.textNoData);
+        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        btn_allposts = (Button) findViewById(R.id.btn_allposts);
+        btn_mypost = (Button) findViewById(R.id.btn_mypost);
+        lnr_filter = (LinearLayout) findViewById(R.id.lnr_filter);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -127,16 +138,16 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
             @Override
             public void onClick(View v) {
                 mypostlist.clear();
-              btn_mypost.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
-              btn_allposts.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
 
+                btn_mypost.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
+                btn_allposts.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 for (int i = 0; i < chatList.size(); i++) {
-                    if (chatList.get(i).getUser_id().equals(User.getCurrentUser(getActivity()).getId())) {
+                    if (chatList.get(i).getUser_id().equals(User.getCurrentUser(context).getId())) {
                         mypostlist.add(chatList.get(i));
                     }
                 }
                 mySelection = true;
-                adapter = new ThetSavandAdapter(getActivity(), fragment, mypostlist);
+                adapter = new ThetSavandAdapter(context, fragment, mypostlist);
                 recyclerView.setAdapter(adapter);
             }
         });
@@ -144,10 +155,9 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
             @Override
             public void onClick(View v) {
                 mySelection = false;
-               btn_allposts.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
-              btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
-
-                adapter = new ThetSavandAdapter(getActivity(), fragment, chatList);
+                btn_allposts.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
+                btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                adapter = new ThetSavandAdapter(context, fragment, chatList);
                 recyclerView.setAdapter(adapter);
             }
         });
@@ -163,22 +173,22 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
 
     private void getChats(boolean isDialogShow) {
         chatList.clear();
-        chatList = AppDatabase.getAppDatabase(getActivity()).userDao().getThetSavandChats();
+        chatList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats();
         if (chatList.size() == 0) {
-            if (Utills.isConnected(getActivity()))
+            if (Utills.isConnected(context))
                 getAllChats(false, isDialogShow);
             else
                 showPopUp();
         } else {
 
             if (mySelection) {
-                adapter = new ThetSavandAdapter(getActivity(), this, mypostlist);
+                adapter = new ThetSavandAdapter(context, this, mypostlist);
                 recyclerView.setAdapter(adapter);
             } else {
-                adapter = new ThetSavandAdapter(getActivity(), this, chatList);
+                adapter = new ThetSavandAdapter(context, this, chatList);
                 recyclerView.setAdapter(adapter);
             }
-            if (Utills.isConnected(getActivity()))
+            if (Utills.isConnected(context))
                 getAllChats(true, isDialogShow);
         }
 
@@ -193,17 +203,17 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
 
     private void getAllChats(boolean isTimePresent, boolean isDialogShow) {
         if (isDialogShow)
-            Utills.showProgressDialog(getActivity(), "Loading Chats", getString(R.string.progress_please_wait));
+            Utills.showProgressDialog(context, "Loading Chats", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
-                ApiClient.getClientWitHeader(getActivity()).create(ServiceRequest.class);
+                ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = "";
         if (isTimePresent)
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(getActivity()).getId()
+                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(context).getId()
                     + "&timestamp=" + chatList.get(0).getTime();
         else
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(getActivity()).getId();
+                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(context).getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -216,7 +226,7 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
                             JSONArray jsonArray = new JSONArray(str);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));
-                            List<Content> contentList = AppDatabase.getAppDatabase(getActivity()).userDao().getThetSavandChats();
+                            List<Content> contentList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats();
                             if ((temp.size() != 0) || (contentList.size() != 0)) {
                                 for (int i = 0; i < temp.size(); i++) {
                                     int j;
@@ -231,10 +241,10 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
                                     }
                                     if (isPresent) {
                                         chatList.set(j, temp.get(i));
-                                        AppDatabase.getAppDatabase(getActivity()).userDao().updateContent(temp.get(i));
+                                        AppDatabase.getAppDatabase(context).userDao().updateContent(temp.get(i));
                                     } else {
                                         chatList.add(0, temp.get(i));
-                                        AppDatabase.getAppDatabase(getActivity()).userDao().insertChats(temp.get(i));
+                                        AppDatabase.getAppDatabase(context).userDao().insertChats(temp.get(i));
                                     }
                                 }
 
@@ -242,16 +252,16 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
 
                                 for (int i = 0; i < chatList.size(); i++) {
 
-                                    if (chatList.get(i).getUser_id().equals(User.getCurrentUser(getActivity()).getId())) {
+                                    if (chatList.get(i).getUser_id().equals(User.getCurrentUser(context).getId())) {
                                         mypostlist.add(chatList.get(i));
                                     }
                                 }
 
                                 if (mySelection) {
-                                    adapter = new ThetSavandAdapter(getActivity(), fragment, mypostlist);
+                                    adapter = new ThetSavandAdapter(context, fragment, mypostlist);
                                     recyclerView.setAdapter(adapter);
                                 } else {
-                                    adapter = new ThetSavandAdapter(getActivity(), fragment, chatList);
+                                    adapter = new ThetSavandAdapter(context, fragment, chatList);
                                     recyclerView.setAdapter(adapter);
                                 }
                                 textNoData.setVisibility(View.GONE);
@@ -277,7 +287,7 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
     }
 
     private void showPopUp() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 
         // Setting Dialog Title
         alertDialog.setTitle(getString(R.string.app_name));
@@ -292,16 +302,16 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
         alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                context.finish();
+                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
         });
         // Setting OK Button
         alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                context.finish();
+                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
         });
 
@@ -314,9 +324,13 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
         switch (view.getId()) {
             case R.id.fab_add_broadcast:
                 Intent intent;
-                intent = new Intent(getActivity(), AddThetSavadActivity.class);
+                intent = new Intent(context, AddThetSavadActivity.class);
                 intent.putExtra("EDIT", false);
                 startActivity(intent);
+                break;
+            case R.id.img_back:
+                finish();
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
         }
     }
@@ -331,7 +345,17 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
         getChats(false);
     }
 
-
+    private void setActionbar(String Title) {
+       RelativeLayout  mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+       TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        toolbar_title.setText(Title);
+        ImageView img_back = (ImageView) findViewById(R.id.img_back);
+        img_back.setVisibility(View.VISIBLE);
+        img_back.setOnClickListener(this);
+        ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
+        img_logout.setVisibility(View.GONE);
+        img_logout.setOnClickListener(this);
+    }
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -345,7 +369,7 @@ public class ThetSavandFragment extends Fragment implements View.OnClickListener
 
     private void registerReceiver() {
 
-        LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(getActivity());
+        LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(context);
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(MESSAGE_PROGRESS);
         bManager.registerReceiver(broadcastReceiver, intentFilter);
