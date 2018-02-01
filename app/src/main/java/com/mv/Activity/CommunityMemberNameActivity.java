@@ -51,9 +51,11 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         initViews(getString(R.string.Community_member));
         preferenceHelper = new PreferenceHelper(this);
+        /*Check Network Connectivity and Call GetCommunityMember()*/
         if (Utills.isConnected(this))
             GetCommunityMember();
         else
+            /*No Internet Connection Popup*/
             Utills.showInternetPopUp(CommunityMemberNameActivity.this);
     }
 
@@ -64,7 +66,7 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
-
+    /*Initialize all  views */
     private void initViews(String title){
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
@@ -82,11 +84,15 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
 
     }
 
+
+    /*Get Community members by calling userdetails api*/
     public void GetCommunityMember(){
         Utills.showProgressDialog(this, getString(R.string.loading_members), getString(R.string.progress_please_wait));
         String url = "";
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        /*UserDetails Url for getting community members*/
+
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + "/services/apexrest/userdetails?communityId=" + preferenceHelper.getString(PreferenceHelper.COMMUNITYID);
 
@@ -104,10 +110,13 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
 
                              final int numberOfItemsInResp = jsonArray.length();
                              for (int i = 0; i < numberOfItemsInResp; i++) {
-                                 CommunityMemberList.add(jsonArray.getString(i));
+                                 CommunityMemberList.add(jsonArray.getString(i));   // add response in CommunityMemberList
                              }
+
+                             // set List To Adapter
                              adapter = new CommunityMemberAdapter(getApplicationContext(), CommunityMemberList);
                              recyclerView.setAdapter(adapter);
+
 
                              textNoData.setVisibility(View.GONE);
                          } else {
@@ -131,6 +140,8 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
             }
         });
     }
+
+    // To search community members in searchbox
     TextWatcher watch = new TextWatcher() {
 
         @Override
@@ -149,10 +160,12 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
         @Override
         public void onTextChanged(CharSequence s, int a, int b, int c) {
             // TODO Auto-generated method stub
-            setFilter(s.toString());
+            setFilter(s.toString()); // call to setFilter
 
         }
     };
+
+/*  This function is used for searching community members by passing string of particular name as input */
 
     private void setFilter(String s) {
         List<String> list = new ArrayList<>();

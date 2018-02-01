@@ -197,4 +197,7 @@
     <string name="my_posts">My \nPosts</string>
     <string name="my_location">My \n Location</string>
     <string name="other_location">Other \nLocation</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

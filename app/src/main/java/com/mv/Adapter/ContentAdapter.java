@@ -124,12 +124,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
-       /* Glide.with(mContext)
-                .load(getUrlWithHeaders(new PreferenceHelper(mContext).getString(PreferenceHelper.InstanceUrl)+"services/data/v20.0/sobjects/Attachment/"+mDataList.get(position).getId()))
-                .skipMemoryCache(true)
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .into(holder.picture);
-*/
 
         if (mDataList.get(position).getMediaPlay()) {
             holder.txt_audio_txt.setText("Stop Audio");
@@ -220,30 +214,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     public void onClick(View view) {
                         Log.i("aaaatemp", temp + "");
                         Log.i("aaaaposition", position + "");
-                      /*  holder.songProgressBar.setProgress(0);
-                        holder.songProgressBar.setMax(100);
-
-                      Runnable mUpdateTimeTask = new Runnable() {
-                            public void run() {
-                                long totalDuration = mPlayer.getDuration();
-                                long currentDuration = mPlayer.getCurrentPosition();
-
-                                // Displaying Total Duration time
-                               *//* songTotalDurationLabel.setText(""+utils.milliSecondsToTimer(totalDuration));
-                                // Displaying time completed playing
-                                songCurrentDurationLabel.setText(""+utils.milliSecondsToTimer(currentDuration));
-*//*
-                                // Updating progress bar
-                                int progress = (int)(Utills.getProgressPercentage(currentDuration, totalDuration));
-                                //Log.d("Progress", ""+progress);
-                                holder.songProgressBar.setProgress(progress);
-
-                                // Running this thread after 100 milliseconds
-                                mHandler.postDelayed(this, 100);
-                            }
-                        };
-                        mHandler.removeCallbacks(mUpdateTimeTask);
-                        mHandler.postDelayed(mUpdateTimeTask, 100);*/
                         if (temp == 555500) {
                             temp = position;
 
@@ -320,7 +290,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         }
 
         Log.i("Value", "Position " + position + " : " + isFileAvalible(position));
-        if (isFileAvalible(position) || mDataList.get(position).getIsAttachmentPresent().equalsIgnoreCase("false")) {
+        if (isFileAvalible(position) || (mDataList.get(position).getIsAttachmentPresent().equalsIgnoreCase("false") && mDataList.get(position).getAttachmentId()==null)) {
             holder.layout_download_file.setVisibility(View.GONE);
             holder.layout_download.setVisibility(View.VISIBLE);
 
@@ -376,6 +346,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         builderSingle.show();
     }
 
+    /*It shows communities dialog for forward posts*/
     private void showDialog(final int position) {
         final String[] items = new String[mActivity.communityList.size()];
         for (int i = 0; i < mActivity.communityList.size(); i++) {
@@ -432,7 +403,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         }
         return sb.toString();
     }
-
+    /*It calls sharedRecords api. ContentId is id of particular posts. */
     private void sendShareRecord(String contentId) {
         if (Utills.isConnected(mContext)) {
             try {
@@ -517,6 +488,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             audioLayout = (RelativeLayout) itemLayoutView.findViewById(R.id.audioLayout);
             layout_download_file = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download_file);
             play = (ImageView) itemLayoutView.findViewById(R.id.play);
+            /*Add the comment to particular posts by calling api. */
             layout_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -527,6 +499,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             });
 
             layout_share = (LinearLayout) itemLayoutView.findViewById(R.id.layout_share);
+            /*Forward posts to different communities*/
             layout_share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -545,6 +518,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             });
 
             layout_Video = (RelativeLayout) itemLayoutView.findViewById(R.id.layout_Video);
+            /*Play the videoin videoview activity. Pass the url of video to videoview activity*/
             layout_Video.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -557,6 +531,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
 
             layout_download = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download);
+            /*Share the different types of media files */
             layout_download.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -587,6 +562,18 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
                         intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
                         mContext.startActivity(Intent.createChooser(intent, "Share Content"));
+                    }else if (mDataList.get(getAdapterPosition()).getAttachmentId() != null) {
+                        // if (mDataList.get(position).getFileType().equalsIgnoreCase("zip")) {
+                        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId()+".png";
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_SEND);
+                        intent.setType("application/*");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+                        intent.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
+
+                        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                        mContext.startActivity(Intent.createChooser(intent, "Share Content"));
                     } else {
                         Intent i = new Intent(Intent.ACTION_SEND);
                         i.setType("image*//**//*");
@@ -602,11 +589,27 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             });
 
 
-
+           /*It Start the downloading file*/
             layout_download_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    startDownload(getAdapterPosition());
+                    if(mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("true")){
+                        startDownload(getAdapterPosition());
+                    }else {
+                        if (mDataList.get(getAdapterPosition()).getAttachmentId()!=null){
+                            downloadImage(getAdapterPosition());
+                        }
+
+                    }
+
+
+/*
+                    if (mDataList.get(getAdapterPosition()).getAttachmentId()!=null) {
+                        downloadImage(getAdapterPosition());
+                    }else {
+
+                        startDownload(getAdapterPosition());
+                    }*/
 
 
 
@@ -614,6 +617,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
             });
             layout_like = (LinearLayout) itemLayoutView.findViewById(R.id.layout_like);
+
+            /*SendLike and SendDislike function is called here.*/
             layout_like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -674,7 +679,15 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             picture.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Utills.showImageZoomInDialog(v.getContext(),mDataList.get(getAdapterPosition()).getId());
+                    if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")){
+                    if (mDataList.get(getAdapterPosition()).getAttachmentId()!=null) {
+                        Utills.showImagewithheaderZoomDialog(v.getContext(), getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(getAdapterPosition()).getAttachmentId() + "/Body"));
+                    }
+                    }else if ( mDataList.get(getAdapterPosition()).getId()!=null){
+                        Utills.showImageZoomInDialog(v.getContext(),mDataList.get(getAdapterPosition()).getId());
+
+                    }
+
                 }
             });
         }
@@ -706,6 +719,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                         FileOutputStream out = new FileOutputStream(file);
                         decodedByte.compress(Bitmap.CompressFormat.PNG, 90, out);
                         out.close();
+                        notifyDataSetChanged();
                       /*  Intent i = new Intent(Intent.ACTION_SEND);
                         i.setType("image*//**//**//**//*");
                         i.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(adapterPosition).getTitle() + "\n\nDescription : " + mDataList.get(adapterPosition).getDescription());
@@ -743,6 +757,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         }
         return bmpUri;
     }
+    /*It calls the removeLike api for dislike the particular post. Here content Id is Id of posts. It is called on layout_like click.*/
 
     private void sendDisLikeAPI(String cotentId, boolean isLike) {
         if (Utills.isConnected(mContext)) {
@@ -792,7 +807,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             Utills.showToast(mContext.getString(R.string.error_no_internet), mContext);
         }
     }
-
+    /*It calls the InsertLike api for like the particular post.Here content Id is Id of posts. It is called on layout_like click.*/
     private void sendLikeAPI(String cotentId, Boolean isLike) {
         if (Utills.isConnected(mContext)) {
             try {
@@ -841,7 +856,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             Utills.showToast(mContext.getString(R.string.error_no_internet), mContext);
         }
     }
-
+   /*It is used for starting mediaplayer by passing audio url.*/
     public void startAudio(String url) {
         if (mPlayer == null)
             mPlayer = new MediaPlayer();
@@ -873,35 +888,45 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         mPlayer.start();
     }
 
+    /*Send urls, filetypes and filenames to Downloadservice for downloading file */
 
     public void startDownload(int position) {
         Utills.showToast("Downloading Started...", mContext);
         Intent intent = new Intent(mContext, DownloadService.class);
         intent.putExtra("fragment_flag", "My_Community");
-        if (mDataList.get(position).getContentType().equalsIgnoreCase("zip")) {
-            intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".zip");
-            intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "zip");
-            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".zip");
-        } else if (mDataList.get(position).getContentType().equalsIgnoreCase("pdf")) {
-            intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".pdf");
-            intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "pdf");
-            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".pdf");
-        } else if (mDataList.get(position).getContentType().equalsIgnoreCase("audio")) {
-            intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".mp3");
-            intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "audio");
-            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp3");
-        } else if (mDataList.get(position).getContentType().equalsIgnoreCase("video")) {
-            intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".mp4");
-            intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "video");
-            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp4");
-        } else if (mDataList.get(position).getContentType().equalsIgnoreCase("Image")) {
-            intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".png");
-            intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "Image");
-            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png");
+        if((mDataList.get(position).getIsAttachmentPresent().equalsIgnoreCase("true")) ) {
+            if ( (mDataList.get(position).getContentType()!=null)) {
+                if (mDataList.get(position).getContentType().equalsIgnoreCase("zip")) {
+                    intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".zip");
+                    intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "zip");
+                    intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".zip");
+                } else if (mDataList.get(position).getContentType().equalsIgnoreCase("pdf")) {
+                    intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".pdf");
+                    intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "pdf");
+                    intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".pdf");
+                } else if (mDataList.get(position).getContentType().equalsIgnoreCase("audio")) {
+                    intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".mp3");
+                    intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "audio");
+                    intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp3");
+                } else if (mDataList.get(position).getContentType().equalsIgnoreCase("video")) {
+                    intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".mp4");
+                    intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "video");
+                    intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp4");
+                } else if (mDataList.get(position).getContentType().equalsIgnoreCase("Image")) {
+                    intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".png");
+                    intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "Image");
+                    intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png");
+                }
+            }else {
+                intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".png");
+                intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "Image");
+                intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png");
+            }
         }
         mContext.startService(intent);
     }
 
+    /*Check if file is available or not in respective folder.*/
     private boolean isFileAvalible(int position) {
         if (mDataList.get(position).getContentType() != null) {
             if (mDataList.get(position).getContentType().equalsIgnoreCase("zip")) {
@@ -931,6 +956,13 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     return true;
                 return false;
             }
+        } else if (mDataList.get(position).getAttachmentId() != null) {
+            // if (mDataList.get(position).getFileType().equalsIgnoreCase("zip")) {
+            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(position).getAttachmentId()+".png";
+            if (new File(filePath).exists())
+                return true;
+            return false;
+            //}
         }
         return false;
     }

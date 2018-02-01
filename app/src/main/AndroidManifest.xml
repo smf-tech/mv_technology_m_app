@@ -64,7 +64,7 @@
         <activity
             android:name=".Activity.HomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/HomeActivityTheme"
+            android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />

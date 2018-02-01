@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,7 +88,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
     @Override
     public void onBindViewHolder(HomeAdapter.MyViewHolder holder, int position) {
 
-
+     Log.d("position", String.valueOf(position));
         Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.blink);
         holder.itemView.startAnimation(animation);
         holder.menu_icon.setImageResource(menuList.get(position).getMenuIcon());

@@ -191,4 +191,7 @@
     <string name="my_posts">माझ्या पोस्ट</string>
     <string name="my_location">माय लोकेशन </string>
     <string name="other_location">इतर लोकेशन </string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

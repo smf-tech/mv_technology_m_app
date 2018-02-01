@@ -72,6 +72,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ArrayList<Integer> XMENArray = new ArrayList<Integer>();
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
+    public static final String LANGUAGE_HINDI = "hi";
     public static final String LANGUAGE = "language";
     final Handler handler = new Handler();
     Timer swipeTimer = new Timer();
@@ -198,7 +199,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void showDialog() {
 
-        final String[] items = {"English", "मराठी"};
+        final String[] items = {"English", "मराठी" ,"हिंदी"};
 
 
 // arraylist to keep the selected items
@@ -224,9 +225,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (lw.getCheckedItemPosition() == 0) {
                             LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_ENGLISH);
                             preferenceHelper.insertString(LANGUAGE, LANGUAGE_ENGLISH);
-                        } else {
+                        } else if(lw.getCheckedItemPosition() == 1){
                             LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_MARATHI);
                             preferenceHelper.insertString(LANGUAGE, LANGUAGE_MARATHI);
+                        }else {
+                            LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_HINDI);
+                            preferenceHelper.insertString(LANGUAGE, LANGUAGE_HINDI);
                         }
                         dialog.dismiss();
                         finish();

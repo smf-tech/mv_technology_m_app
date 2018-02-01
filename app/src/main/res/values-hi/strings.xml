@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">मूल्यवर्धन 2.0</string>
+
+<string name="progress_loading">लोडिंग</string>
+<string name="progress_please_wait">कृपया प्रतीक्षा</string>
+<string name="error_something_went_wrong">कुछ गया गलत, कृपया पुन: प्रयास करें</string>
+<string name="error_no_internet">कृपया अपना इंटरनेट जांचे</string>
+<string name="error_login">गलत परिचय.</string>
+
+<string name="text_choosepicture">फोटो चुनें</string>
+<string name="text_choosevideo">वीडियो चुनें</string>
+<string name="text_gallary">गैलेरी</string>
+<string name="text_camera">कैमेरा</string>
+<string name="error_offline_share_post">आप पोस्ट ऑफलाइन साझा नहीं कर सकते</string>
+<string name="error_offline_like_post">आप पोस्ट ऑफलाइन साझा नहीं कर सकते</string>
+<string name="ok">ओके</string>
+<string name="cancel">रद्द करेंl</string>
+    <!--Home Acitivty-->
+<string name="intro_about_header">के बारे में</string>
+<string name="intro_about_description">मूल्यवर्धन मूल्यवर्धन कार्यक्रम का उद्देश्य यह है कि स्कूली बच्चेभारतीय संविधान के मूल्यों को ग्रहण कर सकें और अच्छे लोकतांत्रिक नागरिक बन सकें।इसका उद्देश्य भारत की स्कूली शिक्षा के मुख्य उद्देश्यों में से एक है। कई पाठ्यक्रमों में दिया गया है कि बच्चों में संवैधानिक मूल्यों को विकसित करना स्कूली शिक्षा का मुख्य उद्देश्य है।अधिक जानकारी के लिए देखेंwww.mulyavardhan.com for more info</string>
+    <string name="intro_mv_training_events_header">मूल्यवर्धन प्रशिक्षण</string>
+    <string name="fragment_intro_about">मूल्यवर्धन के बारे में</string>
+    <string name="fragment_intro_training">मूल्यवर्धन प्रशिक्षण</string>
+    <string name="fragment_intro_events">मूल्यवर्धनकार्यक्रम</string>
+
+    <!--Registration Activity-->
+    <string name="name">पहला नाम *</string>
+    <string name="middle_name">मध्य नाम</string>
+    <string name="last_name">अंतिम नाम</string>
+    <string name="mobile_no">मोबाइल नंबर *</string>
+    <string name="email">ई—मेल आईडी</string>
+
+    <string name="gender">लिंग *</string>
+    <string name="male">पुरुष</string>
+    <string name="female">स्त्री</string>
+    <string name="other">अन्य</string>
+    <string name="thet_savnd">शांतीलाल मुथ्थाजी के साथ \"सिधे   बात\" </string>
+
+    <string name="password">पासवर्ड</string>
+    <string name="confirm_password">पासवर्ड की पुष्टि</string>
+    <string name="role">भूमिका </string>
+    <string name="mandatory_role">पद * </string>
+    <string name="organization">संस्था</string>
+    <string name="disrict">जिला</string>
+    <string name="taluka">तहसील</string>
+    <string name="mandatory_taluka">तहसील *</string>
+    <string name="cluster">कलस्टर</string>
+    <string name="mandatory_cluster">कलस्टर *</string>
+    <string name="village">ग्राम</string>
+
+    <string name="mandatory_village">ग्राम *</string>
+    <string name="school_name">स्कूल का नाम</string>
+    <string name="mandatory_school_name">स्कूल का नाम *</string>
+    <string name="school_code">स्कूल का कोड</string>
+    <string name="district">जिला</string>
+    <string name="state">राज्य</string>
+    <string name="project">परियोजना</string>
+    <string name="mandatory_state">राज्य *</string>
+    <string name="profile_pic">प्रोफाइल फोटो जोड़ो</string>
+    <string name="accept">स्वीकार करो</string>
+    <string name="reject">अस्वीकार करो</string>
+
+    <string name="update_profile">अपडेट प्रोफाइल</string>
+    <!--IssueTemplate Activity-->
+    <string name="issue">मुद्दा प्रकार</string>
+    <string name="priority">वरीयता</string>
+    <string name="item_title">पैलेस गर्नियर</string>
+    <string name="item_desc">जब हमने ऐप लॉन्च किया तो यह पहले एक महीने तक अद्भुत रहा है! यहां कुछ बेहतरीन क्षण दिए गए हैं, जब आप उन्हें याद करते हैं!</string>
+
+    <!--ReportingTemplate Activity-->
+    <string name="reporting">रिपोर्टिंग प्रकार</string>
+    <string name="question_5">प्रश्न 5</string>
+    <string name="hoy">हां</string>
+    <string name="nahi">न</string>
+    <string name="question_4">प्रश्न4</string>
+    <string name="msg_enter_mobile">आरंभ करने के लिए अपना मोबाइल नंबर दर्ज करें!</string>
+    <string name="msg_manual_otp">(यदि हम एसएमएस को स्वचालित रूप से पहचानने में विफल रहते हैं तो नीचे दिए गए ओटीपी दर्ज करें)</string>
+    <string name="resend"><u>ओटीपी को भेजें</u></string>
+    <string name="check_otp">कृपया ओटीपी चेक करें</string>
+
+    <string name="Submit">निवेदन करें</string>
+    <string name="backExit">बाहर निकलने के लिए कृपया वापस फिर से क्लिक करें</string>
+    <string name="select_lang">भाषा चुनें</string>
+    <string name="broadcast">प्रसारण</string>
+    <string name="community">माय\nसमुदाय</string>
+    <string name="programme_management">कार्यक्रम\nप्रबंधक</string>
+    <string name="training_content">प्रशिक्षण\nसामग्री</string>
+    <string name="indicator">माय\nसूचक</string>
+    <string name="training_calendar">प्रशिक्षण\nकॅलेंडर</string>
+    <string name="notification">अधिसूचना</string>
+    <string name="rate">रेट करें</string>
+    <string name="share">शेयर</string>
+    <string name="team_management">टीम\nप्रबंधक</string>
+    <string name="seconds_remaining">दूसरा शेष</string>
+    <string name="back_string">बाहर निकलने के लिए कृपया वापस फिर से क्लिक करें</string>
+    <string name="please_enter">कृपया इंटर करें</string>
+    <string name="digit">डिजिट</string>
+    <string name="logout_string">क्या आप लॉगआउट करना चाहते हैं? </string>
+    <string name="delete_task_string">क्या आप हटाना चाहते हैं? </string>
+    <string name="class_observation">कक्षा अवलोकन</string>
+    <string name="training_responsiblity">"प्रशिक्षण कार्यक्रम"</string>
+    <string name="loading_comment">टिप्पणियाँ लोड हो रही हैं</string>
+    <string name="please_comment">कृपया टिप्पणी दर्ज करें...</string>
+    <string name="comment_add">टिप्पणी सफलतापूर्वक जोड़ा गया...</string>
+    <string name="likes">पसंद</string>
+    <string name="comments">टिप्पणियाँ</string>
+    <string name="share_post">पोस्ट साझा हो रही है...</string>
+    <string name="post_share_successfully">पोस्टसफलतापूर्वक साझा...</string>
+
+    <string name="select_one">एक समुदाय का चयन करें</string>
+    <string name="comunity_detail">सामुदायिक विवरण</string>
+    <string name="template_type">टेम्पलेट प्रकार</string>
+    <string name="description">विवरण</string>
+    <string name="title">शीर्षक</string>
+    <string name="loading_chats">चैट लोड हो रहा है</string>
+    <string name="loading_template">टेम्पलेट लोड हो रही है</string>
+    <string name="home">होम</string>
+    <string name="forgot_password">पासवर्ड भूल गए</string>
+    <string name="select_temp">कृपया टेम्पलेट प्रकार का चयन करें...</string>
+    <string name="img_template">छवि टेम्पलेट</string>
+    <string name="loding_district">जिले लोड हो रहे हैं</string>
+    <string name="loding_taluka">तहसील लोड हो रहे हैं</string>
+
+    <string name="loding_cluster">क्लस्टर लोड हो रहे हैं</string>
+    <string name="loding_school">स्कूललोड हो रहे हैं</string>
+    <string name="loding_village">गांवलोड हो रहे हैं</string>
+
+    <string name="issue_template">मुद्दा टेम्पलेट</string>
+    <string name="issue_submit">मुद्दा सफलतापूर्वक सबमिट किया गया...</string>
+    <string name="broadcast_submit">प्रसारण सफलतापूर्वक सबमिट किया गया...</string>
+    <string name="Process_Detail">प्रक्रिया विवरण</string>
+    <string name="fileNotPresent">फ़ाइल मौजूद नहीं है। कृपया डाउनलोड बटन दबाएं</string>
+
+
+    <string name="Task_List">कार्य सूची</string>
+    <string name="Loading_Process">प्रक्रिया लोड हो रही है</string>
+    <string name="No_Task">कोई कार्य उपलब्ध नहीं</string>
+    <string name="Loading_Roles">भूमिकाएं लोड हो रही हैं</string>
+    <string name="Please_Enter_Name">कृपया नाम दर्ज करें</string>
+    <string name="Please_Enter_Mobile_Number">कृपया मोबाइल नंबर दर्ज करें</string>
+    <string name="mobile_numer_enter">कृपया 10 अंकीय मोबाइल नंबर दर्ज करें</string>
+    <string name="Please_select_Role">कृपयाभूमिका चुनें</string>
+    <string name="Please_Enter_valid_email_address">कृपया मान्य ईमेल पता दर्ज करें</string>
+    <string name="Please_select_State">कृपया राज्य का चयन करें</string>
+    <string name="Please_select_district">कृपया जिला चुनें</string>
+    <string name="Please_select_taluka">कृपया तहसील चुनें</string>
+    <string name="Please_select_custer">क्लस्टर चुनें</string>
+    <string name="Please_select_village">कृपया गांव का चयन करें</string>
+    <string name="Please_select_school">कृपया स्कूल चुनें</string>
+
+    <string name="MV_training">मूल्यवर्धन प्रशिक्षण</string>
+    <string name="Video_template">वीडियो टेम्पलेट</string>
+
+    <string name="Templates">टेम्पलेट्स</string>
+    <string name="Schedule_training">अनुसूची प्रशिक्षण</string>
+    <string name="Registration">पंजीकरण</string>
+
+    <string name="lang">भाषा बदलें</string>
+    <string name="profile">अपडेट प्रोफाइल</string>
+    <string name="logout">लॉग आउट</string>
+
+    <string name="all_posts">सभी  \nपोस्ट</string>
+    <string name="my_posts">मेरी \nपोस्ट</string>
+    <string name="my_location">मेरा  \nस्थान</string>
+    <string name="other_location">अन्य  \स्थान</string>
+
+    </resources>

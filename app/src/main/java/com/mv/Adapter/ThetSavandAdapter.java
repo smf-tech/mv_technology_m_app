@@ -376,8 +376,9 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         return position;
     }
 
+    /**/
     GlideUrl getUrlWithHeaders(String url) {
-//
+
         return new GlideUrl(url, new LazyHeaders.Builder()
                 .addHeader("Authorization", "OAuth " + preferenceHelper.getString(PreferenceHelper.AccessToken))
                 .addHeader("Content-Type", "image/png")
