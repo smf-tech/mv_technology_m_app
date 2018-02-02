@@ -70,8 +70,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static int currentPage = 0;
     private static final Integer[] XMEN = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e};
     private ArrayList<Integer> XMENArray = new ArrayList<Integer>();
+       /* private static final String[] XMENArray = {"slider1","slider2","slider3","slider4"};
+    private ArrayList<String> XMENArray = new ArrayList<>();*/
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
+    public static final String LANGUAGE_HINDI = "hi";
     public static final String LANGUAGE = "language";
     final Handler handler = new Handler();
     Timer swipeTimer = new Timer();
@@ -198,7 +201,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void showDialog() {
 
-        final String[] items = {"English", "मराठी"};
+        final String[] items = {"English", "मराठी" ,"हिंदी"};
 
 
 // arraylist to keep the selected items
@@ -224,9 +227,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (lw.getCheckedItemPosition() == 0) {
                             LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_ENGLISH);
                             preferenceHelper.insertString(LANGUAGE, LANGUAGE_ENGLISH);
-                        } else {
+                        } else if(lw.getCheckedItemPosition() == 1){
                             LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_MARATHI);
                             preferenceHelper.insertString(LANGUAGE, LANGUAGE_MARATHI);
+                        }else {
+                            LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_HINDI);
+                            preferenceHelper.insertString(LANGUAGE, LANGUAGE_HINDI);
                         }
                         dialog.dismiss();
                         finish();

@@ -64,7 +64,7 @@
         <activity
             android:name=".Activity.HomeActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/HomeActivityTheme"
+            android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
@@ -264,6 +264,7 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".Activity.CalenderEventReportingActivity" />
         <activity android:name=".Activity.CalenderFliterActivity"></activity>
+               <activity android:name=".Activity.AboutUsActivity"></activity>
     </application>
 
 </manifest>

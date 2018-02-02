@@ -12,6 +12,7 @@
     <color name="lighter_grey">#EEEEEE</color>
     <color name="lightgray01">#d3d3d3</color>
     <color name="tranparant_lighter_grey">#80EEEEEE</color>
+    <color name="lighter_color_primary">#b0f4f3</color>
 
     <color name="light_blue">#5284E0</color>
     <color name="pink">#ad1457</color>
