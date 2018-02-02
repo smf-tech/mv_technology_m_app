@@ -41,26 +41,33 @@
 
     <string name="text_size_exceed">File Size Cannot Be Greater than 5 MB</string>
     <!--Registration Activity-->
-    <string name="name">पहिले नाव</string>
+    <string name="name">पहिले नाव *</string>
     <string name="middle_name">मधले नाव</string>
     <string name="last_name">आडनाव</string>
-    <string name="mobile_no">मोबाइल नंबर</string>
+    <string name="mobile_no">मोबाइल नंबर *</string>
     <string name="email">ई - मेल आयडी</string>
     <string name="password">पासवर्ड</string>
     <string name="confirm_password">पासवर्डची पुष्टी करा</string>
-    <string name="role">भूमिका</string>
+    <string name="role">भूमिका </string>
+    <string name="mandatory_role">भूमिका *</string>
     <string name="organization">संघटना</string>
     <string name="project">प्रोजेक्ट </string>
-    <string name="disrict">जिल्हा</string>
-    <string name="taluka">तालुका</string>
+    <string name="disrict">जिल्हा </string>
+    <string name="mandatory_district">जिल्हा *</string>
+    <string name="taluka">तालुका </string>
+    <string name="mandatory_taluka">तालुका *</string>
     <string name="thet_savnd"> श्री  शांतीलाल  मुथ्था\nयांच्याशी \"थेट संवाद\" </string>
-    <string name="cluster">क्लस्टर</string>
+    <string name="cluster">क्लस्टर </string>
+    <string name="mandatory_cluster">क्लस्टर *</string>
     <string name="update_profile">Update Profile</string>
-    <string name="village">गाव</string>
-    <string name="school_name">शाळेचे नाव</string>
+    <string name="village">गाव </string>
+    <string name="mandatory_village">गाव *</string>
+    <string name="school_name">शाळेचे नाव </string>
+    <string name="mandatory_school_name">शाळेचे नाव  *</string>
     <string name="school_code">शाळा कोड</string>
     <string name="district">जिल्हा</string>
-    <string name="state">राज्य</string>
+    <string name="state">राज्य </string>
+    <string name="mandatory_state">राज्य *</string>
     <string name="profile_pic">प्रोफाइल चित्र जोडा</string>
     <!--IssueTemplate Activity-->
     <string name="issue">समस्या प्रकार</string>
@@ -87,7 +94,8 @@
     <string name="community">माय \n कॅम्युनिटी </string>
     <string name="programme_management">प्रोग्रॅम \n मॅनेजमेंट </string>
     <string name="training_content">ट्रेनींग \n कन्टेन्ट </string>
-    <string name="indicator">सूचक</string>
+    <string name="claender_reportinng">इव्हेंट तयार करा</string>
+    <string name="indicator">माय \n रिपोर्ट</string>
     <string name="training_calendar">माय \n कॅलेंडर</string>
     <string name="team_management">संघ \n व्यवस्थापन</string>
     <string name="notification">सूचना</string>
@@ -160,7 +168,7 @@
     <string name="Please_select_village">कृपया गाव निवडा</string>
     <string name="Please_select_school">कृपया शाळा निवडा</string>
 
-    <string name="gender">लिंग</string>
+    <string name="gender">लिंग *</string>
     <string name="male">पुरुष</string>
     <string name="female">स्त्री</string>
     <string name="other">अन्य</string>
@@ -183,4 +191,7 @@
     <string name="my_posts">माझ्या पोस्ट</string>
     <string name="my_location">माय लोकेशन </string>
     <string name="other_location">इतर लोकेशन </string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

@@ -4,17 +4,23 @@ package com.mv.Fragment;
  * Created by Rohit Gujar on 09-10-2017.
  */
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -29,6 +35,7 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityNewTemplateBinding;
@@ -46,52 +53,56 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class
-ProgrammeManagmentFragment extends Fragment {
+ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickListener {
     private PreferenceHelper preferenceHelper;
     List<Template> processAllList = new ArrayList<>();
     private TemplateAdapter mAdapter;
     private ActivityNewTemplateBinding binding;
     RecyclerView.LayoutManager mLayoutManager;
     TextView textNoData;
-    View view;
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        binding = DataBindingUtil.inflate(
-                inflater, R.layout.activity_new_template, container, false);
-         view = binding.getRoot();
-        binding.setVariable(BR.vm, new ParentViewModel());
-        RelativeLayout mToolBar = (RelativeLayout) view.findViewById(R.id.toolbar);
-        mToolBar.setVisibility(View.GONE);
-        initViews();
-        return view;
-    }
 
+    Activity context;
+
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context=this;
+        binding =  DataBindingUtil.setContentView(this, R.layout.activity_new_template);
+        binding.setVariable(BR.vm, new ParentViewModel());
+
+
+        initViews();
+    }
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
+    }
     private void initViews() {
-        preferenceHelper = new PreferenceHelper(getActivity());
+        setActionbar(getString(R.string.programme_management));
+        preferenceHelper = new PreferenceHelper(context);
         binding.swiperefresh.setOnRefreshListener(
                 new SwipeRefreshLayout.OnRefreshListener() {
                     @Override
                     public void onRefresh() {
-                        if (Utills.isConnected(getActivity()))
+                        if (Utills.isConnected(context))
                         getAllProcess();
                     }
                 }
         );
 
-        textNoData = (TextView) view.findViewById(R.id.textNoData);
-        mAdapter = new TemplateAdapter(processAllList, getActivity());
-         mLayoutManager = new LinearLayoutManager(getActivity());
+        textNoData = (TextView) findViewById(R.id.textNoData);
+        mAdapter = new TemplateAdapter(processAllList, context);
+         mLayoutManager = new LinearLayoutManager(context);
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(mAdapter);
-        if (Utills.isConnected(getActivity()))
+        if (Utills.isConnected(context))
             getAllProcess();
         else
         {
             processAllList.clear();
-            processAllList=AppDatabase.getAppDatabase(getActivity()).userDao().getProcess();
-            mAdapter = new TemplateAdapter(processAllList, getActivity());
-             mLayoutManager = new LinearLayoutManager(getActivity());
+            processAllList=AppDatabase.getAppDatabase(context).userDao().getProcess();
+            mAdapter = new TemplateAdapter(processAllList, context);
+             mLayoutManager = new LinearLayoutManager(context);
             binding.recyclerView.setAdapter(mAdapter);
         }
     }
@@ -99,14 +110,33 @@ ProgrammeManagmentFragment extends Fragment {
 
 
 
-
+    private void setActionbar(String Title) {
+        RelativeLayout  mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        toolbar_title.setText(Title);
+        ImageView img_back = (ImageView) findViewById(R.id.img_back);
+        img_back.setVisibility(View.VISIBLE);
+        img_back.setOnClickListener(this);
+        ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
+        img_logout.setVisibility(View.GONE);
+        img_logout.setOnClickListener(this);
+    }
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.img_back:
+                context.finish();
+                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                break;
+        }
+    }
 
     private void getAllProcess() {
-        Utills.showProgressDialog(getActivity(), "Loading Process", getString(R.string.progress_please_wait));
+        Utills.showProgressDialog(context, "Loading Process", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
-                ApiClient.getClientWitHeader(getActivity()).create(ServiceRequest.class);
+                ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getProcess/"+ User.getCurrentUser(getActivity()).getId();
+                + "/services/apexrest/getProcess/"+ User.getCurrentUser(context).getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -135,8 +165,8 @@ ProgrammeManagmentFragment extends Fragment {
 
                                 processAllList.add(processList);
                             }
-                            AppDatabase.getAppDatabase(getActivity()).userDao().deleteTable();
-                            AppDatabase.getAppDatabase(getActivity()).userDao().insertProcess(processAllList);
+                            AppDatabase.getAppDatabase(context).userDao().deleteTable();
+                            AppDatabase.getAppDatabase(context).userDao().insertProcess(processAllList);
                             mAdapter.notifyDataSetChanged();
                             textNoData.setVisibility(View.GONE);
                         }else {

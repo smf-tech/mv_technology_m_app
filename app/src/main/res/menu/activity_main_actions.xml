@@ -1,33 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <!-- Search / will display always -->
     <item
         android:id="@+id/action_lang"
-        android:icon="@drawable/like_n"
         android:title="@string/lang" />
 
     <item
         android:id="@+id/action_profile"
-        android:icon="@drawable/like_n"
         android:title="@string/profile" />
     <item
         android:id="@+id/action_notification"
-        android:icon="@drawable/like_n"
         android:title="@string/notification" />
 
     <item
         android:id="@+id/action_rate"
-        android:icon="@drawable/like_n"
         android:title="@string/rate" />
     <item
         android:id="@+id/action_share"
-        android:icon="@drawable/like_n"
         android:title="@string/share" />
 
     <item
         android:id="@+id/action_logout"
-        android:icon="@drawable/like_n"
         android:title="@string/logout" />
 
 

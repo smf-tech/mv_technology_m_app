@@ -1,19 +1,26 @@
 package com.mv.Fragment;
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +34,8 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Utils.Constants;
+import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.FragmentCommunityHomeBinding;
@@ -37,6 +46,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -48,51 +58,67 @@ import retrofit2.Response;
  * Created by Rohit Gujar on 26-10-2017.
  */
 
-public class CommunityHomeFragment extends Fragment implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class CommunityHomeFragment extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private FragmentCommunityHomeBinding binding;
     private PreferenceHelper preferenceHelper;
     private ArrayList<Content> chatList = new ArrayList<Content>();
     private FragmentContentAdapter adapter;
     TextView textNoData;
-    private View view;
+
     private FloatingActionButton fab_add_broadcast;
     RecyclerView recyclerView;
+    Activity context;
+    private RelativeLayout mToolBar;
+    private TextView toolbar_title;
+    private ImageView img_back, img_list, img_logout;
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        context=this;
+        binding = DataBindingUtil.setContentView(this, R.layout.fragment_community_home);
+        binding.setFragment(this);
 
-        binding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_community_home, container, false);
-        view = binding.getRoot();
         //here data must be an instance of the class MarsDataProvider
-        Utills.setupUI(view.findViewById(R.id.layout_main), getActivity());
+        Utills.setupUI(findViewById(R.id.layout_main), context);
         binding.swipeRefreshLayout.setOnRefreshListener(this);
         initViews();
         getChats(true);
-        return view;
-    }
-
-    public void onAddClick() {
-
     }
 
     private void initViews() {
-        preferenceHelper = new PreferenceHelper(getActivity());
-        fab_add_broadcast = (FloatingActionButton) view.findViewById(R.id.fab_add_broadcast);
-        textNoData = (TextView) view.findViewById(R.id.textNoData);
+        preferenceHelper = new PreferenceHelper(context);
+        fab_add_broadcast = (FloatingActionButton) findViewById(R.id.fab_add_broadcast);
+        textNoData = (TextView) findViewById(R.id.textNoData);
         fab_add_broadcast.setOnClickListener(this);
         binding.fabAddBroadcast.setVisibility(View.GONE);
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
-        adapter = new FragmentContentAdapter(getActivity(), chatList);
+        setActionbar(getString(R.string.broadcast));
+        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        adapter = new FragmentContentAdapter(context, chatList);
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
     }
-
+    private void setActionbar(String Title) {
+        mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        toolbar_title.setText(Title);
+        img_back = (ImageView) findViewById(R.id.img_back);
+        img_back.setVisibility(View.VISIBLE);
+        img_back.setOnClickListener(this);
+        img_logout = (ImageView) findViewById(R.id.img_logout);
+        img_logout.setVisibility(View.GONE);
+        img_logout.setOnClickListener(this);
+    }
+    /*For setting differnt languages like english, marathi*/
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
+    }
     private void getChats(boolean isDialogShow) {
-        List<Content> temp = AppDatabase.getAppDatabase(getActivity()).userDao().getAllBroadcastChats();
+        List<Content> temp = AppDatabase.getAppDatabase(context).userDao().getAllBroadcastChats();
         if (temp.size() == 0) {
-            if (Utills.isConnected(getActivity()))
+            if (Utills.isConnected(context))
                 getAllChats(false, isDialogShow);
             else
                 showPopUp();
@@ -102,7 +128,7 @@ public class CommunityHomeFragment extends Fragment implements View.OnClickListe
                 chatList.add(temp.get(i));
             }
             adapter.notifyDataSetChanged();
-            if (Utills.isConnected(getActivity()))
+            if (Utills.isConnected(context))
                 getAllChats(true, isDialogShow);
         }
 
@@ -110,17 +136,17 @@ public class CommunityHomeFragment extends Fragment implements View.OnClickListe
 
     private void getAllChats(boolean isTimePresent, boolean isDialogShow) {
         if (isDialogShow)
-            Utills.showProgressDialog(getActivity(), "Loading Chats", getString(R.string.progress_please_wait));
+            Utills.showProgressDialog(context, "Loading Chats", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
-                ApiClient.getClientWitHeader(getActivity()).create(ServiceRequest.class);
+                ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = "";
         if (isTimePresent)
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/getBroadcastContent?userId=" + User.getCurrentUser(getActivity()).getId()
+                    + "/services/apexrest/getBroadcastContent?userId=" + User.getCurrentUser(context).getId()
                     + "&timestamp=" + chatList.get(0).getTime();
         else
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/getBroadcastContent?userId=" + User.getCurrentUser(getActivity()).getId();
+                    + "/services/apexrest/getBroadcastContent?userId=" + User.getCurrentUser(context).getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -136,7 +162,7 @@ public class CommunityHomeFragment extends Fragment implements View.OnClickListe
                                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                                 List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));
 
-                                List<Content> contentList = AppDatabase.getAppDatabase(getActivity()).userDao().getAllBroadcastChats();
+                                List<Content> contentList = AppDatabase.getAppDatabase(context).userDao().getAllBroadcastChats();
                             if ((temp.size() != 0) || (contentList.size()!=0)) {
 
                                 for (int i = 0; i < temp.size(); i++) {
@@ -151,10 +177,10 @@ public class CommunityHomeFragment extends Fragment implements View.OnClickListe
                                     }
                                     if (isPresent) {
                                         chatList.set(j, temp.get(i));
-                                        AppDatabase.getAppDatabase(getActivity()).userDao().updateContent(temp.get(i));
+                                        AppDatabase.getAppDatabase(context).userDao().updateContent(temp.get(i));
                                     } else {
                                         chatList.add(temp.get(i));
-                                        AppDatabase.getAppDatabase(getActivity()).userDao().insertChats(temp.get(i));
+                                        AppDatabase.getAppDatabase(context).userDao().insertChats(temp.get(i));
                                     }
                                 }
                                 adapter.notifyDataSetChanged();
@@ -183,7 +209,7 @@ public class CommunityHomeFragment extends Fragment implements View.OnClickListe
     }
 
     private void showPopUp() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 
         // Setting Dialog Title
         alertDialog.setTitle(getString(R.string.app_name));
@@ -198,16 +224,16 @@ public class CommunityHomeFragment extends Fragment implements View.OnClickListe
         alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                context.finish();
+                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
         });
         // Setting OK Button
         alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
-                getActivity().finish();
-                getActivity().overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                context.finish();
+                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
         });
 
@@ -220,8 +246,12 @@ public class CommunityHomeFragment extends Fragment implements View.OnClickListe
         switch (view.getId()) {
             case R.id.fab_add_broadcast:
                 Intent intent;
-                intent = new Intent(getActivity(), BroadCastActivity.class);
+                intent = new Intent(context, BroadCastActivity.class);
                 startActivity(intent);
+                break;
+            case R.id.img_back:
+                finish();
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
         }
     }

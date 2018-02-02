@@ -156,7 +156,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
 
 
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(position).getAttachmentId() + ".png";
-        Log.e("bitmap file", filePath);
+
         if (TextUtils.isEmpty(mDataList.get(position).getAttachmentId()) || mDataList.get(position).getAttachmentId() == null
                 || mDataList.get(position).getAttachmentId().equalsIgnoreCase("null") || isFileAvalible(position) ) {
 

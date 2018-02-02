@@ -38,24 +38,33 @@
     <string name="fragment_intro_events">MV Events</string>
 
     <!--Registration Activity-->
-    <string name="name">First Name</string>
+    <string name="name">First Name *</string>
     <string name="middle_name">Middle Name</string>
     <string name="last_name">Last Name</string>
-    <string name="mobile_no">Mobile Number</string>
+    <string name="mobile_no">Mobile Number *</string>
     <string name="email">Email Id</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="role">Role</string>
+    <string name="mandatory_role">Role *</string>
     <string name="project">Project</string>
     <string name="organization">Organization</string>
-    <string name="disrict">District</string>
-    <string name="taluka">Taluka</string>
-    <string name="cluster">Cluster</string>
-    <string name="village">Village</string>
-    <string name="school_name">School Name</string>
+    <string name="disrict">District </string>
+    <string name="mandatory_district">District *</string>
+    <string name="taluka">Taluka </string>
+    <string name="mandatory_taluka">Taluka *</string>
+    <string name="cluster">Cluster </string>
+    <string name="mandatory_cluster">Cluster *</string>
+    <string name="village">Village </string>
+    <string name="mandatory_village">Village *</string>
+    <string name="school_name">School Name </string>
+    <string name="mandatory_school_name">School Name  *</string>
+
+
     <string name="school_code">School Code</string>
-    <string name="district">District</string>
-    <string name="state">State</string>
+    <string name="district">District </string>
+    <string name="state">State </string>
+    <string name="mandatory_state">State *</string>
     <string name="profile_pic">Add Profile Picture</string>
     <string name="approve">Approve</string>
     <string name="reject">Reject</string>
@@ -95,7 +104,7 @@
     <string name="rate">Rate Us</string>
     <string name="share">Share App</string>
     <string name="team_management">Team\nManagement</string>
-
+    <string name="claender_reportinng">Create Event</string>
     <string name="seconds_remaining">Seconds remaining </string>
     <string name="back_string">Please click BACK again to exit </string>
     <string name="please_enter">Please enter </string>
@@ -167,7 +176,7 @@
     <string name="Like">Like</string>
 
 
-    <string name="gender">Gender</string>
+    <string name="gender">Gender *</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
     <string name="other">Other</string>
@@ -188,4 +197,7 @@
     <string name="my_posts">My \nPosts</string>
     <string name="my_location">My \n Location</string>
     <string name="other_location">Other \nLocation</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

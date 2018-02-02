@@ -14,8 +14,7 @@ public class Constants {
     public static String REPORTID = "a1L7F000000YNK4";
     public static String ISSUEID = "a1L7F000000YNJz";
     /* Sandbox*/
-
- /* public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
+  /*  public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
     public static String REPORTID = "a1G0k000000522K";
     public static String ISSUEID = "a1G0k000000522F";*/
@@ -34,6 +33,7 @@ public class Constants {
     public static String LIST = "list";
     public static String CONTENT = "content";
 
+    public static final String TABLE_CALANDER = "table_calender";
     public static final String TABLE_TASK = "table_task";
     public static final String TABLE_PROCESS = "table_process";
     public static final String TABLE_CONTAINER = "table_container";
@@ -104,4 +104,15 @@ public class Constants {
     public static final String PROCESS_TYPE = "process_type";
     public static final String MANGEMENT_PROCESS = "managenment_approval";
     public static final String APPROVAL_PROCESS = "approval_process";
+
+    public static final String Thet_Sanvad = "Thet Sanvad";
+    public static final String Broadcast = "Broadcast";
+    public static final String My_Community = "My Community";
+    public static final String Programme_Management = "Programme Management";
+    public static final String Training_Content = "Training Content";
+    public static final String Team_Management = "Team Management";
+    public static final String My_Reports = "My Reports";
+    public static final String My_Calendar = "My Calendar";
+
+
 }
