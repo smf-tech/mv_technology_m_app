@@ -98,6 +98,7 @@
     <string name="indicator">माय \n रिपोर्ट</string>
     <string name="training_calendar">माय \n कॅलेंडर</string>
     <string name="team_management">संघ \n व्यवस्थापन</string>
+    <string name="about_us">मुल्यवर्धन बद्दल</string>
     <string name="notification">सूचना</string>
     <string name="rate">रेट करा</string>
     <string name="share">शेयर अॅप</string>
@@ -191,4 +192,7 @@
     <string name="my_posts">माझ्या पोस्ट</string>
     <string name="my_location">माय लोकेशन </string>
     <string name="other_location">इतर लोकेशन </string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 </resources>

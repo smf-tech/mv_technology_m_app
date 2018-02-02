@@ -102,8 +102,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         } else {
             showPopUp();
         }
+
     }
 
+    /*
+    * API to get all Projects From server
+    * */
     private void getProject() {
         Utills.showProgressDialog(this, "Loading Projects", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
@@ -119,27 +123,27 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         String data = response.body().string();
                         if (data != null && data.length() > 0) {
 
-                                JSONArray jsonArray = null;
-                                jsonArray = new JSONArray(data);
-                                mListProject.clear();
-                                mListProjectId.clear();
-                                mListProject.add("Select");
-                                mListProjectId.add("Select");
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject object = jsonArray.getJSONObject(i);
-                                    mListProject.add(object.getString("Project_Name__c"));
-                                    mListProjectId.add(object.getString("Id"));
-                                }
-                                project_adapter.notifyDataSetChanged();
-                                if (!isAdd && !isProjectSet) {
-                                    isProjectSet = true;
-                                    for (int i = 0; i < mListProject.size(); i++) {
-                                        if (mListProject.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getProject_Name__c())) {
-                                            spinner_project.setSelection(i);
-                                            break;
-                                        }
+                            JSONArray jsonArray = null;
+                            jsonArray = new JSONArray(data);
+                            mListProject.clear();
+                            mListProjectId.clear();
+                            mListProject.add("Select");
+                            mListProjectId.add("Select");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                mListProject.add(object.getString("Project_Name__c"));
+                                mListProjectId.add(object.getString("Id"));
+                            }
+                            project_adapter.notifyDataSetChanged();
+                            if (!isAdd && !isProjectSet) {
+                                isProjectSet = true;
+                                for (int i = 0; i < mListProject.size(); i++) {
+                                    if (mListProject.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getProject_Name__c())) {
+                                        spinner_project.setSelection(i);
+                                        break;
                                     }
                                 }
+                            }
 
                         }
                     }
@@ -159,6 +163,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
+    /*
+    * API to get all Roles From server
+    * */
     private void getRole() {
         Utills.showProgressDialog(this, getString(R.string.Loading_Roles), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
@@ -175,30 +182,30 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         if (data != null && data.length() > 0) {
 
 
-                                JSONObject obj = new JSONObject(data);
-                                JSONArray jsonArray = obj.getJSONArray("records");
-                                mListRoleName.clear();
-                                mListRoleId.clear();
-                                mListRoleJuridiction.clear();
-                                mListRoleName.add("Select");
-                                mListRoleId.add("");
-                                mListRoleJuridiction.add("");
-                                for (int i = 0; i < jsonArray.length(); i++) {
-                                    JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                    mListRoleName.add(jsonObject.getString("Name"));
-                                    mListRoleId.add(jsonObject.getString("Id"));
-                                    mListRoleJuridiction.add(jsonObject.getString("Juridictions__c"));
-                                }
-                                role_adapter.notifyDataSetChanged();
-                                if (!isAdd && !isRollSet) {
-                                    isRollSet = true;
-                                    for (int i = 0; i < mListRoleName.size(); i++) {
-                                        if (mListRoleName.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getRoll())) {
-                                            binding.spinnerRole.setSelection(i);
-                                            break;
-                                        }
+                            JSONObject obj = new JSONObject(data);
+                            JSONArray jsonArray = obj.getJSONArray("records");
+                            mListRoleName.clear();
+                            mListRoleId.clear();
+                            mListRoleJuridiction.clear();
+                            mListRoleName.add("Select");
+                            mListRoleId.add("");
+                            mListRoleJuridiction.add("");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                mListRoleName.add(jsonObject.getString("Name"));
+                                mListRoleId.add(jsonObject.getString("Id"));
+                                mListRoleJuridiction.add(jsonObject.getString("Juridictions__c"));
+                            }
+                            role_adapter.notifyDataSetChanged();
+                            if (!isAdd && !isRollSet) {
+                                isRollSet = true;
+                                for (int i = 0; i < mListRoleName.size(); i++) {
+                                    if (mListRoleName.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getRoll())) {
+                                        binding.spinnerRole.setSelection(i);
+                                        break;
                                     }
                                 }
+                            }
 
                         }
                     }
@@ -218,6 +225,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
+
+    /*
+    * API to get all Organization From server
+    * */
     private void getOrganization() {
         Utills.showProgressDialog(this, "Loading Organization", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
@@ -266,6 +277,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
+
+    /*
+    * check internet connectivity and show pop up for no internet connection
+    * */
     private void showPopUp() {
         final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 
@@ -306,6 +321,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
 
+    /*
+    * API to get all States From server
+    * */
     private void getState() {
 
         Utills.showProgressDialog(this, "Loading States", getString(R.string.progress_please_wait));
@@ -354,6 +372,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
+    /*
+    * API to get all Districts From server
+    * */
     private void getDistrict() {
 
         Utills.showProgressDialog(this, getString(R.string.loding_district), getString(R.string.progress_please_wait));
@@ -402,6 +423,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
+    /*
+    * initialize all views
+    * */
     private void initViews() {
         setActionbar(getString(R.string.Registration));
         Utills.setupUI(findViewById(R.id.layout_main), this);
@@ -574,6 +598,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     }
 
+    /*
+    * add required header to glide
+    * */
     GlideUrl getUrlWithHeaders(String url) {
 //
         return new GlideUrl(url, new LazyHeaders.Builder()
@@ -582,6 +609,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 .build());
     }
 
+    /*
+    * set actionbar to activity
+    * */
     private void setActionbar(String Title) {
         mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
@@ -612,6 +642,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    /*
+    * send all data to server
+    * */
     private void sendData() {
         if (isValidate()) {
 
@@ -783,6 +816,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+
+    /*
+    * check all data is valid or not
+    * */
     private boolean isValidate() {
         String msg = "";
 
@@ -1073,6 +1110,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+
+    /*
+    * API to get all Clusters From server
+    * */
     private void getCluster() {
         Utills.showProgressDialog(this, getString(R.string.loding_cluster), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
@@ -1118,6 +1159,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
+    /*
+    * API to get all Talukas From server
+    * */
     private void getTaluka() {
 
         Utills.showProgressDialog(this, getString(R.string.loding_taluka), getString(R.string.progress_please_wait));
@@ -1165,6 +1209,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
+    /*
+    * API to get all Villages From server
+    * */
     private void getVillage() {
         Utills.showProgressDialog(this, getString(R.string.loding_village), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
@@ -1211,6 +1258,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
+    /*
+    * API to get all Schools From server
+    * */
     private void getSchool() {
         Utills.showProgressDialog(this, getString(R.string.loding_school), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
@@ -1266,6 +1316,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     }
 
+    /*
+    * Show dialog to select image from camera or gallary
+    * */
     private void showPictureDialog() {
         android.support.v7.app.AlertDialog.Builder dialog = new android.support.v7.app.AlertDialog.Builder(this);
         dialog.setTitle(getString(R.string.text_choosepicture));
@@ -1291,6 +1344,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         dialog.show();
     }
 
+    /*
+    * Intent to open camera
+    * */
     private void takePhotoFromCamera() {
 
         try {
@@ -1308,6 +1364,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    /*
+    * Intent to open gallery
+    * */
     private void choosePhotoFromGallery() {
         Intent i = new Intent(Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI);

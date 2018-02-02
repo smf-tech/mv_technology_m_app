@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mv.Activity.AboutUsActivity">
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbar_layout"></include>
+
+   <ScrollView
+       android:layout_below="@+id/toolbar_layout"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginBottom="@dimen/dimen_5dp">
+
+       <LinearLayout
+           android:layout_margin="@dimen/dimen_10dp"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:orientation="vertical">
+           <com.mv.Widgets.MyTextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:id="@+id/txt_about"
+               android:textAppearance="?attr/textAppearanceListItem"
+               android:textColor="@color/dark_grey"
+               android:text="@string/aboutus_info"
+               android:autoLink="all"
+               />
+
+
+       </LinearLayout>
+   </ScrollView>
+
+
+
+
+</RelativeLayout>

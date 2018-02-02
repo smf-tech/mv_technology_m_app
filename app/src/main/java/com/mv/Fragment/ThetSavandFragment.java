@@ -96,10 +96,13 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         initViews();
         getChats(true);
     }
+    /*It is used for setting different languages like english , marathi*/
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
+
+    /*Initialize differnt views. */
     private void initViews() {
         preferenceHelper = new PreferenceHelper(context);
         setActionbar(getString(R.string.thet_savnd));
@@ -115,6 +118,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         lnr_filter = (LinearLayout) findViewById(R.id.lnr_filter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        /*Change the visiblity of filter button on scroll*/
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
@@ -133,7 +137,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
 
             }
         });
-
+         /*Display the post of only registered users */
         btn_mypost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -151,6 +155,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
                 recyclerView.setAdapter(adapter);
             }
         });
+        /*Display all posts*/
         btn_allposts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,6 +166,8 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
                 recyclerView.setAdapter(adapter);
             }
         });
+
+        /*It is from downloadservice to check file is completely downloaded or not.*/
         registerReceiver();
     }
 
@@ -170,7 +177,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         }
     }
 
-
+    /*Get the Chat List from Database and set to the adapter , if No vales in table then get Chats from Server*/
     private void getChats(boolean isDialogShow) {
         chatList.clear();
         chatList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats();
@@ -200,7 +207,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         initViews();
         getChats(true);
     }
-
+   /*getTheatSawandContent api is called here.*/
     private void getAllChats(boolean isTimePresent, boolean isDialogShow) {
         if (isDialogShow)
             Utills.showProgressDialog(context, "Loading Chats", getString(R.string.progress_please_wait));
@@ -285,7 +292,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
             }
         });
     }
-
+    /*It shows the popup for Internet connection is available or not*/
     private void showPopUp() {
         final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 
@@ -293,7 +300,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         alertDialog.setTitle(getString(R.string.app_name));
 
         // Setting Dialog Message
-        alertDialog.setMessage("Internet connection is required");
+        alertDialog.setMessage(getString(R.string.error_no_internet));
 
         // Setting Icon to Dialog
         alertDialog.setIcon(R.drawable.logomulya);
@@ -345,6 +352,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         getChats(false);
     }
 
+    /*It initialize all views in actionbar.*/
     private void setActionbar(String Title) {
        RelativeLayout  mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
@@ -356,6 +364,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
+    /*Get the the intent from download service after file is completely donloaded*/
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -366,7 +375,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
             }
         }
     };
-
+    /*Register reciver*/
     private void registerReceiver() {
 
         LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(context);

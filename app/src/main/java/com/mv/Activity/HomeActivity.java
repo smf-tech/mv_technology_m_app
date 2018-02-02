@@ -15,20 +15,26 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -97,7 +103,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 
-public class HomeActivity extends AppCompatActivity implements View.OnClickListener, ForceUpdateChecker.OnUpdateNeededListener {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener, ForceUpdateChecker.OnUpdateNeededListener, NavigationView.OnNavigationItemSelectedListener {
 
 
     private ImageView img_back, img_list, img_logout, img_lang;
@@ -107,6 +113,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private PreferenceHelper preferenceHelper;
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
+    public static final String LANGUAGE_HINDI = "hi";
     public static final String LANGUAGE = "language";
     //  private ViewPagerAdapter adapter;
     //   private TabLayout tabLayout;
@@ -117,6 +124,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     int LocatonFlag;
     HomeAdapter mAdapter;
     ArrayList<HomeModel> menulist;
+    ActionBar actionBar;
+    RecyclerView recyclerView;
+    ArrayList<String> menuListName;
+    ImageView iv_home_animate,iv_logo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +138,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         binding.setActivity(this);
         preferenceHelper = new PreferenceHelper(this);
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
-        setActionbar(getString(R.string.app_name));
+        ///setActionbar(getString(R.string.app_name));
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.app_name);
+        toolbar.setTitleTextColor(getResources().getColor(R.color.white));
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        toggle.getDrawerArrowDrawable().setColor(getResources().getColor(R.color.white));
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
         //    tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         //  viewPager = (ViewPager) findViewById(R.id.pager);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -140,7 +163,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
                 if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    LocationPopup();
+                   // LocationPopup();
+                    SampleDialog();
                     LocatonFlag = 0;
 
                 } else {
@@ -208,7 +232,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
                 if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                    LocationPopup();
+                    //LocationPopup();
+                    SampleDialog();
                     LocatonFlag = 0;
 
                 } else {
@@ -259,78 +284,65 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void initViews() {
         Intent receivedIntent = getIntent();
+        recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
+        iv_logo = (ImageView) findViewById(R.id.iv_logo);
+        iv_home_animate = (ImageView) findViewById(R.id.iv_home_animate);
         List<String> allTab = new ArrayList<>();
+        menulist = new ArrayList<>();
+
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameNoteApproved().split(";")));
-            menulist = new ArrayList<>();
             showApprovedDilaog();
         } else {
-            menulist = new ArrayList<>();
             allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameApproved().split(";")));
 
         }
+        menuListName=new ArrayList<>();
+        menuListName.add(Constants.Thet_Sanvad);
+        menuListName.add(Constants.Broadcast);
+        menuListName.add(Constants.My_Community);
+        menuListName.add(Constants.Programme_Management);
+        menuListName.add(Constants.Training_Content);
+        menuListName.add(Constants.Team_Management);
+        menuListName.add(Constants.My_Reports);
+        menuListName.add(Constants.My_Calendar);
 
+
+        //for loop for adding accessible tab
         for (int i = 0; i < allTab.size(); i++) {
-            HomeModel homeModel = new HomeModel();
-            if (allTab.get(i).equals(Constants.Thet_Sanvad)) {
-                homeModel.setMenuName(getString(R.string.thet_savnd));
-                homeModel.setMenuIcon(R.drawable.ic_thet_sanvad);
-                homeModel.setDestination(ThetSavandFragment.class);
 
-            } else if (allTab.get(i).equals(Constants.Broadcast)) {
-                    homeModel.setMenuName(getString(R.string.broadcast));
-                homeModel.setMenuIcon(R.drawable.ic_broadcast);
-                homeModel.setDestination(CommunityHomeFragment.class);
-
-            } else if (allTab.get(i).equals(Constants.My_Community)) {
-                homeModel.setMenuName(getString(R.string.community));
-                homeModel.setMenuIcon(R.drawable.ic_community);
-                homeModel.setDestination(GroupsFragment.class);
-
-
-            } else if (allTab.get(i).equals(Constants.Programme_Management)) {
-                homeModel.setMenuName(getString(R.string.programme_management));
-                homeModel.setMenuIcon(R.drawable.ic_program_mangement);
-                homeModel.setDestination(ProgrammeManagmentFragment.class);
-
-            } else if (allTab.get(i).equals(Constants.Training_Content)) {
-                homeModel.setMenuName(getString(R.string.training_content));
-                homeModel.setMenuIcon(R.drawable.ic_traing_content);
-                homeModel.setDestination(TrainingFragment.class);
-
-            } else if (allTab.get(i).equals(Constants.Team_Management)) {
-                homeModel.setMenuName(getString(R.string.team_management));
-                homeModel.setMenuIcon(R.drawable.ic_team_management);
-                homeModel.setDestination(TeamManagementFragment.class);
-
-            } else if (allTab.get(i).equals(Constants.My_Reports)) {
-                homeModel.setMenuName(getString(R.string.indicator));
-                homeModel.setMenuIcon(R.drawable.ic_reports);
-                homeModel.setDestination(IndicatorListFragmet.class);
-
-            } else if (allTab.get(i).equals(Constants.My_Calendar)) {
-                homeModel.setMenuName(getString(R.string.training_calendar));
-                homeModel.setMenuIcon(R.drawable.ic_calender);
-                homeModel.setDestination(TrainingCalender.class);
-
+            menulist.add(  checkList(allTab,i,true));
+        }
+//for loop for adding non accessible tab
+        for (int i=0;i<menuListName.size();i++)
+        {
+           if(!allTab.contains(menuListName.get(i)) )
+            {
+                menulist.add(  checkList(menuListName,i, false));
             }
-            menulist.add(homeModel);
         }
 
+
+        HomeModel homeModel = new HomeModel();
+        homeModel.setMenuName(getString(R.string.about_us));
+        homeModel.setMenuIcon(R.drawable.ic_calender);
+        homeModel.setDestination(AboutUsActivity.class);
+        homeModel.setAccessible(true);
+        menulist.add(homeModel);
         mAdapter = new HomeAdapter(menulist, HomeActivity.this);
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setAddDuration(1000);
         itemAnimator.setRemoveDuration(1000);
-        binding.recyclerView.setItemAnimator(itemAnimator);
+       recyclerView.setItemAnimator(itemAnimator);
         GridLayoutManager  mLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
         Animation textAnimation = (AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink));
-        binding.ivLogo.startAnimation(textAnimation);
+        iv_logo.startAnimation(textAnimation);
 
 
-        binding.ivHomeAnimate.setBackgroundResource(R.drawable.home_progress);
+        iv_home_animate.setBackgroundResource(R.drawable.home_progress);
 
-        AnimationDrawable rocketAnimation = (AnimationDrawable)    binding.ivHomeAnimate.getBackground();
-        rocketAnimation = (AnimationDrawable)    binding.ivHomeAnimate.getBackground();
+        AnimationDrawable rocketAnimation = (AnimationDrawable)    iv_home_animate.getBackground();
+        rocketAnimation = (AnimationDrawable)iv_home_animate.getBackground();
         rocketAnimation.start();
 
         mLayoutManager.setAutoMeasureEnabled(true);
@@ -339,9 +351,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setAlignItems(AlignItems.STRETCH);
         layoutManager.setJustifyContent(JustifyContent.CENTER);
-        binding.recyclerView.setLayoutManager(mLayoutManager);
+      recyclerView.setLayoutManager(mLayoutManager);
         //binding.recyclerView.setLayoutManager(mLayoutManager);
-        binding.recyclerView.setAdapter(mAdapter);
+       recyclerView.setAdapter(mAdapter);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -402,7 +414,55 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+        public HomeModel  checkList( List<String> allTab ,int i,Boolean isAccessible)
+        {
+            HomeModel homeModel = new HomeModel();
+            homeModel.setAccessible(isAccessible);
+            if (allTab.get(i).equals(Constants.Thet_Sanvad)) {
+                homeModel.setMenuName(getString(R.string.thet_savnd));
+                homeModel.setMenuIcon(R.drawable.ic_thet_sanvad);
+                homeModel.setDestination(ThetSavandFragment.class);
 
+
+            } else if (allTab.get(i).equals(Constants.Broadcast)) {
+                homeModel.setMenuName(getString(R.string.broadcast));
+                homeModel.setMenuIcon(R.drawable.ic_broadcast);
+                homeModel.setDestination(CommunityHomeFragment.class);
+
+            } else if (allTab.get(i).equals(Constants.My_Community)) {
+                homeModel.setMenuName(getString(R.string.community));
+                homeModel.setMenuIcon(R.drawable.ic_community);
+                homeModel.setDestination(GroupsFragment.class);
+
+
+            } else if (allTab.get(i).equals(Constants.Programme_Management)) {
+                homeModel.setMenuName(getString(R.string.programme_management));
+                homeModel.setMenuIcon(R.drawable.ic_program_mangement);
+                homeModel.setDestination(ProgrammeManagmentFragment.class);
+
+            } else if (allTab.get(i).equals(Constants.Training_Content)) {
+                homeModel.setMenuName(getString(R.string.training_content));
+                homeModel.setMenuIcon(R.drawable.ic_traing_content);
+                homeModel.setDestination(TrainingFragment.class);
+
+            } else if (allTab.get(i).equals(Constants.Team_Management)) {
+                homeModel.setMenuName(getString(R.string.team_management));
+                homeModel.setMenuIcon(R.drawable.ic_team_management);
+                homeModel.setDestination(TeamManagementFragment.class);
+
+            } else if (allTab.get(i).equals(Constants.My_Reports)) {
+                homeModel.setMenuName(getString(R.string.indicator));
+                homeModel.setMenuIcon(R.drawable.ic_reports);
+                homeModel.setDestination(IndicatorListFragmet.class);
+
+            } else if (allTab.get(i).equals(Constants.My_Calendar)) {
+                homeModel.setMenuName(getString(R.string.training_calendar));
+                homeModel.setMenuIcon(R.drawable.ic_calender);
+                homeModel.setDestination(TrainingCalender.class);
+
+            }
+            return homeModel;
+        }
 /*    private void setupViewPager(ViewPager viewPager) {
        List<Fragment> fragmentList =  getSupportFragmentManager().getFragments();
        if(fragmentList != null && fragmentList.size()>0){
@@ -600,7 +660,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.img_back:
+           /* case R.id.img_back:
                 if (doubleBackToExitPressedOnce) {
                     super.onBackPressed();
 
@@ -638,7 +698,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.img_lang:
                 showDialog();
-                break;
+                break;*/
         }
     }
 
@@ -697,7 +757,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void showDialog() {
 
-        final String[] items = {"English", "मराठी"};
+        final String[] items = {"English", "मराठी","हिंदी "};
         final ArrayList seletedItems = new ArrayList();
 
         int checkId = 0;
@@ -724,9 +784,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         if (lw.getCheckedItemPosition() == 0) {
                             LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_ENGLISH);
                             preferenceHelper.insertString(LANGUAGE, LANGUAGE_ENGLISH);
-                        } else {
+                        } else if(lw.getCheckedItemPosition() == 1){
                             LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_MARATHI);
                             preferenceHelper.insertString(LANGUAGE, LANGUAGE_MARATHI);
+                        }else {
+                            LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_HINDI);
+                            preferenceHelper.insertString(LANGUAGE, LANGUAGE_HINDI);
                         }
                         dialog.dismiss();
                         finish();
@@ -1038,6 +1101,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+
+
       /*  dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
 
             @Override
@@ -1047,6 +1112,42 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });*/
         dialog.show();
+    }
+
+    private void SampleDialog(){
+        final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
+
+        // Setting Dialog Title
+        alertDialog.setTitle("Open Location");
+
+        // Setting Dialog Message
+        alertDialog.setMessage("Gps is not available. ");
+
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.drawable.logomulya);
+
+        // Setting CANCEL Button
+       /* alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+                finish();
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            }
+        });*/
+        // Setting OK Button
+        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+                Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                startActivity(myIntent);
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            }
+        });
+
+
+
+        // Showing Alert Message
+        alertDialog.show();
     }
 
     private void GetMapParameters(String latitude, String longitude) {
@@ -1105,7 +1206,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                    Toast.makeText(getApplicationContext(), "something went wrong", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), R.string.error_something_went_wrong, Toast.LENGTH_LONG).show();
                 }
             });
 
@@ -1116,5 +1217,35 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+         if (id ==R.id.action_lang ) {
+             showDialog();
+         }else  if(id ==R.id.action_profile){
+             Intent intent;
+             intent = new Intent(this, RegistrationActivity.class);
+             intent.putExtra(Constants.ACTION, Constants.ACTION_EDIT);
+             startActivityForResult(intent, Constants.ISROLECHANGE);
+         }else if(id==R.id.action_logout){
+             showLogoutPopUp();
+         }else if(id == R.id.action_notification){
+             showNotificationDialog();
+         }else if(id==R.id.action_share){
+             ShareApp();
+         }else if(id==R.id.action_rate){
+             RateThisApp.showRateDialog(HomeActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
 
-}
+         }
+
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
+        }
+
+
+
+    }
+

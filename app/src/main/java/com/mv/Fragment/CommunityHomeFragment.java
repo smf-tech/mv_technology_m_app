@@ -35,6 +35,7 @@ import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
+import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.FragmentCommunityHomeBinding;
@@ -109,7 +110,11 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
-
+    /*For setting differnt languages like english, marathi*/
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
+    }
     private void getChats(boolean isDialogShow) {
         List<Content> temp = AppDatabase.getAppDatabase(context).userDao().getAllBroadcastChats();
         if (temp.size() == 0) {
