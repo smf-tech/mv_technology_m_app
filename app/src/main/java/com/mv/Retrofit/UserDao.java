@@ -28,6 +28,7 @@ public interface UserDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     long[] insertLoaction(List<LocationModel> locationModels);
 
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertTask(TaskContainerModel task);
 

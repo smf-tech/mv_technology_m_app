@@ -254,6 +254,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         Intent intent = new Intent(this, LocationService.class);
         // add infos for the service which file to download and where to store
+        intent.putExtra(Constants.State,User.getCurrentUser(getApplicationContext()).getState());
+        intent.putExtra(Constants.DISTRICT,User.getCurrentUser(getApplicationContext()).getDistrict());
         startService(intent);
     }
 

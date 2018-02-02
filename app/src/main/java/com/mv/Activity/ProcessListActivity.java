@@ -321,25 +321,25 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
                                     if (resultJsonObj.getString("Location_Level__c").equals("State")) {
                                             processList.setTask_Response__c(user.getState());
-                                        LocationSelectionActity.selectedState = user.getState();
+                                      //  LocationSelectionActity.selectedState = user.getState();
 
                                     } else if (resultJsonObj.getString("Location_Level__c").equals("District")) {
-                                        LocationSelectionActity.selectedDisrict = user.getDistrict();
+                                       // LocationSelectionActity.selectedDisrict = user.getDistrict();
 
                                         processList.setTask_Response__c(user.getDistrict());
                                     } else if (resultJsonObj.getString("Location_Level__c").equals("Taluka")) {
                                         processList.setTask_Response__c(user.getTaluka());
-                                        LocationSelectionActity.selectedTaluka = user.getTaluka();
+                                      //  LocationSelectionActity.selectedTaluka = user.getTaluka();
                                     } else if (resultJsonObj.getString("Location_Level__c").equals("Cluster")) {
-                                        LocationSelectionActity.selectedCluster = user.getCluster();
+                                      ///  LocationSelectionActity.selectedCluster = user.getCluster();
                                         processList.setTask_Response__c(user.getCluster());
                                     } else if (resultJsonObj.getString("Location_Level__c").equals("Village")) {
-                                        LocationSelectionActity.selectedVillage = user.getVillage();
+                                       // LocationSelectionActity.selectedVillage = user.getVillage();
 
                                         processList.setTask_Response__c(user.getVillage());
                                     } else if (resultJsonObj.getString("Location_Level__c").equals("School")) {
                                         processList.setTask_Response__c(user.getSchool_Name());
-                                        LocationSelectionActity.selectedSchool = user.getSchool_Name();
+                                      //  LocationSelectionActity.selectedSchool = user.getSchool_Name();
                                     }
 
                                 }

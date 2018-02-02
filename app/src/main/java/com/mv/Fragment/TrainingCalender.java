@@ -2,6 +2,7 @@ package com.mv.Fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -22,6 +23,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import com.mv.Activity.CalenderFliterActivity;
+import com.mv.Activity.TeamManagementUserProfileListActivity;
 import com.mv.Adapter.IndicatorListAdapter;
 import com.mv.Adapter.PichartDescriptiveListAdapter;
 import com.mv.Model.CalenderEvent;
@@ -29,6 +32,7 @@ import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -81,6 +85,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
         binding = DataBindingUtil.setContentView(this, R.layout.fragment_trainig_calender);
         binding.setClander(this);
         setActionbar(getString(R.string.training_calendar));
+        binding.fabAddBroadcast.setOnClickListener(this);
         preferenceHelper = new PreferenceHelper(context);
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
@@ -153,6 +158,10 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
             case R.id.img_back:
                 context.finish();
                 context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                break;
+            case R.id.fab_add_broadcast:
+                Intent openClass = new Intent(TrainingCalender.this, CalenderFliterActivity.class);
+                 startActivity(openClass);
                 break;
         }
     }

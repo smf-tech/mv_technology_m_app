@@ -3,19 +3,12 @@ package com.mv.Service;
 import android.app.IntentService;
 import android.content.Intent;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.reflect.TypeToken;
-import com.mv.Activity.LoginActivity;
-import com.mv.Activity.ProcessListActivity;
 import com.mv.Model.LocationModel;
-import com.mv.Model.Task;
-import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 
@@ -24,8 +17,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -38,63 +31,74 @@ import retrofit2.Response;
  */
 
 public class LocationService extends IntentService {
-    public static Boolean locationLoaded;
 
+    public String state;
+    public String district;
     private PreferenceHelper preferenceHelper;
-    List<LocationModel> locationModelArrayList=new ArrayList<>();
+    List<LocationModel> locationModelArrayList = new ArrayList<>();
+    List<String> locationState = new ArrayList<>();
+    List<String> locationDistrct = new ArrayList<>();
+    List<String> mDistrictList = new ArrayList();
+
     public LocationService() {
         super("LocationService");
     }
 
     @Override
     protected void onHandleIntent(Intent workIntent) {
-
+        state = workIntent.getStringExtra(Constants.State);
+        district = workIntent.getStringExtra(Constants.DISTRICT);
         // Gets data from the incoming Intent
-        locationModelArrayList= AppDatabase.getAppDatabase(getApplicationContext()).userDao().getLocationOfDistrict(User.getCurrentUser(getApplicationContext()).getDistrict());
-        
-        if(locationModelArrayList.size()==0)
-        callLoationApi();
+        locationModelArrayList = new ArrayList<>();
+        locationModelArrayList = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getLocationOfDistrict(district);
+        locationState = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getState();
+
+        if (locationModelArrayList.size()<=1)
+            getAllLocation();
+        else if(locationState.size()==1)
+            getState();
 
     }
 
-    private void callLoationApi() {
+    private void getAllLocation() {
 
-        preferenceHelper = new PreferenceHelper(getApplicationContext());
+
         ServiceRequest apiService =
-                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getAllLocation?StateName=" + User.getCurrentUser(getApplicationContext()).getState() + "&DistrictName=" + User.getCurrentUser(getApplicationContext()).getDistrict();
-
-        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+                ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getAllLocation(state, district).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
 
-                Gson gson = new Gson();
                 try {
-                    if(response.body()!=null) {
+                    if (response.body() != null) {
                         String data = response.body().string();
                         //    Type listType = new TypeToken<ArrayList<LocationModel>>() {}.getType();
-                        JSONArray arrayData = new JSONArray(data);
+                        JSONObject dataObject = new JSONObject(data);
+
+                        JSONArray arrayData = dataObject.getJSONArray("locations");
                         locationModelArrayList = new ArrayList<>();
 
                         for (int i = 0; i < arrayData.length(); i++) {
-                            LocationModel locationModel = new LocationModel();
                             JSONObject object = arrayData.getJSONObject(i);
-                            locationModel.setState(object.getString("State"));
-                            locationModel.setDistrict(object.getString("District"));
-                            locationModel.setTaluka(object.getString("Taluka"));
-                            locationModel.setCluster(object.getString("Cluster"));
-                            locationModel.setSchoolName(object.getString("SchoolName"));
-                            locationModel.setSchoolCode(object.getString("SchoolName"));
-                            locationModel.setVillage(object.getString("Village"));
-                            locationModel.setCreatedDate(object.getString("createdDate"));
-                            locationModel.setId(object.getString("Id"));
-                            locationModelArrayList.add(locationModel);
+
+                                LocationModel locationModel = new LocationModel();
+                                locationModel.setState(object.getString("state"));
+                                locationModel.setDistrict(object.getString("district"));
+                                locationModel.setTaluka(object.getString("taluka"));
+                                locationModel.setCluster(object.getString("cluster"));
+                                locationModel.setSchoolName(object.getString("school_name"));
+                                locationModel.setSchoolCode(object.getString("school_code"));
+                                locationModel.setVillage(object.getString("village"));
+                                locationModel.setId(object.getString("id"));
+                                    locationModelArrayList.add(locationModel);
 
                         }
 
+                        locationModelArrayList.removeAll(Collections.singleton(null));
                         AppDatabase.getAppDatabase(getApplicationContext()).userDao().insertLoaction(locationModelArrayList);
+
+                        if (AppDatabase.getAppDatabase(getApplicationContext()).userDao().getState().size() == 1)
+                            getState();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -111,4 +115,96 @@ public class LocationService extends IntentService {
             }
         });
     }
+
+    private void getState() {
+
+
+        ServiceRequest apiService =
+                ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getState().enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            locationModelArrayList = new ArrayList<>();
+                            JSONArray jsonArray = new JSONArray(data);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                LocationModel locationModel = new LocationModel();
+                                locationModel.setState(jsonArray.getString(i));
+                                if(locationModel!=null)
+                                locationModelArrayList.add(locationModel);
+                            }
+                            locationModelArrayList.removeAll(Collections.singleton(null));
+                            AppDatabase.getAppDatabase(getApplicationContext()).userDao().insertLoaction(locationModelArrayList);
+
+                            for (int j = 0; j < locationModelArrayList.size(); j++) {
+
+                                    getSDistrict(locationModelArrayList.get(j).getState());
+                            }
+
+
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
+    }
+
+    private void getSDistrict(final String state) {
+
+
+        ServiceRequest apiService =
+                ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getDistrict(state).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            locationModelArrayList = new ArrayList<>();
+                            JSONArray jsonArray = new JSONArray(data);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                LocationModel locationModel = new LocationModel();
+                                locationModel.setState(state);
+                                locationModel.setDistrict(jsonArray.getString(i));
+                                if(locationModel!=null)
+                                locationModelArrayList.add(locationModel);
+                            }
+                            locationModelArrayList.removeAll(Collections.singleton(null));
+                            AppDatabase.getAppDatabase(getApplicationContext()).userDao().insertLoaction(locationModelArrayList);
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
+    }
+
+
 }

@@ -262,7 +262,8 @@
             android:name=".Fragment.TrainingFragment"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".Activity.CalenderEventReportingActivity"></activity>
+        <activity android:name=".Activity.CalenderEventReportingActivity" />
+        <activity android:name=".Activity.CalenderFliterActivity"></activity>
     </application>
 
 </manifest>

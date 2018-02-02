@@ -68,15 +68,9 @@ public class ApiClient {
             interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             OkHttpClient client = null;
 
-            try {
-                client = new OkHttpClient.Builder().sslSocketFactory(new TLSSocketFactory()).addInterceptor(interceptor).build();
-            } catch (KeyManagementException e) {
-                e.printStackTrace();
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            } catch (KeyStoreException e) {
-                e.printStackTrace();
-            }
+
+                client = new OkHttpClient.Builder().addInterceptor(interceptor).build();
+
             retrofit = new Retrofit.Builder()
                     .baseUrl(BuildConfig.BASEURL)
                     .client(client)
