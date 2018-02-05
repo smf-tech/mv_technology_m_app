@@ -29,6 +29,9 @@
     <string name="ok">OK</string>
     <string name="Setting">Setting</string>
     <string name="cancel">Cancel</string>
+    <string name="no_gps">GPS is not available.</string>
+    <string name="gps_settings">GPS Settings</string>
+
     <!--Home Acitivty-->
     <string name="intro_about_header">About</string>
     <string name="intro_about_description">Mulyavardhan (MV) is a value education programme to help children imbibe democratic values, attitudes and skills in an enabling school climate. The programme is running in select government primary schools across 34 districts of Maharashtra (MV-GoM), government primary schools in two tehsils of Beed district of Maharashtra (MV-Beed), select government primary schools in the state of Goa (MV-GoG), and schools run in Goa by Vidya Bharti, a private school body (MV-VB).  Visit www.mulyavardhan.com for more info</string>
@@ -203,14 +206,9 @@
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
-    <string name="aboutus_info">Mulyavardhan (MV) is a value education programme to help children imbibe democratic values, attitudes and skills in an enabling school climate.\n\n
-        Mulyavardhan was initiated in 2009 and has evolved through an intensive, evidence-based approach to learning and improvement through pilot-project implementation, impact assessment studies and consultations with national and international experts.\n\n
-        The programme has been reviewed and accepted by the Government of Maharashtra and Government of Goa.  Mulyavardhan pilot projects have been launched by these states in a large number of selected schools, as a first step to implementation of the programme in all schools of the states.\n\n
-        The programme is currently being implemented in around 1000 schools in Maharashtra and Goa through four projects: ( MV-GoM, MV-Beed, MV-GoG, MV-VB).\n\n
-        https://www.youtube.com/watch?v=azVGgQTGQ68
+    <string name="aboutus_info">Mulyavardhan (MV) is a value education programme to help children imbibe democratic values, attitudes and skills in an enabling school climate.\n\nMulyavardhan was initiated in 2009 and has evolved through an intensive, evidence-based approach to learning and improvement through pilot-project implementation, impact assessment studies and consultations with national and international experts.\n\nThe programme has been reviewed and accepted by the Government of Maharashtra and Government of Goa.  Mulyavardhan pilot projects have been launched by these states in a large number of selected schools, as a first step to implementation of the programme in all schools of the states.\n\nThe programme is currently being implemented in around 1000 schools in Maharashtra and Goa through four projects: ( MV-GoM, MV-Beed, MV-GoG, MV-VB).\n\nhttps://www.youtube.com/watch?v=azVGgQTGQ68
     \n\n<b>Aim</b>\n\nEnabling schools to provide child-friendly and value-based education to nurture caring, responsible, productive democratic citizens.\n\n<b>Rationale</b>\n\nWhile several educational policy documents, framed in India since Independence, have emphasized the need for value education in schools, there is no model of large-scale implementation of value education across states, school bodies and contexts.
-   \n\nMulyavardhan fills this critical gap with a contemporary approach aligned to national and international policies.\n\n
-    <b>Approach</b>\n\nMulyavardhan adopts a whole-school approach, whereby the entire school ethos and all school processes are guided by core democratic values. Under this approach, values are not “taught”, but absorbed by students from the school ethos, processes and practices.\n\n</string>
+   \n\nMulyavardhan fills this critical gap with a contemporary approach aligned to national and international policies.\n\n<b>Approach</b>\n\nMulyavardhan adopts a whole-school approach, whereby the entire school ethos and all school processes are guided by core democratic values. Under this approach, values are not “taught”, but absorbed by students from the school ethos, processes and practices.\n\n</string>
 
 
 </resources>

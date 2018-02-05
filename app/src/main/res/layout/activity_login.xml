@@ -48,8 +48,8 @@
             <RelativeLayout
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
-
-                android:layout_margin="@dimen/dimen_10dp"
+                android:layout_margin="5dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
                 android:layout_weight="0.4">
 
                 <android.support.v4.view.ViewPager
@@ -69,19 +69,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="0.6"
-                android:gravity="center"
                 android:animateLayoutChanges="true"
-               android:layout_marginRight="30dp"
-                android:layout_marginLeft="30dp"
+                android:gravity="center"
                 android:orientation="vertical">
 
                 <TextSwitcher
                     android:id="@+id/tv_user"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="20dp"
                     android:gravity="center"
-
                     android:text="@string/msg_enter_mobile"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/medium_text" />
@@ -90,7 +88,6 @@
                     android:id="@+id/ll_login_mobile_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dimen_10dp"
                     android:orientation="vertical">
 
 
@@ -98,10 +95,10 @@
                         android:id="@+id/edt_username"
                         android:layout_width="fill_parent"
                         android:layout_height="40dp"
-
+                        android:layout_margin="@dimen/dimen_10dp"
                         android:background="@drawable/transparent_grey_box_radius"
                         android:digits="0123456789"
-                        android:drawableLeft="@drawable/ic_call"
+                        android:drawableLeft="@drawable/person"
                         android:drawablePadding="10dp"
                         android:gravity="center_vertical"
                         android:hint="@string/mobile_no"
@@ -119,20 +116,18 @@
                         android:id="@+id/edt_otp"
                         android:layout_width="fill_parent"
                         android:layout_height="40dp"
+                        android:layout_margin="@dimen/dimen_10dp"
                         android:background="@drawable/transparent_grey_box_radius"
                         android:digits="0123456789"
-
-                        android:drawableLeft="@android:drawable/ic_lock_lock"
+                        android:drawableLeft="@drawable/person"
                         android:drawablePadding="10dp"
                         android:gravity="center_vertical"
-                        android:paddingLeft="10dp"
-                        android:paddingRight="10dp"
-
-                        android:hint="_ _ _ _ _ _"
+                        android:hint="______"
                         android:inputType="phone"
                         android:letterSpacing="0.4"
                         android:maxLength="6"
-
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
                         android:singleLine="true"
 
 
