@@ -16,25 +16,21 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -62,15 +58,14 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kobakei.ratethisapp.RateThisApp;
 import com.mv.Adapter.HomeAdapter;
-import com.mv.Adapter.IndicatortaskAdapter;
-import com.mv.Fragment.CommunityHomeFragment;
-import com.mv.Fragment.GroupsFragment;
-import com.mv.Fragment.IndicatorListFragmet;
-import com.mv.Fragment.ProgrammeManagmentFragment;
-import com.mv.Fragment.TeamManagementFragment;
-import com.mv.Fragment.ThetSavandFragment;
-import com.mv.Fragment.TrainingCalender;
-import com.mv.Fragment.TrainingFragment;
+import com.mv.MenuActivity.CommunityHomeFragment;
+import com.mv.MenuActivity.GroupsFragment;
+import com.mv.MenuActivity.IndicatorListFragmet;
+import com.mv.MenuActivity.ProgrammeManagmentFragment;
+import com.mv.MenuActivity.TeamManagementFragment;
+import com.mv.MenuActivity.ThetSavandFragment;
+import com.mv.MenuActivity.TrainingCalender;
+import com.mv.MenuActivity.TrainingFragment;
 import com.mv.Model.HomeModel;
 import com.mv.Model.User;
 import com.mv.R;
@@ -90,8 +85,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -126,7 +119,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     ArrayList<HomeModel> menulist;
     ActionBar actionBar;
     RecyclerView recyclerView;
-    ImageView iv_home_animate,iv_logo;
+    ArrayList<String> menuListName;
+    ImageView iv_home_animate, iv_logo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,7 +156,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
                 if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                   // LocationPopup();
+                    // LocationPopup();
                     SampleDialog();
                     LocatonFlag = 0;
 
@@ -205,15 +199,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
-
+        initViews();
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             if (Utills.isConnected(this))
                 getUserData();
+        }
 
-            else
-                initViews();
-        } else
-            initViews();
 
     }
 
@@ -278,6 +269,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         Intent intent = new Intent(this, LocationService.class);
         // add infos for the service which file to download and where to store
+        intent.putExtra(Constants.State, User.getCurrentUser(getApplicationContext()).getState());
+        intent.putExtra(Constants.DISTRICT, User.getCurrentUser(getApplicationContext()).getDistrict());
         startService(intent);
     }
 
@@ -287,77 +280,59 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         iv_logo = (ImageView) findViewById(R.id.iv_logo);
         iv_home_animate = (ImageView) findViewById(R.id.iv_home_animate);
         List<String> allTab = new ArrayList<>();
+        menulist = new ArrayList<>();
+
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
             allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameNoteApproved().split(";")));
-            menulist = new ArrayList<>();
             showApprovedDilaog();
         } else {
-            menulist = new ArrayList<>();
             allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameApproved().split(";")));
 
         }
+        menuListName = new ArrayList<>();
+        menuListName.add(Constants.Thet_Sanvad);
+        menuListName.add(Constants.Broadcast);
+        menuListName.add(Constants.My_Community);
+        menuListName.add(Constants.Programme_Management);
+        menuListName.add(Constants.Training_Content);
+        menuListName.add(Constants.Team_Management);
+        menuListName.add(Constants.My_Reports);
+        menuListName.add(Constants.My_Calendar);
 
+
+        //for loop for adding accessible tab
         for (int i = 0; i < allTab.size(); i++) {
-            HomeModel homeModel = new HomeModel();
-            if (allTab.get(i).equals(Constants.Thet_Sanvad)) {
-                homeModel.setMenuName(getString(R.string.thet_savnd));
-                homeModel.setMenuIcon(R.drawable.ic_thet_sanvad);
-                homeModel.setDestination(ThetSavandFragment.class);
 
-            } else if (allTab.get(i).equals(Constants.Broadcast)) {
-                    homeModel.setMenuName(getString(R.string.broadcast));
-                homeModel.setMenuIcon(R.drawable.ic_broadcast);
-                homeModel.setDestination(CommunityHomeFragment.class);
-
-            } else if (allTab.get(i).equals(Constants.My_Community)) {
-                homeModel.setMenuName(getString(R.string.community));
-                homeModel.setMenuIcon(R.drawable.ic_community);
-                homeModel.setDestination(GroupsFragment.class);
-
-
-            } else if (allTab.get(i).equals(Constants.Programme_Management)) {
-                homeModel.setMenuName(getString(R.string.programme_management));
-                homeModel.setMenuIcon(R.drawable.ic_program_mangement);
-                homeModel.setDestination(ProgrammeManagmentFragment.class);
-
-            } else if (allTab.get(i).equals(Constants.Training_Content)) {
-                homeModel.setMenuName(getString(R.string.training_content));
-                homeModel.setMenuIcon(R.drawable.ic_traing_content);
-                homeModel.setDestination(TrainingFragment.class);
-
-            } else if (allTab.get(i).equals(Constants.Team_Management)) {
-                homeModel.setMenuName(getString(R.string.team_management));
-                homeModel.setMenuIcon(R.drawable.ic_team_management);
-                homeModel.setDestination(TeamManagementFragment.class);
-
-            } else if (allTab.get(i).equals(Constants.My_Reports)) {
-                homeModel.setMenuName(getString(R.string.indicator));
-                homeModel.setMenuIcon(R.drawable.ic_reports);
-                homeModel.setDestination(IndicatorListFragmet.class);
-
-            } else if (allTab.get(i).equals(Constants.My_Calendar)) {
-                homeModel.setMenuName(getString(R.string.training_calendar));
-                homeModel.setMenuIcon(R.drawable.ic_calender);
-                homeModel.setDestination(TrainingCalender.class);
-
+            menulist.add(checkList(allTab, i, true));
+        }
+//for loop for adding non accessible tab
+        for (int i = 0; i < menuListName.size(); i++) {
+            if (!allTab.contains(menuListName.get(i))) {
+                menulist.add(checkList(menuListName, i, false));
             }
-            menulist.add(homeModel);
         }
 
+
+        HomeModel homeModel = new HomeModel();
+        homeModel.setMenuName(getString(R.string.about_us));
+        homeModel.setMenuIcon(R.drawable.ic_calender);
+        homeModel.setDestination(AboutUsActivity.class);
+        homeModel.setAccessible(true);
+        menulist.add(homeModel);
         mAdapter = new HomeAdapter(menulist, HomeActivity.this);
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setAddDuration(1000);
         itemAnimator.setRemoveDuration(1000);
-       recyclerView.setItemAnimator(itemAnimator);
-        GridLayoutManager  mLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
+        recyclerView.setItemAnimator(itemAnimator);
+        GridLayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
         Animation textAnimation = (AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink));
         iv_logo.startAnimation(textAnimation);
 
 
         iv_home_animate.setBackgroundResource(R.drawable.home_progress);
 
-        AnimationDrawable rocketAnimation = (AnimationDrawable)    iv_home_animate.getBackground();
-        rocketAnimation = (AnimationDrawable)iv_home_animate.getBackground();
+        AnimationDrawable rocketAnimation = (AnimationDrawable) iv_home_animate.getBackground();
+        rocketAnimation = (AnimationDrawable) iv_home_animate.getBackground();
         rocketAnimation.start();
 
         mLayoutManager.setAutoMeasureEnabled(true);
@@ -366,9 +341,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         layoutManager.setFlexDirection(FlexDirection.ROW);
         layoutManager.setAlignItems(AlignItems.STRETCH);
         layoutManager.setJustifyContent(JustifyContent.CENTER);
-      recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setLayoutManager(mLayoutManager);
         //binding.recyclerView.setLayoutManager(mLayoutManager);
-       recyclerView.setAdapter(mAdapter);
+        recyclerView.setAdapter(mAdapter);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
@@ -430,66 +405,54 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-/*    private void setupViewPager(ViewPager viewPager) {
-       List<Fragment> fragmentList =  getSupportFragmentManager().getFragments();
-       if(fragmentList != null && fragmentList.size()>0){
-           getSupportFragmentManager().getFragments().clear();
-       }
-        adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        List<String> allTab = new ArrayList<>();
-        adapter.clearFrag();
+    public HomeModel checkList(List<String> allTab, int i, Boolean isAccessible) {
+        HomeModel homeModel = new HomeModel();
+        homeModel.setAccessible(isAccessible);
+        if (allTab.get(i).equals(Constants.Thet_Sanvad)) {
+            homeModel.setMenuName(getString(R.string.thet_savnd));
+            homeModel.setMenuIcon(R.drawable.ic_thet_sanvad);
+            homeModel.setDestination(ThetSavandFragment.class);
 
-        if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
-            allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameNoteApproved().split(";")));
-            for(int i=0;i<allTab.size();i++) {
-                if (allTab.get(i).equals(Constants.Thet_Sanvad))
-                    adapter.addFrag(new ThetSavandFragment(), getString(R.string.thet_savnd));
-                else if (allTab.get(i).equals(Constants.Broadcast))
-                    adapter.addFrag(new CommunityHomeFragment(), getString(R.string.broadcast));
-                else if (allTab.get(i).equals(Constants.My_Community))
-                    adapter.addFrag(new GroupsFragment(), getString(R.string.community));
-                else if (allTab.get(i).equals(Constants.Programme_Management))
-                    adapter.addFrag(new ProgrammeManagmentFragment(), getString(R.string.programme_management));
-                else if (allTab.get(i).equals(Constants.Training_Content))
-                    adapter.addFrag(new TrainingFragment(), getString(R.string.training_content));
-                else if (allTab.get(i).equals(Constants.Team_Management))
-                    adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
-                else if (allTab.get(i).equals(Constants.My_Reports))
-                    adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
-                else if (allTab.get(i).equals(Constants.My_Calendar))
-                    adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
-            }
 
-            viewPager.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
-            showApprovedDilaog();
-        } else {
+        } else if (allTab.get(i).equals(Constants.Broadcast)) {
+            homeModel.setMenuName(getString(R.string.broadcast));
+            homeModel.setMenuIcon(R.drawable.ic_broadcast);
+            homeModel.setDestination(CommunityHomeFragment.class);
 
-            allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameApproved().split(";")));
-            for(int i=0;i<allTab.size();i++) {
-                if (allTab.get(i).equals(Constants.Thet_Sanvad))
-                    adapter.addFrag(new ThetSavandFragment(), getString(R.string.thet_savnd));
-                else if (allTab.get(i).equals(Constants.Broadcast))
-                    adapter.addFrag(new CommunityHomeFragment(), getString(R.string.broadcast));
-                else if (allTab.get(i).equals(Constants.My_Community))
-                    adapter.addFrag(new GroupsFragment(), getString(R.string.community));
-                else if (allTab.get(i).equals(Constants.Programme_Management))
-                    adapter.addFrag(new ProgrammeManagmentFragment(), getString(R.string.programme_management));
-                else if (allTab.get(i).equals(Constants.Training_Content))
-                    adapter.addFrag(new TrainingFragment(), getString(R.string.training_content));
-                else if (allTab.get(i).equals(Constants.Team_Management))
-                    adapter.addFrag(new TeamManagementFragment(), getString(R.string.team_management));
-                else if (allTab.get(i).equals(Constants.My_Reports))
-                    adapter.addFrag(new IndicatorListFragmet(), getString(R.string.indicator));
-                else if (allTab.get(i).equals(Constants.My_Calendar))
-                    adapter.addFrag(new TrainingCalender(), getString(R.string.training_calendar));
-            }
-            viewPager.setAdapter(adapter);
-            adapter.notifyDataSetChanged();
+        } else if (allTab.get(i).equals(Constants.My_Community)) {
+            homeModel.setMenuName(getString(R.string.community));
+            homeModel.setMenuIcon(R.drawable.ic_community);
+            homeModel.setDestination(GroupsFragment.class);
+
+
+        } else if (allTab.get(i).equals(Constants.Programme_Management)) {
+            homeModel.setMenuName(getString(R.string.programme_management));
+            homeModel.setMenuIcon(R.drawable.ic_program_mangement);
+            homeModel.setDestination(ProgrammeManagmentFragment.class);
+
+        } else if (allTab.get(i).equals(Constants.Training_Content)) {
+            homeModel.setMenuName(getString(R.string.training_content));
+            homeModel.setMenuIcon(R.drawable.ic_traing_content);
+            homeModel.setDestination(TrainingFragment.class);
+
+        } else if (allTab.get(i).equals(Constants.Team_Management)) {
+            homeModel.setMenuName(getString(R.string.team_management));
+            homeModel.setMenuIcon(R.drawable.ic_team_management);
+            homeModel.setDestination(TeamManagementFragment.class);
+
+        } else if (allTab.get(i).equals(Constants.My_Reports)) {
+            homeModel.setMenuName(getString(R.string.indicator));
+            homeModel.setMenuIcon(R.drawable.ic_reports);
+            homeModel.setDestination(IndicatorListFragmet.class);
+
+        } else if (allTab.get(i).equals(Constants.My_Calendar)) {
+            homeModel.setMenuName(getString(R.string.training_calendar));
+            homeModel.setMenuIcon(R.drawable.ic_calender);
+            homeModel.setDestination(TrainingCalender.class);
+
         }
-
-
-    }*/
+        return homeModel;
+    }
 
     @Override
     public void onUpdateNeeded(final String updateUrl) {
@@ -543,7 +506,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
 
 
-
         @Override
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
@@ -588,8 +550,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 ShareApp();
                 return true;
             case R.id.action_rate:
-
                 RateThisApp.showRateDialog(HomeActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
+                return true;
+            case R.id.action_add_school:
+                Intent openClass = new Intent(HomeActivity.this, AddSchoolActivity.class);
+                startActivity(openClass);
+                //  startActivity(openClass);
+
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -724,7 +691,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void showDialog() {
 
-        final String[] items = {"English", "मराठी","हिंदी "};
+        final String[] items = {"English", "मराठी", "हिंदी "};
         final ArrayList seletedItems = new ArrayList();
 
         int checkId = 0;
@@ -751,10 +718,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         if (lw.getCheckedItemPosition() == 0) {
                             LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_ENGLISH);
                             preferenceHelper.insertString(LANGUAGE, LANGUAGE_ENGLISH);
-                        } else if(lw.getCheckedItemPosition() == 1){
+                        } else if (lw.getCheckedItemPosition() == 1) {
                             LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_MARATHI);
                             preferenceHelper.insertString(LANGUAGE, LANGUAGE_MARATHI);
-                        }else {
+                        } else {
                             LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_HINDI);
                             preferenceHelper.insertString(LANGUAGE, LANGUAGE_HINDI);
                         }
@@ -818,6 +785,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     AppDatabase.getAppDatabase(HomeActivity.this).userDao().clearTableCotent();
                     AppDatabase.getAppDatabase(HomeActivity.this).userDao().clearProcessTable();
                     AppDatabase.getAppDatabase(HomeActivity.this).userDao().clearTaskContainer();
+                    AppDatabase.getAppDatabase(HomeActivity.this).userDao().clearLocation();
                     User.clearUser();
                     Intent startMain = new Intent(HomeActivity.this, LoginActivity.class);
                     startMain.addCategory(Intent.CATEGORY_HOME);
@@ -970,28 +938,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-             /*   try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    mListState.clear();
-                    mListState.add("Select");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        mListState.add(jsonArray.getString(i));
-                    }
-                    state_adapter.notifyDataSetChanged();
-                    if (!isAdd && !isStateSet) {
-                        isStateSet = true;
-                        for (int i = 0; i < mListState.size(); i++) {
-                            if (mListState.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getApprovedUserData())) {
-                                binding.spinnerState.setSelection(i);
-                                break;
-                            }
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }*/
+
             }
 
             @Override
@@ -1081,7 +1028,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         dialog.show();
     }
 
-    private void SampleDialog(){
+    private void SampleDialog() {
         final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
 
         // Setting Dialog Title
@@ -1110,7 +1057,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
         });
-
 
 
         // Showing Alert Message
@@ -1184,35 +1130,39 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-         if (id ==R.id.action_lang ) {
-             showDialog();
-         }else  if(id ==R.id.action_profile){
-             Intent intent;
-             intent = new Intent(this, RegistrationActivity.class);
-             intent.putExtra(Constants.ACTION, Constants.ACTION_EDIT);
-             startActivityForResult(intent, Constants.ISROLECHANGE);
-         }else if(id==R.id.action_logout){
-             showLogoutPopUp();
-         }else if(id == R.id.action_notification){
-             showNotificationDialog();
-         }else if(id==R.id.action_share){
-             ShareApp();
-         }else if(id==R.id.action_rate){
-             RateThisApp.showRateDialog(HomeActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
+        if (id == R.id.action_lang) {
+            showDialog();
+        } else if (id == R.id.action_profile) {
+            Intent intent;
+            intent = new Intent(this, RegistrationActivity.class);
+            intent.putExtra(Constants.ACTION, Constants.ACTION_EDIT);
+            startActivityForResult(intent, Constants.ISROLECHANGE);
+        } else if (id == R.id.action_logout) {
+            showLogoutPopUp();
+        } else if (id == R.id.action_notification) {
+            showNotificationDialog();
+        } else if (id == R.id.action_share) {
+            ShareApp();
+        } else if (id == R.id.action_rate) {
+            RateThisApp.showRateDialog(HomeActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
 
-         }
-
-            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-            drawer.closeDrawer(GravityCompat.START);
-            return true;
         }
+        else if (id == R.id.action_add_school) {
+            Intent openClass = new Intent(HomeActivity.this, AddSchoolActivity.class);
+            startActivity(openClass);
 
-
-
+        }
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
+
+
+}
 

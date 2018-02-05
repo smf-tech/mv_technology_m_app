@@ -67,17 +67,11 @@ public class IndicatorListAdapter extends RecyclerView.Adapter<IndicatorListAdap
                 @Override
                 public void onClick(View v) {
 
-                    if (getAdapterPosition() != 0) {
                         Intent intent = new Intent(mContext, IndicatorTask.class);
                         intent.putExtra(Constants.PROCESS_ID, processAllList.get(getAdapterPosition()));
                         mContext.startActivity(intent);
-                    }
-                    else
-                    {
-                        Intent intent = new Intent(mContext, IndicatorTrainingFeedBackTaskList.class);
-                        intent.putExtra(Constants.TITLE, processAllList.get(getAdapterPosition()).getName());
-                        mContext.startActivity(intent);
-                    }
+
+
                 }
             });
             txtName = (TextView) itemLayoutView.findViewById(R.id.txtName);

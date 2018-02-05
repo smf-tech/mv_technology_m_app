@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.mv.Activity.HomeActivity;
 import com.mv.Activity.IndicatorTrainingFeedBackTaskList;
 
 import com.mv.Activity.PiachartActivity;
@@ -22,6 +21,7 @@ import com.mv.Activity.ProcessApprovalActivity;
 import com.mv.Activity.ProcessListActivity;
 import com.mv.Activity.TeamManagementUserProfileListActivity;
 import com.mv.Activity.TemplatesActivity;
+import com.mv.MenuActivity.ProgrammeManagmentFragment;
 import com.mv.Model.Template;
 import com.mv.R;
 
@@ -52,7 +52,7 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.MyView
                     if (mContext instanceof TemplatesActivity)
                         ((TemplatesActivity) mContext).onLayoutTemplateClick(getAdapterPosition());
 
-                    else if (mContext instanceof HomeActivity) {
+                    else if (mContext instanceof ProgrammeManagmentFragment) {
 
 
                         preferenceHelper.insertBoolean(Constants.IS_EDITABLE, teplateList.get(getAdapterPosition()).getIs_Editable__c());
@@ -80,7 +80,6 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.MyView
                         openClass.putExtra(Constants.APPROVAL_TYPE, Constants.PROCESS_APPROVAL);
                         openClass.putExtra(Constants.TITLE, teplateList.get(getAdapterPosition()).getName());
                         openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
-
                         mContext.startActivity(openClass);
                         mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
                     }

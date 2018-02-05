@@ -56,6 +56,14 @@ public interface ServiceRequest {
     @POST("user/app_get_taluka")
     Call<ResponseBody> getTaluka(@Field("state") String mState, @Field("district") String mDistrict);
 
+
+    @FormUrlEncoded
+    @POST("get_all_location")
+    Call<ResponseBody> getAllLocation(@Field("state") String mState, @Field("district") String mDistrict);
+
+    @FormUrlEncoded
+    @POST("save_new_location")
+    Call<ResponseBody> submitLocation(@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster, @Field("village") String mVillage,@Field("school_name") String mSchool);
     @FormUrlEncoded
     @POST("user/app_get_cluster")
     Call<ResponseBody> getCluster(@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka);

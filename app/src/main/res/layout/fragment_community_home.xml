@@ -5,7 +5,7 @@
 
         <variable
             name="fragment"
-            type="com.mv.Fragment.CommunityHomeFragment" />
+            type="com.mv.MenuActivity.CommunityHomeFragment" />
     </data>
 
     <RelativeLayout

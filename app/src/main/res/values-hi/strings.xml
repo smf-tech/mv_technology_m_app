@@ -86,6 +86,7 @@
     <string name="community">माय\nसमुदाय</string>
     <string name="programme_management">कार्यक्रम\nप्रबंधक</string>
     <string name="training_content">प्रशिक्षण\nसामग्री</string>
+    <string name="about_us">मुल्यवर्धन के बारे में</string>
     <string name="indicator">माय\nसूचक</string>
     <string name="training_calendar">प्रशिक्षण\nकॅलेंडर</string>
     <string name="notification">अधिसूचना</string>
@@ -159,6 +160,7 @@
     <string name="lang">भाषा बदलें</string>
     <string name="profile">अपडेट प्रोफाइल</string>
     <string name="logout">लॉग आउट</string>
+    <string name="add_location">स्थान जोड़िए</string>
 
     <string name="all_posts">सभी  \nपोस्ट</string>
     <string name="my_posts">मेरी \nपोस्ट</string>

@@ -21,7 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mv.Activity.ActivityWebView;
-import com.mv.Fragment.TrainingFragment;
+import com.mv.MenuActivity.TrainingFragment;
 import com.mv.Model.DownloadContent;
 import com.mv.R;
 import com.mv.Utils.Constants;

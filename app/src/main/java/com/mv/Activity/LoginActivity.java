@@ -70,6 +70,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static int currentPage = 0;
     private static final Integer[] XMEN = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e};
     private ArrayList<Integer> XMENArray = new ArrayList<Integer>();
+       /* private static final String[] XMENArray = {"slider1","slider2","slider3","slider4"};
+    private ArrayList<String> XMENArray = new ArrayList<>();*/
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
     public static final String LANGUAGE_HINDI = "hi";

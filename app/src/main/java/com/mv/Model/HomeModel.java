@@ -35,5 +35,15 @@ public class HomeModel {
 
     private Class<?> destination;
 
+    public Boolean getAccessible() {
+        return isAccessible;
+    }
+
+    public void setAccessible(Boolean accessible) {
+        isAccessible = accessible;
+    }
+
+    Boolean isAccessible;
+
 }
 

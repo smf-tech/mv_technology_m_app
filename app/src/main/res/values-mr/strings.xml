@@ -98,6 +98,7 @@
     <string name="indicator">माय \n रिपोर्ट</string>
     <string name="training_calendar">माय \n कॅलेंडर</string>
     <string name="team_management">संघ \n व्यवस्थापन</string>
+    <string name="about_us">मुल्यवर्धन बद्दल</string>
     <string name="notification">सूचना</string>
     <string name="rate">रेट करा</string>
     <string name="share">शेयर अॅप</string>
@@ -186,7 +187,7 @@
     <string name="logout">बाहेर पडणे</string>
     <string name="select_form">फॉर्म निवडा</string>
     <string name="catagory">Categories</string>
-
+    <string name="add_location">स्थान जोडा</string>
     <string name="all_posts">सर्व पोस्ट</string>
     <string name="my_posts">माझ्या पोस्ट</string>
     <string name="my_location">माय लोकेशन </string>

@@ -73,7 +73,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private Spinner spinner_project, spinner_organization, spinner_role, spinner_state, spinner_district, spinner_taluka, spinner_cluster, spinner_village, spinner_school_name;
     private int mSelectProject = 0, mSelectOrganization = 0, mSelectRole = 0, mSelectState = 0, mSelectDistrict = 0, mSelectTaluka = 0, mSelectCluster = 0, mSelectVillage = 0, mSelectSchoolName = 0;
     private ArrayList<String> mListProjectId, mListProject, mListOrganization, mListState, mListDistrict, mListTaluka, mListCluster, mListVillage, mListSchoolName;
-    private List<String> mListRoleName, mListCode, mListRoleId, mListRoleJuridiction;
+        private List<String> mListRoleName, mListCode, mListRoleId, mListRoleJuridiction;
     private TextView txt_district, txt_taluka, txt_cluster, txt_village, txt_school;
     private TextInputLayout input_school_code;
     private ArrayAdapter<String> state_adapter, district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, role_adapter, organization_adapter, project_adapter;

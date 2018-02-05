@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:my_font="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.mv.Activity.CalenderFliterActivity" />
+    </data>
+
+    <LinearLayout
+
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:padding="@dimen/dimen_10dp"
+        android:weightSum="10"
+        android:focusableInTouchMode="true"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar"
+            android:visibility="gone"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9"
+
+
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/rl_more_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="Loacation"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/medium_text" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_keyboard_arrow_down_black_24dp" />
+                </RelativeLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/ll_loacationlayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:animateLayoutChanges="true"
+                    android:visibility="gone">
+
+                <com.mv.Widgets.MyTextView
+                    android:id="@+id/tv_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="State"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/medium_text" />
+
+                <Spinner
+                    android:id="@+id/spinner_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/grey_box"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:prompt="@string/state"
+                    android:spinnerMode="dialog" />
+
+
+                <com.mv.Widgets.MyTextView
+                    android:id="@+id/tv_district"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/district"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/medium_text" />
+
+                <Spinner
+                    android:id="@+id/spinner_district"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/grey_box"
+
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:prompt="@string/district"
+                    android:spinnerMode="dialog" />
+
+                <com.mv.Widgets.MyTextView
+                    android:id="@+id/tv_taluka"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/taluka"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/medium_text" />
+
+                <Spinner
+                    android:id="@+id/spinner_taluka"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/grey_box"
+
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:prompt="@string/taluka"
+                    android:spinnerMode="dialog" />
+
+                <com.mv.Widgets.MyTextView
+                    android:id="@+id/tv_cluster"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/cluster"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/medium_text" />
+
+                <Spinner
+                    android:id="@+id/spinner_cluster"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/grey_box"
+
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:prompt="@string/cluster"
+                    android:spinnerMode="dialog" />
+
+                <com.mv.Widgets.MyTextView
+                    android:id="@+id/tv_village"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/village"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/medium_text" />
+
+                <Spinner
+                    android:id="@+id/spinner_village"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/grey_box"
+
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:prompt="@string/village"
+                    android:spinnerMode="dialog" />
+
+                <com.mv.Widgets.MyTextView
+                    android:id="@+id/tv_school"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/school_name"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/medium_text" />
+
+                <Spinner
+                    android:id="@+id/spinner_school_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/grey_box"
+
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:prompt="@string/school_name"
+                    android:spinnerMode="dialog" />
+                </LinearLayout>
+                <com.mv.Widgets.MyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/organization"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/small_text" />
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/grey_box"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:paddingBottom="10dp"
+                    >
+
+                    <Spinner
+                        android:id="@+id/spinner_organization"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="3dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:prompt="@string/organization"
+                        android:spinnerMode="dialog" />
+                </RelativeLayout>
+
+
+
+
+                <com.mv.Widgets.MyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/role"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/small_text" />
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/grey_box"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:paddingBottom="10dp">
+
+                    <TextView
+                        android:id="@+id/spinner_role"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:layout_marginTop="3dp"
+                        android:padding="10dp"
+
+                        />
+                </RelativeLayout>
+
+
+                <android.support.design.widget.TextInputLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_view1"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
+
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                    <com.mv.Widgets.MyEditTextView
+                        android:id="@+id/et_event_title"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:inputType="textPersonName"
+                        android:hint="Enter Title"
+                        android:textColor="@color/black"
+
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_view1"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
+
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                    <com.mv.Widgets.MyEditTextView
+                        android:id="@+id/et_event_date"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:inputType="textPersonName"
+                        android:hint="Enter Date"
+                        android:textColor="@color/black"
+
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_view1"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
+
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                    <com.mv.Widgets.MyEditTextView
+                        android:id="@+id/et_event_discription"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="left"
+                        android:hint="Enter Description"
+                        android:textColor="@color/black"
+                        android:lines="4"
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
+                <com.mv.Widgets.MyTextView
+                    android:id="@+id/tv_event_add_user"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="left"
+                    android:drawableLeft="@android:drawable/ic_menu_add"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="Add People"
+                    android:paddingBottom="@dimen/dimen_10dp"
+                    android:textColor="@color/black"
+
+                    android:textSize="@dimen/medium_text" />
+            </LinearLayout>
+        </ScrollView>
+
+        <com.mv.Widgets.MyFontButton
+            android:id="@+id/btn_submit"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_margin="10dp"
+            android:background="@color/colorPink"
+            android:text="@string/Submit"
+            android:layout_weight="1"
+            android:textColor="#ffffff"
+            android:textSize="17sp" />
+    </LinearLayout>
+</layout>

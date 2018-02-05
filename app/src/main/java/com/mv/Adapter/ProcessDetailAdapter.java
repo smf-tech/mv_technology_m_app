@@ -337,9 +337,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llDate.setVisibility(View.VISIBLE);
                 // holder.questionResponse.setHint(task.getTask_Text__c());
                 if (task.getIs_Response_Mnadetory__c())
-                    holder.dateHeader.setHint("*" + task.getTask_Text__c());
+                    holder.dateHeader.setText("*" + task.getTask_Text__c());
                 else
-                    holder.dateHeader.setHint(task.getTask_Text__c());
+                    holder.dateHeader.setText(task.getTask_Text__c());
                 holder.date.setText(task.getTask_Response__c());
                 holder.date.setTag(position);
                 holder.date.setFocusable(false);
@@ -370,9 +370,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llCheck.setVisibility(View.GONE);
                 // holder.questionResponse.setHint(task.getTask_Text__c());
                 if (task.getIs_Response_Mnadetory__c())
-                    holder.dateHeader.setHint("*" + task.getTask_Text__c());
+                    holder.dateHeader.setText("*" + task.getTask_Text__c());
                 else
-                    holder.dateHeader.setHint(task.getTask_Text__c());
+                    holder.dateHeader.setText(task.getTask_Text__c());
                 holder.date.setText(task.getTask_Response__c());
                 holder.date.setTag(position);
                 holder.date.setFocusable(false);
@@ -431,9 +431,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llDate.setVisibility(View.VISIBLE);
                 // holder.questionResponse.setHint(task.getTask_Text__c());
                 if (task.getIs_Response_Mnadetory__c())
-                    holder.dateHeader.setHint("*" + task.getTask_Text__c());
+                    holder.dateHeader.setText("*" +"abhi");
                 else
-                    holder.dateHeader.setHint(task.getTask_Text__c());
+                    holder.dateHeader.setText("Abhi");
                 holder.date.setText(task.getTask_Response__c());
                 holder.date.setTag(position);
                 holder.date.setFocusable(false);
