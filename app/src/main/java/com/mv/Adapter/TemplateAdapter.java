@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.mv.Activity.HomeActivity;
 import com.mv.Activity.IndicatorTrainingFeedBackTaskList;
 
 import com.mv.Activity.PiachartActivity;
@@ -22,7 +21,7 @@ import com.mv.Activity.ProcessApprovalActivity;
 import com.mv.Activity.ProcessListActivity;
 import com.mv.Activity.TeamManagementUserProfileListActivity;
 import com.mv.Activity.TemplatesActivity;
-import com.mv.Fragment.ProgrammeManagmentFragment;
+import com.mv.MenuActivity.ProgrammeManagmentFragment;
 import com.mv.Model.Template;
 import com.mv.R;
 

@@ -160,6 +160,7 @@
     <string name="lang">भाषा बदलें</string>
     <string name="profile">अपडेट प्रोफाइल</string>
     <string name="logout">लॉग आउट</string>
+    <string name="add_location">स्थान जोड़िए</string>
 
     <string name="all_posts">सभी  \nपोस्ट</string>
     <string name="my_posts">मेरी \nपोस्ट</string>

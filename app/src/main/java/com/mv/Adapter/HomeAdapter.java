@@ -3,8 +3,6 @@ package com.mv.Adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,8 +17,6 @@ import android.widget.TextView;
 
 import com.google.android.flexbox.AlignSelf;
 import com.google.android.flexbox.FlexboxLayoutManager;
-import com.mv.Fragment.GroupsFragment;
-import com.mv.Model.Community;
 import com.mv.Model.HomeModel;
 import com.mv.R;
 
@@ -45,7 +41,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
         public MyViewHolder(View view) {
             super(view);
-
 
             menu_name = (TextView) view.findViewById(R.id.tv_home_menu_name);
             menu_icon = (ImageView) view.findViewById(R.id.iv_home_menu_icon);

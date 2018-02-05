@@ -192,6 +192,7 @@
     <string name="lang">Change Language</string>
     <string name="profile">Update Profile</string>
     <string name="logout">Logout</string>
+    <string name="add_location">Add Location</string>
     <string name="select_form">Select Form</string>
 
     <string name="all_posts">All \nPosts</string>

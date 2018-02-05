@@ -3,8 +3,8 @@ package com.mv.Model;
 
 import com.mv.Activity.ProcessApprovalActivity;
 import com.mv.Activity.TemplatesActivity;
-import com.mv.Fragment.IndicatorListFragmet;
-import com.mv.Fragment.ProgrammeManagmentFragment;
+import com.mv.MenuActivity.IndicatorListFragmet;
+import com.mv.MenuActivity.ProgrammeManagmentFragment;
 
 /**
  * Created by nanostuffs on 18-09-2017.

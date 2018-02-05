@@ -5,6 +5,7 @@ import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
 import android.content.Context;
 
+import com.mv.Model.CalenderEvent;
 import com.mv.Model.Community;
 import com.mv.Model.Content;
 import com.mv.Model.LocationModel;
@@ -16,7 +17,7 @@ import com.mv.Model.Template;
  * Created by Rohit Gujar on 23-10-2017.
  */
 
-@Database(entities = { Community.class, Content.class, Template.class, TaskContainerModel.class, LocationModel.class}, version = 5)
+@Database(entities = { Community.class, Content.class, Template.class, TaskContainerModel.class, LocationModel.class,CalenderEvent.class}, version = 6)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;

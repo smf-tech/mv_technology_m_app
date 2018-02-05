@@ -133,12 +133,10 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
 
     private void getDistrict() {
 
-        Utills.showProgressDialog(this, getString(R.string.loding_district), getString(R.string.progress_please_wait));
+        Utills.showProgressDialog(this, "Loading Districts", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
-                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getDistrict_Name__c?StateName=Maharashtra";
-        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+                ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getDistrict(User.getCurrentUser(IssueTemplateActivity.this).getState()).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -150,7 +148,8 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                         mListDistrict.add(jsonArray.getString(i));
                     }
                     district_adapter.notifyDataSetChanged();
-                    binding.spinnerDistrict.setSelection(mListDistrict.indexOf(User.getCurrentUser(IssueTemplateActivity.this).getProject_Name__c()));
+                    binding.spinnerDistrict.setSelection(mListDistrict.indexOf(User.getCurrentUser(IssueTemplateActivity.this).getDistrict()));
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -165,6 +164,8 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
             }
         });
     }
+
+
 
     private void getTaluka() {
 

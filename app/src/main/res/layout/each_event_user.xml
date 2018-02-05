@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/grey_box"
+    android:layout_marginTop="@dimen/dimen_5dp"
+    android:weightSum="10"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/ll_edittext_layout"
+        android:layout_width="0dp"
+        android:layout_weight="9"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+      >
+
+        <TextView
+            android:id="@+id/tv_event_user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_5dp"
+            android:layout_marginLeft="5dp"
+
+            android:layout_marginTop="@dimen/dimen_5dp"
+            android:text="@string/question_5" />
+
+        <TextView
+            android:id="@+id/tv_event_user_role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_5dp"
+            android:layout_marginLeft="5dp"
+
+            android:layout_marginTop="@dimen/dimen_5dp"
+            android:text="@string/question_5" />
+
+
+    </LinearLayout>
+
+<CheckBox
+    android:id="@+id/cb_event_user_cb"
+    android:layout_width="0dp"
+    android:layout_weight="1"
+    android:layout_height="wrap_content" />
+
+
+</LinearLayout>

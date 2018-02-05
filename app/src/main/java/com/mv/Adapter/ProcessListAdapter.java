@@ -136,7 +136,7 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                 }
             });
         }
-        //  holder.txtCommunityName.setText(String.valueOf(position));
+        //  holder.eventUserName.setText(String.valueOf(position));
     }
 
     @Override
