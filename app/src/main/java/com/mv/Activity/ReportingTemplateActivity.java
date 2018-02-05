@@ -151,15 +151,12 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         // Showing Alert Message
         alertDialog.show();
     }
-
     private void getDistrict() {
 
         Utills.showProgressDialog(this, "Loading Districts", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
-                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getDistrict_Name__c?StateName=Maharashtra";
-        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+                ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getDistrict(User.getCurrentUser(ReportingTemplateActivity.this).getState()).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -187,6 +184,9 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             }
         });
     }
+
+
+
 
     private void getTaluka() {
 

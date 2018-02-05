@@ -6,7 +6,7 @@
 
         <variable
             name="fragment"
-            type="com.mv.Fragment.GroupsFragment" />
+            type="com.mv.MenuActivity.GroupsFragment" />
     </data>
 
     <RelativeLayout

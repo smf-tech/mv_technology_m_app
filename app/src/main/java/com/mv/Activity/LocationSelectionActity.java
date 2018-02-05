@@ -19,6 +19,7 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Service.LocationService;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -29,6 +30,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -108,17 +110,27 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             getDistrict();
         else {
 
-            mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(User.getCurrentUser(context).getState());
+            mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(selectedState);
             mListDistrict.add(0, "Select");
         }
         */
-        state_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mStateList);
+      /*  state_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mStateList);
         state_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerState.setAdapter(state_adapter);
-        if (Utills.isConnected(this))
-            getState();
-        else
-            mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
+        binding.spinnerState.setAdapter(state_adapter);*/
+        mStateList.clear();
+        mStateList = AppDatabase.getAppDatabase(context).userDao().getState();
+        mStateList.removeAll(Collections.singleton(null));
+        if (mStateList.size() == 0) {
+            if (Utills.isConnected(this))
+                getState();
+        }
+        else {
+            mStateList = AppDatabase.getAppDatabase(context).userDao().getState();
+            mStateList.add(0, "Select");
+            setSpinnerAdapter(mStateList, state_adapter, binding.spinnerState, selectedState);
+            //  mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
+        }
+        //  mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
         binding.spinnerState.setSelection(mStateList.indexOf(selectedState));
         setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
         setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
@@ -227,13 +239,13 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
         msg = "";
         taskList.get(position).setTask_Response__c(selectedSpinner.getSelectedItem().toString());
-        for (int i = 0; i < locationState; i++) {
+   /*     for (int i = 0; i < locationState; i++) {
             if (taskList.get(i).getTask_Response__c().equals("Select")) {
                 msg = "Please Select " + taskList.get(i).getTask_Text__c();
                 break;
             }
-        }
-        if (msg.isEmpty()) {
+        }*/
+        if (!selectedSpinner.getSelectedItem().toString().equals("Select")) {
             preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
             Intent openClass = new Intent(context, ProcessDeatailActivity.class);
             // openClass.putExtra(Constants.PROCESS_ID, dashaBoardListModel);
@@ -259,28 +271,38 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                 if (mSelectState != 0) {
                     selectedState = mStateList.get(mSelectState);
                 }
-              /*  selectedDisrict="";
-                selectedTaluka="";
-                selectedCluster="";
-                selectedVillage="";
-                selectedSchool="";*/
-                if (binding.spinnerDistrict.isShown()) {
-                    if (Utills.isConnected(this))
-                        getDistrict();
-                    else {
-                        mListDistrict = new ArrayList<>();
-                        mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(User.getCurrentUser(context).getState());
-                        mListDistrict.add(0, "Select");
-                        setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
+                mListDistrict.clear();
+                mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(selectedState);
+                mListDistrict.removeAll(Collections.singleton(null));
+                if (mListDistrict.size() == 0) {
 
+                    if (binding.spinnerDistrict.isShown()) {
+                        if (Utills.isConnected(this))
+                            getDistrict();
+                        else {
+                            mListDistrict = new ArrayList<>();
+                            mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(selectedState);
+                            mListDistrict.removeAll(Collections.singleton(null));
+                            mListDistrict.add(0, "Select");
+                            setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
+
+                        }
                     }
                 }
+                else {
+                    mListDistrict = new ArrayList<>();
+                    mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(selectedState);
+                    mListDistrict.removeAll(Collections.singleton(null));
+                    mListDistrict.add(0, "Select");
+                    setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
 
-
+                }
+                setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
                 setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
                 setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster, selectedCluster);
                 setSpinnerAdapter(mListVillage, village_adapter, binding.spinnerVillage, selectedVillage);
                 setSpinnerAdapter(mListSchoolName, school_adapter, binding.spinnerSchoolName, selectedSchool);
+
 
                 //    mListDistrict.clear();
 
@@ -294,15 +316,29 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                     selectedCluster="";
                     selectedVillage="";
                     selectedSchool="";*/
-                    if (binding.spinnerTaluka.isShown()) {
-                        if (Utills.isConnected(this))
-                            getTaluka();
-                        else {
-                            mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict));
-                            mListTaluka.add(0, "Select");
-                            setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
+                    mListTaluka.clear();
+                    mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
+                    mListTaluka.removeAll(Collections.singleton(null));
+                    if (mListTaluka.size() == 0) {
+                        if (binding.spinnerTaluka.isShown()) {
+                            if (Utills.isConnected(this))
+                                getTaluka();
+                            else {
+                                mListTaluka.clear();
+                                mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
+                                mListTaluka.add(0, "Select");
+                                mListTaluka.removeAll(Collections.singleton(null));
+                                setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
 
+                            }
                         }
+                    } else {
+                        mListTaluka.clear();
+                        mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
+                        mListTaluka.add(0, "Select");
+                        mListTaluka.removeAll(Collections.singleton(null));
+                        setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
+
                     }
                 } else {
                     mListTaluka.clear();
@@ -311,10 +347,11 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
                 }
 
-
+                setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
                 setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster, selectedCluster);
                 setSpinnerAdapter(mListVillage, village_adapter, binding.spinnerVillage, selectedVillage);
                 setSpinnerAdapter(mListSchoolName, school_adapter, binding.spinnerSchoolName, selectedSchool);
+
                 break;
 
 
@@ -326,16 +363,26 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                     selectedVillage="";
                     selectedSchool="";*/
                     if (binding.spinnerCluster.isShown()) {
-                        if (Utills.isConnected(this))
-                            getCluster();
-                        else {
 
-                            mListCluster.clear();
+                        mListCluster.clear();
+                        mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
+                        mListCluster.removeAll(Collections.singleton(null));
+                        if (mListCluster.size() == 0) {
+                            mListCluster.add(0, "Select");
+                            if (Utills.isConnected(this))
+                                getCluster();
+                            else {
 
-
-                            mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
+                                mListCluster.clear();
+                                mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
+                                mListCluster.add(0, "Select");
+                                mListCluster.removeAll(Collections.singleton(null));
+                                setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster, selectedCluster);
+                            }
+                        } else {
                             mListCluster.add(0, "Select");
                             setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster, selectedCluster);
+
                         }
                     }
                 } else {
@@ -356,11 +403,22 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 /*                    selectedVillage="";
                     selectedSchool="";*/
                     if (binding.spinnerVillage.isShown()) {
-                        if (Utills.isConnected(this))
-                            getVillage();
+
+                        mListVillage.clear();
+                        mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
+                        mListVillage.removeAll(Collections.singleton(null));
+                        if(mListVillage.size()==0) {
+                            if (Utills.isConnected(this))
+                                getVillage();
+                            else {
+                                mListVillage.clear();
+                                mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
+                                mListVillage.add(0, "Select");
+                                mListVillage.removeAll(Collections.singleton(null));
+                                setSpinnerAdapter(mListVillage, village_adapter, binding.spinnerVillage, selectedVillage);
+                            }
+                        }
                         else {
-                            mListVillage.clear();
-                            mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
                             mListVillage.add(0, "Select");
                             setSpinnerAdapter(mListVillage, village_adapter, binding.spinnerVillage, selectedVillage);
                         }
@@ -382,13 +440,23 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                     selectedVillage = mListVillage.get(mSelectVillage);
                     // selectedSchool="";
                     if (binding.spinnerSchoolName.isShown()) {
-                        if (Utills.isConnected(this))
-                            getSchool();
-                        else {
-                            mListSchoolName.clear();
-                            mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
+                        mListSchoolName.clear();
+                        mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
+                        mListSchoolName.removeAll(Collections.singleton(null));
+                        if (mListSchoolName.size() == 0) {
+                            if (Utills.isConnected(this))
+                                getSchool();
+                            else {
+                                mListSchoolName.clear();
+                                mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
+                                mListSchoolName.add(0, "Select");
+                                mListSchoolName.removeAll(Collections.singleton(null));
+                                setSpinnerAdapter(mListSchoolName, school_adapter, binding.spinnerSchoolName, selectedSchool);
+                            }
+                        } else {
                             mListSchoolName.add(0, "Select");
                             setSpinnerAdapter(mListSchoolName, school_adapter, binding.spinnerSchoolName, selectedSchool);
+
                         }
                     }
                 } else {
@@ -514,6 +582,11 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                         mListTaluka.add(jsonArr.getString(i));
                     }
                     setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
+                    Intent intent = new Intent(getApplicationContext(), LocationService.class);
+                    // add infos for the service which file to download and where to store
+                    intent.putExtra(Constants.State,mStateList.get(mSelectState));
+                    intent.putExtra(Constants.DISTRICT,mListDistrict.get(mSelectDistrict));
+                    startService(intent);
                     // taluka_adapter.notifyDataSetChanged();
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();

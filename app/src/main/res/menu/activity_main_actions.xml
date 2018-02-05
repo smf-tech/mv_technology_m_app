@@ -12,15 +12,18 @@
         android:id="@+id/action_profile"
         android:title="@string/profile" />
     <item
+        android:id="@+id/action_add_school"
+        android:title="@string/add_location" />
+    <item
         android:id="@+id/action_notification"
         android:title="@string/notification" />
-
-    <item
-        android:id="@+id/action_rate"
-        android:title="@string/rate" />
     <item
         android:id="@+id/action_share"
         android:title="@string/share" />
+    <item
+        android:id="@+id/action_rate"
+        android:title="@string/rate" />
+
 
     <item
         android:id="@+id/action_logout"

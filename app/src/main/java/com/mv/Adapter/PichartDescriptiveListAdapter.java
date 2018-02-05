@@ -28,7 +28,7 @@ public class PichartDescriptiveListAdapter extends RecyclerView.Adapter<PichartD
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView state, district, taluka, name, detail, index;
+        public TextView state, district, taluka, name, detail, index,title;
         public LinearLayout layout;
 
         public MyViewHolder(View view) {
@@ -37,6 +37,7 @@ public class PichartDescriptiveListAdapter extends RecyclerView.Adapter<PichartD
             district = (TextView) view.findViewById(R.id.txtTemplateName);
             taluka = (TextView) view.findViewById(R.id.txtTemplateName);
             name = (TextView) view.findViewById(R.id.txtTemplateName);*/
+            title = (TextView) view.findViewById(R.id.tv_piachart);
             detail = (TextView) view.findViewById(R.id.tv_piachart_description);
             index = (TextView) view.findViewById(R.id.tv_piachart_number);
 
@@ -70,11 +71,15 @@ public class PichartDescriptiveListAdapter extends RecyclerView.Adapter<PichartD
         {
             PiaChartModel piaChartModel= (PiaChartModel) piaChartModelsList.get(position);
             holder.detail.setText(piaChartModel.getDetail());
+            holder.title.setVisibility(View.GONE);
         }
         else
         {
+            holder.title.setVisibility(View.VISIBLE);
             CalenderEvent piaChartModel= (CalenderEvent) piaChartModelsList.get(position);
             holder.detail.setText(piaChartModel.getDescription());
+            holder.title.setText(piaChartModel.getTitle());
+
         }
 
 

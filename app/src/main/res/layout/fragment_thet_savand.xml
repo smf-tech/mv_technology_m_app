@@ -5,7 +5,7 @@
 
         <variable
             name="fragment"
-            type="com.mv.Fragment.ThetSavandFragment" />
+            type="com.mv.MenuActivity.ThetSavandFragment" />
     </data>
 
     <RelativeLayout

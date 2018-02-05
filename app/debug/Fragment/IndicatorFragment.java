@@ -1,4 +1,4 @@
-package com.mv.Fragment;
+package com.mv.MenuActivity;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;

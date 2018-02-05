@@ -6,6 +6,7 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import com.mv.Model.CalenderEvent;
 import com.mv.Model.Community;
 import com.mv.Model.Content;
 import com.mv.Model.LocationModel;
@@ -23,10 +24,12 @@ import java.util.List;
 public interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
+    long[] insertCalendr(List<CalenderEvent> tasks);
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     long[] insertTask(List<TaskContainerModel> tasks);
-
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     long[] insertLoaction(List<LocationModel> locationModels);
+
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertTask(TaskContainerModel task);
@@ -84,6 +87,8 @@ public interface UserDao {
     @Query("SELECT * FROM " + Constants.TABLE_LOCATION + " where District = :district")
     List<LocationModel> getLocationOfDistrict(String district);
 
+    @Query("SELECT * FROM " + Constants.TABLE_CALANDER + " where Date__c = :date")
+    List<CalenderEvent> getCalenderList(String date);
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId order by CreatedDate desc")
     List<Content> getAllChats(String communityId);
 
@@ -130,7 +135,8 @@ public interface UserDao {
     )
     List<String> getSchoolCode(String state, String district, String taluka, String cluster, String village, String schoolname);
 
-
+    @Query("DELETE FROM " + Constants.TABLE_CALANDER)
+    public  void deleteCalender();
     @Query("DELETE FROM " + Constants.TABLE_COMMUNITY)
     public void clearTableCommunity();
 
@@ -142,6 +148,8 @@ public interface UserDao {
 
     @Query("DELETE FROM " + Constants.TABLE_CONTAINER)
     public void clearTaskContainer();
+    @Query("DELETE FROM " + Constants.TABLE_LOCATION)
+    public void clearLocation();
 
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where synchStatus = '" + Constants.STATUS_LOCAL + "' order by CreatedDate desc")
     List<Content> getAllASynchChats();

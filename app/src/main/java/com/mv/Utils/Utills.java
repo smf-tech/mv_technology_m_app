@@ -119,7 +119,7 @@ public class Utills {
     }
 
     public static void showToast(String msg, Context context) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 
 

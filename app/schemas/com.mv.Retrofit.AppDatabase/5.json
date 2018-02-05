@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 5,
-    "identityHash": "7f63fdbb3371b3679d2764725d7a0613",
+    "identityHash": "73dcfc76a7e3c52523c141982c5b7eda",
     "entities": [
       {
         "tableName": "table_community",
@@ -373,11 +373,55 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "table_calender",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Description__c` TEXT, `Date__c` TEXT, `MV_User1__c` TEXT, `Title` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "Unique_Id",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "Description__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "Date__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "MV_User1__c",
+            "columnName": "MV_User1__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "Title",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"7f63fdbb3371b3679d2764725d7a0613\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"73dcfc76a7e3c52523c141982c5b7eda\")"
     ]
   }
 }

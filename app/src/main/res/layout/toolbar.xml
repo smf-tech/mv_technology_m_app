@@ -74,7 +74,15 @@
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:src="@drawable/ic_power_settings_new_white_36dp" />
-
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="@dimen/dimen_25dp"
+            android:layout_height="@dimen/dimen_25dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:layout_marginLeft="10dp"
+            />
 
 
     </LinearLayout>
