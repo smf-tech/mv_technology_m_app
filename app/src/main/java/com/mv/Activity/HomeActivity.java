@@ -102,12 +102,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView img_back, img_list, img_logout, img_lang;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
+    private android.app.AlertDialog alertDialogApproved;
     private ActivityHome1Binding binding;
     private PreferenceHelper preferenceHelper;
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
     public static final String LANGUAGE_HINDI = "hi";
     public static final String LANGUAGE = "language";
+    private android.app.AlertDialog alertLocationDialog = null;
     //  private ViewPagerAdapter adapter;
     //   private TabLayout tabLayout;
     //  private ViewPager viewPager;
@@ -151,7 +153,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         date = new Date(System.currentTimeMillis());
 
 
-        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
+        if ((User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) || (User.getCurrentUser(getApplicationContext()).getRoll().equals("MT"))) {
             if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("true")) {
 
 
@@ -216,7 +218,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
+        if ((User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) || (User.getCurrentUser(getApplicationContext()).getRoll().equals("MT"))) {
             if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("true")) {
                 final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -227,6 +229,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     LocatonFlag = 0;
 
                 } else {
+                    if (alertLocationDialog != null && alertLocationDialog.isShowing())
+                        alertLocationDialog.dismiss();
                     if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
                         // Utills.scheduleJob(getApplicationContext());
@@ -749,7 +753,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+        alertDialog.setButton2(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
                 // Write your code here to execute after dialog closed
@@ -758,7 +762,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+        alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 sendLogOutRequest();
             }
@@ -840,10 +844,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void showApprovedDilaog() {
         String message = "";
-        final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
+        alertDialogApproved = new android.app.AlertDialog.Builder(this).create();
 
         // Setting Dialog Title
-        alertDialog.setTitle(getString(R.string.app_name));
+        alertDialogApproved.setTitle(getString(R.string.app_name));
 
         // Setting Dialog Message
         if (User.getCurrentUser(getApplicationContext()).getApproval_role() != null) {
@@ -851,17 +855,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             message = getString(R.string.approve_profile);
         }
-        alertDialog.setMessage(message);
+        alertDialogApproved.setMessage(message);
 
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.logomulya);
+        alertDialogApproved.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
 
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+        alertDialogApproved.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
+                alertDialogApproved.dismiss();
                 //initViews();
              /*   finish();
                 sendLogOutRequest();
@@ -870,7 +874,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         // Showing Alert Message
-        alertDialog.show();
+        alertDialogApproved.show();
     }
 
     boolean doubleBackToExitPressedOnce = false;
@@ -930,9 +934,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         String data = response.body().string();
                         preferenceHelper.insertString(PreferenceHelper.UserData, data);
                         User.clearUser();
-
-
                     }
+                    if (alertDialogApproved != null && alertDialogApproved.isShowing())
+                        alertDialogApproved.dismiss();
+                    alertLocationDialog = null;
                     initViews();
 
                 } catch (IOException e) {
@@ -1029,18 +1034,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void SampleDialog() {
-        final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
+        if (alertLocationDialog == null) {
+            alertLocationDialog = new android.app.AlertDialog.Builder(this).create();
 
-        // Setting Dialog Title
-        alertDialog.setTitle("Open Location");
+            // Setting Dialog Title
+            alertLocationDialog.setTitle(getString(R.string.gps_settings));
 
-        // Setting Dialog Message
-        alertDialog.setMessage("Gps is not available. ");
+            // Setting Dialog Message
+            alertLocationDialog.setMessage(getString(R.string.no_gps));
 
-        // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.logomulya);
+            // Setting Icon to Dialog
+            alertLocationDialog.setIcon(R.drawable.logomulya);
 
-        // Setting CANCEL Button
+            // Setting CANCEL Button
        /* alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
@@ -1048,19 +1054,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
         });*/
-        // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(myIntent);
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
-        });
+            // Setting OK Button
+            alertLocationDialog.setButton(getString(R.string.gps_settings), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(myIntent);
+                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                }
+            });
 
 
-        // Showing Alert Message
-        alertDialog.show();
+            // Showing Alert Message
+            alertLocationDialog.show();
+        }
+
     }
 
     private void GetMapParameters(String latitude, String longitude) {
@@ -1152,8 +1159,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else if (id == R.id.action_rate) {
             RateThisApp.showRateDialog(HomeActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
 
-        }
-        else if (id == R.id.action_add_school) {
+        } else if (id == R.id.action_add_school) {
             Intent openClass = new Intent(HomeActivity.this, AddSchoolActivity.class);
             startActivity(openClass);
 

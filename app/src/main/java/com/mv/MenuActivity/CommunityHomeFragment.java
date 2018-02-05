@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -63,10 +64,11 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
     private RelativeLayout mToolBar;
     private TextView toolbar_title;
     private ImageView img_back, img_list, img_logout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context=this;
+        context = this;
         binding = DataBindingUtil.setContentView(this, R.layout.fragment_community_home);
         binding.setFragment(this);
 
@@ -83,7 +85,7 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
         textNoData = (TextView) findViewById(R.id.textNoData);
         fab_add_broadcast.setOnClickListener(this);
         binding.fabAddBroadcast.setVisibility(View.GONE);
-        String title = getString(R.string.broadcast).replace("\n"," ");
+        String title = getString(R.string.broadcast).replace("\n", " ");
         setActionbar(title);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         adapter = new FragmentContentAdapter(context, chatList);
@@ -92,22 +94,31 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
     }
+
     private void setActionbar(String Title) {
-        mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(Title);
-        img_back = (ImageView) findViewById(R.id.img_back);
+        String str = Title;
+        if (str.contains("\n")) {
+            str = str.replace("\n", " ");
+        }
+        LinearLayout layoutList = (LinearLayout) findViewById(R.id.layoutList);
+        layoutList.setVisibility(View.GONE);
+        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        toolbar_title.setText(str);
+        ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
-        img_logout = (ImageView) findViewById(R.id.img_logout);
+        ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
+
     /*For setting differnt languages like english, marathi*/
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
+
     private void getChats(boolean isDialogShow) {
         List<Content> temp = AppDatabase.getAppDatabase(context).userDao().getAllBroadcastChats();
         if (temp.size() == 0) {
@@ -129,7 +140,7 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
 
     private void getAllChats(boolean isTimePresent, boolean isDialogShow) {
         if (isDialogShow)
-            Utills.showProgressDialog(context, "Loading Chats", getString(R.string.progress_please_wait));
+            Utills.showProgressDialog(CommunityHomeFragment.this, "Loading Chats", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = "";
@@ -143,20 +154,19 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
-                binding.swipeRefreshLayout.setRefreshing(false);
+
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
                         if (str != null && str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
 
-                                Log.e("array length,", String.valueOf(jsonArray.length()));
-                                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                                List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));
+                            Log.e("array length,", String.valueOf(jsonArray.length()));
+                            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                            List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));
 
-                                List<Content> contentList = AppDatabase.getAppDatabase(context).userDao().getAllBroadcastChats();
-                            if ((temp.size() != 0) || (contentList.size()!=0)) {
+                            List<Content> contentList = AppDatabase.getAppDatabase(context).userDao().getAllBroadcastChats();
+                            if ((temp.size() != 0) || (contentList.size() != 0)) {
 
                                 for (int i = 0; i < temp.size(); i++) {
                                     int j;
@@ -178,17 +188,23 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
                                 }
                                 adapter.notifyDataSetChanged();
                                 textNoData.setVisibility(View.GONE);
-                            }else {
-                                     Log.e("temp size", String.valueOf(temp.size()));
-                                     adapter.notifyDataSetChanged();
+                            } else {
+                                Log.e("temp size", String.valueOf(temp.size()));
+                                adapter.notifyDataSetChanged();
                                 textNoData.setVisibility(View.VISIBLE);
                             }
                         }
+                        Utills.hideProgressDialog();
+                        binding.swipeRefreshLayout.setRefreshing(false);
                     }
 
                 } catch (JSONException e) {
+                    Utills.hideProgressDialog();
+                    binding.swipeRefreshLayout.setRefreshing(false);
                     e.printStackTrace();
                 } catch (IOException e) {
+                    Utills.hideProgressDialog();
+                    binding.swipeRefreshLayout.setRefreshing(false);
                     e.printStackTrace();
                 }
             }

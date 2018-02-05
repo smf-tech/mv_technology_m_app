@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -57,7 +58,7 @@ import retrofit2.Response;
  * Created by nanostuffs on 05-12-2017.
  */
 
-public class TrainingCalender extends AppCompatActivity implements OnDateSelectedListener,View.OnClickListener {
+public class TrainingCalender extends AppCompatActivity implements OnDateSelectedListener, View.OnClickListener {
     private PreferenceHelper preferenceHelper;
     List<CalenderEvent> dateList = new ArrayList<>();
     private IndicatorListAdapter mAdapter;
@@ -69,10 +70,11 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
     PichartDescriptiveListAdapter adapter;
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
     Activity context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context=this;
+        context = this;
         binding = DataBindingUtil.setContentView(this, R.layout.fragment_trainig_calender);
         binding.setClander(this);
         setActionbar(getString(R.string.training_calendar));
@@ -95,7 +97,6 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
         instance1.set(instance1.get(Calendar.YEAR), Calendar.JANUARY, 1);
 
 
-
         binding.calendarView.state().edit()
                 .setMinimumDate(instance1.getTime())
                 .commit();
@@ -113,6 +114,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -122,22 +124,27 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
-        if( eventMap.get(date)!=null) {
-            adapter = new PichartDescriptiveListAdapter(context, AppDatabase.getAppDatabase(getApplicationContext()).userDao().getCalenderList( formatter.format(date.getDate())));
+        if (eventMap.get(date) != null) {
+            adapter = new PichartDescriptiveListAdapter(context, AppDatabase.getAppDatabase(getApplicationContext()).userDao().getCalenderList(formatter.format(date.getDate())));
             binding.recyclerView.setAdapter(adapter);
-        }
-        else
-        {
+        } else {
             adapter = new PichartDescriptiveListAdapter(context, new ArrayList<CalenderEvent>());
             binding.recyclerView.setAdapter(adapter);
         }
 
 
     }
+
     private void setActionbar(String Title) {
+        String str = Title;
+        if (str.contains("\n")) {
+            str = str.replace("\n", " ");
+        }
+        LinearLayout layoutList = (LinearLayout) findViewById(R.id.layoutList);
+        layoutList.setVisibility(View.GONE);
         RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(Title);
+        toolbar_title.setText(str);
         ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
@@ -145,6 +152,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -154,7 +162,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                 break;
             case R.id.fab_add_broadcast:
                 Intent openClass = new Intent(TrainingCalender.this, CalenderFliterActivity.class);
-                 startActivity(openClass);
+                startActivity(openClass);
                 break;
         }
     }
@@ -171,7 +179,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                 Utills.hideProgressDialog();
 
                 try {
-                    if(response.isSuccess()) {
+                    if (response.isSuccess()) {
                         JSONArray jsonArray = new JSONArray(response.body().string());
 
                         eventMap = new HashMap<>();
@@ -183,7 +191,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                             calenderEvent.setDate(jsonArray.getJSONObject(i).getString("Date__c"));
                             calenderEvent.setDescription(jsonArray.getJSONObject(i).getString("Description_New__c"));
                             calenderEvent.setTitle(jsonArray.getJSONObject(i).getString("Title__c"));
-                          //  calenderEvent.setMV_User1__c(jsonArray.getJSONObject(i).getString("MV_User1__c"));
+                            //  calenderEvent.setMV_User1__c(jsonArray.getJSONObject(i).getString("MV_User1__c"));
                             CalendarDay day = CalendarDay.from(formatter.parse(jsonArray.getJSONObject(i).getString("Date__c")));
 
                             if (eventMap.get(jsonArray.getJSONObject(i).getString("Date__c")) != null)
@@ -200,7 +208,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                         binding.calendarView.addDecorator(new EventDecorator(Color.RED, dates));
                         Calendar instance = Calendar.getInstance();
                         if (eventMap.get(CalendarDay.from(instance)) != null) {
-                            adapter = new PichartDescriptiveListAdapter(context,  AppDatabase.getAppDatabase(getApplicationContext()).userDao().getCalenderList( formatter.format(instance.getTime())));
+                            adapter = new PichartDescriptiveListAdapter(context, AppDatabase.getAppDatabase(getApplicationContext()).userDao().getCalenderList(formatter.format(instance.getTime())));
                             binding.recyclerView.setAdapter(adapter);
                         }
                     }

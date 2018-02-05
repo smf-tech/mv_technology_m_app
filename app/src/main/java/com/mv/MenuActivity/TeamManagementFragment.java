@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -30,11 +31,11 @@ import java.util.List;
  * Created by nanostuffs on 16-11-2017.
  */
 
-public class TeamManagementFragment  extends AppCompatActivity implements View.OnClickListener {
+public class TeamManagementFragment extends AppCompatActivity implements View.OnClickListener {
     private PreferenceHelper preferenceHelper;
     List<Template> processAllList = new ArrayList<>();
     private TeamManagementAdapter mAdapter;
-    ArrayList<String>menuList;
+    ArrayList<String> menuList;
     private ActivityNewTemplateBinding binding;
     RecyclerView.LayoutManager mLayoutManager;
     TextView textNoData;
@@ -44,9 +45,9 @@ public class TeamManagementFragment  extends AppCompatActivity implements View.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context=this;
+        context = this;
 
-        binding =  DataBindingUtil.setContentView(this, R.layout.activity_new_template);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_new_template);
         binding.setVariable(BR.vm, new ParentViewModel());
 
     }
@@ -58,9 +59,15 @@ public class TeamManagementFragment  extends AppCompatActivity implements View.O
     }
 
     private void setActionbar(String Title) {
-        RelativeLayout  mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        String str = Title;
+        if (str.contains("\n")) {
+            str = str.replace("\n", " ");
+        }
+        LinearLayout layoutList = (LinearLayout) findViewById(R.id.layoutList);
+        layoutList.setVisibility(View.GONE);
+        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(Title);
+        toolbar_title.setText(str);
         ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
@@ -68,6 +75,7 @@ public class TeamManagementFragment  extends AppCompatActivity implements View.O
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -82,6 +90,7 @@ public class TeamManagementFragment  extends AppCompatActivity implements View.O
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
+
     private void initViews() {
         setActionbar(getString(R.string.team_management));
         textNoData = (TextView) findViewById(R.id.textNoData);

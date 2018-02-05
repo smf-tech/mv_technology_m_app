@@ -76,21 +76,21 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
     public static final String MESSAGE_PROGRESS = "message_progress";
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context=this;
-        fragment=this;
+        context = this;
+        fragment = this;
         binding = DataBindingUtil.setContentView(this, R.layout.fragment_thet_savand);
         binding.setFragment(this);
 
         //here data must be an instance of the class MarsDataProvider
-       // Utills.setupUI(view.findViewById(R.id.layout_main), context);
+        // Utills.setupUI(view.findViewById(R.id.layout_main), context);
         binding.swipeRefreshLayout.setOnRefreshListener(this);
         initViews();
         getChats(true);
     }
+
     /*It is used for setting different languages like english , marathi*/
     @Override
     protected void attachBaseContext(Context base) {
@@ -202,10 +202,11 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         initViews();
         getChats(true);
     }
-   /*getTheatSawandContent api is called here.*/
+
+    /*getTheatSawandContent api is called here.*/
     private void getAllChats(boolean isTimePresent, boolean isDialogShow) {
         if (isDialogShow)
-            Utills.showProgressDialog(context, "Loading Chats", getString(R.string.progress_please_wait));
+            Utills.showProgressDialog(ThetSavandFragment.this, "Loading Chats", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = "";
@@ -219,8 +220,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
-                binding.swipeRefreshLayout.setRefreshing(false);
+
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
@@ -272,11 +272,16 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
                             textNoData.setVisibility(View.VISIBLE);
                         }
                     }
-
+                    Utills.hideProgressDialog();
+                    binding.swipeRefreshLayout.setRefreshing(false);
                 } catch (JSONException e) {
                     e.printStackTrace();
+                    Utills.hideProgressDialog();
+                    binding.swipeRefreshLayout.setRefreshing(false);
                 } catch (IOException e) {
                     e.printStackTrace();
+                    Utills.hideProgressDialog();
+                    binding.swipeRefreshLayout.setRefreshing(false);
                 }
             }
 
@@ -287,6 +292,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
             }
         });
     }
+
     /*It shows the popup for Internet connection is available or not*/
     private void showPopUp() {
         final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
@@ -349,9 +355,15 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
 
     /*It initialize all views in actionbar.*/
     private void setActionbar(String Title) {
-       RelativeLayout  mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-       TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(Title);
+        String str = Title;
+        if (str.contains("\n")) {
+            str = str.replace("\n", " ");
+        }
+        LinearLayout layoutList = (LinearLayout) findViewById(R.id.layoutList);
+        layoutList.setVisibility(View.GONE);
+        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        toolbar_title.setText(str);
         ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
@@ -359,6 +371,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
+
     /*Get the the intent from download service after file is completely donloaded*/
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -370,6 +383,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
             }
         }
     };
+
     /*Register reciver*/
     private void registerReceiver() {
 

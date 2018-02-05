@@ -20,6 +20,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -62,17 +63,17 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
     private List<Community> replicaCommunityList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
     TextView textNoData;
-Activity context;
+    Activity context;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context=this;
+        context = this;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_group);
         binding.setFragment(this);
         //here data must be an instance of the class MarsDataProvider
-        Utills.setupUI(findViewById(R.id.layout_main),context);
+        Utills.setupUI(findViewById(R.id.layout_main), context);
 
         initViews();
         getCommunities(true);
@@ -117,17 +118,24 @@ Activity context;
                 }
         );
         preferenceHelper = new PreferenceHelper(context);
-        mAdapter = new GroupAdapter(communityList,context, this);
+        mAdapter = new GroupAdapter(communityList, context, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(mAdapter);
 
     }
+
     private void setActionbar(String Title) {
+        String str = Title;
+        if (str.contains("\n")) {
+            str = str.replace("\n", " ");
+        }
+        LinearLayout layoutList = (LinearLayout) findViewById(R.id.layoutList);
+        layoutList.setVisibility(View.GONE);
         RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(Title);
+        toolbar_title.setText(str);
         ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
@@ -135,6 +143,7 @@ Activity context;
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
+
     private void getAllCommunities(boolean isTimePresent, boolean isDialogShow) {
         if (isDialogShow)
             Utills.showProgressDialog(context, "Loading Communities", getString(R.string.progress_please_wait));
@@ -158,10 +167,10 @@ Activity context;
                         String str = response.body().string();
                         if (str != null && str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
-                                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                                List<Community> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Community[].class));
-                                List<Community> list = AppDatabase.getAppDatabase(context).userDao().getAllCommunities();
-                            if((temp.size()!=0) || (list.size()!=0)) {
+                            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                            List<Community> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Community[].class));
+                            List<Community> list = AppDatabase.getAppDatabase(context).userDao().getAllCommunities();
+                            if ((temp.size() != 0) || (list.size() != 0)) {
                                 for (int i = 0; i < temp.size(); i++) {
                                     int j;
                                     boolean isPresent = false;
@@ -184,7 +193,7 @@ Activity context;
                                 }
                                 mAdapter.notifyDataSetChanged();
                                 textNoData.setVisibility(View.GONE);
-                            }else {
+                            } else {
                                 textNoData.setVisibility(View.VISIBLE);
                             }
                         }
@@ -220,16 +229,16 @@ Activity context;
         alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
-               context.finish();
-               context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                context.finish();
+                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
         });
         // Setting OK Button
         alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
-               context.finish();
-               context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                context.finish();
+                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
         });
 
@@ -241,8 +250,8 @@ Activity context;
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
-               context.finish();
-               context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                context.finish();
+                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
         }
     }
@@ -296,12 +305,12 @@ Activity context;
                 preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Issue");
                 preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, Constants.ISSUEID);
                 intent = new Intent(context, IssueTemplateActivity.class);
-               context.startActivity(intent);
+                context.startActivity(intent);
             } else {
                 preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Report");
                 preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, Constants.REPORTID);
                 intent = new Intent(context, ReportingTemplateActivity.class);
-               context.startActivity(intent);
+                context.startActivity(intent);
             }
         } else {
             preferenceHelper.insertString(PreferenceHelper.COMMUNITYID, communityList.get(position).getId());
