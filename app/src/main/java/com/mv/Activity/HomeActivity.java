@@ -109,6 +109,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     public static final String LANGUAGE_MARATHI = "mr";
     public static final String LANGUAGE_HINDI = "hi";
     public static final String LANGUAGE = "language";
+    private android.app.AlertDialog alertLocationDialog = null;
     //  private ViewPagerAdapter adapter;
     //   private TabLayout tabLayout;
     //  private ViewPager viewPager;
@@ -228,6 +229,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     LocatonFlag = 0;
 
                 } else {
+                    if (alertLocationDialog != null && alertLocationDialog.isShowing())
+                        alertLocationDialog.dismiss();
                     if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
                         // Utills.scheduleJob(getApplicationContext());
@@ -934,6 +937,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     }
                     if (alertDialogApproved != null && alertDialogApproved.isShowing())
                         alertDialogApproved.dismiss();
+                    alertLocationDialog = null;
                     initViews();
 
                 } catch (IOException e) {
@@ -1030,18 +1034,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void SampleDialog() {
-        final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
+        if (alertLocationDialog == null) {
+            alertLocationDialog = new android.app.AlertDialog.Builder(this).create();
 
-        // Setting Dialog Title
-        alertDialog.setTitle("Open Location");
+            // Setting Dialog Title
+            alertLocationDialog.setTitle("Open Location");
 
-        // Setting Dialog Message
-        alertDialog.setMessage("Gps is not available. ");
+            // Setting Dialog Message
+            alertLocationDialog.setMessage("Gps is not available. ");
 
-        // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.logomulya);
+            // Setting Icon to Dialog
+            alertLocationDialog.setIcon(R.drawable.logomulya);
 
-        // Setting CANCEL Button
+            // Setting CANCEL Button
        /* alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
@@ -1049,19 +1054,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
         });*/
-        // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(myIntent);
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
-        });
+            // Setting OK Button
+            alertLocationDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    startActivity(myIntent);
+                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                }
+            });
 
 
-        // Showing Alert Message
-        alertDialog.show();
+            // Showing Alert Message
+            alertLocationDialog.show();
+        }
+
     }
 
     private void GetMapParameters(String latitude, String longitude) {
