@@ -101,7 +101,7 @@
 
                         android:background="@drawable/transparent_grey_box_radius"
                         android:digits="0123456789"
-                        android:drawableLeft="@android:drawable/stat_sys_vp_phone_call"
+                        android:drawableLeft="@drawable/ic_call"
                         android:drawablePadding="10dp"
                         android:gravity="center_vertical"
                         android:hint="@string/mobile_no"

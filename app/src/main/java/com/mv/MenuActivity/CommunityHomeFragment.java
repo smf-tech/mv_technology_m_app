@@ -140,7 +140,7 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
 
     private void getAllChats(boolean isTimePresent, boolean isDialogShow) {
         if (isDialogShow)
-            Utills.showProgressDialog(context, "Loading Chats", getString(R.string.progress_please_wait));
+            Utills.showProgressDialog(CommunityHomeFragment.this, "Loading Chats", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = "";
@@ -154,8 +154,7 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
-                binding.swipeRefreshLayout.setRefreshing(false);
+
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
@@ -195,11 +194,17 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
                                 textNoData.setVisibility(View.VISIBLE);
                             }
                         }
+                        Utills.hideProgressDialog();
+                        binding.swipeRefreshLayout.setRefreshing(false);
                     }
 
                 } catch (JSONException e) {
+                    Utills.hideProgressDialog();
+                    binding.swipeRefreshLayout.setRefreshing(false);
                     e.printStackTrace();
                 } catch (IOException e) {
+                    Utills.hideProgressDialog();
+                    binding.swipeRefreshLayout.setRefreshing(false);
                     e.printStackTrace();
                 }
             }
