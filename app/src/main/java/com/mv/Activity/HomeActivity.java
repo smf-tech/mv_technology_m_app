@@ -153,7 +153,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         date = new Date(System.currentTimeMillis());
 
 
-        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
+        if ((User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) || (User.getCurrentUser(getApplicationContext()).getRoll().equals("MT"))) {
             if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("true")) {
 
 
@@ -218,7 +218,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
+        if ((User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) || (User.getCurrentUser(getApplicationContext()).getRoll().equals("MT"))) {
             if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("true")) {
                 final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -753,7 +753,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+        alertDialog.setButton2(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
                 // Write your code here to execute after dialog closed
@@ -762,7 +762,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+        alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 sendLogOutRequest();
             }
@@ -1038,10 +1038,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             alertLocationDialog = new android.app.AlertDialog.Builder(this).create();
 
             // Setting Dialog Title
-            alertLocationDialog.setTitle("Open Location");
+            alertLocationDialog.setTitle(getString(R.string.gps_settings));
 
             // Setting Dialog Message
-            alertLocationDialog.setMessage("Gps is not available. ");
+            alertLocationDialog.setMessage(getString(R.string.no_gps));
 
             // Setting Icon to Dialog
             alertLocationDialog.setIcon(R.drawable.logomulya);
@@ -1055,7 +1055,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });*/
             // Setting OK Button
-            alertLocationDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+            alertLocationDialog.setButton(getString(R.string.gps_settings), new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int which) {
                     Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     startActivity(myIntent);
