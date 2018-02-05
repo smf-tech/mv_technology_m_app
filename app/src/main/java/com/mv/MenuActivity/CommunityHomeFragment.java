@@ -83,7 +83,8 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
         textNoData = (TextView) findViewById(R.id.textNoData);
         fab_add_broadcast.setOnClickListener(this);
         binding.fabAddBroadcast.setVisibility(View.GONE);
-        setActionbar(getString(R.string.broadcast));
+        String title = getString(R.string.broadcast).replace("\n"," ");
+        setActionbar(title);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         adapter = new FragmentContentAdapter(context, chatList);
         recyclerView.setAdapter(adapter);
