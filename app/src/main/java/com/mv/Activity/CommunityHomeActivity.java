@@ -78,10 +78,11 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     LinearLayout lnr_filter;
     private boolean filter = false;
     public String json;
-    private Boolean mySelection = false,myLocation = false;
-    int filterflag=0;
+    private Boolean mySelection = false, myLocation = false;
+    int filterflag = 0;
     TextView textNoData;
     public static final String MESSAGE_PROGRESS = "message_progress";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -95,11 +96,13 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
         getChats(true);
     }
+
     /*For setting differnt languages like english, marathi*/
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
+
     /*Get the Chat List from Database and set to the adapter , if No vales in table then get Chats from Server*/
     private void getChats(boolean isDialogShow) {
         List<Content> temp = AppDatabase.getAppDatabase(this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
@@ -114,7 +117,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
             for (int i = 0; i < temp.size(); i++) {
                 chatList.add(temp.get(i));
             }
-            adapter = new ContentAdapter( this, chatList);
+            adapter = new ContentAdapter(this, chatList);
             recyclerView.setAdapter(adapter);
             if (Utills.isConnected(this))
                 getAllChats(true, isDialogShow);
@@ -123,7 +126,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
     }
 
-   /*Api Call of getChatContent */
+    /*Api Call of getChatContent */
     private void getAllChats(boolean isTimePresent, boolean isDialogShow) {
         if (isDialogShow)
             Utills.showProgressDialog(this, getString(R.string.loading_chats), getString(R.string.progress_please_wait));
@@ -140,8 +143,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
-                binding.swipeRefreshLayout.setRefreshing(false);
+
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
@@ -175,9 +177,9 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                                     }
 
                                 }
-                              List<Content>contentList_fromDb = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
-                                 chatList.clear();
-                                for (int i=0;i<contentList_fromDb.size();i++){
+                                List<Content> contentList_fromDb = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
+                                chatList.clear();
+                                for (int i = 0; i < contentList_fromDb.size(); i++) {
                                     chatList.add(contentList_fromDb.get(i));
                                 }
 
@@ -185,16 +187,21 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                                 recyclerView.setAdapter(adapter);
 
                                 textNoData.setVisibility(View.GONE);
-                            }else {
+                            } else {
                                 textNoData.setVisibility(View.VISIBLE);
                             }
                         }
-                            //adapter.notifyDataSetChanged();
-                        }
-
+                        //adapter.notifyDataSetChanged();
+                    }
+                    Utills.hideProgressDialog();
+                    binding.swipeRefreshLayout.setRefreshing(false);
                 } catch (JSONException e) {
+                    Utills.hideProgressDialog();
+                    binding.swipeRefreshLayout.setRefreshing(false);
                     e.printStackTrace();
                 } catch (IOException e) {
+                    Utills.hideProgressDialog();
+                    binding.swipeRefreshLayout.setRefreshing(false);
                     e.printStackTrace();
                 }
             }
@@ -238,7 +245,8 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         // Showing Alert Message
         alertDialog.show();
     }
-   /*Initialize all views and Set the filter on particular button click*/
+
+    /*Initialize all views and Set the filter on particular button click*/
     private void initViews() {
         setActionbar(getIntent().getExtras().getString(Constants.TITLE));
         json = getIntent().getExtras().getString(Constants.LIST);
@@ -253,7 +261,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         btn_allposts = (Button) findViewById(R.id.btn_allposts);
         btn_mypost = (Button) findViewById(R.id.btn_mypost);
         btn_mylocation = (Button) findViewById(R.id.btn_mylocation);
-        btn_otherlcation =(Button) findViewById(R.id.btn_otherlocation);
+        btn_otherlcation = (Button) findViewById(R.id.btn_otherlocation);
         lnr_filter = (LinearLayout) findViewById(R.id.lnr_filter);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -308,10 +316,10 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 mySelection = false;
                 filterflag = 0;
-                chatList =  AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
+                chatList = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
 
 
-                adapter = new ContentAdapter(CommunityHomeActivity.this,chatList);
+                adapter = new ContentAdapter(CommunityHomeActivity.this, chatList);
                 recyclerView.setAdapter(adapter);
             }
         });
@@ -326,11 +334,11 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 myLocation = true;
                 filterflag = 2;
-                chatList =  AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
+                chatList = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
                 for (int i = 0; i < chatList.size(); i++) {
 
 
-                    if (chatList.get(i).getTaluka()!=null) {
+                    if (chatList.get(i).getTaluka() != null) {
 
                         if (chatList.get(i).getTaluka().equalsIgnoreCase(User.getCurrentUser(getApplicationContext()).getTaluka())) {
                             mylocationlist.add(chatList.get(i));
@@ -355,10 +363,10 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 myLocation = false;
                 filterflag = 3;
-                chatList =  AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
+                chatList = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
                 for (int i = 0; i < chatList.size(); i++) {
 
-                    if (chatList.get(i).getTaluka()!=null) {
+                    if (chatList.get(i).getTaluka() != null) {
 
                         if (!chatList.get(i).getTaluka().equals(User.getCurrentUser(getApplicationContext()).getTaluka())) {
 
@@ -368,13 +376,13 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
                 }
 
-                adapter = new ContentAdapter(CommunityHomeActivity.this,otherlocationlist);
+                adapter = new ContentAdapter(CommunityHomeActivity.this, otherlocationlist);
                 recyclerView.setAdapter(adapter);
             }
         });
     }
 
-   /*Initialize views in actionbar and set ToolBar title*/
+    /*Initialize views in actionbar and set ToolBar title*/
     private void setActionbar(final String Title) {
         mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
@@ -576,12 +584,12 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     public void onRefresh() {
 
         binding.swipeRefreshLayout.setRefreshing(false);
-            getChats(false);
-
+        getChats(false);
 
 
     }
-   /*Show Filter popup for Ho Support*/
+
+    /*Show Filter popup for Ho Support*/
     private void HoSupportFilter() {
         AlertDialog.Builder b = new AlertDialog.Builder(CommunityHomeActivity.this);
         String title = getIntent().getExtras().getString(Constants.TITLE);
@@ -620,7 +628,8 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
         b.show();
     }
-   /*It shows the filter dialog for all communities except Ho support */
+
+    /*It shows the filter dialog for all communities except Ho support */
     private void OtherFilter() {
 
         AlertDialog.Builder b = new AlertDialog.Builder(CommunityHomeActivity.this);
@@ -635,7 +644,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 switch (position) {
                     case 1:
 
-                            setFilter("Information Sharing");
+                        setFilter("Information Sharing");
 
                         break;
                     case 2:
@@ -655,45 +664,41 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
         b.show();
     }
+
     /*Set the filterlist to adapter according to respective filter parameter along with report type and issue type */
     private void setFilter(String filtertype) {
 
 
         filterlist.clear();
-        if(filterflag ==0) {
+        if (filterflag == 0) {
             List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filtertype);
             for (int i = 0; i < contentList.size(); i++) {
                 filterlist.add(contentList.get(i));
             }
-        }else
-            if(filterflag==1){
+        } else if (filterflag == 1) {
 
-                List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getMyChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),User.getCurrentUser(getApplicationContext()).getId(),filtertype);
-                for (int i = 0; i < contentList.size(); i++) {
-                    filterlist.add(contentList.get(i));
-                }
+            List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getMyChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), User.getCurrentUser(getApplicationContext()).getId(), filtertype);
+            for (int i = 0; i < contentList.size(); i++) {
+                filterlist.add(contentList.get(i));
             }
-        else
-            if(filterflag==2){
-                List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getMyLocationChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filtertype,User.getCurrentUser(getApplicationContext()).getTaluka());
-                for (int i = 0; i < contentList.size(); i++) {
-                    filterlist.add(contentList.get(i));
-                }
+        } else if (filterflag == 2) {
+            List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getMyLocationChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filtertype, User.getCurrentUser(getApplicationContext()).getTaluka());
+            for (int i = 0; i < contentList.size(); i++) {
+                filterlist.add(contentList.get(i));
             }
+        } else if (filterflag == 3) {
+            List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getOtherChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filtertype, User.getCurrentUser(getApplicationContext()).getTaluka());
+            for (int i = 0; i < contentList.size(); i++) {
+                filterlist.add(contentList.get(i));
+            }
+        }
 
-        else
-            if(filterflag==3){
-                List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getOtherChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filtertype,User.getCurrentUser(getApplicationContext()).getTaluka());
-                for (int i = 0; i < contentList.size(); i++) {
-                    filterlist.add(contentList.get(i));
-                }
-            }
-
-        adapter = new ContentAdapter( this, filterlist);
+        adapter = new ContentAdapter(this, filterlist);
         recyclerView.setAdapter(adapter);
 
     }
-   /*Get the the intent from download service for checking file is completely donloaded or not*/
+
+    /*Get the the intent from download service for checking file is completely donloaded or not*/
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -704,6 +709,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
             }
         }
     };
+
     /*Register reciver*/
     private void registerReceiver() {
 

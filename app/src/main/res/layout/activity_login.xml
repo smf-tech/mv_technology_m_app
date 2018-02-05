@@ -98,7 +98,7 @@
                         android:layout_margin="@dimen/dimen_10dp"
                         android:background="@drawable/transparent_grey_box_radius"
                         android:digits="0123456789"
-                        android:drawableLeft="@drawable/person"
+                        android:drawableLeft="@drawable/ic_call"
                         android:drawablePadding="10dp"
                         android:gravity="center_vertical"
                         android:hint="@string/mobile_no"
