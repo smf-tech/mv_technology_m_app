@@ -19,11 +19,11 @@ import java.util.ArrayList;
 
 public class SliderAdapter extends PagerAdapter {
 
-    private ArrayList<Integer> images;
+    private ArrayList<String> images;
     private LayoutInflater inflater;
     private Context context;
 
-    public SliderAdapter(Context context, ArrayList<Integer> images) {
+    public SliderAdapter(Context context, ArrayList<String> images) {
         this.context = context;
         this.images = images;
         inflater = LayoutInflater.from(context);
@@ -44,11 +44,11 @@ public class SliderAdapter extends PagerAdapter {
         View myImageLayout = inflater.inflate(R.layout.slide, view, false);
         ImageView myImage = (ImageView) myImageLayout
                 .findViewById(R.id.image);
-        myImage.setImageResource(images.get(position));
-      /*  Glide.with(context)
+      //  myImage.setImageResource(images.get(position));
+        Glide.with(context)
                 .load("http://13.58.218.106/images/" + images.get(position) + ".png")
-                .placeholder(context.getResources().getDrawable(R.drawable.mulya_bg))
-                .into(myImage);*/
+                .placeholder(context.getResources().getDrawable(R.drawable.a))
+                .into(myImage);
         view.addView(myImageLayout, 0);
         return myImageLayout;
     }

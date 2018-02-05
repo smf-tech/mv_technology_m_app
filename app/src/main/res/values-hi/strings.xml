@@ -15,7 +15,7 @@
 <string name="error_offline_share_post">आप पोस्ट ऑफलाइन साझा नहीं कर सकते</string>
 <string name="error_offline_like_post">आप पोस्ट ऑफलाइन साझा नहीं कर सकते</string>
 <string name="ok">ओके</string>
-<string name="cancel">रद्द करेंl</string>
+<string name="cancel">रद्द करें</string>
     <!--Home Acitivty-->
 <string name="intro_about_header">के बारे में</string>
 <string name="intro_about_description">मूल्यवर्धन मूल्यवर्धन कार्यक्रम का उद्देश्य यह है कि स्कूली बच्चेभारतीय संविधान के मूल्यों को ग्रहण कर सकें और अच्छे लोकतांत्रिक नागरिक बन सकें।इसका उद्देश्य भारत की स्कूली शिक्षा के मुख्य उद्देश्यों में से एक है। कई पाठ्यक्रमों में दिया गया है कि बच्चों में संवैधानिक मूल्यों को विकसित करना स्कूली शिक्षा का मुख्य उद्देश्य है।अधिक जानकारी के लिए देखेंwww.mulyavardhan.com for more info</string>
@@ -48,7 +48,8 @@
     <string name="cluster">कलस्टर</string>
     <string name="mandatory_cluster">कलस्टर *</string>
     <string name="village">ग्राम</string>
-
+    <string name="no_gps">GPS उपलब्ध नहीं है.</string>
+    <string name="gps_settings">GPS सेटिंग</string>
     <string name="mandatory_village">ग्राम *</string>
     <string name="school_name">स्कूल का नाम</string>
     <string name="mandatory_school_name">स्कूल का नाम *</string>
@@ -67,6 +68,8 @@
     <string name="priority">वरीयता</string>
     <string name="item_title">पैलेस गर्नियर</string>
     <string name="item_desc">जब हमने ऐप लॉन्च किया तो यह पहले एक महीने तक अद्भुत रहा है! यहां कुछ बेहतरीन क्षण दिए गए हैं, जब आप उन्हें याद करते हैं!</string>
+    <string name="approve_profile"> आप स्वीकृत नहीं है. </string>
+    <string name="approve_profile2">आपको स्वीकृति देगा.</string>
 
     <!--ReportingTemplate Activity-->
     <string name="reporting">रिपोर्टिंग प्रकार</string>
@@ -83,11 +86,11 @@
     <string name="backExit">बाहर निकलने के लिए कृपया वापस फिर से क्लिक करें</string>
     <string name="select_lang">भाषा चुनें</string>
     <string name="broadcast">प्रसारण</string>
-    <string name="community">माय\nसमुदाय</string>
+    <string name="community">मेरा\nसमुदाय</string>
     <string name="programme_management">कार्यक्रम\nप्रबंधक</string>
     <string name="training_content">प्रशिक्षण\nसामग्री</string>
     <string name="about_us">मुल्यवर्धन के बारे में</string>
-    <string name="indicator">माय\nसूचक</string>
+    <string name="indicator">मेरी\nरिपोर्ट</string>
     <string name="training_calendar">प्रशिक्षण\nकॅलेंडर</string>
     <string name="notification">अधिसूचना</string>
     <string name="rate">रेट करें</string>

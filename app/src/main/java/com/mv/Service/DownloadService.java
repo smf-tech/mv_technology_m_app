@@ -174,7 +174,7 @@ public class DownloadService extends IntentService {
         sendIntent(download);
         notificationManager.cancel(0);
         notificationBuilder.setProgress(0, 0, false);
-        notificationBuilder.setContentText(fileName + " Downloaded");
+        notificationBuilder.setContentText(fileName + " downloaded");
         notificationManager.notify(0, notificationBuilder.build());
         if (filetype.equalsIgnoreCase("zip"))
             startUnZipping();

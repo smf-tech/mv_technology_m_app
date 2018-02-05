@@ -47,6 +47,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.utils.Utils;
 import com.google.android.flexbox.AlignItems;
 import com.google.android.flexbox.FlexDirection;
 import com.google.android.flexbox.FlexWrap;
@@ -98,6 +99,7 @@ import java.util.Date;
 import java.util.List;
 
 import okhttp3.ResponseBody;
+import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -128,7 +130,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     RecyclerView recyclerView;
     ArrayList<String> menuListName;
     ImageView iv_home_animate,iv_logo;
-
+    AlertDialog alertDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -158,18 +160,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         date = new Date(System.currentTimeMillis());
 
 
-        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
+        if ((User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) || (User.getCurrentUser(getApplicationContext()).getRoll().equals("MT"))) {
             if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("true")) {
-
+                alertDialog = new android.app.AlertDialog.Builder(this).create();
 
                 if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                    // LocationPopup();
-                    SampleDialog();
-                    LocatonFlag = 0;
+                    LocationDialog();
+
 
                 } else {
-                    if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-
+                    if ((manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) && alertDialog.isShowing()) {
+                       alertDialog.dismiss();
                         // Utills.scheduleJob(getApplicationContext());
                         getAddress();
 
@@ -196,12 +198,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         }
 */
 
-                    } else {
-                        if (LocatonFlag == 0) {
-                            if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                                getAddress();
-                            }
-                        }
                     }
                 }
             }
@@ -226,21 +222,31 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
+        if ((User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) || (User.getCurrentUser(getApplicationContext()).getRoll().equals("MT"))) {
             if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("true")) {
+                alertDialog = new android.app.AlertDialog.Builder(this).create();
                 final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-
-                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+               Boolean GpsStatus = manager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+                if (GpsStatus==false) {
                     //LocationPopup();
-                    SampleDialog();
-                    LocatonFlag = 0;
+                    LocationDialog();
+                    Log.e("GPS off","1");
+
+
 
                 } else {
-                    if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    alertDialog.dismiss();
+                    if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && (alertDialog.isShowing()) ) {
+                        Log.e("gps on","1");
+
+                        alertDialog.dismiss();
+                        getAddress();
+
+
 
                         // Utills.scheduleJob(getApplicationContext());
-                        getAddress();
+
 
                        /* SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
 
@@ -265,12 +271,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         }
 */
 
-                    } else {
-                        if (LocatonFlag == 0) {
-                            if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                                getAddress();
-                            }
-                        }
                     }
                 }
             }
@@ -815,7 +815,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+        alertDialog.setButton2(getString((R.string.cancel)), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
                 // Write your code here to execute after dialog closed
@@ -824,7 +824,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+        alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 sendLogOutRequest();
             }
@@ -1114,14 +1114,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         dialog.show();
     }
 
-    private void SampleDialog(){
-        final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
+    private void LocationDialog(){
+       alertDialog = new android.app.AlertDialog.Builder(this).create();
 
         // Setting Dialog Title
-        alertDialog.setTitle("Open Location");
+        alertDialog.setTitle(getString(R.string.gps_settings));
 
         // Setting Dialog Message
-        alertDialog.setMessage("Gps is not available. ");
+        alertDialog.setMessage(getString(R.string.no_gps));
 
         // Setting Icon to Dialog
         alertDialog.setIcon(R.drawable.logomulya);
@@ -1135,14 +1135,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });*/
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+        alertDialog.setButton((getString(R.string.gps_settings)), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
                 Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                 startActivity(myIntent);
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                alertDialog.dismiss();
             }
         });
+
+
 
 
 
@@ -1177,7 +1180,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                 JSONObject jsonObject = new JSONObject(data);
                                 String status = jsonObject.getString("status");
                                 String message = jsonObject.getString("msg");
-                                //Utills.showToast(status,HomeActivity.this);
                                 if (status.equals("Success")) {
 
 

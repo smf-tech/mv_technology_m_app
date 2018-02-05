@@ -427,7 +427,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     * initialize all views
     * */
     private void initViews() {
-        setActionbar(getString(R.string.Registration));
+
         Utills.setupUI(findViewById(R.id.layout_main), this);
         preferenceHelper = new PreferenceHelper(this);
 
@@ -564,6 +564,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         if (getIntent() != null) {
 
             if (getIntent().getStringExtra(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_EDIT)) {
+                setActionbar(getString(R.string.update_profile));
                 isAdd = false;
                 binding.editTextMidleName.setText(User.getCurrentUser(this).getMiddleName());
                 binding.editTextLastName.setText(User.getCurrentUser(this).getLastName());
@@ -593,6 +594,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     binding.editTextEmail.setText(User.getCurrentUser(this).getEmail());
             } else {
                 isAdd = true;
+                setActionbar(getString(R.string.Registration));
             }
         }
 
