@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -45,7 +46,7 @@ import retrofit2.Response;
  * Created by nanostuffs on 14-11-2017.
  */
 
-public class IndicatorListFragmet extends AppCompatActivity implements View.OnClickListener{
+public class IndicatorListFragmet extends AppCompatActivity implements View.OnClickListener {
     private PreferenceHelper preferenceHelper;
     List<DashaBoardListModel> processAllList = new ArrayList<>();
     private IndicatorListAdapter mAdapter;
@@ -63,16 +64,23 @@ public class IndicatorListFragmet extends AppCompatActivity implements View.OnCl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context=this;
-        binding =  DataBindingUtil.setContentView(this, R.layout.activity_new_template);
+        context = this;
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_new_template);
         binding.setVariable(BR.vm, new ParentViewModel());
 
         setActionbar(getString(R.string.indicator));
     }
+
     private void setActionbar(String Title) {
-        RelativeLayout  mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        String str = Title;
+        if (str.contains("\n")) {
+            str = str.replace("\n", " ");
+        }
+        LinearLayout layoutList = (LinearLayout) findViewById(R.id.layoutList);
+        layoutList.setVisibility(View.GONE);
+        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(Title);
+        toolbar_title.setText(str);
         ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
@@ -80,6 +88,7 @@ public class IndicatorListFragmet extends AppCompatActivity implements View.OnCl
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -89,10 +98,12 @@ public class IndicatorListFragmet extends AppCompatActivity implements View.OnCl
                 break;
         }
     }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
+
     private void initViews() {
         preferenceHelper = new PreferenceHelper(context);
         binding.swiperefresh.setOnRefreshListener(

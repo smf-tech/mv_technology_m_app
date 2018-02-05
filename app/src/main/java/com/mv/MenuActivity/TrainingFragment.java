@@ -19,6 +19,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -49,7 +50,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TrainingFragment extends AppCompatActivity implements View.OnClickListener{
+public class TrainingFragment extends AppCompatActivity implements View.OnClickListener {
     public static final String MESSAGE_PROGRESS = "message_progress";
     private RecyclerView recyclerView;
 
@@ -58,11 +59,12 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
     private ArrayList<DownloadContent> mList = new ArrayList<DownloadContent>();
     TextView textNoData;
     Activity context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_training);
-        context=this;
+        context = this;
         setActionbar(getString(R.string.training_content));
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         textNoData = (TextView) findViewById(R.id.textNoData);
@@ -91,9 +93,15 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
     }
 
     private void setActionbar(String Title) {
+        String str = Title;
+        if (str.contains("\n")) {
+            str = str.replace("\n", " ");
+        }
+        LinearLayout layoutList = (LinearLayout) findViewById(R.id.layoutList);
+        layoutList.setVisibility(View.GONE);
         RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(Title);
+        toolbar_title.setText(str);
         ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
@@ -101,6 +109,7 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -115,6 +124,7 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
+
     private void showPopUp() {
         final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 
@@ -168,18 +178,18 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
                             JSONArray jsonArray = new JSONArray(str);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<DownloadContent> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), DownloadContent[].class));
-                             if (temp.size()!=0) {
-                                 if (temp.size() > 0)
-                                     preferenceHelper.insertString(PreferenceHelper.TrainingContentData, str);
-                                 mList.clear();
-                                 for (DownloadContent content : temp) {
-                                     mList.add(content);
-                                 }
-                                 adapter.notifyDataSetChanged();
-                                 textNoData.setVisibility(View.GONE);
-                             }else {
-                                 textNoData.setVisibility(View.VISIBLE);
-                             }
+                            if (temp.size() != 0) {
+                                if (temp.size() > 0)
+                                    preferenceHelper.insertString(PreferenceHelper.TrainingContentData, str);
+                                mList.clear();
+                                for (DownloadContent content : temp) {
+                                    mList.add(content);
+                                }
+                                adapter.notifyDataSetChanged();
+                                textNoData.setVisibility(View.GONE);
+                            } else {
+                                textNoData.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
                 } catch (JSONException e) {
@@ -209,7 +219,7 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
         Utills.showToast("Downloading Started...", context);
         Intent intent = new Intent(context, DownloadService.class);
         intent.putExtra("URL", mList.get(position).getUrl());
-        intent.putExtra("fragment_flag","Training_Fragment");
+        intent.putExtra("fragment_flag", "Training_Fragment");
         if (mList.get(position).getFileType().equalsIgnoreCase("zip")) {
             intent.putExtra("FILENAME", mList.get(position).getName() + ".zip");
             intent.putExtra("FILETYPE", mList.get(position).getName() + "zip");

@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -57,17 +58,19 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context=this;
-        binding =  DataBindingUtil.setContentView(this, R.layout.activity_new_template);
+        context = this;
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_new_template);
         binding.setVariable(BR.vm, new ParentViewModel());
 
 
         initViews();
     }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
+
     private void initViews() {
         setActionbar(getString(R.string.programme_management));
         preferenceHelper = new PreferenceHelper(context);
@@ -76,36 +79,39 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onRefresh() {
                         if (Utills.isConnected(context))
-                        getAllProcess();
+                            getAllProcess();
                     }
                 }
         );
 
         textNoData = (TextView) findViewById(R.id.textNoData);
         mAdapter = new TemplateAdapter(processAllList, context);
-         mLayoutManager = new LinearLayoutManager(context);
+        mLayoutManager = new LinearLayoutManager(context);
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(mAdapter);
         if (Utills.isConnected(context))
             getAllProcess();
-        else
-        {
+        else {
             processAllList.clear();
-            processAllList=AppDatabase.getAppDatabase(context).userDao().getProcess();
+            processAllList = AppDatabase.getAppDatabase(context).userDao().getProcess();
             mAdapter = new TemplateAdapter(processAllList, context);
-             mLayoutManager = new LinearLayoutManager(context);
+            mLayoutManager = new LinearLayoutManager(context);
             binding.recyclerView.setAdapter(mAdapter);
         }
     }
 
 
-
-
     private void setActionbar(String Title) {
-        RelativeLayout  mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        String str = Title;
+        if (str.contains("\n")) {
+            str = str.replace("\n", " ");
+        }
+        LinearLayout layoutList = (LinearLayout) findViewById(R.id.layoutList);
+        layoutList.setVisibility(View.GONE);
+        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(Title);
+        toolbar_title.setText(str);
         ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
@@ -113,6 +119,7 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -128,7 +135,7 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getProcess/"+ User.getCurrentUser(context).getId();
+                + "/services/apexrest/getProcess/" + User.getCurrentUser(context).getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -137,7 +144,7 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                 try {
                     if (response.isSuccess()) {
                         JSONArray jsonArray = new JSONArray(response.body().string());
-                        if (jsonArray.length()!=0) {
+                        if (jsonArray.length() != 0) {
                             processAllList.clear();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 Template processList = new Template();
@@ -161,7 +168,7 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                             AppDatabase.getAppDatabase(context).userDao().insertProcess(processAllList);
                             mAdapter.notifyDataSetChanged();
                             textNoData.setVisibility(View.GONE);
-                        }else {
+                        } else {
                             textNoData.setVisibility(View.VISIBLE);
                         }
                     }
