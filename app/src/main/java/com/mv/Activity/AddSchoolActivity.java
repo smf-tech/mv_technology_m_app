@@ -87,14 +87,14 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                 selectedCluster = (String) parent.getItemAtPosition(position);
 
                 mListVillage.clear();
-                mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), selectedCluster);
+                mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), selectedCluster);
                 mListVillage.removeAll(Collections.singleton(null));
                 if (mListVillage.size() == 0) {
                     if (Utills.isConnected(context))
                         getVillage();
                     else {
                         mListVillage.clear();
-                        mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), selectedCluster);
+                        mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), selectedCluster);
                         mListVillage.add(0, "Select");
                         mListVillage.removeAll(Collections.singleton(null));
                         ArrayAdapter<String> adapterVillage = new ArrayAdapter<String>
@@ -122,14 +122,14 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                 selectedVillage = (String) parent.getItemAtPosition(position);
 
                 mListSchoolName.clear();
-                mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), selectedCluster, selectedVillage);
+                mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), selectedCluster, selectedVillage);
                 mListSchoolName.removeAll(Collections.singleton(null));
                 if (mListSchoolName.size() == 0) {
                     if (Utills.isConnected(context))
                         getSchool();
                     else {
                         mListSchoolName.clear();
-                        mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), selectedCluster, selectedVillage);
+                        mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), selectedCluster, selectedVillage);
                         mListSchoolName.add(0, "Select");
                         mListSchoolName.removeAll(Collections.singleton(null));
                         ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<String>(context, android.R.layout.select_dialog_item, mListSchoolName);
@@ -176,21 +176,27 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
             getDistrict();
         else {
 
-            mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(User.getCurrentUser(context).getState());
+            mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(selectedState);
             mListDistrict.add(0, "Select");
         }
         */
       /*  state_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mStateList);
         state_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerState.setAdapter(state_adapter);*/
-/*        if (Utills.isConnected(this))
-            getState();
-        else*/
-        mStateList = AppDatabase.getAppDatabase(context).userDao().getState();
-        mStateList.add(0, "Select");
-        setSpinnerAdapter(mStateList, state_adapter, binding.spinnerState, selectedState);
-        //  mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
 
+        mStateList.clear();
+        mStateList = AppDatabase.getAppDatabase(context).userDao().getState();
+        mStateList.removeAll(Collections.singleton(null));
+        if (mStateList.size() == 0) {
+            if (Utills.isConnected(this))
+                getState();
+        }
+        else {
+            mStateList = AppDatabase.getAppDatabase(context).userDao().getState();
+            mStateList.add(0, "Select");
+            setSpinnerAdapter(mStateList, state_adapter, binding.spinnerState, selectedState);
+            //  mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
+        }
         setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
         setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
 
@@ -291,21 +297,32 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                 if (mSelectState != 0) {
                     selectedState = mStateList.get(mSelectState);
                 }
+                mListDistrict.clear();
+                mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(selectedState);
+                mListDistrict.removeAll(Collections.singleton(null));
+                if (mListDistrict.size() == 0) {
 
-                if (binding.spinnerDistrict.isShown()) {
-               /*     if (Utills.isConnected(this))
-                      getDistrict();
-                  else {*/
+                    if (binding.spinnerDistrict.isShown()) {
+                        if (Utills.isConnected(this))
+                            getDistrict();
+                        else {
+                            mListDistrict = new ArrayList<>();
+                            mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(selectedState);
+                            mListDistrict.removeAll(Collections.singleton(null));
+                            mListDistrict.add(0, "Select");
+                            setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
+
+                        }
+                    }
+                }
+                else {
                     mListDistrict = new ArrayList<>();
                     mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(selectedState);
                     mListDistrict.removeAll(Collections.singleton(null));
                     mListDistrict.add(0, "Select");
                     setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
 
-                    //  }
                 }
-
-
                 setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
                 binding.spinnerCluster.setText("");
                 binding.spinnerVillage.setText("");
@@ -324,7 +341,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                     selectedVillage="";
                     selectedSchool="";*/
                     mListTaluka.clear();
-                    mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict));
+                    mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
                     mListTaluka.removeAll(Collections.singleton(null));
                     if (mListTaluka.size() == 0) {
                         if (binding.spinnerTaluka.isShown()) {
@@ -332,7 +349,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                                 getTaluka();
                             else {
                                 mListTaluka.clear();
-                                mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict));
+                                mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
                                 mListTaluka.add(0, "Select");
                                 mListTaluka.removeAll(Collections.singleton(null));
                                 setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
@@ -341,7 +358,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                         }
                     } else {
                         mListTaluka.clear();
-                        mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict));
+                        mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
                         mListTaluka.add(0, "Select");
                         mListTaluka.removeAll(Collections.singleton(null));
                         setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
@@ -370,7 +387,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                     if (binding.spinnerCluster.isShown()) {
 
                         mListCluster.clear();
-                        mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
+                        mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
                         mListCluster.removeAll(Collections.singleton(null));
                         System.out.println(mListCluster);
                         if (mListCluster.size() == 0) {
@@ -380,7 +397,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                             else {
 
                                 mListCluster.clear();
-                                mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
+                                mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
                                 mListCluster.add(0, "Select");
                                 mListCluster.removeAll(Collections.singleton(null));
                                 ArrayAdapter<String> adapterCluster = new ArrayAdapter<String>
@@ -420,14 +437,14 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                     if (binding.spinnerVillage.isShown()) {
 
                         mListVillage.clear();
-                        mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
+                        mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
                         mListVillage.removeAll(Collections.singleton(null));
                         if (mListVillage.size() == 0) {
                             if (Utills.isConnected(this))
                                 getVillage();
                             else {
                                 mListVillage.clear();
-                                mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
+                                mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
                                 mListVillage.add(0, "Select");
                                 mListVillage.removeAll(Collections.singleton(null));
                                 ArrayAdapter<String> adapterVillage = new ArrayAdapter<String>
@@ -465,14 +482,14 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                     // selectedSchool="";
                     if (binding.spinnerSchoolName.isShown()) {
                         mListSchoolName.clear();
-                        mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
+                        mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
                         mListSchoolName.removeAll(Collections.singleton(null));
                         if (mListSchoolName.size() == 0) {
                             if (Utills.isConnected(this))
                                 getSchool();
                             else {
                                 mListSchoolName.clear();
-                                mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
+                                mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
                                 mListSchoolName.add(0, "Select");
                                 mListSchoolName.removeAll(Collections.singleton(null));
                                 ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<String>
@@ -571,7 +588,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
 
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getDistrict(mStateList.get(mSelectState)).enqueue(new Callback<ResponseBody>() {
+        apiService.getDistrict(selectedState).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -605,7 +622,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
 
-        apiService.getTaluka(mStateList.get(mSelectState), mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
+        apiService.getTaluka(selectedState, mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -619,7 +636,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                     setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
                     Intent intent = new Intent(getApplicationContext(), LocationService.class);
                     // add infos for the service which file to download and where to store
-                    intent.putExtra(Constants.State, mStateList.get(mSelectState));
+                    intent.putExtra(Constants.State, selectedState);
                     intent.putExtra(Constants.DISTRICT, mListDistrict.get(mSelectDistrict));
                     startService(intent);
                     // taluka_adapter.notifyDataSetChanged();
@@ -639,7 +656,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
         Utills.showProgressDialog(this, getString(R.string.loding_cluster), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getCluster(mStateList.get(mSelectState), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka)).enqueue(new Callback<ResponseBody>() {
+        apiService.getCluster(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -671,7 +688,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
         Utills.showProgressDialog(this, getString(R.string.loding_village), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getVillage(mStateList.get(mSelectState), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster)).enqueue(new Callback<ResponseBody>() {
+        apiService.getVillage(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -704,7 +721,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
 
-        apiService.getSchool(mStateList.get(mSelectState), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage)).enqueue(new Callback<ResponseBody>() {
+        apiService.getSchool(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();

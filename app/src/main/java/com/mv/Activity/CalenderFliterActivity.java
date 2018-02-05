@@ -128,20 +128,19 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
         mListRoleName = new ArrayList<String>();
         mListRoleName.add("Select");
-      /*  if (Utills.isConnected(this))
-            getDistrict();
-        else {
-
-            mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(User.getCurrentUser(context).getState());
-            mListDistrict.add(0, "Select");
+        mStateList.clear();
+        mStateList = AppDatabase.getAppDatabase(context).userDao().getState();
+        mStateList.removeAll(Collections.singleton(null));
+        if (mStateList.size() == 0) {
+            if (Utills.isConnected(this))
+                getState();
         }
-        */
-      /*  state_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mStateList);
-        state_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        binding.spinnerState.setAdapter(state_adapter);*/
-/*        if (Utills.isConnected(this))
-            getState();
-        else*/
+        else {
+            mStateList = AppDatabase.getAppDatabase(context).userDao().getState();
+            mStateList.add(0, "Select");
+            setSpinnerAdapter(mStateList, state_adapter, binding.spinnerState, selectedState);
+            //  mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
+        }
         if (Utills.isConnected(this))
             getOrganization();
         mStateList = AppDatabase.getAppDatabase(context).userDao().getState();
@@ -170,7 +169,45 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
+    private void getState() {
 
+        Utills.showProgressDialog(this, "Loading States", getString(R.string.progress_please_wait));
+        Utills.showProgressDialog(this);
+        ServiceRequest apiService =
+                ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getState().enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(data);
+                            mStateList.clear();
+                            mStateList.add("Select");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                mStateList.add(jsonArray.getString(i));
+                            }
+                            setSpinnerAdapter(mStateList, state_adapter, binding.spinnerState, selectedState);
+
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -271,25 +308,38 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 if (mSelectState != 0) {
                     selectedState = mStateList.get(mSelectState);
                 }
+                mListDistrict.clear();
+                mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(selectedState);
+                mListDistrict.removeAll(Collections.singleton(null));
+                if (mListDistrict.size() == 0) {
 
+                    if (binding.spinnerDistrict.isShown()) {
+                        if (Utills.isConnected(this))
+                            getDistrict();
+                        else {
+                            mListDistrict = new ArrayList<>();
+                            mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(selectedState);
+                            mListDistrict.removeAll(Collections.singleton(null));
+                            mListDistrict.add(0, "Select");
+                            setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
 
-               /*     if (Utills.isConnected(this))
-                      getDistrict();
-                  else {*/
+                        }
+                    }
+                }
+                else {
                     mListDistrict = new ArrayList<>();
                     mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(selectedState);
                     mListDistrict.removeAll(Collections.singleton(null));
                     mListDistrict.add(0, "Select");
                     setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
 
-                    //  }
-
-
-
+                }
+                setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
                 setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
                 setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster, selectedCluster);
                 setSpinnerAdapter(mListVillage, village_adapter, binding.spinnerVillage, selectedVillage);
                 setSpinnerAdapter(mListSchoolName, school_adapter, binding.spinnerSchoolName, selectedSchool);
+
 
                 //    mListDistrict.clear();
 
@@ -304,24 +354,24 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                     selectedVillage="";
                     selectedSchool="";*/
                     mListTaluka.clear();
-                    mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict));
+                    mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
                     mListTaluka.removeAll(Collections.singleton(null));
                     if (mListTaluka.size() == 0) {
-
+                        if (binding.spinnerTaluka.isShown()) {
                             if (Utills.isConnected(this))
                                 getTaluka();
                             else {
                                 mListTaluka.clear();
-                                mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict));
+                                mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
                                 mListTaluka.add(0, "Select");
                                 mListTaluka.removeAll(Collections.singleton(null));
                                 setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
 
                             }
-
+                        }
                     } else {
                         mListTaluka.clear();
-                        mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict));
+                        mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
                         mListTaluka.add(0, "Select");
                         mListTaluka.removeAll(Collections.singleton(null));
                         setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
@@ -334,12 +384,12 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
                 }
 
-
+                setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
                 setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster, selectedCluster);
                 setSpinnerAdapter(mListVillage, village_adapter, binding.spinnerVillage, selectedVillage);
                 setSpinnerAdapter(mListSchoolName, school_adapter, binding.spinnerSchoolName, selectedSchool);
-                break;
 
+                break;
 
             case R.id.spinner_taluka:
                 mSelectTaluka = i;
@@ -481,7 +531,39 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         String abc;
 
     }
+    private void getDistrict() {
 
+        Utills.showProgressDialog(this, getString(R.string.loding_district), getString(R.string.progress_please_wait));
+
+        ServiceRequest apiService =
+                ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getDistrict(mStateList.get(mSelectState)).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    JSONArray jsonArray = new JSONArray(response.body().string());
+                    mListDistrict.clear();
+                    mListDistrict.add("Select");
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        mListDistrict.add(jsonArray.getString(i));
+                    }
+                    setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
+    }
     private void getRole() {
         Utills.showProgressDialog(this, getString(R.string.Loading_Roles), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
