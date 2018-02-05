@@ -122,6 +122,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     RecyclerView recyclerView;
     ArrayList<String> menuListName;
     ImageView iv_home_animate, iv_logo;
+    final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -152,18 +153,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         date = new Date(System.currentTimeMillis());
 
 
-        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
+        if ((User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) || (User.getCurrentUser(getApplicationContext()).getRoll().equals("MT"))) {
             if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("true")) {
 
 
                 if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     // LocationPopup();
+                    Log.e("Gps enable","No");
                     SampleDialog();
                     LocatonFlag = 0;
 
                 } else {
                     if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-
+                        Log.e("Gps enable","yes");
                         // Utills.scheduleJob(getApplicationContext());
                         getAddress();
 
@@ -190,12 +192,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         }
 */
 
-                    } else {
-                        if (LocatonFlag == 0) {
-                            if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                                getAddress();
-                            }
-                        }
                     }
                 }
             }
@@ -217,9 +213,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if (User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) {
+        if ((User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) || (User.getCurrentUser(getApplicationContext()).getRoll().equals("MT"))) {
             if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("true")) {
-                final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+               // final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 
                 if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -256,12 +252,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         }
 */
 
-                    } else {
-                        if (LocatonFlag == 0) {
-                            if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                                getAddress();
-                            }
-                        }
                     }
                 }
             }
@@ -1033,10 +1023,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
 
         // Setting Dialog Title
-        alertDialog.setTitle("Open Location");
+        alertDialog.setTitle(getString(R.string.gps_settings));
 
         // Setting Dialog Message
-        alertDialog.setMessage("Gps is not available. ");
+        alertDialog.setMessage(getString(R.string.no_gps));
 
         // Setting Icon to Dialog
         alertDialog.setIcon(R.drawable.logomulya);
@@ -1050,7 +1040,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         });*/
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+        alertDialog.setButton((getString(R.string.gps_settings)), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
                 Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
