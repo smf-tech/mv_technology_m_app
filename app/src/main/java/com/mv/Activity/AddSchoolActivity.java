@@ -753,6 +753,14 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
 
     private void submitLocation() {
 
+        final LocationModel locationModel=new LocationModel();
+        locationModel.setState(selectedState);
+        locationModel.setDistrict(selectedDisrict);
+        locationModel.setTaluka(selectedTaluka);
+        locationModel.setCluster(binding.spinnerCluster.getText().toString().toUpperCase());
+        locationModel.setVillage( binding.spinnerVillage.getText().toString().toUpperCase());
+        locationModel.setSchoolName(binding.spinnerSchoolName.getText().toString().toUpperCase());
+
         Utills.showProgressDialog(context, "Loading ", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
@@ -768,7 +776,10 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                         JSONObject dataObject = new JSONObject(data);
                        if( dataObject.getString("status").equals("1"))
                        {
-                           Utills.showToast("Please logout and sign in for see  newly add locaton",context);
+                           AppDatabase.getAppDatabase(getApplicationContext()).userDao().insertLocation(locationModel);
+
+                           Utills.showToast("Location Inserted successfully",context);
+
                            finish();
                        }
 

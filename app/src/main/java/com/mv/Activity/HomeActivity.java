@@ -315,7 +315,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         HomeModel homeModel = new HomeModel();
         homeModel.setMenuName(getString(R.string.about_us));
-        homeModel.setMenuIcon(R.drawable.ic_calender);
+        homeModel.setMenuIcon(R.drawable.ic_about_us);
         homeModel.setDestination(AboutUsActivity.class);
         homeModel.setAccessible(true);
         menulist.add(homeModel);
@@ -732,7 +732,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                 }).create();
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.show();
     }
 
@@ -1119,7 +1119,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                    Toast.makeText(getApplicationContext(), R.string.error_something_went_wrong, Toast.LENGTH_LONG).show();
+                 //   Toast.makeText(getApplicationContext(), R.string.error_something_went_wrong, Toast.LENGTH_LONG).show();
                 }
             });
 

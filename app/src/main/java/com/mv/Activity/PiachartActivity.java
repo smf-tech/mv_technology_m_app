@@ -37,7 +37,6 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -70,11 +69,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -95,7 +91,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     ImageView imageView;
     Bitmap mbitmap;
     String roleList;
-    private ImageView img_back, img_list, img_logout,location;
+    private ImageView img_back, img_list, img_logout, location;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     RecyclerView rvPiaChartDeatail;
@@ -119,9 +115,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         roleList = getIntent().getStringExtra(Constants.INDICATOR_TASK_ROLE);
         title = getIntent().getExtras().getString(Constants.TITLE);
         locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
-        if(locationModel==null)
-        {
-            locationModel=new LocationModel();
+        if (locationModel == null) {
+            locationModel = new LocationModel();
             locationModel.setState(User.getCurrentUser(getApplicationContext()).getState());
             locationModel.setDistrict(User.getCurrentUser(getApplicationContext()).getDistrict());
             locationModel.setTaluka(User.getCurrentUser(getApplicationContext()).getTaluka());
@@ -463,12 +458,13 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 break;
 
             case R.id.img_list:
-                Intent openClass = new Intent(PiachartActivity.this, ReportLocationSelectionActivity.class);
-                openClass.putExtra(Constants.TITLE,title);
-                openClass.putExtra(Constants.INDICATOR_TASK,task);
-                openClass.putExtra(Constants.INDICATOR_TASK_ROLE,roleList);
+                Intent openClass = new Intent(PiachartActivity.this, IndicatorLocationSelectionActivity.class);
+                openClass.putExtra(Constants.TITLE, title);
+                openClass.putExtra(Constants.INDICATOR_TASK, task);
+                openClass.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
                 startActivity(openClass);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                finish();
                 break;
         }
     }
@@ -571,7 +567,10 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                             JSONArray jsonArray = recorObject.getJSONArray("outputdata");
                             JSONObject dataObject = recorObject.getJSONObject("data");
                             binding.processName.setText(dataObject.getString("processName"));
-                            binding.captionName.setText("Caption : " + dataObject.getString("caption"));
+                            if (dataObject.getString("caption").equals("null"))
+                                binding.captionName.setText("Caption : N/A");
+                            else
+                                binding.captionName.setText("Caption : " + dataObject.getString("caption"));
                             binding.countOfDistrict.setText("Count of District : " + dataObject.getString("countOfDistrict"));
                             binding.countOfTaluka.setText("Count of Taluka : " + dataObject.getString("countOfDistrict"));
                             binding.countOfCluster.setText("Count of Cluster : " + dataObject.getString("countOfDistrict"));

@@ -55,13 +55,13 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
     private int mSelectOrganization = 0, mSelectRole = 0, mSelectState = 1, mSelectDistrict = 1, mSelectTaluka = 0, mSelectCluster = 0, mSelectVillage = 0, mSelectSchoolName = 0;
     private List<String> mListOrganization, mListRoleName, mListDistrict, mListTaluka, mListCluster, mListVillage, mListSchoolName, mStateList;
     ArrayList<EventUser> selectedUser = new ArrayList<>();
-    private ArrayAdapter<String> district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, state_adapter, organization_adapter, role_adapter;
+    private ArrayAdapter<String> district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, state_adapter, organization_adapter, role_adapter,catagory_adapter;
     private PreferenceHelper preferenceHelper;
     private RelativeLayout mToolBar;
     private Spinner selectedSpinner;
     String msg = "";
     private int locationState;
-    public String selectedState = "", selectedDisrict = "", selectedTaluka = "", selectedCluster = "", selectedVillage = "", selectedSchool = "", selectedRole = "", selectedOrganization = "", selectedUserId = "",selectedUserName="";
+    public String selectedState = "", selectedDisrict = "", selectedTaluka = "", selectedCluster = "", selectedVillage = "", selectedSchool = "", selectedRole = "", selectedOrganization = "", selectedUserId = "",selectedUserName="",selectedCatagory="";
 
     ArrayList<EventUser> calenderEventUserArrayList;
 
@@ -99,6 +99,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         binding.spinnerCluster.setOnItemSelectedListener(this);
         binding.spinnerVillage.setOnItemSelectedListener(this);
         binding.spinnerSchoolName.setOnItemSelectedListener(this);
+        binding.spinnerCatogory.setOnItemSelectedListener(this);
         binding.btnSubmit.setOnClickListener(this);
         binding.spinnerOrganization.setOnItemSelectedListener(this);
         binding.tvEventAddUser.setOnClickListener(this);
@@ -147,7 +148,15 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         mStateList.add(0, "Select");
         setSpinnerAdapter(mStateList, state_adapter, binding.spinnerState, selectedState);
         //  mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
+        ArrayList<String> catagory=new ArrayList<>();
+        catagory.add("Select");
+        catagory.add("Training Observation");
+        catagory.add("Classroom Observation");
+        catagory.add("School Visit");
+        catagory.add("School and Classroom Observation");
+        catagory.add("Training");
 
+        setSpinnerAdapter(catagory, catagory_adapter, binding.spinnerCatogory, "");
         setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
         setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
         setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster, selectedCluster);
@@ -218,7 +227,11 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 break;
             case R.id.btn_submit:
                 String msg="";
-                if(binding.etEventTitle.getText().toString().equals(""))
+                if(selectedCatagory.equals("")||selectedCatagory.equals("Select"))
+                {
+                    msg="Please Select Category";
+                }
+               else if(binding.etEventTitle.getText().toString().equals(""))
                 {
                     msg="Please Enter  Title";
                 }else if(binding.etEventDate.getText().toString().equals(""))
@@ -272,32 +285,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         }
     }
 
-    private void sendLocation() {
 
-       /* msg = "";
-        taskList.get(position).setTask_Response__c(selectedSpinner.getSelectedItem().toString());
-   *//*     for (int i = 0; i < locationState; i++) {
-            if (taskList.get(i).getTask_Response__c().equals("Select")) {
-                msg = "Please Select " + taskList.get(i).getTask_Text__c();
-                break;
-            }
-        }*//*
-        if (!selectedSpinner.getSelectedItem().toString().equals("Select")) {
-            preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
-            Intent openClass = new Intent(context, ProcessDeatailActivity.class);
-            // openClass.putExtra(Constants.PROCESS_ID, dashaBoardListModel);
-            openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskList);
-            //  openClass.putExtra("stock_list", resultList.get(getAdapterPosition()).get(0));
-            setResult(RESULT_OK, openClass);
-            //  startActivity(openClass);
-            finish();
-            overridePendingTransition(R.anim.right_in, R.anim.left_out);
-        } else {
-            Utills.showToast(msg, getApplicationContext());
-        }*/
-
-
-    }
 
 
     @Override
@@ -511,6 +499,10 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 if (mSelectOrganization != 0) {
                     getRole();
                 }
+
+                break;
+            case R.id.spinner_catogory:
+                selectedCatagory=adapterView.getItemAtPosition(i).toString();
 
                 break;
 
@@ -942,7 +934,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
                 jsonObject1.put("State__c",selectedState);
                 jsonObject1.put("Taluka__c", selectedTaluka);
-
+                jsonObject1.put("category", selectedCatagory);
                 jsonObject1.put("Title__c", binding.etEventTitle.getText().toString());
 
                 jsonArray.put(jsonObject1);
