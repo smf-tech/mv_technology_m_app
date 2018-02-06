@@ -1,6 +1,7 @@
 package com.mv.Activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Service.LocationService;
 import com.mv.Utils.Constants;
+import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityAddSchoolBinding;
@@ -72,6 +74,10 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
         initViews();
     }
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
+    }
 
     private void initViews() {
         setActionbar("Select Location");

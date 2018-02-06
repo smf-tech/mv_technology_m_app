@@ -3,7 +3,11 @@
     android:layout_width="match_parent"
     android:id="@+id/rel_dialog"
     android:layout_height="match_parent">
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbar_layout"
+        android:visibility="invisible"></include>
     <ImageView
+        android:layout_below="@+id/toolbar_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/cancel"

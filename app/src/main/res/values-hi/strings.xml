@@ -23,7 +23,7 @@
     <string name="fragment_intro_about">मूल्यवर्धन के बारे में</string>
     <string name="fragment_intro_training">मूल्यवर्धन प्रशिक्षण</string>
     <string name="fragment_intro_events">मूल्यवर्धनकार्यक्रम</string>
-
+    <string name="reporting_template">Reporting Template</string>
     <!--Registration Activity-->
     <string name="name">पहला नाम *</string>
     <string name="middle_name">मध्य नाम</string>
@@ -81,7 +81,8 @@
     <string name="msg_manual_otp">(यदि हम एसएमएस को स्वचालित रूप से पहचानने में विफल रहते हैं तो नीचे दिए गए ओटीपी दर्ज करें)</string>
     <string name="resend"><u>ओटीपी को भेजें</u></string>
     <string name="check_otp">कृपया ओटीपी चेक करें</string>
-
+    <string name="download">डाऊनलोड</string>
+    <string name="locked">उपलब्ध नहीं</string>
     <string name="Submit">निवेदन करें</string>
     <string name="backExit">बाहर निकलने के लिए कृपया वापस फिर से क्लिक करें</string>
     <string name="select_lang">भाषा चुनें</string>
@@ -129,14 +130,14 @@
     <string name="loding_cluster">क्लस्टर लोड हो रहे हैं</string>
     <string name="loding_school">स्कूललोड हो रहे हैं</string>
     <string name="loding_village">गांवलोड हो रहे हैं</string>
-
+    <string name="Forward">फॉरवर्ड </string>
     <string name="issue_template">मुद्दा टेम्पलेट</string>
     <string name="issue_submit">मुद्दा सफलतापूर्वक सबमिट किया गया...</string>
     <string name="broadcast_submit">प्रसारण सफलतापूर्वक सबमिट किया गया...</string>
     <string name="Process_Detail">प्रक्रिया विवरण</string>
     <string name="fileNotPresent">फ़ाइल मौजूद नहीं है। कृपया डाउनलोड बटन दबाएं</string>
-
-
+    <string name="Like">पसंद</string>
+    <string name="no_data_available">कोई डेटा उपलब्ध नहीं है</string>
     <string name="Task_List">कार्य सूची</string>
     <string name="Loading_Process">प्रक्रिया लोड हो रही है</string>
     <string name="No_Task">कोई कार्य उपलब्ध नहीं</string>
