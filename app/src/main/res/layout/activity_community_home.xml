@@ -33,7 +33,7 @@
             android:id="@+id/swipe_refresh_layout"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_above="@+id/lnr_filter"
+
             android:layout_below="@+id/toolbar">
 
             <android.support.v7.widget.RecyclerView

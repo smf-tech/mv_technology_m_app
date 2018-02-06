@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:focusableInTouchMode="true"
     android:orientation="vertical">
 
     <LinearLayout
@@ -9,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:focusableInTouchMode="true"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
         android:background="@drawable/grey_box"
@@ -32,6 +34,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/txt_view1"
             android:layout_marginBottom="@dimen/dimen_10dp"
+            android:focusableInTouchMode="true"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"
@@ -44,8 +47,9 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:inputType="textPersonName"
 
+                android:inputType="textPersonName"
+                android:focusableInTouchMode="true"
                 android:textColor="@color/black"
 
                 android:textSize="@dimen/medium_text" />
@@ -87,7 +91,7 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"
-
+            android:focusableInTouchMode="true"
             android:background="@drawable/lighter_grey_box"
             android:padding="10dp">
 
@@ -97,7 +101,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:inputType="textPersonName"
-
+                android:focusableInTouchMode="true"
                 android:textColor="@color/black"
 
                 android:textSize="@dimen/medium_text" />
