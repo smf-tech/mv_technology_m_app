@@ -72,7 +72,7 @@
     <string name="profile_pic">Add Profile Picture</string>
     <string name="approve">Approve</string>
     <string name="reject">Reject</string>
-    <string name="thet_savnd">\"Thet Sanwand\" with\nMr.Shantilal Muttha</string>
+    <string name="thet_savnd">\"Thet Sanwand\"with\nMr.Shantilal Muttha</string>
     <string name="update_profile">Update Profile</string>
     <string name="approve_profile"> You are not approved yet. </string>
     <string name="approve_profile2">will approve you.</string>
@@ -101,7 +101,7 @@
 
     <string name="backExit">Please click BACK again to exit </string>
     <string name="select_lang"> Select Language</string>
-    <string name="broadcast">Broadcast \nMessage</string>
+    <string name="broadcast">Broadcast\nMessage</string>
     <string name="community">My\nCommunity</string>
     <string name="programme_management">Programme\nManagement</string>
     <string name="training_content">Training\nContent</string>

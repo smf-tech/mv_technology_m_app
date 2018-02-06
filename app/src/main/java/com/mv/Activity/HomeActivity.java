@@ -934,11 +934,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         String data = response.body().string();
                         preferenceHelper.insertString(PreferenceHelper.UserData, data);
                         User.clearUser();
+
+                        if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
+                        } else {
+                            if (alertDialogApproved != null && alertDialogApproved.isShowing())
+                                alertDialogApproved.dismiss();
+                            alertLocationDialog = null;
+                            initViews();
+                        }
+
+
                     }
-                    if (alertDialogApproved != null && alertDialogApproved.isShowing())
-                        alertDialogApproved.dismiss();
-                    alertLocationDialog = null;
-                    initViews();
+
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -1071,7 +1078,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void GetMapParameters(String latitude, String longitude) {
-
+        if (!Utills.isConnected(this))
+            return;
         try {
 
             preferenceHelper = new PreferenceHelper(getApplicationContext());
@@ -1126,7 +1134,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
 
-                 //   Toast.makeText(getApplicationContext(), R.string.error_something_went_wrong, Toast.LENGTH_LONG).show();
+                    //   Toast.makeText(getApplicationContext(), R.string.error_something_went_wrong, Toast.LENGTH_LONG).show();
                 }
             });
 
