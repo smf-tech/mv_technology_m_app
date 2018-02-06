@@ -28,6 +28,7 @@ import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Service.LocationService;
 import com.mv.Utils.Constants;
+import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityClalenderFliterBinding;
@@ -87,6 +88,10 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         initViews();
     }
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
+    }
 
     private void initViews() {
         setActionbar("Select Location");

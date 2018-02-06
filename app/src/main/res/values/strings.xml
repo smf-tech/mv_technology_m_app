@@ -31,6 +31,7 @@
     <string name="cancel">Cancel</string>
     <string name="no_gps">GPS is not available.</string>
     <string name="gps_settings">GPS Settings</string>
+    <string name="reporting_template">Reporting Template</string>
 
     <!--Home Acitivty-->
     <string name="intro_about_header">About</string>

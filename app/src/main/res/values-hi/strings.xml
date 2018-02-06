@@ -23,7 +23,7 @@
     <string name="fragment_intro_about">मूल्यवर्धन के बारे में</string>
     <string name="fragment_intro_training">मूल्यवर्धन प्रशिक्षण</string>
     <string name="fragment_intro_events">मूल्यवर्धनकार्यक्रम</string>
-
+    <string name="reporting_template">Reporting Template</string>
     <!--Registration Activity-->
     <string name="name">पहला नाम *</string>
     <string name="middle_name">मध्य नाम</string>
