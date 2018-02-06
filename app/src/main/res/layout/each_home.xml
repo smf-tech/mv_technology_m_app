@@ -63,7 +63,7 @@
             android:layout_gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="LOCKED"
+            android:text="@string/locked"
             android:layout_centerInParent="true"
             android:textColor="@color/white"
             android:textSize="@dimen/medium_text" />

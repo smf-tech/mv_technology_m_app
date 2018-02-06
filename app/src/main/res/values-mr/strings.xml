@@ -86,10 +86,11 @@
     <string name="msg_manual_otp">(आम्ही स्वयंचलितपणे SMS शोधण्यात अयशस्वी झाल्यास खालील OTP प्रविष्ट करा)</string>
     <string name="resend"> <u>OTP पुन्हा पाठवा</u></string>
     <string name="check_otp">कृपया OTP तपासा</string>
-
+    <string name="download">डाऊनलोड</string>
     <string name="Submit"> सबमिट</string>
     <string name="Save">जतन करा</string>
     <string name="backExit"> बाहेर पडण्यासाठी कृपया पुन्हा क्लिक करा </string>
+    <string name="locked">उपलब्ध नाही</string>
     <string name="select_lang"> भाषा निवडा</string>
     <string name="broadcast">ब्रॉडकास्ट \n मेसेज</string>
     <string name="community">माय \n कॅम्युनिटी </string>
@@ -150,7 +151,7 @@
     <string name="Like">पसंत</string>
 
     <string name="fileNotPresent">फाईल उपलब्ध नाही. कृपया डाउनलोड बटण दाबा</string>
-
+    <string name="no_data_available">माहिती उपलब्ध नाही.</string>
     <string name="Process_Detail">प्रक्रिया तपशील</string>
 
     <string name="Task_List">कार्य सूची</string>
