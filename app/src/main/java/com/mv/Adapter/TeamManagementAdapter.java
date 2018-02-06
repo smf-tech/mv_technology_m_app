@@ -14,6 +14,7 @@ import com.mv.Activity.ProcessApprovalActivity;
 import com.mv.Activity.ProcessListApproval;
 import com.mv.Activity.TeamManagementUserProfileListActivity;
 import com.mv.Activity.UserApproveDetail;
+import com.mv.MenuActivity.TeamManagementFragment;
 import com.mv.Model.Task;
 import com.mv.Model.Template;
 import com.mv.Model.User;
@@ -48,7 +49,7 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                 public void onClick(View view) {
 
 
-                    if(mContext instanceof HomeActivity)
+                    if(mContext instanceof TeamManagementFragment)
                     {
                         if(getAdapterPosition()==0) {
                             //User Approval

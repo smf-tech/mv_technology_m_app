@@ -15,19 +15,21 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mv.Adapter.TemplateAdapter;
 import com.mv.BR;
 import com.mv.Model.ParentViewModel;
+import com.mv.Model.Task;
+import com.mv.Model.TaskContainerModel;
 import com.mv.Model.Template;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -35,6 +37,7 @@ import com.mv.databinding.ActivityNewTemplateBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,24 +56,23 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
     private ActivityNewTemplateBinding binding;
     RecyclerView.LayoutManager mLayoutManager;
     TextView textNoData;
-
+    ArrayList<Task> taskList = new ArrayList<>();
+    TaskContainerModel taskContainerModel;
     Activity context;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_new_template);
+        context=this;
+        binding =  DataBindingUtil.setContentView(this, R.layout.activity_new_template);
         binding.setVariable(BR.vm, new ParentViewModel());
 
 
         initViews();
     }
-
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
-
     private void initViews() {
         setActionbar(getString(R.string.programme_management));
         preferenceHelper = new PreferenceHelper(context);
@@ -79,39 +81,36 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onRefresh() {
                         if (Utills.isConnected(context))
-                            getAllProcess();
+                        getAllProcess();
                     }
                 }
         );
 
         textNoData = (TextView) findViewById(R.id.textNoData);
         mAdapter = new TemplateAdapter(processAllList, context);
-        mLayoutManager = new LinearLayoutManager(context);
+         mLayoutManager = new LinearLayoutManager(context);
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(mAdapter);
         if (Utills.isConnected(context))
             getAllProcess();
-        else {
+        else
+        {
             processAllList.clear();
-            processAllList = AppDatabase.getAppDatabase(context).userDao().getProcess();
+            processAllList=AppDatabase.getAppDatabase(context).userDao().getProcess();
             mAdapter = new TemplateAdapter(processAllList, context);
-            mLayoutManager = new LinearLayoutManager(context);
+             mLayoutManager = new LinearLayoutManager(context);
             binding.recyclerView.setAdapter(mAdapter);
         }
     }
 
 
+
+
     private void setActionbar(String Title) {
-        String str = Title;
-        if (str.contains("\n")) {
-            str = str.replace("\n", " ");
-        }
-        LinearLayout layoutList = (LinearLayout) findViewById(R.id.layoutList);
-        layoutList.setVisibility(View.GONE);
-        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        RelativeLayout  mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(str);
+        toolbar_title.setText(Title);
         ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
@@ -119,7 +118,6 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -135,7 +133,7 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getProcess/" + User.getCurrentUser(context).getId();
+                + "/services/apexrest/getallprocessandtask/"+ User.getCurrentUser(context).getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -144,31 +142,103 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                 try {
                     if (response.isSuccess()) {
                         JSONArray jsonArray = new JSONArray(response.body().string());
-                        if (jsonArray.length() != 0) {
+                        if (jsonArray.length()!=0) {
                             processAllList.clear();
-                            for (int i = 0; i < jsonArray.length(); i++) {
+
+                            for (int j = 0; j < jsonArray.length(); j++) {
+                                JSONObject mainObj=  jsonArray.getJSONObject(j) ;
+
+
                                 Template processList = new Template();
+                                processList.setType(mainObj.getJSONObject("prc").getJSONObject("attributes").getString("type"));
+                                processList.setUrl(mainObj.getJSONObject("prc").getJSONObject("attributes").getString("url"));
+                                processList.setId(mainObj.getJSONObject("prc").getString("Id"));
+                                processList.setName(mainObj.getJSONObject("prc").getString("Name"));
 
-                                processList.setType(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("type"));
-                                processList.setUrl(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("url"));
-                                processList.setId(jsonArray.getJSONObject(i).getString("Id"));
-                                processList.setName(jsonArray.getJSONObject(i).getString("Name"));
+                                processList.setIs_Editable__c(mainObj.getJSONObject("prc").getBoolean("Is_Editable__c"));
+                                processList.setIs_Multiple_Entry_Allowed__c(mainObj.getJSONObject("prc").getBoolean("Is_Multiple_Entry_Allowed__c"));
 
-                                processList.setIs_Editable__c(jsonArray.getJSONObject(i).getBoolean("Is_Editable__c"));
-                                processList.setIs_Multiple_Entry_Allowed__c(jsonArray.getJSONObject(i).getBoolean("Is_Multiple_Entry_Allowed__c"));
+                                processList.setLocation(mainObj.getJSONObject("prc").getBoolean("Location_Required__c"));
 
-                                processList.setLocation(jsonArray.getJSONObject(i).getBoolean("Location_Required__c"));
-
-                                if (jsonArray.getJSONObject(i).has("Location_Level__c"))
-                                    processList.setLocationLevel(jsonArray.getJSONObject(i).getString("Location_Level__c"));
+                                if (mainObj.getJSONObject("prc").has("Location_Level__c"))
+                                    processList.setLocationLevel(mainObj.getJSONObject("prc").getString("Location_Level__c"));
 
                                 processAllList.add(processList);
+                                JSONArray resultArray = mainObj.getJSONArray("tsk");
+                                //list of task
+                                taskContainerModel = new TaskContainerModel();
+                                taskList = new ArrayList<>();
+                                User user= User.getCurrentUser(getApplicationContext());
+                                for (int i = 0; i < resultArray.length(); i++) {
+                                    JSONObject resultJsonObj = resultArray.getJSONObject(i);
+
+                                    //task is each task detail
+                                    Task taskList = new Task();
+                                    taskList.setMV_Task__c_Id(resultJsonObj.getString("Id"));
+                                    taskList.setName(resultJsonObj.getString("Name"));
+                                    taskList.setIs_Completed__c(resultJsonObj.getBoolean("Is_Completed__c"));
+                                    taskList.setIs_Response_Mnadetory__c(resultJsonObj.getBoolean("Is_Response_Mnadetory__c"));
+                                    if (resultJsonObj.has("Picklist_Value__c"))
+                                        taskList.setPicklist_Value__c(resultJsonObj.getString("Picklist_Value__c"));
+
+                                    if (resultJsonObj.has("Location_Level__c")) {
+                                        taskList.setLocationLevel(resultJsonObj.getString("Location_Level__c"));
+
+                                        if (resultJsonObj.getString("Location_Level__c").equals("State")) {
+                                            taskList.setTask_Response__c(user.getState());
+                                            //  LocationSelectionActity.selectedState = user.getState();
+
+                                        } else if (resultJsonObj.getString("Location_Level__c").equals("District")) {
+                                            // LocationSelectionActity.selectedDisrict = user.getDistrict();
+
+                                            taskList.setTask_Response__c(user.getDistrict());
+                                        } else if (resultJsonObj.getString("Location_Level__c").equals("Taluka")) {
+                                            taskList.setTask_Response__c(user.getTaluka());
+                                            //  LocationSelectionActity.selectedTaluka = user.getTaluka();
+                                        } else if (resultJsonObj.getString("Location_Level__c").equals("Cluster")) {
+                                            ///  LocationSelectionActity.selectedCluster = user.getCluster();
+                                            taskList.setTask_Response__c(user.getCluster());
+                                        } else if (resultJsonObj.getString("Location_Level__c").equals("Village")) {
+                                            // LocationSelectionActity.selectedVillage = user.getVillage();
+
+                                            taskList.setTask_Response__c(user.getVillage());
+                                        } else if (resultJsonObj.getString("Location_Level__c").equals("School")) {
+                                            taskList.setTask_Response__c(user.getSchool_Name());
+                                            //  LocationSelectionActity.selectedSchool = user.getSchool_Name();
+                                        }
+
+                                    }
+                                    taskList.setMV_Process__c(resultJsonObj.getString("MV_Process__c"));
+                                    taskList.setTask_Text__c(resultJsonObj.getString("Task_Text__c"));
+                                    taskList.setTask_type__c(resultJsonObj.getString("Task_type__c"));
+                                    taskList.setValidation(resultJsonObj.getString("Validaytion_on_text__c"));
+                                    taskList.setIsSave(Constants.PROCESS_STATE_SAVE);
+                                    // processList.setTimestamp__c(resultJsonObj.getString("Timestamp__c"));
+                                    // processList.setMTUser__c(resultJsonObj.getString("MTUser__c"));
+
+                                    ProgrammeManagmentFragment.this.taskList.add(taskList);
+
+
+                                }
+                                // each task list  convert to String and stored in process task filled
+                                taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
+
+                                taskContainerModel.setIsSave(Constants.PROCESS_STATE_SAVE);
+                                //task without answer
+                                taskContainerModel.setTaskType(Constants.TASK_QUESTION);
+                                taskContainerModel.setMV_Process__c(processList.getId());
+                                //delete old question
+                                AppDatabase.getAppDatabase(getApplicationContext()).userDao().deleteQuestion(processList.getId(), Constants.TASK_QUESTION);
+                                //add new question
+                                AppDatabase.getAppDatabase(getApplicationContext()).userDao().insertTask(taskContainerModel);
+
+
                             }
                             AppDatabase.getAppDatabase(context).userDao().deleteTable();
                             AppDatabase.getAppDatabase(context).userDao().insertProcess(processAllList);
                             mAdapter.notifyDataSetChanged();
                             textNoData.setVisibility(View.GONE);
-                        } else {
+                        }else {
                             textNoData.setVisibility(View.VISIBLE);
                         }
                     }

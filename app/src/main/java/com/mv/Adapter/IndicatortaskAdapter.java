@@ -10,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mv.Activity.PiachartActivity;
-import com.mv.Activity.ReportLocationSelectionActivity;
 import com.mv.Model.DashaBoardListModel;
 import com.mv.Model.LocationModel;
 import com.mv.Model.Task;
