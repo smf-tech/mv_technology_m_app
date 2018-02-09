@@ -2,63 +2,62 @@
 <resources>
     <string name="app_name">मूल्यवर्धन 2.0</string>
 
-<string name="progress_loading">लोडिंग</string>
-<string name="progress_please_wait">कृपया प्रतीक्षा</string>
-<string name="error_something_went_wrong">कुछ गया गलत, कृपया पुन: प्रयास करें</string>
-<string name="error_no_internet">कृपया अपना इंटरनेट जांचे</string>
-<string name="error_login">गलत परिचय.</string>
+    <string name="progress_loading">लोडिंग</string>
+    <string name="progress_please_wait">कृपया प्रतीक्षा</string>
+    <string name="error_something_went_wrong">कुछ गया गलत, कृपया पुन: प्रयास करें</string>
+    <string name="error_no_internet">कृपया अपना इंटरनेट जांचे</string>
+    <string name="error_login">गलत परिचय.</string>
 
-<string name="text_choosepicture">फोटो चुनें</string>
-<string name="text_choosevideo">वीडियो चुनें</string>
-<string name="text_gallary">गैलेरी</string>
-<string name="text_camera">कैमेरा</string>
-<string name="error_offline_share_post">आप पोस्ट ऑफलाइन साझा नहीं कर सकते</string>
-<string name="error_offline_like_post">आप पोस्ट ऑफलाइन साझा नहीं कर सकते</string>
-<string name="ok">ओके</string>
-<string name="cancel">रद्द करें</string>
+    <string name="text_choosepicture">फोटो चुनें</string>
+    <string name="text_choosevideo">वीडियो चुनें</string>
+    <string name="text_gallary">गैलेरी</string>
+    <string name="text_camera">कैमेरा</string>
+    <string name="error_offline_share_post">आप पोस्ट ऑफलाइन साझा नहीं कर सकते</string>
+    <string name="error_offline_like_post">आप पोस्ट ऑफलाइन साझा नहीं कर सकते</string>
+    <string name="ok">ओके</string>
+    <string name="cancel">रद्द करें</string>
     <!--Home Acitivty-->
-<string name="intro_about_header">के बारे में</string>
-<string name="intro_about_description">मूल्यवर्धन मूल्यवर्धन कार्यक्रम का उद्देश्य यह है कि स्कूली बच्चेभारतीय संविधान के मूल्यों को ग्रहण कर सकें और अच्छे लोकतांत्रिक नागरिक बन सकें।इसका उद्देश्य भारत की स्कूली शिक्षा के मुख्य उद्देश्यों में से एक है। कई पाठ्यक्रमों में दिया गया है कि बच्चों में संवैधानिक मूल्यों को विकसित करना स्कूली शिक्षा का मुख्य उद्देश्य है।अधिक जानकारी के लिए देखेंwww.mulyavardhan.com for more info</string>
+    <string name="intro_about_header">के बारे में</string>
+    <string name="intro_about_description">मूल्यवर्धन मूल्यवर्धन कार्यक्रम का उद्देश्य यह है कि स्कूली बच्चेभारतीय संविधान के मूल्यों को ग्रहण कर सकें और अच्छे लोकतांत्रिक नागरिक बन सकें।इसका उद्देश्य भारत की स्कूली शिक्षा के मुख्य उद्देश्यों में से एक है। कई पाठ्यक्रमों में दिया गया है कि बच्चों में संवैधानिक मूल्यों को विकसित करना स्कूली शिक्षा का मुख्य उद्देश्य है।अधिक जानकारी के लिए देखेंwww.mulyavardhan.com for more info</string>
     <string name="intro_mv_training_events_header">मूल्यवर्धन प्रशिक्षण</string>
     <string name="fragment_intro_about">मूल्यवर्धन के बारे में</string>
     <string name="fragment_intro_training">मूल्यवर्धन प्रशिक्षण</string>
     <string name="fragment_intro_events">मूल्यवर्धनकार्यक्रम</string>
     <string name="reporting_template">Reporting Template</string>
     <string name="text_mediatype">Select Media Type</string>
-    <string name="text_image">Image</string>
-    <string name="text_audio">Audio</string>
-    <string name="text_video">Video</string>
+    <string name="text_image">छवि</string>
+    <string name="text_audio">ध्वनी</string>
+    <string name="text_video">वीडियो</string>
 
-    <string name="text_record">Record Audio</string>
-    <string name="text_select_audio">Select Audio</string>
-    <string name="text_chooseaudio">Choose Audio</string>
+    <string name="text_record">ध्वनि रिकॉर्ड करें</string>
+    <string name="text_select_audio">ऑडियो चुनें</string>
+    <string name="text_chooseaudio">ऑडियो चुनें</string>
 
-    <string name="text_size_exceed">File Size Cannot Be Greater than 5 MB</string>
+    <string name="text_size_exceed">फ़ाइल का आकार 5 एमबी से बड़ा नहीं हो सकता</string>
 
-    <string name="text_are_you_sure">Are you sure?</string>
-    <string name="text_delete">You really want to delete this post?</string>
-    <string name="Setting">Setting</string>
-    <string name="mandatory_district">District *</string>
-    <string name="approve">Approve</string>
-    <string name="catagory">Categories</string>
-    <string name="Save">Save</string>
-    <string name="claender_reportinng">Create Event</string>
-    <string name="enter_comment">Please Enter Comment</string>
-    <string name="submitted_successfully">Submitted Successfully...</string>
-    <string name="loading_members">Loading Members</string>
-    <string name="Please_select_Gender">Please select Gender</string>
-    <string name="Community_member">Members</string>
-    <string name="Forward">Forward</string>
-    <string name="Share">Share</string>
-    <string name="Like">Like</string>
-    <string name="team_user_approval">User Approval</string>
-    <string name="team_form_approval">Form Approval</string>
+    <string name="text_are_you_sure">क्या आपको यकीन है?</string>
+    <string name="text_delete">क्या आप वास्तव में इस पोस्ट को हटाना चाहते हैं?</string>
+    <string name="Setting">सेटिंग</string>
+    <string name="mandatory_district">जिला *</string>
+    <string name="approve">मंजूर</string>
+    <string name="catagory">श्रेणियाँ</string>
+    <string name="Save">बचाना</string>
+    <string name="claender_reportinng">कार्यक्रम बनाएँ</string>
+    <string name="enter_comment">कृपया टिप्पणी दर्ज करें</string>
+    <string name="submitted_successfully">सफलतापूर्वक जमा...</string>
+    <string name="loading_members">लोड हो रहा सदस्य</string>
+    <string name="Please_select_Gender">कृपया लिंग चुनें</string>
+    <string name="Community_member">सदस्य</string>
+
+    <string name="Share">शेयर</string>
+
+    <string name="team_user_approval">उपयोगकर्ता स्वीकृति</string>
+    <string name="team_form_approval">फॉर्म स्वीकृति</string>
     <string name="select_form">Select Form</string>
-    <string name="aboutus_info">Mulyavardhan (MV) is a value education programme to help children imbibe democratic values, attitudes and skills in an enabling school climate.\n\nMulyavardhan was initiated in 2009 and has evolved through an intensive, evidence-based approach to learning and improvement through pilot-project implementation, impact assessment studies and consultations with national and international experts.\n\nThe programme has been reviewed and accepted by the Government of Maharashtra and Government of Goa.  Mulyavardhan pilot projects have been launched by these states in a large number of selected schools, as a first step to implementation of the programme in all schools of the states.\n\nThe programme is currently being implemented in around 1000 schools in Maharashtra and Goa through four projects: ( MV-GoM, MV-Beed, MV-GoG, MV-VB).\n\nhttps://www.youtube.com/watch?v=azVGgQTGQ68
-    \n\n<b>Aim</b>\n\nEnabling schools to provide child-friendly and value-based education to nurture caring, responsible, productive democratic citizens.\n\n<b>Rationale</b>\n\nWhile several educational policy documents, framed in India since Independence, have emphasized the need for value education in schools, there is no model of large-scale implementation of value education across states, school bodies and contexts.
-   \n\nMulyavardhan fills this critical gap with a contemporary approach aligned to national and international policies.\n\n<b>Approach</b>\n\nMulyavardhan adopts a whole-school approach, whereby the entire school ethos and all school processes are guided by core democratic values. Under this approach, values are not “taught”, but absorbed by students from the school ethos, processes and practices.\n\n</string>
     <string name="add_the_sanvad">पोस्ट जोडा</string>
-
+    <string name="aboutus_info"><b>सारांश</b>\n\nमूल्यवर्धन का लक्ष्य स्कूली बच्चों में संवैधानिक मूल्यों को आत्मसात करने में सहायता करना है।\n\nमूल्यवर्धन का लक्ष्य स्कूली पाठ्यक्रमों के उद्देश्य के अनुरूप है।\n\n<b>विस्तृत</b>\n\nमूल्यवर्धन कार्यक्रम का उद्देश्य यह है कि स्कूली बच्चे भारतीय संविधान के मूल्यों को ग्रहण कर सकें और अच्छे लोकतांत्रिक नागरिक बन सकें। \n\nइसका उद्देश्य भारत की स्कूली शिक्षा के मुख्य उद्देश्यों में से एक है। कई पाठ्यक्रमों में दिया
+गया है कि बच्चों में संवैधानिक मूल्यों को विकसित करना स्कूली शिक्षा का मुख्य उद्देश्य है।\n\nमूल्यवर्धन कार्यक्रम के द्वारा स्कूल इस उद्देश्य को नियोजित, व्यवस्थित और नियमित रूप से हासिल कर सकता है।\n\nबच्चों में संवैधानिक मूल्यों को विकसित करने का प्रयास स्कूलों में पहले से ही चल रहा है। मूल्यवर्धन कार्यक्रम इन प्रयासों को मज़बूती देगा। \n\n<b>मूल्यवर्धन के मूल्य</b>\n\nमूल्यवर्धन भारतीय संविधान के चार आधारभूत मूल्यों पर आधारित है :\n\nस्वतंत्रता\n\nन्याय\n\nसमानता\n\nबंधुता\n\nसंविधान के चार आधारभूत मूल्यों को स्कूल के शैक्षणिक स्तर पर आठ मूल्यों द्वारा समझाया गया है। इन सभी आठ मूल्यों को राष्ट्रीय पाठ्यक्रम रूपरेखा 2005 से लिया गया है।\n\nये मूल्य हैं : \n\nमानवीय गरिमा का आदर\n\nस्वायत्तता\n\nउत्तरदायित्व\n\nसमालोचनात्मक और रचनात्मक विचार\n\nविविधता के महत्व को पहचानना\n\nसौहार्दपूर्ण जीवन यापन\n\nदूसरों के लिए चिंता\n\nसक्रिय योगदान
+</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <!--Registration Activity-->
@@ -127,7 +126,7 @@
     <string name="community">मेरा\nसमुदाय</string>
     <string name="programme_management">कार्यक्रम\nप्रबंधक</string>
     <string name="training_content">प्रशिक्षण\nसामग्री</string>
-    <string name="about_us">मुल्यवर्धन के बारे में</string>
+    <string name="about_us">मुल्यवर्धन\nके बारे में</string>
     <string name="indicator">मेरी\nरिपोर्ट</string>
     <string name="training_calendar">प्रशिक्षण\nकॅलेंडर</string>
     <string name="notification">अधिसूचना</string>
@@ -207,5 +206,6 @@
     <string name="my_posts">मेरी \nपोस्ट</string>
     <string name="my_location">मेरा  \nस्थान</string>
     <string name="other_location">अन्य  \स्थान</string>
+    <string name="detail"><u>Deatail...</u></string>
 
-    </resources>
+</resources>

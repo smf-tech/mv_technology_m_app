@@ -252,7 +252,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView picture, userImage, imgLike, img_share, img_comment;
         public CardView card_view;
-        public TextView txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_forward;
+        public TextView txt_title, txt_template_type, txt_desc,txt_detail, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_forward;
         public LinearLayout layout_like, mediaLayout, layout_comment, layout_share, layout_download,layout_download_file;
 
         public ViewHolder(View itemLayoutView) {
@@ -270,6 +270,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             textViewLike = (TextView) itemLayoutView.findViewById(R.id.textViewLike);
             img_share = (ImageView) itemLayoutView.findViewById(R.id.img_share);
             img_comment = (ImageView) itemLayoutView.findViewById(R.id.img_comment);
+            txt_detail = (TextView) itemLayoutView.findViewById(R.id.txt_detail);
             txt_forward = (TextView) itemLayoutView.findViewById(R.id.txt_forward);
             layout_comment = (LinearLayout) itemLayoutView.findViewById(R.id.layout_comment);
             layout_download = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download);
@@ -277,7 +278,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             layout_share = (LinearLayout) itemLayoutView.findViewById(R.id.layout_share);
             mediaLayout = (LinearLayout) itemLayoutView.findViewById(R.id.mediaLayout);
             layout_download_file = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download_file);
-            txt_desc.setOnClickListener(new View.OnClickListener() {
+            txt_detail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
@@ -354,16 +355,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
 
                 }
             });
-            card_view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                    intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                    intent.putExtra("flag", "not_forward_flag");
 
-                    mContext.startActivity(intent);
-                }
-            });
 
             picture.setOnClickListener(new View.OnClickListener() {
                 @Override

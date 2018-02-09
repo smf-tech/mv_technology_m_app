@@ -287,9 +287,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         menulist = new ArrayList<>();
 
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
+            if(!User.getCurrentUser(getApplicationContext()).getIsApproved().equals(""))
             allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameNoteApproved().split(";")));
             showApprovedDilaog();
         } else {
+            if(!User.getCurrentUser(getApplicationContext()).getTabNameApproved().equals(""))
             allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameApproved().split(";")));
 
         }
@@ -567,33 +569,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void setActionbar(String Title) {
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            // actionBar.setTitle(Title);
-            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-            getSupportActionBar().setDisplayShowCustomEnabled(true);
-            getSupportActionBar().setCustomView(R.layout.toolbar);
-            View view = getSupportActionBar().getCustomView();
-            toolbar_title = (TextView) view.findViewById(R.id.toolbar_title);
-            toolbar_title.setText(Title);
-            img_back = (ImageView) findViewById(R.id.img_back);
-            img_back.setVisibility(View.GONE);
-            img_back.setOnClickListener(this);
-            img_logout = (ImageView) view.findViewById(R.id.img_logout);
-            img_logout.setVisibility(View.GONE);
-            img_logout.setOnClickListener(this);
-            img_list = (ImageView) view.findViewById(R.id.img_list);
-            img_lang = (ImageView) view.findViewById(R.id.img_lang);
-            img_lang.setVisibility(View.GONE);
-            img_lang.setOnClickListener(this);
-            img_list.setImageResource(R.drawable.ic_account_circle_white_36dp);
-            img_list.setVisibility(View.GONE);
-            img_list.setOnClickListener(this);
-        }
-
-    }
-
 
     @Override
     public void onClick(View view) {
@@ -701,9 +676,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         int checkId = 0;
         if (preferenceHelper.getString(LANGUAGE).equalsIgnoreCase(LANGUAGE_MARATHI)) {
             checkId = 1;
-        } else {
-
+        } else if(preferenceHelper.getString(LANGUAGE).equalsIgnoreCase(LANGUAGE_HINDI)){
+            checkId = 2;
         }
+
 
 
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -1168,8 +1144,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             RateThisApp.showRateDialog(HomeActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
 
         } else if (id == R.id.action_add_school) {
-            Intent openClass = new Intent(HomeActivity.this, AddSchoolActivity.class);
-            startActivity(openClass);
+            String role=User.getCurrentUser(getApplicationContext()).getRoll();
+            if(role.equals("PC")||role.equals("MT")||role.equals("PC")||role.equals("PM")) {
+                Intent openClass = new Intent(HomeActivity.this, AddSchoolActivity.class);
+                startActivity(openClass);
+            }
+            else
+            {
+                Utills.showToast("You don't have access to add location",HomeActivity.this);
+            }
 
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

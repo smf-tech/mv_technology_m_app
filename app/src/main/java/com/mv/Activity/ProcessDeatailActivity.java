@@ -6,6 +6,7 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -14,7 +15,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -92,6 +96,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_process_deatail);
         context = this;
+        this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         preferenceHelper = new PreferenceHelper(this);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         id = String.valueOf(Calendar.getInstance().getTimeInMillis());
@@ -154,7 +159,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             layout_photo.setVisibility(View.VISIBLE);
             if (imageId != null && imageId.length() > 0) {
                 Glide.with(this)
-                        .load("http://13.58.218.106/images/" + imageId + ".png")
+                        .load("http://mobileapp.mulyavardhan.org/images/" + imageId + ".png")
                         .placeholder(getResources().getDrawable(R.drawable.ic_add_photo))
                         .into(img_add);
             }
@@ -301,8 +306,27 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     public void saveDataToList(Task answer, int position) {
         taskList.set(position, answer);
+
+
+
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
+    }
     private void submitAllData() {
         manditoryFlag = false;
 
@@ -436,7 +460,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         JsonArray gsonObject = (JsonArray) jsonParser.parse(array.toString());
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
-        apiService.sendImageToSalesforce("http://13.58.218.106/new_upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
+        apiService.sendImageToSalesforce("http://mobileapp.mulyavardhan.org/new_upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();

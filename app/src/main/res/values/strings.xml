@@ -194,7 +194,7 @@
     <string name="team_user_approval">User Approval</string>
     <string name="team_form_approval">Form Approval</string>
     <string name="Registration">Registration</string>
-    <string name="about_us">About Mulyavardhan</string>
+    <string name="about_us">About\nMulyavardhan</string>
 
 
     <string name="lang">Change Language</string>
@@ -216,4 +216,5 @@
    \n\nMulyavardhan fills this critical gap with a contemporary approach aligned to national and international policies.\n\n<b>Approach</b>\n\nMulyavardhan adopts a whole-school approach, whereby the entire school ethos and all school processes are guided by core democratic values. Under this approach, values are not “taught”, but absorbed by students from the school ethos, processes and practices.\n\n</string>
     <string name="add_the_sanvad">पोस्ट जोडा</string>
     <string name="accept">स्वीकार करो</string>
+    <string name="detail"><u>Detail...</u></string>
 </resources>

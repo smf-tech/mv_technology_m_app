@@ -34,10 +34,10 @@ android {
         applicationId "com.mv"
         minSdkVersion 17
         targetSdkVersion 22
-        versionCode 14
-        versionName "2.2"
+        versionCode 16
+        versionName "2.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "BASEURL", "\"http://13.58.218.106/mv_gov/index.php/\""
+        buildConfigField "String", "BASEURL", "\"http://mobileapp.mulyavardhan.org/mv_gov/index.php/\""
         multiDexEnabled true
         javaCompileOptions {
             annotationProcessorOptions {

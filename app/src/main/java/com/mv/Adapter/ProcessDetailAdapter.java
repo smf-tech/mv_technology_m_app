@@ -152,6 +152,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             spinnerResponse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                     if (position == 0)
                         taskList.get(getAdapterPosition()).setTask_Response__c("");
                     else

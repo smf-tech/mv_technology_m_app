@@ -96,6 +96,12 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     protected void onResume() {
         super.onResume();
         resultList.clear();
+        LocationSelectionActity.selectedState  = User.getCurrentUser(getApplicationContext()).getState();
+        LocationSelectionActity.selectedDisrict  = User.getCurrentUser(getApplicationContext()).getDistrict();
+        LocationSelectionActity.selectedTaluka = User.getCurrentUser(getApplicationContext()).getTaluka();
+        LocationSelectionActity.selectedCluster = User.getCurrentUser(getApplicationContext()).getCluster();
+        LocationSelectionActity.selectedVillage= User.getCurrentUser(getApplicationContext()).getVillage();
+        LocationSelectionActity.selectedSchool= User.getCurrentUser(getApplicationContext()).getSchool_Name();
         getAllProcessData();
 
     }

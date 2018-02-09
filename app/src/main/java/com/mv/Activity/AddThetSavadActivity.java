@@ -798,7 +798,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         JsonArray gsonObject = (JsonArray) jsonParser.parse(jsonArray.toString());
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
-        apiService.sendImageToSalesforce("http://13.58.218.106/new_upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
+        apiService.sendImageToSalesforce("http://mobileapp.mulyavardhan.org/new_upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();

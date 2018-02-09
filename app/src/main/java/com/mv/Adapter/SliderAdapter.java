@@ -46,7 +46,7 @@ public class SliderAdapter extends PagerAdapter {
                 .findViewById(R.id.image);
       //  myImage.setImageResource(images.get(position));
         Glide.with(context)
-                .load("http://13.58.218.106/images/" + images.get(position) + ".png")
+                .load("http://mobileapp.mulyavardhan.org/images/" + images.get(position) + ".png")
                 .placeholder(context.getResources().getDrawable(R.drawable.a))
                 .into(myImage);
         view.addView(myImageLayout, 0);

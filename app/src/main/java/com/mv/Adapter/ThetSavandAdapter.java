@@ -192,7 +192,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 holder.layout_Video.setVisibility(View.GONE);
                 holder.audioLayout.setVisibility(View.GONE);
                 Glide.with(mContext)
-                        .load("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png")
+                        .load("http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".png")
                         .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.picture);
@@ -201,7 +201,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 holder.picture.setVisibility(View.GONE);
                 holder.audioLayout.setVisibility(View.GONE);
                 holder.layout_Video.setVisibility(View.VISIBLE);
-              /*  holder.card_video.setVideoPath("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp4");
+              /*  holder.card_video.setVideoPath("http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".mp4");
                 holder.card_video.start();*/
 
             } else if (mDataList.get(position).getContentType() != null
@@ -242,7 +242,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                         if (temp == 555500) {
                             temp = position;
 
-                            startAudio("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp3");
+                            startAudio("http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".mp3");
                             holder.play.setImageResource(R.drawable.pause_song);
                             holder.txt_audio_txt.setText("Stop Audio");
                             // notifyItemChanged(position);
@@ -262,7 +262,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                             //  notifyItemChanged(position);
                         } else {
 
-                            startAudio("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp3");
+                            startAudio("http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".mp3");
                             mDataList.get(position).setMediaPlay(true);
                             mDataList.get(temp).setMediaPlay(false);
                             notifyItemChanged(position);
@@ -445,7 +445,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView picture, userImage, imgLike, img_comment, imageThumbnail;
         public CardView card_view;
-        public TextView txt_audio_txt, txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type;
+        public TextView txt_audio_txt, txt_title, txt_detail,txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type;
         public LinearLayout mediaLayout, layout_like, layout_comment, layout_share, layout_download, layout_download_file;
         public RelativeLayout audioLayout, layout_Video;
         public ImageView play, imgMore;
@@ -471,11 +471,12 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             layout_comment = (LinearLayout) itemLayoutView.findViewById(R.id.layout_comment);
             imageThumbnail = (ImageView) itemLayoutView.findViewById(R.id.card_Thumbnail);
             txt_type = (TextView) itemLayoutView.findViewById(R.id.txt_type);
+            txt_detail = (TextView) itemLayoutView.findViewById(R.id.txt_detail);
             layout_download_file = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download_file);
             lnr_content = (LinearLayout) itemLayoutView.findViewById(R.id.lnr_content);
 
 
-            txt_desc.setOnClickListener(new View.OnClickListener() {
+            txt_detail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())) {
@@ -534,7 +535,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 public void onClick(View view) {
                     Intent myIntent = new Intent(mContext,
                             VideoViewActivity.class);
-                    myIntent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".mp4");
+                    myIntent.putExtra("URL", "http://mobileapp.mulyavardhan.org/images/" + mDataList.get(getAdapterPosition()).getId() + ".mp4");
                     mContext.startActivity(myIntent);
                 }
             });
@@ -594,7 +595,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                                 try {
                                     theBitmap = Glide.
                                             with(mContext).
-                                            load("http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".png").
+                                            load("http://mobileapp.mulyavardhan.org/images/" + mDataList.get(getAdapterPosition()).getId() + ".png").
                                             asBitmap().
                                             into(200, 200).
                                             get();
@@ -651,32 +652,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
 
                 }
             });
-            card_view.setOnClickListener(new View.OnClickListener()
 
-            {
-                @Override
-                public void onClick(View view) {
-                    if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())) {
-                        Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                        intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                        intent.putExtra("flag", "not_forward_flag");
-                        mContext.startActivity(intent);
-                    } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) {
-                        Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                        intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                        intent.putExtra("flag", "not_forward_flag");
-                        mContext.startActivity(intent);
-                    } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image")) {
-                        Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                        intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                        intent.putExtra("flag", "not_forward_flag");
-                        mContext.startActivity(intent);
-                    }
-                    Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                    intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                    mContext.startActivity(intent);
-                }
-            });
 
             picture.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -946,23 +922,23 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         if (mDataList.get(position).getContentType().equalsIgnoreCase("zip")) {
             intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".zip");
             intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "zip");
-            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".zip");
+            intent.putExtra("URL", "http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".zip");
         } else if (mDataList.get(position).getContentType().equalsIgnoreCase("pdf")) {
             intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".pdf");
             intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "pdf");
-            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".pdf");
+            intent.putExtra("URL", "http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".pdf");
         } else if (mDataList.get(position).getContentType().equalsIgnoreCase("audio")) {
             intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".mp3");
             intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "audio");
-            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp3");
+            intent.putExtra("URL", "http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".mp3");
         } else if (mDataList.get(position).getContentType().equalsIgnoreCase("video")) {
             intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".mp4");
             intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "video");
-            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp4");
+            intent.putExtra("URL", "http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".mp4");
         } else if (mDataList.get(position).getContentType().equalsIgnoreCase("Image")) {
             intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".png");
             intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "Image");
-            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png");
+            intent.putExtra("URL", "http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".png");
         }
         mContext.startService(intent);
     }

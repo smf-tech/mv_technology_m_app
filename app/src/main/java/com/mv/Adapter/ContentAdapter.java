@@ -192,7 +192,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
 
                 Glide.with(mContext)
-                        .load("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png")
+                        .load("http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".png")
                         .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.picture);
@@ -202,7 +202,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 holder.audioLayout.setVisibility(View.GONE);
                 holder.layout_Video.setVisibility(View.VISIBLE);
 
-              /*  holder.card_video.setVideoPath("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp4");
+              /*  holder.card_video.setVideoPath("http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".mp4");
                 holder.card_video.start();*/
 
             } else if (mDataList.get(position).getContentType() != null
@@ -219,7 +219,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                         if (temp == 555500) {
                             temp = position;
 
-                            startAudio("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp3");
+                            startAudio("http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".mp3");
                             holder.play.setImageResource(R.drawable.pause_song);
                             holder.txt_audio_txt.setText("Stop Audio");
                             // notifyItemChanged(position);
@@ -239,7 +239,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                             //  notifyItemChanged(position);
                         } else {
 
-                            startAudio("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp3");
+                            startAudio("http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".mp3");
                             mDataList.get(position).setMediaPlay(true);
                             mDataList.get(temp).setMediaPlay(false);
                             notifyItemChanged(position);
@@ -260,7 +260,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             } else  if (mDataList.get(position).getId()!=null)
             {
                 Glide.with(mContext)
-                        .load("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png")
+                        .load("http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".png")
                         .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.picture);
@@ -465,7 +465,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         public ImageView picture, userImage, imgLike, img_comment,play;
         public CardView card_view;
         public RelativeLayout audioLayout, layout_Video;
-        public TextView txt_audio_txt,txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type;
+        public TextView txt_audio_txt,txt_title, txt_template_type, txt_desc,txt_detail, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type;
         public LinearLayout layout_like, mediaLayout, layout_comment, layout_share, layout_download,layout_download_file;
 
         public ViewHolder(View itemLayoutView) {
@@ -474,6 +474,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             txt_title = (TextView) itemLayoutView.findViewById(R.id.txt_title);
             txt_template_type = (TextView) itemLayoutView.findViewById(R.id.txt_template_type);
             txt_desc = (TextView) itemLayoutView.findViewById(R.id.txt_desc);
+            txt_detail = (TextView) itemLayoutView.findViewById(R.id.txt_detail);
             txt_time = (TextView) itemLayoutView.findViewById(R.id.txt_time);
             txtLikeCount = (TextView) itemLayoutView.findViewById(R.id.txtLikeCount);
             txtCommentCount = (TextView) itemLayoutView.findViewById(R.id.txtCommentCount);
@@ -502,7 +503,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             });
 
 
-           txt_desc.setOnClickListener(new View.OnClickListener() {
+            txt_detail.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View view) {
                    if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())) {
@@ -563,7 +564,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 public void onClick(View view) {
                     Intent myIntent = new Intent(mContext,
                             VideoViewActivity.class);
-                    myIntent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".mp4");
+                    myIntent.putExtra("URL", "http://mobileapp.mulyavardhan.org/images/" + mDataList.get(getAdapterPosition()).getId() + ".mp4");
                     mContext.startActivity(myIntent);
                 }
             });
@@ -961,28 +962,28 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 if (mDataList.get(position).getContentType().equalsIgnoreCase("zip")) {
                     intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".zip");
                     intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "zip");
-                    intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".zip");
+                    intent.putExtra("URL", "http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".zip");
                 } else if (mDataList.get(position).getContentType().equalsIgnoreCase("pdf")) {
                     intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".pdf");
                     intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "pdf");
-                    intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".pdf");
+                    intent.putExtra("URL", "http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".pdf");
                 } else if (mDataList.get(position).getContentType().equalsIgnoreCase("audio")) {
                     intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".mp3");
                     intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "audio");
-                    intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp3");
+                    intent.putExtra("URL", "http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".mp3");
                 } else if (mDataList.get(position).getContentType().equalsIgnoreCase("video")) {
                     intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".mp4");
                     intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "video");
-                    intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp4");
+                    intent.putExtra("URL", "http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".mp4");
                 } else if (mDataList.get(position).getContentType().equalsIgnoreCase("Image")) {
                     intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".png");
                     intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "Image");
-                    intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png");
+                    intent.putExtra("URL", "http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".png");
                 }
             }else {
                 intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".png");
                 intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "Image");
-                intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png");
+                intent.putExtra("URL", "http://mobileapp.mulyavardhan.org/images/" + mDataList.get(position).getId() + ".png");
             }
         }
         mContext.startService(intent);

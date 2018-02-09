@@ -428,7 +428,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         JsonArray gsonObject = (JsonArray) jsonParser.parse(jsonArray.toString());
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
-        apiService.sendImageToSalesforce("http://13.58.218.106/upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
+        apiService.sendImageToSalesforce("http://mobileapp.mulyavardhan.org/upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
