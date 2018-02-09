@@ -74,7 +74,7 @@ public class TemplatesActivity extends AppCompatActivity implements View.OnClick
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/MV_GeTemplates_c";
+                +Constants.MV_GeTemplates_cUrl;
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

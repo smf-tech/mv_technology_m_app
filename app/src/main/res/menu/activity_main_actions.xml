@@ -24,7 +24,9 @@
         android:id="@+id/action_rate"
         android:title="@string/rate" />
 
-
+    <item
+        android:id="@+id/action_callus"
+        android:title="@string/call_us" />
     <item
         android:id="@+id/action_logout"
         android:title="@string/logout" />

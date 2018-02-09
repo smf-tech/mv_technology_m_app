@@ -152,7 +152,7 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getprocessAnswerTaskfoApproval?processId=" + proceesId + "&UserId=" + userId;
+                + Constants.GetprocessAnswerTaskfoApprovalUrl+"?processId=" + proceesId + "&UserId=" + userId;
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override

@@ -87,6 +87,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -287,9 +288,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         menulist = new ArrayList<>();
 
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
+            if(!User.getCurrentUser(getApplicationContext()).getTabNameNoteApproved().equals(""))
             allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameNoteApproved().split(";")));
             showApprovedDilaog();
         } else {
+            if(!User.getCurrentUser(getApplicationContext()).getTabNameApproved().equals(""))
             allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameApproved().split(";")));
 
         }
@@ -302,7 +305,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         menuListName.add(Constants.Team_Management);
         menuListName.add(Constants.My_Reports);
         menuListName.add(Constants.My_Calendar);
-
+        allTab.removeAll(Arrays.asList(null,""));
 
         //for loop for adding accessible tab
         for (int i = 0; i < allTab.size(); i++) {
@@ -778,7 +781,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             ServiceRequest apiService =
                     ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
             String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/doLogout/" + User.getCurrentUser(this).getId();
+                    + Constants.DoLogout_url + User.getCurrentUser(this).getId();
 
             apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -923,7 +926,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getUserData?userId=" + User.getCurrentUser(getApplicationContext()).getId();
+                + Constants.GetUserData_url+"?userId=" + User.getCurrentUser(getApplicationContext()).getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -1095,7 +1098,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             ServiceRequest apiService =
                     ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-            apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/MapParameters", gsonObject).enqueue(new Callback<ResponseBody>() {
+            apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.MapParametersUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     try {
@@ -1171,6 +1174,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             Intent openClass = new Intent(HomeActivity.this, AddSchoolActivity.class);
             startActivity(openClass);
 
+        }else if (id==R.id.action_callus){
+            Uri uri = Uri.parse("https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2"); // missing 'http://' will cause crashed
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

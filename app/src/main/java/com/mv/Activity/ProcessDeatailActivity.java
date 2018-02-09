@@ -154,7 +154,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             layout_photo.setVisibility(View.VISIBLE);
             if (imageId != null && imageId.length() > 0) {
                 Glide.with(this)
-                        .load("http://13.58.218.106/images/" + imageId + ".png")
+                        .load(Constants.IMAGEURL + imageId + ".png")
                         .placeholder(getResources().getDrawable(R.drawable.ic_add_photo))
                         .into(img_add);
             }
@@ -358,7 +358,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
             JsonParser jsonParser = new JsonParser();
             JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
-            apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertAnswerForProcessAnswer", gsonObject).enqueue(new Callback<ResponseBody>() {
+            apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.InsertAnswerForProcessAnswerUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Utills.hideProgressDialog();
@@ -436,7 +436,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         JsonArray gsonObject = (JsonArray) jsonParser.parse(array.toString());
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
-        apiService.sendImageToSalesforce("http://13.58.218.106/new_upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
+        apiService.sendImageToSalesforce(Constants.New_upload_phpUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -471,7 +471,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         apiService.getSalesForceData(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/DeleteTaskAnswer/" + uniqueId).enqueue(new Callback<ResponseBody>() {
+                +Constants.DeleteTaskAnswerUrl + uniqueId).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -548,7 +548,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
                 JsonParser jsonParser = new JsonParser();
                 JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject1.toString());
-                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/ApproveCommentforProcess", gsonObject).enqueue(new Callback<ResponseBody>() {
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.ApproveCommentforProcessUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();

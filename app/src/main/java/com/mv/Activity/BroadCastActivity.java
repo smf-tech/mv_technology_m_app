@@ -164,7 +164,7 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/data/v36.0/query/?q=select+Name+from+MV_Role__c";
+                + Constants.MV_Role__c_URL;
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -556,7 +556,7 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
                             ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
                     JsonParser jsonParser = new JsonParser();
                     JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
-                    apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertBroadcastPost", gsonObject).enqueue(new Callback<ResponseBody>() {
+                    apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.InsertBroadcastPostUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             Utills.hideProgressDialog();

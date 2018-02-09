@@ -420,7 +420,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                         ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
                 JsonParser jsonParser = new JsonParser();
                 JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
-                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/insertContent", gsonObject).enqueue(new Callback<ResponseBody>() {
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.InsertContentUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
@@ -613,7 +613,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         JsonArray gsonObject = (JsonArray) jsonParser.parse(jsonArray.toString());
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
-        apiService.sendImageToSalesforce("http://13.58.218.106/new_upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
+        apiService.sendImageToSalesforce(Constants.New_upload_phpUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();

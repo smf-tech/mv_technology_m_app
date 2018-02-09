@@ -489,7 +489,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getDashboardDatademo?userId=" + User.getCurrentUser(PiachartActivity.this).getId() + "&qustionArea=" + title;
+                + Constants.GetDashboardDatademoUrl+"?userId=" + User.getCurrentUser(PiachartActivity.this).getId() + "&qustionArea=" + title;
 
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
@@ -556,7 +556,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                         ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
                 JsonParser jsonParser = new JsonParser();
                 JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
-                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/getchartDatademoNew", gsonObject).enqueue(new Callback<ResponseBody>() {
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.GetchartDatademoNew, gsonObject).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
@@ -735,7 +735,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                         ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
                 JsonParser jsonParser = new JsonParser();
                 JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
-                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/insertContent", gsonObject).enqueue(new Callback<ResponseBody>() {
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.InsertContentUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
@@ -792,7 +792,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         JsonArray gsonObject = (JsonArray) jsonParser.parse(jsonArray.toString());
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
-        apiService.sendImageToSalesforce("http://13.58.218.106/upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
+        apiService.sendImageToSalesforce(Constants.Upload_Url, gsonObject).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();

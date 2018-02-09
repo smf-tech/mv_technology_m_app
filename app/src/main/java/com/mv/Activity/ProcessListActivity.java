@@ -188,7 +188,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getprocessAnswerData?processId=" + proceesId + "&UserId=" + User.getCurrentUser(this).getId();
+                + Constants.GetprocessAnswerDataUrl+"?processId=" + proceesId + "&UserId=" + User.getCurrentUser(this).getId();
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -288,7 +288,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getprocessTask?Id=" + proceesId;
+                + Constants.GetprocessTaskUrl+"?Id=" + proceesId;
         // + "/services/apexrest/getprocessAnswerTask?processId=a1Q0k000000O6Ex&UserId=a100k000000KX6y";
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
