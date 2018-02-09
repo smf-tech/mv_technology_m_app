@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -87,6 +88,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         binding.setActivity(this);
         initViews();
+
      /*   DownloadFile downloadFile = new DownloadFile(this);
         downloadFile.startDownload("http://mobileyougokidinformationdesk.com//denver123//videos//test0.zip","DownLoad1.zip");
 */
@@ -258,7 +260,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getLoginOTP?mobileNo=" + binding.edtUsername.getText().toString().trim()
+                + Constants.GetLoginOTP_url+"?mobileNo=" + binding.edtUsername.getText().toString().trim()
                 + "&notificationId=" + preferenceHelper.getString(PreferenceHelper.TOKEN);
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {

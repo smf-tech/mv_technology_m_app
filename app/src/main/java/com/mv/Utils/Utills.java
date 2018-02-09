@@ -450,7 +450,7 @@ public class Utills {
         RelativeLayout rel_dialog =(RelativeLayout)view.findViewById(R.id.rel_dialog);
         ImageView close_dialog  = (ImageView)view.findViewById(R.id.close_dialog);
         Glide.with(context)
-                .load("http://mobileapp.mulyavardhan.org/images/" + id + ".png")
+                .load(Constants.IMAGEURL + id + ".png")
                 .placeholder(context.getResources().getDrawable(R.drawable.mulya_bg))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(img_post);

@@ -569,6 +569,33 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    private void setActionbar(String Title) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            // actionBar.setTitle(Title);
+            getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+            getSupportActionBar().setDisplayShowCustomEnabled(true);
+            getSupportActionBar().setCustomView(R.layout.toolbar);
+            View view = getSupportActionBar().getCustomView();
+            toolbar_title = (TextView) view.findViewById(R.id.toolbar_title);
+            toolbar_title.setText(Title);
+            img_back = (ImageView) findViewById(R.id.img_back);
+            img_back.setVisibility(View.GONE);
+            img_back.setOnClickListener(this);
+            img_logout = (ImageView) view.findViewById(R.id.img_logout);
+            img_logout.setVisibility(View.GONE);
+            img_logout.setOnClickListener(this);
+            img_list = (ImageView) view.findViewById(R.id.img_list);
+            img_lang = (ImageView) view.findViewById(R.id.img_lang);
+            img_lang.setVisibility(View.GONE);
+            img_lang.setOnClickListener(this);
+            img_list.setImageResource(R.drawable.ic_account_circle_white_36dp);
+            img_list.setVisibility(View.GONE);
+            img_list.setOnClickListener(this);
+        }
+
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -754,7 +781,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             ServiceRequest apiService =
                     ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
             String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/doLogout/" + User.getCurrentUser(this).getId();
+                    + Constants.DoLogout_url + User.getCurrentUser(this).getId();
 
             apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -899,7 +926,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getUserData?userId=" + User.getCurrentUser(getApplicationContext()).getId();
+                + Constants.GetUserData_url+"?userId=" + User.getCurrentUser(getApplicationContext()).getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -1071,7 +1098,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             ServiceRequest apiService =
                     ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-            apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/MapParameters", gsonObject).enqueue(new Callback<ResponseBody>() {
+            apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.MapParametersUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     try {
@@ -1154,6 +1181,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 Utills.showToast("You don't have access to add location",HomeActivity.this);
             }
 
+        }else if (id==R.id.action_callus){
+            Uri uri = Uri.parse("https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2"); // missing 'http://' will cause crashed
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

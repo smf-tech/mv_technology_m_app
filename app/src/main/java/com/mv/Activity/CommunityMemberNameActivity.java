@@ -16,6 +16,7 @@ import com.mv.Adapter.CommunityMemberAdapter;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -94,7 +95,7 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
         /*UserDetails Url for getting community members*/
 
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/userdetails?communityId=" + preferenceHelper.getString(PreferenceHelper.COMMUNITYID);
+                + Constants.Userdetails_Url+"?communityId=" + preferenceHelper.getString(PreferenceHelper.COMMUNITYID);
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override

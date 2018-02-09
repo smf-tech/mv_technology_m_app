@@ -69,7 +69,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         preferenceHelper = new PreferenceHelper(context);
         if(approvalType.equals(Constants.USER_APPROVAL)) {
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/getApprovalData?userId=" + User.getCurrentUser(context).getId();
+                    + Constants.GetApprovalDataUrl+"?userId=" + User.getCurrentUser(context).getId();
 
             setActionbar(getString(R.string.team_user_approval));
         }else if(approvalType.equals(Constants.PROCESS_APPROVAL))
@@ -77,7 +77,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
             id=getIntent().getExtras().getString(Constants.ID);
             processTitle= getIntent().getExtras().getString(Constants.TITLE);
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                  + "/services/apexrest/WS_getProcessAprovalUser?UserId="+ User.getCurrentUser(context).getId()+ "&processId="+id ;;
+                  + Constants.WS_getProcessAprovalUserUrl+"?UserId="+ User.getCurrentUser(context).getId()+ "&processId="+id ;;
             setActionbar(processTitle);
         }
         binding.swiperefresh.setOnRefreshListener(

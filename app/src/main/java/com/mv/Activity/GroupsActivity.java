@@ -75,7 +75,7 @@ public class GroupsActivity extends AppCompatActivity implements View.OnClickLis
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/MV_GetCommunities_c";
+                + Constants.MV_GetCommunities_c_Url;
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
