@@ -3,7 +3,6 @@ package com.mv.Utils;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -44,8 +43,12 @@ public class ForceUpdateChecker {
             String currentVersion = remoteConfig.getString(KEY_CURRENT_VERSION);
             String appVersion = getAppVersion(context);
             String updateUrl = remoteConfig.getString(KEY_UPDATE_URL);
-
-            if (!TextUtils.equals(currentVersion, appVersion)
+            float appV = 0, currentV = 0;
+            if (appVersion != null && appVersion.length() != 0)
+                appV = Float.parseFloat(appVersion);
+            if (currentVersion != null && currentVersion.length() != 0)
+                currentV = Float.parseFloat(currentVersion);
+            if (appV < currentV
                     && onUpdateNeededListener != null) {
                 onUpdateNeededListener.onUpdateNeeded(updateUrl);
             }
