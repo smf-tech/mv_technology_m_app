@@ -450,6 +450,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         public RelativeLayout audioLayout, layout_Video;
         public ImageView play, imgMore;
         public ProgressBar songProgressBar;
+        LinearLayout lnr_content;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
@@ -471,6 +472,31 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             imageThumbnail = (ImageView) itemLayoutView.findViewById(R.id.card_Thumbnail);
             txt_type = (TextView) itemLayoutView.findViewById(R.id.txt_type);
             layout_download_file = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download_file);
+            lnr_content = (LinearLayout) itemLayoutView.findViewById(R.id.lnr_content);
+
+
+            txt_desc.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())) {
+                        Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
+                        intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
+                        intent.putExtra("flag", "not_forward_flag");
+                        mContext.startActivity(intent);
+                    } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) {
+                        Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
+                        intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
+                        intent.putExtra("flag", "not_forward_flag");
+                        mContext.startActivity(intent);
+                    } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image")) {
+                        Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
+                        intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
+                        intent.putExtra("flag", "not_forward_flag");
+                        mContext.startActivity(intent);
+                    }
+                }
+            });
+
             layout_download_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -646,9 +672,9 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                         intent.putExtra("flag", "not_forward_flag");
                         mContext.startActivity(intent);
                     }
-                   /* Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
+                    Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
                     intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                    mContext.startActivity(intent);*/
+                    mContext.startActivity(intent);
                 }
             });
 

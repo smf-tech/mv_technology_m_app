@@ -1,5 +1,7 @@
 package com.mv.Adapter;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -487,6 +489,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             audioLayout = (RelativeLayout) itemLayoutView.findViewById(R.id.audioLayout);
             layout_download_file = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download_file);
             play = (ImageView) itemLayoutView.findViewById(R.id.play);
+
+
             /*Add the comment to particular posts by calling api. */
             layout_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -496,6 +500,42 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     mContext.startActivity(intent);
                 }
             });
+
+
+           txt_desc.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                   if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())) {
+                       Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
+                       intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
+                       intent.putExtra("flag", "forward_flag");
+                       intent.putExtra(Constants.LIST, mActivity.json);
+                       mContext.startActivity(intent);
+                   } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) {
+                       Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
+                       intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
+                       intent.putExtra("flag", "forward_flag");
+                       intent.putExtra(Constants.LIST, mActivity.json);
+                       mContext.startActivity(intent);
+                   } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("true")){
+                       if (mDataList.get(getAdapterPosition()).getContentType()!=null){
+                           if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image")) {
+                               Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
+                               intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
+                               intent.putExtra("flag", "forward_flag");
+                               intent.putExtra(Constants.LIST, mActivity.json);
+                               mContext.startActivity(intent);
+                           }
+                       }else {
+                           Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
+                           intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
+                           intent.putExtra("flag", "forward_flag");
+                           intent.putExtra(Constants.LIST, mActivity.json);
+                           mContext.startActivity(intent);
+                       }
+                   }
+               }
+           });
 
             layout_share = (LinearLayout) itemLayoutView.findViewById(R.id.layout_share);
             /*Forward posts to different communities*/
@@ -660,7 +700,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
                 }
             });
-            card_view.setOnClickListener(new View.OnClickListener()
+           /* card_view.setOnClickListener(new View.OnClickListener()
 
             {
                 @Override
@@ -678,15 +718,25 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                         intent.putExtra("flag", "forward_flag");
                         intent.putExtra(Constants.LIST, mActivity.json);
                         mContext.startActivity(intent);
-                    } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image")) {
-                        Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                        intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                        intent.putExtra("flag", "forward_flag");
-                        intent.putExtra(Constants.LIST, mActivity.json);
-                        mContext.startActivity(intent);
+                    } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("true")){
+                        if (mDataList.get(getAdapterPosition()).getContentType()!=null){
+                            if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image")) {
+                                Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
+                                intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
+                                intent.putExtra("flag", "forward_flag");
+                                intent.putExtra(Constants.LIST, mActivity.json);
+                                mContext.startActivity(intent);
+                            }
+                        }else {
+                            Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
+                            intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
+                            intent.putExtra("flag", "forward_flag");
+                            intent.putExtra(Constants.LIST, mActivity.json);
+                            mContext.startActivity(intent);
+                        }
                     }
                 }
-            });
+            });*/
 
             picture.setOnClickListener(new View.OnClickListener() {
                 @Override

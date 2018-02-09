@@ -277,7 +277,16 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             layout_share = (LinearLayout) itemLayoutView.findViewById(R.id.layout_share);
             mediaLayout = (LinearLayout) itemLayoutView.findViewById(R.id.mediaLayout);
             layout_download_file = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download_file);
+            txt_desc.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
+                    intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
+                    intent.putExtra("flag", "not_forward_flag");
 
+                    mContext.startActivity(intent);
+                }
+            });
             layout_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
