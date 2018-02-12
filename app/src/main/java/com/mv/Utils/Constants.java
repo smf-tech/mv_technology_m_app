@@ -117,7 +117,7 @@ public class Constants {
     public static final String My_Reports = "My Reports";
     public static final String My_Calendar = "My Calendar";
 
-    public static final String IMAGEURL = "http://13.58.218.106/images/";
+    public static final String IMAGEURL = "http://mobileapp.mulyavardhan.org/images/";
     public static final String InsertContentUrl = "/services/apexrest/insertContent";
     public static final String DeletePostUrl = "/services/apexrest/DeletePost/";
     public  static final String InsertBroadcastPostUrl ="/services/apexrest/InsertBroadcastPost";
@@ -131,13 +131,13 @@ public class Constants {
     public static final String GetUserData_url ="/services/apexrest/getUserData";
     public static final String MapParametersUrl="/services/apexrest/MapParameters";
     public static final String GetSessionDatademo_Url  ="/services/apexrest/getSessionDatademo/";
-    public static final String Upload_Url  =  "http://13.58.218.106/upload.php";
+    public static final String Upload_Url  =  "http://mobileapp.mulyavardhan.org/upload.php";
     public static final String GetLoginOTP_url  =  "/services/apexrest/getLoginOTP";
     public static final String GetchartDatademoNew  =  "/services/apexrest/getchartDatademoNew";
     public static final String GetDashboardDatademoUrl  =  "/services/apexrest/getDashboardDatademo";
     public static final String GetApprovalProcessUrl  ="/services/apexrest/getApprovalProcess";
     public static final String InsertAnswerForProcessAnswerUrl  = "/services/apexrest/InsertAnswerForProcessAnswer";
-    public static final String New_upload_phpUrl  ="http://13.58.218.106/new_upload.php";
+    public static final String New_upload_phpUrl  ="http://mobileapp.mulyavardhan.org/new_upload.php";
     public static final String GetprocessAnswerDataUrl = "/services/apexrest/getprocessAnswerData";
     public static final String GetprocessTaskUrl ="/services/apexrest/getprocessTask";
     public static final String DeleteTaskAnswerUrl =  "/services/apexrest/DeleteTaskAnswer/";
