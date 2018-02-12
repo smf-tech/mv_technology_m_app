@@ -8,9 +8,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.databinding.DataBindingUtil;
+import android.graphics.Bitmap;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -44,6 +47,7 @@ import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
+import com.mv.Utils.GetFilePathFromDevice;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -335,141 +339,145 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
     }
 
     private void setdDataToSalesForcce() {
-        if (Utills.isConnected(this)) {
-            try {
-                Utills.showProgressDialog(this);
-                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                String json = gson.toJson(content);
-                JSONObject jsonObject = new JSONObject();
-                JSONArray jsonArray = new JSONArray();
-                JSONObject jsonObject1 = new JSONObject(json);
+        {
+            if (Utills.isConnected(this)) {
+                try {
+                    Utills.showProgressDialog(this);
+                    Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                    String json = gson.toJson(content);
+                    JSONObject jsonObject = new JSONObject();
+                    JSONArray jsonArray = new JSONArray();
+                    JSONObject jsonObject1 = new JSONObject(json);
 
-                JSONArray jsonArrayAttchment = new JSONArray();
-                // jsonObject1.put("isTheatMessage", "true");
-                if (FinalUri != null) {
-                    try {
+                    JSONArray jsonArrayAttchment = new JSONArray();
+                    // jsonObject1.put("isTheatMessage", "true");
+                    if (FinalUri != null) {
+                        try {
                        /* if (checkSizeExceed(FinalUri)) {
                             Utills.showToast("File Size Cannot Be Greater than 5 MB", this);
                             return;
                         }*/
-                        jsonObject1.put("contentType", "Image");
-                        jsonObject1.put("isAttachmentPresent", "true");
-                        InputStream iStream = null;
-                        iStream = getContentResolver().openInputStream(FinalUri);
-                        img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
+                            jsonObject1.put("contentType", "Image");
+                            jsonObject1.put("isAttachmentPresent", "true");
+                            InputStream iStream = null;
+                            iStream = getContentResolver().openInputStream(FinalUri);
+                            img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
                       /*  JSONObject jsonObjectAttachment = new JSONObject();
                         jsonObjectAttachment.put("Body", img_str);
                         jsonObjectAttachment.put("Name", content.getTitle());
                         jsonObjectAttachment.put("ContentType", "image/png");
                         jsonArrayAttchment.put(jsonObjectAttachment);*/
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else if (outputUri != null) {
-                    try {
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else if (outputUri != null) {
+                        try {
                        /* if (checkSizeExceed(outputUri)) {
                             Utills.showToast("File Size Cannot Be Greater than 5 MB", this);
                             return;
                         }*/
-                        jsonObject1.put("contentType", "Video");
-                        jsonObject1.put("isAttachmentPresent", "true");
-                        img_str = getVideoString(outputUri);
+                            jsonObject1.put("contentType", "Video");
+                            jsonObject1.put("isAttachmentPresent", "true");
+                            img_str = getVideoString(outputUri);
                       /*  JSONObject jsonObjectAttachment = new JSONObject();
                         jsonObjectAttachment.put("Body", img_str);
                         jsonObjectAttachment.put("Name", content.getTitle());
                         jsonObjectAttachment.put("ContentType", "image/png");
                         jsonArrayAttchment.put(jsonObjectAttachment);*/
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else if (audioUri != null) {
-                    try {
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else if (audioUri != null) {
+                        try {
                        /* if (checkSizeExceed(audioUri)) {
                             Utills.showToast("File Size Cannot Be Greater than 5 MB", this);
                             return;
                         }*/
 
-                        jsonObject1.put("contentType", "Audio");
-                        jsonObject1.put("isAttachmentPresent", "true");
-                        img_str = getVideoString(audioUri);
+                            jsonObject1.put("contentType", "Audio");
+                            jsonObject1.put("isAttachmentPresent", "true");
+                            img_str = getVideoString(audioUri);
                       /*  JSONObject jsonObjectAttachment = new JSONObject();
                         jsonObjectAttachment.put("Body", img_str);
                         jsonObjectAttachment.put("Name", content.getTitle());
                         jsonObjectAttachment.put("ContentType", "image/png");
                         jsonArrayAttchment.put(jsonObjectAttachment);*/
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
                 /*JSONObject jsonObjectAttachment = new JSONObject();
                 jsonArrayAttchment.put(jsonObjectAttachment);*/
-                jsonObject1.put("attachments", jsonArrayAttchment);
-                jsonArray.put(jsonObject1);
-                jsonObject.put("listVisitsData", jsonArray);
+                    jsonObject1.put("attachments", jsonArrayAttchment);
+                    jsonArray.put(jsonObject1);
+                    jsonObject.put("listVisitsData", jsonArray);
 
-                ServiceRequest apiService =
-                        ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-                JsonParser jsonParser = new JsonParser();
-                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
-                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.InsertContentUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        Utills.hideProgressDialog();
-                        try {
+                    ServiceRequest apiService =
+                            ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+                    JsonParser jsonParser = new JsonParser();
+                    JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
+                    apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.InsertContentUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
+                        @Override
+                        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            Utills.hideProgressDialog();
+                            try {
 
-                            String str = response.body().string();
-                            JSONObject object = new JSONObject(str);
-                            JSONArray array = object.getJSONArray("Records");
-                            if (array.length() > 0) {
-                                JSONObject object1 = array.getJSONObject(0);
-                                if (object1.has("Id") && (FinalUri != null || outputUri != null || audioUri != null)) {
-                                    JSONObject object2 = new JSONObject();
-                                    object2.put("id", object1.getString("Id"));
+                                String str = response.body().string();
+                                JSONObject object = new JSONObject(str);
+                                JSONArray array = object.getJSONArray("Records");
+                                if (array.length() > 0) {
+                                    JSONObject object1 = array.getJSONObject(0);
+                                    if (object1.has("Id") && (FinalUri != null || outputUri != null || audioUri != null)) {
+                                        JSONObject object2 = new JSONObject();
+                                        object2.put("id", object1.getString("Id"));
 
-                                    stringId = object1.getString("Id");
-                                    if (FinalUri != null)
-                                        object2.put("type", "png");
-                                    else if (outputUri != null)
-                                        object2.put("type", "mp4");
-                                    else if (audioUri != null)
-                                        object2.put("type", "mp3");
-                                    object2.put("img", img_str);
-                                    JSONArray array1 = new JSONArray();
-                                    array1.put(object2);
-                                    sendImageToServer(array1);
+                                        stringId = object1.getString("Id");
+                                        if (FinalUri != null)
+                                            object2.put("type", "png");
+                                        else if (outputUri != null)
+                                            object2.put("type", "mp4");
+                                        else if (audioUri != null)
+                                            object2.put("type", "mp3");
+                                        object2.put("img", img_str);
+                                        JSONArray array1 = new JSONArray();
+                                        array1.put(object2);
+                                        sendImageToServer(array1);
                                    /* Utills.showToast("Report submitted successfully...", getApplicationContext());
                                     finish();
                                     overridePendingTransition(R.anim.left_in, R.anim.right_out);*/
+                                    } else {
+                                        Utills.showToast("Report submitted successfully...", getApplicationContext());
+                                        finish();
+                                        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                                    }
                                 } else {
                                     Utills.showToast("Report submitted successfully...", getApplicationContext());
                                     finish();
                                     overridePendingTransition(R.anim.left_in, R.anim.right_out);
                                 }
-                            } else {
-                                Utills.showToast("Report submitted successfully...", getApplicationContext());
-                                finish();
-                                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                            }
 
-                        } catch (Exception e) {
+                            } catch (Exception e) {
+                                Utills.hideProgressDialog();
+                                e.printStackTrace();
+                                Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ResponseBody> call, Throwable t) {
                             Utills.hideProgressDialog();
-                            e.printStackTrace();
                             Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
                         }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Utills.hideProgressDialog();
-                        Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
-                    }
-                });
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Utills.hideProgressDialog();
-                Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                    });
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Utills.hideProgressDialog();
+                    Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                }
+            } else {
+                showPopUp();
             }
-        } else {
+        } /*else {
             Calendar c = Calendar.getInstance();
             SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String formattedDate1 = df1.format(c.getTime());
@@ -494,36 +502,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
             Utills.showToast(getString(R.string.issue_submit), getApplicationContext());
             finish();
             overridePendingTransition(R.anim.left_in, R.anim.right_out);
-        }
-    }
-    private String getVideoString(Uri selectedImageUri) {
-        InputStream inputStream = null;
-        try {
-            inputStream = getContentResolver().openInputStream(selectedImageUri);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        int bufferSize = 1024;
-        byte[] buffer = new byte[bufferSize];
-        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int len = 0;
-        try {
-            while ((len = inputStream.read(buffer)) != -1) {
-                byteBuffer.write(buffer, 0, len);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.println("converted!");
-        String videoData = "";
-        //Converting bytes into base64
-        videoData = Base64.encodeToString(byteBuffer.toByteArray(), Base64.DEFAULT);
-        Log.d("VideoData**>  ", videoData);
-        String sinSaltoFinal2 = videoData.trim();
-        String sinsinSalto2 = sinSaltoFinal2.replaceAll("\n", "");
-        Log.d("VideoData**>  ", sinsinSalto2);
-        String baseVideo = sinsinSalto2;
-        return baseVideo;
+        }*/
     }
     private void sendImageToServer(JSONArray jsonArray) {
         Utills.showProgressDialog(this);
@@ -531,7 +510,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         JsonArray gsonObject = (JsonArray) jsonParser.parse(jsonArray.toString());
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
-        apiService.sendImageToSalesforce(Constants.Upload_Url, gsonObject).enqueue(new Callback<ResponseBody>() {
+        apiService.sendImageToSalesforce(Constants.New_upload_phpUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -627,6 +606,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Bitmap bmThumbnail;
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
             try {
                 String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture_crop.jpg";
@@ -654,6 +634,39 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(binding.addImage);
+        } else if (requestCode == Constants.CHOOSE_VIDEO_FROM_CAMERA && resultCode == RESULT_OK) {
+            String selectedImagePath = getPath(outputUri);
+            if (checkSizeExceed(selectedImagePath)) {
+                outputUri = null;
+                Utills.showToast(getString(R.string.text_size_exceed), this);
+            } else {
+                bmThumbnail = ThumbnailUtils.createVideoThumbnail(outputUri.getPath(), MediaStore.Video.Thumbnails.MINI_KIND);
+                binding.addImage.setImageBitmap(bmThumbnail);
+            }
+        } else if (requestCode == Constants.CHOOSE_VIDEO_FROM_GALLERY && resultCode == RESULT_OK) {
+            outputUri = data.getData();
+            String selectedVideoFilePath = GetFilePathFromDevice.getPath(this, outputUri);
+
+            if (checkSizeExceed(selectedVideoFilePath)) {
+                outputUri = null;
+                Utills.showToast(getString(R.string.text_size_exceed), this);
+            } else {
+                if (selectedVideoFilePath != null) {
+                    binding.addImage.setImageBitmap(ThumbnailUtils.createVideoThumbnail(selectedVideoFilePath, MediaStore.Video.Thumbnails.FULL_SCREEN_KIND));
+                }
+            }
+        } else if (requestCode == Constants.SELECT_AUDIO && resultCode == RESULT_OK) {
+            audioUri = data.getData();
+            String dddd = getPath(audioUri);
+            Log.e("dddd", dddd);
+
+            if (checkSizeExceed(getPath(audioUri))) {
+                audioUri = null;
+                Utills.showToast(getString(R.string.text_size_exceed), this);
+            } else {
+                auxFileAudio = new File(getPath(audioUri));
+                binding.addImage.setImageResource(R.drawable.mic);
+            }
         }
     }
 
@@ -695,7 +708,62 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
 
     }
 
+    private boolean checkSizeExceed(String filePath) {
+        File f = new File(filePath);
+        // Get length of file in bytes
+        long fileSizeInBytes = f.length();
+        // Convert the bytes to Kilobytes (1 KB = 1024 Bytes)
+        long fileSizeInKB = fileSizeInBytes / 1024;
+        // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
+        long fileSizeInMB = fileSizeInKB / 1024;
+        if (fileSizeInMB > 5)
+            return true;
+        return false;
+    }
 
+    private String getVideoString(Uri selectedImageUri) {
+        InputStream inputStream = null;
+        try {
+            inputStream = getContentResolver().openInputStream(selectedImageUri);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int len = 0;
+        try {
+            while ((len = inputStream.read(buffer)) != -1) {
+                byteBuffer.write(buffer, 0, len);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println("converted!");
+        String videoData = "";
+        //Converting bytes into base64
+        videoData = Base64.encodeToString(byteBuffer.toByteArray(), Base64.DEFAULT);
+        Log.d("VideoData**>  ", videoData);
+        String sinSaltoFinal2 = videoData.trim();
+        String sinsinSalto2 = sinSaltoFinal2.replaceAll("\n", "");
+        Log.d("VideoData**>  ", sinsinSalto2);
+        String baseVideo = sinsinSalto2;
+        return baseVideo;
+    }
+
+    public String getPath(Uri uri) {
+        String[] projection = {MediaStore.Video.Media.DATA};
+        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+        if (cursor != null) {
+            // HERE YOU WILL GET A NULLPOINTER IF CURSOR IS NULL
+            // THIS CAN BE, IF YOU USED OI FILE MANAGER FOR PICKING THE MEDIA
+            int column_index = cursor
+                    .getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+            cursor.moveToFirst();
+            return cursor.getString(column_index);
+        } else
+            return null;
+    }
     private void showMediaDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(getString(R.string.text_mediatype));
