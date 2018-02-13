@@ -65,7 +65,6 @@ import com.mv.MenuActivity.ProgrammeManagmentFragment;
 import com.mv.MenuActivity.TeamManagementFragment;
 import com.mv.MenuActivity.ThetSavandFragment;
 import com.mv.MenuActivity.TrainingCalender;
-import com.mv.MenuActivity.TrainingFragment;
 import com.mv.Model.HomeModel;
 import com.mv.Model.User;
 import com.mv.R;
@@ -437,7 +436,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else if (allTab.get(i).equals(Constants.Training_Content)) {
             homeModel.setMenuName(getString(R.string.training_content));
             homeModel.setMenuIcon(R.drawable.ic_traing_content);
-            homeModel.setDestination(TrainingFragment.class);
+            homeModel.setDestination(ExpandableListActivity.class);
 
         } else if (allTab.get(i).equals(Constants.Team_Management)) {
             homeModel.setMenuName(getString(R.string.team_management));
