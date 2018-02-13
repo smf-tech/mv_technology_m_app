@@ -648,6 +648,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
                         setFilter("Information Sharing");
 
+
                         break;
                     case 2:
                         setFilter("Events Update");

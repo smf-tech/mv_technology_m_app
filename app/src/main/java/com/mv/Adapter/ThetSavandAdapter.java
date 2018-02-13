@@ -474,7 +474,13 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             layout_download_file = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download_file);
             lnr_content = (LinearLayout) itemLayoutView.findViewById(R.id.lnr_content);
 
-
+            txt_desc.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Utills.MarkAsSpamDialog(mContext,preferenceHelper,mDataList.get(mPosition).getId());
+                    return false;
+                }
+            });
             txt_desc.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

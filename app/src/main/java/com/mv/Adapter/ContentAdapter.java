@@ -15,6 +15,7 @@ import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Environment;
+import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -92,6 +94,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
     private Bitmap theBitmap;
     int temp = 555500;
     MediaPlayer mPlayer = new MediaPlayer();
+    private AlertDialog alertLocationDialog;
     private static final Pattern urlPattern = Pattern.compile( "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
             + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
@@ -278,6 +281,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         holder.txt_time.setText(mDataList.get(position).getTime().toString());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");
         holder.txtCommentCount.setText(mDataList.get(position).getCommentCount() + " Comments");
+        holder.txt_tag.setText("Tag : ");
 
         holder.txt_type.setText(mDataList.get(position).getIssue_priority());
         if (mDataList.get(position).getIsLike() && (mDataList.get(position).getUser_id().equalsIgnoreCase(User.getCurrentUser(mContext).getId())))
@@ -465,7 +469,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         public ImageView picture, userImage, imgLike, img_comment,play;
         public CardView card_view;
         public RelativeLayout audioLayout, layout_Video;
-        public TextView txt_audio_txt,txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type;
+        public TextView txt_audio_txt,txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type,txt_tag;
         public LinearLayout layout_like, mediaLayout, layout_comment, layout_share, layout_download,layout_download_file;
 
         public ViewHolder(View itemLayoutView) {
@@ -489,7 +493,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             audioLayout = (RelativeLayout) itemLayoutView.findViewById(R.id.audioLayout);
             layout_download_file = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download_file);
             play = (ImageView) itemLayoutView.findViewById(R.id.play);
-
+            txt_tag = (TextView) itemLayoutView.findViewById(R.id.txt_tag);
 
             /*Add the comment to particular posts by calling api. */
             layout_comment.setOnClickListener(new View.OnClickListener() {
@@ -498,6 +502,14 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     Intent intent = new Intent(mContext, CommentActivity.class);
                     intent.putExtra(Constants.ID, mDataList.get(getAdapterPosition()).getId());
                     mContext.startActivity(intent);
+                }
+            });
+
+            txt_desc.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Utills.MarkAsSpamDialog(mContext,preferenceHelper,mDataList.get(mPosition).getId());
+                    return false;
                 }
             });
 
@@ -1037,5 +1049,68 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         return false;
     }
 
+
+ /*   public  void spamContent(){
+        String url = "";
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
+        *//*UserDetails Url for getting community members*//*
+
+        url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.SpamContentUrl+"?Id=" +mDataList.get(mPosition).getId();
+
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                String data = null;
+                try {
+                    data = response.body().string();
+                    if (data != null && data.length() > 0) {
+
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public  static void AddTagDialog(Context context){
+        LayoutInflater inflater = LayoutInflater.from(context);
+        final View view = inflater.inflate(R.layout.each_tag, null);
+        final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(view.getContext()).create();
+        alertDialog.setTitle("Add Tag Here");
+        // alertDialog.setIcon("Icon id here");
+        alertDialog.setCancelable(false);
+        //alertDialog.setMessage("Your Message Here");
+
+
+        final EditText etComments = (EditText) view.findViewById(R.id.addtag);
+
+        alertDialog.setButton(android.app.AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+
+        alertDialog.setButton(android.app.AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+
+
+        alertDialog.setView(view);
+        alertDialog.show();
+    }*/
 }
 
