@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="@dimen/dimen_5dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginTop="2dp"
     android:foreground="?attr/selectableItemBackground"
 
     app:cardBackgroundColor="@color/white">
@@ -14,7 +15,7 @@
         android:id="@+id/layoutMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/txtCount"
@@ -41,20 +42,21 @@
             android:id="@+id/imgDownload"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:visibility="gone"
+            android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
-            android:src="@drawable/download_file" />
+            android:src="@drawable/download_file"
+            android:visibility="gone" />
+
         <ImageView
             android:id="@+id/imgshare"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:visibility="gone"
+            android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
-            android:src="@drawable/download" />
+            android:src="@drawable/download"
+            android:visibility="gone" />
 
 
     </RelativeLayout>

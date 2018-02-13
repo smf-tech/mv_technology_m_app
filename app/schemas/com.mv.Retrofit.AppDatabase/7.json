@@ -1,0 +1,471 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 7,
+    "identityHash": "8b3683dff2961cceaafff932bac0d981",
+    "entities": [
+      {
+        "tableName": "table_community",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`community_id` TEXT, `community_name` TEXT, `timestamp` TEXT, `unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT)",
+        "fields": [
+          {
+            "fieldPath": "Id",
+            "columnName": "community_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Name",
+            "columnName": "community_name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Time",
+            "columnName": "timestamp",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Unique_Id",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_content",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `isAttachmentPresent` TEXT, `synchStatus` TEXT, `Id` TEXT, `UserId` TEXT, `CommunityId` TEXT, `District` TEXT, `taluka` TEXT, `likeCount` INTEGER, `commentCount` INTEGER, `isLike` INTEGER, `Issue_Type` TEXT, `Report_Type` TEXT, `Priority` TEXT, `Title` TEXT, `Description` TEXT, `TemplateId` TEXT, `TemplateName` TEXT, `userAttachmentId` TEXT, `CreatedDate` TEXT, `isbroadcast` TEXT, `userName` TEXT, `isMediaPlay` INTEGER, `contentType` TEXT, `isTheatMessage` TEXT, `attachmentId` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "Unique_Id",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "isAttachmentPresent",
+            "columnName": "isAttachmentPresent",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "synchStatus",
+            "columnName": "synchStatus",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "user_id",
+            "columnName": "UserId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "community_id",
+            "columnName": "CommunityId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "district",
+            "columnName": "District",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "taluka",
+            "columnName": "taluka",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "likeCount",
+            "columnName": "likeCount",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "commentCount",
+            "columnName": "commentCount",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "isLike",
+            "columnName": "isLike",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "issue_type",
+            "columnName": "Issue_Type",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "reporting_type",
+            "columnName": "Report_Type",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "issue_priority",
+            "columnName": "Priority",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "Title",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "Description",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "template",
+            "columnName": "TemplateId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "templateName",
+            "columnName": "TemplateName",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "userAttachmentId",
+            "columnName": "userAttachmentId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "time",
+            "columnName": "CreatedDate",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isBroadcast",
+            "columnName": "isbroadcast",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "userName",
+            "columnName": "userName",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "mediaPlay",
+            "columnName": "isMediaPlay",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "contentType",
+            "columnName": "contentType",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isTheatMessage",
+            "columnName": "isTheatMessage",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "attachmentId",
+            "columnName": "attachmentId",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_process",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `template_id` TEXT, `template_name` TEXT, `Location` INTEGER, `LocationLevel` TEXT, `type` TEXT, `url` TEXT, `MV_Process__c` TEXT, `MV_User__c` TEXT, `P1F1__c` TEXT, `P1F2__c` TEXT, `P1F3__c` TEXT, `P1F4__c` TEXT, `P1F5__c` TEXT, `Is_Editable__c` INTEGER, `Is_Multiple_Entry_Allowed__c` INTEGER)",
+        "fields": [
+          {
+            "fieldPath": "Unique_Id",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "Id",
+            "columnName": "template_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Name",
+            "columnName": "template_name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Location",
+            "columnName": "Location",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "LocationLevel",
+            "columnName": "LocationLevel",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "MV_Process__c",
+            "columnName": "MV_Process__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "MV_User__c",
+            "columnName": "MV_User__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "P1F1__c",
+            "columnName": "P1F1__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "P1F2__c",
+            "columnName": "P1F2__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "P1F3__c",
+            "columnName": "P1F3__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "P1F4__c",
+            "columnName": "P1F4__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "P1F5__c",
+            "columnName": "P1F5__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Is_Editable__c",
+            "columnName": "Is_Editable__c",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "Is_Multiple_Entry_Allowed__c",
+            "columnName": "Is_Multiple_Entry_Allowed__c",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_container",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` TEXT, `taskListString` TEXT, `isSave` TEXT, `MV_Process__c` TEXT, `TaskType` TEXT, PRIMARY KEY(`unique_Id`))",
+        "fields": [
+          {
+            "fieldPath": "Unique_Id",
+            "columnName": "unique_Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "taskListString",
+            "columnName": "taskListString",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isSave",
+            "columnName": "isSave",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "MV_Process__c",
+            "columnName": "MV_Process__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "TaskType",
+            "columnName": "TaskType",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_location",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`Id` TEXT, `Village` TEXT, `Taluka` TEXT, `State` TEXT, `SchoolName` TEXT, `SchoolCode` TEXT, `District` TEXT, `createdDate` TEXT, `Cluster` TEXT, PRIMARY KEY(`Id`))",
+        "fields": [
+          {
+            "fieldPath": "Id",
+            "columnName": "Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "village",
+            "columnName": "Village",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "taluka",
+            "columnName": "Taluka",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "state",
+            "columnName": "State",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "schoolName",
+            "columnName": "SchoolName",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "schoolCode",
+            "columnName": "SchoolCode",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "district",
+            "columnName": "District",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "createdDate",
+            "columnName": "createdDate",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "cluster",
+            "columnName": "Cluster",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "Id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_calender",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Description__c` TEXT, `Date__c` TEXT, `MV_User1__c` TEXT, `Title` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "Unique_Id",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "Description__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "Date__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "MV_User1__c",
+            "columnName": "MV_User1__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "Title",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_download_content",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Section` TEXT, `Name` TEXT, `URL__c` TEXT, `FileType__c` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "Unique_Id",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "Id",
+            "columnName": "Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Section",
+            "columnName": "Section",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Name",
+            "columnName": "Name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "URL__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "FileType",
+            "columnName": "FileType__c",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"8b3683dff2961cceaafff932bac0d981\")"
+    ]
+  }
+}
