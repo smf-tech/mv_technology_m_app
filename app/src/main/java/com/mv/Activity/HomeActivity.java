@@ -286,9 +286,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         menulist = new ArrayList<>();
 
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
+            if(!User.getCurrentUser(getApplicationContext()).getIsApproved().equals(""))
             allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameNoteApproved().split(";")));
             showApprovedDilaog();
         } else {
+            if(!User.getCurrentUser(getApplicationContext()).getTabNameApproved().equals(""))
             allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameApproved().split(";")));
 
         }
@@ -700,9 +702,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         int checkId = 0;
         if (preferenceHelper.getString(LANGUAGE).equalsIgnoreCase(LANGUAGE_MARATHI)) {
             checkId = 1;
-        } else {
-
+        } else if(preferenceHelper.getString(LANGUAGE).equalsIgnoreCase(LANGUAGE_HINDI)){
+            checkId = 2;
         }
+
 
 
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -777,7 +780,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             ServiceRequest apiService =
                     ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
             String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/doLogout/" + User.getCurrentUser(this).getId();
+                    + Constants.DoLogout_url + User.getCurrentUser(this).getId();
 
             apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -922,7 +925,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getUserData?userId=" + User.getCurrentUser(getApplicationContext()).getId();
+                + Constants.GetUserData_url+"?userId=" + User.getCurrentUser(getApplicationContext()).getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -1094,7 +1097,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             ServiceRequest apiService =
                     ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-            apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/MapParameters", gsonObject).enqueue(new Callback<ResponseBody>() {
+            apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.MapParametersUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     try {
@@ -1167,9 +1170,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             RateThisApp.showRateDialog(HomeActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
 
         } else if (id == R.id.action_add_school) {
-            Intent openClass = new Intent(HomeActivity.this, AddSchoolActivity.class);
-            startActivity(openClass);
+            String role=User.getCurrentUser(getApplicationContext()).getRoll();
+            if(role.equals("PC")||role.equals("MT")||role.equals("PC")||role.equals("PM")) {
+                Intent openClass = new Intent(HomeActivity.this, AddSchoolActivity.class);
+                startActivity(openClass);
+            }
+            else
+            {
+                Utills.showToast("You don't have access to add location",HomeActivity.this);
+            }
 
+        }else if (id==R.id.action_callus){
+            Uri uri = Uri.parse("https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2"); // missing 'http://' will cause crashed
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            startActivity(intent);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

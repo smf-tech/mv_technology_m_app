@@ -18,35 +18,38 @@
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
+
         <LinearLayout
             android:id="@+id/llrole_lay"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <com.mv.Widgets.MyTextView
-            android:id="@+id/tv_state"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="2dp"
-            android:text="@string/role"
-            android:textColor="@color/dark_grey"
-            android:textSize="@dimen/small_text" />
 
-        <Spinner
-            android:id="@+id/spinner_role"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="3dp"
-            android:background="@drawable/grey_box"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:prompt="@string/role"
-            android:spinnerMode="dialog" />
+            <com.mv.Widgets.MyTextView
+                android:id="@+id/tv_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="2dp"
+                android:text="@string/role"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/small_text" />
+
+            <Spinner
+                android:id="@+id/spinner_role"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/grey_box"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:prompt="@string/role"
+                android:spinnerMode="dialog" />
         </LinearLayout>
+
         <TextView
             android:id="@+id/tv_pia_no_data_available"
             android:layout_width="match_parent"
@@ -61,203 +64,213 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <FrameLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:weightSum="2">
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/process_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:text="ProcessName "
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/small_text"
+                            android:textStyle="bold" />
+
+                    </TableRow>
+
+                </TableLayout>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:weightSum="2">
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/caption_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:text="Caption"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/small_text" />
+
+                    </TableRow>
+
+                </TableLayout>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:weightSum="2">
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/total_feedback"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:text="Total Feedback Coun"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/small_text" />
+
+                        <TextView
+                            android:id="@+id/valid_feedback"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_column="2"
+                            android:layout_weight="1"
+                            android:text="Valid Feedback Count"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/small_text" />
+                    </TableRow>
+
+                </TableLayout>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:weightSum="2">
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/count_of_district"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:text="Count of District "
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/small_text" />
+
+                        <TextView
+                            android:id="@+id/count_of_taluka"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_column="2"
+                            android:layout_weight="1"
+                            android:text="Count of taluka "
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/small_text" />
+                    </TableRow>
+
+                    <TableRow>
+
+
+                        <TextView
+                            android:id="@+id/count_of_cluster"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:text="Count of cluster "
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/small_text" />
+                    </TableRow>
+                </TableLayout>
+
                 <LinearLayout
                     android:id="@+id/piachart_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:visibility="gone"
                     android:orientation="vertical">
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txt_view1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
 
-                    android:background="@drawable/search_rounded"
-                    android:padding="10dp">
-
-                    <com.mv.Widgets.MyEditTextView
-                        android:id="@+id/edit_text_email"
-                        android:layout_width="fill_parent"
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_email"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:drawableLeft="@drawable/search"
-                        android:drawablePadding="10dp"
-                        android:focusableInTouchMode="true"
-                        android:hint="Search"
-                        android:inputType="textEmailAddress"
+                        android:layout_below="@+id/txt_view1"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="2dp"
 
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/medium_text" />
-                </android.support.design.widget.TextInputLayout>
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:scrollbars="vertical" />
+                        android:background="@drawable/search_rounded"
+                        android:padding="5dp">
+
+                        <com.mv.Widgets.MyEditTextView
+                            android:id="@+id/edit_text_email"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:drawableLeft="@drawable/search"
+                            android:drawablePadding="5dp"
+                            android:focusableInTouchMode="true"
+                            android:hint="Search"
+                            android:inputType="textEmailAddress"
+
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/medium_text" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:scrollbars="vertical" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/piachart_chart_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-
-                    android:orientation="vertical">
-            <TableLayout
-                android:weightSum="2"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                    <TableRow>
-
-                        <TextView
-                            android:id="@+id/process_name"
-                            android:layout_width="wrap_content"
-                            android:text="ProcessName "
-                            android:layout_height="wrap_content"
-                            android:textColor="@color/black"
-                            android:textStyle="bold"
-                            android:layout_column="1"
-                            android:layout_weight="1"
-                            android:textSize="@dimen/small_text"/>
-
-                    </TableRow>
-
-            </TableLayout>
-                    <TableLayout
-                        android:weightSum="2"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TableRow>
-
-                            <TextView
-                                android:id="@+id/caption_name"
-                                android:layout_width="match_parent"
-                                android:text="Caption"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/black"
-                                android:layout_column="1"
-                                android:layout_weight="1"
-                                android:textSize="@dimen/small_text"/>
-
-                        </TableRow>
-
-                    </TableLayout>
-                    <TableLayout
-                        android:weightSum="2"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TableRow>
-
-                            <TextView
-                                android:id="@+id/total_feedback"
-                                android:layout_width="match_parent"
-                                android:text="Total Feedback Coun"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/black"
-                                android:layout_column="1"
-                                android:layout_weight="1"
-                                android:textSize="@dimen/small_text"/>
-
-                            <TextView
-                                android:id="@+id/valid_feedback"
-                                android:layout_width="match_parent"
-                                android:text="Valid Feedback Count"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/black"
-                                android:layout_column="2"
-                                android:layout_weight="1"
-                                android:textSize="@dimen/small_text"/>
-                        </TableRow>
-
-                    </TableLayout>
-                    <TableLayout
-                        android:weightSum="2"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-                        <TableRow>
-
-                            <TextView
-                                android:id="@+id/count_of_district"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_column="1"
-                                android:layout_weight="1"
-                                android:text="Count of District "
-                                android:textColor="@color/black"
-                                android:textSize="@dimen/small_text" />
-                            <TextView
-                                android:id="@+id/count_of_taluka"
-                                android:layout_width="match_parent"
-                                android:text="Count of taluka "
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/black"
-                                android:layout_column="2"
-                                android:layout_weight="1"
-                                android:textSize="@dimen/small_text"/>
-                        </TableRow>
-                        <TableRow>
+                    android:orientation="vertical"
+                    android:weightSum="10">
 
 
-                            <TextView
-                                android:id="@+id/count_of_cluster"
-                                android:layout_width="match_parent"
-                                android:text="Count of cluster "
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/black"
-                                android:layout_column="1"
-                                android:layout_weight="1"
-                                android:textSize="@dimen/small_text"/>
-                        </TableRow>
-                    </TableLayout>
 
 
-                    <LinearLayout
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_menu"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="3"
+                            android:scrollbars="vertical" />
 
-                        android:layout_width="match_parent"
-                        android:weightSum="10"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rv_menu"
-                        android:layout_weight="3"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="5dp"
-                        android:scrollbars="vertical" />
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/chart1"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="7"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_above="@+id/seekBar1" />
-                    </LinearLayout>
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/chart1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_above="@+id/seekBar1"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="7" />
+
 
                 </LinearLayout>
 
-            </FrameLayout>
+            </LinearLayout>
         </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 </layout>

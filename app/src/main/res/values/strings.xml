@@ -194,7 +194,7 @@
     <string name="team_user_approval">User Approval</string>
     <string name="team_form_approval">Form Approval</string>
     <string name="Registration">Registration</string>
-    <string name="about_us">About Mulyavardhan</string>
+    <string name="about_us">About\nMulyavardhan</string>
 
 
     <string name="lang">Change Language</string>
@@ -214,6 +214,10 @@
     <string name="aboutus_info">Mulyavardhan (MV) is a value education programme to help children imbibe democratic values, attitudes and skills in an enabling school climate.\n\nMulyavardhan was initiated in 2009 and has evolved through an intensive, evidence-based approach to learning and improvement through pilot-project implementation, impact assessment studies and consultations with national and international experts.\n\nThe programme has been reviewed and accepted by the Government of Maharashtra and Government of Goa.  Mulyavardhan pilot projects have been launched by these states in a large number of selected schools, as a first step to implementation of the programme in all schools of the states.\n\nThe programme is currently being implemented in around 1000 schools in Maharashtra and Goa through four projects: ( MV-GoM, MV-Beed, MV-GoG, MV-VB).\n\nhttps://www.youtube.com/watch?v=azVGgQTGQ68
     \n\n<b>Aim</b>\n\nEnabling schools to provide child-friendly and value-based education to nurture caring, responsible, productive democratic citizens.\n\n<b>Rationale</b>\n\nWhile several educational policy documents, framed in India since Independence, have emphasized the need for value education in schools, there is no model of large-scale implementation of value education across states, school bodies and contexts.
    \n\nMulyavardhan fills this critical gap with a contemporary approach aligned to national and international policies.\n\n<b>Approach</b>\n\nMulyavardhan adopts a whole-school approach, whereby the entire school ethos and all school processes are guided by core democratic values. Under this approach, values are not “taught”, but absorbed by students from the school ethos, processes and practices.\n\n</string>
+    <string name="add_the_sanvad">पोस्ट जोडा</string>
+    <string name="accept">स्वीकार करो</string>
+    <string name="detail"><u>Detail...</u></string>
 
+    <string name="call_us">Call Us</string>
 
 </resources>

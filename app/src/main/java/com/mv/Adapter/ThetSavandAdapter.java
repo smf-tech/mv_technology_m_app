@@ -192,7 +192,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 holder.layout_Video.setVisibility(View.GONE);
                 holder.audioLayout.setVisibility(View.GONE);
                 Glide.with(mContext)
-                        .load("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png")
+                        .load(Constants.IMAGEURL + mDataList.get(position).getId() + ".png")
                         .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.picture);
@@ -201,7 +201,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 holder.picture.setVisibility(View.GONE);
                 holder.audioLayout.setVisibility(View.GONE);
                 holder.layout_Video.setVisibility(View.VISIBLE);
-              /*  holder.card_video.setVideoPath("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp4");
+              /*  holder.card_video.setVideoPath(Constants.IMAGEURL + mDataList.get(position).getId() + ".mp4");
                 holder.card_video.start();*/
 
             } else if (mDataList.get(position).getContentType() != null
@@ -242,7 +242,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                         if (temp == 555500) {
                             temp = position;
 
-                            startAudio("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp3");
+                            startAudio(Constants.IMAGEURL + mDataList.get(position).getId() + ".mp3");
                             holder.play.setImageResource(R.drawable.pause_song);
                             holder.txt_audio_txt.setText("Stop Audio");
                             // notifyItemChanged(position);
@@ -262,7 +262,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                             //  notifyItemChanged(position);
                         } else {
 
-                            startAudio("http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp3");
+                            startAudio(Constants.IMAGEURL + mDataList.get(position).getId() + ".mp3");
                             mDataList.get(position).setMediaPlay(true);
                             mDataList.get(temp).setMediaPlay(false);
                             notifyItemChanged(position);
@@ -407,7 +407,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                         ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
                 JsonParser jsonParser = new JsonParser();
                 JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject1.toString());
-                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/sharedRecords", gsonObject).enqueue(new Callback<ResponseBody>() {
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.SharedRecordsUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
@@ -534,7 +534,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 public void onClick(View view) {
                     Intent myIntent = new Intent(mContext,
                             VideoViewActivity.class);
-                    myIntent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".mp4");
+                    myIntent.putExtra("URL", Constants.IMAGEURL + mDataList.get(getAdapterPosition()).getId() + ".mp4");
                     mContext.startActivity(myIntent);
                 }
             });
@@ -594,7 +594,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                                 try {
                                     theBitmap = Glide.
                                             with(mContext).
-                                            load("http://13.58.218.106/images/" + mDataList.get(getAdapterPosition()).getId() + ".png").
+                                            load(Constants.IMAGEURL + mDataList.get(getAdapterPosition()).getId() + ".png").
                                             asBitmap().
                                             into(200, 200).
                                             get();
@@ -729,7 +729,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
         apiService.getSalesForceData(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/DeletePost/" + postId).enqueue(new Callback<ResponseBody>() {
+                + Constants.DeletePostUrl + postId).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -830,7 +830,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                         ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
                 JsonParser jsonParser = new JsonParser();
                 JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
-                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/removeLike", gsonObject).enqueue(new Callback<ResponseBody>() {
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.RemoveLikeUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
@@ -879,7 +879,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                         ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
                 JsonParser jsonParser = new JsonParser();
                 JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
-                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertLike", gsonObject).enqueue(new Callback<ResponseBody>() {
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.InsertLikeUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
@@ -946,23 +946,23 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         if (mDataList.get(position).getContentType().equalsIgnoreCase("zip")) {
             intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".zip");
             intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "zip");
-            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".zip");
+            intent.putExtra("URL", Constants.IMAGEURL + mDataList.get(position).getId() + ".zip");
         } else if (mDataList.get(position).getContentType().equalsIgnoreCase("pdf")) {
             intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".pdf");
             intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "pdf");
-            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".pdf");
+            intent.putExtra("URL", Constants.IMAGEURL + mDataList.get(position).getId() + ".pdf");
         } else if (mDataList.get(position).getContentType().equalsIgnoreCase("audio")) {
             intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".mp3");
             intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "audio");
-            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp3");
+            intent.putExtra("URL", Constants.IMAGEURL + mDataList.get(position).getId() + ".mp3");
         } else if (mDataList.get(position).getContentType().equalsIgnoreCase("video")) {
             intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".mp4");
             intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "video");
-            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".mp4");
+            intent.putExtra("URL", Constants.IMAGEURL + mDataList.get(position).getId() + ".mp4");
         } else if (mDataList.get(position).getContentType().equalsIgnoreCase("Image")) {
             intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".png");
             intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "Image");
-            intent.putExtra("URL", "http://13.58.218.106/images/" + mDataList.get(position).getId() + ".png");
+            intent.putExtra("URL", Constants.IMAGEURL + mDataList.get(position).getId() + ".png");
         }
         mContext.startService(intent);
     }

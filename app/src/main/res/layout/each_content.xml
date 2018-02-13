@@ -22,9 +22,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:descendantFocusability="beforeDescendants"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
+
     android:layout_marginBottom="@dimen/fab_margin"
     android:layout_marginLeft="@dimen/fab_margin"
     android:layout_marginRight="@dimen/fab_margin">
@@ -212,6 +210,7 @@
             android:maxLines="3"
             android:scrollbars="none"
             android:textIsSelectable="true"
+            android:focusable="false"
             android:text="@string/item_desc"
             android:textColor="@color/dark_grey"
             android:textSize="@dimen/article_subheading"
@@ -225,11 +224,30 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_10dp"
             android:text=""
+            android:clickable="true"
             android:textColor="@color/dark_grey"
             android:textSize="@dimen/article_subheading"
             android:visibility="gone"
             my_font:typeface="Abel-Regular.ttf" />
+        <com.mv.Widgets.MyTextView
+            android:padding="@dimen/dimen_10dp"
+            android:id="@+id/txt_detail"
+            android:layout_width="match_parent"
+            android:gravity="right"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_template_type"
+            android:layout_marginLeft="10dp"
+            android:layout_toLeftOf="@+id/imgMore"
+            android:layout_toRightOf="@+id/userImage"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="@string/detail"
 
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textColor="@color/blue"
+            android:textIsSelectable="true"
+            android:textSize="@dimen/medium_text"
+            my_font:typeface="Abel-Regular.ttf" />
 
         <LinearLayout
             style="?android:attr/borderlessButtonStyle"

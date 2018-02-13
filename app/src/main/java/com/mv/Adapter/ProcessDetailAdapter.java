@@ -152,6 +152,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             spinnerResponse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
                     if (position == 0)
                         taskList.get(getAdapterPosition()).setTask_Response__c("");
                     else
@@ -270,7 +271,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llHeaderLay.setVisibility(View.GONE);
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
-                holder.questionResponse.setSingleLine(true);
+                holder.questionResponse.setSingleLine(false);
                 holder.llDate.setVisibility(View.GONE);
                 // holder.questionResponse.setHint(task.getTask_Text__c());
                 if (task.getIs_Response_Mnadetory__c())
@@ -278,9 +279,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 else
                     holder.editHeader.setText(task.getTask_Text__c());
 
-                holder.questionResponse.setMinLines(3);
-                holder.questionResponse.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-                holder.questionResponse.setGravity(Gravity.LEFT | Gravity.TOP);
+                holder.questionResponse.setLines(3);
+             //   holder.questionResponse.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                holder.questionResponse.setGravity(Gravity.LEFT );
                 holder.questionResponse.setText(task.getTask_Response__c());
 
                 break;

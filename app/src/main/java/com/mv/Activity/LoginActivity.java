@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -68,9 +69,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     CountDownTimer yourCountDownTimer;
     private static ViewPager mPager;
     private static int currentPage = 0;
- /*   private static final Integer[] XMEN = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e};
-    private ArrayList<Integer> XMENArray = new ArrayList<Integer>();*/
-        private static final String[] XMEN = {"slider1","slider2","slider3","slider4"};
+    /*   private static final Integer[] XMEN = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e};
+       private ArrayList<Integer> XMENArray = new ArrayList<Integer>();*/
+    private static final String[] XMEN = {"slider1", "slider2", "slider3", "slider4"};
     private ArrayList<String> XMENArray = new ArrayList<>();
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
@@ -87,6 +88,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
         binding.setActivity(this);
         initViews();
+
      /*   DownloadFile downloadFile = new DownloadFile(this);
         downloadFile.startDownload("http://mobileyougokidinformationdesk.com//denver123//videos//test0.zip","DownLoad1.zip");
 */
@@ -103,29 +105,33 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Utills.showInternetPopUp(this);
             }
         } else if (binding.edtOtp.isShown() && isValidate(binding.edtOtp, 6, "OTP")) {
-            if (user.getPassword().trim().equals(binding.edtOtp.getText().toString().trim())) {
-                yourCountDownTimer.cancel();
-                if (user.getRoll() != null) {
-                    Utills.showToast("Login Successful...", LoginActivity.this);
-                    Intent intent;
-                    intent = new Intent(LoginActivity.this, HomeActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                    finish();
-                    preferenceHelper.insertString(PreferenceHelper.UserRole, user.getRoll());
-                } else {
+            if (user.getPassword() != null) {
+                if (user.getPassword().trim().equals(binding.edtOtp.getText().toString().trim())) {
+                    yourCountDownTimer.cancel();
+                    if (user.getRoll() != null) {
+                        Utills.showToast("Login Successful...", LoginActivity.this);
+                        Intent intent;
+                        intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                        finish();
+                        preferenceHelper.insertString(PreferenceHelper.UserRole, user.getRoll());
+                    } else {
 
-                    Intent intent;
-                    intent = new Intent(LoginActivity.this, RegistrationActivity.class);
-                    intent.putExtra(Constants.ACTION, Constants.ACTION_ADD);
-                    startActivity(intent);
-                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                    finish();
+                        Intent intent;
+                        intent = new Intent(LoginActivity.this, RegistrationActivity.class);
+                        intent.putExtra(Constants.ACTION, Constants.ACTION_ADD);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                        finish();
+
+                    }
+                } else {
+                    binding.edtOtp.setError(getString(R.string.check_otp));
 
                 }
             } else {
-                binding.edtOtp.setError(getString(R.string.check_otp));
-
+                Utills.showToast(getString(R.string.error_no_internet), LoginActivity.this);
             }
 
         }
@@ -138,7 +144,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onResendOtpClick() {
         if (Utills.isConnected(this)) {
             binding.tvResendOtp.setVisibility(View.GONE);
-            getLoginOTP();
+            loginToSalesforce();
         } else {
             Utills.showInternetPopUp(this);
         }
@@ -193,15 +199,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utills.hideProgressDialog();
-                Log.e("error",t.getLocalizedMessage());
-                Logger.doToast(getString(R.string.error_something_went_wrong), LoginActivity.this);
+                Log.e("error", t.getLocalizedMessage());
+                Logger.doToast(getString(R.string.error_no_internet), LoginActivity.this);
+                binding.tvTimer.setVisibility(View.GONE);
+                binding.tvResendOtp.setVisibility(View.VISIBLE);
+
             }
         });
     }
 
     private void showDialog() {
 
-        final String[] items = {"English", "मराठी" ,"हिंदी"};
+        final String[] items = {"English", "मराठी", "हिंदी"};
 
 
 // arraylist to keep the selected items
@@ -227,10 +236,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if (lw.getCheckedItemPosition() == 0) {
                             LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_ENGLISH);
                             preferenceHelper.insertString(LANGUAGE, LANGUAGE_ENGLISH);
-                        } else if(lw.getCheckedItemPosition() == 1){
+                        } else if (lw.getCheckedItemPosition() == 1) {
                             LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_MARATHI);
                             preferenceHelper.insertString(LANGUAGE, LANGUAGE_MARATHI);
-                        }else {
+                        } else {
                             LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_HINDI);
                             preferenceHelper.insertString(LANGUAGE, LANGUAGE_HINDI);
                         }
@@ -251,7 +260,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getLoginOTP?mobileNo=" + binding.edtUsername.getText().toString().trim()
+                + Constants.GetLoginOTP_url+"?mobileNo=" + binding.edtUsername.getText().toString().trim()
                 + "&notificationId=" + preferenceHelper.getString(PreferenceHelper.TOKEN);
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
@@ -265,7 +274,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             preferenceHelper.insertString(PreferenceHelper.UserData, data);
                             user = gson.fromJson(data, User.class);
-                            Log.e("otp",user.getPassword());
+                            Log.e("otp", user.getPassword());
                             setTimer();
                         }
                     }
@@ -277,9 +286,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utills.hideProgressDialog();
-               // Log.e("error-->",t.getLocalizedMessage());
-              //  Utills.showToast("wrong",LoginActivity.this);
-               Utills.showToast(getString(R.string.error_something_went_wrong), LoginActivity.this);
+                binding.tvTimer.setVisibility(View.GONE);
+                binding.tvResendOtp.setVisibility(View.VISIBLE);
+                Utills.showToast(getString(R.string.error_no_internet), LoginActivity.this);
+
             }
         });
     }
@@ -363,10 +373,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 msg = msg.replace("\n", "");
                 String body = msg.substring(msg.lastIndexOf(":") + 1, msg.length());
 
-                String pNumber = msg.substring(0, msg.lastIndexOf(":"));
+
                 Log.d("OTP", body);
                 binding.edtOtp.setText(body);
-                yourCountDownTimer.cancel();
+                if (yourCountDownTimer != null)
+                    yourCountDownTimer.cancel();
                 binding.tvTimer.setVisibility(View.GONE);
                 binding.tvResendOtp.setVisibility(View.GONE);
 

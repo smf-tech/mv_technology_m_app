@@ -611,7 +611,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getOrganization";
+                + Constants.GetOrganizationUrl;
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -831,7 +831,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
 
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getUserDataForCalnder?state=" + binding.spinnerState.getSelectedItem().toString() + "&dist=" + binding.spinnerDistrict.getSelectedItem().toString() + "&tal=" + binding.spinnerTaluka.getSelectedItem().toString() + "&cluster=" + binding.spinnerCluster.getSelectedItem().toString() + "&village=" + binding.spinnerVillage.getSelectedItem().toString() + "&school=" + binding.spinnerSchoolName.getSelectedItem().toString() + "&role=" + selectedRole;
+                + Constants.GetUserDataForCalnder+"?state=" + binding.spinnerState.getSelectedItem().toString() + "&dist=" + binding.spinnerDistrict.getSelectedItem().toString() + "&tal=" + binding.spinnerTaluka.getSelectedItem().toString() + "&cluster=" + binding.spinnerCluster.getSelectedItem().toString() + "&village=" + binding.spinnerVillage.getSelectedItem().toString() + "&school=" + binding.spinnerSchoolName.getSelectedItem().toString() + "&role=" + selectedRole;
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -949,7 +949,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                         ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
                 JsonParser jsonParser = new JsonParser();
                 JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
-                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertEventcalender", gsonObject).enqueue(new Callback<ResponseBody>() {
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.InsertEventcalender_Url, gsonObject).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                             Utills.hideProgressDialog();

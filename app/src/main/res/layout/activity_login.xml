@@ -107,6 +107,7 @@
                         android:paddingRight="10dp"
                         android:singleLine="true"
                         android:text=""
+
                         android:textColor="@color/dark_grey"
                         android:textColorHint="@color/dark_grey"
                         android:textSize="@dimen/medium_text" />
@@ -119,10 +120,10 @@
                         android:layout_margin="@dimen/dimen_10dp"
                         android:background="@drawable/transparent_grey_box_radius"
                         android:digits="0123456789"
-                        android:drawableLeft="@drawable/person"
+                        android:drawableLeft="@android:drawable/ic_lock_lock"
                         android:drawablePadding="10dp"
                         android:gravity="center_vertical"
-                        android:hint="______"
+                        android:hint="_ _ _ _ _ _"
                         android:inputType="phone"
                         android:letterSpacing="0.4"
                         android:maxLength="6"

@@ -132,7 +132,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         } else {
 
             if (Utills.isConnected(this))
-                getDashBoardData(User.getCurrentUser(getApplicationContext()).getRoll());
+              //  getDashBoardData(User.getCurrentUser(getApplicationContext()).getRoll());
             llSpinner.setVisibility(View.VISIBLE);
         }
     }
@@ -228,6 +228,12 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 screenShot(v);
             }
         });
+
+    }
+
+    private void initPicahrtView() {
+        //setActionbar(task);
+        setActionbar(title);
         role = (Spinner) findViewById(R.id.spinner_role);
         role.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -246,13 +252,9 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
             ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, myList);
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             role.setAdapter(arrayAdapter);
+            if(myList.contains(User.getCurrentUser(getApplicationContext()).getRoll()))
             role.setSelection(myList.indexOf(User.getCurrentUser(getApplicationContext()).getRoll()));
         }
-    }
-
-    private void initPicahrtView() {
-        //setActionbar(task);
-        setActionbar(title);
         preferenceHelper = new PreferenceHelper(PiachartActivity.this);
         mChart = (PieChart) findViewById(R.id.chart1);
         binding.piachartChartView.setVisibility(View.VISIBLE);
@@ -615,9 +617,9 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                                         piaChartModel.setState(jsonArray.getJSONObject(i).getString("state"));
                                         piaChartModel.setDistrict(jsonArray.getJSONObject(i).getString("district"));
                                         piaChartModel.setTaluka(jsonArray.getJSONObject(i).getString("taluka"));
-                                        piaChartModel.setName(jsonArray.getJSONObject(i).getString("fName") + " " + jsonArray.getJSONObject(i).getString("lName"));
+                                        piaChartModel.setName(jsonArray.getJSONObject(i).getString("Name"));
                                         piaChartModel.setDetail(jsonArray.getJSONObject(i).getString("feedbackdetail"));
-
+                                        if(!jsonArray.getJSONObject(i).getString("feedbackdetail").equals("null"))
                                         piaChartModelArrayList.add(piaChartModel);
                                     }
                                     mChart.setVisibility(View.GONE);
@@ -792,7 +794,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         JsonArray gsonObject = (JsonArray) jsonParser.parse(jsonArray.toString());
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
-        apiService.sendImageToSalesforce("http://13.58.218.106/upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
+        apiService.sendImageToSalesforce("http://mobileapp.mulyavardhan.org/upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();

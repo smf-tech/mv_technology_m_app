@@ -128,7 +128,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                                     try {
                                         theBitmap = Glide.
                                                 with(getApplicationContext()).
-                                                load("http://13.58.218.106/images/" + mContent.getId() + ".png").
+                                                load("http://mobileapp.mulyavardhan.org/images/" + mContent.getId() + ".png").
 
                                                 asBitmap().
                                                 into(200, 200).
@@ -563,7 +563,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         } else {
 
             Glide.with(this)
-                    .load("http://13.58.218.106/images/" + mContent.getId() + ".png")
+                    .load("http://mobileapp.mulyavardhan.org/images/" + mContent.getId() + ".png")
                     .placeholder(getResources().getDrawable(R.drawable.mulya_bg))
                     .into(binding.cardImagedetails);
         }

@@ -134,6 +134,8 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = "";
         if (isTimePresent)
+
+
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/getChatContent?CommunityId=" + preferenceHelper.getString(PreferenceHelper.COMMUNITYID)
                     + "&userId=" + User.getCurrentUser(this).getId() + "&timestamp=" + chatList.get(0).getTime();

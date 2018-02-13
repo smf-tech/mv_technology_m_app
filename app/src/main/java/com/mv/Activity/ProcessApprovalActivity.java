@@ -22,6 +22,7 @@ import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -138,7 +139,7 @@ public class ProcessApprovalActivity extends AppCompatActivity implements View.O
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getApprovalProcess?userId=" + User.getCurrentUser(getApplicationContext()).getId();
+                + Constants.GetApprovalProcessUrl+"?userId=" + User.getCurrentUser(getApplicationContext()).getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

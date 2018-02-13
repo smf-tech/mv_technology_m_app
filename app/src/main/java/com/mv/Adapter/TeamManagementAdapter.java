@@ -124,8 +124,4 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
 
 
 
-
-
-
-
 }

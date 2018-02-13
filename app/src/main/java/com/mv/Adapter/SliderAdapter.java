@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.mv.R;
+import com.mv.Utils.Constants;
 
 import java.util.ArrayList;
 
@@ -46,7 +47,7 @@ public class SliderAdapter extends PagerAdapter {
                 .findViewById(R.id.image);
       //  myImage.setImageResource(images.get(position));
         Glide.with(context)
-                .load("http://13.58.218.106/images/" + images.get(position) + ".png")
+                .load(Constants.IMAGEURL + images.get(position) + ".png")
                 .placeholder(context.getResources().getDrawable(R.drawable.a))
                 .into(myImage);
         view.addView(myImageLayout, 0);

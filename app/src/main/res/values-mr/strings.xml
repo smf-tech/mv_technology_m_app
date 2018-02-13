@@ -1,17 +1,17 @@
 <resources>
-    <string name="app_name">मूल्यवर्धन 2.0</string>
+    <string name="app_name">मुल्यवर्धन 2.0</string>
 
     <string name="text_mediatype">मीडिया प्रकार निवडा</string>
-    <string name="text_image">फोटो</string>
+    <string name="text_image">ईमेज</string>
     <string name="text_audio">ऑडिओ</string>
     <string name="text_video">व्हिडिओ</string>
 
-    <string name="text_are_you_sure">Are you sure?</string>
-    <string name="text_delete">You really want to delete this post?</string>
+    <string name="text_are_you_sure">तुला खात्री आहे?</string>
+    <string name="text_delete">आपण हे पोस्ट खरोखर हटवू इच्छिता?</string>
 
-    <string name="text_record">Record Audio</string>
-    <string name="text_select_audio">Select Audio</string>
-    <string name="text_chooseaudio">Choose Audio</string>
+    <string name="text_record">ऑडिओ रेकॉर्ड करा</string>
+    <string name="text_select_audio">ऑडिओ निवडा</string>
+    <string name="text_chooseaudio">ऑडिओ निवडा</string>
 
     <string name="progress_loading">लोडिंग</string>
     <string name="progress_please_wait">कृपया थांबा</string>
@@ -38,7 +38,7 @@
     <string name="add_the_sanvad">संवाद जोडा</string>
     <string name="approve">मंजूर</string>
     <string name="reject">नाकारा</string>
-
+    <string name="accept">स्वीकार करो</string>
     <string name="text_size_exceed">File Size Cannot Be Greater than 5 MB</string>
     <!--Registration Activity-->
     <string name="name">पहिले नाव *</string>
@@ -100,17 +100,17 @@
     <string name="indicator">दर्शक</string>
     <string name="training_calendar">प्रशिक्षण \n दिनदर्शिका</string>
     <string name="team_management">संघ \n व्यवस्थापन</string>
-    <string name="about_us">मुल्यवर्धन बद्दल</string>
+    <string name="about_us">मुल्यवर्धन\nबद्दल</string>
     <string name="notification">सूचना</string>
     <string name="rate">दर्जा ठरवा</string>
     <string name="share">शेयर अॅप</string>
     <string name="seconds_remaining">उर्वरित सेकंद </string>
-    <string name="reporting_template">Reporting Template</string>
+    <string name="reporting_template">रिपोर्टिंग टेम्पलेट</string>
     <string name="back_string">बाहेर पडण्यासाठी कृपया पुन्हा क्लिक करा </string>
     <string name="please_enter">कृपया प्रविष्ट करा </string>
     <string name="digit"> अंक </string>
     <string name="logout_string">आपण लॉगआउट करू इच्छिता? </string>
-    <string name="delete_task_string">Do you want Delete? </string>
+    <string name="delete_task_string">आपण हटवू इच्छिता?</string>
     <string name="approve_profile"> तुम्ही अँप्रूव्ह नाही. </string>
     <string name="approve_profile2">यांना संपर्क साधा.</string>
     <string name="class_observation">वर्ग निरीक्षण</string>
@@ -197,9 +197,10 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-
+    <string name="detail"><u>विस्तार...</u></string>
     <string name="aboutus_info"><b>संस्थेविषयी:</b>\n\nशांतीलाल मुथ्था फाउंडेशन (एसएमएफ) ही शिक्षणाच्या क्षेत्रात मोलाचे योगदान देणारी आणि नफा डोळ्यासमोर न ठेवता सामाजिक क्षेत्रात  भरीव योगदान देणारी सामाजिक संस्था आहे. शालेय शिक्षणामध्ये मुलभूत बदल घडून यावेत यासाठी ती प्रयत्नशील आहे. श्री. शांतीलाल मुथ्था यांनी या संस्थेची सुरुवात केलेली आहे. एसएमएफच्या माध्यमातून सध्या दोन महत्वाचे कार्यक्रम हाती घेण्यात आले आहेत.\n\n१. मूल्यवर्धन (एमव्ही)\n\n२. सिस्टीम ऑफ एनरीचमेंट ऑफ स्कूल क्वालिटी (एसइएसक्यू)\n\n<b>संकल्पना :</b>\n\nमुलांमध्ये घटनात्मक मूल्ये शालेय वयातच रुजायला हवीत, तसेच भविष्यात त्यांच्यामधून चांगले लोकशाहीभिमुख नागरिक घडायला हवेत, या उद्देशाने शाळांसाठी मूल्यवर्धनाचा कार्यक्रम तयार करण्यात आला आहे.\n\nसामाजिक क्षेत्रात तीन दशकाहून अधिक वर्षे कार्यरत असलेल्या श्री. शांतीलाल मुथ्था यांनी विद्यार्थ्यांच्या उज्ज्वल भविष्यासाठी मूल्यवर्धनचे बीज रोवले आहे.\n\nशिक्षक या घटकाला केंद्रबिंदू ठेऊन मूल्यवर्धन हा उपक्रम सुरू करण्यात आला आहे. महाराष्ट्र सरकारने हा उपक्रम स्वीकारला असून जिल्हा परिषदेच्या शाळांमध्ये याची प्रभावी अंमलबजावणी सुरू झाली आहे.\n\n<b>मूल्यवर्धनचा उद्देश :</b>
      \n\nराज्यघटनेतील मूल्ये शालेय स्तरावरच विद्यार्थ्यांमध्ये रुजावित आणि हेच विद्यार्थी भविष्यात सुजाण नागरिक व्हावेत हा या उपक्रमामागील उद्देश आहे.\n\nमुलांमध्ये घटनात्मक मूल्ये रुजावीत यासाठी शाळा प्रयत्न करत असतातच. मूल्यवर्धन कार्यक्रमामुळे या प्रयत्नांना आणखी बळकटी मिळेल.\n\nमूल्यवर्धनाच्या माध्यमातून शाळा हे उद्दिष्ट नियोजित, पद्धतशीर आणि नियमित रीतीने साध्य करू शकतील. त्यातून मुलांमध्ये अमुलाग्र असे परिवर्तन होईल.\n\n<b>मूल्यवर्धनची वैशिष्ट्ये :</b>\n\nमूल्यवर्धन कार्यक्रम राष्ट्रीय अभ्यासक्रम आराखडा 2005, शिक्षण हक्क कायदा 2009 राज्याच्या प्राथमिक शिक्षण अभ्यासक्रमाची उद्दिष्टे तसेच इतर महत्त्वाच्या राष्ट्रीय आणि आंतरराष्ट्रीय शैक्षणिक दस्तावेजांतील अपेक्षांशी सुसंगत आहे.\n\n
      राज्य घटनेतील मूल्ये मुलांमध्ये रुजावित हे शालेय शिक्षणाचे मूलभूत उद्दिष्ट आहे. भारतीय संविधानात ठळकपणे नमूद केलेल्या स्वातंत्र्य, न्याय, समता आणि बंधूता या चार मुख्य मूल्यांचा मूल्यवर्धनच्या उपक्रमात समावेश केलेला आहे.\n\nयासाठी शाळांचा, शिक्षकांचा सकारात्मक प्रतिसाद मिळणेही तेवढेच आवश्यक आहे. मूल्यवर्धन या उपक्रमाद्वारे शाळा हे उद्दिष्ट नियोजित, पद्धतशीर आणि नियमित रितीने साध्य करू शकतात.\n\n राष्ट्रीय अभ्यासक्रम आराखडा 2005मध्ये घटनात्मक मूल्यांच्या आधारावर आठ मूल्ये शालेय शिक्षणाच्या संदर्भात सुचविलेली आहेत. मूल्यवर्धन या आठ मूल्यांवर आधारित आहेत. मानवी प्रतिष्ठेचा आदर, स्वायतत्ता, जबाबदारी, चिकित्सक आणि सर्जनशील विचार, विविधतेचा आदर, सुसंवादी नातेसंबंध, इतरांबद्दल आस्था आणि सक्रिय योगदान ही ती मुल्ये आहेत.
 </string>
+    <string name="call_us">Call Us</string>
 </resources>
