@@ -217,6 +217,24 @@
             my_font:typeface="Abel-Regular.ttf" />
 
         <com.mv.Widgets.MyTextView
+
+            android:id="@+id/txt_tag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:autoLink="web"
+            android:linksClickable="true"
+            android:maxLines="3"
+            android:scrollbars="none"
+            android:textIsSelectable="true"
+            android:focusable="false"
+            android:text="Tag"
+            android:visibility="gone"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/article_subheading"
+            my_font:typeface="Abel-Regular.ttf" />
+
+        <com.mv.Widgets.MyTextView
           
 
             android:id="@+id/txt_type"

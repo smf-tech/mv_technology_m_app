@@ -132,7 +132,6 @@ public class Constants {
     public static final String GetUserData_url ="/services/apexrest/getUserData";
     public static final String MapParametersUrl="/services/apexrest/MapParameters";
     public static final String GetSessionDatademo_Url  ="/services/apexrest/getSessionDatademo/";
-    public static final String Upload_Url  =  "http://mobileapp.mulyavardhan.org/upload.php";
     public static final String GetLoginOTP_url  =  "/services/apexrest/getLoginOTP";
     public static final String GetchartDatademoNew  =  "/services/apexrest/getchartDatademoNew";
     public static final String GetDashboardDatademoUrl  =  "/services/apexrest/getDashboardDatademo";
@@ -154,4 +153,6 @@ public class Constants {
     public  static final String SharedRecordsUrl =   "/services/apexrest/sharedRecords";
     public  static final String RemoveLikeUrl = "/services/apexrest/removeLike";
     public  static final String InsertLikeUrl = "/services/apexrest/InsertLike";
+    public static final String SpamContentUrl = "/services/apexrest/spamContent";
 }
+

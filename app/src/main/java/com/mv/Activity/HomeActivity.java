@@ -1154,7 +1154,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.action_lang) {
-            showDialog();
+          showDialog();
+
+
         } else if (id == R.id.action_profile) {
             Intent intent;
             intent = new Intent(this, RegistrationActivity.class);
