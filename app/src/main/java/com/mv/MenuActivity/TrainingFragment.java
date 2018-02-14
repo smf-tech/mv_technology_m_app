@@ -16,7 +16,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,6 +30,7 @@ import com.mv.Model.DownloadContent;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
+import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Service.DownloadService;
 import com.mv.Utils.LocaleManager;
@@ -53,7 +53,6 @@ import retrofit2.Response;
 public class TrainingFragment extends AppCompatActivity implements View.OnClickListener {
     public static final String MESSAGE_PROGRESS = "message_progress";
     private RecyclerView recyclerView;
-
     private TrainingAdapter adapter;
     private PreferenceHelper preferenceHelper;
     private ArrayList<DownloadContent> mList = new ArrayList<DownloadContent>();
@@ -71,7 +70,7 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
         preferenceHelper = new PreferenceHelper(context);
         registerReceiver();
         setRecyclerView();
-        if (TextUtils.isEmpty(preferenceHelper.getString(PreferenceHelper.TrainingContentData))) {
+      /*  if (AppDatabase.getAppDatabase(TrainingFragment.this).userDao().getDownloadContent().size() == 0) {
             if (Utills.isConnected(context)) {
                 getData();
             } else {
@@ -79,7 +78,7 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
             }
         } else {
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-            List<DownloadContent> temp = Arrays.asList(gson.fromJson(preferenceHelper.getString(PreferenceHelper.TrainingContentData), DownloadContent[].class));
+          //  List<DownloadContent> temp = AppDatabase.getAppDatabase(TrainingFragment.this).userDao().getDownloadContent();
             mList.clear();
             for (DownloadContent content : temp) {
                 mList.add(content);
@@ -89,7 +88,7 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
                 getData();
             }
         }
-
+*/
     }
 
     private void setActionbar(String Title) {
@@ -179,12 +178,12 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<DownloadContent> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), DownloadContent[].class));
                             if (temp.size() != 0) {
-                                if (temp.size() > 0)
-                                    preferenceHelper.insertString(PreferenceHelper.TrainingContentData, str);
                                 mList.clear();
                                 for (DownloadContent content : temp) {
                                     mList.add(content);
                                 }
+                                AppDatabase.getAppDatabase(TrainingFragment.this).userDao().clearDownloadContent();
+                                AppDatabase.getAppDatabase(TrainingFragment.this).userDao().insertDownloadContent(mList);
                                 adapter.notifyDataSetChanged();
                                 textNoData.setVisibility(View.GONE);
                             } else {

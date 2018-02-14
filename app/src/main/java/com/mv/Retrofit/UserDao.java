@@ -9,6 +9,7 @@ import android.arch.persistence.room.Update;
 import com.mv.Model.CalenderEvent;
 import com.mv.Model.Community;
 import com.mv.Model.Content;
+import com.mv.Model.DownloadContent;
 import com.mv.Model.LocationModel;
 import com.mv.Model.TaskContainerModel;
 import com.mv.Model.Template;
@@ -25,13 +26,16 @@ public interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     long[] insertCalendr(List<CalenderEvent> tasks);
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     long[] insertTask(List<TaskContainerModel> tasks);
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     long[] insertLoaction(List<LocationModel> locationModels);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertLocation(LocationModel task);
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertTask(TaskContainerModel task);
 
@@ -43,6 +47,18 @@ public interface UserDao {
 
     @Update
     public void updateCommunities(Community... communities);
+
+    @Query("SELECT * FROM " + Constants.TABLE_DOWNLOAD_CONTENT + " where Lang = :lang")
+    List<DownloadContent> getDownloadContent(String lang);
+
+    @Query("SELECT DISTINCT Section FROM " + Constants.TABLE_DOWNLOAD_CONTENT + " where Lang = :lang")
+    List<String> getDistinctDownloadContent(String lang);
+
+    @Query("SELECT *  FROM " + Constants.TABLE_DOWNLOAD_CONTENT + " where Section = :section AND Lang = :lang")
+    List<DownloadContent> getDownloadContent(String section, String lang);
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertDownloadContent(List<DownloadContent> tasks);
 
     @Insert
     void insertCommunities(Community... communities);
@@ -90,6 +106,7 @@ public interface UserDao {
 
     @Query("SELECT * FROM " + Constants.TABLE_CALANDER + " where Date__c = :date")
     List<CalenderEvent> getCalenderList(String date);
+
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId order by CreatedDate desc")
     List<Content> getAllChats(String communityId);
 
@@ -137,7 +154,8 @@ public interface UserDao {
     List<String> getSchoolCode(String state, String district, String taluka, String cluster, String village, String schoolname);
 
     @Query("DELETE FROM " + Constants.TABLE_CALANDER)
-    public  void deleteCalender();
+    public void deleteCalender();
+
     @Query("DELETE FROM " + Constants.TABLE_COMMUNITY)
     public void clearTableCommunity();
 
@@ -149,6 +167,10 @@ public interface UserDao {
 
     @Query("DELETE FROM " + Constants.TABLE_CONTAINER)
     public void clearTaskContainer();
+
+    @Query("DELETE FROM " + Constants.TABLE_DOWNLOAD_CONTENT)
+    public void clearDownloadContent();
+
     @Query("DELETE FROM " + Constants.TABLE_LOCATION)
     public void clearLocation();
 

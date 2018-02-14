@@ -44,6 +44,8 @@ public class Constants {
     public static final String TABLE_PROCESS = "table_process";
     public static final String TABLE_CONTAINER = "table_container";
     public static final String TABLE_LOCATION = "table_location";
+    public static final String TABLE_DOWNLOAD_CONTENT = "table_download_content";
+
     public static String ACTION = "action";
     public static String ACTION_ADD = "add";
     public static String ACTION_EDIT = "edit";
@@ -144,6 +146,21 @@ public class Constants {
     public static final String GetprocessAnswerDataUrl = "/services/apexrest/getprocessAnswerDataNew";
     public static final String GetprocessTaskUrl = "/services/apexrest/getprocessTaskNew";
     public static final String DeleteTaskAnswerUrl = "/services/apexrest/DeleteTaskAnswer/";
+    public static final String Userdetails_Url ="/services/apexrest/userdetails";
+    public static final String MV_GetCommunities_c_Url="/services/apexrest/MV_GetCommunities_c";
+    public static final String DoLogout_url ="/services/apexrest/doLogout/";
+    public static final String GetUserData_url ="/services/apexrest/getUserData";
+    public static final String MapParametersUrl="/services/apexrest/MapParameters";
+    public static final String GetSessionDatademo_Url  ="/services/apexrest/getSessionDatademo/";
+    public static final String GetLoginOTP_url  =  "/services/apexrest/getLoginOTP";
+    public static final String GetchartDatademoNew  =  "/services/apexrest/getchartDatademoNew";
+    public static final String GetDashboardDatademoUrl  =  "/services/apexrest/getDashboardDatademo";
+    public static final String GetApprovalProcessUrl  ="/services/apexrest/getApprovalProcess";
+    public static final String InsertAnswerForProcessAnswerUrl  = "/services/apexrest/InsertAnswerForProcessAnswer";
+    public static final String New_upload_phpUrl  ="http://mobileapp.mulyavardhan.org/new_upload.php";
+    public static final String GetprocessAnswerDataUrl = "/services/apexrest/getprocessAnswerData";
+    public static final String GetprocessTaskUrl ="/services/apexrest/getprocessTask";
+    public static final String DeleteTaskAnswerUrl =  "/services/apexrest/DeleteTaskAnswer/";
     public static final String ApproveCommentforProcessUrl = "/services/apexrest/ApproveCommentforProcess";
     public static final String GetprocessAnswerTaskfoApprovalUrl = "/services/apexrest/getprocessAnswerTaskfoApproval";
     public static final String GetProjectDataUrl = "/services/apexrest/getProjectData";
@@ -156,4 +173,13 @@ public class Constants {
     public static final String SharedRecordsUrl = "/services/apexrest/sharedRecords";
     public static final String RemoveLikeUrl = "/services/apexrest/removeLike";
     public static final String InsertLikeUrl = "/services/apexrest/InsertLike";
+    public static final String GetApprovalDataUrl =     "/services/apexrest/getApprovalData";
+    public  static final String WS_getProcessAprovalUserUrl ="/services/apexrest/WS_getProcessAprovalUser";
+    public  static final String MV_GeTemplates_cUrl = "/services/apexrest/MV_GeTemplates_c";
+    public  static final String ApproveCommentUrl = "/services/apexrest/ApproveComment";
+    public  static final String SharedRecordsUrl =   "/services/apexrest/sharedRecords";
+    public  static final String RemoveLikeUrl = "/services/apexrest/removeLike";
+    public  static final String InsertLikeUrl = "/services/apexrest/InsertLike";
+    public static final String SpamContentUrl = "/services/apexrest/spamContent";
 }
+

@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,8 +46,13 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.mv.Model.Task;
 import com.mv.R;
+import com.mv.Retrofit.ApiClient;
+import com.mv.Retrofit.ServiceRequest;
 import com.mv.Service.MyJobService;
 import com.mv.Widgets.TouchImageView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -60,6 +66,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by acer on 5/18/2017.
@@ -493,5 +504,99 @@ public class Utills {
         });
         alertD.show();
 
+    }
+
+
+    public static void MarkAsSpamDialog(final Context mContext, final PreferenceHelper preferenceHelper, final String ID){
+        final String[] items = {"Mark As Spam", "Add Tag"};
+
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(mContext)
+                .setTitle(mContext.getString(R.string.app_name));
+        dialog.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int position) {
+                dialogInterface.dismiss();
+                switch (position){
+                    case 0:spamContent(mContext,preferenceHelper,ID);
+                    break;
+                    case 1: AddTagDialog(mContext);
+                    break;
+                }
+
+            }
+        });
+
+        dialog.show();
+    }
+
+    public  static void AddTagDialog(Context context){
+        LayoutInflater inflater = LayoutInflater.from(context);
+        final View view = inflater.inflate(R.layout.each_tag, null);
+        final AlertDialog alertDialog = new AlertDialog.Builder(view.getContext()).create();
+        alertDialog.setTitle("Add Tag Here");
+       // alertDialog.setIcon("Icon id here");
+        alertDialog.setCancelable(false);
+      //alertDialog.setMessage("Your Message Here");
+
+
+        final EditText etComments = (EditText) view.findViewById(R.id.addtag);
+
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+
+
+        alertDialog.setView(view);
+        alertDialog.show();
+    }
+
+
+
+    public static void spamContent(Context mContext, PreferenceHelper preferenceHelper, String ID){
+        String url = "";
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
+        /*UserDetails Url for getting community members*/
+
+        url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.SpamContentUrl+"?Id=" +ID;
+
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                String data = null;
+                try {
+                     data = response.body().string();
+                    if (data != null && data.length() > 0) {
+                        JSONObject jsonObject = new JSONObject(data);
+                        String True = jsonObject.getString("true");
+                       Log.e("true-->",True);
+                    }
+
+                } catch (IOException e) {
+
+                    e.printStackTrace();
+                }catch(JSONException e){
+
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
     }
 }
