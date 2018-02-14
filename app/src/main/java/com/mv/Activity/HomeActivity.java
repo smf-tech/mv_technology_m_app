@@ -286,12 +286,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         menulist = new ArrayList<>();
 
         if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
-            if(!User.getCurrentUser(getApplicationContext()).getIsApproved().equals(""))
-            allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameNoteApproved().split(";")));
+            if (!User.getCurrentUser(getApplicationContext()).getIsApproved().equals(""))
+                allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameNoteApproved().split(";")));
             showApprovedDilaog();
         } else {
-            if(!User.getCurrentUser(getApplicationContext()).getTabNameApproved().equals(""))
-            allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameApproved().split(";")));
+            if (!User.getCurrentUser(getApplicationContext()).getTabNameApproved().equals(""))
+                allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameApproved().split(";")));
 
         }
         menuListName = new ArrayList<>();
@@ -702,10 +702,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         int checkId = 0;
         if (preferenceHelper.getString(LANGUAGE).equalsIgnoreCase(LANGUAGE_MARATHI)) {
             checkId = 1;
-        } else if(preferenceHelper.getString(LANGUAGE).equalsIgnoreCase(LANGUAGE_HINDI)){
+        } else if (preferenceHelper.getString(LANGUAGE).equalsIgnoreCase(LANGUAGE_HINDI)) {
             checkId = 2;
         }
-
 
 
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -925,7 +924,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetUserData_url+"?userId=" + User.getCurrentUser(getApplicationContext()).getId();
+                + Constants.GetUserData_url + "?userId=" + User.getCurrentUser(getApplicationContext()).getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -1154,7 +1153,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.action_lang) {
-          showDialog();
+            showDialog();
 
 
         } else if (id == R.id.action_profile) {
@@ -1172,17 +1171,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             RateThisApp.showRateDialog(HomeActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
 
         } else if (id == R.id.action_add_school) {
-            String role=User.getCurrentUser(getApplicationContext()).getRoll();
-            if(role.equals("PC")||role.equals("MT")||role.equals("PC")||role.equals("PM")) {
+            String role = User.getCurrentUser(getApplicationContext()).getRoll();
+            if (role.equals("PC") || role.equals("MT") || role.equals("PC") || role.equals("PM")) {
                 Intent openClass = new Intent(HomeActivity.this, AddSchoolActivity.class);
                 startActivity(openClass);
-            }
-            else
-            {
-                Utills.showToast("You don't have access to add location",HomeActivity.this);
+            } else {
+                Utills.showToast("You don't have access to add location", HomeActivity.this);
             }
 
-        }else if (id==R.id.action_callus){
+        } else if (id == R.id.action_callus) {
             Uri uri = Uri.parse("https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2"); // missing 'http://' will cause crashed
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
