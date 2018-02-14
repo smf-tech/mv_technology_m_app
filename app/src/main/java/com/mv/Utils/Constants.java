@@ -1,6 +1,5 @@
 package com.mv.Utils;
 
-import android.content.Context;
 import android.net.Uri;
 
 /**
@@ -41,6 +40,8 @@ public class Constants {
     public static final String TABLE_PROCESS = "table_process";
     public static final String TABLE_CONTAINER = "table_container";
     public static final String TABLE_LOCATION = "table_location";
+    public static final String TABLE_DOWNLOAD_CONTENT = "table_download_content";
+
     public static String ACTION = "action";
     public static String ACTION_ADD = "add";
     public static String ACTION_EDIT = "edit";

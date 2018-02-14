@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 9,
-    "identityHash": "8b3683dff2961cceaafff932bac0d981",
+    "identityHash": "c3c4d72e35e56cbac3a678876375a911",
     "entities": [
       {
         "tableName": "table_community",
@@ -420,7 +420,7 @@
       },
       {
         "tableName": "table_download_content",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Section` TEXT, `Name` TEXT, `URL__c` TEXT, `FileType__c` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Section` TEXT, `Lang` TEXT, `Name` TEXT, `URL__c` TEXT, `FileType__c` TEXT)",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -435,6 +435,11 @@
           {
             "fieldPath": "Section",
             "columnName": "Section",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Lang",
+            "columnName": "Lang",
             "affinity": "TEXT"
           },
           {
@@ -465,7 +470,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"8b3683dff2961cceaafff932bac0d981\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c3c4d72e35e56cbac3a678876375a911\")"
     ]
   }
 }

@@ -37,6 +37,11 @@ public class DownloadContent {
     @Expose
     private String Section;
 
+    @ColumnInfo(name = "Lang")
+    @SerializedName("Lang__c")
+    @Expose
+    private String Lang;
+
     @ColumnInfo(name = "Name")
     @Expose
     @SerializedName("Name")
@@ -51,6 +56,15 @@ public class DownloadContent {
     @Expose
     @SerializedName("FileType__c")
     private String FileType;
+
+    public String getLang() {
+        return Lang;
+    }
+
+    public void setLang(String Lang) {
+        this.Lang = Lang;
+    }
+
 
     public String getSection() {
         return Section;

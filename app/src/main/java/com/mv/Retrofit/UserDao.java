@@ -48,14 +48,14 @@ public interface UserDao {
     @Update
     public void updateCommunities(Community... communities);
 
-    @Query("SELECT * FROM " + Constants.TABLE_DOWNLOAD_CONTENT)
-    List<DownloadContent> getDownloadContent();
+    @Query("SELECT * FROM " + Constants.TABLE_DOWNLOAD_CONTENT + " where Lang = :lang")
+    List<DownloadContent> getDownloadContent(String lang);
 
-    @Query("SELECT DISTINCT Section FROM " + Constants.TABLE_DOWNLOAD_CONTENT)
-    List<String> getDistinctDownloadContent();
+    @Query("SELECT DISTINCT Section FROM " + Constants.TABLE_DOWNLOAD_CONTENT + " where Lang = :lang")
+    List<String> getDistinctDownloadContent(String lang);
 
-    @Query("SELECT *  FROM " + Constants.TABLE_DOWNLOAD_CONTENT + " where Section = :section")
-    List<DownloadContent> getDownloadContent(String section);
+    @Query("SELECT *  FROM " + Constants.TABLE_DOWNLOAD_CONTENT + " where Section = :section AND Lang = :lang")
+    List<DownloadContent> getDownloadContent(String section, String lang);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertDownloadContent(List<DownloadContent> tasks);
