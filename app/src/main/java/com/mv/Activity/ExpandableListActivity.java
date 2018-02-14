@@ -50,6 +50,7 @@ import retrofit2.Response;
 
 public class ExpandableListActivity extends Activity implements View.OnClickListener {
     private int lastExpandedPosition = -1;
+    public static final String LANGUAGE = "language";
     ExpandableListAdapter listAdapter;
     ExpandableListView expListView;
     List<String> listDataHeader = new ArrayList<String>();
@@ -105,11 +106,9 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
 
             @Override
             public void onGroupCollapse(int groupPosition) {
-
-
             }
         });
-        if (AppDatabase.getAppDatabase(ExpandableListActivity.this).userDao().getDownloadContent().size() == 0) {
+        if (AppDatabase.getAppDatabase(ExpandableListActivity.this).userDao().getDownloadContent(preferenceHelper.getString(LANGUAGE)).size() == 0) {
             if (Utills.isConnected(ExpandableListActivity.this)) {
                 getData();
             } else {
@@ -134,7 +133,7 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
         }
     }
 
-    
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
@@ -162,10 +161,8 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
                             if (temp.size() != 0) {
                                 AppDatabase.getAppDatabase(ExpandableListActivity.this).userDao().clearDownloadContent();
                                 AppDatabase.getAppDatabase(ExpandableListActivity.this).userDao().insertDownloadContent(temp);
+                                prepareListData();
                                 listAdapter.notifyDataSetChanged();
-                                textNoData.setVisibility(View.GONE);
-                            } else {
-                                textNoData.setVisibility(View.VISIBLE);
                             }
                         }
                     }
@@ -228,19 +225,19 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
         intent.putExtra("fragment_flag", "Training_Fragment");
         if (content.getFileType().equalsIgnoreCase("zip")) {
             intent.putExtra("FILENAME", content.getName() + ".zip");
-            intent.putExtra("FILETYPE", content.getName() + "zip");
+            intent.putExtra("FILETYPE", "zip");
         } else if (content.getFileType().equalsIgnoreCase("pdf")) {
             intent.putExtra("FILENAME", content.getName() + ".pdf");
-            intent.putExtra("FILETYPE", content.getName() + "pdf");
+            intent.putExtra("FILETYPE", "pdf");
         } else if (content.getFileType().equalsIgnoreCase("audio")) {
             intent.putExtra("FILENAME", content.getName() + ".mp3");
-            intent.putExtra("FILETYPE", content.getName() + "audio");
+            intent.putExtra("FILETYPE", "audio");
         } else if (content.getFileType().equalsIgnoreCase("video")) {
             intent.putExtra("FILENAME", content.getName() + ".mp4");
-            intent.putExtra("FILETYPE", content.getName() + "video");
+            intent.putExtra("FILETYPE", "video");
         } else if (content.getFileType().equalsIgnoreCase("ppt")) {
             intent.putExtra("FILENAME", content.getName() + ".ppt");
-            intent.putExtra("FILETYPE", content.getName() + "ppt");
+            intent.putExtra("FILETYPE", "ppt");
         }
         startService(intent);
     }
@@ -251,11 +248,18 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
     private void prepareListData() {
         listDataHeader.clear();
         listDataChild.clear();
-        listDataHeader = AppDatabase.getAppDatabase(ExpandableListActivity.this).userDao().getDistinctDownloadContent();
-        listDataChild = new HashMap<String, List<DownloadContent>>();
-
+        List<String> temp = new ArrayList<String>();
+        temp = AppDatabase.getAppDatabase(ExpandableListActivity.this).userDao().getDistinctDownloadContent(preferenceHelper.getString(LANGUAGE));
+        for (String s : temp) {
+            listDataHeader.add(s);
+        }
         for (String downloadContent : listDataHeader) {
-            listDataChild.put(downloadContent, AppDatabase.getAppDatabase(ExpandableListActivity.this).userDao().getDownloadContent(downloadContent));
+            listDataChild.put(downloadContent, AppDatabase.getAppDatabase(ExpandableListActivity.this).userDao().getDownloadContent(downloadContent, preferenceHelper.getString(LANGUAGE)));
+        }
+        if (listDataHeader.size() > 0) {
+            textNoData.setVisibility(View.GONE);
+        } else {
+            textNoData.setVisibility(View.VISIBLE);
         }
     }
 }

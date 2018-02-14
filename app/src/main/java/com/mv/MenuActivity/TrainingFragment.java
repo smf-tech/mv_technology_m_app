@@ -70,7 +70,7 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
         preferenceHelper = new PreferenceHelper(context);
         registerReceiver();
         setRecyclerView();
-        if (AppDatabase.getAppDatabase(TrainingFragment.this).userDao().getDownloadContent().size() == 0) {
+      /*  if (AppDatabase.getAppDatabase(TrainingFragment.this).userDao().getDownloadContent().size() == 0) {
             if (Utills.isConnected(context)) {
                 getData();
             } else {
@@ -78,7 +78,7 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
             }
         } else {
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-            List<DownloadContent> temp = AppDatabase.getAppDatabase(TrainingFragment.this).userDao().getDownloadContent();
+          //  List<DownloadContent> temp = AppDatabase.getAppDatabase(TrainingFragment.this).userDao().getDownloadContent();
             mList.clear();
             for (DownloadContent content : temp) {
                 mList.add(content);
@@ -88,7 +88,7 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
                 getData();
             }
         }
-
+*/
     }
 
     private void setActionbar(String Title) {
