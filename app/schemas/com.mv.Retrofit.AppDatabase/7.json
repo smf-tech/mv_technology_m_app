@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 7,
-    "identityHash": "cbfeda113cacdf2ab016b451d99134a0",
+    "identityHash": "c6dcfc44a1df41e929d46dff2a1bc39b",
     "entities": [
       {
         "tableName": "table_community",
@@ -422,11 +422,60 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "table_download_content",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Section` TEXT, `Lang` TEXT, `Name` TEXT, `URL__c` TEXT, `FileType__c` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "Unique_Id",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "Id",
+            "columnName": "Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Section",
+            "columnName": "Section",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Lang",
+            "columnName": "Lang",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Name",
+            "columnName": "Name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "URL__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "FileType",
+            "columnName": "FileType__c",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"cbfeda113cacdf2ab016b451d99134a0\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c6dcfc44a1df41e929d46dff2a1bc39b\")"
     ]
   }
 }

@@ -280,14 +280,14 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             layout_download_file = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download_file);
 
 
-            txt_desc.setOnLongClickListener(new View.OnLongClickListener() {
+         /*   txt_desc.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
                     Utills.MarkAsSpamDialog(mContext,preferenceHelper,mDataList.get(mPosition).getId());
                     notifyDataSetChanged();
                     return false;
                 }
-            });
+            });*/
             txt_detail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
