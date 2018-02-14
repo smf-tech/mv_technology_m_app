@@ -196,5 +196,7 @@ public interface UserDao {
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  and (Report_Type =:str or Priority = :str) and (taluka != :taluka) order by CreatedDate desc")
     List<Content> getOtherChatsfilter(String communityId, String str, String taluka);
 
+    @Query("DELETE FROM " + Constants.TABLE_CONTENT + " where  isLike = :islike ")
+    int deletelikepost(Boolean islike);
 
 }

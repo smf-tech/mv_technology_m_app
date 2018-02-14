@@ -219,5 +219,7 @@
     <string name="detail"><u>Detail...</u></string>
 
     <string name="call_us">Call Us</string>
+    <string name="call_on_hangout">Call on Hangout</string>
+    <string name="call_on_landline">Call on Landline(10AM to 6PM)</string>
 
 </resources>

@@ -31,6 +31,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -38,6 +40,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -1147,6 +1150,37 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
+  private void CallUSDialog(){
+      final String[] items = {getString(R.string.call_on_hangout), getString(R.string.call_on_landline)};
+
+      final AlertDialog.Builder dialog = new AlertDialog.Builder(this)
+              .setTitle(getString(R.string.app_name));
+      dialog.setItems(items, new DialogInterface.OnClickListener() {
+          @Override
+          public void onClick(DialogInterface dialogInterface, int position) {
+              dialogInterface.dismiss();
+              switch (position){
+                  case 0:  Uri uri = Uri.parse("https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2"); // missing 'http://' will cause crashed
+                           Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                            startActivity(intent);
+                      break;
+                  case 1:    Intent dial = new Intent();
+                      dial.setAction("android.intent.action.DIAL");
+                      try {
+                          dial.setData(Uri.parse("tel:020 6605 114"));
+                          startActivity(dial);
+                      } catch (Exception e) {
+                          Log.e("Calling", "" + e.getMessage());
+                      }
+              }
+
+          }
+      });
+
+      dialog.show();
+  }
+
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -1183,14 +1217,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
 
         }else if (id==R.id.action_callus){
-            Uri uri = Uri.parse("https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2"); // missing 'http://' will cause crashed
+            CallUSDialog();
+           /* Uri uri = Uri.parse("https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2"); // missing 'http://' will cause crashed
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);
+            startActivity(intent);*/
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
 
 }

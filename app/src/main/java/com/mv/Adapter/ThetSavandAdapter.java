@@ -445,7 +445,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView picture, userImage, imgLike, img_comment, imageThumbnail;
         public CardView card_view;
-        public TextView txt_audio_txt, txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type;
+        public TextView txt_audio_txt, txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type,txt_detail;
         public LinearLayout mediaLayout, layout_like, layout_comment, layout_share, layout_download, layout_download_file;
         public RelativeLayout audioLayout, layout_Video;
         public ImageView play, imgMore;
@@ -473,15 +473,16 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             txt_type = (TextView) itemLayoutView.findViewById(R.id.txt_type);
             layout_download_file = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download_file);
             lnr_content = (LinearLayout) itemLayoutView.findViewById(R.id.lnr_content);
+            txt_detail = (TextView) itemLayoutView.findViewById(R.id.txt_detail);
 
-            txt_desc.setOnLongClickListener(new View.OnLongClickListener() {
+          /*  txt_desc.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
                     Utills.MarkAsSpamDialog(mContext,preferenceHelper,mDataList.get(mPosition).getId());
                     return false;
                 }
-            });
-            txt_desc.setOnClickListener(new View.OnClickListener() {
+            });*/
+            txt_detail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())) {

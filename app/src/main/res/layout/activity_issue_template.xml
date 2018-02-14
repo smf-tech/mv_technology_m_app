@@ -40,6 +40,15 @@
                     android:text="@string/disrict"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/small_text" />
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/grey_box"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:paddingBottom="10dp"
+                    >
 
                 <Spinner
                     android:id="@+id/spinner_district"
@@ -48,12 +57,12 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
-                    android:background="@drawable/grey_box"
                     android:entries="@array/array_of_district"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
                     android:prompt="@string/disrict"
                     android:spinnerMode="dialog" />
+                </RelativeLayout>
 
                 <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"
@@ -65,6 +74,16 @@
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/small_text" />
 
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/grey_box"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:paddingBottom="10dp"
+                    >
+
                 <Spinner
                     android:id="@+id/spinner_taluka"
                     android:layout_width="match_parent"
@@ -72,12 +91,12 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
-                    android:background="@drawable/grey_box"
                     android:entries="@array/array_of_taluka"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
                     android:prompt="@string/taluka"
                     android:spinnerMode="dialog" />
+                </RelativeLayout>
 
                 <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"
@@ -114,6 +133,15 @@
                     android:text="@string/issue"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/small_text" />
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/grey_box"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:paddingBottom="10dp"
+                    >
 
                 <Spinner
                     android:id="@+id/spinner_issue"
@@ -122,12 +150,12 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
-                    android:background="@drawable/grey_box"
                     android:entries="@array/array_of_issue"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
                     android:prompt="@string/issue"
                     android:spinnerMode="dialog" />
+                </RelativeLayout>
 
 
                 <com.mv.Widgets.MyTextView
@@ -139,6 +167,15 @@
                     android:text="@string/priority"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/small_text" />
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/grey_box"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:paddingBottom="10dp"
+                    >
 
                 <Spinner
                     android:id="@+id/spinner_priority"
@@ -147,12 +184,12 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
-                    android:background="@drawable/grey_box"
                     android:entries="@array/array_of_priority"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
                     android:prompt="@string/priority"
                     android:spinnerMode="dialog" />
+                </RelativeLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_content"

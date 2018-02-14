@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -179,14 +180,38 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                                     }
 
                                 }
+
+
                                 List<Content> contentList_fromDb = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
                                 chatList.clear();
                                 for (int i = 0; i < contentList_fromDb.size(); i++) {
                                     chatList.add(contentList_fromDb.get(i));
                                 }
 
+
+
                                 adapter = new ContentAdapter(CommunityHomeActivity.this, chatList);
                                 recyclerView.setAdapter(adapter);
+
+                               /* List<Content> contentList_fromDb = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
+                                //chatList.clear();
+                                for (int i = 0; i < contentList_fromDb.size(); i++) {
+                                    if (contentList_fromDb.get(i).getIsLike()){
+                                        AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().deletelikepost(contentList_fromDb.get(i).getIsLike());
+                                         contentList.remove(i);
+                                       Utills.showToast("like",CommunityHomeActivity.this);
+                                    }else {
+                                        Utills.showToast("not like",CommunityHomeActivity.this);
+                                    }
+
+                                    Log.e("is like", String.valueOf(contentList_fromDb.get(i).getIsLike()));
+
+                                }
+
+
+
+                                adapter = new ContentAdapter(CommunityHomeActivity.this, contentList_fromDb);
+                                recyclerView.setAdapter(adapter);*/
 
                                 textNoData.setVisibility(View.GONE);
                             } else {
@@ -298,7 +323,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 for (int i = 0; i < chatList.size(); i++) {
                     if (chatList.get(i).getUser_id().equals(User.getCurrentUser(getApplicationContext()).getId())) {
-                        mypostlist.add(chatList.get(i));
+
                     }
 
                 }
