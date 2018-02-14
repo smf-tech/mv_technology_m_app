@@ -165,7 +165,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
                 Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
                 openClass.putExtra(Constants.PROCESS_ID, taskList);
-
                 openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
                 //  openClass.putExtra("stock_list", resultList.get(getAdapterPosition()).get(0));
                 startActivity(openClass);
@@ -194,7 +193,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetprocessAnswerDataUrl+"?processId=" + proceesId + "&UserId=" + User.getCurrentUser(this).getId();
+                + Constants.GetprocessAnswerDataUrl+"?processId=" + proceesId + "&UserId=" + User.getCurrentUser(this).getId()+"&language=" + preferenceHelper.getString(Constants.LANGUAGE);
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -225,6 +224,11 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     processList.setIs_Response_Mnadetory__c(jsonArray.getJSONObject(i).getBoolean("Is_Mandotory"));
                                     processList.setTask_type__c(jsonArray.getJSONObject(i).getString("Task_Type"));
                                     processList.setTask_Text__c(jsonArray.getJSONObject(i).getString("Question"));
+                                    if (!jsonArray.getJSONObject(i).getString("lanTsaskText").equals("null"))
+                                        processList.setTask_Text___Lan_c(jsonArray.getJSONObject(i).getString("lanTsaskText"));
+                                    else
+                                        processList.setTask_Text___Lan_c(jsonArray.getJSONObject(i).getString("Question"));
+                                    processList.setPicklist_Value_Lan__c(jsonArray.getJSONObject(i).getString("lanPicklistValue"));
                                     if (jsonArray.getJSONObject(i).has("Picklist_Value"))
                                         processList.setPicklist_Value__c(jsonArray.getJSONObject(i).getString("Picklist_Value"));
 
@@ -294,7 +298,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetprocessTaskUrl+"?Id=" + proceesId;
+                + Constants.GetprocessTaskUrl+"?Id=" + proceesId +"&language=" + preferenceHelper.getString(Constants.LANGUAGE);
         // + "/services/apexrest/getprocessAnswerTask?processId=a1Q0k000000O6Ex&UserId=a100k000000KX6y";
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -315,44 +319,53 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
                                 //task is each task detail
                                 Task processList = new Task();
-                                processList.setMV_Task__c_Id(resultJsonObj.getString("Id"));
-                                processList.setName(resultJsonObj.getString("Name"));
-                                processList.setIs_Completed__c(resultJsonObj.getBoolean("Is_Completed__c"));
-                                processList.setIs_Response_Mnadetory__c(resultJsonObj.getBoolean("Is_Response_Mnadetory__c"));
-                                if (resultJsonObj.has("Picklist_Value__c"))
-                                    processList.setPicklist_Value__c(resultJsonObj.getString("Picklist_Value__c"));
+                                processList.setMV_Task__c_Id(resultJsonObj.getString("id"));
+                                processList.setName(resultJsonObj.getString("name"));
+                                processList.setIs_Completed__c(resultJsonObj.getBoolean("isCompleted"));
+                                processList.setIs_Response_Mnadetory__c(resultJsonObj.getBoolean("isResponseMnadetory"));
+                                if (!resultJsonObj.getString("lanTsaskText").equals("null"))
+                                processList.setTask_Text___Lan_c(resultJsonObj.getString("lanTsaskText"));
+                                else
+                                    processList.setTask_Text___Lan_c(resultJsonObj.getString("taskText"));
 
-                                if (resultJsonObj.has("Location_Level__c")) {
-                                    processList.setLocationLevel(resultJsonObj.getString("Location_Level__c"));
+                                processList.setPicklist_Value_Lan__c(resultJsonObj.getString("lanPicklistValue"));
 
-                                    if (resultJsonObj.getString("Location_Level__c").equals("State")) {
+
+                                if (resultJsonObj.has("picklistValue"))
+                                    processList.setPicklist_Value__c(resultJsonObj.getString("picklistValue"));
+
+
+                                if (!resultJsonObj.getString("locationLevel").equals("null")) {
+                                    processList.setLocationLevel(resultJsonObj.getString("locationLevel"));
+
+                                    if (resultJsonObj.getString("locationLevel").equals("State")) {
                                             processList.setTask_Response__c(user.getState());
                                       //  LocationSelectionActity.selectedState = user.getState();
 
-                                    } else if (resultJsonObj.getString("Location_Level__c").equals("District")) {
+                                    } else if (resultJsonObj.getString("locationLevel").equals("District")) {
                                        // LocationSelectionActity.selectedDisrict = user.getDistrict();
 
                                         processList.setTask_Response__c(user.getDistrict());
-                                    } else if (resultJsonObj.getString("Location_Level__c").equals("Taluka")) {
+                                    } else if (resultJsonObj.getString("locationLevel").equals("Taluka")) {
                                         processList.setTask_Response__c(user.getTaluka());
                                       //  LocationSelectionActity.selectedTaluka = user.getTaluka();
-                                    } else if (resultJsonObj.getString("Location_Level__c").equals("Cluster")) {
+                                    } else if (resultJsonObj.getString("locationLevel").equals("Cluster")) {
                                       ///  LocationSelectionActity.selectedCluster = user.getCluster();
                                         processList.setTask_Response__c(user.getCluster());
-                                    } else if (resultJsonObj.getString("Location_Level__c").equals("Village")) {
+                                    } else if (resultJsonObj.getString("locationLevel").equals("Village")) {
                                        // LocationSelectionActity.selectedVillage = user.getVillage();
 
                                         processList.setTask_Response__c(user.getVillage());
-                                    } else if (resultJsonObj.getString("Location_Level__c").equals("School")) {
+                                    } else if (resultJsonObj.getString("locationLevel").equals("School")) {
                                         processList.setTask_Response__c(user.getSchool_Name());
                                       //  LocationSelectionActity.selectedSchool = user.getSchool_Name();
                                     }
 
                                 }
-                                processList.setMV_Process__c(resultJsonObj.getString("MV_Process__c"));
-                                processList.setTask_Text__c(resultJsonObj.getString("Task_Text__c"));
-                                processList.setTask_type__c(resultJsonObj.getString("Task_type__c"));
-                                processList.setValidation(resultJsonObj.getString("Validaytion_on_text__c"));
+                                processList.setMV_Process__c(resultJsonObj.getString("mVProcess"));
+                                processList.setTask_Text__c(resultJsonObj.getString("taskText"));
+                                processList.setTask_type__c(resultJsonObj.getString("tasktype"));
+                                processList.setValidation(resultJsonObj.getString("validaytionOnText"));
                                 processList.setIsSave(Constants.PROCESS_STATE_SAVE);
                                 // processList.setTimestamp__c(resultJsonObj.getString("Timestamp__c"));
                                 // processList.setMTUser__c(resultJsonObj.getString("MTUser__c"));

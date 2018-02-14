@@ -102,13 +102,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView img_back, img_list, img_logout, img_lang;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
-    private android.app.AlertDialog alertDialogApproved;
+    private android.app.AlertDialog alertDialogApproved ;
     private ActivityHome1Binding binding;
     private PreferenceHelper preferenceHelper;
-    public static final String LANGUAGE_ENGLISH = "en";
-    public static final String LANGUAGE_MARATHI = "mr";
-    public static final String LANGUAGE_HINDI = "hi";
-    public static final String LANGUAGE = "language";
+
     private android.app.AlertDialog alertLocationDialog = null;
     //  private ViewPagerAdapter adapter;
     //   private TabLayout tabLayout;
@@ -132,6 +129,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
         binding.setActivity(this);
         preferenceHelper = new PreferenceHelper(this);
+        alertDialogApproved = new android.app.AlertDialog.Builder(this).create();;
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
         ///setActionbar(getString(R.string.app_name));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -353,40 +351,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-        int height = displayMetrics.heightPixels;
-        int width = displayMetrics.widthPixels;
+
         TypedValue tv = new TypedValue();
         int actionBarHeight = 0;
         if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
             actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
         }
-        int toolbarHeight = actionBarHeight;
-        height = height - toolbarHeight;
-        height = height - dpToPx(80);
-        int textWidth = height / 3;
 
 
-        // tabLayout.setupWithViewPager(viewPager);
-        ///   setupViewPager(viewPager);
 
-/*
-        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                viewPager.setCurrentItem(tab.getPosition());
-            }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
 
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });*/
         String receivedAction = receivedIntent.getAction();
         String receivedType = receivedIntent.getType();
         //make sure it's an action and type we can handle
@@ -487,42 +462,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         startActivity(intent);
     }
 
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getItemPosition(Object object) {
-            return POSITION_NONE;
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
 
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
 
-    }
-
-    public int dpToPx(int dp) {
-        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -600,45 +542,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-           /* case R.id.img_back:
-                if (doubleBackToExitPressedOnce) {
-                    super.onBackPressed();
 
-                    Intent startMain = new Intent(Intent.ACTION_MAIN);
-                    startMain.addCategory(Intent.CATEGORY_HOME);
-                    startMain.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    Runtime.getRuntime().gc();
-                    startActivity(startMain);
-                    System.exit(0);
-
-
-                    finish();
-                    return;
-                }
-
-                this.doubleBackToExitPressedOnce = true;
-                Toast.makeText(this, getString(R.string.back_string), Toast.LENGTH_SHORT).show();
-
-                new Handler().postDelayed(new Runnable() {
-
-                    @Override
-                    public void run() {
-                        doubleBackToExitPressedOnce = false;
-                    }
-                }, 2000);
-                break;
-            case R.id.img_logout:
-                showLogoutPopUp();
-                break;
-            case R.id.img_list:
-                Intent intent;
-                intent = new Intent(this, RegistrationActivity.class);
-                intent.putExtra(Constants.ACTION, Constants.ACTION_EDIT);
-                startActivityForResult(intent, Constants.ISROLECHANGE);
-                break;
-            case R.id.img_lang:
-                showDialog();
-                break;*/
         }
     }
 
@@ -647,14 +551,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.ISROLECHANGE && resultCode == RESULT_OK) {
 
-            //    if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
-            if (Utills.isConnected(this))
-                getUserData();
-            else
-                initViews();
-    /*        }
-            else
-                initViews();*/
+            if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
+            } else {
+                if (alertDialogApproved != null && alertDialogApproved.isShowing())
+                    alertDialogApproved.dismiss();
+                alertDialogApproved = null;
+            }
+            initViews();
 
         }
     }
@@ -701,9 +604,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         final ArrayList seletedItems = new ArrayList();
 
         int checkId = 0;
-        if (preferenceHelper.getString(LANGUAGE).equalsIgnoreCase(LANGUAGE_MARATHI)) {
+        if (preferenceHelper.getString(Constants.LANGUAGE).equalsIgnoreCase(Constants.LANGUAGE_MARATHI)) {
             checkId = 1;
-        } else if(preferenceHelper.getString(LANGUAGE).equalsIgnoreCase(LANGUAGE_HINDI)){
+        } else if(preferenceHelper.getString(Constants.LANGUAGE).equalsIgnoreCase(Constants.LANGUAGE_HINDI)){
             checkId = 2;
         }
 
@@ -723,14 +626,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         ListView lw = ((AlertDialog) dialog).getListView();
 
                         if (lw.getCheckedItemPosition() == 0) {
-                            LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_ENGLISH);
-                            preferenceHelper.insertString(LANGUAGE, LANGUAGE_ENGLISH);
+                            LocaleManager.setNewLocale(getApplicationContext(), Constants.LANGUAGE_ENGLISH);
+                            preferenceHelper.insertString(Constants.LANGUAGE, Constants.LANGUAGE_ENGLISH);
                         } else if (lw.getCheckedItemPosition() == 1) {
-                            LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_MARATHI);
-                            preferenceHelper.insertString(LANGUAGE, LANGUAGE_MARATHI);
+                            LocaleManager.setNewLocale(getApplicationContext(), Constants.LANGUAGE_MARATHI);
+                            preferenceHelper.insertString(Constants.LANGUAGE, Constants.LANGUAGE_MARATHI);
                         } else {
-                            LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_HINDI);
-                            preferenceHelper.insertString(LANGUAGE, LANGUAGE_HINDI);
+                            LocaleManager.setNewLocale(getApplicationContext(), Constants.LANGUAGE_HINDI);
+                            preferenceHelper.insertString(Constants.LANGUAGE,Constants. LANGUAGE_HINDI);
                         }
                         dialog.dismiss();
                         finish();
@@ -847,7 +750,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void showApprovedDilaog() {
         String message = "";
-        alertDialogApproved = new android.app.AlertDialog.Builder(this).create();
+        if(alertDialogApproved.isShowing())
+            alertDialogApproved.dismiss();
 
         // Setting Dialog Title
         alertDialogApproved.setTitle(getString(R.string.app_name));
@@ -942,10 +846,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         } else {
                             if (alertDialogApproved != null && alertDialogApproved.isShowing())
                                 alertDialogApproved.dismiss();
-                            alertLocationDialog = null;
-                            initViews();
+                            alertDialogApproved = null;
                         }
-
+                        initViews();
 
                     }
 
@@ -1015,33 +918,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private void LocationPopup() {
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(HomeActivity.this);
-        dialog.setMessage("Gps network not enabled");
-        dialog.setPositiveButton("Open Location", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                // TODO Auto-generated method stub
-                Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(myIntent);
 
-
-                //get gps
-            }
-        });
-
-
-
-      /*  dialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                // TODO Auto-generated method stub
-
-            }
-        });*/
-        dialog.show();
-    }
 
     private void SampleDialog() {
         if (alertLocationDialog == null) {
@@ -1172,7 +1049,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         } else if (id == R.id.action_add_school) {
             String role=User.getCurrentUser(getApplicationContext()).getRoll();
-            if(role.equals("PC")||role.equals("MT")||role.equals("PC")||role.equals("PM")) {
+            if(role.equals("PC")||role.equals("MT")||role.equals("TC")||role.equals("PM")) {
                 Intent openClass = new Intent(HomeActivity.this, AddSchoolActivity.class);
                 startActivity(openClass);
             }

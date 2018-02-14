@@ -210,6 +210,6 @@
        </string>
     <string name="call_us">Call Us</string>
 
-    <string name="detail"><u>Deatail...</u></string>
-
+    <string name="detail"><u>विस्तार...</u></string>
+    <string name="target_date">नियोजित तारीख : </string>
 </resources>
