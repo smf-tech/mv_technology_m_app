@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 7,
-    "identityHash": "8b3683dff2961cceaafff932bac0d981",
+    "identityHash": "c6dcfc44a1df41e929d46dff2a1bc39b",
     "entities": [
       {
         "tableName": "table_community",
@@ -184,7 +184,7 @@
       },
       {
         "tableName": "table_process",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `template_id` TEXT, `template_name` TEXT, `Location` INTEGER, `LocationLevel` TEXT, `type` TEXT, `url` TEXT, `MV_Process__c` TEXT, `MV_User__c` TEXT, `P1F1__c` TEXT, `P1F2__c` TEXT, `P1F3__c` TEXT, `P1F4__c` TEXT, `P1F5__c` TEXT, `Is_Editable__c` INTEGER, `Is_Multiple_Entry_Allowed__c` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `template_id` TEXT, `template_name` TEXT, `Targated_Date__c` TEXT, `Location` INTEGER, `LocationLevel` TEXT, `type` TEXT, `url` TEXT, `MV_Process__c` TEXT, `MV_User__c` TEXT, `P1F1__c` TEXT, `P1F2__c` TEXT, `P1F3__c` TEXT, `P1F4__c` TEXT, `P1F5__c` TEXT, `Is_Editable__c` INTEGER, `Is_Multiple_Entry_Allowed__c` INTEGER)",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -199,6 +199,11 @@
           {
             "fieldPath": "Name",
             "columnName": "template_name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Targated_Date__c",
+            "columnName": "Targated_Date__c",
             "affinity": "TEXT"
           },
           {
@@ -420,7 +425,7 @@
       },
       {
         "tableName": "table_download_content",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Section` TEXT, `Name` TEXT, `URL__c` TEXT, `FileType__c` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Section` TEXT, `Lang` TEXT, `Name` TEXT, `URL__c` TEXT, `FileType__c` TEXT)",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -435,6 +440,11 @@
           {
             "fieldPath": "Section",
             "columnName": "Section",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Lang",
+            "columnName": "Lang",
             "affinity": "TEXT"
           },
           {
@@ -465,7 +475,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"8b3683dff2961cceaafff932bac0d981\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c6dcfc44a1df41e929d46dff2a1bc39b\")"
     ]
   }
 }

@@ -305,9 +305,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
         }
 
-
-
-
     }
 
     @Override
@@ -472,7 +469,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         public ImageView picture, userImage, imgLike, img_comment,play;
         public CardView card_view;
         public RelativeLayout audioLayout, layout_Video;
-        public TextView txt_audio_txt,txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type,txt_tag,txt_detail;
+        public TextView txt_detail,txt_audio_txt,txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type,txt_tag;
         public LinearLayout layout_like, mediaLayout, layout_comment, layout_share, layout_download,layout_download_file;
 
         public ViewHolder(View itemLayoutView) {
@@ -498,6 +495,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             play = (ImageView) itemLayoutView.findViewById(R.id.play);
             txt_tag = (TextView) itemLayoutView.findViewById(R.id.txt_tag);
             txt_detail = (TextView) itemLayoutView.findViewById(R.id.txt_detail);
+
             /*Add the comment to particular posts by calling api. */
             layout_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -508,18 +506,16 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 }
             });
 
-            txt_desc.setOnLongClickListener(new View.OnLongClickListener() {
+          /*  txt_desc.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    Utills.MarkAsSpamDialog(mContext,preferenceHelper,mDataList.get(getAdapterPosition()).getId());
+                    Utills.MarkAsSpamDialog(mContext,preferenceHelper,mDataList.get(mPosition).getId());
                     return false;
                 }
             });
+*/
 
-
-
-
-           txt_detail.setOnClickListener(new View.OnClickListener() {
+            txt_detail.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View view) {
                    if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())) {

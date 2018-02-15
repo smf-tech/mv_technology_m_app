@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 10,
-    "identityHash": "4a1065a7f169d4374cacf83ffa622095",
+    "identityHash": "c3c4d72e35e56cbac3a678876375a911",
     "entities": [
       {
         "tableName": "table_community",
@@ -40,7 +40,7 @@
       },
       {
         "tableName": "table_content",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `isAttachmentPresent` TEXT, `synchStatus` TEXT, `Id` TEXT, `UserId` TEXT, `CommunityId` TEXT, `District` TEXT, `taluka` TEXT, `likeCount` INTEGER, `commentCount` INTEGER, `isLike` INTEGER, `Issue_Type` TEXT, `Report_Type` TEXT, `Priority` TEXT, `Title` TEXT, `Description` TEXT, `TemplateId` TEXT, `TemplateName` TEXT, `userAttachmentId` TEXT, `CreatedDate` TEXT, `isbroadcast` TEXT, `userName` TEXT, `isMediaPlay` INTEGER, `isAtive` INTEGER, `contentType` TEXT, `isTheatMessage` TEXT, `attachmentId` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `isAttachmentPresent` TEXT, `synchStatus` TEXT, `Id` TEXT, `UserId` TEXT, `CommunityId` TEXT, `District` TEXT, `taluka` TEXT, `likeCount` INTEGER, `commentCount` INTEGER, `isLike` INTEGER, `Issue_Type` TEXT, `Report_Type` TEXT, `Priority` TEXT, `Title` TEXT, `Description` TEXT, `TemplateId` TEXT, `TemplateName` TEXT, `userAttachmentId` TEXT, `CreatedDate` TEXT, `isbroadcast` TEXT, `userName` TEXT, `isMediaPlay` INTEGER, `contentType` TEXT, `isTheatMessage` TEXT, `attachmentId` TEXT)",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -155,11 +155,6 @@
           {
             "fieldPath": "mediaPlay",
             "columnName": "isMediaPlay",
-            "affinity": "INTEGER"
-          },
-          {
-            "fieldPath": "isAtive",
-            "columnName": "isAtive",
             "affinity": "INTEGER"
           },
           {
@@ -475,7 +470,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"4a1065a7f169d4374cacf83ffa622095\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c3c4d72e35e56cbac3a678876375a911\")"
     ]
   }
 }

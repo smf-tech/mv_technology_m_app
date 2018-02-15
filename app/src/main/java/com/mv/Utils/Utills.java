@@ -508,7 +508,7 @@ public class Utills {
 
 
     public static void MarkAsSpamDialog(final Context mContext, final PreferenceHelper preferenceHelper, final String ID){
-        final String[] items = {"Mark As Spam"};
+        final String[] items = {"Mark As Spam", "Add Tag"};
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(mContext)
                 .setTitle(mContext.getString(R.string.app_name));
@@ -519,7 +519,8 @@ public class Utills {
                 switch (position){
                     case 0:spamContent(mContext,preferenceHelper,ID);
                     break;
-
+                    case 1: AddTagDialog(mContext);
+                    break;
                 }
 
             }

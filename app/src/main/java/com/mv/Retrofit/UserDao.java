@@ -1,7 +1,6 @@
 package com.mv.Retrofit;
 
 import android.arch.persistence.room.Dao;
-import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
@@ -84,17 +83,13 @@ public interface UserDao {
     int deletePost(String postId);
 
     @Insert
-    long[] insertChats(Content... contents);
+    void insertChats(Content... contents);
 
     @Update
     public void updateChats(Content content);
 
     @Update
     void updateContent(Content... contents);
-
-    @Delete
-    void DeleteContent(Content... contents);
-
 
     @Query("SELECT * FROM " + Constants.TABLE_CONTAINER + " where MV_Process__c = :processId AND  TaskType = :questionType")
     List<TaskContainerModel> getTask(String processId, String questionType);
@@ -112,23 +107,22 @@ public interface UserDao {
     @Query("SELECT * FROM " + Constants.TABLE_CALANDER + " where Date__c = :date")
     List<CalenderEvent> getCalenderList(String date);
 
-    @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId AND  isActive = :flag order by CreatedDate desc")
-    List<Content> getAllChats(String communityId,Boolean flag);
-   /* @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  order by CreatedDate desc")
+    @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId order by CreatedDate desc")
     List<Content> getAllChats(String communityId);
-  @Query("SELECT * FROM " + Constants.TABLE_CONTENT)
-    List<Content> getAllChats();*/
+
+    @Query("SELECT * FROM " + Constants.TABLE_CONTENT)
+    List<Content> getAllChats();
 
     //String strSQL = "UPDATE myTable SET Column1 = someValue WHERE columnId = "+ someValue;
 
 
     //String strSQL = "UPDATE myTable SET Column1 = someValue WHERE columnId = "+ someValue;
 
-    @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where isBroadcast = 'true' AND  isActive = :flag order by CreatedDate desc")
-    List<Content> getAllBroadcastChats(Boolean flag );
+    @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where isBroadcast = 'true' order by CreatedDate desc")
+    List<Content> getAllBroadcastChats();
 
-    @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where isTheatMessage = 'true' AND  isActive = :flag order by CreatedDate desc")
-    List<Content> getThetSavandChats(Boolean flag);
+    @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where isTheatMessage = 'true' order by CreatedDate desc")
+    List<Content> getThetSavandChats();
 
     @Query("SELECT * FROM " + Constants.TABLE_COMMUNITY + " order by timestamp desc")
     List<Community> getAllCommunities();
@@ -202,7 +196,5 @@ public interface UserDao {
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  and (Report_Type =:str or Priority = :str) and (taluka != :taluka) order by CreatedDate desc")
     List<Content> getOtherChatsfilter(String communityId, String str, String taluka);
 
-    @Query("DELETE FROM " + Constants.TABLE_CONTENT + " where Id = :contentId and isActive = :value")
-    int spampost(String contentId, Boolean value);
 
 }

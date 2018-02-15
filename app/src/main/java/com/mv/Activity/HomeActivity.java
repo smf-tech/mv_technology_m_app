@@ -845,7 +845,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         } else {
                             if (alertDialogApproved != null && alertDialogApproved.isShowing())
                                 alertDialogApproved.dismiss();
-                            alertDialogApproved = null;
+
                         }
                         initViews();
 
@@ -1091,10 +1091,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
 
         }else if (id==R.id.action_callus){
+            CallUSDialog();
            /* Uri uri = Uri.parse("https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2"); // missing 'http://' will cause crashed
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);*/
-           CallUSDialog();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
