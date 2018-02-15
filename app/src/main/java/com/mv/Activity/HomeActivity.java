@@ -554,7 +554,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             } else {
                 if (alertDialogApproved != null && alertDialogApproved.isShowing())
                     alertDialogApproved.dismiss();
-                alertDialogApproved = null;
+
             }
             initViews();
 
@@ -845,7 +845,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         } else {
                             if (alertDialogApproved != null && alertDialogApproved.isShowing())
                                 alertDialogApproved.dismiss();
-                            alertDialogApproved = null;
+
                         }
                         initViews();
 

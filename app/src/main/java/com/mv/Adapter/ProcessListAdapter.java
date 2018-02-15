@@ -160,16 +160,12 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         alertDialog.setButton2(mContext.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
-                // Write your code here to execute after dialog closed
-              /*  listOfWrongQuestions.add(mPosition);
-                prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
             }
         });
         // Setting OK Button
         alertDialog.setButton(mContext.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(resultList.get(postion).getUnique_Id(), resultList.get(postion).getMV_Process__c());
-
                 ( (ProcessListActivity) mContext).getAllProcessData();
             }
         });
