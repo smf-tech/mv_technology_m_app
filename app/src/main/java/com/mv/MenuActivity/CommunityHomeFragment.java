@@ -120,7 +120,7 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
     }
 
     private void getChats(boolean isDialogShow) {
-        List<Content> temp = AppDatabase.getAppDatabase(context).userDao().getAllBroadcastChats();
+        List<Content> temp = AppDatabase.getAppDatabase(context).userDao().getAllBroadcastChats(true);
         if (temp.size() == 0) {
             if (Utills.isConnected(context))
                 getAllChats(false, isDialogShow);
@@ -165,7 +165,7 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));
 
-                            List<Content> contentList = AppDatabase.getAppDatabase(context).userDao().getAllBroadcastChats();
+                            List<Content> contentList = AppDatabase.getAppDatabase(context).userDao().getAllBroadcastChats(true);
                             if ((temp.size() != 0) || (contentList.size() != 0)) {
 
                                 for (int i = 0; i < temp.size(); i++) {
@@ -181,11 +181,19 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
                                     if (isPresent) {
                                         chatList.set(j, temp.get(i));
                                         AppDatabase.getAppDatabase(context).userDao().updateContent(temp.get(i));
+
+
+
                                     } else {
                                         chatList.add(temp.get(i));
                                         AppDatabase.getAppDatabase(context).userDao().insertChats(temp.get(i));
+
+
                                     }
+
+
                                 }
+
                                 adapter.notifyDataSetChanged();
                                 textNoData.setVisibility(View.GONE);
                             } else {

@@ -1,1 +1,1 @@
-[{"outputType":{"type":"APK"},"apkInfo":{"type":"MAIN","splits":[],"versionCode":16},"path":"app-debug.apk","properties":{"packageId":"com.mv.debug","split":"","minSdkVersion":"17"}}]
+[{"outputType":{"type":"APK"},"apkInfo":{"type":"MAIN","splits":[],"versionCode":13},"path":"app-debug.apk","properties":{"packageId":"com.mv","split":"","minSdkVersion":"17"}}]
