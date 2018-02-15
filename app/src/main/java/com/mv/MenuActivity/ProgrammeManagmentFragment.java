@@ -20,7 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mv.Adapter.ProgramMangementAdapter;
-import com.mv.Adapter.TemplateAdapter;
 import com.mv.BR;
 import com.mv.Model.ParentViewModel;
 import com.mv.Model.Task;
@@ -192,7 +191,12 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                                     taskList.setPicklist_Value_Lan__c(resultJsonObj.getString("lanPicklistValue"));
                                     if (resultJsonObj.has("picklistValue"))
                                         taskList.setPicklist_Value__c(resultJsonObj.getString("picklistValue"));
-
+                                    if (resultJsonObj.has("status")) {
+                                        taskList.setStatus__c(resultJsonObj.getString("status"));
+                                    }
+                                    if (resultJsonObj.has("IsEditable")) {
+                                        taskList.setIsEditable__c(resultJsonObj.getString("IsEditable"));
+                                    }
                                     if (resultJsonObj.has("locationLevel")) {
                                         taskList.setLocationLevel(resultJsonObj.getString("locationLevel"));
 

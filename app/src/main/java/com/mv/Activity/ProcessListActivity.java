@@ -53,7 +53,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     String proceesId, Processname;
     Context mContext;
     TextView textNoData;
-
+    public int headerPosition = 999999999;
 
     TaskContainerModel taskContainerModel;
     List<TaskContainerModel> resultList = new ArrayList<>();
@@ -96,12 +96,12 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     protected void onResume() {
         super.onResume();
         resultList.clear();
-        LocationSelectionActity.selectedState  = User.getCurrentUser(getApplicationContext()).getState();
-        LocationSelectionActity.selectedDisrict  = User.getCurrentUser(getApplicationContext()).getDistrict();
+        LocationSelectionActity.selectedState = User.getCurrentUser(getApplicationContext()).getState();
+        LocationSelectionActity.selectedDisrict = User.getCurrentUser(getApplicationContext()).getDistrict();
         LocationSelectionActity.selectedTaluka = User.getCurrentUser(getApplicationContext()).getTaluka();
         LocationSelectionActity.selectedCluster = User.getCurrentUser(getApplicationContext()).getCluster();
-        LocationSelectionActity.selectedVillage= User.getCurrentUser(getApplicationContext()).getVillage();
-        LocationSelectionActity.selectedSchool= User.getCurrentUser(getApplicationContext()).getSchool_Name();
+        LocationSelectionActity.selectedVillage = User.getCurrentUser(getApplicationContext()).getVillage();
+        LocationSelectionActity.selectedSchool = User.getCurrentUser(getApplicationContext()).getSchool_Name();
         getAllProcessData();
 
     }
@@ -193,7 +193,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetprocessAnswerDataUrl+"?processId=" + proceesId + "&UserId=" + User.getCurrentUser(this).getId()+"&language=" + preferenceHelper.getString(Constants.LANGUAGE);
+                + Constants.GetprocessAnswerDataUrl + "?processId=" + proceesId + "&UserId=" + User.getCurrentUser(this).getId() + "&language=" + preferenceHelper.getString(Constants.LANGUAGE);
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -219,11 +219,14 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     Task processList = new Task();
                                     processList.setId(jsonArray.getJSONObject(i).getString("Id"));
-                                   // processList.setName(jsonArray.getJSONObject(i).getString("Name"));
+                                    // processList.setName(jsonArray.getJSONObject(i).getString("Name"));
                                     //  processList.setIs_Completed__c(jsonArray.getJSONObject(i).getBoolean("Is_Completed__c"));
                                     processList.setIs_Response_Mnadetory__c(jsonArray.getJSONObject(i).getBoolean("Is_Mandotory"));
                                     processList.setTask_type__c(jsonArray.getJSONObject(i).getString("Task_Type"));
                                     processList.setTask_Text__c(jsonArray.getJSONObject(i).getString("Question"));
+                                    if (jsonArray.getJSONObject(i).getString("isHeader").equals("true"))
+                                        headerPosition = i;
+
                                     if (!jsonArray.getJSONObject(i).getString("lanTsaskText").equals("null"))
                                         processList.setTask_Text___Lan_c(jsonArray.getJSONObject(i).getString("lanTsaskText"));
                                     else
@@ -243,6 +246,12 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     processList.setUnique_Id__c(jsonArray.getJSONObject(i).getString("Unique_Idd"));
                                     processList.setMTUser__c(jsonArray.getJSONObject(i).getString("MV_User"));
                                     processList.setIsApproved__c(jsonArray.getJSONObject(i).getString("IsApproved"));
+                                    if (jsonArray.getJSONObject(i).has("status")) {
+                                        processList.setStatus__c(jsonArray.getJSONObject(i).getString("status"));
+                                    }
+                                    if (jsonArray.getJSONObject(i).has("IsEditable")) {
+                                        processList.setIsEditable__c(jsonArray.getJSONObject(i).getString("IsEditable"));
+                                    }
                                     processList.setValidation(jsonArray.getJSONObject(i).getString("Validation_on_text"));
                                     processList.setIsSave(Constants.PROCESS_STATE_SUBMIT);
                                     taskList.add(processList);
@@ -252,6 +261,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
                                 taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
                                 taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
+                                taskContainerModel.setHeaderPosition(headerPosition);
                                 //task is with answer
                                 taskContainerModel.setTaskType(Constants.TASK_ANSWER);
                                 taskContainerModel.setMV_Process__c(proceesId);
@@ -298,8 +308,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetprocessTaskUrl+"?Id=" + proceesId +"&language=" + preferenceHelper.getString(Constants.LANGUAGE);
-        // + "/services/apexrest/getprocessAnswerTask?processId=a1Q0k000000O6Ex&UserId=a100k000000KX6y";
+                + Constants.GetprocessTaskUrl + "?Id=" + proceesId + "&language=" + preferenceHelper.getString(Constants.LANGUAGE);
+
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -313,7 +323,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                             //list of task
                             taskContainerModel = new TaskContainerModel();
                             taskList = new ArrayList<>();
-                           User user= User.getCurrentUser(getApplicationContext());
+                            User user = User.getCurrentUser(getApplicationContext());
                             for (int i = 0; i < resultArray.length(); i++) {
                                 JSONObject resultJsonObj = resultArray.getJSONObject(i);
 
@@ -322,12 +332,19 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 processList.setMV_Task__c_Id(resultJsonObj.getString("id"));
                                 processList.setName(resultJsonObj.getString("name"));
                                 processList.setIs_Completed__c(resultJsonObj.getBoolean("isCompleted"));
+                                if (resultJsonObj.getString("isHeader").equals("true"))
+                                    headerPosition = i;
                                 processList.setIs_Response_Mnadetory__c(resultJsonObj.getBoolean("isResponseMnadetory"));
                                 if (!resultJsonObj.getString("lanTsaskText").equals("null"))
-                                processList.setTask_Text___Lan_c(resultJsonObj.getString("lanTsaskText"));
+                                    processList.setTask_Text___Lan_c(resultJsonObj.getString("lanTsaskText"));
                                 else
                                     processList.setTask_Text___Lan_c(resultJsonObj.getString("taskText"));
-
+                                if (resultJsonObj.has("status")) {
+                                    processList.setStatus__c(resultJsonObj.getString("status"));
+                                }
+                                if (resultJsonObj.has("IsEditable")) {
+                                    processList.setIsEditable__c(resultJsonObj.getString("IsEditable"));
+                                }
                                 processList.setPicklist_Value_Lan__c(resultJsonObj.getString("lanPicklistValue"));
 
 
@@ -339,26 +356,26 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     processList.setLocationLevel(resultJsonObj.getString("locationLevel"));
 
                                     if (resultJsonObj.getString("locationLevel").equals("State")) {
-                                            processList.setTask_Response__c(user.getState());
-                                      //  LocationSelectionActity.selectedState = user.getState();
+                                        processList.setTask_Response__c(user.getState());
+                                        //  LocationSelectionActity.selectedState = user.getState();
 
                                     } else if (resultJsonObj.getString("locationLevel").equals("District")) {
-                                       // LocationSelectionActity.selectedDisrict = user.getDistrict();
+                                        // LocationSelectionActity.selectedDisrict = user.getDistrict();
 
                                         processList.setTask_Response__c(user.getDistrict());
                                     } else if (resultJsonObj.getString("locationLevel").equals("Taluka")) {
                                         processList.setTask_Response__c(user.getTaluka());
-                                      //  LocationSelectionActity.selectedTaluka = user.getTaluka();
+                                        //  LocationSelectionActity.selectedTaluka = user.getTaluka();
                                     } else if (resultJsonObj.getString("locationLevel").equals("Cluster")) {
-                                      ///  LocationSelectionActity.selectedCluster = user.getCluster();
+                                        ///  LocationSelectionActity.selectedCluster = user.getCluster();
                                         processList.setTask_Response__c(user.getCluster());
                                     } else if (resultJsonObj.getString("locationLevel").equals("Village")) {
-                                       // LocationSelectionActity.selectedVillage = user.getVillage();
+                                        // LocationSelectionActity.selectedVillage = user.getVillage();
 
                                         processList.setTask_Response__c(user.getVillage());
                                     } else if (resultJsonObj.getString("locationLevel").equals("School")) {
                                         processList.setTask_Response__c(user.getSchool_Name());
-                                      //  LocationSelectionActity.selectedSchool = user.getSchool_Name();
+                                        //  LocationSelectionActity.selectedSchool = user.getSchool_Name();
                                     }
 
                                 }

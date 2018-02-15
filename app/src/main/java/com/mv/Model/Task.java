@@ -10,8 +10,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.mv.Utils.Constants;
 
-import java.io.Serializable;
-
 /**
  * Created by nanostuffs on 26-09-2017.
  */
@@ -54,7 +52,7 @@ public class Task implements Parcelable {
     @ColumnInfo(name = "Task_Response__c")
     @SerializedName("Answer")
     @Expose
-    private String Task_Response__c="";
+    private String Task_Response__c = "";
     @SerializedName("Task_Text")
     @Expose
     @ColumnInfo(name = "Task_Text__c")
@@ -135,7 +133,32 @@ public class Task implements Parcelable {
     @SerializedName("Section_Name")
     @Expose
     private String Section_Name__c;
+    @ColumnInfo(name = "status__c")
+    @SerializedName("status__c")
+    @Expose
+    private String status;
 
+    @ColumnInfo(name = "IsEditable")
+    @SerializedName("IsEditable")
+    @Expose
+    private String IsEditable;
+
+
+    public String getIsEditable__c() {
+        return IsEditable;
+    }
+
+    public void setIsEditable__c(String IsEditable) {
+        this.IsEditable = IsEditable;
+    }
+
+    public String getStatus__c() {
+        return status;
+    }
+
+    public void setStatus__c(String status) {
+        this.status = status;
+    }
 
     public String getIsSave() {
         return isSave;
@@ -144,6 +167,7 @@ public class Task implements Parcelable {
     public void setIsSave(String isSave) {
         this.isSave = isSave;
     }
+
     public String getIsApproved__c() {
         return IsApproved__c;
     }
@@ -316,6 +340,8 @@ public class Task implements Parcelable {
         dest.writeString(this.LocationLevel);
         dest.writeString(this.validation);
         dest.writeString(this.Section_Name__c);
+        dest.writeString(this.status);
+        dest.writeString(this.IsEditable);
     }
 
     protected Task(Parcel in) {
@@ -340,6 +366,8 @@ public class Task implements Parcelable {
         this.LocationLevel = in.readString();
         this.validation = in.readString();
         this.Section_Name__c = in.readString();
+        this.status = in.readString();
+        this.IsEditable = in.readString();
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {

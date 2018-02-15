@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 7,
-    "identityHash": "c6dcfc44a1df41e929d46dff2a1bc39b",
+    "identityHash": "1a18c8f79f2f88f74204f0ae676d802e",
     "entities": [
       {
         "tableName": "table_community",
@@ -283,7 +283,7 @@
       },
       {
         "tableName": "table_container",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` TEXT, `taskListString` TEXT, `isSave` TEXT, `MV_Process__c` TEXT, `TaskType` TEXT, PRIMARY KEY(`unique_Id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` TEXT, `taskListString` TEXT, `isSave` TEXT, `MV_Process__c` TEXT, `TaskType` TEXT, `headerPosition` INTEGER, PRIMARY KEY(`unique_Id`))",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -309,6 +309,11 @@
             "fieldPath": "TaskType",
             "columnName": "TaskType",
             "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "headerPosition",
+            "columnName": "headerPosition",
+            "affinity": "INTEGER"
           }
         ],
         "primaryKey": {
@@ -475,7 +480,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c6dcfc44a1df41e929d46dff2a1bc39b\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1a18c8f79f2f88f74204f0ae676d802e\")"
     ]
   }
 }
