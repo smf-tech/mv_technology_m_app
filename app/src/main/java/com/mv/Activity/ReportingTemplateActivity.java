@@ -237,6 +237,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         if (User.getCurrentUser(ReportingTemplateActivity.this).getRoll().equalsIgnoreCase("TC")) {
             binding.txtSpinner.setVisibility(View.VISIBLE);
             binding.spinnerIssue.setVisibility(View.VISIBLE);
+            binding.relIssue.setVisibility(View.VISIBLE);
         }
 
         mListTaluka.add("Select");
@@ -301,6 +302,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                     } else {
                         binding.txtSpinner.setVisibility(View.VISIBLE);
                         binding.spinnerIssue.setVisibility(View.VISIBLE);
+                        binding.relIssue.setVisibility(View.VISIBLE);
                     }
 
                 } else {
@@ -309,6 +311,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                     } else {
                         binding.txtSpinner.setVisibility(View.GONE);
                         binding.spinnerIssue.setVisibility(View.GONE);
+                        binding.relIssue.setVisibility(View.GONE);
                     }
                 }
                 break;

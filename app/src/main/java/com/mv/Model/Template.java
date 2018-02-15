@@ -3,8 +3,6 @@ package com.mv.Model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
-import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -16,7 +14,7 @@ import java.io.Serializable;
  * Created by Rohit Gujar on 13-09-2017.
  */
 @Entity(tableName = Constants.TABLE_PROCESS)
-public class Template implements Serializable, Parcelable {
+public class Template implements Serializable{
 
 
     @PrimaryKey(autoGenerate = true)
@@ -33,19 +31,6 @@ public class Template implements Serializable, Parcelable {
     @Expose
     private String Name;
 
-
-    public String getTargated_Date__c() {
-        return Targated_Date__c;
-    }
-
-    public void setTargated_Date__c(String targated_Date__c) {
-        Targated_Date__c = targated_Date__c;
-    }
-
-    @ColumnInfo(name = "Targated_Date__c")
-    @SerializedName("Targated_Date__c")
-    @Expose
-    private String Targated_Date__c;
 
     public Boolean getLocation() {
         return Location;
@@ -221,65 +206,4 @@ public class Template implements Serializable, Parcelable {
     }
 
     private  Boolean Is_Multiple_Entry_Allowed__c;
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.Unique_Id);
-        dest.writeString(this.Id);
-        dest.writeString(this.Name);
-        dest.writeString(this.Targated_Date__c);
-        dest.writeValue(this.Location);
-        dest.writeString(this.LocationLevel);
-        dest.writeString(this.type);
-        dest.writeString(this.url);
-        dest.writeString(this.MV_Process__c);
-        dest.writeString(this.MV_User__c);
-        dest.writeString(this.P1F1__c);
-        dest.writeString(this.P1F2__c);
-        dest.writeString(this.P1F3__c);
-        dest.writeString(this.P1F4__c);
-        dest.writeString(this.P1F5__c);
-        dest.writeValue(this.Is_Editable__c);
-        dest.writeValue(this.Is_Multiple_Entry_Allowed__c);
-    }
-
-    public Template() {
-    }
-
-    protected Template(Parcel in) {
-        this.Unique_Id = in.readInt();
-        this.Id = in.readString();
-        this.Name = in.readString();
-        this.Targated_Date__c = in.readString();
-        this.Location = (Boolean) in.readValue(Boolean.class.getClassLoader());
-        this.LocationLevel = in.readString();
-        this.type = in.readString();
-        this.url = in.readString();
-        this.MV_Process__c = in.readString();
-        this.MV_User__c = in.readString();
-        this.P1F1__c = in.readString();
-        this.P1F2__c = in.readString();
-        this.P1F3__c = in.readString();
-        this.P1F4__c = in.readString();
-        this.P1F5__c = in.readString();
-        this.Is_Editable__c = (Boolean) in.readValue(Boolean.class.getClassLoader());
-        this.Is_Multiple_Entry_Allowed__c = (Boolean) in.readValue(Boolean.class.getClassLoader());
-    }
-
-    public static final Parcelable.Creator<Template> CREATOR = new Parcelable.Creator<Template>() {
-        @Override
-        public Template createFromParcel(Parcel source) {
-            return new Template(source);
-        }
-
-        @Override
-        public Template[] newArray(int size) {
-            return new Template[size];
-        }
-    };
 }

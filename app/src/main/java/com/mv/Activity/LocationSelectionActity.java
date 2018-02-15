@@ -51,7 +51,6 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     private PreferenceHelper preferenceHelper;
     private RelativeLayout mToolBar;
     private Spinner selectedSpinner;
-    private String selectedLocation;
     String msg = "";
     private int locationState;
     public static String selectedState = "", selectedDisrict = "", selectedTaluka = "", selectedCluster = "", selectedVillage = "", selectedSchool = "";
@@ -154,7 +153,6 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             binding.spinnerVillage.setVisibility(View.GONE);
             binding.tvVillage.setVisibility(View.GONE);
             selectedSpinner = binding.spinnerState;
-            selectedLocation="State";
 
             binding.spinnerSchoolName.setVisibility(View.GONE);
             binding.tvSchool.setVisibility(View.GONE);
@@ -169,7 +167,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             binding.spinnerVillage.setVisibility(View.GONE);
             binding.tvVillage.setVisibility(View.GONE);
             selectedSpinner = binding.spinnerDistrict;
-            selectedLocation="District";
+
             binding.spinnerSchoolName.setVisibility(View.GONE);
             binding.tvSchool.setVisibility(View.GONE);
         } else if (locationType.equals("Taluka")) {
@@ -183,7 +181,6 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             binding.spinnerSchoolName.setVisibility(View.GONE);
             binding.tvSchool.setVisibility(View.GONE);
             selectedSpinner = binding.spinnerTaluka;
-            selectedLocation="Taluka";
         } else if (locationType.equals("Cluster")) {
             locationState = 4;
             binding.spinnerVillage.setVisibility(View.GONE);
@@ -192,17 +189,14 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             binding.spinnerSchoolName.setVisibility(View.GONE);
             binding.tvSchool.setVisibility(View.GONE);
             selectedSpinner = binding.spinnerCluster;
-            selectedLocation="Cluster";
         } else if (locationType.equals("Village")) {
             locationState = 5;
             binding.spinnerSchoolName.setVisibility(View.GONE);
             binding.tvSchool.setVisibility(View.GONE);
             selectedSpinner = binding.spinnerVillage;
-            selectedLocation="Village";
             /*if (task.getTask_Response__c() != null)
                 holder.spinnerResponse.setSelection(myList.indexOf(task.getTask_Response__c().trim()));*/
         } else if (locationType.equals("School")) {
-            selectedLocation="School";
             locationState = 6;
             selectedSpinner = binding.spinnerSchoolName;
         }
@@ -252,7 +246,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             }
         }*/
         if (!selectedSpinner.getSelectedItem().toString().equals("Select")) {
-
+            preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
             Intent openClass = new Intent(context, ProcessDeatailActivity.class);
             // openClass.putExtra(Constants.PROCESS_ID, dashaBoardListModel);
             openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskList);
@@ -262,7 +256,6 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             finish();
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
         } else {
-            msg="Please select "+selectedLocation;
             Utills.showToast(msg, getApplicationContext());
         }
 

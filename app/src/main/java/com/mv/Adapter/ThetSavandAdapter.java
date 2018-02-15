@@ -323,6 +323,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         if (isFileAvalible(position) || mDataList.get(position).getIsAttachmentPresent().equalsIgnoreCase("false")) {
             holder.layout_download_file.setVisibility(View.GONE);
             holder.layout_download.setVisibility(View.VISIBLE);
+
         } else {
             holder.layout_download_file.setVisibility(View.VISIBLE);
             holder.layout_download.setVisibility(View.GONE);
@@ -444,7 +445,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView picture, userImage, imgLike, img_comment, imageThumbnail;
         public CardView card_view;
-        public TextView txt_detail,txt_audio_txt, txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type;
+        public TextView txt_audio_txt, txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type,txt_detail;
         public LinearLayout mediaLayout, layout_like, layout_comment, layout_share, layout_download, layout_download_file;
         public RelativeLayout audioLayout, layout_Video;
         public ImageView play, imgMore;
@@ -657,32 +658,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
 
                 }
             });
-            card_view.setOnClickListener(new View.OnClickListener()
 
-            {
-                @Override
-                public void onClick(View view) {
-                    if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())) {
-                        Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                        intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                        intent.putExtra("flag", "not_forward_flag");
-                        mContext.startActivity(intent);
-                    } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) {
-                        Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                        intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                        intent.putExtra("flag", "not_forward_flag");
-                        mContext.startActivity(intent);
-                    } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image")) {
-                        Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                        intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                        intent.putExtra("flag", "not_forward_flag");
-                        mContext.startActivity(intent);
-                    }
-                    Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                    intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                    mContext.startActivity(intent);
-                }
-            });
 
             picture.setOnClickListener(new View.OnClickListener() {
                 @Override
