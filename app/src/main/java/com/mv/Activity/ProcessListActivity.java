@@ -96,12 +96,12 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     protected void onResume() {
         super.onResume();
         resultList.clear();
-        LocationSelectionActity.selectedState  = User.getCurrentUser(getApplicationContext()).getState();
-        LocationSelectionActity.selectedDisrict  = User.getCurrentUser(getApplicationContext()).getDistrict();
+        LocationSelectionActity.selectedState = User.getCurrentUser(getApplicationContext()).getState();
+        LocationSelectionActity.selectedDisrict = User.getCurrentUser(getApplicationContext()).getDistrict();
         LocationSelectionActity.selectedTaluka = User.getCurrentUser(getApplicationContext()).getTaluka();
         LocationSelectionActity.selectedCluster = User.getCurrentUser(getApplicationContext()).getCluster();
-        LocationSelectionActity.selectedVillage= User.getCurrentUser(getApplicationContext()).getVillage();
-        LocationSelectionActity.selectedSchool= User.getCurrentUser(getApplicationContext()).getSchool_Name();
+        LocationSelectionActity.selectedVillage = User.getCurrentUser(getApplicationContext()).getVillage();
+        LocationSelectionActity.selectedSchool = User.getCurrentUser(getApplicationContext()).getSchool_Name();
         getAllProcessData();
 
     }
@@ -165,7 +165,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
                 Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
                 openClass.putExtra(Constants.PROCESS_ID, taskList);
-
                 openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
                 //  openClass.putExtra("stock_list", resultList.get(getAdapterPosition()).get(0));
                 startActivity(openClass);
@@ -324,7 +323,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                             //list of task
                             taskContainerModel = new TaskContainerModel();
                             taskList = new ArrayList<>();
-                           User user= User.getCurrentUser(getApplicationContext());
+                            User user = User.getCurrentUser(getApplicationContext());
                             for (int i = 0; i < resultArray.length(); i++) {
                                 JSONObject resultJsonObj = resultArray.getJSONObject(i);
 
@@ -348,8 +347,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 }
                                 processList.setPicklist_Value_Lan__c(resultJsonObj.getString("lanPicklistValue"));
 
-                                if (resultJsonObj.has("Location_Level__c")) {
-                                    processList.setLocationLevel(resultJsonObj.getString("Location_Level__c"));
 
                                 if (resultJsonObj.has("picklistValue"))
                                     processList.setPicklist_Value__c(resultJsonObj.getString("picklistValue"));

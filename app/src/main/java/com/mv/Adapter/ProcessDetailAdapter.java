@@ -319,6 +319,11 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     holder.locText.setText("Select");
                 else
                 holder.locText.setText(task.getTask_Response__c());
+
+                if(task.getIsEditable__c().equals("false"))
+                    holder.llLocation.setEnabled(false);
+                else
+                    holder.llLocation.setEnabled(true);
                 break;
 
             case Constants.LOCATION_TASK:
