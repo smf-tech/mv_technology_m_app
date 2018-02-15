@@ -44,6 +44,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     private ActivityLoactionSelectionActityBinding binding;
     int position;
     private String locationType;
+    private String taskType;
     private int mSelectState = 1, mSelectDistrict = 1, mSelectTaluka = 0, mSelectCluster = 0, mSelectVillage = 0, mSelectSchoolName = 0;
     private List<String> mListDistrict, mListTaluka, mListCluster, mListVillage, mListSchoolName, mStateList;
 
@@ -53,6 +54,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     private Spinner selectedSpinner;
     String msg = "";
     private int locationState;
+
     public static String selectedState = "", selectedDisrict = "", selectedTaluka = "", selectedCluster = "", selectedVillage = "", selectedSchool = "";
 
 
@@ -64,12 +66,20 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-        // overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_loaction_selection_actity);
         binding.setActivity(this);
+        preferenceHelper = new PreferenceHelper(this);
+
         if (getIntent().getSerializableExtra(Constants.PROCESS_ID) != null) {
             position = getIntent().getExtras().getInt(Constants.POSITION);
+           taskType= getIntent().getExtras().getString(Constants.LOCATION_TYPE);
+           if(taskType.equals("Task Location"))
             locationType = getIntent().getExtras().getString(Constants.LOCATION);
+           else
+           {
+               locationType=preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL);
+           }
             taskList = getIntent().getParcelableArrayListExtra(Constants.PROCESS_ID);
         }
         initViews();
@@ -79,7 +89,6 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     private void initViews() {
         setActionbar("Select Location");
         Utills.setupUI(findViewById(R.id.layout_main), this);
-        preferenceHelper = new PreferenceHelper(this);
 
         binding.spinnerState.setOnItemSelectedListener(this);
         binding.spinnerDistrict.setOnItemSelectedListener(this);
@@ -227,24 +236,93 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                 break;
             case R.id.btn_submit:
 
-                sendLocation();
 
+                if(taskType.equals("Task Location"))
+                sendLocationTask();
+                else
+                {
+                    sendLocation();
+                }
                 // sendData();
                 break;
 
         }
     }
 
+
     private void sendLocation() {
 
+            if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("State")) {
+                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
+                locationState = 1;
+            } else if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("District")) {
+                locationState = 2;
+                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
+                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
+            } else if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("Taluka")) {
+                locationState = 3;
+                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
+                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
+                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem().toString());
+            } else if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("Cluster")) {
+                locationState = 4;
+                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
+                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
+                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem().toString());
+                taskList.get(3).setTask_Response__c(binding.spinnerCluster.getSelectedItem().toString());
+
+            } else if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("Village")) {
+                locationState = 5;
+                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
+                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
+                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem().toString());
+                taskList.get(3).setTask_Response__c(binding.spinnerCluster.getSelectedItem().toString());
+                taskList.get(4).setTask_Response__c(binding.spinnerVillage.getSelectedItem().toString());
+
+            } else if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equals("School")) {
+                locationState = 6;
+                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
+                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
+                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem().toString());
+                taskList.get(3).setTask_Response__c(binding.spinnerCluster.getSelectedItem().toString());
+                taskList.get(4).setTask_Response__c(binding.spinnerVillage.getSelectedItem().toString());
+                taskList.get(5).setTask_Response__c(binding.spinnerSchoolName.getSelectedItem().toString());
+            }
         msg = "";
-        taskList.get(position).setTask_Response__c(selectedSpinner.getSelectedItem().toString());
-   /*     for (int i = 0; i < locationState; i++) {
+      //  taskList.get(position).setTask_Response__c(selectedSpinner.getSelectedItem().toString());
+        for (int i = 0; i < locationState; i++) {
             if (taskList.get(i).getTask_Response__c().equals("Select")) {
                 msg = "Please Select " + taskList.get(i).getTask_Text__c();
                 break;
             }
-        }*/
+        }
+        if (msg.isEmpty()) {
+            preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
+            Intent openClass = new Intent(context, ProcessDeatailActivity.class);
+            // openClass.putExtra(Constants.PROCESS_ID, taskList);
+            openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskList);
+            //  openClass.putExtra("stock_list", resultList.get(getAdapterPosition()).get(0));
+            setResult(RESULT_OK,openClass);
+            //  startActivity(openClass);
+            finish();
+            overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        } else {
+            Utills.showToast(msg, getApplicationContext());
+        }
+
+
+    }
+
+    private void sendLocationTask() {
+
+        msg = "";
+        taskList.get(position).setTask_Response__c(selectedSpinner.getSelectedItem().toString());
+        for (int i = 0; i < locationState; i++) {
+            if (taskList.get(i).getTask_Response__c().equals("Select")) {
+                msg = "Please Select " + taskList.get(i).getTask_Text__c();
+                break;
+            }
+        }
         if (!selectedSpinner.getSelectedItem().toString().equals("Select")) {
             preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
             Intent openClass = new Intent(context, ProcessDeatailActivity.class);

@@ -120,6 +120,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(mContext, LocationSelectionActity.class);
+                    intent.putExtra(Constants.LOCATION_TYPE, taskList.get(getAdapterPosition()).getTask_type__c());
                     intent.putExtra(Constants.LOCATION, taskList.get(getAdapterPosition()).getLocationLevel());
                     intent.putExtra(Constants.POSITION, getAdapterPosition());
                     intent.putParcelableArrayListExtra(Constants.PROCESS_ID, taskList);
@@ -327,6 +328,23 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 else
                     holder.locText.setText(task.getTask_Response__c());
                 break;
+
+            case Constants.LOCATION_TASK:
+                holder.llHeaderLay.setVisibility(View.GONE);
+                holder.llEdittext.setVisibility(View.GONE);
+                holder.llLayout.setVisibility(View.GONE);
+                holder.llCheck.setVisibility(View.GONE);
+                holder.llDate.setVisibility(View.GONE);
+                holder.llLocation.setVisibility(View.VISIBLE);
+                if (task.getIs_Response_Mnadetory__c())
+                    holder.locHeader.setText("* " + task.getTask_Text___Lan_c());
+                else
+                    holder.locHeader.setText(task.getTask_Text___Lan_c());
+                if(task.getTask_Response__c().equals(""))
+                    holder.locText.setText("Select");
+                else
+                    holder.locText.setText(task.getTask_Response__c());
+                break;
             case Constants.DATE:
                 holder.llEdittext.setVisibility(View.GONE);
                 holder.llLayout.setVisibility(View.GONE);
@@ -471,7 +489,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llLayout.setVisibility(View.GONE);
                 holder.llDate.setVisibility(View.GONE);
-                holder.llMutiselect.setVisibility(View.GONE);
+            //    holder.llMutiselect.setVisibility(View.GONE);
         }
 
     }

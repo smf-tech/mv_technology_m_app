@@ -57,6 +57,29 @@ public class Task implements Parcelable {
     @Expose
     @ColumnInfo(name = "Task_Text__c")
     private String Task_Text__c;
+
+    public String getTask_Text___Lan_c() {
+        return Task_Text___Lan_c;
+    }
+
+    public void setTask_Text___Lan_c(String task_Text___Lan_c) {
+        Task_Text___Lan_c = task_Text___Lan_c;
+    }
+
+    public String getPicklist_Value_Lan__c() {
+        return Picklist_Value_Lan__c;
+    }
+
+    public void setPicklist_Value_Lan__c(String picklist_Value_Lan__c) {
+        Picklist_Value_Lan__c = picklist_Value_Lan__c;
+    }
+
+    @SerializedName("lanTsaskText")
+    @Expose
+
+    @ColumnInfo(name = "Task_Text__Lan_c")
+    private String Task_Text___Lan_c;
+
     @SerializedName("Task_type")
     @Expose
     @ColumnInfo(name = "Task_type__c")
@@ -65,6 +88,12 @@ public class Task implements Parcelable {
     @Expose
     @ColumnInfo(name = "Picklist_Value")
     private String Picklist_Value__c;
+
+
+    @SerializedName("lanPicklistValue")
+    @Expose
+    @ColumnInfo(name = "Picklist_Value_lan")
+    private String Picklist_Value_Lan__c;
 
     @ColumnInfo(name = "MV_Task__c_Id")
     @SerializedName("MV_Task")
@@ -298,8 +327,10 @@ public class Task implements Parcelable {
         dest.writeString(this.MV_Process__c);
         dest.writeString(this.Task_Response__c);
         dest.writeString(this.Task_Text__c);
+        dest.writeString(this.Task_Text___Lan_c);
         dest.writeString(this.Task_type__c);
         dest.writeString(this.Picklist_Value__c);
+        dest.writeString(this.Picklist_Value_Lan__c);
         dest.writeString(this.MV_Task__c_Id);
         dest.writeString(this.Timestamp__c);
         dest.writeString(this.Unique_Id__c);
@@ -322,8 +353,10 @@ public class Task implements Parcelable {
         this.MV_Process__c = in.readString();
         this.Task_Response__c = in.readString();
         this.Task_Text__c = in.readString();
+        this.Task_Text___Lan_c = in.readString();
         this.Task_type__c = in.readString();
         this.Picklist_Value__c = in.readString();
+        this.Picklist_Value_Lan__c = in.readString();
         this.MV_Task__c_Id = in.readString();
         this.Timestamp__c = in.readString();
         this.Unique_Id__c = in.readString();

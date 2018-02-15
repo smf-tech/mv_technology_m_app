@@ -1,5 +1,6 @@
 package com.mv.Utils;
 
+import android.content.Context;
 import android.net.Uri;
 
 /**
@@ -8,8 +9,8 @@ import android.net.Uri;
 
 public class Constants {
 
-    /* Production*/
-   /* public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
+    /* Production
+    public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com";
     public static String REPORTID = "a1L7F000000YNK4";
     public static String ISSUEID = "a1L7F000000YNJz";*/
@@ -19,7 +20,10 @@ public class Constants {
     public static String REPORTID = "a1G0k000000522K";
     public static String ISSUEID = "a1G0k000000522F";
 
-
+    public static final String LANGUAGE_ENGLISH = "en";
+    public static final String LANGUAGE_MARATHI = "mr";
+    public static final String LANGUAGE_HINDI = "hi";
+    public static final String LANGUAGE = "language";
 
     public static int SELECT_AUDIO = 501;
     public static Uri shareUri = null;
@@ -71,6 +75,8 @@ public class Constants {
     public static final String MULTI_LINE = "Multi-Lines";
     public static final String HEADER = "Header";
     public static final String LOCATION = "Location";
+    public static final String LOCATION_TASK = "Task Location";
+    public static final String LOCATION_TYPE = "location_type";
     public static final String POSITION = "position";
     public static final String DATE = "Date";
     public static final String TIME = "Time Picker";
@@ -121,31 +127,47 @@ public class Constants {
     public static final String IMAGEURL = "http://mobileapp.mulyavardhan.org/images/";
     public static final String InsertContentUrl = "/services/apexrest/insertContent";
     public static final String DeletePostUrl = "/services/apexrest/DeletePost/";
-    public  static final String InsertBroadcastPostUrl ="/services/apexrest/InsertBroadcastPost";
+    public static final String InsertBroadcastPostUrl = "/services/apexrest/InsertBroadcastPost";
     public static final String MV_Role__c_URL = "/services/data/v36.0/query/?q=select+Name+from+MV_Role__c";
     public static final String GetOrganizationUrl = "/services/apexrest/getOrganization";
     public static final String GetUserDataForCalnder = "/services/apexrest/getUserDataForCalnder";
     public static final String InsertEventcalender_Url = "/services/apexrest/InsertEventcalender";
-    public static final String Userdetails_Url ="/services/apexrest/userdetails";
-    public static final String MV_GetCommunities_c_Url="/services/apexrest/MV_GetCommunities_c";
-    public static final String DoLogout_url ="/services/apexrest/doLogout/";
-    public static final String GetUserData_url ="/services/apexrest/getUserData";
-    public static final String MapParametersUrl="/services/apexrest/MapParameters";
-    public static final String GetSessionDatademo_Url  ="/services/apexrest/getSessionDatademo/";
-    public static final String GetLoginOTP_url  =  "/services/apexrest/getLoginOTP";
-    public static final String GetchartDatademoNew  =  "/services/apexrest/getchartDatademoNew";
-    public static final String GetDashboardDatademoUrl  =  "/services/apexrest/getDashboardDatademo";
-    public static final String GetApprovalProcessUrl  ="/services/apexrest/getApprovalProcess";
-    public static final String InsertAnswerForProcessAnswerUrl  = "/services/apexrest/InsertAnswerForProcessAnswer";
-    public static final String New_upload_phpUrl  ="http://mobileapp.mulyavardhan.org/new_upload.php";
-    public static final String GetprocessAnswerDataUrl = "/services/apexrest/getprocessAnswerData";
-    public static final String GetprocessTaskUrl ="/services/apexrest/getprocessTask";
+    public static final String Userdetails_Url = "/services/apexrest/userdetails";
+    public static final String MV_GetCommunities_c_Url = "/services/apexrest/MV_GetCommunities_c";
+    public static final String DoLogout_url = "/services/apexrest/doLogout/";
+    public static final String GetUserData_url = "/services/apexrest/getUserData";
+    public static final String MapParametersUrl = "/services/apexrest/MapParameters";
+    public static final String GetSessionDatademo_Url = "/services/apexrest/getSessionDatademo/";
+    public static final String Upload_Url = "http://mobileapp.mulyavardhan.org/upload.php";
+    public static final String GetLoginOTP_url = "/services/apexrest/getLoginOTP";
+    public static final String GetchartDatademoNew = "/services/apexrest/getchartDatademoNew";
+    public static final String GetDashboardDatademoUrl = "/services/apexrest/getDashboardDatademo";
+    public static final String GetApprovalProcessUrl = "/services/apexrest/getApprovalProcess";
+    public static final String InsertAnswerForProcessAnswerUrl = "/services/apexrest/InsertAnswerForProcessAnswer";
+    public static final String New_upload_phpUrl = "http://mobileapp.mulyavardhan.org/new_upload.php";
+    public static final String GetprocessAnswerDataUrl = "/services/apexrest/getprocessAnswerDataNew";
+    public static final String GetprocessTaskUrl = "/services/apexrest/getprocessTaskNew";
+
+
+
+
+
+
+
+
+
+
+
+
+  //  public static final String GetprocessAnswerDataUrl = "/services/apexrest/getprocessAnswerData";
+  //  public static final String GetprocessTaskUrl ="/services/apexrest/getprocessTask";
     public static final String DeleteTaskAnswerUrl =  "/services/apexrest/DeleteTaskAnswer/";
     public static final String ApproveCommentforProcessUrl = "/services/apexrest/ApproveCommentforProcess";
     public static final String GetprocessAnswerTaskfoApprovalUrl = "/services/apexrest/getprocessAnswerTaskfoApproval";
-    public static final String GetProjectDataUrl ="/services/apexrest/getProjectData";
+    public static final String GetProjectDataUrl = "/services/apexrest/getProjectData";
     public static final String MV_RoleUrl = "/services/data/v36.0/query/?q=select+Id,Juridictions__c,Name+from+MV_Role__c+where+Organisation__c='";
     public static final String MTRegisterUrl = "/services/apexrest/MTRegister";
+
     public static final String GetApprovalDataUrl =     "/services/apexrest/getApprovalData";
     public  static final String WS_getProcessAprovalUserUrl ="/services/apexrest/WS_getProcessAprovalUser";
     public  static final String MV_GeTemplates_cUrl = "/services/apexrest/MV_GeTemplates_c";
