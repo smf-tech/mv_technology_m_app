@@ -94,7 +94,7 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
     public ProcessListAdapter(List<TaskContainerModel> resultList, Activity context) {
         this.resultList = resultList;
 
-            this.mContext =  context;
+        this.mContext = context;
         this.preferenceHelper = new PreferenceHelper(context);
         gson = new Gson();
         listType = new TypeToken<ArrayList<Task>>() {
@@ -118,12 +118,23 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
 
         //Task template = tasks.get(0);
         Log.d("pos", String.valueOf(position));
-        holder.txtCommunityName.setText(Utills.getDate(Long.valueOf(tasks.get(0).getTimestamp__c()), "dd/MM/yyyy hh:mm:ss.SSS"));
+        // holder.txtCommunityName.setText(Utills.getDate(Long.valueOf(tasks.get(0).getTimestamp__c()), "dd/MM/yyyy hh:mm:ss.SSS"));
+        if (resultList.get(position).getHeaderPosition() == 999999999)
+            holder.txtCommunityName.setText(Utills.getDate(Long.valueOf(tasks.get(0).getTimestamp__c()), "dd/MM/yyyy hh:mm:ss.SSS"));
+        else
+            holder.txtCommunityName.setText(tasks.get(resultList.get(position).getHeaderPosition()).getTask_Response__c());
+
+
         if (tasks.get(0).getIsSave().equals("false")) {
-            if(tasks.get(0).getIsApproved__c().equals("false"))
-            holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.orange));
-            else
-                holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
+            if (tasks.get(0).getIsApproved__c().equals("false")) {
+                holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.orange));
+            } else {
+                if (tasks.get(0).getStatus__c() == null || tasks.get(0).getStatus__c().length() == 0) {
+                    holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
+                } else {
+                    holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.purple));
+                }
+            }
             holder.deleteRecord.setImageResource(R.drawable.arrow);
         } else {
             holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.red));
@@ -160,13 +171,17 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         alertDialog.setButton2(mContext.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
+                // Write your code here to execute after dialog closed
+              /*  listOfWrongQuestions.add(mPosition);
+                prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
             }
         });
         // Setting OK Button
         alertDialog.setButton(mContext.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(resultList.get(postion).getUnique_Id(), resultList.get(postion).getMV_Process__c());
-                ( (ProcessListActivity) mContext).getAllProcessData();
+
+                ((ProcessListActivity) mContext).getAllProcessData();
             }
         });
 
