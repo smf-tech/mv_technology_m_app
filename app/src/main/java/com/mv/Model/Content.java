@@ -123,6 +123,12 @@ public class Content implements Serializable {
     @Expose
     Boolean mediaPlay=false;
 
+    @ColumnInfo(name = "isActive")
+    @SerializedName("isActive")
+    @Expose
+    private boolean isActive;
+
+
     public String getContentType() {
         return contentType;
     }
@@ -337,4 +343,11 @@ public class Content implements Serializable {
         this.templateName = templateName;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 }

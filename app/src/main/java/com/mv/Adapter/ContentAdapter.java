@@ -508,13 +508,15 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 }
             });
 
-        /*    txt_desc.setOnLongClickListener(new View.OnLongClickListener() {
+            txt_desc.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    Utills.MarkAsSpamDialog(mContext,preferenceHelper,mDataList.get(mPosition).getId());
+                    Utills.MarkAsSpamDialog(mContext,preferenceHelper,mDataList.get(getAdapterPosition()).getId());
                     return false;
                 }
-            });*/
+            });
+
+
 
 
            txt_detail.setOnClickListener(new View.OnClickListener() {

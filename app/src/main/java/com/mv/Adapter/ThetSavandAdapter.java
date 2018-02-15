@@ -658,32 +658,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
 
                 }
             });
-            card_view.setOnClickListener(new View.OnClickListener()
 
-            {
-                @Override
-                public void onClick(View view) {
-                    if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())) {
-                        Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                        intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                        intent.putExtra("flag", "not_forward_flag");
-                        mContext.startActivity(intent);
-                    } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) {
-                        Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                        intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                        intent.putExtra("flag", "not_forward_flag");
-                        mContext.startActivity(intent);
-                    } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image")) {
-                        Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                        intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                        intent.putExtra("flag", "not_forward_flag");
-                        mContext.startActivity(intent);
-                    }
-                    Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                    intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                    mContext.startActivity(intent);
-                }
-            });
 
             picture.setOnClickListener(new View.OnClickListener() {
                 @Override
