@@ -469,7 +469,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView picture, userImage, imgLike, img_comment,play;
+        public ImageView picture, userImage, imgLike, img_comment,play,imgMore;
         public CardView card_view;
         public RelativeLayout audioLayout, layout_Video;
         public TextView txt_audio_txt,txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type,txt_tag,txt_detail;
@@ -498,6 +498,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             play = (ImageView) itemLayoutView.findViewById(R.id.play);
             txt_tag = (TextView) itemLayoutView.findViewById(R.id.txt_tag);
             txt_detail = (TextView) itemLayoutView.findViewById(R.id.txt_detail);
+            imgMore = (ImageView) itemLayoutView.findViewById(R.id.imgMore);
             /*Add the comment to particular posts by calling api. */
             layout_comment.setOnClickListener(new View.OnClickListener() {
                 @Override

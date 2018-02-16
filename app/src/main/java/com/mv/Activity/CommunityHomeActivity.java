@@ -169,17 +169,14 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                                     }
                                     if (isPresent) {
                                         chatList.set(j, temp.get(i));
-                                        if(temp.get(i).isActive())
                                         AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().updateContent(temp.get(i));
-                                        else
-                                            AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().spampost(temp.get(i).getId(),false);
+
                                     } else {
 
 
                                         chatList.add(temp.get(i));
 
                                         temp.get(i).setCommunity_id(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
-                                        if(temp.get(i).isActive())
                                         AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().insertChats(temp.get(i));
                                     }
 
