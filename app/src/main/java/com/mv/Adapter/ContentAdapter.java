@@ -13,6 +13,7 @@ import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.Settings;
@@ -24,12 +25,14 @@ import android.text.util.Linkify;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +43,7 @@ import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mv.Activity.AddThetSavadActivity;
 import com.mv.Activity.CommentActivity;
 import com.mv.Activity.CommunityDetailsActivity;
 import com.mv.Activity.CommunityHomeActivity;
@@ -283,6 +287,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         holder.txtCommentCount.setText(mDataList.get(position).getCommentCount() + " Comments");
         holder.txt_tag.setText("Tag : ");
 
+
         holder.txt_type.setText(mDataList.get(position).getIssue_priority());
         if (mDataList.get(position).getIsLike() && (mDataList.get(position).getUser_id().equalsIgnoreCase(User.getCurrentUser(mContext).getId())))
             holder.imgLike.setImageResource(R.drawable.like);
@@ -304,7 +309,35 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             holder.layout_download.setVisibility(View.GONE);
 
         }
+        holder.imgMore.setVisibility(View.VISIBLE);
+    holder.imgMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PopupMenu popup = new PopupMenu(mContext,holder.imgMore);
+                    //Inflating the Popup using xml file
+                    popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
+                 //   popup.getMenu().getItem(R.id.spam).setVisible(true);
+                    MenuItem spam= (MenuItem) popup.getMenu().findItem(R.id.spam);
+                    MenuItem edit= (MenuItem) popup.getMenu().findItem(R.id.edit);
+                    MenuItem delete= (MenuItem) popup.getMenu().findItem(R.id.delete);
+                    spam.setVisible(true);
+                    edit.setVisible(false);
+                    delete.setVisible(false);
 
+
+
+                    //registering popup with OnMenuItemClickListener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            if (item.getTitle().toString().equalsIgnoreCase("Spam")) {
+                                Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId());
+                            }
+                            return true;
+                        }
+                    });
+                 popup.show();
+                }
+            });
 
 
 
@@ -508,15 +541,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     mContext.startActivity(intent);
                 }
             });
-
-            txt_desc.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    Utills.MarkAsSpamDialog(mContext,preferenceHelper,mDataList.get(getAdapterPosition()).getId());
-                    return false;
-                }
-            });
-
 
 
 
@@ -770,7 +794,38 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
                 }
             });
+
+
+
+          /*  imgMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PopupMenu popup = new PopupMenu(mContext);
+                    //Inflating the Popup using xml file
+                    popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
+                    popup.getMenu().getItem(R.id.spam).setVisible(Visi)
+
+                    //registering popup with OnMenuItemClickListener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            if (item.getTitle().toString().equalsIgnoreCase("Edit")) {
+                                Intent intent;
+                                intent = new Intent(mContext, AddThetSavadActivity.class);
+                                intent.putExtra("EDIT", true);
+                                intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
+                                mContext.startActivity(intent);
+                            }
+                            return true;
+                        }
+                    });
+
+                }
+            });
+
+*/
+
         }
+
 
 
     }

@@ -184,14 +184,14 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
 
                                 List<Content> contentList_fromDb = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),true);
-                                chatList.clear();
+                              /*  chatList.clear();
                                 for (int i = 0; i < contentList_fromDb.size(); i++) {
                                     chatList.add(contentList_fromDb.get(i));
                                 }
+*/
 
 
-
-                                adapter = new ContentAdapter(CommunityHomeActivity.this, chatList);
+                                adapter = new ContentAdapter(CommunityHomeActivity.this, contentList_fromDb);
                                 recyclerView.setAdapter(adapter);
 
                                /* List<Content> contentList_fromDb = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
@@ -324,6 +324,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 for (int i = 0; i < chatList.size(); i++) {
                     if (chatList.get(i).getUser_id().equals(User.getCurrentUser(getApplicationContext()).getId())) {
+                        mypostlist.add(chatList.get(i));
 
                     }
 

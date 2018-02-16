@@ -330,7 +330,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
 
         }
 
-        if (mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getId())) {
+      /*  if (mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getId())) {
             holder.imgMore.setVisibility(View.VISIBLE);
             holder.imgMore.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -362,7 +362,54 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             });
         } else {
             holder.imgMore.setVisibility(View.GONE);
-        }
+        }*/
+
+            holder.imgMore.setVisibility(View.VISIBLE);
+            holder.imgMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    PopupMenu popup = new PopupMenu(mContext, holder.imgMore);
+                    //Inflating the Popup using xml file
+                    popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
+                    MenuItem edit= (MenuItem) popup.getMenu().findItem(R.id.edit);
+                    MenuItem delete= (MenuItem) popup.getMenu().findItem(R.id.delete);
+                    MenuItem spam= (MenuItem) popup.getMenu().findItem(R.id.spam);
+                    spam.setVisible(true);
+                    if (mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getId())) {
+
+                        edit.setVisible(true);
+                        delete.setVisible(true);
+                    }else {
+                        edit.setVisible(false);
+                        delete.setVisible(false);
+                    }
+
+
+                        //registering popup with OnMenuItemClickListener
+                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                        public boolean onMenuItemClick(MenuItem item) {
+                            if (item.getTitle().toString().equalsIgnoreCase("Edit")) {
+                                Intent intent;
+                                intent = new Intent(mContext, AddThetSavadActivity.class);
+                                intent.putExtra("EDIT", true);
+                                intent.putExtra(Constants.CONTENT, mDataList.get(position));
+                                mContext.startActivity(intent);
+                            } else if (item.getTitle().toString().equalsIgnoreCase("Delete")) {
+                                postId = mDataList.get(position).getId();
+                                deletePosition = position;
+                                showDeletePopUp();
+                            }else   if (item.getTitle().toString().equalsIgnoreCase("Spam")) {
+                                Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId());
+                            }
+                            return true;
+                        }
+                    });
+
+                    popup.show();//showing popup menu
+                }
+            });
+
+
 
     }
 
@@ -475,13 +522,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             lnr_content = (LinearLayout) itemLayoutView.findViewById(R.id.lnr_content);
             txt_detail = (TextView) itemLayoutView.findViewById(R.id.txt_detail);
 
-            txt_desc.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View view) {
-                    Utills.MarkAsSpamDialog(mContext,preferenceHelper,mDataList.get(getAdapterPosition()).getId());
-                    return false;
-                }
-            });
+
             txt_detail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
