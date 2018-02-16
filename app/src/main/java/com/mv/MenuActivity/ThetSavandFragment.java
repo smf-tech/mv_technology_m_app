@@ -175,7 +175,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
     /*Get the Chat List from Database and set to the adapter , if No vales in table then get Chats from Server*/
     private void getChats(boolean isDialogShow) {
         chatList.clear();
-        chatList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats();
+        chatList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true);
         if (chatList.size() == 0) {
             if (Utills.isConnected(context))
                 getAllChats(false, isDialogShow);
@@ -228,7 +228,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
                             JSONArray jsonArray = new JSONArray(str);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));
-                            List<Content> contentList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats();
+                            List<Content> contentList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true);
                             if ((temp.size() != 0) || (contentList.size() != 0)) {
                                 for (int i = 0; i < temp.size(); i++) {
                                     int j;
@@ -249,6 +249,11 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
                                         AppDatabase.getAppDatabase(context).userDao().insertChats(temp.get(i));
                                     }
                                 }
+
+
+
+
+
 
                                 mypostlist.clear();
 

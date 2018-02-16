@@ -33,6 +33,18 @@ public class Template implements Serializable, Parcelable {
     @Expose
     private String Name;
 
+    public String getAnswerCount() {
+        return answerCount;
+    }
+
+    public void setAnswerCount(String answerCount) {
+        this.answerCount = answerCount;
+    }
+
+    @SerializedName("answerCount")
+    @Expose
+    @ColumnInfo(name = "answerCount")
+    private String answerCount;
 
     public String getTargated_Date__c() {
         return Targated_Date__c;
@@ -222,6 +234,9 @@ public class Template implements Serializable, Parcelable {
 
     private  Boolean Is_Multiple_Entry_Allowed__c;
 
+    public Template() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -232,6 +247,7 @@ public class Template implements Serializable, Parcelable {
         dest.writeInt(this.Unique_Id);
         dest.writeString(this.Id);
         dest.writeString(this.Name);
+        dest.writeString(this.answerCount);
         dest.writeString(this.Targated_Date__c);
         dest.writeValue(this.Location);
         dest.writeString(this.LocationLevel);
@@ -248,13 +264,11 @@ public class Template implements Serializable, Parcelable {
         dest.writeValue(this.Is_Multiple_Entry_Allowed__c);
     }
 
-    public Template() {
-    }
-
     protected Template(Parcel in) {
         this.Unique_Id = in.readInt();
         this.Id = in.readString();
         this.Name = in.readString();
+        this.answerCount = in.readString();
         this.Targated_Date__c = in.readString();
         this.Location = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.LocationLevel = in.readString();
@@ -271,7 +285,7 @@ public class Template implements Serializable, Parcelable {
         this.Is_Multiple_Entry_Allowed__c = (Boolean) in.readValue(Boolean.class.getClassLoader());
     }
 
-    public static final Parcelable.Creator<Template> CREATOR = new Parcelable.Creator<Template>() {
+    public static final Creator<Template> CREATOR = new Creator<Template>() {
         @Override
         public Template createFromParcel(Parcel source) {
             return new Template(source);

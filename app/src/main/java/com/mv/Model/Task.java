@@ -58,6 +58,7 @@ public class Task implements Parcelable {
     @ColumnInfo(name = "Task_Text__c")
     private String Task_Text__c;
 
+
     public String getTask_Text___Lan_c() {
         return Task_Text___Lan_c;
     }

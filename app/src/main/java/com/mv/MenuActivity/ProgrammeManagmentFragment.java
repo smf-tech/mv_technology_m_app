@@ -156,6 +156,7 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                             for (int j = 0; j < jsonArray.length(); j++) {
                                 JSONObject mainObj=  jsonArray.getJSONObject(j) ;
                                 Template processList = new Template();
+                                processList.setAnswerCount(mainObj.getString("answerCount"));
                                 processList.setType(mainObj.getJSONObject("prc").getJSONObject("attributes").getString("type"));
                                 processList.setUrl(mainObj.getJSONObject("prc").getJSONObject("attributes").getString("url"));
                                 processList.setId(mainObj.getJSONObject("prc").getString("Id"));
@@ -195,8 +196,8 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                                     if (resultJsonObj.has("status")) {
                                         taskList.setStatus__c(resultJsonObj.getString("status"));
                                     }
-                                    if (resultJsonObj.has("IsEditable")) {
-                                        taskList.setIsEditable__c(resultJsonObj.getString("IsEditable"));
+                                    if (resultJsonObj.has("isEditable")) {
+                                        taskList.setIsEditable__c(resultJsonObj.getString("isEditable"));
                                     }
                                     if (resultJsonObj.has("locationLevel")) {
                                         taskList.setLocationLevel(resultJsonObj.getString("locationLevel"));
@@ -230,6 +231,7 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                                     taskList.setTask_type__c(resultJsonObj.getString("tasktype"));
                                     taskList.setValidation(resultJsonObj.getString("validaytionOnText"));
                                     taskList.setIsSave(Constants.PROCESS_STATE_SAVE);
+
                                     // processList.setTimestamp__c(resultJsonObj.getString("Timestamp__c"));
                                     // processList.setMTUser__c(resultJsonObj.getString("MTUser__c"));
 

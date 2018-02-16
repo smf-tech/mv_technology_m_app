@@ -143,7 +143,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
         holder.img_share.setImageResource(R.drawable.download);
         holder.txt_forward.setText(mContext.getString(R.string.Share));
         if (mDataList.get(position).getIsLike())
-                //&& (mDataList.get(position).getUser_id().equalsIgnoreCase(User.getCurrentUser(mContext).getId())))
+            //&& (mDataList.get(position).getUser_id().equalsIgnoreCase(User.getCurrentUser(mContext).getId())))
             holder.imgLike.setImageResource(R.drawable.like);
         else
             holder.imgLike.setImageResource(R.drawable.dislike);
@@ -171,7 +171,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
 
 
 
-}
+    }
 
     @Override
     public long getItemId(int position) {
@@ -279,15 +279,16 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             mediaLayout = (LinearLayout) itemLayoutView.findViewById(R.id.mediaLayout);
             layout_download_file = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download_file);
 
-
-         /*   txt_desc.setOnLongClickListener(new View.OnLongClickListener() {
+            txt_desc.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    Utills.MarkAsSpamDialog(mContext,preferenceHelper,mDataList.get(mPosition).getId());
-                    notifyDataSetChanged();
+                    Utills.MarkAsSpamDialog(mContext,preferenceHelper,mDataList.get(getAdapterPosition()).getId());
+                    Log.e("id",mDataList.get(getAdapterPosition()).getId());
+
+                    // notifyDataSetChanged();
                     return false;
                 }
-            });*/
+            });
             txt_detail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -330,12 +331,12 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                     }else {
                         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId()+".png";
 
-            Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
-            shareIntent.setType( "application/*");
+                        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        shareIntent.setType( "application/*");
                         shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
 
                         shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
-            mContext.startActivity(Intent.createChooser(shareIntent, "Share Content"));
+                        mContext.startActivity(Intent.createChooser(shareIntent, "Share Content"));
 
 
                     }
@@ -548,11 +549,11 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
 
     private boolean isFileAvalible(int position) {
         if (mDataList.get(position).getAttachmentId() != null) {
-           // if (mDataList.get(position).getFileType().equalsIgnoreCase("zip")) {
-                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(position).getAttachmentId()+".png";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+            // if (mDataList.get(position).getFileType().equalsIgnoreCase("zip")) {
+            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(position).getAttachmentId()+".png";
+            if (new File(filePath).exists())
+                return true;
+            return false;
             //}
         }
         return false;
@@ -561,5 +562,5 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
 
 
 
-        }
+}
 

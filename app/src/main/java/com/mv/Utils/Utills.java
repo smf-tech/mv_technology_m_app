@@ -508,7 +508,7 @@ public class Utills {
 
 
     public static void MarkAsSpamDialog(final Context mContext, final PreferenceHelper preferenceHelper, final String ID){
-        final String[] items = {"Mark As Spam", "Add Tag"};
+        final String[] items = {"Mark As Spam"};
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(mContext)
                 .setTitle(mContext.getString(R.string.app_name));
@@ -518,9 +518,8 @@ public class Utills {
                 dialogInterface.dismiss();
                 switch (position){
                     case 0:spamContent(mContext,preferenceHelper,ID);
-                    break;
-                    case 1: AddTagDialog(mContext);
-                    break;
+                        break;
+
                 }
 
             }
@@ -534,9 +533,9 @@ public class Utills {
         final View view = inflater.inflate(R.layout.each_tag, null);
         final AlertDialog alertDialog = new AlertDialog.Builder(view.getContext()).create();
         alertDialog.setTitle("Add Tag Here");
-       // alertDialog.setIcon("Icon id here");
+        // alertDialog.setIcon("Icon id here");
         alertDialog.setCancelable(false);
-      //alertDialog.setMessage("Your Message Here");
+        //alertDialog.setMessage("Your Message Here");
 
 
         final EditText etComments = (EditText) view.findViewById(R.id.addtag);
@@ -577,11 +576,11 @@ public class Utills {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 String data = null;
                 try {
-                     data = response.body().string();
+                    data = response.body().string();
                     if (data != null && data.length() > 0) {
                         JSONObject jsonObject = new JSONObject(data);
                         String True = jsonObject.getString("true");
-                       Log.e("true-->",True);
+                        Log.e("true-->",True);
                     }
 
                 } catch (IOException e) {

@@ -106,7 +106,7 @@ public class ProgramMangementAdapter  extends RecyclerView.Adapter<ProgramMangem
     public void onBindViewHolder(ProgramMangementAdapter.MyViewHolder holder, int position) {
         Log.d("Position",""+position);
         Template template = teplateList.get(position);
-        holder.txtCommunityName.setText(template.getName());
+        holder.txtCommunityName.setText(template.getName()+" ( "+template.getAnswerCount()+" )");
         if(template.getTargated_Date__c()!=null)
         holder.txt_targeted_date.setText("Target Date : "+template.getTargated_Date__c());
         else
