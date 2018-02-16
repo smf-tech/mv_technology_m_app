@@ -125,15 +125,7 @@
                         android:text="@string/disrict"
                         android:textColor="@color/dark_grey"
                         android:textSize="@dimen/small_text" />
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/grey_box"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="3dp"
-                        android:paddingBottom="10dp"
-                        >
+
                     <Spinner
                         android:id="@+id/spinner_district"
                         android:layout_width="match_parent"
@@ -141,12 +133,13 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="3dp"
+                        android:background="@drawable/grey_box"
                         android:entries="@array/array_of_district"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
                         android:prompt="@string/disrict"
                         android:spinnerMode="dialog" />
-                    </RelativeLayout>
+
                     <com.mv.Widgets.MyTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -156,15 +149,7 @@
                         android:text="@string/taluka"
                         android:textColor="@color/dark_grey"
                         android:textSize="@dimen/small_text" />
-                    <RelativeLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/grey_box"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="3dp"
-                        android:paddingBottom="10dp"
-                        >
+
                     <Spinner
                         android:id="@+id/spinner_taluka"
                         android:layout_width="match_parent"
@@ -172,12 +157,12 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="3dp"
+                        android:background="@drawable/grey_box"
                         android:entries="@array/array_of_taluka"
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
                         android:prompt="@string/taluka"
                         android:spinnerMode="dialog" />
-                    </RelativeLayout>
 
                     <com.mv.Widgets.MyTextView
                         android:layout_width="wrap_content"
@@ -220,18 +205,6 @@
                     android:textSize="@dimen/small_text"
                     android:visibility="gone" />
 
-                <RelativeLayout
-                    android:id="@+id/rel_issue"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/grey_box"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:paddingBottom="10dp"
-                    android:visibility="gone"
-                    >
-
                 <Spinner
                     android:id="@+id/spinner_issue"
                     android:layout_width="match_parent"
@@ -239,13 +212,13 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
+                    android:background="@drawable/grey_box"
                     android:entries="@array/array_of_reporting_type"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
                     android:prompt="@string/reporting"
                     android:spinnerMode="dialog"
                     android:visibility="gone" />
-                </RelativeLayout>
 
                 <ImageView
                     android:id="@+id/addImage"

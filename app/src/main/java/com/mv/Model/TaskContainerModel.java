@@ -71,6 +71,18 @@ public class TaskContainerModel {
     @Expose
     private String TaskType;
 
+    public int getHeaderPosition() {
+        return headerPosition;
+    }
+
+    public void setHeaderPosition(int headerPosition) {
+        this.headerPosition = headerPosition;
+    }
+
+    @ColumnInfo(name = "headerPosition")
+    @SerializedName("headerPosition")
+    @Expose
+    private int headerPosition;
 
 
 }

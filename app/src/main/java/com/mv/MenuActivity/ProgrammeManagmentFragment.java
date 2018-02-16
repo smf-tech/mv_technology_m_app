@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mv.Adapter.ProgramMangementAdapter;
 import com.mv.Adapter.TemplateAdapter;
 import com.mv.BR;
 import com.mv.Model.ParentViewModel;
@@ -53,7 +54,7 @@ public class
 ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickListener {
     private PreferenceHelper preferenceHelper;
     List<Template> processAllList = new ArrayList<>();
-    private TemplateAdapter mAdapter;
+    private ProgramMangementAdapter mAdapter;
     private ActivityNewTemplateBinding binding;
     RecyclerView.LayoutManager mLayoutManager;
     TextView textNoData;
@@ -88,7 +89,7 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
         );
 
         textNoData = (TextView) findViewById(R.id.textNoData);
-        mAdapter = new TemplateAdapter(processAllList, context);
+        mAdapter = new ProgramMangementAdapter(processAllList, context);
          mLayoutManager = new LinearLayoutManager(context);
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -99,7 +100,7 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
         {
             processAllList.clear();
             processAllList=AppDatabase.getAppDatabase(context).userDao().getProcess();
-            mAdapter = new TemplateAdapter(processAllList, context);
+            mAdapter = new ProgramMangementAdapter(processAllList, context);
              mLayoutManager = new LinearLayoutManager(context);
             binding.recyclerView.setAdapter(mAdapter);
         }
@@ -140,7 +141,7 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getallprocessandtask/"+ User.getCurrentUser(context).getId();
+                + "/services/apexrest/getallprocessandtaskNew"+"?userId=" + User.getCurrentUser(this).getId()+"&language=" + preferenceHelper.getString(Constants.LANGUAGE);
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -154,17 +155,17 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
 
                             for (int j = 0; j < jsonArray.length(); j++) {
                                 JSONObject mainObj=  jsonArray.getJSONObject(j) ;
-
-
                                 Template processList = new Template();
+                                processList.setAnswerCount(mainObj.getString("answerCount"));
                                 processList.setType(mainObj.getJSONObject("prc").getJSONObject("attributes").getString("type"));
                                 processList.setUrl(mainObj.getJSONObject("prc").getJSONObject("attributes").getString("url"));
                                 processList.setId(mainObj.getJSONObject("prc").getString("Id"));
                                 processList.setName(mainObj.getJSONObject("prc").getString("Name"));
+                                if (mainObj.getJSONObject("prc").has("Targated_Date__c"))
+                                processList.setTargated_Date__c(mainObj.getJSONObject("prc").getString("Targated_Date__c"));
 
                                 processList.setIs_Editable__c(mainObj.getJSONObject("prc").getBoolean("Is_Editable__c"));
                                 processList.setIs_Multiple_Entry_Allowed__c(mainObj.getJSONObject("prc").getBoolean("Is_Multiple_Entry_Allowed__c"));
-
                                 processList.setLocation(mainObj.getJSONObject("prc").getBoolean("Location_Required__c"));
 
                                 if (mainObj.getJSONObject("prc").has("Location_Level__c"))
@@ -181,45 +182,56 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
 
                                     //task is each task detail
                                     Task taskList = new Task();
-                                    taskList.setMV_Task__c_Id(resultJsonObj.getString("Id"));
-                                    taskList.setName(resultJsonObj.getString("Name"));
-                                    taskList.setIs_Completed__c(resultJsonObj.getBoolean("Is_Completed__c"));
-                                    taskList.setIs_Response_Mnadetory__c(resultJsonObj.getBoolean("Is_Response_Mnadetory__c"));
-                                    if (resultJsonObj.has("Picklist_Value__c"))
-                                        taskList.setPicklist_Value__c(resultJsonObj.getString("Picklist_Value__c"));
+                                    taskList.setMV_Task__c_Id(resultJsonObj.getString("id"));
+                                    taskList.setName(resultJsonObj.getString("name"));
+                                    taskList.setIs_Completed__c(resultJsonObj.getBoolean("isCompleted"));
+                                    taskList.setIs_Response_Mnadetory__c(resultJsonObj.getBoolean("isResponseMnadetory"));
+                                    if (!resultJsonObj.getString("lanTsaskText").equals("null"))
+                                        taskList.setTask_Text___Lan_c(resultJsonObj.getString("lanTsaskText"));
+                                    else
+                                        taskList.setTask_Text___Lan_c(resultJsonObj.getString("taskText"));
+                                    taskList.setPicklist_Value_Lan__c(resultJsonObj.getString("lanPicklistValue"));
+                                    if (resultJsonObj.has("picklistValue"))
+                                        taskList.setPicklist_Value__c(resultJsonObj.getString("picklistValue"));
+                                    if (resultJsonObj.has("status")) {
+                                        taskList.setStatus__c(resultJsonObj.getString("status"));
+                                    }
+                                    if (resultJsonObj.has("isEditable")) {
+                                        taskList.setIsEditable__c(resultJsonObj.getString("isEditable"));
+                                    }
+                                    if (resultJsonObj.has("locationLevel")) {
+                                        taskList.setLocationLevel(resultJsonObj.getString("locationLevel"));
 
-                                    if (resultJsonObj.has("Location_Level__c")) {
-                                        taskList.setLocationLevel(resultJsonObj.getString("Location_Level__c"));
-
-                                        if (resultJsonObj.getString("Location_Level__c").equals("State")) {
+                                        if (resultJsonObj.getString("locationLevel").equals("State")) {
                                             taskList.setTask_Response__c(user.getState());
                                             //  LocationSelectionActity.selectedState = user.getState();
 
-                                        } else if (resultJsonObj.getString("Location_Level__c").equals("District")) {
+                                        } else if (resultJsonObj.getString("locationLevel").equals("District")) {
                                             // LocationSelectionActity.selectedDisrict = user.getDistrict();
 
                                             taskList.setTask_Response__c(user.getDistrict());
-                                        } else if (resultJsonObj.getString("Location_Level__c").equals("Taluka")) {
+                                        } else if (resultJsonObj.getString("locationLevel").equals("Taluka")) {
                                             taskList.setTask_Response__c(user.getTaluka());
                                             //  LocationSelectionActity.selectedTaluka = user.getTaluka();
-                                        } else if (resultJsonObj.getString("Location_Level__c").equals("Cluster")) {
+                                        } else if (resultJsonObj.getString("locationLevel").equals("Cluster")) {
                                             ///  LocationSelectionActity.selectedCluster = user.getCluster();
                                             taskList.setTask_Response__c(user.getCluster());
-                                        } else if (resultJsonObj.getString("Location_Level__c").equals("Village")) {
+                                        } else if (resultJsonObj.getString("locationLevel").equals("Village")) {
                                             // LocationSelectionActity.selectedVillage = user.getVillage();
 
                                             taskList.setTask_Response__c(user.getVillage());
-                                        } else if (resultJsonObj.getString("Location_Level__c").equals("School")) {
+                                        } else if (resultJsonObj.getString("locationLevel").equals("School")) {
                                             taskList.setTask_Response__c(user.getSchool_Name());
                                             //  LocationSelectionActity.selectedSchool = user.getSchool_Name();
                                         }
 
                                     }
-                                    taskList.setMV_Process__c(resultJsonObj.getString("MV_Process__c"));
-                                    taskList.setTask_Text__c(resultJsonObj.getString("Task_Text__c"));
-                                    taskList.setTask_type__c(resultJsonObj.getString("Task_type__c"));
-                                    taskList.setValidation(resultJsonObj.getString("Validaytion_on_text__c"));
+                                    taskList.setMV_Process__c(resultJsonObj.getString("mVProcess"));
+                                    taskList.setTask_Text__c(resultJsonObj.getString("taskText"));
+                                    taskList.setTask_type__c(resultJsonObj.getString("tasktype"));
+                                    taskList.setValidation(resultJsonObj.getString("validaytionOnText"));
                                     taskList.setIsSave(Constants.PROCESS_STATE_SAVE);
+
                                     // processList.setTimestamp__c(resultJsonObj.getString("Timestamp__c"));
                                     // processList.setMTUser__c(resultJsonObj.getString("MTUser__c"));
 

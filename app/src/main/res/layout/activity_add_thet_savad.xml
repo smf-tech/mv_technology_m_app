@@ -118,15 +118,6 @@
                     android:text="@string/catagory"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/small_text" />
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/grey_box"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:paddingBottom="10dp"
-                    >
 
                 <Spinner
                     android:id="@+id/spinner_issue"
@@ -135,12 +126,12 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
+                    android:background="@drawable/grey_box"
                     android:entries="@array/array_of_thet_savad"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
                     android:prompt="@string/catagory"
                     android:spinnerMode="dialog" />
-                </RelativeLayout>
 
 
 

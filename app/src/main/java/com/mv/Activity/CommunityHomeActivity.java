@@ -169,7 +169,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                                     }
                                     if (isPresent) {
                                         chatList.set(j, temp.get(i));
-                                        AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().updateContent(temp.get(i));
+                                            AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().updateContent(temp.get(i));
 
                                     } else {
 
@@ -177,7 +177,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                                         chatList.add(temp.get(i));
 
                                         temp.get(i).setCommunity_id(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
-                                        AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().insertChats(temp.get(i));
+                                            AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().insertChats(temp.get(i));
                                     }
 
                                 }
