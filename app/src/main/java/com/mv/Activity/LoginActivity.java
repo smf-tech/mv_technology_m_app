@@ -86,6 +86,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
+
         binding.setActivity(this);
         initViews();
 
@@ -209,49 +210,50 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void showDialog() {
-
-        final String[] items = {"English", "मराठी", "हिंदी"};
-
-
-// arraylist to keep the selected items
+        preferenceHelper.insertString(Constants.LANGUAGE, Constants.LANGUAGE_ENGLISH);
+        final String[] items = {"English", "मराठी", "हिंदी "};
         final ArrayList seletedItems = new ArrayList();
+
+        int checkId = 0;
+        if (preferenceHelper.getString(Constants.LANGUAGE).equalsIgnoreCase(Constants.LANGUAGE_MARATHI)) {
+            checkId = 1;
+        } else if(preferenceHelper.getString(Constants.LANGUAGE).equalsIgnoreCase(Constants.LANGUAGE_HINDI)){
+            checkId = 2;
+        }
+
+
+
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.select_lang))
-                .setSingleChoiceItems(items, 0, new DialogInterface.OnClickListener() {
+                .setSingleChoiceItems(items, checkId, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                     }
                 })
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                      /*  Intent intent;
-                            intent = new Intent(LoginActivity.this, LoginActivity.class);
-
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);*/
                         ListView lw = ((AlertDialog) dialog).getListView();
 
                         if (lw.getCheckedItemPosition() == 0) {
-                            LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_ENGLISH);
-                            preferenceHelper.insertString(LANGUAGE, LANGUAGE_ENGLISH);
+                            LocaleManager.setNewLocale(getApplicationContext(), Constants.LANGUAGE_ENGLISH);
+                            preferenceHelper.insertString(Constants.LANGUAGE, Constants.LANGUAGE_ENGLISH);
                         } else if (lw.getCheckedItemPosition() == 1) {
-                            LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_MARATHI);
-                            preferenceHelper.insertString(LANGUAGE, LANGUAGE_MARATHI);
+                            LocaleManager.setNewLocale(getApplicationContext(), Constants.LANGUAGE_MARATHI);
+                            preferenceHelper.insertString(Constants.LANGUAGE, Constants.LANGUAGE_MARATHI);
                         } else {
-                            LocaleManager.setNewLocale(getApplicationContext(), LANGUAGE_HINDI);
-                            preferenceHelper.insertString(LANGUAGE, LANGUAGE_HINDI);
+                            LocaleManager.setNewLocale(getApplicationContext(), Constants.LANGUAGE_HINDI);
+                            preferenceHelper.insertString(Constants.LANGUAGE,Constants. LANGUAGE_HINDI);
                         }
                         dialog.dismiss();
                         finish();
                         startActivity(getIntent());
 
-
                     }
 
                 }).create();
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
         dialog.show();
     }
 
@@ -430,6 +432,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         binding.tvUser.setOutAnimation(out);
         binding.tvUser.setText(getString(R.string.msg_enter_mobile));
         preferenceHelper = new PreferenceHelper(this);
+
         initSlider();
     }
 

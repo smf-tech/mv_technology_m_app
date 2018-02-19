@@ -101,11 +101,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView img_back, img_list, img_logout, img_lang;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
-    private android.app.AlertDialog alertDialogApproved ;
+    private AlertDialog alertDialogApproved ;
     private ActivityHome1Binding binding;
     private PreferenceHelper preferenceHelper;
 
-    private android.app.AlertDialog alertLocationDialog = null;
+    private AlertDialog alertLocationDialog = null;
     //  private ViewPagerAdapter adapter;
     //   private TabLayout tabLayout;
     //  private ViewPager viewPager;
@@ -128,7 +128,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
         binding.setActivity(this);
         preferenceHelper = new PreferenceHelper(this);
-        alertDialogApproved = new android.app.AlertDialog.Builder(this).create();;
+        alertDialogApproved = new AlertDialog.Builder(this).create();;
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
         ///setActionbar(getString(R.string.app_name));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -715,7 +715,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showPopUp() {
-        final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 
         // Setting Dialog Title
         alertDialog.setTitle(getString(R.string.app_name));
@@ -845,7 +845,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         } else {
                             if (alertDialogApproved != null && alertDialogApproved.isShowing())
                                 alertDialogApproved.dismiss();
-                            alertDialogApproved = null;
+
                         }
                         initViews();
 
@@ -921,7 +921,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void SampleDialog() {
         if (alertLocationDialog == null) {
-            alertLocationDialog = new android.app.AlertDialog.Builder(this).create();
+            alertLocationDialog = new AlertDialog.Builder(this).create();
 
             // Setting Dialog Title
             alertLocationDialog.setTitle(getString(R.string.gps_settings));
@@ -1091,10 +1091,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
 
         }else if (id==R.id.action_callus){
+            CallUSDialog();
            /* Uri uri = Uri.parse("https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2"); // missing 'http://' will cause crashed
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);*/
-           CallUSDialog();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

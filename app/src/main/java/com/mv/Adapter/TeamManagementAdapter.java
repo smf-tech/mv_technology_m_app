@@ -103,15 +103,15 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
     }
 
     @Override
-    public TeamManagementAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_template, parent, false);
 
-        return new TeamManagementAdapter.MyViewHolder(itemView);
+        return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(TeamManagementAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, int position) {
         Template template = teplateList.get(position);
         holder.txtCommunityName.setText(template.getName());
     }

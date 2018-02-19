@@ -230,7 +230,6 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
 
         // Setting Dialog Title
         alertDialog.setTitle(getString(R.string.app_name));
-
         // Setting Dialog Message
         alertDialog.setMessage("Internet connection is required");
 

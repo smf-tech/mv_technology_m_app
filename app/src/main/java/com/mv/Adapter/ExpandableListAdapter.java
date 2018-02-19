@@ -100,7 +100,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     } else if (content.getFileType().equalsIgnoreCase("audio")) {
                         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".mp3";
                         Intent intent = new Intent();
-                        intent.setAction(android.content.Intent.ACTION_VIEW);
+                        intent.setAction(Intent.ACTION_VIEW);
                         File file = new File("/sdcard/test.mp3");
                         intent.setDataAndType(Uri.fromFile(new File(filePath)), "audio/*");
                         PackageManager packageManager = _context.getPackageManager();
@@ -112,7 +112,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     } else if (content.getFileType().equalsIgnoreCase("video")) {
                         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".mp4";
                         Intent intent = new Intent();
-                        intent.setAction(android.content.Intent.ACTION_VIEW);
+                        intent.setAction(Intent.ACTION_VIEW);
                         intent.setDataAndType(Uri.fromFile(new File(filePath)), "video/*");
                         PackageManager packageManager = _context.getPackageManager();
                         if (intent.resolveActivity(packageManager) != null) {
@@ -123,7 +123,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     } else if (content.getFileType().equalsIgnoreCase("pdf")) {
                         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".pdf";
                         Intent intent = new Intent();
-                        intent.setAction(android.content.Intent.ACTION_VIEW);
+                        intent.setAction(Intent.ACTION_VIEW);
                         intent.setDataAndType(Uri.fromFile(new File(filePath)), "application/pdf");
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         PackageManager packageManager = _context.getPackageManager();

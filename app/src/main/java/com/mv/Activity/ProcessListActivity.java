@@ -342,8 +342,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 if (resultJsonObj.has("status")) {
                                     processList.setStatus__c(resultJsonObj.getString("status"));
                                 }
-                                if (resultJsonObj.has("IsEditable")) {
-                                    processList.setIsEditable__c(resultJsonObj.getString("IsEditable"));
+                                if (resultJsonObj.has("isEditable")) {
+                                    processList.setIsEditable__c(resultJsonObj.getString("isEditable"));
                                 }
                                 processList.setPicklist_Value_Lan__c(resultJsonObj.getString("lanPicklistValue"));
 

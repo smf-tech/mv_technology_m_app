@@ -111,18 +111,18 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
     }
 
     @Override
-    public ThetSavandAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemLayoutView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_content, parent, false);
 
         // create ViewHolder
-        ThetSavandAdapter.ViewHolder viewHolder = new ThetSavandAdapter.ViewHolder(itemLayoutView);
+        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
         return viewHolder;
     }
 
 
     @Override
-    public void onBindViewHolder(final ThetSavandAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
 
        /* Glide.with(mContext)
                 .load(getUrlWithHeaders(new PreferenceHelper(mContext).getString(PreferenceHelper.InstanceUrl)+"services/data/v20.0/sobjects/Attachment/"+mDataList.get(position).getId()))
@@ -475,13 +475,13 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             lnr_content = (LinearLayout) itemLayoutView.findViewById(R.id.lnr_content);
             txt_detail = (TextView) itemLayoutView.findViewById(R.id.txt_detail);
 
-          /*  txt_desc.setOnLongClickListener(new View.OnLongClickListener() {
+            txt_desc.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View view) {
-                    Utills.MarkAsSpamDialog(mContext,preferenceHelper,mDataList.get(mPosition).getId());
+                    Utills.MarkAsSpamDialog(mContext,preferenceHelper,mDataList.get(getAdapterPosition()).getId());
                     return false;
                 }
-            });*/
+            });
             txt_detail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -507,7 +507,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             layout_download_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                //    Utills.showToast("download",mContext);
+                    //    Utills.showToast("download",mContext);
                     startDownload(getAdapterPosition());
 
                 }

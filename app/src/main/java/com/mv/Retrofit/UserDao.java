@@ -113,7 +113,7 @@ public interface UserDao {
     List<CalenderEvent> getCalenderList(String date);
 
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId AND  isActive = :flag order by CreatedDate desc")
-    List<Content> getAllChats(String communityId,Boolean flag);
+    List<Content> getAllChats(String communityId, Boolean flag);
    /* @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  order by CreatedDate desc")
     List<Content> getAllChats(String communityId);
   @Query("SELECT * FROM " + Constants.TABLE_CONTENT)
@@ -125,7 +125,7 @@ public interface UserDao {
     //String strSQL = "UPDATE myTable SET Column1 = someValue WHERE columnId = "+ someValue;
 
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where isBroadcast = 'true' AND  isActive = :flag order by CreatedDate desc")
-    List<Content> getAllBroadcastChats(Boolean flag );
+    List<Content> getAllBroadcastChats(Boolean flag);
 
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where isTheatMessage = 'true' AND  isActive = :flag order by CreatedDate desc")
     List<Content> getThetSavandChats(Boolean flag);

@@ -169,32 +169,29 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                                     }
                                     if (isPresent) {
                                         chatList.set(j, temp.get(i));
-                                        if(temp.get(i).isActive())
-                                        AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().updateContent(temp.get(i));
-                                        else
-                                            AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().spampost(temp.get(i).getId(),false);
+                                            AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().updateContent(temp.get(i));
+
                                     } else {
 
 
                                         chatList.add(temp.get(i));
 
                                         temp.get(i).setCommunity_id(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
-                                        if(temp.get(i).isActive())
-                                        AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().insertChats(temp.get(i));
+                                            AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().insertChats(temp.get(i));
                                     }
 
                                 }
 
 
                                 List<Content> contentList_fromDb = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),true);
-                                chatList.clear();
+                            /*    chatList.clear();
                                 for (int i = 0; i < contentList_fromDb.size(); i++) {
                                     chatList.add(contentList_fromDb.get(i));
                                 }
+*/
 
 
-
-                                adapter = new ContentAdapter(CommunityHomeActivity.this, chatList);
+                                adapter = new ContentAdapter(CommunityHomeActivity.this, contentList_fromDb);
                                 recyclerView.setAdapter(adapter);
 
                                /* List<Content> contentList_fromDb = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));

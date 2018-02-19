@@ -238,6 +238,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 TaskContainerModel taskContainerModel = new TaskContainerModel();
                 taskContainerModel.setTaskListString(json);
                 taskContainerModel.setTaskType(Constants.TASK_ANSWER);
+                taskContainerModel.setHeaderPosition(999999999);
                 taskContainerModel.setIsSave(Constants.PROCESS_STATE_SAVE);
                 taskContainerModel.setMV_Process__c(taskList.get(0).getMV_Process__c());
                 if (preferenceHelper.getBoolean(Constants.NEW_PROCESS)) {
@@ -341,7 +342,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 manditoryFlag = true;
                 msg = "please check " + taskList.get(i).getTask_Text__c();
                 break;
-
             }
             if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.IMAGE)) {
                 if (FinalUri != null) {

@@ -13,7 +13,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.view.View;
@@ -450,6 +449,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         edit_text_last_name = (EditText) findViewById(R.id.edit_text_last_name);
         edit_text_mobile_number = (EditText) findViewById(R.id.edit_text_mobile_number);
         edit_text_mobile_number.setText(User.getCurrentUser(RegistrationActivity.this).getPhone());
+
         edit_text_email = (EditText) findViewById(R.id.edit_text_email);
         btn_submit = (Button) findViewById(R.id.btn_submit);
         btn_submit.setOnClickListener(this);
