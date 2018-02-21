@@ -383,6 +383,11 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                         edit.setVisible(false);
                         delete.setVisible(false);
                     }
+                    if (mDataList.get(position).getPostUserDidSpam().equals(false)){
+                        spam.setTitle("Mark As Spam");
+                    }else {
+                        spam.setTitle("Mark As Unspam");
+                    }
 
 
                         //registering popup with OnMenuItemClickListener
@@ -398,9 +403,13 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                                 postId = mDataList.get(position).getId();
                                 deletePosition = position;
                                 showDeletePopUp();
-                            }else   if (item.getTitle().toString().equalsIgnoreCase("Spam")) {
-                                Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId());
-                            }
+                            }else     if (mDataList.get(position).getPostUserDidSpam().equals(false)){
+                                Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),true);
+                               notifyDataSetChanged();
+                               }else {
+                                Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),false);
+                                notifyDataSetChanged();
+                                }
                             return true;
                         }
                     });

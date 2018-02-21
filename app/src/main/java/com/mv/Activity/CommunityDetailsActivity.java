@@ -108,58 +108,59 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                 startActivity(intent);
                 break;
             case R.id.layout_download_file:
+                if (mContent.getIsAttachmentPresent()!=null){
 
-                    if(mContent.getIsAttachmentPresent().equalsIgnoreCase("true")) {
+                if (mContent.getIsAttachmentPresent().equalsIgnoreCase("true")) {
 
-                        if (mContent.getAttachmentId()== null) {
+                    if (mContent.getAttachmentId() == null) {
 
-                            new AsyncTask<Void, Void, Void>() {
-                                @Override
-                                protected void onPreExecute() {
-                                    Utills.showProgressDialog(CommunityDetailsActivity.this, "Downloading", getString(R.string.progress_please_wait));
+                        new AsyncTask<Void, Void, Void>() {
+                            @Override
+                            protected void onPreExecute() {
+                                Utills.showProgressDialog(CommunityDetailsActivity.this, "Downloading", getString(R.string.progress_please_wait));
 
-                                    theBitmap = null;
+                                theBitmap = null;
+                            }
+
+
+                            @Override
+
+                            protected Void doInBackground(Void... params) {
+                                try {
+                                    theBitmap = Glide.
+                                            with(getApplicationContext()).
+                                            load("http://mobileapp.mulyavardhan.org/images/" + mContent.getId() + ".png").
+
+                                            asBitmap().
+                                            into(200, 200).
+                                            get();
+                                } catch (final ExecutionException e) {
+
+                                } catch (final InterruptedException e) {
+
                                 }
+                                return null;
+                            }
+
+                            @Override
+                            protected void onPostExecute(Void dummy) {
+                                if (theBitmap != null) {
+                                    Utills.hideProgressDialog();
 
 
-                                @Override
-
-                                protected Void doInBackground(Void... params) {
                                     try {
-                                        theBitmap = Glide.
-                                                with(getApplicationContext()).
-                                                load("http://mobileapp.mulyavardhan.org/images/" + mContent.getId() + ".png").
+                                        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mContent.getId() + ".png");
+                                        FileOutputStream out = null;
+                                        out = new FileOutputStream(file);
+                                        theBitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+                                        out.close();
 
-                                                asBitmap().
-                                                into(200, 200).
-                                                get();
-                                    } catch (final ExecutionException e) {
 
-                                    } catch (final InterruptedException e) {
-
+                                    } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
                                     }
-                                    return null;
-                                }
-
-                                @Override
-                                protected void onPostExecute(Void dummy) {
-                                    if (theBitmap != null) {
-                                        Utills.hideProgressDialog();
-
-
-                                        try {
-                                            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" +mContent.getId()+".png");
-                                            FileOutputStream out = null;
-                                            out = new FileOutputStream(file);
-                                            theBitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
-                                            out.close();
-
-
-                                        } catch (FileNotFoundException e) {
-                                            e.printStackTrace();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
 
 
                                    /* Intent i = new Intent(Intent.ACTION_SEND);
@@ -168,48 +169,52 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                                     i.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(theBitmap, getAdapterPosition()));
                                     Utills.hideProgressDialog();
                                     mContext.startActivity(Intent.createChooser(i, "Share Post"));*/
-                                    }else {
-                                        Utills.hideProgressDialog();
-                                    }
+                                } else {
+                                    Utills.hideProgressDialog();
                                 }
-                            }.execute();
-                        }else {
-                            downloadImage();
-                        }
+                            }
+                        }.execute();
+                    } else {
+                        downloadImage();
                     }
-
+                }
+        }
 
 
                 break;
             case R.id.layout_share:
-                if(mContent.getIsAttachmentPresent().equalsIgnoreCase("true")){
-                    if (mContent.getAttachmentId()==null){
-                        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" +mContent.getId()+".png";
-                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                        shareIntent.setType( "application/*");
-                        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
-                        shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + mContent.getTitle() + "\n\nDescription : " + mContent.getDescription());
+                if (mContent.getIsAttachmentPresent()!=null) {
 
-                       startActivity(Intent.createChooser(shareIntent, "Share Content"));
-                    }else {
-                        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" +mContent.getAttachmentId()+".png";
+                    if (mContent.getIsAttachmentPresent().equalsIgnoreCase("true")) {
+                        if (mContent.getAttachmentId() == null) {
+                            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mContent.getId() + ".png";
+                            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                            shareIntent.setType("application/*");
+                            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                            shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + mContent.getTitle() + "\n\nDescription : " + mContent.getDescription());
 
-                        //String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId()+".png";
+                            startActivity(Intent.createChooser(shareIntent, "Share Content"));
+                        } else {
+                            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mContent.getAttachmentId() + ".png";
 
-                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                        shareIntent.setType( "application/*");
-                        shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " +mContent.getTitle() + "\n\nDescription : " + mContent.getDescription());
+                            //String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId()+".png";
 
-                        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
-                        startActivity(Intent.createChooser(shareIntent, "Share Content"));
+                            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                            shareIntent.setType("application/*");
+                            shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + mContent.getTitle() + "\n\nDescription : " + mContent.getDescription());
+
+                            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                            startActivity(Intent.createChooser(shareIntent, "Share Content"));
+                        }
+                    } else {
+                        Intent i = new Intent(Intent.ACTION_SEND);
+                        i.setType("image*//**//*");
+                        i.putExtra(Intent.EXTRA_TEXT, "Title : " + mContent.getTitle() + "\n\nDescription : " + mContent.getDescription());
+                        startActivity(Intent.createChooser(i, "Share Post"));
+
                     }
-                }else {
-                    Intent i = new Intent(Intent.ACTION_SEND);
-                    i.setType("image*//**//*");
-                    i.putExtra(Intent.EXTRA_TEXT, "Title : " + mContent.getTitle() + "\n\nDescription : " + mContent.getDescription());
-                  startActivity(Intent.createChooser(i, "Share Post"));
-
                 }
+                break;
             case R.id.layout_like:
                 if (!mContent.getIsLike()) {
                     sendLikeAPI(mContent.getId(), !(mContent.getIsLike()));

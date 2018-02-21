@@ -335,16 +335,18 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                         delete.setVisible(false);
                         edit.setVisible(false);
                     }
-
+                    if (mDataList.get(position).getPostUserDidSpam().equals(false)){
+                        spam.setTitle("Mark As Spam");
+                    }else {
+                        spam.setTitle("Mark As Unspam");
+                    }
 
 
 
                     //registering popup with OnMenuItemClickListener
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem item) {
-                            if (item.getTitle().toString().equalsIgnoreCase("Spam")) {
-                                Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId());
-                            }else if (item.getTitle().toString().equalsIgnoreCase("Delete")) {
+                            if (item.getTitle().toString().equalsIgnoreCase("Delete")) {
                                 postId = mDataList.get(position).getId();
                                 deletePosition = position;
                                 showDeletePopUp();
@@ -363,6 +365,12 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                                     intent.putExtra(Constants.CONTENT, mDataList.get(position));
                                     mContext.startActivity(intent);
                                 }
+                            }else     if (mDataList.get(position).getPostUserDidSpam().equals(false)){
+                                Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),true);
+
+                            }else {
+                                Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),false);
+
                             }
                             return true;
                         }

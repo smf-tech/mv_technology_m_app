@@ -352,7 +352,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
     public void onRefresh() {
 
         binding.swipeRefreshLayout.setRefreshing(false);
-        getChats(false);
+        getChats(true);
     }
 
     /*It initialize all views in actionbar.*/
