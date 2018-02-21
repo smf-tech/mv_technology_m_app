@@ -69,7 +69,7 @@ public class MyJobService extends JobService {
 
             jsonObject.put("lat", latitude);
             jsonObject.put("lon", longitude);
-            jsonObject.put("id", User.getCurrentUser(this).getId());
+            jsonObject.put("id", User.getCurrentUser(this).getMvUser().getId());
             JsonParser jsonParser = new JsonParser();
             JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
 

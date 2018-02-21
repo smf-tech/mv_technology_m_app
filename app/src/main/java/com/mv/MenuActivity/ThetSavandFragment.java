@@ -141,7 +141,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
                 btn_mypost.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
                 btn_allposts.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 for (int i = 0; i < chatList.size(); i++) {
-                    if (chatList.get(i).getUser_id().equals(User.getCurrentUser(context).getId())) {
+                    if (chatList.get(i).getUser_id().equals(User.getCurrentUser(context).getMvUser().getId())) {
                         mypostlist.add(chatList.get(i));
                     }
                 }
@@ -212,11 +212,11 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         String url = "";
         if (isTimePresent)
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(context).getId()
+                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(context).getMvUser().getId()
                     + "&timestamp=" + chatList.get(0).getTime();
         else
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(context).getId();
+                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(context).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -259,7 +259,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
 
                                 for (int i = 0; i < chatList.size(); i++) {
 
-                                    if (chatList.get(i).getUser_id().equals(User.getCurrentUser(context).getId())) {
+                                    if (chatList.get(i).getUser_id().equals(User.getCurrentUser(context).getMvUser().getId())) {
                                         mypostlist.add(chatList.get(i));
                                     }
                                 }

@@ -200,7 +200,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                 Utills.showProgressDialog(mContext, "Sharing Post...", "Please wait");
                 JSONObject jsonObject1 = new JSONObject();
 
-                jsonObject1.put("userId", User.getCurrentUser(mContext).getId());
+                jsonObject1.put("userId", User.getCurrentUser(mContext).getMvUser().getId());
                 jsonObject1.put("contentId", contentId);
 
                 JSONArray jsonArrayAttchment = new JSONArray();
@@ -460,7 +460,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
 
                 jsonObject1.put("Is_Like", isLike);
                 jsonObject1.put("MV_Content", cotentId);
-                jsonObject1.put("MV_User", User.getCurrentUser(mContext).getId());
+                jsonObject1.put("MV_User", User.getCurrentUser(mContext).getMvUser().getId());
 
                 jsonArray.put(jsonObject1);
                 jsonObject.put("listVisitsData", jsonArray);
@@ -509,7 +509,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
 
                 jsonObject1.put("Is_Like__c", isLike);
                 jsonObject1.put("MV_Content__c", cotentId);
-                jsonObject1.put("MV_User__c", User.getCurrentUser(mContext).getId());
+                jsonObject1.put("MV_User__c", User.getCurrentUser(mContext).getMvUser().getId());
 
                 jsonArray.put(jsonObject1);
                 jsonObject.put("contentlikeList", jsonArray);

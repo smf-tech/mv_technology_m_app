@@ -9,16 +9,16 @@ import android.net.Uri;
 
 public class Constants {
 
-    /* Production*/
+    /* Production
     public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com";
     public static String REPORTID = "a1L7F000000YNK4";
-    public static String ISSUEID = "a1L7F000000YNJz";
-    /* Sandbox
+    public static String ISSUEID = "a1L7F000000YNJz";*/
+    /* Sandbox*/
     public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
     public static String REPORTID = "a1G0k000000522K";
-    public static String ISSUEID = "a1G0k000000522F";*/
+    public static String ISSUEID = "a1G0k000000522F";
 
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
@@ -135,11 +135,11 @@ public class Constants {
     public static final String Userdetails_Url = "/services/apexrest/userdetails";
     public static final String MV_GetCommunities_c_Url = "/services/apexrest/MV_GetCommunities_c";
     public static final String DoLogout_url = "/services/apexrest/doLogout/";
-    public static final String GetUserData_url = "/services/apexrest/getUserData";
+    public static final String GetUserData_url = "/services/apexrest/getUserDataNew";
     public static final String MapParametersUrl = "/services/apexrest/MapParameters";
     public static final String GetSessionDatademo_Url = "/services/apexrest/getSessionDatademo/";
     public static final String Upload_Url = "http://mobileapp.mulyavardhan.org/upload.php";
-    public static final String GetLoginOTP_url = "/services/apexrest/getLoginOTP";
+    public static final String GetLoginOTP_url = "/services/apexrest/getLoginOTPNew";
     public static final String GetchartDatademoNew = "/services/apexrest/getchartDatademoNew";
     public static final String GetDashboardDatademoUrl = "/services/apexrest/getDashboardDatademo";
     public static final String GetApprovalProcessUrl = "/services/apexrest/getApprovalProcess";
@@ -166,7 +166,7 @@ public class Constants {
     public static final String GetprocessAnswerTaskfoApprovalUrl = "/services/apexrest/getprocessAnswerTaskfoApproval";
     public static final String GetProjectDataUrl = "/services/apexrest/getProjectData";
     public static final String MV_RoleUrl = "/services/data/v36.0/query/?q=select+Id,Juridictions__c,Name+from+MV_Role__c+where+Organisation__c='";
-    public static final String MTRegisterUrl = "/services/apexrest/MTRegister";
+    public static final String MTRegisterUrl = "/services/apexrest/MTRegisterNew";
 
     public static final String GetApprovalDataUrl =     "/services/apexrest/getApprovalData";
     public  static final String WS_getProcessAprovalUserUrl ="/services/apexrest/WS_getProcessAprovalUser";

@@ -156,7 +156,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         Utills.showProgressDialog(this, "Loading Districts", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getDistrict(User.getCurrentUser(ReportingTemplateActivity.this).getState()).enqueue(new Callback<ResponseBody>() {
+        apiService.getDistrict(User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getState()).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -168,7 +168,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                         mListDistrict.add(jsonArray.getString(i));
                     }
                     district_adapter.notifyDataSetChanged();
-                    binding.spinnerDistrict.setSelection(mListDistrict.indexOf(User.getCurrentUser(ReportingTemplateActivity.this).getDistrict()));
+                    binding.spinnerDistrict.setSelection(mListDistrict.indexOf(User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getDistrict()));
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -193,7 +193,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         Utills.showProgressDialog(this, "Loading Talukas", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getTaluka(User.getCurrentUser(ReportingTemplateActivity.this).getState(), mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
+        apiService.getTaluka(User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getState(), mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -233,15 +233,15 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         binding.layoutMore.setOnClickListener(this);
 
         mListDistrict.add("Select");
-        mListDistrict.add(User.getCurrentUser(this).getDistrict());
-        if (User.getCurrentUser(ReportingTemplateActivity.this).getRoll().equalsIgnoreCase("TC")) {
+        mListDistrict.add(User.getCurrentUser(this).getMvUser().getDistrict());
+        if (User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getRoll().equalsIgnoreCase("TC")) {
             binding.txtSpinner.setVisibility(View.VISIBLE);
             binding.spinnerIssue.setVisibility(View.VISIBLE);
         }
 
         mListTaluka.add("Select");
         if (!Utills.isConnected(this)) {
-            List<String> list = AppDatabase.getAppDatabase(this).userDao().getTaluka(User.getCurrentUser(this).getState(), User.getCurrentUser(this).getDistrict());
+            List<String> list = AppDatabase.getAppDatabase(this).userDao().getTaluka(User.getCurrentUser(this).getMvUser().getState(), User.getCurrentUser(this).getMvUser().getDistrict());
             if (list.size() == 0) {
                 showPopUp();
             } else {
@@ -297,7 +297,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             case R.id.layoutMore:
                 if (binding.layoutMoreDetail.getVisibility() == View.GONE) {
                     binding.layoutMoreDetail.setVisibility(View.VISIBLE);
-                    if (User.getCurrentUser(ReportingTemplateActivity.this).getRoll().equalsIgnoreCase("TC")) {
+                    if (User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getRoll().equalsIgnoreCase("TC")) {
                     } else {
                         binding.txtSpinner.setVisibility(View.VISIBLE);
                         binding.spinnerIssue.setVisibility(View.VISIBLE);
@@ -305,7 +305,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
 
                 } else {
                     binding.layoutMoreDetail.setVisibility(View.GONE);
-                    if (User.getCurrentUser(ReportingTemplateActivity.this).getRoll().equalsIgnoreCase("TC")) {
+                    if (User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getRoll().equalsIgnoreCase("TC")) {
                     } else {
                         binding.txtSpinner.setVisibility(View.GONE);
                         binding.spinnerIssue.setVisibility(View.GONE);
@@ -335,7 +335,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             content.setDistrict(mListDistrict.get(mSelectDistrict));
             content.setTaluka(mListTaluka.get(mSelectTaluka));
             content.setReporting_type(mListReportingType.get(mSelectReportingType));
-            content.setUser_id(User.getCurrentUser(this).getId());
+            content.setUser_id(User.getCurrentUser(this).getMvUser().getId());
             content.setCommunity_id(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
             content.setTemplate(preferenceHelper.getString(PreferenceHelper.TEMPLATEID));
             setdDataToSalesForcce();
@@ -586,8 +586,8 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             content.setSynchStatus(Constants.STATUS_LOCAL);
             content.setTime(formattedDate1);
             content.setLikeCount(0);
-            content.setUserName(User.getCurrentUser(this).getName());
-            content.setUserAttachmentId(User.getCurrentUser(this).getImageId());
+            content.setUserName(User.getCurrentUser(this).getMvUser().getName());
+            content.setUserAttachmentId(User.getCurrentUser(this).getMvUser().getImageId());
             content.setCommentCount(0);
             content.setIsLike(false);
             if (FinalUri != null) {
@@ -644,7 +644,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
 
     private boolean isValidate() {
         String str = "";
-        if (User.getCurrentUser(ReportingTemplateActivity.this).getRoll().equalsIgnoreCase("TC")
+        if (User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getRoll().equalsIgnoreCase("TC")
                 && mSelectReportingType == 0) {
             str = "Please Select Reporting Type";
         } else if (binding.editTextContent.getText().toString().trim().length() == 0) {
@@ -853,7 +853,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
 
                 }
                 mListTaluka.clear();
-                List<String> list = AppDatabase.getAppDatabase(this).userDao().getTaluka(User.getCurrentUser(this).getState(), User.getCurrentUser(this).getDistrict());
+                List<String> list = AppDatabase.getAppDatabase(this).userDao().getTaluka(User.getCurrentUser(this).getMvUser().getState(), User.getCurrentUser(this).getMvUser().getDistrict());
                 mListTaluka.add("Select");
                 for (int k = 0; k < list.size(); k++) {
                     mListTaluka.add(list.get(k));

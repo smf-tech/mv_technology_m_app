@@ -106,17 +106,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Utills.showInternetPopUp(this);
             }
         } else if (binding.edtOtp.isShown() && isValidate(binding.edtOtp, 6, "OTP")) {
-            if (user.getPassword() != null) {
-                if (user.getPassword().trim().equals(binding.edtOtp.getText().toString().trim())) {
+            if (user.getMvUser().getPassword() != null) {
+                if (user.getMvUser().getPassword().trim().equals(binding.edtOtp.getText().toString().trim())) {
                     yourCountDownTimer.cancel();
-                    if (user.getRoll() != null) {
+                    if (user.getMvUser().getRoll() != null) {
                         Utills.showToast("Login Successful...", LoginActivity.this);
                         Intent intent;
                         intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
                         overridePendingTransition(R.anim.right_in, R.anim.left_out);
                         finish();
-                        preferenceHelper.insertString(PreferenceHelper.UserRole, user.getRoll());
+                        preferenceHelper.insertString(PreferenceHelper.UserRole, user.getMvUser().getRoll());
                     } else {
 
                         Intent intent;
@@ -276,7 +276,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             preferenceHelper.insertString(PreferenceHelper.UserData, data);
                             user = gson.fromJson(data, User.class);
-                            Log.e("otp", user.getPassword());
+                            Log.e("otp", user.getMvUser().getPassword());
                             setTimer();
                         }
                     }

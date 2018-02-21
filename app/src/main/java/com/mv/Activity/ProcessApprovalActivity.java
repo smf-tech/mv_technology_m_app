@@ -139,7 +139,7 @@ public class ProcessApprovalActivity extends AppCompatActivity implements View.O
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetApprovalProcessUrl+"?userId=" + User.getCurrentUser(getApplicationContext()).getId();
+                + Constants.GetApprovalProcessUrl+"?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

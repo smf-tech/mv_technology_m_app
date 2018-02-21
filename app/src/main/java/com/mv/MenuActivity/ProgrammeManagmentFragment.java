@@ -61,7 +61,7 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
     ArrayList<Task> taskList = new ArrayList<>();
     TaskContainerModel taskContainerModel;
     Activity context;
-
+    public int headerPosition = 999999999;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context=this;
@@ -141,7 +141,7 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getallprocessandtaskNew"+"?userId=" + User.getCurrentUser(this).getId()+"&language=" + preferenceHelper.getString(Constants.LANGUAGE);
+                + "/services/apexrest/getallprocessandtaskNew"+"?userId=" + User.getCurrentUser(this).getMvUser().getId()+"&language=" + preferenceHelper.getString(Constants.LANGUAGE);
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -196,6 +196,10 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                                     if (resultJsonObj.has("status")) {
                                         taskList.setStatus__c(resultJsonObj.getString("status"));
                                     }
+                                    if (resultJsonObj.getString("isHeader").equals("true"))
+                                        headerPosition = i;
+
+                                    taskList.setIsEditable__c(resultJsonObj.getString("isHeader"));
                                     if (resultJsonObj.has("isEditable")) {
                                         taskList.setIsEditable__c(resultJsonObj.getString("isEditable"));
                                     }
@@ -203,26 +207,26 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                                         taskList.setLocationLevel(resultJsonObj.getString("locationLevel"));
 
                                         if (resultJsonObj.getString("locationLevel").equals("State")) {
-                                            taskList.setTask_Response__c(user.getState());
-                                            //  LocationSelectionActity.selectedState = user.getState();
+                                            taskList.setTask_Response__c(user.getMvUser().getState());
+                                            //  LocationSelectionActity.selectedState = user.getMvUser().getState();
 
                                         } else if (resultJsonObj.getString("locationLevel").equals("District")) {
-                                            // LocationSelectionActity.selectedDisrict = user.getDistrict();
+                                            // LocationSelectionActity.selectedDisrict = user.getMvUser().getDistrict();
 
-                                            taskList.setTask_Response__c(user.getDistrict());
+                                            taskList.setTask_Response__c(user.getMvUser().getDistrict());
                                         } else if (resultJsonObj.getString("locationLevel").equals("Taluka")) {
-                                            taskList.setTask_Response__c(user.getTaluka());
-                                            //  LocationSelectionActity.selectedTaluka = user.getTaluka();
+                                            taskList.setTask_Response__c(user.getMvUser().getTaluka());
+                                            //  LocationSelectionActity.selectedTaluka = user.getMvUser().getTaluka();
                                         } else if (resultJsonObj.getString("locationLevel").equals("Cluster")) {
-                                            ///  LocationSelectionActity.selectedCluster = user.getCluster();
-                                            taskList.setTask_Response__c(user.getCluster());
+                                            ///  LocationSelectionActity.selectedCluster = user.getMvUser().getCluster();
+                                            taskList.setTask_Response__c(user.getMvUser().getCluster());
                                         } else if (resultJsonObj.getString("locationLevel").equals("Village")) {
-                                            // LocationSelectionActity.selectedVillage = user.getVillage();
+                                            // LocationSelectionActity.selectedVillage = user.getMvUser().getVillage();
 
-                                            taskList.setTask_Response__c(user.getVillage());
+                                            taskList.setTask_Response__c(user.getMvUser().getVillage());
                                         } else if (resultJsonObj.getString("locationLevel").equals("School")) {
-                                            taskList.setTask_Response__c(user.getSchool_Name());
-                                            //  LocationSelectionActity.selectedSchool = user.getSchool_Name();
+                                            taskList.setTask_Response__c(user.getMvUser().getSchool_Name());
+                                            //  LocationSelectionActity.selectedSchool = user.getMvUser().getSchool_Name();
                                         }
 
                                     }
@@ -241,7 +245,7 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                                 }
                                 // each task list  convert to String and stored in process task filled
                                 taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
-
+                                taskContainerModel.setHeaderPosition(headerPosition);
                                 taskContainerModel.setIsSave(Constants.PROCESS_STATE_SAVE);
                                 //task without answer
                                 taskContainerModel.setTaskType(Constants.TASK_QUESTION);

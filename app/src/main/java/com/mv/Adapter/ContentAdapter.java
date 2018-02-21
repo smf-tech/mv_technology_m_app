@@ -284,7 +284,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         holder.txt_tag.setText("Tag : ");
 
         holder.txt_type.setText(mDataList.get(position).getIssue_priority());
-        if (mDataList.get(position).getIsLike() && (mDataList.get(position).getUser_id().equalsIgnoreCase(User.getCurrentUser(mContext).getId())))
+        if (mDataList.get(position).getIsLike() && (mDataList.get(position).getUser_id().equalsIgnoreCase(User.getCurrentUser(mContext).getMvUser().getId())))
             holder.imgLike.setImageResource(R.drawable.like);
         else
             holder.imgLike.setImageResource(R.drawable.dislike);
@@ -420,7 +420,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 Utills.showProgressDialog(mContext, "Sharing Post...", "Please wait");
                 JSONObject jsonObject1 = new JSONObject();
 
-                jsonObject1.put("userId", User.getCurrentUser(mContext).getId());
+                jsonObject1.put("userId", User.getCurrentUser(mContext).getMvUser().getId());
                 jsonObject1.put("contentId", contentId);
 
 
@@ -849,7 +849,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
                 jsonObject1.put("Is_Like", isLike);
                 jsonObject1.put("MV_Content", cotentId);
-                jsonObject1.put("MV_User", User.getCurrentUser(mContext).getId());
+                jsonObject1.put("MV_User", User.getCurrentUser(mContext).getMvUser().getId());
 
                 jsonArray.put(jsonObject1);
                 jsonObject.put("listVisitsData", jsonArray);
@@ -898,7 +898,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
                 jsonObject1.put("Is_Like__c", isLike);
                 jsonObject1.put("MV_Content__c", cotentId);
-                jsonObject1.put("MV_User__c", User.getCurrentUser(mContext).getId());
+                jsonObject1.put("MV_User__c", User.getCurrentUser(mContext).getMvUser().getId());
 
                 jsonArray.put(jsonObject1);
                 jsonObject.put("contentlikeList", jsonArray);
