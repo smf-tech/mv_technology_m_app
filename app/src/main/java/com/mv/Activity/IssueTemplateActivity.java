@@ -67,6 +67,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -230,7 +231,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
 
     private void initViews() {
         setActionbar(getString(R.string.issue_template));
-
+        isEdit = getIntent().getExtras().getBoolean("EDIT");
         preferenceHelper = new PreferenceHelper(this);
 
         binding.spinnerDistrict.setOnItemSelectedListener(this);
@@ -286,6 +287,16 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                     .into(binding.addImage);
             Constants.shareUri = null;
         }
+
+        if (isEdit) {
+            mContent = (Content) getIntent().getExtras().getSerializable(Constants.CONTENT);
+            binding.editTextContent.setText(mContent.getTitle());
+            binding.editTextDescription.setText(mContent.getDescription());
+            List<String> mList = new ArrayList<String>();
+            Collections.addAll(mList, getResources().getStringArray(R.array.array_of_issue));
+            binding.spinnerIssue.setSelection(mList.indexOf(mContent.getIssue_type()));
+        }
+
     }
 
     private void setActionbar(String Title) {
@@ -324,6 +335,8 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
     public void onBtnSubmitClick() {
         if (isValidate()) {
             content = new Content();
+            if (isEdit)
+                content.setId(mContent.getId());
             content.setDescription(binding.editTextDescription.getText().toString().trim());
             content.setTitle(binding.editTextContent.getText().toString().trim());
             content.setDistrict(mListDistrict.get(mSelectDistrict));

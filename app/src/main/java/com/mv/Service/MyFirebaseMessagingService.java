@@ -92,7 +92,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 list.remove(position);
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
             String json = gson.toJson(list);
-            Log.e("name-->",community.getName());
             intent = new Intent(getApplicationContext(), CommunityHomeActivity.class);
             intent.putExtra(Constants.TITLE, community.getName());
             intent.putExtra(Constants.LIST, json);

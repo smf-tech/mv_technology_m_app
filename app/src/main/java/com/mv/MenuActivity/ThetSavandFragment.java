@@ -175,7 +175,8 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
     /*Get the Chat List from Database and set to the adapter , if No vales in table then get Chats from Server*/
     private void getChats(boolean isDialogShow) {
         chatList.clear();
-        chatList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats();
+        chatList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true,false);
+
         if (chatList.size() == 0) {
             if (Utills.isConnected(context))
                 getAllChats(false, isDialogShow);
@@ -249,18 +250,14 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
                                         AppDatabase.getAppDatabase(context).userDao().insertChats(temp.get(i));
                                     }
                                 }
-
-
-
-
-                               chatList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true);
+                           List<Content> ActivePost=     AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true,false);
 
                                 mypostlist.clear();
 
-                                for (int i = 0; i < chatList.size(); i++) {
+                                for (int i = 0; i < ActivePost.size(); i++) {
 
-                                    if (chatList.get(i).getUser_id().equals(User.getCurrentUser(context).getId())) {
-                                        mypostlist.add(chatList.get(i));
+                                    if (ActivePost.get(i).getUser_id().equals(User.getCurrentUser(context).getId())) {
+                                        mypostlist.add(ActivePost.get(i));
                                     }
                                 }
 
@@ -268,7 +265,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
                                     adapter = new ThetSavandAdapter(context, fragment, mypostlist);
                                     recyclerView.setAdapter(adapter);
                                 } else {
-                                    adapter = new ThetSavandAdapter(context, fragment, chatList);
+                                    adapter = new ThetSavandAdapter(context, fragment, ActivePost);
                                     recyclerView.setAdapter(adapter);
                                 }
                                 textNoData.setVisibility(View.GONE);

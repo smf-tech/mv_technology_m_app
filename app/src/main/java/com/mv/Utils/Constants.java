@@ -19,7 +19,6 @@ public class Constants {
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
     public static String REPORTID = "a1G0k000000522K";
     public static String ISSUEID = "a1G0k000000522F";
-
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
     public static final String LANGUAGE_HINDI = "hi";
@@ -148,19 +147,6 @@ public class Constants {
     public static final String GetprocessAnswerDataUrl = "/services/apexrest/getprocessAnswerDataNew";
     public static final String GetprocessTaskUrl = "/services/apexrest/getprocessTaskNew";
 
-
-
-
-
-
-
-
-
-
-
-
-  //  public static final String GetprocessAnswerDataUrl = "/services/apexrest/getprocessAnswerData";
-  //  public static final String GetprocessTaskUrl ="/services/apexrest/getprocessTask";
     public static final String DeleteTaskAnswerUrl =  "/services/apexrest/DeleteTaskAnswer/";
     public static final String ApproveCommentforProcessUrl = "/services/apexrest/ApproveCommentforProcess";
     public static final String GetprocessAnswerTaskfoApprovalUrl = "/services/apexrest/getprocessAnswerTaskfoApproval";

@@ -952,6 +952,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             // Showing Alert Message
             alertLocationDialog.show();
+            alertLocationDialog.setCancelable(false);
         }
 
     }
@@ -982,10 +983,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             String data = response.body().string();
                             if (data != null && data.length() > 0) {
                                 JSONObject jsonObject = new JSONObject(data);
-                                String status = jsonObject.getString("status");
+                                String statusofmap = jsonObject.getString("status");
                                 String message = jsonObject.getString("msg");
-                                //Utills.showToast(status,HomeActivity.this);
-                                if (status.equals("Success")) {
+                                Utills.showToast(statusofmap,HomeActivity.this);
+                                if (statusofmap.equals("Success")) {
 
 
 

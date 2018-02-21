@@ -47,6 +47,8 @@ import com.mv.Activity.AddThetSavadActivity;
 import com.mv.Activity.CommentActivity;
 import com.mv.Activity.CommunityDetailsActivity;
 import com.mv.Activity.CommunityHomeActivity;
+import com.mv.Activity.IssueTemplateActivity;
+import com.mv.Activity.ReportingTemplateActivity;
 import com.mv.Activity.VideoViewActivity;
 import com.mv.Model.Content;
 import com.mv.Model.User;
@@ -96,8 +98,9 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
     private String value;
     private JSONArray jsonArrayAttchment = new JSONArray();
     private Bitmap theBitmap;
-    int temp = 555500;
+    int temp = 555500,deletePosition;
     MediaPlayer mPlayer = new MediaPlayer();
+    private String postId;
     private AlertDialog alertLocationDialog;
     private static final Pattern urlPattern = Pattern.compile( "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
@@ -289,7 +292,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
 
         holder.txt_type.setText(mDataList.get(position).getIssue_priority());
-        if (mDataList.get(position).getIsLike() && (mDataList.get(position).getUser_id().equalsIgnoreCase(User.getCurrentUser(mContext).getId())))
+        if (mDataList.get(position).getIsLike())
             holder.imgLike.setImageResource(R.drawable.like);
         else
             holder.imgLike.setImageResource(R.drawable.dislike);
@@ -321,8 +324,18 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     MenuItem edit= (MenuItem) popup.getMenu().findItem(R.id.edit);
                     MenuItem delete= (MenuItem) popup.getMenu().findItem(R.id.delete);
                     spam.setVisible(true);
-                    edit.setVisible(false);
-                    delete.setVisible(false);
+
+                    Log.e("title 111->",mActivity.HoSupportCommunity);
+
+                    if (mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getId())) {
+                        delete.setVisible(true);
+                        edit.setVisible(true);
+
+                    }else {
+                        delete.setVisible(false);
+                        edit.setVisible(false);
+                    }
+
 
 
 
@@ -330,7 +343,26 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem item) {
                             if (item.getTitle().toString().equalsIgnoreCase("Spam")) {
-                                Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId());
+                                Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getId());
+                            }else if (item.getTitle().toString().equalsIgnoreCase("Delete")) {
+                                postId = mDataList.get(position).getId();
+                                deletePosition = position;
+                                showDeletePopUp();
+                            }else if (item.getTitle().toString().equalsIgnoreCase("Edit")) {
+                                if (mActivity.HoSupportCommunity.equalsIgnoreCase("Ho Support")){
+                                    Intent intent;
+                                    intent = new Intent(mContext, IssueTemplateActivity.class);
+                                    intent.putExtra("EDIT", true);
+                                    intent.putExtra(Constants.CONTENT, mDataList.get(position));
+                                    mContext.startActivity(intent);
+
+                                }else {
+                                    Intent intent;
+                                    intent = new Intent(mContext, ReportingTemplateActivity.class);
+                                    intent.putExtra("EDIT", true);
+                                    intent.putExtra(Constants.CONTENT, mDataList.get(position));
+                                    mContext.startActivity(intent);
+                                }
                             }
                             return true;
                         }
@@ -338,7 +370,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                  popup.show();
                 }
             });
-
 
 
     }
@@ -505,7 +536,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         public ImageView picture, userImage, imgLike, img_comment,play,imgMore;
         public CardView card_view;
         public RelativeLayout audioLayout, layout_Video;
-        public TextView txt_audio_txt,txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type,txt_tag,txt_detail;
+        public TextView txt_id,txt_audio_txt,txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type,txt_tag,txt_detail;
         public LinearLayout layout_like, mediaLayout, layout_comment, layout_share, layout_download,layout_download_file;
 
         public ViewHolder(View itemLayoutView) {
@@ -532,6 +563,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             txt_tag = (TextView) itemLayoutView.findViewById(R.id.txt_tag);
             txt_detail = (TextView) itemLayoutView.findViewById(R.id.txt_detail);
             imgMore = (ImageView) itemLayoutView.findViewById(R.id.imgMore);
+            txt_id =(TextView) itemLayoutView.findViewById(R.id.txt_id);
             /*Add the comment to particular posts by calling api. */
             layout_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -1110,6 +1142,67 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         return false;
     }
 
+    private void showDeletePopUp() {
+        final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(mContext).create();
+
+        // Setting Dialog Title
+        alertDialog.setTitle(mContext.getString(R.string.text_are_you_sure));
+
+        // Setting Dialog Message
+        alertDialog.setMessage(mContext.getString(R.string.text_delete));
+
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.drawable.logomulya);
+
+        // Setting CANCEL Button
+        alertDialog.setButton2(mContext.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+                // Write your code here to execute after dialog closed
+              /*  listOfWrongQuestions.add(mPosition);
+                prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
+            }
+        });
+        // Setting OK Button
+        alertDialog.setButton(mContext.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                DeletePost();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
+    private void DeletePost() {
+        Utills.showProgressDialog(mContext);
+
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
+        apiService.getSalesForceData(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.DeletePostUrl + postId).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    //AppDatabase.getAppDatabase(mContext).userDao().deletePost(postId);
+                    Utills.showToast("Post Deleted Successfully...", mContext);
+                    mDataList.remove(deletePosition);
+                    notifyItemRemoved(deletePosition);
+                } catch (Exception e) {
+                    Utills.hideProgressDialog();
+                    Utills.showToast(mContext.getString(R.string.error_something_went_wrong), mContext);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+                Utills.showToast(mContext.getString(R.string.error_something_went_wrong), mContext);
+            }
+        });
+
+    }
 
  /*   public  void spamContent(){
         String url = "";

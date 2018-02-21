@@ -302,7 +302,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
 
 
         holder.txt_type.setText(mDataList.get(position).getIssue_priority());
-        if ((mDataList.get(position).getIsLike()) && (mDataList.get(position).getUser_id().equalsIgnoreCase(User.getCurrentUser(mContext).getId())))
+        if ((mDataList.get(position).getIsLike()))
             holder.imgLike.setImageResource(R.drawable.like);
         else
             holder.imgLike.setImageResource(R.drawable.dislike);
@@ -757,7 +757,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    AppDatabase.getAppDatabase(mContext).userDao().deletePost(postId);
+                    //AppDatabase.getAppDatabase(mContext).userDao().deletePost(postId);
                     Utills.showToast("Post Deleted Successfully...", mContext);
                     mDataList.remove(deletePosition);
                     notifyItemRemoved(deletePosition);

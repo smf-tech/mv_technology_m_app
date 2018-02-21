@@ -79,6 +79,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     LinearLayout lnr_filter;
     private boolean filter = false;
     public String json;
+    public String HoSupportCommunity;
     private Boolean mySelection = false, myLocation = false;
     int filterflag = 0;
     TextView textNoData;
@@ -106,7 +107,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
     /*Get the Chat List from Database and set to the adapter , if No vales in table then get Chats from Server*/
     private void getChats(boolean isDialogShow) {
-        List<Content> temp = AppDatabase.getAppDatabase(this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),true);
+        List<Content> temp = AppDatabase.getAppDatabase(this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
         if (temp.size() == 0) {
             if (Utills.isConnected(this))
                 /*Api Call if  internet is available */
@@ -154,7 +155,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                             JSONArray jsonArray = new JSONArray(data);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));
-                            List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),true);
+                            List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
                             if ((temp.size() != 0) || (contentList.size() != 0)) {
                                 for (int i = 0; i < temp.size(); i++) {
                                     int j;
@@ -183,7 +184,9 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                                 }
 
 
-                                List<Content> contentList_fromDb = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),true);
+                                AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().deletepost(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),false,true);
+                                List<Content> contentList_fromDb = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
+
                               /*  chatList.clear();
                                 for (int i = 0; i < contentList_fromDb.size(); i++) {
                                     chatList.add(contentList_fromDb.get(i));
@@ -278,6 +281,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     private void initViews() {
         setActionbar(getIntent().getExtras().getString(Constants.TITLE));
         json = getIntent().getExtras().getString(Constants.LIST);
+        HoSupportCommunity = (getIntent().getExtras().getString(Constants.TITLE));
         final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 
         communityList = Arrays.asList(gson.fromJson(json, Community[].class));
@@ -345,7 +349,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 mySelection = false;
                 filterflag = 0;
-                chatList = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),true);
+                chatList = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),true,false);
 
 
                 adapter = new ContentAdapter(CommunityHomeActivity.this, chatList);
@@ -363,7 +367,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 myLocation = true;
                 filterflag = 2;
-                chatList = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),true);
+                chatList = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),true,false);
                 for (int i = 0; i < chatList.size(); i++) {
 
 
@@ -392,7 +396,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 myLocation = false;
                 filterflag = 3;
-                chatList = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),true);
+                chatList = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),true,false);
                 for (int i = 0; i < chatList.size(); i++) {
 
                     if (chatList.get(i).getTaluka() != null) {
@@ -490,11 +494,13 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                     preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Issue");
                     preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, Constants.ISSUEID);
                     intent = new Intent(CommunityHomeActivity.this, IssueTemplateActivity.class);
+                    intent.putExtra("EDIT", false);
                     startActivity(intent);
                 } else {
                     preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Report");
                     preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, Constants.REPORTID);
                     intent = new Intent(CommunityHomeActivity.this, ReportingTemplateActivity.class);
+                    intent.putExtra("EDIT", false);
                     startActivity(intent);
                 }
 

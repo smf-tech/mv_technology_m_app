@@ -64,6 +64,7 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -219,7 +220,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
 
     private void initViews() {
         setActionbar("Reporting Template");
-
+        isEdit = getIntent().getExtras().getBoolean("EDIT");
         preferenceHelper = new PreferenceHelper(this);
         binding.spinnerDistrict.setOnItemSelectedListener(this);
         binding.spinnerTaluka.setOnItemSelectedListener(this);
@@ -273,6 +274,16 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                     .into(binding.addImage);
             Constants.shareUri = null;
         }
+
+        if (isEdit) {
+            mContent = (Content) getIntent().getExtras().getSerializable(Constants.CONTENT);
+            binding.editTextContent.setText(mContent.getTitle());
+            binding.editTextDescription.setText(mContent.getDescription());
+            List<String> mList = new ArrayList<String>();
+            Collections.addAll(mList, getResources().getStringArray(R.array.array_of_reporting_type));
+            binding.spinnerIssue.setSelection(mList.indexOf(mContent.getReporting_type()));
+        }
+
     }
 
     private void setActionbar(String Title) {
@@ -329,6 +340,8 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
     public void onBtnSubmitClick() {
         if (isValidate()) {
             content = new Content();
+            if (isEdit)
+                content.setId(mContent.getId());
 //            content.setId(mContent.getId());
             content.setDescription(binding.editTextDescription.getText().toString().trim());
             content.setTitle(binding.editTextContent.getText().toString().trim());
