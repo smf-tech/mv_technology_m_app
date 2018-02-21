@@ -76,14 +76,14 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         // overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_clalender_fliter);
         binding.setActivity(this);
-        selectedState = User.getCurrentUser(getApplicationContext()).getState();
-        selectedDisrict = User.getCurrentUser(getApplicationContext()).getDistrict();
-        selectedTaluka = User.getCurrentUser(getApplicationContext()).getTaluka();
-        selectedCluster = User.getCurrentUser(getApplicationContext()).getCluster();
-        selectedVillage = User.getCurrentUser(getApplicationContext()).getVillage();
-        selectedSchool = User.getCurrentUser(getApplicationContext()).getSchool_Name();
-        selectedOrganization = User.getCurrentUser(getApplicationContext()).getOrganisation();
-        selectedRole = User.getCurrentUser(getApplicationContext()).getRoll();
+        selectedState = User.getCurrentUser(getApplicationContext()).getMvUser().getState();
+        selectedDisrict = User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict();
+        selectedTaluka = User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka();
+        selectedCluster = User.getCurrentUser(getApplicationContext()).getMvUser().getCluster();
+        selectedVillage = User.getCurrentUser(getApplicationContext()).getMvUser().getVillage();
+        selectedSchool = User.getCurrentUser(getApplicationContext()).getMvUser().getSchool_Name();
+        selectedOrganization = User.getCurrentUser(getApplicationContext()).getMvUser().getOrganisation();
+        selectedRole = User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
 
         initViews();
     }
@@ -112,7 +112,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         binding.etEventDate.setFocusable(false);
         binding.etEventDate.setClickable(true);
         binding.spinnerRole.setOnClickListener(this);
-        binding.spinnerRole.setText(User.getCurrentUser(getApplicationContext()).getRoll());
+        binding.spinnerRole.setText(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll());
         mStateList = new ArrayList<String>();
         mStateList.add("Select");
         //mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
@@ -394,7 +394,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
 
                         mListCluster.clear();
-                        mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
+                        mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
                         mListCluster.removeAll(Collections.singleton(null));
                         if (mListCluster.size() == 0) {
                             mListCluster.add(0, "Select");
@@ -403,7 +403,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                             else {
 
                                 mListCluster.clear();
-                                mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
+                                mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
                                 mListCluster.add(0, "Select");
                                 mListCluster.removeAll(Collections.singleton(null));
                                 setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster, selectedCluster);
@@ -434,14 +434,14 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
 
                         mListVillage.clear();
-                        mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
+                        mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
                         mListVillage.removeAll(Collections.singleton(null));
                         if (mListVillage.size() == 0) {
                             if (Utills.isConnected(this))
                                 getVillage();
                             else {
                                 mListVillage.clear();
-                                mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
+                                mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
                                 mListVillage.add(0, "Select");
                                 mListVillage.removeAll(Collections.singleton(null));
                                 setSpinnerAdapter(mListVillage, village_adapter, binding.spinnerVillage, selectedVillage);
@@ -469,14 +469,14 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                     // selectedSchool="";
 
                         mListSchoolName.clear();
-                        mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
+                        mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
                         mListSchoolName.removeAll(Collections.singleton(null));
                         if (mListSchoolName.size() == 0) {
                             if (Utills.isConnected(this))
                                 getSchool();
                             else {
                                 mListSchoolName.clear();
-                                mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
+                                mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
                                 mListSchoolName.add(0, "Select");
                                 mListSchoolName.removeAll(Collections.singleton(null));
                                 setSpinnerAdapter(mListSchoolName, school_adapter, binding.spinnerSchoolName, selectedSchool);
@@ -778,7 +778,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         }
         final boolean[] mSelection = new boolean[items.length];
         Arrays.fill(mSelection, false);
-        mSelection[mListRoleName.indexOf(User.getCurrentUser(getApplicationContext()).getRoll())] = true;
+        mSelection[mListRoleName.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll())] = true;
 
 // arraylist to keep the selected items
         final ArrayList seletedItems = new ArrayList();

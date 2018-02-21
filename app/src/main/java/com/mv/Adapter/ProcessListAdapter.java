@@ -121,6 +121,8 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         // holder.txtCommunityName.setText(Utills.getDate(Long.valueOf(tasks.get(0).getTimestamp__c()), "dd/MM/yyyy hh:mm:ss.SSS"));
         if (resultList.get(position).getHeaderPosition() == 999999999)
             holder.txtCommunityName.setText(Utills.getDate(Long.valueOf(tasks.get(0).getTimestamp__c()), "dd/MM/yyyy hh:mm:ss.SSS"));
+        else if(tasks.get(resultList.get(position).getHeaderPosition()).getTask_Response__c().equals("")||tasks.get(resultList.get(position).getHeaderPosition()).getTask_Response__c().equals("Select"))
+            holder.txtCommunityName.setText(Utills.getDate(Long.valueOf(tasks.get(0).getTimestamp__c()), "dd/MM/yyyy hh:mm:ss.SSS"));
         else
             holder.txtCommunityName.setText(tasks.get(resultList.get(position).getHeaderPosition()).getTask_Response__c());
 

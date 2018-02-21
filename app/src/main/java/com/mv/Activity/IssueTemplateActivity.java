@@ -67,6 +67,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -167,7 +168,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         Utills.showProgressDialog(this, "Loading Districts", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getDistrict(User.getCurrentUser(IssueTemplateActivity.this).getState()).enqueue(new Callback<ResponseBody>() {
+        apiService.getDistrict(User.getCurrentUser(IssueTemplateActivity.this).getMvUser().getState()).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -179,7 +180,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                         mListDistrict.add(jsonArray.getString(i));
                     }
                     district_adapter.notifyDataSetChanged();
-                    binding.spinnerDistrict.setSelection(mListDistrict.indexOf(User.getCurrentUser(IssueTemplateActivity.this).getDistrict()));
+                    binding.spinnerDistrict.setSelection(mListDistrict.indexOf(User.getCurrentUser(IssueTemplateActivity.this).getMvUser().getDistrict()));
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -203,7 +204,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         Utills.showProgressDialog(this, getString(R.string.loding_taluka), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getTaluka(User.getCurrentUser(IssueTemplateActivity.this).getState(), mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
+        apiService.getTaluka(User.getCurrentUser(IssueTemplateActivity.this).getMvUser().getState(), mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -230,7 +231,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
 
     private void initViews() {
         setActionbar(getString(R.string.issue_template));
-
+        isEdit = getIntent().getExtras().getBoolean("EDIT");
         preferenceHelper = new PreferenceHelper(this);
 
         binding.spinnerDistrict.setOnItemSelectedListener(this);
@@ -243,12 +244,12 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         mListTaluka = new ArrayList<String>();
 
         mListDistrict.add("Select");
-        mListDistrict.add(User.getCurrentUser(this).getDistrict());
+        mListDistrict.add(User.getCurrentUser(this).getMvUser().getDistrict());
 
 
         mListTaluka.add("Select");
         if (!Utills.isConnected(this)) {
-            List<String> list = AppDatabase.getAppDatabase(this).userDao().getTaluka(User.getCurrentUser(this).getState(), User.getCurrentUser(this).getDistrict());
+            List<String> list = AppDatabase.getAppDatabase(this).userDao().getTaluka(User.getCurrentUser(this).getMvUser().getState(), User.getCurrentUser(this).getMvUser().getDistrict());
             if (list.size() == 0) {
                 showPopUp();
             } else {
@@ -286,6 +287,16 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                     .into(binding.addImage);
             Constants.shareUri = null;
         }
+
+        if (isEdit) {
+            mContent = (Content) getIntent().getExtras().getSerializable(Constants.CONTENT);
+            binding.editTextContent.setText(mContent.getTitle());
+            binding.editTextDescription.setText(mContent.getDescription());
+            List<String> mList = new ArrayList<String>();
+            Collections.addAll(mList, getResources().getStringArray(R.array.array_of_issue));
+            binding.spinnerIssue.setSelection(mList.indexOf(mContent.getIssue_type()));
+        }
+
     }
 
     private void setActionbar(String Title) {
@@ -324,13 +335,15 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
     public void onBtnSubmitClick() {
         if (isValidate()) {
             content = new Content();
+            if (isEdit)
+                content.setId(mContent.getId());
             content.setDescription(binding.editTextDescription.getText().toString().trim());
             content.setTitle(binding.editTextContent.getText().toString().trim());
             content.setDistrict(mListDistrict.get(mSelectDistrict));
             content.setTaluka(mListTaluka.get(mSelectTaluka));
             content.setIssue_priority(mListIssuePriority.get(mSelectIssuePriority));
             content.setIssue_type(mListIssueType.get(mSelectIssueType));
-            content.setUser_id(User.getCurrentUser(this).getId());
+            content.setUser_id(User.getCurrentUser(this).getMvUser().getId());
             content.setCommunity_id(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
             content.setTemplate(preferenceHelper.getString(PreferenceHelper.TEMPLATEID));
             setdDataToSalesForcce();
@@ -684,7 +697,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                     }
                 }
                 mListTaluka.clear();
-                List<String> list = AppDatabase.getAppDatabase(this).userDao().getTaluka(User.getCurrentUser(this).getState(), User.getCurrentUser(this).getDistrict());
+                List<String> list = AppDatabase.getAppDatabase(this).userDao().getTaluka(User.getCurrentUser(this).getMvUser().getState(), User.getCurrentUser(this).getMvUser().getDistrict());
                 mListTaluka.add("Select");
                 for (int k = 0; k < list.size(); k++) {
                     mListTaluka.add(list.get(k));

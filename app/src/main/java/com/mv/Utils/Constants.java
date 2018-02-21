@@ -1,5 +1,6 @@
 package com.mv.Utils;
 
+import android.content.Context;
 import android.net.Uri;
 
 /**
@@ -18,7 +19,6 @@ public class Constants {
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
     public static String REPORTID = "a1G0k000000522K";
     public static String ISSUEID = "a1G0k000000522F";
-
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
     public static final String LANGUAGE_HINDI = "hi";
@@ -134,11 +134,11 @@ public class Constants {
     public static final String Userdetails_Url = "/services/apexrest/userdetails";
     public static final String MV_GetCommunities_c_Url = "/services/apexrest/MV_GetCommunities_c";
     public static final String DoLogout_url = "/services/apexrest/doLogout/";
-    public static final String GetUserData_url = "/services/apexrest/getUserData";
+    public static final String GetUserData_url = "/services/apexrest/getUserDataNew";
     public static final String MapParametersUrl = "/services/apexrest/MapParameters";
     public static final String GetSessionDatademo_Url = "/services/apexrest/getSessionDatademo/";
     public static final String Upload_Url = "http://mobileapp.mulyavardhan.org/upload.php";
-    public static final String GetLoginOTP_url = "/services/apexrest/getLoginOTP";
+    public static final String GetLoginOTP_url = "/services/apexrest/getLoginOTPNew";
     public static final String GetchartDatademoNew = "/services/apexrest/getchartDatademoNew";
     public static final String GetDashboardDatademoUrl = "/services/apexrest/getDashboardDatademo";
     public static final String GetApprovalProcessUrl = "/services/apexrest/getApprovalProcess";
@@ -147,23 +147,20 @@ public class Constants {
     public static final String GetprocessAnswerDataUrl = "/services/apexrest/getprocessAnswerDataNew";
     public static final String GetprocessTaskUrl = "/services/apexrest/getprocessTaskNew";
 
-
-    //  public static final String GetprocessAnswerDataUrl = "/services/apexrest/getprocessAnswerData";
-    //  public static final String GetprocessTaskUrl ="/services/apexrest/getprocessTask";
-    public static final String DeleteTaskAnswerUrl = "/services/apexrest/DeleteTaskAnswer/";
+    public static final String DeleteTaskAnswerUrl =  "/services/apexrest/DeleteTaskAnswer/";
     public static final String ApproveCommentforProcessUrl = "/services/apexrest/ApproveCommentforProcess";
     public static final String GetprocessAnswerTaskfoApprovalUrl = "/services/apexrest/getprocessAnswerTaskfoApproval";
     public static final String GetProjectDataUrl = "/services/apexrest/getProjectData";
     public static final String MV_RoleUrl = "/services/data/v36.0/query/?q=select+Id,Juridictions__c,Name+from+MV_Role__c+where+Organisation__c='";
-    public static final String MTRegisterUrl = "/services/apexrest/MTRegister";
+    public static final String MTRegisterUrl = "/services/apexrest/MTRegisterNew";
 
-    public static final String GetApprovalDataUrl = "/services/apexrest/getApprovalData";
-    public static final String WS_getProcessAprovalUserUrl = "/services/apexrest/WS_getProcessAprovalUser";
-    public static final String MV_GeTemplates_cUrl = "/services/apexrest/MV_GeTemplates_c";
-    public static final String ApproveCommentUrl = "/services/apexrest/ApproveComment";
-    public static final String SharedRecordsUrl = "/services/apexrest/sharedRecords";
-    public static final String RemoveLikeUrl = "/services/apexrest/removeLike";
-    public static final String InsertLikeUrl = "/services/apexrest/InsertLike";
+    public static final String GetApprovalDataUrl =     "/services/apexrest/getApprovalData";
+    public  static final String WS_getProcessAprovalUserUrl ="/services/apexrest/WS_getProcessAprovalUser";
+    public  static final String MV_GeTemplates_cUrl = "/services/apexrest/MV_GeTemplates_c";
+    public  static final String ApproveCommentUrl = "/services/apexrest/ApproveComment";
+    public  static final String SharedRecordsUrl =   "/services/apexrest/sharedRecords";
+    public  static final String RemoveLikeUrl = "/services/apexrest/removeLike";
+    public  static final String InsertLikeUrl = "/services/apexrest/InsertLike";
     public static final String SpamContentUrl = "/services/apexrest/spamContent";
 }
 

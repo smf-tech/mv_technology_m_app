@@ -63,7 +63,7 @@ public class SplashScreenActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(preference.getString(PreferenceHelper.UserRole))) {
                     intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
                 } else {
-                    if (User.getCurrentUser(SplashScreenActivity.this).getGender() == null || TextUtils.isEmpty(User.getCurrentUser(SplashScreenActivity.this).getGender())) {
+                    if (User.getCurrentUser(SplashScreenActivity.this).getMvUser().getGender() == null || TextUtils.isEmpty(User.getCurrentUser(SplashScreenActivity.this).getMvUser().getGender())) {
                         intent = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
                         intent.putExtra(Constants.ACTION, Constants.ACTION_EDIT);
                     } else {

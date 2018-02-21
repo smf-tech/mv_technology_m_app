@@ -154,6 +154,13 @@ public class Content implements Serializable {
     @SerializedName("isTheatMessage")
     @Expose
     String isTheatMessage;
+
+
+    @ColumnInfo(name = "isDelete")
+    @SerializedName("isDelete")
+    @Expose
+    Boolean isDelete;
+
     public String getIsAttachmentPresent() {
         return isAttachmentPresent;
     }
@@ -350,4 +357,14 @@ public class Content implements Serializable {
     public void setActive(boolean active) {
         isActive = active;
     }
+
+
+    public Boolean getDelete() {
+        return isDelete;
+    }
+
+    public void setDelete(Boolean delete) {
+        isDelete = delete;
+    }
+
 }

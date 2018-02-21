@@ -117,7 +117,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         mListSchoolName = new ArrayList<String>();
 
         mStateList = new ArrayList<String>();
-        mListDistrict.add(User.getCurrentUser(context).getDistrict());
+        mListDistrict.add(User.getCurrentUser(context).getMvUser().getDistrict());
         mListTaluka.add("Select");
         mListCluster.add("Select");
         mListVillage.add("Select");
@@ -126,12 +126,12 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
             getDistrict();
         else {
 
-            mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(User.getCurrentUser(context).getState());
+            mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(User.getCurrentUser(context).getMvUser().getState());
             mListDistrict.add(0, "Select");
         }*/
 
 
-        mStateList = new ArrayList<String>(Arrays.asList(getColumnIdex((User.getCurrentUser(getApplicationContext()).getState()).split(","))));
+        mStateList = new ArrayList<String>(Arrays.asList(getColumnIdex((User.getCurrentUser(getApplicationContext()).getMvUser().getState()).split(","))));
         mStateList.add(0, "Select");
         state_adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, mStateList);
@@ -245,7 +245,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                     if (Utills.isConnected(this))
                         getDistrict();
                     else {
-                        mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(User.getCurrentUser(context).getState());
+                        mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(User.getCurrentUser(context).getMvUser().getState());
                         mListDistrict.add(0, "Select");
                         district_adapter = new ArrayAdapter<String>(this,
                                 android.R.layout.simple_spinner_item, mListDistrict);
@@ -291,7 +291,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
 
 
                         mListTaluka.clear();
-                        mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict));
+                        mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict));
                         mListTaluka.add(0, "Select");
                         taluka_adapter = new ArrayAdapter<String>(this,
                                 android.R.layout.simple_spinner_item, mListTaluka);
@@ -331,7 +331,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                     else {
                         mListCluster.clear();
                         mListCluster.add("Select");
-                        mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
+                        mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
                         mListCluster.add(0, "Select");
                        cluster_adapter = new ArrayAdapter<String>(this,
                                 android.R.layout.simple_spinner_item, mListCluster);
@@ -364,7 +364,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                         getVillage();
                     else {
                         mListVillage.clear();
-                        mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
+                        mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
                         mListVillage.add(0, "Select");
                     /*    village_adapter = new ArrayAdapter<String>(this,
                                 android.R.layout.simple_spinner_item, mListVillage);
@@ -395,7 +395,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                     else {
                         mListSchoolName.clear();
                         mListSchoolName.add("Select");
-                        mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
+                        mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
                         mListSchoolName.add(0, "Select");
                        /* school_adapter = new ArrayAdapter<String>(this,
                                 android.R.layout.simple_spinner_item, mListSchoolName);
@@ -428,7 +428,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         Utills.showProgressDialog(this, getString(R.string.loding_village), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getVillage(User.getCurrentUser(IndicatorLocationSelectionActivity.this).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster)).enqueue(new Callback<ResponseBody>() {
+        apiService.getVillage(User.getCurrentUser(IndicatorLocationSelectionActivity.this).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -457,7 +457,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
 
-        apiService.getSchool(User.getCurrentUser(IndicatorLocationSelectionActivity.this).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage)).enqueue(new Callback<ResponseBody>() {
+        apiService.getSchool(User.getCurrentUser(IndicatorLocationSelectionActivity.this).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -504,7 +504,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 mStateList.add(jsonArray.getString(i));
                             }
-                            setSpinnerAdapter(mStateList, state_adapter, binding.spinnerState, User.getCurrentUser(getApplicationContext()).getState());
+                            setSpinnerAdapter(mStateList, state_adapter, binding.spinnerState, User.getCurrentUser(getApplicationContext()).getMvUser().getState());
 
                         }
                     }
@@ -540,7 +540,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                     for (int i = 0; i < jsonArray.length(); i++) {
                         mListDistrict.add(jsonArray.getString(i));
                     }
-                    setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, User.getCurrentUser(getApplicationContext()).getDistrict());
+                    setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -574,7 +574,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                     for (int i = 0; i < jsonArr.length(); i++) {
                         mListTaluka.add(jsonArr.getString(i));
                     }
-                    setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, User.getCurrentUser(getApplicationContext()).getTaluka());
+                    setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
                     // taluka_adapter.notifyDataSetChanged();
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
@@ -592,7 +592,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         Utills.showProgressDialog(this, getString(R.string.loding_cluster), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getCluster(User.getCurrentUser(IndicatorLocationSelectionActivity.this).getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka)).enqueue(new Callback<ResponseBody>() {
+        apiService.getCluster(User.getCurrentUser(IndicatorLocationSelectionActivity.this).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();

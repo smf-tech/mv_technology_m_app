@@ -172,7 +172,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getcalenderEventRecords?userId=" + User.getCurrentUser(context).getId();
+                + "/services/apexrest/getcalenderEventRecords?userId=" + User.getCurrentUser(context).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

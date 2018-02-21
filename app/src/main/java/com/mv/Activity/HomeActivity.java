@@ -16,9 +16,6 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -150,8 +147,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         date = new Date(System.currentTimeMillis());
 
 
-        if ((User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) || (User.getCurrentUser(getApplicationContext()).getRoll().equals("MT"))) {
-            if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("true")) {
+        if ((User.getCurrentUser(getApplicationContext()).getMvUser().getRoll().equals("TC")) || (User.getCurrentUser(getApplicationContext()).getMvUser().getRoll().equals("MT"))) {
+            if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("true")) {
 
 
                 if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -199,7 +196,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         initViews();
-        if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
+        if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
             if (Utills.isConnected(this))
                 getUserData();
         }
@@ -215,8 +212,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onResume() {
         super.onResume();
-        if ((User.getCurrentUser(getApplicationContext()).getRoll().equals("TC")) || (User.getCurrentUser(getApplicationContext()).getRoll().equals("MT"))) {
-            if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("true")) {
+        if ((User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationTrackingAllow__c().equals("true"))) {
+            if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("true")) {
                 final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
 
@@ -270,8 +267,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         Intent intent = new Intent(this, LocationService.class);
         // add infos for the service which file to download and where to store
-        intent.putExtra(Constants.State, User.getCurrentUser(getApplicationContext()).getState());
-        intent.putExtra(Constants.DISTRICT, User.getCurrentUser(getApplicationContext()).getDistrict());
+        intent.putExtra(Constants.State, User.getCurrentUser(getApplicationContext()).getMvUser().getState());
+        intent.putExtra(Constants.DISTRICT, User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
         startService(intent);
     }
 
@@ -283,13 +280,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         List<String> allTab = new ArrayList<>();
         menulist = new ArrayList<>();
 
-        if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
-            if(!User.getCurrentUser(getApplicationContext()).getIsApproved().equals(""))
-            allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameNoteApproved().split(";")));
+        if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
+            if(!User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equals(""))
+            allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().split(";")));
             showApprovedDilaog();
         } else {
-            if(!User.getCurrentUser(getApplicationContext()).getTabNameApproved().equals(""))
-            allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getTabNameApproved().split(";")));
+            if(!User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().equals(""))
+            allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().split(";")));
 
         }
         menuListName = new ArrayList<>();
@@ -550,7 +547,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.ISROLECHANGE && resultCode == RESULT_OK) {
 
-            if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
+            if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
             } else {
                 if (alertDialogApproved != null && alertDialogApproved.isShowing())
                     alertDialogApproved.dismiss();
@@ -683,7 +680,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             ServiceRequest apiService =
                     ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
             String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + Constants.DoLogout_url + User.getCurrentUser(this).getId();
+                    + Constants.DoLogout_url + User.getCurrentUser(this).getMvUser().getId();
 
             apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -756,8 +753,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         alertDialogApproved.setTitle(getString(R.string.app_name));
 
         // Setting Dialog Message
-        if (User.getCurrentUser(getApplicationContext()).getApproval_role() != null) {
-            message = getString(R.string.approve_profile) + "\n" + User.getCurrentUser(getApplicationContext()).getApproval_role() + " " + getString(R.string.approve_profile2);
+        if (User.getCurrentUser(getApplicationContext()).getMvUser().getApproval_role() != null) {
+            message = getString(R.string.approve_profile) + "\n" + User.getCurrentUser(getApplicationContext()).getMvUser().getApproval_role() + " " + getString(R.string.approve_profile2);
         } else {
             message = getString(R.string.approve_profile);
         }
@@ -829,7 +826,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetUserData_url+"?userId=" + User.getCurrentUser(getApplicationContext()).getId();
+                + Constants.GetUserData_url+"?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -841,7 +838,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         preferenceHelper.insertString(PreferenceHelper.UserData, data);
                         User.clearUser();
 
-                        if (User.getCurrentUser(getApplicationContext()).getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getIsApproved().equalsIgnoreCase("false")) {
+                        if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
                         } else {
                             if (alertDialogApproved != null && alertDialogApproved.isShowing())
                                 alertDialogApproved.dismiss();
@@ -952,6 +949,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             // Showing Alert Message
             alertLocationDialog.show();
+            alertLocationDialog.setCancelable(false);
         }
 
     }
@@ -968,7 +966,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
             jsonObject.put("lat", latitude);
             jsonObject.put("lon", longitude);
-            jsonObject.put("id", User.getCurrentUser(this).getId());
+            jsonObject.put("id", User.getCurrentUser(this).getMvUser().getId());
             JsonParser jsonParser = new JsonParser();
             JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
 
@@ -982,10 +980,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             String data = response.body().string();
                             if (data != null && data.length() > 0) {
                                 JSONObject jsonObject = new JSONObject(data);
-                                String status = jsonObject.getString("status");
+                                String statusofmap = jsonObject.getString("status");
                                 String message = jsonObject.getString("msg");
-                                //Utills.showToast(status,HomeActivity.this);
-                                if (status.equals("Success")) {
+                                Utills.showToast(statusofmap,HomeActivity.this);
+                                if (statusofmap.equals("Success")) {
 
 
 
@@ -1034,14 +1032,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
           public void onClick(DialogInterface dialogInterface, int position) {
               dialogInterface.dismiss();
               switch (position){
-                  case 0:  Uri uri = Uri.parse("https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2"); // missing 'http://' will cause crashed
+                  case 0:  Uri uri = Uri.parse(User.getCurrentUser(getApplicationContext()).getAppConfig().getHangout_URL__c()); // missing 'http://' will cause crashed
                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                             startActivity(intent);
                       break;
                   case 1:    Intent dial = new Intent();
                       dial.setAction("android.intent.action.DIAL");
                       try {
-                          dial.setData(Uri.parse("tel:020 6605 114"));
+                          dial.setData(Uri.parse(User.getCurrentUser(getApplicationContext()).getAppConfig().getContact_No__c()));
                           startActivity(dial);
                       } catch (Exception e) {
                           Log.e("Calling", "" + e.getMessage());
@@ -1080,8 +1078,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             RateThisApp.showRateDialog(HomeActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
 
         } else if (id == R.id.action_add_school) {
-            String role=User.getCurrentUser(getApplicationContext()).getRoll();
-            if(role.equals("PC")||role.equals("MT")||role.equals("TC")||role.equals("PM")) {
+            String role=User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
+            if((User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationAllow__c().equals("true"))) {
                 Intent openClass = new Intent(HomeActivity.this, AddSchoolActivity.class);
                 startActivity(openClass);
             }

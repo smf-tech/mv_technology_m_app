@@ -69,7 +69,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         preferenceHelper = new PreferenceHelper(context);
         if(approvalType.equals(Constants.USER_APPROVAL)) {
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + Constants.GetApprovalDataUrl+"?userId=" + User.getCurrentUser(context).getId();
+                    + Constants.GetApprovalDataUrl+"?userId=" + User.getCurrentUser(context).getMvUser().getId();
 
             setActionbar(getString(R.string.team_user_approval));
         }else if(approvalType.equals(Constants.PROCESS_APPROVAL))
@@ -77,7 +77,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
             id=getIntent().getExtras().getString(Constants.ID);
             processTitle= getIntent().getExtras().getString(Constants.TITLE);
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                  + Constants.WS_getProcessAprovalUserUrl+"?UserId="+ User.getCurrentUser(context).getId()+ "&processId="+id ;;
+                  + Constants.WS_getProcessAprovalUserUrl+"?UserId="+ User.getCurrentUser(context).getMvUser().getId()+ "&processId="+id ;;
             setActionbar(processTitle);
         }
         binding.swiperefresh.setOnRefreshListener(
@@ -128,7 +128,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
        // String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-         //       + "/services/apexrest/WS_getProcessAprovalUser?UserId="+ User.getCurrentUser(context).getId()+ "&processId=a1I7F000000VeJQUA0" ;;
+         //       + "/services/apexrest/WS_getProcessAprovalUser?UserId="+ User.getCurrentUser(context).getMvUser().getId()+ "&processId=a1I7F000000VeJQUA0" ;;
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

@@ -229,7 +229,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
 
                 jsonObject1.put("MV_Content__c", conetentId);
                 jsonObject1.put("Comment__c", binding.edtComment.getText().toString().trim());
-                jsonObject1.put("MV_User__c", User.getCurrentUser(this).getId());
+                jsonObject1.put("MV_User__c", User.getCurrentUser(this).getMvUser().getId());
 
                 jsonArray.put(jsonObject1);
                 jsonObject.put("listOfComments", jsonArray);
@@ -245,7 +245,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                         try {
                             Comment comment = new Comment();
                             comment.setComment(binding.edtComment.getText().toString().trim());
-                            comment.setUserName(User.getCurrentUser(CommentActivity.this).getName());
+                            comment.setUserName(User.getCurrentUser(CommentActivity.this).getMvUser().getName());
                             Calendar c = Calendar.getInstance();
                             System.out.println("Current time => " + c.getTime());
                             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

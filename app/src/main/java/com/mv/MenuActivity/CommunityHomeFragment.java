@@ -146,11 +146,11 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
         String url = "";
         if (isTimePresent)
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/getBroadcastContent?userId=" + User.getCurrentUser(context).getId()
+                    + "/services/apexrest/getBroadcastContent?userId=" + User.getCurrentUser(context).getMvUser().getId()
                     + "&timestamp=" + chatList.get(0).getTime();
         else
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/getBroadcastContent?userId=" + User.getCurrentUser(context).getId();
+                    + "/services/apexrest/getBroadcastContent?userId=" + User.getCurrentUser(context).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
