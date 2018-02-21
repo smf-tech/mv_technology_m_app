@@ -303,7 +303,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             }
         }
         if (msg.isEmpty()) {
-            preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
+
             Intent openClass = new Intent(context, ProcessDeatailActivity.class);
             // openClass.putExtra(Constants.PROCESS_ID, taskList);
             openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskList);
@@ -330,13 +330,9 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             }
         }
         if (!selectedSpinner.getSelectedItem().toString().equals("Select")) {
-
             Intent openClass = new Intent(context, ProcessDeatailActivity.class);
-            // openClass.putExtra(Constants.PROCESS_ID, dashaBoardListModel);
             openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskList);
-            //  openClass.putExtra("stock_list", resultList.get(getAdapterPosition()).get(0));
             setResult(RESULT_OK, openClass);
-            //  startActivity(openClass);
             finish();
             overridePendingTransition(R.anim.right_in, R.anim.left_out);
         } else {

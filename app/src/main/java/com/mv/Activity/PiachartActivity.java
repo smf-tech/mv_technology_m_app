@@ -117,9 +117,9 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
         if (locationModel == null) {
             locationModel = new LocationModel();
-            locationModel.setState(User.getCurrentUser(getApplicationContext()).getState());
-            locationModel.setDistrict(User.getCurrentUser(getApplicationContext()).getDistrict());
-            locationModel.setTaluka(User.getCurrentUser(getApplicationContext()).getTaluka());
+            locationModel.setState(User.getCurrentUser(getApplicationContext()).getMvUser().getState());
+            locationModel.setDistrict(User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
+            locationModel.setTaluka(User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
 
         }
 
@@ -179,10 +179,10 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                                 Content content = new Content();
                                 content.setDescription("");
                                 content.setTitle(title);
-                                content.setDistrict(User.getCurrentUser(getApplicationContext()).getDistrict());
-                                content.setTaluka(User.getCurrentUser(getApplicationContext()).getTaluka());
+                                content.setDistrict(User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
+                                content.setTaluka(User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
                                 content.setReporting_type("Information Sharing");
-                                content.setUser_id(User.getCurrentUser(getApplicationContext()).getId());
+                                content.setUser_id(User.getCurrentUser(getApplicationContext()).getMvUser().getId());
                                 content.setCommunity_id(temp.get(i).getId());
                                 content.setTemplate(preferenceHelper.getString(PreferenceHelper.TEMPLATEID));
                                 contentsList.add(content);
@@ -252,8 +252,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
             ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, myList);
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             role.setAdapter(arrayAdapter);
-            if(myList.contains(User.getCurrentUser(getApplicationContext()).getRoll()))
-            role.setSelection(myList.indexOf(User.getCurrentUser(getApplicationContext()).getRoll()));
+            if(myList.contains(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll()))
+            role.setSelection(myList.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll()));
         }
         preferenceHelper = new PreferenceHelper(PiachartActivity.this);
         mChart = (PieChart) findViewById(R.id.chart1);
@@ -491,7 +491,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getDashboardDatademo?userId=" + User.getCurrentUser(PiachartActivity.this).getId() + "&qustionArea=" + title;
+                + "/services/apexrest/getDashboardDatademo?userId=" + User.getCurrentUser(PiachartActivity.this).getMvUser().getId() + "&qustionArea=" + title;
 
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {

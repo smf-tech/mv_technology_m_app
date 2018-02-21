@@ -65,15 +65,15 @@ public class IndicatortaskAdapter extends RecyclerView.Adapter<IndicatortaskAdap
     }
 
     @Override
-    public IndicatortaskAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_template, parent, false);
 
-        return new IndicatortaskAdapter.MyViewHolder(itemView);
+        return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(IndicatortaskAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, int position) {
 
         holder.txtCommunityName.setText(indicatortaskList.get(position).getSection_Name__c());
     }

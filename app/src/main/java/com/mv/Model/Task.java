@@ -144,6 +144,18 @@ public class Task implements Parcelable {
     @Expose
     private String IsEditable;
 
+    public String getIsHeader() {
+        return isHeader;
+    }
+
+    public void setIsHeader(String isHeader) {
+        this.isHeader = isHeader;
+    }
+
+    @ColumnInfo(name = "isHeader")
+    @SerializedName("isHeader")
+    @Expose
+    private String isHeader;
 
     public String getIsEditable__c() {
         return IsEditable;
@@ -343,6 +355,7 @@ public class Task implements Parcelable {
         dest.writeString(this.Section_Name__c);
         dest.writeString(this.status);
         dest.writeString(this.IsEditable);
+        dest.writeString(this.isHeader);
     }
 
     protected Task(Parcel in) {
@@ -369,6 +382,7 @@ public class Task implements Parcelable {
         this.Section_Name__c = in.readString();
         this.status = in.readString();
         this.IsEditable = in.readString();
+        this.isHeader = in.readString();
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {

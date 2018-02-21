@@ -77,7 +77,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     String timestamp;
     Activity context;
-
+    public int headerPosition = 999999999;
     Button submit, save, approve, reject;
 
     ProcessDetailAdapter adapter;
@@ -227,7 +227,9 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     else*/
                     taskList.get(i).setIsSave(Constants.PROCESS_STATE_SAVE);
                     taskList.get(i).setTimestamp__c(timestamp);
-                    taskList.get(i).setMTUser__c(User.getCurrentUser(context).getId());
+                    if ( taskList.get(i).getIsHeader().equals("true"))
+                        headerPosition = i;
+                    taskList.get(i).setMTUser__c(User.getCurrentUser(context).getMvUser().getId());
                     if (preferenceHelper.getBoolean(Constants.NEW_PROCESS))
                         taskList.get(i).setId(null);
 
@@ -238,11 +240,14 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 TaskContainerModel taskContainerModel = new TaskContainerModel();
                 taskContainerModel.setTaskListString(json);
                 taskContainerModel.setTaskType(Constants.TASK_ANSWER);
+                taskContainerModel.setHeaderPosition(headerPosition);
                 taskContainerModel.setIsSave(Constants.PROCESS_STATE_SAVE);
                 taskContainerModel.setMV_Process__c(taskList.get(0).getMV_Process__c());
+
                 if (preferenceHelper.getBoolean(Constants.NEW_PROCESS)) {
 
                     //if process is new  INSERT it with timestmap as id
+
                     taskContainerModel.setUnique_Id(id);
                     AppDatabase.getAppDatabase(context).userDao().insertTask(taskContainerModel);
                 } else {
@@ -333,7 +338,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
         for (int i = 0; i < taskList.size(); i++) {
             taskList.get(i).setTimestamp__c(timestamp);
-            taskList.get(i).setMTUser__c(User.getCurrentUser(context).getId());
+            taskList.get(i).setMTUser__c(User.getCurrentUser(context).getMvUser().getId());
             taskList.get(i).setIsSave(Constants.PROCESS_STATE_SUBMIT);
             if (preferenceHelper.getBoolean(Constants.NEW_PROCESS))
                 taskList.get(i).setId(null);
@@ -341,7 +346,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 manditoryFlag = true;
                 msg = "please check " + taskList.get(i).getTask_Text__c();
                 break;
-
             }
             if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.IMAGE)) {
                 if (FinalUri != null) {
@@ -560,7 +564,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 JSONObject jsonObject1 = new JSONObject();
 
                 jsonObject1.put("uniqueId", taskList.get(0).getUnique_Id__c());
-                jsonObject1.put("ApprovedBy", User.getCurrentUser(getApplicationContext()).getId());
+                jsonObject1.put("ApprovedBy", User.getCurrentUser(getApplicationContext()).getMvUser().getId());
 
                 JSONArray jsonArrayAttchment = new JSONArray();
 

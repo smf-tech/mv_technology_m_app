@@ -98,7 +98,7 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
                         } else if (mDataList.get(getAdapterPosition()).getFileType().equalsIgnoreCase("audio")) {
                             String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getName() + ".mp3";
                             Intent intent = new Intent();
-                            intent.setAction(android.content.Intent.ACTION_VIEW);
+                            intent.setAction(Intent.ACTION_VIEW);
                             File file = new File("/sdcard/test.mp3");
                             intent.setDataAndType(Uri.fromFile(new File(filePath)), "audio/*");
                             PackageManager packageManager = mContext.getPackageManager();
@@ -110,7 +110,7 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
                         } else if (mDataList.get(getAdapterPosition()).getFileType().equalsIgnoreCase("video")) {
                             String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getName() + ".mp4";
                             Intent intent = new Intent();
-                            intent.setAction(android.content.Intent.ACTION_VIEW);
+                            intent.setAction(Intent.ACTION_VIEW);
                             intent.setDataAndType(Uri.fromFile(new File(filePath)), "video/*");
                             PackageManager packageManager = mContext.getPackageManager();
                             if (intent.resolveActivity(packageManager) != null) {
@@ -121,7 +121,7 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
                         } else if (mDataList.get(getAdapterPosition()).getFileType().equalsIgnoreCase("pdf")) {
                             String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getName() + ".pdf";
                             Intent intent = new Intent();
-                            intent.setAction(android.content.Intent.ACTION_VIEW);
+                            intent.setAction(Intent.ACTION_VIEW);
                             intent.setDataAndType(Uri.fromFile(new File(filePath)), "application/pdf");
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             PackageManager packageManager = mContext.getPackageManager();

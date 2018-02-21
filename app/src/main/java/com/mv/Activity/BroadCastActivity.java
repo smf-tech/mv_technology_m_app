@@ -205,7 +205,7 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
 
 // arraylist to keep the selected items
         final ArrayList seletedItems = new ArrayList();
-        android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(this)
+        AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Select Roles")
                 .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override

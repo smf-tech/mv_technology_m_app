@@ -96,12 +96,12 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     protected void onResume() {
         super.onResume();
         resultList.clear();
-        LocationSelectionActity.selectedState = User.getCurrentUser(getApplicationContext()).getState();
-        LocationSelectionActity.selectedDisrict = User.getCurrentUser(getApplicationContext()).getDistrict();
-        LocationSelectionActity.selectedTaluka = User.getCurrentUser(getApplicationContext()).getTaluka();
-        LocationSelectionActity.selectedCluster = User.getCurrentUser(getApplicationContext()).getCluster();
-        LocationSelectionActity.selectedVillage = User.getCurrentUser(getApplicationContext()).getVillage();
-        LocationSelectionActity.selectedSchool = User.getCurrentUser(getApplicationContext()).getSchool_Name();
+        LocationSelectionActity.selectedState = User.getCurrentUser(getApplicationContext()).getMvUser().getState();
+        LocationSelectionActity.selectedDisrict = User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict();
+        LocationSelectionActity.selectedTaluka = User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka();
+        LocationSelectionActity.selectedCluster = User.getCurrentUser(getApplicationContext()).getMvUser().getCluster();
+        LocationSelectionActity.selectedVillage = User.getCurrentUser(getApplicationContext()).getMvUser().getVillage();
+        LocationSelectionActity.selectedSchool = User.getCurrentUser(getApplicationContext()).getMvUser().getSchool_Name();
         getAllProcessData();
 
     }
@@ -193,7 +193,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetprocessAnswerDataUrl + "?processId=" + proceesId + "&UserId=" + User.getCurrentUser(this).getId() + "&language=" + preferenceHelper.getString(Constants.LANGUAGE);
+                + Constants.GetprocessAnswerDataUrl + "?processId=" + proceesId + "&UserId=" + User.getCurrentUser(this).getMvUser().getId() + "&language=" + preferenceHelper.getString(Constants.LANGUAGE);
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -224,8 +224,10 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     processList.setIs_Response_Mnadetory__c(jsonArray.getJSONObject(i).getBoolean("Is_Mandotory"));
                                     processList.setTask_type__c(jsonArray.getJSONObject(i).getString("Task_Type"));
                                     processList.setTask_Text__c(jsonArray.getJSONObject(i).getString("Question"));
-                                    if (jsonArray.getJSONObject(i).getString("isHeader").equals("true"))
+                                    if (jsonArray.getJSONObject(i).getString("isHeader").equals("true")) {
                                         headerPosition = i;
+                                    }
+                                    processList.setIsHeader(jsonArray.getJSONObject(i).getString("isHeader"));
 
                                     if (!jsonArray.getJSONObject(i).getString("lanTsaskText").equals("null"))
                                         processList.setTask_Text___Lan_c(jsonArray.getJSONObject(i).getString("lanTsaskText"));
@@ -332,8 +334,11 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 processList.setMV_Task__c_Id(resultJsonObj.getString("id"));
                                 processList.setName(resultJsonObj.getString("name"));
                                 processList.setIs_Completed__c(resultJsonObj.getBoolean("isCompleted"));
-                                if (resultJsonObj.getString("isHeader").equals("true"))
+                                if (resultJsonObj.getString("isHeader").equals("true")) {
                                     headerPosition = i;
+
+                                }
+                                processList.setIsHeader(resultJsonObj.getString("isHeader"));
                                 processList.setIs_Response_Mnadetory__c(resultJsonObj.getBoolean("isResponseMnadetory"));
                                 if (!resultJsonObj.getString("lanTsaskText").equals("null"))
                                     processList.setTask_Text___Lan_c(resultJsonObj.getString("lanTsaskText"));
@@ -356,25 +361,25 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     processList.setLocationLevel(resultJsonObj.getString("locationLevel"));
 
                                     if (resultJsonObj.getString("locationLevel").equals("State")) {
-                                        processList.setTask_Response__c(user.getState());
+                                        processList.setTask_Response__c(user.getMvUser().getState());
                                         //  LocationSelectionActity.selectedState = user.getState();
 
                                     } else if (resultJsonObj.getString("locationLevel").equals("District")) {
                                         // LocationSelectionActity.selectedDisrict = user.getDistrict();
 
-                                        processList.setTask_Response__c(user.getDistrict());
+                                        processList.setTask_Response__c(user.getMvUser().getDistrict());
                                     } else if (resultJsonObj.getString("locationLevel").equals("Taluka")) {
-                                        processList.setTask_Response__c(user.getTaluka());
+                                        processList.setTask_Response__c(user.getMvUser().getTaluka());
                                         //  LocationSelectionActity.selectedTaluka = user.getTaluka();
                                     } else if (resultJsonObj.getString("locationLevel").equals("Cluster")) {
                                         ///  LocationSelectionActity.selectedCluster = user.getCluster();
-                                        processList.setTask_Response__c(user.getCluster());
+                                        processList.setTask_Response__c(user.getMvUser().getCluster());
                                     } else if (resultJsonObj.getString("locationLevel").equals("Village")) {
                                         // LocationSelectionActity.selectedVillage = user.getVillage();
 
-                                        processList.setTask_Response__c(user.getVillage());
+                                        processList.setTask_Response__c(user.getMvUser().getVillage());
                                     } else if (resultJsonObj.getString("locationLevel").equals("School")) {
-                                        processList.setTask_Response__c(user.getSchool_Name());
+                                        processList.setTask_Response__c(user.getMvUser().getSchool_Name());
                                         //  LocationSelectionActity.selectedSchool = user.getSchool_Name();
                                     }
 
@@ -384,6 +389,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 processList.setTask_type__c(resultJsonObj.getString("tasktype"));
                                 processList.setValidation(resultJsonObj.getString("validaytionOnText"));
                                 processList.setIsSave(Constants.PROCESS_STATE_SAVE);
+
                                 // processList.setTimestamp__c(resultJsonObj.getString("Timestamp__c"));
                                 // processList.setMTUser__c(resultJsonObj.getString("MTUser__c"));
 
@@ -393,7 +399,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                             }
                             // each task list  convert to String and stored in process task filled
                             taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
-
+                            taskContainerModel.setHeaderPosition(headerPosition);
                             taskContainerModel.setIsSave(Constants.PROCESS_STATE_SAVE);
                             //task without answer
                             taskContainerModel.setTaskType(Constants.TASK_QUESTION);

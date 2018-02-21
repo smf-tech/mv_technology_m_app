@@ -89,13 +89,13 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
                     String data=response.body().string();
                     mUser = gson.fromJson(data, User.class);
 
-                    binding.editTextName.setText(mUser.getName());
-                    binding.editTextMidleName.setText(mUser.getMiddleName());
-                    binding.editTextLastName.setText(mUser.getLastName());
-                    binding.editTextMobileNumber.setText(mUser.getPhone());
-                    binding.editTextEmail.setText(mUser.getEmail());
-                    binding.editOrganization.setText(mUser.getOrganisation());
-                    binding.editRole.setText(mUser.getRoll());
+                    binding.editTextName.setText(mUser.getMvUser().getName());
+                    binding.editTextMidleName.setText(mUser.getMvUser().getMiddleName());
+                    binding.editTextLastName.setText(mUser.getMvUser().getLastName());
+                    binding.editTextMobileNumber.setText(mUser.getMvUser().getPhone());
+                    binding.editTextEmail.setText(mUser.getMvUser().getEmail());
+                    binding.editOrganization.setText(mUser.getMvUser().getOrganisation());
+                    binding.editRole.setText(mUser.getMvUser().getRoll());
                     binding.accept.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -111,47 +111,47 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
                         }
                     });
 
-                    if(mUser.getState()!=null&&!(! mUser.getState().isEmpty()||!mUser.getState().equalsIgnoreCase("Select")))
+                    if(mUser.getMvUser().getState()!=null&&!(! mUser.getMvUser().getState().isEmpty()||!mUser.getMvUser().getState().equalsIgnoreCase("Select")))
                     {
-                        binding.editState.setText(mUser.getState());
+                        binding.editState.setText(mUser.getMvUser().getState());
                         binding.layState.setVisibility(View.VISIBLE);
                         binding.txtState.setVisibility(View.VISIBLE);
                     }
-                    if(mUser.getDistrict()!=null&&!(! mUser.getDistrict().isEmpty()||!mUser.getDistrict().equalsIgnoreCase("Select")))
+                    if(mUser.getMvUser().getDistrict()!=null&&!(! mUser.getMvUser().getDistrict().isEmpty()||!mUser.getMvUser().getDistrict().equalsIgnoreCase("Select")))
                     {
-                        binding.editDistrict.setText(mUser.getDistrict());
+                        binding.editDistrict.setText(mUser.getMvUser().getDistrict());
                         binding.layDistrict.setVisibility(View.VISIBLE);
                         binding.txtDistrict.setVisibility(View.VISIBLE);
                     }
-                    if(mUser.getTaluka()!=null&&!(! mUser.getTaluka().isEmpty()||!mUser.getTaluka().equalsIgnoreCase("Select")))
+                    if(mUser.getMvUser().getTaluka()!=null&&!(! mUser.getMvUser().getTaluka().isEmpty()||!mUser.getMvUser().getTaluka().equalsIgnoreCase("Select")))
                     {
-                        binding.editTaluka.setText(mUser.getTaluka());
+                        binding.editTaluka.setText(mUser.getMvUser().getTaluka());
                         binding.layTaluka.setVisibility(View.VISIBLE);
                         binding.txtTaluka.setVisibility(View.VISIBLE);
                     }
 
-                    if(mUser.getCluster()!=null&&!(! mUser.getCluster().isEmpty()||!mUser.getCluster().equalsIgnoreCase("Select")))
+                    if(mUser.getMvUser().getCluster()!=null&&!(! mUser.getMvUser().getCluster().isEmpty()||!mUser.getMvUser().getCluster().equalsIgnoreCase("Select")))
                     {
-                        binding.editCluster.setText(mUser.getCluster());
+                        binding.editCluster.setText(mUser.getMvUser().getCluster());
                         binding.layCluster.setVisibility(View.VISIBLE);
                         binding.txtCluster.setVisibility(View.VISIBLE);
                     }
-                    if(mUser.getVillage()!=null&&!(! mUser.getVillage().isEmpty()||!mUser.getVillage().equalsIgnoreCase("Select")))
+                    if(mUser.getMvUser().getVillage()!=null&&!(! mUser.getMvUser().getVillage().isEmpty()||!mUser.getMvUser().getVillage().equalsIgnoreCase("Select")))
                     {
-                        binding.editVillage.setText(mUser.getVillage());
+                        binding.editVillage.setText(mUser.getMvUser().getVillage());
                         binding.layVillage.setVisibility(View.VISIBLE);
                         binding.txtVillage.setVisibility(View.VISIBLE);
                     }
-                    if(mUser.getSchool_Name()!=null&&!(! mUser.getSchool_Name().isEmpty()||!mUser.getSchool_Name().equalsIgnoreCase("Select")))
+                    if(mUser.getMvUser().getSchool_Name()!=null&&!(! mUser.getMvUser().getSchool_Name().isEmpty()||!mUser.getMvUser().getSchool_Name().equalsIgnoreCase("Select")))
                     {
-                        binding.editSchool.setText(mUser.getSchool_Name());
+                        binding.editSchool.setText(mUser.getMvUser().getSchool_Name());
                         binding.laySchool.setVisibility(View.VISIBLE);
                         binding.txtDistrict.setVisibility(View.VISIBLE);
                     }
 
-                    if (mUser.getImageId() != null && !(mUser.getImageId().equalsIgnoreCase("null"))) {
+                    if (mUser.getMvUser().getImageId() != null && !(mUser.getMvUser().getImageId().equalsIgnoreCase("null"))) {
                         Glide.with(getApplicationContext())
-                                .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mUser.getImageId() + "/Body"))
+                                .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mUser.getMvUser().getImageId() + "/Body"))
                                 .placeholder(getResources().getDrawable(R.drawable.mulya_bg))
                                 .into(binding.addImage);
                     }
@@ -272,8 +272,8 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
                 Utills.showProgressDialog(this, getString(R.string.share_post), getString(R.string.progress_please_wait));
                 JSONObject jsonObject1 = new JSONObject();
 
-                jsonObject1.put("userId", mUser.getId());
-                jsonObject1.put("ApprovedBy", User.getCurrentUser(getApplicationContext()).getId());
+                jsonObject1.put("userId", mUser.getMvUser().getId());
+                jsonObject1.put("ApprovedBy", User.getCurrentUser(getApplicationContext()).getMvUser().getId());
 
                 JSONArray jsonArrayAttchment = new JSONArray();
 

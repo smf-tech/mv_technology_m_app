@@ -16,12 +16,10 @@ import android.text.util.Linkify;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -48,7 +46,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 import okhttp3.ResponseBody;
@@ -68,13 +65,13 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
     private final Drawable[] mPlacePictures;
     private final Context mContext;
 
-    private List<Content> mDataList;
+    private ArrayList<Content> mDataList;
     private PreferenceHelper preferenceHelper;
     private int mPosition;
     private static final Pattern urlPattern = Pattern.compile( "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
             + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
-    public FragmentContentAdapter(Context context, List<Content> chatList) {
+    public FragmentContentAdapter(Context context, ArrayList<Content> chatList) {
         Resources resources = context.getResources();
         mPlaces = resources.getStringArray(R.array.places);
         mPlaceDesc = resources.getStringArray(R.array.place_desc);
@@ -101,7 +98,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
 
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         holder.layout_share.setVisibility(View.GONE);
        /* Glide.with(mContext)
                 .load(getUrlWithHeaders(new PreferenceHelper(mContext).getString(PreferenceHelper.InstanceUrl)+"services/data/v20.0/sobjects/Attachment/"+mDataList.get(position).getId()))
@@ -171,35 +168,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             holder.layout_download.setVisibility(View.GONE);
             holder.layout_download_file.setVisibility(View.VISIBLE);
         }
-        holder.imgMore.setVisibility(View.VISIBLE);
-        holder.imgMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu popup = new PopupMenu(mContext,holder.imgMore);
-                //Inflating the Popup using xml file
-                popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
-                //   popup.getMenu().getItem(R.id.spam).setVisible(true);
-                MenuItem spam= (MenuItem) popup.getMenu().findItem(R.id.spam);
-                MenuItem edit= (MenuItem) popup.getMenu().findItem(R.id.edit);
-                MenuItem delete= (MenuItem) popup.getMenu().findItem(R.id.delete);
-                spam.setVisible(true);
-                edit.setVisible(false);
-                delete.setVisible(false);
 
-
-
-                //registering popup with OnMenuItemClickListener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getTitle().toString().equalsIgnoreCase("Spam")) {
-                            Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId());
-                        }
-                        return true;
-                    }
-                });
-                popup.show();
-            }
-        });
 
 
     }
@@ -231,7 +200,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                 Utills.showProgressDialog(mContext, "Sharing Post...", "Please wait");
                 JSONObject jsonObject1 = new JSONObject();
 
-                jsonObject1.put("userId", User.getCurrentUser(mContext).getId());
+                jsonObject1.put("userId", User.getCurrentUser(mContext).getMvUser().getId());
                 jsonObject1.put("contentId", contentId);
 
                 JSONArray jsonArrayAttchment = new JSONArray();
@@ -281,7 +250,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView picture, userImage, imgLike, img_share, img_comment,imgMore;
+        public ImageView picture, userImage, imgLike, img_share, img_comment;
         public CardView card_view;
         public TextView txt_title, txt_template_type, txt_desc,txt_detail, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_forward;
         public LinearLayout layout_like, mediaLayout, layout_comment, layout_share, layout_download,layout_download_file;
@@ -309,8 +278,17 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             layout_share = (LinearLayout) itemLayoutView.findViewById(R.id.layout_share);
             mediaLayout = (LinearLayout) itemLayoutView.findViewById(R.id.mediaLayout);
             layout_download_file = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download_file);
-            imgMore = (ImageView) itemLayoutView.findViewById(R.id.imgMore);
 
+            txt_desc.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View view) {
+                    Utills.MarkAsSpamDialog(mContext,preferenceHelper,mDataList.get(getAdapterPosition()).getId());
+                    Log.e("id",mDataList.get(getAdapterPosition()).getId());
+
+                    // notifyDataSetChanged();
+                    return false;
+                }
+            });
             txt_detail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -353,7 +331,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                     }else {
                         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId()+".png";
 
-                        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
                         shareIntent.setType( "application/*");
                         shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
 
@@ -482,7 +460,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
 
                 jsonObject1.put("Is_Like", isLike);
                 jsonObject1.put("MV_Content", cotentId);
-                jsonObject1.put("MV_User", User.getCurrentUser(mContext).getId());
+                jsonObject1.put("MV_User", User.getCurrentUser(mContext).getMvUser().getId());
 
                 jsonArray.put(jsonObject1);
                 jsonObject.put("listVisitsData", jsonArray);
@@ -531,7 +509,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
 
                 jsonObject1.put("Is_Like__c", isLike);
                 jsonObject1.put("MV_Content__c", cotentId);
-                jsonObject1.put("MV_User__c", User.getCurrentUser(mContext).getId());
+                jsonObject1.put("MV_User__c", User.getCurrentUser(mContext).getMvUser().getId());
 
                 jsonArray.put(jsonObject1);
                 jsonObject.put("contentlikeList", jsonArray);

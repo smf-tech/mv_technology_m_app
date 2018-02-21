@@ -164,7 +164,7 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = "";
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getdownloadContentData?userId=" + User.getCurrentUser(context).getId();
+                + "/services/apexrest/getdownloadContentData?userId=" + User.getCurrentUser(context).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

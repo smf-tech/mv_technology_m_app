@@ -185,7 +185,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                 if(mContent.getIsAttachmentPresent().equalsIgnoreCase("true")){
                     if (mContent.getAttachmentId()==null){
                         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" +mContent.getId()+".png";
-                        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
                         shareIntent.setType( "application/*");
                         shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
                         shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + mContent.getTitle() + "\n\nDescription : " + mContent.getDescription());
@@ -196,7 +196,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
 
                         //String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId()+".png";
 
-                        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
                         shareIntent.setType( "application/*");
                         shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " +mContent.getTitle() + "\n\nDescription : " + mContent.getDescription());
 
@@ -293,7 +293,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                 Utills.showProgressDialog(this, "Sharing Post...", "Please wait");
                 JSONObject jsonObject1 = new JSONObject();
 
-                jsonObject1.put("userId", User.getCurrentUser(getApplicationContext()).getId());
+                jsonObject1.put("userId", User.getCurrentUser(getApplicationContext()).getMvUser().getId());
                 jsonObject1.put("contentId", contentId);
 
 
@@ -403,7 +403,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
 
                 jsonObject1.put("Is_Like", isLike);
                 jsonObject1.put("MV_Content", cotentId);
-                jsonObject1.put("MV_User", User.getCurrentUser(this).getId());
+                jsonObject1.put("MV_User", User.getCurrentUser(this).getMvUser().getId());
 
                 jsonArray.put(jsonObject1);
                 jsonObject.put("listVisitsData", jsonArray);
@@ -452,7 +452,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
 
                 jsonObject1.put("Is_Like__c", isLike);
                 jsonObject1.put("MV_Content__c", cotentId);
-                jsonObject1.put("MV_User__c", User.getCurrentUser(this).getId());
+                jsonObject1.put("MV_User__c", User.getCurrentUser(this).getMvUser().getId());
 
                 jsonArray.put(jsonObject1);
                 jsonObject.put("contentlikeList", jsonArray);

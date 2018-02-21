@@ -138,7 +138,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             if (!isAdd && !isProjectSet) {
                                 isProjectSet = true;
                                 for (int i = 0; i < mListProject.size(); i++) {
-                                    if (mListProject.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getProject_Name__c())) {
+                                    if (mListProject.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getProject_Name__c())) {
                                         spinner_project.setSelection(i);
                                         break;
                                     }
@@ -200,7 +200,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             if (!isAdd && !isRollSet) {
                                 isRollSet = true;
                                 for (int i = 0; i < mListRoleName.size(); i++) {
-                                    if (mListRoleName.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getRoll())) {
+                                    if (mListRoleName.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getRoll())) {
                                         binding.spinnerRole.setSelection(i);
                                         break;
                                     }
@@ -253,7 +253,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             if (!isAdd && !isOrganizationSet) {
                                 isOrganizationSet = true;
                                 for (int i = 0; i < mListOrganization.size(); i++) {
-                                    if (mListOrganization.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getOrganisation())) {
+                                    if (mListOrganization.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getOrganisation())) {
                                         spinner_organization.setSelection(i);
                                         break;
                                     }
@@ -348,7 +348,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             if (!isAdd && !isStateSet) {
                                 isStateSet = true;
                                 for (int i = 0; i < mListState.size(); i++) {
-                                    if (mListState.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getState())) {
+                                    if (mListState.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getState())) {
                                         binding.spinnerState.setSelection(i);
                                         break;
                                     }
@@ -399,7 +399,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             if (!isAdd && !isDistrictSet) {
                                 isDistrictSet = true;
                                 for (int i = 0; i < mListDistrict.size(); i++) {
-                                    if (mListDistrict.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getDistrict())) {
+                                    if (mListDistrict.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getDistrict())) {
                                         binding.spinnerDistrict.setSelection(i);
                                         break;
                                     }
@@ -448,7 +448,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         edit_text_midle_name = (EditText) findViewById(R.id.edit_text_midle_name);
         edit_text_last_name = (EditText) findViewById(R.id.edit_text_last_name);
         edit_text_mobile_number = (EditText) findViewById(R.id.edit_text_mobile_number);
-        edit_text_mobile_number.setText(User.getCurrentUser(RegistrationActivity.this).getPhone());
+        edit_text_mobile_number.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getPhone());
 
         edit_text_email = (EditText) findViewById(R.id.edit_text_email);
         btn_submit = (Button) findViewById(R.id.btn_submit);
@@ -566,32 +566,32 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             if (getIntent().getStringExtra(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_EDIT)) {
                 setActionbar(getString(R.string.update_profile));
                 isAdd = false;
-                binding.editTextMidleName.setText(User.getCurrentUser(this).getMiddleName());
-                binding.editTextLastName.setText(User.getCurrentUser(this).getLastName());
-                binding.editTextMobileNumber.setText(User.getCurrentUser(this).getPhone());
-                binding.editTextName.setText(User.getCurrentUser(this).getName());
+                binding.editTextMidleName.setText(User.getCurrentUser(this).getMvUser().getMiddleName());
+                binding.editTextLastName.setText(User.getCurrentUser(this).getMvUser().getLastName());
+                binding.editTextMobileNumber.setText(User.getCurrentUser(this).getMvUser().getPhone());
+                binding.editTextName.setText(User.getCurrentUser(this).getMvUser().getName());
 
-                if (User.getCurrentUser(this).getGender() != null && !TextUtils.isEmpty(User.getCurrentUser(this).getGender())) {
-                    if (User.getCurrentUser(this).getGender().equalsIgnoreCase("Male")) {
+                if (User.getCurrentUser(this).getMvUser().getGender() != null && !TextUtils.isEmpty(User.getCurrentUser(this).getMvUser().getGender())) {
+                    if (User.getCurrentUser(this).getMvUser().getGender().equalsIgnoreCase("Male")) {
                         radioGroup.check(R.id.gender_male);
                         mGenderSelect = "Male";
-                    } else if (User.getCurrentUser(this).getGender().equalsIgnoreCase("Female")) {
+                    } else if (User.getCurrentUser(this).getMvUser().getGender().equalsIgnoreCase("Female")) {
                         radioGroup.check(R.id.gender_female);
                         mGenderSelect = "Female";
-                    } else if (User.getCurrentUser(this).getGender().equalsIgnoreCase("Other")) {
+                    } else if (User.getCurrentUser(this).getMvUser().getGender().equalsIgnoreCase("Other")) {
                         radioGroup.check(R.id.gender_other);
                         mGenderSelect = "Other";
                     }
                 }
 
-                if (User.getCurrentUser(this).getImageId() != null && !(User.getCurrentUser(this).getImageId().equalsIgnoreCase("null"))) {
+                if (User.getCurrentUser(this).getMvUser().getImageId() != null && !(User.getCurrentUser(this).getMvUser().getImageId().equalsIgnoreCase("null"))) {
                     Glide.with(this)
-                            .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + User.getCurrentUser(this).getImageId() + "/Body"))
+                            .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + User.getCurrentUser(this).getMvUser().getImageId() + "/Body"))
                             .placeholder(getResources().getDrawable(R.drawable.mulya_bg))
                             .into(binding.addImage);
                 }
-                if (!(TextUtils.isEmpty(User.getCurrentUser(this).getEmail()) || User.getCurrentUser(this).getEmail().equalsIgnoreCase("null")))
-                    binding.editTextEmail.setText(User.getCurrentUser(this).getEmail());
+                if (!(TextUtils.isEmpty(User.getCurrentUser(this).getMvUser().getEmail()) || User.getCurrentUser(this).getMvUser().getEmail().equalsIgnoreCase("null")))
+                    binding.editTextEmail.setText(User.getCurrentUser(this).getMvUser().getEmail());
             } else {
                 isAdd = true;
                 setActionbar(getString(R.string.Registration));
@@ -654,22 +654,22 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             ServiceRequest apiService =
                     ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
             user = new User();
-            user.setName(edit_text_name.getText().toString().trim());
-            user.setEmail(edit_text_email.getText().toString().trim());
-            user.setPhone(edit_text_mobile_number.getText().toString().trim());
-            user.setRoll(mListRoleName.get(mSelectRole));
-            user.setCluster(mListCluster.get(mSelectCluster));
-            user.setDistrict(mListDistrict.get(mSelectDistrict));
-            user.setTaluka(mListTaluka.get(mSelectTaluka));
-            user.setVillage(mListVillage.get(mSelectVillage));
-            user.setSchool_Code(edit_text_school_code.getText().toString().trim());
-            user.setSchool_Name(mListSchoolName.get(mSelectSchoolName));
+            user.getMvUser().setName(edit_text_name.getText().toString().trim());
+            user.getMvUser().setEmail(edit_text_email.getText().toString().trim());
+            user.getMvUser().setPhone(edit_text_mobile_number.getText().toString().trim());
+            user.getMvUser().setRoll(mListRoleName.get(mSelectRole));
+            user.getMvUser().setCluster(mListCluster.get(mSelectCluster));
+            user.getMvUser().setDistrict(mListDistrict.get(mSelectDistrict));
+            user.getMvUser().setTaluka(mListTaluka.get(mSelectTaluka));
+            user.getMvUser().setVillage(mListVillage.get(mSelectVillage));
+            user.getMvUser().setSchool_Code(edit_text_school_code.getText().toString().trim());
+            user.getMvUser().setSchool_Name(mListSchoolName.get(mSelectSchoolName));
 
             JSONObject jsonObject1 = new JSONObject();
             JSONObject jsonObject2 = new JSONObject();
             try {
 
-                jsonObject2.put("Id", User.getCurrentUser(RegistrationActivity.this).getId());
+                jsonObject2.put("Id", User.getCurrentUser(RegistrationActivity.this).getMvUser().getId());
                 jsonObject2.put("Name", edit_text_name.getText().toString().trim());
                 jsonObject2.put("User_Email__c", edit_text_email.getText().toString().trim());
                 jsonObject2.put("User_Mobile_No__c", edit_text_mobile_number.getText().toString().trim());
@@ -770,7 +770,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             if (response.body() != null) {
                                 String data = response.body().string();
                                 if (data != null && data.length() > 0) {
-                                    JSONObject object = new JSONObject(data);
+                                  /*  JSONObject object = new JSONObject(data);
                                     JSONArray array = object.getJSONArray("Records");
                                     for (int i = 0; i < array.length(); i++) {
                                         JSONObject object1 = array.getJSONObject(i);
@@ -780,7 +780,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                                 AppDatabase.getAppDatabase(RegistrationActivity.this).userDao().clearTableCommunity();
                                             }
                                             preferenceHelper.insertString(PreferenceHelper.UserData, object1.toString());
-                                            preferenceHelper.insertString(PreferenceHelper.UserRole, user.getRoll());
+                                            preferenceHelper.insertString(PreferenceHelper.UserRole, user.getMvUser().getRoll());
                                             Utills.showToast("Registration Successful...", RegistrationActivity.this);
                                             User.clearUser();
                                             setResult(RESULT_OK);
@@ -791,6 +791,17 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                         }
                                         break;
                                     }
+*/
+                                    if (!isAdd) {
+                                        AppDatabase.getAppDatabase(RegistrationActivity.this).userDao().clearTableCommunity();
+                                    }
+                                  Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                                    preferenceHelper.insertString(PreferenceHelper.UserData, data);
+                                    preferenceHelper.insertString(PreferenceHelper.UserRole, user.getMvUser().getRoll());
+                                    User.clearUser();
+                                    setResult(RESULT_OK);
+                                    finish();
+                                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
                                 }
                             }
                             /*JSONObject response1 = new JSONObject(response.body().string());
@@ -1138,7 +1149,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             if (!isAdd && !isClusterSet) {
                                 isClusterSet = true;
                                 for (int i = 0; i < mListCluster.size(); i++) {
-                                    if (mListCluster.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getCluster())) {
+                                    if (mListCluster.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getCluster())) {
                                         binding.spinnerCluster.setSelection(i);
                                         break;
                                     }
@@ -1188,7 +1199,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             if (!isAdd && !isTalukaSet) {
                                 isTalukaSet = true;
                                 for (int i = 0; i < mListTaluka.size(); i++) {
-                                    if (mListTaluka.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getTaluka())) {
+                                    if (mListTaluka.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getTaluka())) {
                                         binding.spinnerTaluka.setSelection(i);
                                         break;
                                     }
@@ -1237,7 +1248,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             if (!isAdd && !isVillageSet) {
                                 isVillageSet = true;
                                 for (int i = 0; i < mListVillage.size(); i++) {
-                                    if (mListVillage.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getVillage())) {
+                                    if (mListVillage.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getVillage())) {
                                         binding.spinnerVillage.setSelection(i);
                                         break;
                                     }
@@ -1290,7 +1301,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             if (!isAdd && !isSchoolSet) {
                                 isSchoolSet = true;
                                 for (int i = 0; i < mListSchoolName.size(); i++) {
-                                    if (mListSchoolName.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getSchool_Name())) {
+                                    if (mListSchoolName.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getSchool_Name())) {
                                         binding.spinnerSchoolName.setSelection(i);
                                         break;
                                     }
