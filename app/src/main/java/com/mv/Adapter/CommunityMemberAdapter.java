@@ -52,16 +52,16 @@ public class CommunityMemberAdapter extends RecyclerView.Adapter<CommunityMember
     }
 
     @Override
-    public CommunityMemberAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemLayoutView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_community_member, parent, false);
 
-        CommunityMemberAdapter.ViewHolder viewHolder = new CommunityMemberAdapter.ViewHolder(itemLayoutView);
+        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(CommunityMemberAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
 
 
         holder.txtCommunityMember.setText((position+1) + " " +CommunityMemberList.get(position));

@@ -81,16 +81,16 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
     }
 
     @Override
-    public HomeAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_home, parent, false);
 /*        int height = parent.getMeasuredHeight() / 4;
         itemView.setMinimumHeight(height);*/
-        return new HomeAdapter.MyViewHolder(itemView);
+        return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(HomeAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, int position) {
 
         Log.d("position", String.valueOf(position));
         Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.blink);

@@ -95,15 +95,15 @@ public class ProgramMangementAdapter  extends RecyclerView.Adapter<ProgramMangem
     }
 
     @Override
-    public ProgramMangementAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_programe, parent, false);
 
-        return new ProgramMangementAdapter.MyViewHolder(itemView);
+        return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(ProgramMangementAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, int position) {
         Log.d("Position",""+position);
         Template template = teplateList.get(position);
         holder.txtCommunityName.setText(template.getName()+" ( "+template.getAnswerCount()+" )");

@@ -63,7 +63,7 @@ public interface ServiceRequest {
 
     @FormUrlEncoded
     @POST("save_new_location")
-    Call<ResponseBody> submitLocation(@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster, @Field("village") String mVillage,@Field("school_name") String mSchool);
+    Call<ResponseBody> submitLocation(@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster, @Field("village") String mVillage, @Field("school_name") String mSchool);
     @FormUrlEncoded
     @POST("user/app_get_cluster")
     Call<ResponseBody> getCluster(@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka);
@@ -81,10 +81,10 @@ public interface ServiceRequest {
 
     @FormUrlEncoded
     @POST("")
-    Call<ResponseBody> getLoacationData(@Url String url,@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster, @Field("village") String mVillage);
+    Call<ResponseBody> getLoacationData(@Url String url, @Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster, @Field("village") String mVillage);
 
     @FormUrlEncoded
     @POST("")
-    Call<ResponseBody> getMapContent(@Url String url,@Field("id") String mId, @Field("lat") String mlat, @Field("lon") String mlon);
+    Call<ResponseBody> getMapContent(@Url String url, @Field("id") String mId, @Field("lat") String mlat, @Field("lon") String mlon);
 
 }

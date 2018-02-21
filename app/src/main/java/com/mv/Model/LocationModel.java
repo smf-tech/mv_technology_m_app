@@ -159,7 +159,7 @@ public class LocationModel implements Parcelable {
         this.cluster = in.readString();
     }
 
-    public static final Parcelable.Creator<LocationModel> CREATOR = new Parcelable.Creator<LocationModel>() {
+    public static final Creator<LocationModel> CREATOR = new Creator<LocationModel>() {
         @Override
         public LocationModel createFromParcel(Parcel source) {
             return new LocationModel(source);

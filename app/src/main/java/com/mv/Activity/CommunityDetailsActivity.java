@@ -185,7 +185,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                 if(mContent.getIsAttachmentPresent().equalsIgnoreCase("true")){
                     if (mContent.getAttachmentId()==null){
                         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" +mContent.getId()+".png";
-                        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
                         shareIntent.setType( "application/*");
                         shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
                         shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + mContent.getTitle() + "\n\nDescription : " + mContent.getDescription());
@@ -196,7 +196,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
 
                         //String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId()+".png";
 
-                        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
                         shareIntent.setType( "application/*");
                         shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " +mContent.getTitle() + "\n\nDescription : " + mContent.getDescription());
 

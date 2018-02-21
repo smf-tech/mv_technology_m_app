@@ -54,7 +54,7 @@ import retrofit2.Response;
 public class CommunityHomeFragment extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private FragmentCommunityHomeBinding binding;
     private PreferenceHelper preferenceHelper;
-    private ArrayList<Content> chatList = new ArrayList<Content>();
+    private List<Content> chatList = new ArrayList<Content>();
     private FragmentContentAdapter adapter;
     TextView textNoData;
 
@@ -120,7 +120,7 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
     }
 
     private void getChats(boolean isDialogShow) {
-        List<Content> temp = AppDatabase.getAppDatabase(context).userDao().getAllBroadcastChats(true);
+        List<Content> temp = AppDatabase.getAppDatabase(context).userDao().getAllBroadcastChats();
         if (temp.size() == 0) {
             if (Utills.isConnected(context))
                 getAllChats(false, isDialogShow);
@@ -161,11 +161,10 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
                         if (str != null && str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
 
-                            Log.e("array length,", String.valueOf(jsonArray.length()));
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));
 
-                            List<Content> contentList = AppDatabase.getAppDatabase(context).userDao().getAllBroadcastChats(true);
+                            List<Content> contentList = AppDatabase.getAppDatabase(context).userDao().getAllBroadcastChats();
                             if ((temp.size() != 0) || (contentList.size() != 0)) {
 
                                 for (int i = 0; i < temp.size(); i++) {
@@ -194,10 +193,11 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
 
                                 }
 
+                                chatList=AppDatabase.getAppDatabase(context).userDao().getAllBroadcastChats(true);
                                 adapter.notifyDataSetChanged();
                                 textNoData.setVisibility(View.GONE);
                             } else {
-                                Log.e("temp size", String.valueOf(temp.size()));
+
                                 adapter.notifyDataSetChanged();
                                 textNoData.setVisibility(View.VISIBLE);
                             }

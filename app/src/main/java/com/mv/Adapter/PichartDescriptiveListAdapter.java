@@ -52,15 +52,15 @@ public class PichartDescriptiveListAdapter extends RecyclerView.Adapter<PichartD
     }
 
     @Override
-    public PichartDescriptiveListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_pichart_discreptive, parent, false);
 
-        return new PichartDescriptiveListAdapter.MyViewHolder(itemView);
+        return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(PichartDescriptiveListAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, int position) {
 
       /*  holder.state.setText(piaChartModelsList.get(position).getState());
         holder.district.setText(piaChartModelsList.get(position).getDistrict());

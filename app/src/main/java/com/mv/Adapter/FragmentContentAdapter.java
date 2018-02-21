@@ -331,7 +331,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                     }else {
                         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId()+".png";
 
-                        Intent shareIntent = new Intent(android.content.Intent.ACTION_SEND);
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
                         shareIntent.setType( "application/*");
                         shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
 
