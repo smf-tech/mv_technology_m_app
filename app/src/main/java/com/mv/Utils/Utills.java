@@ -517,7 +517,7 @@ public class Utills {
             public void onClick(DialogInterface dialogInterface, int position) {
                 dialogInterface.dismiss();
                 switch (position){
-                    case 0:spamContent(mContext,preferenceHelper,ID,UserId);
+                    case 0:spamContent(mContext,preferenceHelper,ID);
                         break;
 
                 }
@@ -562,14 +562,14 @@ public class Utills {
 
 
 
-    public static void spamContent(Context mContext, PreferenceHelper preferenceHelper, String ID, String UserID){
+    public static void spamContent(Context mContext, PreferenceHelper preferenceHelper, String ID){
         String url = "";
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
         /*UserDetails Url for getting community members*/
 
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.SpamContentUrl+"?Id=" +ID +"&userId" + UserID;
+                + Constants.SpamContentUrl+"?Id=" +ID ;
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override

@@ -327,7 +327,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
                     Log.e("title 111->",mActivity.HoSupportCommunity);
 
-                    if (mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getId())) {
+                    if (mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
                         delete.setVisible(true);
                         edit.setVisible(true);
 
@@ -343,7 +343,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                         public boolean onMenuItemClick(MenuItem item) {
                             if (item.getTitle().toString().equalsIgnoreCase("Spam")) {
-                                Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getId());
+                                Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId());
                             }else if (item.getTitle().toString().equalsIgnoreCase("Delete")) {
                                 postId = mDataList.get(position).getId();
                                 deletePosition = position;
@@ -484,7 +484,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 Utills.showProgressDialog(mContext, "Sharing Post...", "Please wait");
                 JSONObject jsonObject1 = new JSONObject();
 
-                jsonObject1.put("userId", User.getCurrentUser(mContext).getId());
+                jsonObject1.put("userId", User.getCurrentUser(mContext).getMvUser().getId());
                 jsonObject1.put("contentId", contentId);
 
 
@@ -937,7 +937,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
                 jsonObject1.put("Is_Like", isLike);
                 jsonObject1.put("MV_Content", cotentId);
-                jsonObject1.put("MV_User", User.getCurrentUser(mContext).getId());
+                jsonObject1.put("MV_User", User.getCurrentUser(mContext).getMvUser().getId());
 
                 jsonArray.put(jsonObject1);
                 jsonObject.put("listVisitsData", jsonArray);
@@ -986,7 +986,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
                 jsonObject1.put("Is_Like__c", isLike);
                 jsonObject1.put("MV_Content__c", cotentId);
-                jsonObject1.put("MV_User__c", User.getCurrentUser(mContext).getId());
+                jsonObject1.put("MV_User__c", User.getCurrentUser(mContext).getMvUser().getId());
 
                 jsonArray.put(jsonObject1);
                 jsonObject.put("contentlikeList", jsonArray);
