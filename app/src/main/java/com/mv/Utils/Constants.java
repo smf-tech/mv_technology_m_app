@@ -1,6 +1,5 @@
 package com.mv.Utils;
 
-import android.content.Context;
 import android.net.Uri;
 
 /**
@@ -19,6 +18,7 @@ public class Constants {
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
     public static String REPORTID = "a1G0k000000522K";
     public static String ISSUEID = "a1G0k000000522F";
+
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
     public static final String LANGUAGE_HINDI = "hi";

@@ -73,7 +73,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private Spinner spinner_project, spinner_organization, spinner_role, spinner_state, spinner_district, spinner_taluka, spinner_cluster, spinner_village, spinner_school_name;
     private int mSelectProject = 0, mSelectOrganization = 0, mSelectRole = 0, mSelectState = 0, mSelectDistrict = 0, mSelectTaluka = 0, mSelectCluster = 0, mSelectVillage = 0, mSelectSchoolName = 0;
     private ArrayList<String> mListProjectId, mListProject, mListOrganization, mListState, mListDistrict, mListTaluka, mListCluster, mListVillage, mListSchoolName;
-        private List<String> mListRoleName, mListCode, mListRoleId, mListRoleJuridiction;
+    private List<String> mListRoleName, mListCode, mListRoleId, mListRoleJuridiction;
     private TextView txt_district, txt_taluka, txt_cluster, txt_village, txt_school;
     private TextInputLayout input_school_code;
     private ArrayAdapter<String> state_adapter, district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, role_adapter, organization_adapter, project_adapter;
@@ -86,7 +86,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private Boolean isAdd;
     private boolean isProjectSet = false, isOrganizationSet = false, isStateSet = false, isDistrictSet = false, isTalukaSet = false, isClusterSet = false, isVillageSet = false, isSchoolSet = false, isRollSet = false;
     private RadioGroup radioGroup;
-    private RelativeLayout rel_district,rel_taluka,rel_cluster,rel_villgae,rel_school_name;
+    private RelativeLayout rel_district, rel_taluka, rel_cluster, rel_villgae, rel_school_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -674,7 +674,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 jsonObject2.put("User_Email__c", edit_text_email.getText().toString().trim());
                 jsonObject2.put("User_Mobile_No__c", edit_text_mobile_number.getText().toString().trim());
                 jsonObject2.put("MV_Role__c", mListRoleId.get(mSelectRole));
-
+                jsonObject2.put("Role_Name__c", mListRoleName.get(mSelectRole));
                 jsonObject2.put("Last_Name__c", edit_text_last_name.getText().toString().trim());
                 jsonObject2.put("Middle_Name__c", edit_text_midle_name.getText().toString().trim());
 
@@ -795,7 +795,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                     if (!isAdd) {
                                         AppDatabase.getAppDatabase(RegistrationActivity.this).userDao().clearTableCommunity();
                                     }
-                                  Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                                    Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                                     preferenceHelper.insertString(PreferenceHelper.UserData, data);
                                     preferenceHelper.insertString(PreferenceHelper.UserRole, user.getMvUser().getRoll());
                                     User.clearUser();

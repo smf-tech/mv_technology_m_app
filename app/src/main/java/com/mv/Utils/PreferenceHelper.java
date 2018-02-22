@@ -23,7 +23,7 @@ public class PreferenceHelper {
     public static final String APICALLTIME = "APICALLTIME";
 
     public static final String NOTIFICATION = "notification";
-
+    public static final String MOBILEAPPVERSION = "mobileappversion";
     public static final String UserData = "UserData";
     public static final String UserRole = "UserRole";
     public static final String AccessToken = "AccessToken";
