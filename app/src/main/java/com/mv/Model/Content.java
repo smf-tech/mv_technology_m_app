@@ -161,6 +161,9 @@ public class Content implements Serializable {
     @Expose
     Boolean isDelete;
 
+    @SerializedName("isPostUserDidSpam")
+    @Expose
+    Boolean  isPostUserDidSpam;
     public String getIsAttachmentPresent() {
         return isAttachmentPresent;
     }
@@ -367,4 +370,11 @@ public class Content implements Serializable {
         isDelete = delete;
     }
 
+    public Boolean getPostUserDidSpam() {
+        return isPostUserDidSpam;
+    }
+
+    public void setPostUserDidSpam(Boolean postUserDidSpam) {
+        isPostUserDidSpam = postUserDidSpam;
+    }
 }

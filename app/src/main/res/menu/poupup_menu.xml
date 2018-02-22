@@ -11,7 +11,7 @@
 
     <item
         android:id="@+id/spam"
-        android:title="Spam"
+
         android:visible="false"/>
 
 

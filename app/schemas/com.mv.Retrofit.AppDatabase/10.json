@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 10,
-    "identityHash": "2775978083dd9e134e0d05e96a5c6c23",
+    "identityHash": "72e66867f16893c95113da60eb4fb2d9",
     "entities": [
       {
         "tableName": "table_community",
@@ -40,7 +40,7 @@
       },
       {
         "tableName": "table_content",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `isAttachmentPresent` TEXT, `synchStatus` TEXT, `Id` TEXT, `UserId` TEXT, `CommunityId` TEXT, `District` TEXT, `taluka` TEXT, `likeCount` INTEGER, `commentCount` INTEGER, `isLike` INTEGER, `Issue_Type` TEXT, `Report_Type` TEXT, `Priority` TEXT, `Title` TEXT, `Description` TEXT, `TemplateId` TEXT, `TemplateName` TEXT, `userAttachmentId` TEXT, `CreatedDate` TEXT, `isbroadcast` TEXT, `userName` TEXT, `isMediaPlay` INTEGER, `isActive` INTEGER, `contentType` TEXT, `isTheatMessage` TEXT, `isDelete` INTEGER, `attachmentId` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `isAttachmentPresent` TEXT, `synchStatus` TEXT, `Id` TEXT, `UserId` TEXT, `CommunityId` TEXT, `District` TEXT, `taluka` TEXT, `likeCount` INTEGER, `commentCount` INTEGER, `isLike` INTEGER, `Issue_Type` TEXT, `Report_Type` TEXT, `Priority` TEXT, `Title` TEXT, `Description` TEXT, `TemplateId` TEXT, `TemplateName` TEXT, `userAttachmentId` TEXT, `CreatedDate` TEXT, `isbroadcast` TEXT, `userName` TEXT, `isMediaPlay` INTEGER, `isActive` INTEGER, `contentType` TEXT, `isTheatMessage` TEXT, `isDelete` INTEGER, `isPostUserDidSpam` INTEGER, `attachmentId` TEXT)",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -175,6 +175,11 @@
           {
             "fieldPath": "isDelete",
             "columnName": "isDelete",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "isPostUserDidSpam",
+            "columnName": "isPostUserDidSpam",
             "affinity": "INTEGER"
           },
           {
@@ -495,7 +500,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"2775978083dd9e134e0d05e96a5c6c23\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"72e66867f16893c95113da60eb4fb2d9\")"
     ]
   }
 }

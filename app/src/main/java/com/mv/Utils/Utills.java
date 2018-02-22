@@ -507,26 +507,7 @@ public class Utills {
     }
 
 
-    public static void MarkAsSpamDialog(final Context mContext, final PreferenceHelper preferenceHelper, final String ID, final String UserId){
-        final String[] items = {"Mark As Spam"};
 
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(mContext)
-                .setTitle(mContext.getString(R.string.app_name));
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int position) {
-                dialogInterface.dismiss();
-                switch (position){
-                    case 0:spamContent(mContext,preferenceHelper,ID);
-                        break;
-
-                }
-
-            }
-        });
-
-        dialog.show();
-    }
 
     public  static void AddTagDialog(Context context){
         LayoutInflater inflater = LayoutInflater.from(context);
@@ -562,14 +543,16 @@ public class Utills {
 
 
 
-    public static void spamContent(Context mContext, PreferenceHelper preferenceHelper, String ID){
+
+
+    public static void spamContent(Context mContext, PreferenceHelper preferenceHelper, String ID,String UserId, Boolean isSpam){
         String url = "";
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
         /*UserDetails Url for getting community members*/
 
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.SpamContentUrl+"?Id=" +ID ;
+                + Constants.SpamContentUrl+"?Id=" +ID +"&userId=" + UserId + "&isSpam=" +isSpam;
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -579,6 +562,7 @@ public class Utills {
                     data = response.body().string();
                     if (data != null && data.length() > 0) {
                         JSONObject jsonObject = new JSONObject(data);
+
 
 
                     }
@@ -598,4 +582,5 @@ public class Utills {
             }
         });
     }
+
 }
