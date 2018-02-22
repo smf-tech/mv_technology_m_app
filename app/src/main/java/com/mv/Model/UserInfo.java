@@ -86,6 +86,17 @@ public class UserInfo {
     @Expose
     private String gender;
 
+    public String getUserMobileAppVersion() {
+        return User_Mobile_App_Version__c;
+    }
+
+    public void setUserMobileAppVersion(String user_Mobile_App_Version__c) {
+        User_Mobile_App_Version__c = user_Mobile_App_Version__c;
+    }
+
+    @SerializedName("User_Mobile_App_Version__c")
+    @Expose
+    private String User_Mobile_App_Version__c;
 
     public String getIsLocationTrackingAllow__c() {
         return isLocationTrackingAllow__c;
@@ -136,7 +147,6 @@ public class UserInfo {
     private String isLocationAllow__c;
 
 
-
     @SerializedName("Contact_No__c")
     @Expose
     private String Contact_No__c = "";
@@ -148,7 +158,6 @@ public class UserInfo {
     @SerializedName("Languges__c")
     @Expose
     private String Languges__c;
-
 
 
     public String getGender() {

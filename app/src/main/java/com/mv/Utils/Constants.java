@@ -1,6 +1,5 @@
 package com.mv.Utils;
 
-import android.content.Context;
 import android.net.Uri;
 
 /**

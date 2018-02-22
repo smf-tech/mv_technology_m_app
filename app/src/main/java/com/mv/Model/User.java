@@ -40,13 +40,13 @@ public class User {
 
     @SerializedName("mvUser")
     @Expose
-    private UserInfo mvUser=new UserInfo();
+    private UserInfo mvUser = new UserInfo();
     @SerializedName("mvr")
     @Expose
-    private UserInfo rolePermssion=new UserInfo();
+    private UserInfo rolePermssion = new UserInfo();
     @SerializedName("mac")
     @Expose
-    private UserInfo appConfig=new UserInfo();
+    private UserInfo appConfig = new UserInfo();
 
     public UserInfo getMvUser() {
         return mvUser;
