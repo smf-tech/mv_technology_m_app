@@ -1,4 +1,4 @@
-package com.mv.MenuActivity;
+package com.mv.ActivityMenu;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;

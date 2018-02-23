@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mv.Activity.OverallReportActivity;
 import com.mv.Activity.PiachartActivity;
 import com.mv.Model.DashaBoardListModel;
 import com.mv.Model.LocationModel;
@@ -44,12 +45,23 @@ public class IndicatortaskAdapter extends RecyclerView.Adapter<IndicatortaskAdap
                 @Override
                 public void onClick(View view) {
 
-                    Intent openClass = new Intent(mContext, PiachartActivity.class);
-                    openClass.putExtra(Constants.TITLE,indicatortaskList.get(getAdapterPosition()).getSection_Name__c());
-                    openClass.putExtra(Constants.INDICATOR_TASK,indicatortaskList.get(getAdapterPosition()));
-                    openClass.putExtra(Constants.INDICATOR_TASK_ROLE,moviesList.getMultiple_Role__c());
-                    mContext.startActivity(openClass);
-                    mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    if(getAdapterPosition()==0)
+                    {
+                        Intent openClass = new Intent(mContext, OverallReportActivity.class);
+                        openClass.putExtra(Constants.INDICATOR_TASK_ROLE, moviesList.getMultiple_Role__c());
+                        openClass.putExtra(Constants.TITLE, indicatortaskList.get(getAdapterPosition()).getSection_Name__c());
+                        openClass.putExtra(Constants.INDICATOR_TASK, indicatortaskList.get(getAdapterPosition()));
+                        openClass.putExtra(Constants.PROCESS_ID, moviesList.getId());
+                        mContext.startActivity(openClass);
+                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    }else {
+                        Intent openClass = new Intent(mContext, PiachartActivity.class);
+                        openClass.putExtra(Constants.TITLE, indicatortaskList.get(getAdapterPosition()).getSection_Name__c());
+                        openClass.putExtra(Constants.INDICATOR_TASK, indicatortaskList.get(getAdapterPosition()));
+                        openClass.putExtra(Constants.INDICATOR_TASK_ROLE, moviesList.getMultiple_Role__c());
+                        mContext.startActivity(openClass);
+                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    }
                 }
             });
         }

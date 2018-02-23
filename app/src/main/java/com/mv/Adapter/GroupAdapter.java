@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.mv.MenuActivity.GroupsFragment;
+import com.mv.ActivityMenu.GroupsFragment;
 import com.mv.Model.Community;
 import com.mv.R;
 

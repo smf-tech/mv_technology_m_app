@@ -1,4 +1,4 @@
-package com.mv.MenuActivity;
+package com.mv.ActivityMenu;
 
 import android.app.Activity;
 import android.content.Context;

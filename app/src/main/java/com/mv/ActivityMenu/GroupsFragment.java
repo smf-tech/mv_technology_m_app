@@ -1,4 +1,4 @@
-package com.mv.MenuActivity;
+package com.mv.ActivityMenu;
 
 /**
  * Created by Rohit Gujar on 09-10-2017.

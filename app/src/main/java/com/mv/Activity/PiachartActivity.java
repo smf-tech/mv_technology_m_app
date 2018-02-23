@@ -251,7 +251,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                         for (int i = 0; i < items.length; i++) {
                             if (mSelection[i]) {
                                 sb.append(prefix);
-                                prefix = ",";
+                                prefix = ";";
                                 sb.append(temp.get(i));
                                 //now original string is changed
                             }
@@ -529,7 +529,9 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 openClass.putExtra(Constants.TITLE, title);
                 openClass.putExtra(Constants.INDICATOR_TASK, task);
                 openClass.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
+                openClass.putExtra(Constants.PROCESS_ID, "");
                 startActivity(openClass);
+
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
                 break;
