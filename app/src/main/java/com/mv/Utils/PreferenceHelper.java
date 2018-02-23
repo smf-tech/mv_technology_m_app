@@ -20,6 +20,8 @@ public class PreferenceHelper {
     public static final String TOKEN = "Token";
     public static final String CONTENTISSYNCHED = "CONTENTISSYNCHED";
 
+    public static final String FIRSTTIME_V_2_7 = "FIRSTTIME_V_2_7";
+
     public static final String APICALLTIME = "APICALLTIME";
 
     public static final String NOTIFICATION = "notification";
@@ -52,8 +54,9 @@ public class PreferenceHelper {
         editor.putBoolean(key, value);
         editor.commit();
     }
-    public void insetLong(String key, long value){
-        editor.putLong(key,value);
+
+    public void insetLong(String key, long value) {
+        editor.putLong(key, value);
         editor.commit();
     }
 
@@ -70,7 +73,9 @@ public class PreferenceHelper {
         return pref.getBoolean(key, true);
     }
 
-    public  long getLong(String key){return pref.getLong(key,0);}
+    public long getLong(String key) {
+        return pref.getLong(key, 0);
+    }
 
    /* public String getLongString(String key) {
         return String.valueOf(Long.valueOf(pref.getString(key, "")));
@@ -86,6 +91,10 @@ public class PreferenceHelper {
             }
 
         }
+    }
+
+    public void clearPrefrences(String key) {
+        editor.remove(key).commit();
     }
 
 }

@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -41,7 +40,6 @@ import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityLoginBinding;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -220,8 +218,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         } else if(preferenceHelper.getString(Constants.LANGUAGE).equalsIgnoreCase(Constants.LANGUAGE_HINDI)){
             checkId = 2;
         }
-
-
 
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.select_lang))
