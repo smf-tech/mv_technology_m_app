@@ -39,11 +39,10 @@ public class SplashScreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setActivity(this);
         preference = new PreferenceHelper(this);
-
+        // TODO Remove this code after build
         if (preference.getBoolean(PreferenceHelper.FIRSTTIME_V_2_7)) {
             preference.clearPrefrences(PreferenceHelper.UserData);
             preference.clearPrefrences(PreferenceHelper.UserRole);

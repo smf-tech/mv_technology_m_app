@@ -142,6 +142,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View headerLayout = navigationView.getHeaderView(0);
+        TextView versionName = (TextView) headerLayout.findViewById(R.id.versionName);
+        versionName.setText("Version is : " + getAppVersion());
         //    tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         //  viewPager = (ViewPager) findViewById(R.id.pager);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -210,6 +213,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
+
 
     @Override
     protected void onResume() {
