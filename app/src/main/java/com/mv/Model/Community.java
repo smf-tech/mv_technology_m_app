@@ -47,6 +47,20 @@ public class Community {
     @ColumnInfo(name = "unique_Id")
     private int Unique_Id;
 
+
+    public String getCount() {
+        return Count;
+    }
+
+    public void setCount(String count) {
+        Count = count;
+    }
+
+    @ColumnInfo(name = "Count")
+    @SerializedName("Count")
+    @Expose
+    private String Count;
+
     public String getId() {
         return Id;
     }
