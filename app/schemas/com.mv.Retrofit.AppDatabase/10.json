@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 10,
-    "identityHash": "72e66867f16893c95113da60eb4fb2d9",
+    "identityHash": "33712056951bda86e18bc1ad2bd03956",
     "entities": [
       {
         "tableName": "table_community",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`community_id` TEXT, `community_name` TEXT, `timestamp` TEXT, `unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`community_id` TEXT, `community_name` TEXT, `timestamp` TEXT, `unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Count` TEXT)",
         "fields": [
           {
             "fieldPath": "Id",
@@ -27,6 +27,11 @@
             "fieldPath": "Unique_Id",
             "columnName": "unique_Id",
             "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "Count",
+            "columnName": "Count",
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -500,7 +505,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"72e66867f16893c95113da60eb4fb2d9\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"33712056951bda86e18bc1ad2bd03956\")"
     ]
   }
 }

@@ -142,6 +142,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View headerLayout = navigationView.getHeaderView(0);
+        TextView versionName = (TextView) headerLayout.findViewById(R.id.versionName);
+        versionName.setText("Version is : " + getAppVersion());
         //    tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         //  viewPager = (ViewPager) findViewById(R.id.pager);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -211,10 +214,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
-        if ((User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationTrackingAllow__c().equals("true"))) {
+        if (User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationTrackingAllow__c() != null
+                && User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationTrackingAllow__c().equals("true")) {
             if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("true")) {
                 final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 

@@ -121,7 +121,7 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         // holder.txtCommunityName.setText(Utills.getDate(Long.valueOf(tasks.get(0).getTimestamp__c()), "dd/MM/yyyy hh:mm:ss.SSS"));
         if (resultList.get(position).getHeaderPosition() == 999999999)
             holder.txtCommunityName.setText(Utills.getDate(Long.valueOf(tasks.get(0).getTimestamp__c()), "dd/MM/yyyy hh:mm:ss.SSS"));
-        else if(tasks.get(resultList.get(position).getHeaderPosition()).getTask_Response__c().equals("")||tasks.get(resultList.get(position).getHeaderPosition()).getTask_Response__c().equals("Select"))
+        else if (tasks.get(resultList.get(position).getHeaderPosition()).getTask_Response__c().equals("") || tasks.get(resultList.get(position).getHeaderPosition()).getTask_Response__c().equals("Select"))
             holder.txtCommunityName.setText(Utills.getDate(Long.valueOf(tasks.get(0).getTimestamp__c()), "dd/MM/yyyy hh:mm:ss.SSS"));
         else
             holder.txtCommunityName.setText(tasks.get(resultList.get(position).getHeaderPosition()).getTask_Response__c());
@@ -131,10 +131,10 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
             if (tasks.get(0).getIsApproved__c().equals("false")) {
                 holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.orange));
             } else {
-                if (tasks.get(0).getStatus__c() == null || tasks.get(0).getStatus__c().length() == 0) {
-                    holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
-                } else {
+                if (tasks.get(0).getStatus__c() != null && tasks.get(0).getStatus__c().equalsIgnoreCase("Expected")) {
                     holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.purple));
+                } else {
+                    holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                 }
             }
             holder.deleteRecord.setImageResource(R.drawable.arrow);
