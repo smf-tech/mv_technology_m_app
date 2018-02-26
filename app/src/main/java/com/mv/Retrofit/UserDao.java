@@ -113,28 +113,37 @@ public interface UserDao {
     List<CalenderEvent> getCalenderList(String date);
 
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId AND  (isActive = :flag AND isDelete =:deleteflag) order by CreatedDate desc")
-    List<Content> getAllChats(String communityId,Boolean flag,Boolean deleteflag);
-   /* @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  order by CreatedDate desc")
+    List<Content> getAllChats(String communityId, Boolean flag, Boolean deleteflag);
+
+    /* @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  order by CreatedDate desc")
+     List<Content> getAllChats(String communityId);
+   @Query("SELECT * FROM " + Constants.TABLE_CONTENT)
+     List<Content> getAllChats();*/
+    @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  order by CreatedDate desc")
     List<Content> getAllChats(String communityId);
-  @Query("SELECT * FROM " + Constants.TABLE_CONTENT)
-    List<Content> getAllChats();*/
-   @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  order by CreatedDate desc")
-   List<Content> getAllChats(String communityId);
     //String strSQL = "UPDATE myTable SET Column1 = someValue WHERE columnId = "+ someValue;
 
 
     //String strSQL = "UPDATE myTable SET Column1 = someValue WHERE columnId = "+ someValue;
 
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where isBroadcast = 'true' AND  isActive = :flag order by CreatedDate desc")
-    List<Content> getAllBroadcastChats(Boolean flag );
+    List<Content> getAllBroadcastChats(Boolean flag);
+
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where isBroadcast = 'true'  order by CreatedDate desc")
     List<Content> getAllBroadcastChats();
+
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where isTheatMessage = 'true'  order by CreatedDate desc")
     List<Content> getThetSavandChats();
+
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where isTheatMessage = 'true' AND  (isActive = :flag AND isDelete =:deleteflag) order by CreatedDate desc")
-    List<Content> getThetSavandChats(Boolean flag,Boolean deleteflag);
+    List<Content> getThetSavandChats(Boolean flag, Boolean deleteflag);
+
     @Query("SELECT * FROM " + Constants.TABLE_COMMUNITY + " order by timestamp desc")
     List<Community> getAllCommunities();
+
+
+    @Query("SELECT count(*) FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId")
+    int getCommunitySize(String communityId);
 
     @Query("SELECT DISTINCT State FROM " + Constants.TABLE_LOCATION)
     List<String> getState();
@@ -208,7 +217,7 @@ public interface UserDao {
     @Query("DELETE FROM " + Constants.TABLE_CONTENT + " where Id = :contentId and isActive = :value")
     int spampost(String contentId, Boolean value);
 
-    @Query("DELETE FROM " + Constants.TABLE_CONTENT +" where CommunityId = :communityId AND  (isActive = :flag OR isDelete =:deleteflag)")
-    int deletepost(String communityId,Boolean flag,Boolean deleteflag);
+    @Query("DELETE FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId AND  (isActive = :flag OR isDelete =:deleteflag)")
+    int deletepost(String communityId, Boolean flag, Boolean deleteflag);
 
 }

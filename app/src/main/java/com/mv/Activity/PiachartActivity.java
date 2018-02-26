@@ -21,6 +21,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -88,6 +89,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     ArrayList<PieEntry> entries;
     Task task;
     File file;
+    List<String> temp;
     ImageView imageView;
     Bitmap mbitmap;
     String roleList;
@@ -97,12 +99,13 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     RecyclerView rvPiaChartDeatail;
     PichartDescriptiveListAdapter adapter;
     PichartMenuAdapter menuAdapter;
-    Spinner role;
+    EditText role;
     LinearLayout llSpinner;
     LocationModel locationModel;
     Activity context;
     String title;
     private String img_str;
+    public static String selectedRole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,9 +135,11 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         } else {
 
             if (Utills.isConnected(this))
-              //  getDashBoardData(User.getCurrentUser(getApplicationContext()).getRoll());
+              getDashBoardData(role.getText().toString());
             llSpinner.setVisibility(View.VISIBLE);
         }
+
+
     }
 
     @Override
@@ -203,6 +208,69 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
+
+    private void showRoleDialog() {
+
+
+        if (roleList != null && !roleList.isEmpty()) {
+          temp = new ArrayList<String>(Arrays.asList(roleList.split(";")));
+
+                 }
+      //  final List<Community> temp = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities();
+        final String[] items = new String[temp.size()];
+        for (int i = 0; i < temp.size(); i++) {
+            items[i] = temp.get(i);
+        }
+        final boolean[] mSelection = new boolean[items.length];
+        Arrays.fill(mSelection, true);
+      /* if(temp.contains(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll()))
+        mSelection[temp.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll())] = true;
+*/
+// arraylist to keep the selected items
+        final ArrayList seletedItems = new ArrayList();
+        android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(PiachartActivity.this)
+                .setTitle("Select Role")
+                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (mSelection != null && which < mSelection.length) {
+                            mSelection[which] = isChecked;
+
+
+                        } else {
+                            throw new IllegalArgumentException(
+                                    "Argument 'which' is out of bounds.");
+                        }
+                    }
+                })
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        StringBuffer sb = new StringBuffer();
+                        String prefix = "";
+                        for (int i = 0; i < items.length; i++) {
+                            if (mSelection[i]) {
+                                sb.append(prefix);
+                                prefix = ";";
+                                sb.append(temp.get(i));
+                                //now original string is changed
+                            }
+                        }
+
+                        if (Utills.isConnected(getApplicationContext()))
+                            getDashBoardData(sb.toString());
+                        role.setText(sb.toString());
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Your code when user clicked on Cancel
+                    }
+                }).create();
+
+
+        dialog.show();
+    }
     private void setActionbar(String Title) {
         mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
@@ -234,27 +302,24 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     private void initPicahrtView() {
         //setActionbar(task);
         setActionbar(title);
-        role = (Spinner) findViewById(R.id.spinner_role);
-        role.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        role = (EditText) findViewById(R.id.spinner_role);
+        role.setText(roleList);
+        role.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (Utills.isConnected(getApplicationContext()))
-                    getDashBoardData(parent.getItemAtPosition(position).toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
+            public void onClick(View v) {
+                showRoleDialog();
             }
         });
-        if (roleList != null && !roleList.isEmpty()) {
+
+
+    /*    if (roleList != null && !roleList.isEmpty()) {
             ArrayList<String> myList = new ArrayList<String>(Arrays.asList(roleList.split(";")));
             ArrayAdapter arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, myList);
             arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             role.setAdapter(arrayAdapter);
             if(myList.contains(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll()))
             role.setSelection(myList.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll()));
-        }
+        }*/
         preferenceHelper = new PreferenceHelper(PiachartActivity.this);
         mChart = (PieChart) findViewById(R.id.chart1);
         binding.piachartChartView.setVisibility(View.VISIBLE);
@@ -464,7 +529,9 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 openClass.putExtra(Constants.TITLE, title);
                 openClass.putExtra(Constants.INDICATOR_TASK, task);
                 openClass.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
+                openClass.putExtra(Constants.PROCESS_ID, "");
                 startActivity(openClass);
+
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
                 break;
@@ -623,6 +690,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                                         piaChartModelArrayList.add(piaChartModel);
                                     }
                                     mChart.setVisibility(View.GONE);
+                                    binding.tvPiaNoDataAvailable.setVisibility(View.GONE);
                                     binding.piachartRecyclerView.setVisibility(View.VISIBLE);
                                     adapter = new PichartDescriptiveListAdapter(context, piaChartModelArrayList);
                                     rvPiaChartDeatail.setAdapter(adapter);

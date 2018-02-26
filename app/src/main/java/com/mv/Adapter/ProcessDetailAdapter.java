@@ -47,19 +47,19 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
     private ArrayList<Task> taskList;
     private Activity mContext;
     PreferenceHelper preferenceHelper;
-    ArrayList<String> myList,selectedLanList;
+    ArrayList<String> myList, selectedLanList;
     ArrayAdapter<String> dimen_adapter;
     boolean[] mSelection = null;
     final String[] items = null;
     String value;
-    public static String state,village,taluka;
+    public static String state, village, taluka;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
 
-        LinearLayout llLayout, llHeaderLay, llLocation, llCheck, llMutiselect,llEdittext,llDate;
+        LinearLayout llLayout, llHeaderLay, llLocation, llCheck, llMutiselect, llEdittext, llDate;
         EditText questionResponse, date;
-        TextView question, header, locHeader, locText, checkText,dateHeader,editHeader;
+        TextView question, header, locHeader, locText, checkText, dateHeader, editHeader;
         Spinner spinnerResponse;
 
         CheckBox checkBox;
@@ -80,7 +80,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             ///location layout
             locHeader = (TextView) view.findViewById(R.id.tv_loc_hed);
             locText = (TextView) view.findViewById(R.id.loc_text);
-            editHeader= (TextView) view.findViewById(R.id.tv_edittext_question);
+            editHeader = (TextView) view.findViewById(R.id.tv_edittext_question);
             spinnerResponse = (Spinner) view.findViewById(R.id.sp_response);
             //    multiSelect = (MultiSelectionSpinner) view.findViewById(R.id.multi_spinner);
             //date  and timelayout
@@ -90,7 +90,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             date.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.DATE)||taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.EVENT_DATE))
+                    if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.DATE) || taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.EVENT_DATE))
                         showDateDialog(mContext, getAdapterPosition());
                     else if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.MULTI_SELECT)) {
                         myList = new ArrayList<String>(Arrays.asList(getColumnIdex((taskList.get(getAdapterPosition()).getPicklist_Value__c()).split(","))));
@@ -128,7 +128,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 }
             });
             //text and multiline
-           // inputLayout = (TextInputLayout) view.findViewById(R.id.input_content);
+            // inputLayout = (TextInputLayout) view.findViewById(R.id.input_content);
             questionResponse = (EditText) view.findViewById(R.id.et_process_detail);
             questionResponse.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -138,16 +138,16 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        Log.d("positionEdit",""+getAdapterPosition());
+                    Log.d("positionEdit", "" + getAdapterPosition());
                     //  taskList.get(getAdapterPosition()).setTask_Response__c(s.toString());
-                               taskList.get(getAdapterPosition()).setTask_Response__c(s.toString());
+                    taskList.get(getAdapterPosition()).setTask_Response__c(s.toString());
                     ((ProcessDeatailActivity) mContext).saveDataToList(taskList.get(getAdapterPosition()), getAdapterPosition());
 
                 }
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                                 }
+                }
             });
 
             //spinner
@@ -210,9 +210,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
-        Log.d("position",""+position);
+        Log.d("position", "" + position);
         Task task = taskList.get(position);
-        if (!preferenceHelper.getBoolean(Constants.IS_EDITABLE) ) {
+        if (!preferenceHelper.getBoolean(Constants.IS_EDITABLE)) {
             holder.questionResponse.setEnabled(false);
             holder.spinnerResponse.setEnabled(false);
             holder.llLocation.setEnabled(false);
@@ -224,7 +224,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         switch (task.getTask_type__c().trim()) {
 
             case Constants.TASK_TEXT:
-          //      holder.inputLayout.setVisibility(View.);
+                //      holder.inputLayout.setVisibility(View.);
                 holder.llEdittext.setVisibility(View.VISIBLE);
                 holder.llLayout.setVisibility(View.GONE);
                 holder.llHeaderLay.setVisibility(View.GONE);
@@ -238,7 +238,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 else
                     holder.editHeader.setText(task.getTask_Text___Lan_c());
 
-                    holder.questionResponse.setText(task.getTask_Response__c());
+                holder.questionResponse.setText(task.getTask_Response__c());
                 if (task.getValidation().equals("Alphabets")) {
                     //  holder.questionResponse.setInputType();
                     holder.questionResponse.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -262,15 +262,15 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
                 myList = new ArrayList<String>(Arrays.asList(getColumnIdex(("Select," + task.getPicklist_Value__c()).split(","))));
                 selectedLanList = new ArrayList<String>(Arrays.asList(getColumnIdex(("Select," + task.getPicklist_Value_Lan__c()).split(","))));
-               if(myList.size()==selectedLanList.size())
-                dimen_adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, selectedLanList);
-               else
-                   dimen_adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, myList);
+                if (myList.size() == selectedLanList.size())
+                    dimen_adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, selectedLanList);
+                else
+                    dimen_adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, myList);
                 dimen_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 holder.spinnerResponse.setPrompt(task.getTask_Text___Lan_c());
                 holder.spinnerResponse.setAdapter(dimen_adapter);
-          //      if (!preferenceHelper.getBoolean(Constants.NEW_PROCESS))
-                if(myList.indexOf(task.getTask_Response__c().trim())>=0)
+                //      if (!preferenceHelper.getBoolean(Constants.NEW_PROCESS))
+                if (myList.indexOf(task.getTask_Response__c().trim()) >= 0)
                     holder.spinnerResponse.setSelection(myList.indexOf(task.getTask_Response__c().trim()));
 
                 break;
@@ -289,8 +289,8 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     holder.editHeader.setText(task.getTask_Text___Lan_c());
 
                 holder.questionResponse.setLines(3);
-             //   holder.questionResponse.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-                holder.questionResponse.setGravity(Gravity.LEFT );
+                //   holder.questionResponse.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+                holder.questionResponse.setGravity(Gravity.LEFT);
                 holder.questionResponse.setText(task.getTask_Response__c());
                 holder.questionResponse.setSingleLine(false);
 
@@ -305,25 +305,39 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.header.setText(task.getTask_Text___Lan_c());
                 break;
             case Constants.LOCATION:
-                holder.llHeaderLay.setVisibility(View.GONE);
-                holder.llEdittext.setVisibility(View.GONE);
-                holder.llLayout.setVisibility(View.GONE);
-                holder.llCheck.setVisibility(View.GONE);
-                holder.llDate.setVisibility(View.GONE);
-                holder.llLocation.setVisibility(View.VISIBLE);
-                if (task.getIs_Response_Mnadetory__c())
-                    holder.locHeader.setText("* " + task.getTask_Text___Lan_c());
-                else
-                    holder.locHeader.setText(task.getTask_Text___Lan_c());
-                if(task.getTask_Response__c().equals(""))
-                    holder.locText.setText("Select");
-                else
-                holder.locText.setText(task.getTask_Response__c());
 
-                if(task.getIsEditable__c().equals("false"))
-                    holder.llLocation.setEnabled(false);
-                else
-                    holder.llLocation.setEnabled(true);
+
+
+                if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equalsIgnoreCase(task.getTask_Text__c())) {
+                    holder.llHeaderLay.setVisibility(View.GONE);
+                    holder.llEdittext.setVisibility(View.GONE);
+                    holder.llLayout.setVisibility(View.GONE);
+                    holder.llCheck.setVisibility(View.GONE);
+                    holder.llDate.setVisibility(View.GONE);
+                    holder.llLocation.setVisibility(View.VISIBLE);
+                    if (task.getIs_Response_Mnadetory__c())
+                        holder.locHeader.setText("* " + task.getTask_Text___Lan_c());
+                    else
+                        holder.locHeader.setText(task.getTask_Text___Lan_c());
+                    if (task.getTask_Response__c().equals(""))
+                        holder.locText.setText("Select");
+                    else
+                        holder.locText.setText(task.getTask_Response__c());
+
+                    if (task.getIsEditable__c().equals("false"))
+                        holder.llLocation.setEnabled(false);
+                    else
+                        holder.llLocation.setEnabled(true);
+                } else {
+                    holder.llHeaderLay.setVisibility(View.GONE);
+                    holder.llEdittext.setVisibility(View.GONE);
+                    holder.llLocation.setVisibility(View.GONE);
+                    holder.llLayout.setVisibility(View.GONE);
+                    holder.llDate.setVisibility(View.GONE);
+                    holder.llCheck.setVisibility(View.GONE);
+                }
+
+
                 break;
 
             case Constants.LOCATION_TASK:
@@ -337,7 +351,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     holder.locHeader.setText("* " + task.getTask_Text___Lan_c());
                 else
                     holder.locHeader.setText(task.getTask_Text___Lan_c());
-                if(task.getTask_Response__c().equals(""))
+                if (task.getTask_Response__c().equals(""))
                     holder.locText.setText("Select");
                 else
                     holder.locText.setText(task.getTask_Response__c());
@@ -427,7 +441,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 else
                     holder.editHeader.setText(task.getTask_Text___Lan_c());
 
-                    holder.questionResponse.setText(task.getTask_Response__c());
+                holder.questionResponse.setText(task.getTask_Response__c());
                 if (task.getValidation().equals("Alphabets")) {
                     //  holder.questionResponse.setInputType();
                     holder.questionResponse.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -464,7 +478,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llDate.setVisibility(View.VISIBLE);
                 // holder.questionResponse.setHint(task.getTask_Text___Lan_c());
                 if (task.getIs_Response_Mnadetory__c())
-                    holder.dateHeader.setText("*" +"abhi");
+                    holder.dateHeader.setText("*" + "abhi");
                 else
                     holder.dateHeader.setText("Abhi");
                 holder.date.setText(task.getTask_Response__c());
@@ -486,7 +500,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llLayout.setVisibility(View.GONE);
                 holder.llDate.setVisibility(View.GONE);
-            //    holder.llMutiselect.setVisibility(View.GONE);
+                //    holder.llMutiselect.setVisibility(View.GONE);
         }
 
     }

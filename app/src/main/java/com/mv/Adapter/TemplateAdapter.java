@@ -21,7 +21,7 @@ import com.mv.Activity.ProcessApprovalActivity;
 import com.mv.Activity.ProcessListActivity;
 import com.mv.Activity.TeamManagementUserProfileListActivity;
 import com.mv.Activity.TemplatesActivity;
-import com.mv.MenuActivity.ProgrammeManagmentFragment;
+import com.mv.ActivityMenu.ProgrammeManagmentFragment;
 import com.mv.Model.Template;
 import com.mv.R;
 

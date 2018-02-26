@@ -12,23 +12,29 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:layout_marginTop="@dimen/dimen_10dp"
         android:layout_width="@dimen/dimen_70dp"
         android:layout_height="@dimen/dimen_70dp"
         android:layout_gravity="right"
-        android:src="@drawable/smflogo0001"/>
-
+        android:layout_marginTop="@dimen/dimen_10dp"
+        android:src="@drawable/smflogo0001" />
 
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/mulya_image"
         android:layout_gravity="center"
+        android:src="@drawable/mulya_image" />
 
-       />
-
+    <TextView
+        android:id="@+id/versionName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:gravity="center"
+        android:textSize="@dimen/small_text"
+        android:text="Footer Item 2"
+        android:textColor="@color/medium_grey" />
 
 
 </LinearLayout>

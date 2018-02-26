@@ -22,26 +22,39 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_margin="10dp"
-            android:maxLines="1"
+            android:layout_weight="5"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
             android:marqueeRepeatLimit="marquee_forever"
             android:scrollHorizontally="true"
-            android:layout_weight="5"
+            android:singleLine="true"
             android:text="Group 1"
             android:textColor="@color/dark_grey"
             android:textSize="@dimen/medium_text" />
 
 
         <ImageView
+            android:id="@+id/imgNextArrow"
             android:layout_width="15dp"
-
             android:layout_height="20dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
             android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
             android:src="@drawable/arrow" />
+
+        <TextView
+            android:id="@+id/txtCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:text="50"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/medium_text"
+            android:visibility="gone" />
 
     </LinearLayout>
 

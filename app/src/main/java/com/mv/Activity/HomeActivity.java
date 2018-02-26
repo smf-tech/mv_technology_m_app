@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.AnimationDrawable;
 import android.location.Geocoder;
@@ -55,13 +56,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kobakei.ratethisapp.RateThisApp;
 import com.mv.Adapter.HomeAdapter;
-import com.mv.MenuActivity.CommunityHomeFragment;
-import com.mv.MenuActivity.GroupsFragment;
-import com.mv.MenuActivity.IndicatorListFragmet;
-import com.mv.MenuActivity.ProgrammeManagmentFragment;
-import com.mv.MenuActivity.TeamManagementFragment;
-import com.mv.MenuActivity.ThetSavandFragment;
-import com.mv.MenuActivity.TrainingCalender;
+import com.mv.ActivityMenu.CommunityHomeFragment;
+import com.mv.ActivityMenu.GroupsFragment;
+import com.mv.ActivityMenu.IndicatorListFragmet;
+import com.mv.ActivityMenu.ProgrammeManagmentFragment;
+import com.mv.ActivityMenu.TeamManagementFragment;
+import com.mv.ActivityMenu.ThetSavandFragment;
+import com.mv.ActivityMenu.TrainingCalender;
 import com.mv.Model.HomeModel;
 import com.mv.Model.User;
 import com.mv.R;
@@ -98,7 +99,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView img_back, img_list, img_logout, img_lang;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
-    private AlertDialog alertDialogApproved ;
+    private AlertDialog alertDialogApproved;
     private ActivityHome1Binding binding;
     private PreferenceHelper preferenceHelper;
 
@@ -125,7 +126,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
         binding.setActivity(this);
         preferenceHelper = new PreferenceHelper(this);
-        alertDialogApproved = new AlertDialog.Builder(this).create();;
+        alertDialogApproved = new AlertDialog.Builder(this).create();
+        ;
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
         ///setActionbar(getString(R.string.app_name));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -140,6 +142,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View headerLayout = navigationView.getHeaderView(0);
+        TextView versionName = (TextView) headerLayout.findViewById(R.id.versionName);
+        versionName.setText("Version is : " + getAppVersion());
         //    tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         //  viewPager = (ViewPager) findViewById(R.id.pager);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -209,10 +214,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
-        if ((User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationTrackingAllow__c().equals("true"))) {
+        if (User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationTrackingAllow__c() != null
+                && User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationTrackingAllow__c().equals("true")) {
             if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("true")) {
                 final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -263,13 +270,112 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
+        if (User.getCurrentUser(this).getMvUser().getUserMobileAppVersion() != null &&
+                User.getCurrentUser(this).getMvUser().getUserMobileAppVersion().equalsIgnoreCase(getAppVersion())) {
 
+        } else {
+            User.getCurrentUser(this).getMvUser().setUserMobileAppVersion(getAppVersion());
+            sendData();
+        }
 
         Intent intent = new Intent(this, LocationService.class);
         // add infos for the service which file to download and where to store
         intent.putExtra(Constants.State, User.getCurrentUser(getApplicationContext()).getMvUser().getState());
         intent.putExtra(Constants.DISTRICT, User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
         startService(intent);
+    }
+
+    private void sendData() {
+        JSONObject jsonObject1 = new JSONObject();
+        try {
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            String json = gson.toJson(User.getCurrentUser(this).getMvUser());
+            JSONObject jsonObject2 = new JSONObject(json);
+            JSONObject jsonObject = new JSONObject();
+            JSONArray jsonArray = new JSONArray();
+            JSONObject jsonObjectAttachment = new JSONObject();
+            jsonObject1.put("user", jsonObject2);
+            jsonObject1.put("attachments", jsonObjectAttachment);
+            jsonArray.put(jsonObject1);
+            jsonObject.put("listVisitsData", jsonArray);
+            JsonParser jsonParser = new JsonParser();
+            JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
+            ServiceRequest apiService =
+                    ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+            apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.MTRegisterUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    try {
+
+                        if (response.body() != null) {
+                            String data = response.body().string();
+                            if (data != null && data.length() > 0) {
+                                  /*  JSONObject object = new JSONObject(data);
+                                    JSONArray array = object.getJSONArray("Records");
+                                    for (int i = 0; i < array.length(); i++) {
+                                        JSONObject object1 = array.getJSONObject(i);
+                                        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                                        try {
+                                            if (!isAdd) {
+                                                AppDatabase.getAppDatabase(RegistrationActivity.this).userDao().clearTableCommunity();
+                                            }
+                                            preferenceHelper.insertString(PreferenceHelper.UserData, object1.toString());
+                                            preferenceHelper.insertString(PreferenceHelper.UserRole, user.getMvUser().getRoll());
+                                            Utills.showToast("Registration Successful...", RegistrationActivity.this);
+                                            User.clearUser();
+                                            setResult(RESULT_OK);
+                                            finish();
+                                            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        break;
+                                    }
+*/
+                                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                                preferenceHelper.insertString(PreferenceHelper.UserData, data);
+                                User.clearUser();
+                                preferenceHelper.insertString(PreferenceHelper.UserRole, User.getCurrentUser(HomeActivity.this).getMvUser().getRoll());
+                            }
+                        }
+                            /*JSONObject response1 = new JSONObject(response.body().string());
+                            if (response1.getBoolean("success")) {
+                                // user.setId(response1.getString("id"));
+                            } else {
+                                Utills.showToast(response1.getString("Message"), RegistrationActivity.this);
+                            }*/
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Utills.showToast(getString(R.string.error_something_went_wrong), HomeActivity.this);
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Utills.hideProgressDialog();
+                    Utills.showToast(getString(R.string.error_something_went_wrong), HomeActivity.this);
+                }
+            });
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private String getAppVersion() {
+        String result = "";
+
+        try {
+            result = getPackageManager()
+                    .getPackageInfo(getPackageName(), 0)
+                    .versionName;
+            result = result.replaceAll("[a-zA-Z]|-", "");
+        } catch (PackageManager.NameNotFoundException e) {
+            Log.e("TAG", e.getMessage());
+        }
+
+        return result;
     }
 
     private void initViews() {
@@ -281,12 +387,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         menulist = new ArrayList<>();
 
         if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
-            if(!User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equals(""))
-            allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().split(";")));
+            if (!User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equals(""))
+                allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().split(";")));
             showApprovedDilaog();
         } else {
-            if(!User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().equals(""))
-            allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().split(";")));
+            if (!User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().equals(""))
+                allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().split(";")));
 
         }
         menuListName = new ArrayList<>();
@@ -353,9 +459,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true)) {
             actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
         }
-
-
-
 
 
         String receivedAction = receivedIntent.getAction();
@@ -457,9 +560,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
-
-
-
 
 
     @Override
@@ -602,10 +702,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         int checkId = 0;
         if (preferenceHelper.getString(Constants.LANGUAGE).equalsIgnoreCase(Constants.LANGUAGE_MARATHI)) {
             checkId = 1;
-        } else if(preferenceHelper.getString(Constants.LANGUAGE).equalsIgnoreCase(Constants.LANGUAGE_HINDI)){
+        } else if (preferenceHelper.getString(Constants.LANGUAGE).equalsIgnoreCase(Constants.LANGUAGE_HINDI)) {
             checkId = 2;
         }
-
 
 
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -629,7 +728,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                             preferenceHelper.insertString(Constants.LANGUAGE, Constants.LANGUAGE_MARATHI);
                         } else {
                             LocaleManager.setNewLocale(getApplicationContext(), Constants.LANGUAGE_HINDI);
-                            preferenceHelper.insertString(Constants.LANGUAGE,Constants. LANGUAGE_HINDI);
+                            preferenceHelper.insertString(Constants.LANGUAGE, Constants.LANGUAGE_HINDI);
                         }
                         dialog.dismiss();
                         finish();
@@ -746,7 +845,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private void showApprovedDilaog() {
         String message = "";
-        if(alertDialogApproved.isShowing())
+        if (alertDialogApproved.isShowing())
             alertDialogApproved.dismiss();
 
         // Setting Dialog Title
@@ -826,7 +925,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetUserData_url+"?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
+                + Constants.GetUserData_url + "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -914,8 +1013,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
-
     private void SampleDialog() {
         if (alertLocationDialog == null) {
             alertLocationDialog = new AlertDialog.Builder(this).create();
@@ -982,7 +1079,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                 JSONObject jsonObject = new JSONObject(data);
                                 String statusofmap = jsonObject.getString("status");
                                 String message = jsonObject.getString("msg");
-                                Utills.showToast(statusofmap,HomeActivity.this);
+                                Utills.showToast(statusofmap, HomeActivity.this);
                                 if (statusofmap.equals("Success")) {
 
 
@@ -1022,36 +1119,38 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
-  private void CallUSDialog(){
-      final String[] items = {getString(R.string.call_on_hangout), getString(R.string.call_on_landline)};
 
-      final AlertDialog.Builder dialog = new AlertDialog.Builder(this)
-              .setTitle(getString(R.string.app_name));
-      dialog.setItems(items, new DialogInterface.OnClickListener() {
-          @Override
-          public void onClick(DialogInterface dialogInterface, int position) {
-              dialogInterface.dismiss();
-              switch (position){
-                  case 0:  Uri uri = Uri.parse(User.getCurrentUser(getApplicationContext()).getAppConfig().getHangout_URL__c()); // missing 'http://' will cause crashed
-                           Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                            startActivity(intent);
-                      break;
-                  case 1:    Intent dial = new Intent();
-                      dial.setAction("android.intent.action.DIAL");
-                      try {
-                          dial.setData(Uri.parse(User.getCurrentUser(getApplicationContext()).getAppConfig().getContact_No__c()));
-                          startActivity(dial);
-                      } catch (Exception e) {
-                          Log.e("Calling", "" + e.getMessage());
-                      }
-              }
+    private void CallUSDialog() {
+        final String[] items = {getString(R.string.call_on_hangout), getString(R.string.call_on_landline)};
 
-          }
-      });
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this)
+                .setTitle(getString(R.string.app_name));
+        dialog.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int position) {
+                dialogInterface.dismiss();
+                switch (position) {
+                    case 0:
+                        Uri uri = Uri.parse(User.getCurrentUser(getApplicationContext()).getAppConfig().getHangout_URL__c()); // missing 'http://' will cause crashed
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        Intent dial = new Intent();
+                        dial.setAction("android.intent.action.DIAL");
+                        try {
+                            dial.setData(Uri.parse(User.getCurrentUser(getApplicationContext()).getAppConfig().getContact_No__c()));
+                            startActivity(dial);
+                        } catch (Exception e) {
+                            Log.e("Calling", "" + e.getMessage());
+                        }
+                }
 
-      dialog.show();
-  }
+            }
+        });
 
+        dialog.show();
+    }
 
 
     @SuppressWarnings("StatementWithEmptyBody")
@@ -1060,7 +1159,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         if (id == R.id.action_lang) {
-          showDialog();
+            showDialog();
 
 
         } else if (id == R.id.action_profile) {
@@ -1078,17 +1177,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             RateThisApp.showRateDialog(HomeActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
 
         } else if (id == R.id.action_add_school) {
-            String role=User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
-            if((User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationAllow__c().equals("true"))) {
+            String role = User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
+            if ((User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationAllow__c().equals("true"))) {
                 Intent openClass = new Intent(HomeActivity.this, AddSchoolActivity.class);
                 startActivity(openClass);
-            }
-            else
-            {
-                Utills.showToast("You don't have access to add location",HomeActivity.this);
+            } else {
+                Utills.showToast("You don't have access to add location", HomeActivity.this);
             }
 
-        }else if (id==R.id.action_callus){
+        } else if (id == R.id.action_callus) {
             CallUSDialog();
            /* Uri uri = Uri.parse("https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2"); // missing 'http://' will cause crashed
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);

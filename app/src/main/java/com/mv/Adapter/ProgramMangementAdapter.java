@@ -16,7 +16,7 @@ import com.mv.Activity.ProcessApprovalActivity;
 import com.mv.Activity.ProcessListActivity;
 import com.mv.Activity.TeamManagementUserProfileListActivity;
 import com.mv.Activity.TemplatesActivity;
-import com.mv.MenuActivity.ProgrammeManagmentFragment;
+import com.mv.ActivityMenu.ProgrammeManagmentFragment;
 import com.mv.Model.Template;
 import com.mv.R;
 import com.mv.Utils.Constants;
@@ -36,13 +36,14 @@ public class ProgramMangementAdapter  extends RecyclerView.Adapter<ProgramMangem
     private PreferenceHelper preferenceHelper;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView txtCommunityName,txt_targeted_date;
+        public TextView txtCommunityName,txt_targeted_date,txt_targeted_count;
         public LinearLayout layout;
 
         public MyViewHolder(View view) {
             super(view);
             txtCommunityName = (TextView) view.findViewById(R.id.txtTemplateName);
             txt_targeted_date = (TextView) view.findViewById(R.id.txt_traget_date);
+            txt_targeted_count = (TextView) view.findViewById(R.id.txt_traget_count);
             layout = (LinearLayout) view.findViewById(R.id.layoutTemplate);
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -106,11 +107,13 @@ public class ProgramMangementAdapter  extends RecyclerView.Adapter<ProgramMangem
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Log.d("Position",""+position);
         Template template = teplateList.get(position);
-        holder.txtCommunityName.setText(template.getName()+" ( "+template.getAnswerCount()+" )");
+        holder.txtCommunityName.setText(template.getName());
         if(template.getTargated_Date__c()!=null)
         holder.txt_targeted_date.setText("Target Date : "+template.getTargated_Date__c());
         else
             holder.txt_targeted_date.setText("Target Date : "+"N/A");
+
+        holder.txt_targeted_count.setText("Count : "+template.getAnswerCount());
     }
 
     @Override
