@@ -178,7 +178,11 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                         downloadImage();
                     }
                 }
-        }
+        }else {
+                    if (mContent.getAttachmentId()!=null){
+                        downloadImage();
+                    }
+                }
 
 
                 break;
@@ -207,6 +211,25 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                             startActivity(Intent.createChooser(shareIntent, "Share Content"));
                         }
                     } else {
+                        Intent i = new Intent(Intent.ACTION_SEND);
+                        i.setType("image*//**//*");
+                        i.putExtra(Intent.EXTRA_TEXT, "Title : " + mContent.getTitle() + "\n\nDescription : " + mContent.getDescription());
+                        startActivity(Intent.createChooser(i, "Share Post"));
+
+                    }
+                }else {
+                    if (mContent.getAttachmentId()!=null){
+                        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mContent.getAttachmentId() + ".png";
+
+                        //String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId()+".png";
+
+                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                        shareIntent.setType("application/*");
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + mContent.getTitle() + "\n\nDescription : " + mContent.getDescription());
+
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                        startActivity(Intent.createChooser(shareIntent, "Share Content"));
+                    }else {
                         Intent i = new Intent(Intent.ACTION_SEND);
                         i.setType("image*//**//*");
                         i.putExtra(Intent.EXTRA_TEXT, "Title : " + mContent.getTitle() + "\n\nDescription : " + mContent.getDescription());

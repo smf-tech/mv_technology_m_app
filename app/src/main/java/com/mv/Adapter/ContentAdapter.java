@@ -325,7 +325,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     MenuItem delete= (MenuItem) popup.getMenu().findItem(R.id.delete);
                     spam.setVisible(true);
 
-                    Log.e("title 111->",mActivity.HoSupportCommunity);
+
 
                     if (mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
                         delete.setVisible(true);
