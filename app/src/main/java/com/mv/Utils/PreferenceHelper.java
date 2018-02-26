@@ -85,7 +85,9 @@ public class PreferenceHelper {
         Map<String, ?> prefs = pref.getAll();
         for (Map.Entry<String, ?> prefToReset : prefs.entrySet()) {
             if (prefToReset.getKey().equalsIgnoreCase(PreferenceHelper.TOKEN)
-                    || prefToReset.getKey().equalsIgnoreCase(PreferenceHelper.InstanceUrl)) {
+                    || prefToReset.getKey().equalsIgnoreCase(PreferenceHelper.InstanceUrl)
+                    || prefToReset.getKey().equalsIgnoreCase(PreferenceHelper.FIRSTTIME_V_2_7)
+                    ) {
             } else {
                 editor.remove(prefToReset.getKey()).commit();
             }

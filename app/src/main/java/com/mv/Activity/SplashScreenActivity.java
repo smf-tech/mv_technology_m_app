@@ -45,10 +45,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         // TODO Remove this code after build
         if (preference.getBoolean(PreferenceHelper.FIRSTTIME_V_2_7)) {
             preference.clearPrefrences(PreferenceHelper.UserData);
-
             preference.insertBoolean(PreferenceHelper.FIRSTTIME_V_2_7, false);
         }
-
         Utills.makedirs(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Video");
         Utills.makedirs(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image");
         Utills.makedirs(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download");
