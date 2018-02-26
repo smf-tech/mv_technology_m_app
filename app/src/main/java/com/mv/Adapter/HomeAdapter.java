@@ -95,7 +95,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         Log.d("position", String.valueOf(position));
         Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.blink);
         holder.itemView.startAnimation(animation);
-        holder.menu_icon.setImageResource(menuList.get(position).getMenuIcon());
+//        holder.menu_icon.setImageResource(menuList.get(position).getMenuIcon());
         holder.bindTo(menuList.get(position).getMenuName());
         if (!menuList.get(position).getAccessible()) {
             //  holder.layout.setBackgroundColor(mContext.getColor(R.color.blue));
