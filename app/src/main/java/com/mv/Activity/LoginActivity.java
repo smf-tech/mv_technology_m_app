@@ -62,6 +62,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private RelativeLayout mToolBar;
     private PreferenceHelper preferenceHelper;
     private BroadcastReceiver mIntentReceiver;
+    private String data;
     User user = new User();
     String msg = "";
     CountDownTimer yourCountDownTimer;
@@ -98,14 +99,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         // slideOut(binding.edtOtp,binding.edtUsername);
         if (binding.edtUsername.isShown() && isValidate(binding.edtUsername, 10, getString(R.string.mobile_no))) {
             if (Utills.isConnected(this)) {
-                slideOut(binding.edtOtp, binding.edtUsername, getString(R.string.msg_manual_otp));
                 loginToSalesforce();
             } else {
                 Utills.showInternetPopUp(this);
             }
         } else if (binding.edtOtp.isShown() && isValidate(binding.edtOtp, 6, "OTP")) {
+
             if (user.getMvUser().getPassword() != null) {
+
                 if (user.getMvUser().getPassword().trim().equals(binding.edtOtp.getText().toString().trim())) {
+                    preferenceHelper.insertString(PreferenceHelper.UserData, data);
                     yourCountDownTimer.cancel();
                     if (user.getMvUser().getRoll() != null) {
                         Utills.showToast("Login Successful...", LoginActivity.this);
@@ -114,7 +117,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         startActivity(intent);
                         overridePendingTransition(R.anim.right_in, R.anim.left_out);
                         finish();
-                        preferenceHelper.insertString(PreferenceHelper.UserRole, user.getMvUser().getRoll());
                     } else {
 
                         Intent intent;
@@ -167,7 +169,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Utills.hideProgressDialog();
                 try {
                     if (response.body() != null) {
-                        String data = response.body().string();
+                        data = response.body().string();
                         if (data != null && data.length() > 0) {
                             JSONObject obj = new JSONObject(data);
                             String access_token = obj.getString("access_token");
@@ -215,7 +217,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         int checkId = 0;
         if (preferenceHelper.getString(Constants.LANGUAGE).equalsIgnoreCase(Constants.LANGUAGE_MARATHI)) {
             checkId = 1;
-        } else if(preferenceHelper.getString(Constants.LANGUAGE).equalsIgnoreCase(Constants.LANGUAGE_HINDI)){
+        } else if (preferenceHelper.getString(Constants.LANGUAGE).equalsIgnoreCase(Constants.LANGUAGE_HINDI)) {
             checkId = 2;
         }
 
@@ -240,7 +242,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             preferenceHelper.insertString(Constants.LANGUAGE, Constants.LANGUAGE_MARATHI);
                         } else {
                             LocaleManager.setNewLocale(getApplicationContext(), Constants.LANGUAGE_HINDI);
-                            preferenceHelper.insertString(Constants.LANGUAGE,Constants. LANGUAGE_HINDI);
+                            preferenceHelper.insertString(Constants.LANGUAGE, Constants.LANGUAGE_HINDI);
                         }
                         dialog.dismiss();
                         finish();
@@ -254,12 +256,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void getLoginOTP() {
+
         Utills.showProgressDialog(this);
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetLoginOTP_url+"?mobileNo=" + binding.edtUsername.getText().toString().trim()
-                + "&notificationId=" + preferenceHelper.getString(PreferenceHelper.TOKEN);
+                + Constants.GetLoginOTP_url + "?mobileNo=" + binding.edtUsername.getText().toString().trim()
+                + "&notificationId=" + preferenceHelper.getString(PreferenceHelper.TOKEN)
+                + "&PhoneId=" + Utills.getDeviceId(LoginActivity.this);
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -267,13 +271,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Utills.hideProgressDialog();
                 try {
                     if (response.body() != null) {
-                        String data = response.body().string();
+                        data = response.body().string();
                         if (data != null && data.length() > 0) {
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                            preferenceHelper.insertString(PreferenceHelper.UserData, data);
                             user = gson.fromJson(data, User.class);
                             Log.e("otp", user.getMvUser().getPassword());
-                            setTimer();
+
+                            if (user.getMvUser().getPhoneId() != null
+                                    && user.getMvUser().getPhoneId().equalsIgnoreCase(Utills.getDeviceId(LoginActivity.this))) {
+                                preferenceHelper.insertString(PreferenceHelper.UserData, data);
+                                Utills.showToast("Login Successful...", LoginActivity.this);
+                                Intent intent;
+                                intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                                finish();
+                            } else {
+                                slideOut(binding.edtOtp, binding.edtUsername, getString(R.string.msg_manual_otp));
+                                setTimer();
+                            }
+
                         }
                     }
                 } catch (IOException e) {

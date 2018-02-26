@@ -45,7 +45,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         // TODO Remove this code after build
         if (preference.getBoolean(PreferenceHelper.FIRSTTIME_V_2_7)) {
             preference.clearPrefrences(PreferenceHelper.UserData);
-            preference.clearPrefrences(PreferenceHelper.UserRole);
+
             preference.insertBoolean(PreferenceHelper.FIRSTTIME_V_2_7, false);
         }
 
@@ -67,12 +67,16 @@ public class SplashScreenActivity extends AppCompatActivity {
             @Override
             public void run() {
                 Intent intent;
-                if (TextUtils.isEmpty(preference.getString(PreferenceHelper.UserRole))) {
+                if (User.getCurrentUser(SplashScreenActivity.this).getMvUser().getRoll() == null
+                        || TextUtils.isEmpty(User.getCurrentUser(SplashScreenActivity.this).getMvUser().getRoll())) {
                     intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
+                    User.clearUser();
                 } else {
-                    if (User.getCurrentUser(SplashScreenActivity.this).getMvUser().getGender() == null || TextUtils.isEmpty(User.getCurrentUser(SplashScreenActivity.this).getMvUser().getGender())) {
+                    if (User.getCurrentUser(SplashScreenActivity.this).getMvUser().getGender() == null
+                            || TextUtils.isEmpty(User.getCurrentUser(SplashScreenActivity.this).getMvUser().getGender())) {
                         intent = new Intent(SplashScreenActivity.this, RegistrationActivity.class);
                         intent.putExtra(Constants.ACTION, Constants.ACTION_EDIT);
+                        User.clearUser();
                     } else {
                         intent = new Intent(SplashScreenActivity.this, HomeActivity.class);
                     }
@@ -115,7 +119,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                         public void run() {
 
                             Intent intent;
-                            if (TextUtils.isEmpty(preference.getString(PreferenceHelper.UserRole)))
+                            if (User.getCurrentUser(SplashScreenActivity.this).getMvUser().getRoll() == null
+                                    || TextUtils.isEmpty(User.getCurrentUser(SplashScreenActivity.this).getMvUser().getRoll()))
                                 intent = new Intent(SplashScreenActivity.this, LoginActivity.class);
                             else
                                 intent = new Intent(SplashScreenActivity.this, HomeActivity.class);

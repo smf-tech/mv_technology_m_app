@@ -797,7 +797,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                     }
                                     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                                     preferenceHelper.insertString(PreferenceHelper.UserData, data);
-                                    preferenceHelper.insertString(PreferenceHelper.UserRole, user.getMvUser().getRoll());
                                     User.clearUser();
                                     setResult(RESULT_OK);
                                     finish();

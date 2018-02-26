@@ -11,64 +11,64 @@ public class UserInfo {
 
     @SerializedName("Id")
     @Expose
-    private String Id;
+    private String Id = "";
     @SerializedName("Project__c")
     @Expose
-    private String Project__c;
+    private String Project__c = "";
     @SerializedName("Project_Name__c")
     @Expose
-    private String Project_Name__c;
+    private String Project_Name__c = "";
     @SerializedName("Name")
     @Expose
-    private String Name;
+    private String Name = "";
     @SerializedName("User_Email__c")
     @Expose
-    private String Email;
+    private String Email = "";
     @SerializedName("User_Cluster__c")
     @Expose
-    private String Cluster;
+    private String Cluster = "";
     @SerializedName("User_District__c")
     @Expose
-    private String District;
+    private String District = "";
     @SerializedName("User_Password__c")
     @Expose
-    private String Password;
+    private String Password = "";
     @SerializedName("User_Mobile_No__c")
     @Expose
-    private String Phone;
+    private String Phone = "";
     @SerializedName("Role_Name__c")
     @Expose
-    private String Roll;
+    private String Roll = "";
     @SerializedName("User_SchoolID__c")
     @Expose
-    private String School_Code;
+    private String School_Code = "";
     @SerializedName("UserSchoolName__c")
     @Expose
-    private String School_Name;
+    private String School_Name = "";
     @SerializedName("User_Taluka__c")
     @Expose
-    private String Taluka;
+    private String Taluka = "";
     @SerializedName("User_Village__c")
     @Expose
-    private String Village;
+    private String Village = "";
     @SerializedName("User_State__c")
     @Expose
-    private String State;
+    private String State = "";
     @SerializedName("Middle_Name__c")
     @Expose
-    private String MiddleName;
+    private String MiddleName = "";
     @SerializedName("Last_Name__c")
     @Expose
-    private String LastName;
+    private String LastName = "";
     @SerializedName("ImageId__c")
     @Expose
-    private String ImageId;
+    private String ImageId = "";
     @SerializedName("Role_Organization__c")
     @Expose
-    private String Organisation;
+    private String Organisation = "";
     @SerializedName("Is_Approved__c")
     @Expose
-    private String isApproved;
+    private String isApproved = "";
 
     @SerializedName("Mobile_Tab_Name_c__c")
     @Expose
@@ -80,11 +80,23 @@ public class UserInfo {
 
     @SerializedName("Approval_Role_c__c")
     @Expose
-    private String approval_role;
+    private String approval_role = "";
 
     @SerializedName("Gender__c")
     @Expose
-    private String gender;
+    private String gender = "";
+
+    public String getPhoneId() {
+        return PhoneId;
+    }
+
+    public void setPhoneId(String phoneId) {
+        PhoneId = phoneId;
+    }
+
+    @SerializedName("PhoneID__c")
+    @Expose
+    private String PhoneId = "";
 
     public String getUserMobileAppVersion() {
         return User_Mobile_App_Version__c;
@@ -96,7 +108,7 @@ public class UserInfo {
 
     @SerializedName("User_Mobile_App_Version__c")
     @Expose
-    private String User_Mobile_App_Version__c;
+    private String User_Mobile_App_Version__c = "";
 
     public String getIsLocationTrackingAllow__c() {
         return isLocationTrackingAllow__c;
