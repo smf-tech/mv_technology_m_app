@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.mv.MenuActivity.GroupsFragment;
+import com.mv.ActivityMenu.GroupsFragment;
 import com.mv.Model.Community;
 import com.mv.R;
 import com.mv.Retrofit.AppDatabase;

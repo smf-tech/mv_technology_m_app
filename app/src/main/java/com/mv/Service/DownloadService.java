@@ -15,8 +15,8 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.mv.Activity.CommunityHomeActivity;
-import com.mv.MenuActivity.ThetSavandFragment;
-import com.mv.MenuActivity.TrainingFragment;
+import com.mv.ActivityMenu.ThetSavandFragment;
+import com.mv.ActivityMenu.TrainingFragment;
 import com.mv.Model.Download;
 import com.mv.R;
 import com.mv.Retrofit.ServiceRequest;

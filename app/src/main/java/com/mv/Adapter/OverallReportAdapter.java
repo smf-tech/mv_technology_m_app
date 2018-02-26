@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,6 +18,9 @@ import com.mv.Activity.ProcessListActivity;
 import com.mv.Activity.TeamManagementUserProfileListActivity;
 import com.mv.Activity.TemplatesActivity;
 import com.mv.ActivityMenu.ProgrammeManagmentFragment;
+import com.mv.Model.CalenderEvent;
+import com.mv.Model.OverAllModel;
+import com.mv.Model.PiaChartModel;
 import com.mv.Model.Template;
 import com.mv.R;
 import com.mv.Utils.Constants;
@@ -25,12 +29,12 @@ import com.mv.Utils.PreferenceHelper;
 import java.util.List;
 
 /**
- * Created by nanostuffs on 13-02-2018.
+ * Created by nanostuffs on 23-02-2018.
  */
 
-public class ProgramMangementAdapter  extends RecyclerView.Adapter<ProgramMangementAdapter.MyViewHolder> {
+public class OverallReportAdapter extends RecyclerView.Adapter<OverallReportAdapter.MyViewHolder> {
 
-    private List<Template> teplateList;
+    private List<OverAllModel> teplateList;
     private Activity mContext;
 
     private PreferenceHelper preferenceHelper;
@@ -38,17 +42,19 @@ public class ProgramMangementAdapter  extends RecyclerView.Adapter<ProgramMangem
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView txtCommunityName,txt_targeted_date,txt_targeted_count;
         public LinearLayout layout;
+        ImageView arraow;
 
         public MyViewHolder(View view) {
             super(view);
             txtCommunityName = (TextView) view.findViewById(R.id.txtTemplateName);
             txt_targeted_date = (TextView) view.findViewById(R.id.txt_traget_date);
             txt_targeted_count = (TextView) view.findViewById(R.id.txt_traget_count);
+            arraow = (ImageView) view.findViewById(R.id.row_img);
             layout = (LinearLayout) view.findViewById(R.id.layoutTemplate);
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mContext instanceof TemplatesActivity)
+           /*         if (mContext instanceof TemplatesActivity)
                         ((TemplatesActivity) mContext).onLayoutTemplateClick(getAdapterPosition());
 
                     else if (mContext instanceof ProgrammeManagmentFragment) {
@@ -81,7 +87,7 @@ public class ProgramMangementAdapter  extends RecyclerView.Adapter<ProgramMangem
                         openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
                         mContext.startActivity(openClass);
                         mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                    }
+                    }*/
 
                 }
             });
@@ -89,31 +95,32 @@ public class ProgramMangementAdapter  extends RecyclerView.Adapter<ProgramMangem
     }
 
 
-    public ProgramMangementAdapter(List<Template> moviesList, Activity context) {
+    public OverallReportAdapter(List<OverAllModel> moviesList, Activity context) {
         this.teplateList = moviesList;
         this.mContext = context;
         preferenceHelper = new PreferenceHelper(context);
     }
 
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public OverallReportAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_programe, parent, false);
 
-        return new MyViewHolder(itemView);
+        return new OverallReportAdapter.MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(OverallReportAdapter.MyViewHolder holder, int position) {
         Log.d("Position",""+position);
-        Template template = teplateList.get(position);
-        holder.txtCommunityName.setText(template.getName());
-        if(template.getTargated_Date__c()!=null)
-        holder.txt_targeted_date.setText("Target Date : "+template.getTargated_Date__c());
+        OverAllModel template = teplateList.get(position);
+        holder.arraow.setVisibility(View.GONE);
+        holder.txtCommunityName.setText(template.getTalukaName());
+        if(template.getExpectedCount()!=null)
+            holder.txt_targeted_date.setText("Expected Count : "+template.getExpectedCount());
         else
-            holder.txt_targeted_date.setText("Target Date : "+"N/A");
+            holder.txt_targeted_date.setText("Expected Count : "+"N/A");
 
-        holder.txt_targeted_count.setText("Count : "+template.getAnswerCount());
+        holder.txt_targeted_count.setText("Submitted Count : "+template.getSubmittedCount());
     }
 
     @Override

@@ -47,7 +47,10 @@ public class IndicatorTask extends AppCompatActivity implements View.OnClickList
 
 
     private void initViews() {
+
+
         dashaBoardListModel = getIntent().getExtras().getParcelable(Constants.PROCESS_ID);
+
 
         preferenceHelper = new PreferenceHelper(this);
         setActionbar(dashaBoardListModel.getName());

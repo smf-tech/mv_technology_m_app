@@ -39,6 +39,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.ResponseBody;
+import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,13 +65,13 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
     String msg = "";
     private int locationState;
     private Boolean isAdd;
-    DashaBoardListModel dashaBoardListModel;
+
     private boolean isDistrictSet = false, isRollSet = false;
     Activity context;
     LocationModel locationModel;
     Task task;
     String roleList;
-    String title;
+    String title,processId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +82,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         task = getIntent().getParcelableExtra(Constants.INDICATOR_TASK);
         roleList = getIntent().getStringExtra(Constants.INDICATOR_TASK_ROLE);
         title = getIntent().getExtras().getString(Constants.TITLE);
-        dashaBoardListModel = getIntent().getExtras().getParcelable(Constants.PROCESS_ID);
+        processId = getIntent().getExtras().getString(Constants.PROCESS_ID);
         locationModel=new LocationModel();
         locationModel.setState("");
         locationModel.setDistrict("");
@@ -205,20 +206,36 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
 
                 sendLocation();
 
-                // sendData();
+
                 break;
 
         }
     }
 
     private void sendLocation() {
-        Intent intent = new Intent(IndicatorLocationSelectionActivity.this, PiachartActivity.class);
-        intent.putExtra(Constants.TITLE,title);
-        intent.putExtra(Constants.INDICATOR_TASK,task);
-        intent.putExtra(Constants.INDICATOR_TASK_ROLE,roleList);
-        intent.putExtra(Constants.LOCATION, locationModel);
-        startActivity(intent);
-        finish();
+        if(locationModel.getState().equals("")||locationModel.getState().equals("Select")) {
+            if (processId.equals("")) {
+                Intent intent = new Intent(IndicatorLocationSelectionActivity.this, PiachartActivity.class);
+                intent.putExtra(Constants.TITLE, title);
+                intent.putExtra(Constants.INDICATOR_TASK, task);
+                intent.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
+                intent.putExtra(Constants.LOCATION, locationModel);
+                startActivity(intent);
+                finish();
+            } else {
+                Intent intent = new Intent(IndicatorLocationSelectionActivity.this, OverallReportActivity.class);
+                intent.putExtra(Constants.TITLE, title);
+                intent.putExtra(Constants.INDICATOR_TASK, task);
+                intent.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
+                intent.putExtra(Constants.LOCATION, locationModel);
+                intent.putExtra(Constants.PROCESS_ID, processId);
+                startActivity(intent);
+                finish();
+            }
+        }else
+        {
+            Utills.showToast("Please Select State",IndicatorLocationSelectionActivity.this);
+        }
     }
 
 

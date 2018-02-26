@@ -9,15 +9,13 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.mv.Activity.HomeActivity;
 import com.mv.Activity.ProcessApprovalActivity;
 import com.mv.Activity.ProcessListApproval;
 import com.mv.Activity.TeamManagementUserProfileListActivity;
 import com.mv.Activity.UserApproveDetail;
-import com.mv.MenuActivity.TeamManagementFragment;
+import com.mv.ActivityMenu.TeamManagementFragment;
 import com.mv.Model.Task;
 import com.mv.Model.Template;
-import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;

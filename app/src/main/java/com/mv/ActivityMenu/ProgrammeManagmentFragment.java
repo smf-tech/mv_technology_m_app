@@ -1,4 +1,4 @@
-package com.mv.MenuActivity;
+package com.mv.ActivityMenu;
 
 /**
  * Created by Rohit Gujar on 09-10-2017.
@@ -20,7 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mv.Adapter.ProgramMangementAdapter;
-import com.mv.Adapter.TemplateAdapter;
 import com.mv.BR;
 import com.mv.Model.ParentViewModel;
 import com.mv.Model.Task;
