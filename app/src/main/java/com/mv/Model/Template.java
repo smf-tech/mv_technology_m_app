@@ -46,6 +46,33 @@ public class Template implements Serializable, Parcelable {
     @ColumnInfo(name = "answerCount")
     private String answerCount;
 
+
+    public String getExpectedCount() {
+        return expectedCount;
+    }
+
+    public void setExpectedCount(String expectedCount) {
+        this.expectedCount = expectedCount;
+    }
+
+    public String getSubmittedCount() {
+        return submittedCount;
+    }
+
+    public void setSubmittedCount(String submittedCount) {
+        this.submittedCount = submittedCount;
+    }
+
+    @SerializedName("expectedCount")
+    @Expose
+    @ColumnInfo(name = "expectedCount")
+    private String expectedCount;
+
+    @SerializedName("submittedCount")
+    @Expose
+    @ColumnInfo(name = "submittedCount")
+    private String submittedCount;
+
     public String getTargated_Date__c() {
         return Targated_Date__c;
     }

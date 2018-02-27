@@ -158,7 +158,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     // LocationPopup();
-                    SampleDialog();
+                    LocationGPSDialog();
                     LocatonFlag = 0;
 
                 } else {
@@ -226,7 +226,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     //LocationPopup();
-                    SampleDialog();
+                    LocationGPSDialog();
                     LocatonFlag = 0;
 
                 } else {
@@ -575,6 +575,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+       if (alertLocationDialog!=null)
+           alertLocationDialog.dismiss();
+
+       if( alertDialogApproved!=null)
+           alertDialogApproved.dismiss();
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -1018,7 +1028,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private void SampleDialog() {
+    private void LocationGPSDialog() {
         if (alertLocationDialog == null) {
             alertLocationDialog = new AlertDialog.Builder(this).create();
 

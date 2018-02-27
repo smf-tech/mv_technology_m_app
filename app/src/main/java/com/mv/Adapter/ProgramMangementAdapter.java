@@ -36,13 +36,15 @@ public class ProgramMangementAdapter  extends RecyclerView.Adapter<ProgramMangem
     private PreferenceHelper preferenceHelper;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView txtCommunityName,txt_targeted_date,txt_targeted_count;
+        public TextView txtCommunityName,txt_targeted_date,txt_targeted_count,expectedCount,submittedCount;
         public LinearLayout layout;
 
         public MyViewHolder(View view) {
             super(view);
             txtCommunityName = (TextView) view.findViewById(R.id.txtTemplateName);
             txt_targeted_date = (TextView) view.findViewById(R.id.txt_traget_date);
+            expectedCount = (TextView) view.findViewById(R.id.txt_expected_count);
+            submittedCount = (TextView) view.findViewById(R.id.txt_submmited_date);
             txt_targeted_count = (TextView) view.findViewById(R.id.txt_traget_count);
             layout = (LinearLayout) view.findViewById(R.id.layoutTemplate);
             layout.setOnClickListener(new View.OnClickListener() {
@@ -57,7 +59,6 @@ public class ProgramMangementAdapter  extends RecyclerView.Adapter<ProgramMangem
                         preferenceHelper.insertBoolean(Constants.IS_EDITABLE, teplateList.get(getAdapterPosition()).getIs_Editable__c());
                         preferenceHelper.insertBoolean(Constants.IS_LOCATION, teplateList.get(getAdapterPosition()).getLocation());
                         preferenceHelper.insertBoolean(Constants.IS_MULTIPLE, teplateList.get(getAdapterPosition()).getIs_Multiple_Entry_Allowed__c());
-
                         preferenceHelper.insertString(Constants.STATE_LOCATION_LEVEL, teplateList.get(getAdapterPosition()).getLocationLevel());
 
                         Intent openClass = new Intent(mContext, ProcessListActivity.class);
@@ -113,7 +114,9 @@ public class ProgramMangementAdapter  extends RecyclerView.Adapter<ProgramMangem
         else
             holder.txt_targeted_date.setText("Target Date : "+"N/A");
 
-        holder.txt_targeted_count.setText("Count : "+template.getAnswerCount());
+        holder.txt_targeted_count.setText("Total Count : "+template.getAnswerCount());
+        holder.submittedCount.setText("Submitted Count : "+template.getSubmittedCount());
+        holder.expectedCount.setText("Expected Count : "+template.getExpectedCount());
     }
 
     @Override

@@ -156,6 +156,8 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                                 JSONObject mainObj=  jsonArray.getJSONObject(j) ;
                                 Template processList = new Template();
                                 processList.setAnswerCount(mainObj.getString("answerCount"));
+                                processList.setSubmittedCount(mainObj.getString("submittedCount"));
+                                processList.setExpectedCount(mainObj.getString("expectedCount"));
                                 processList.setType(mainObj.getJSONObject("prc").getJSONObject("attributes").getString("type"));
                                 processList.setUrl(mainObj.getJSONObject("prc").getJSONObject("attributes").getString("url"));
                                 processList.setId(mainObj.getJSONObject("prc").getString("Id"));

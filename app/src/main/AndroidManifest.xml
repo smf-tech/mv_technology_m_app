@@ -238,35 +238,35 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".MenuActivity.CommunityHomeFragment"
+            android:name=".ActivityMenu.CommunityHomeFragment"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".MenuActivity.GroupsFragment"
+            android:name=".ActivityMenu.GroupsFragment"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".MenuActivity.IndicatorListFragmet"
+            android:name=".ActivityMenu.IndicatorListFragmet"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".MenuActivity.ProgrammeManagmentFragment"
+            android:name=".ActivityMenu.ProgrammeManagmentFragment"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".MenuActivity.TeamManagementFragment"
+            android:name=".ActivityMenu.TeamManagementFragment"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".MenuActivity.ThetSavandFragment"
+            android:name=".ActivityMenu.ThetSavandFragment"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".MenuActivity.TrainingCalender"
+            android:name=".ActivityMenu.TrainingCalender"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".MenuActivity.TrainingFragment"
+            android:name=".ActivityMenu.TrainingFragment"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
