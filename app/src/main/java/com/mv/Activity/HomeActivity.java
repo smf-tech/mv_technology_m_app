@@ -392,7 +392,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         menulist = new ArrayList<>();
 
         if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
-            if (!User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equals(""))
+            if (!User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().equals(""))
                 allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().split(";")));
             showApprovedDilaog();
         } else {
@@ -1154,7 +1154,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         Intent dial = new Intent();
                         dial.setAction("android.intent.action.DIAL");
                         try {
-                            dial.setData(Uri.parse(User.getCurrentUser(getApplicationContext()).getAppConfig().getContact_No__c()));
+                            dial.setData(Uri.parse("tel:" + User.getCurrentUser(getApplicationContext()).getAppConfig().getContact_No__c()));
                             startActivity(dial);
                         } catch (Exception e) {
                             Log.e("Calling", "" + e.getMessage());

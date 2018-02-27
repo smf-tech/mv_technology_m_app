@@ -366,6 +366,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                                     mContext.startActivity(intent);
                                 }
                             }else     if (mDataList.get(position).getPostUserDidSpam().equals(false)){
+
                                 Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),true);
 
                             }else {

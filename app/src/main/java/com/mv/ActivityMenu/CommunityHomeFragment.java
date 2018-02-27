@@ -191,8 +191,8 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
 
 
                                 }
-
-                                chatList=AppDatabase.getAppDatabase(context).userDao().getAllBroadcastChats(true);
+                                chatList.clear();
+                                chatList.addAll(AppDatabase.getAppDatabase(context).userDao().getAllBroadcastChats(true));
                                 adapter.notifyDataSetChanged();
                                 textNoData.setVisibility(View.GONE);
                             } else {
