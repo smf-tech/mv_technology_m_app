@@ -213,7 +213,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
     }
 
     private void sendLocation() {
-        if(locationModel.getState().equals("")||locationModel.getState().equals("Select")) {
+        if(locationModel.getState().equals("")||!locationModel.getState().equals("Select")) {
             if (processId.equals("")) {
                 Intent intent = new Intent(IndicatorLocationSelectionActivity.this, PiachartActivity.class);
                 intent.putExtra(Constants.TITLE, title);
@@ -288,6 +288,11 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 mListVillage.add("Select");
                 mListSchoolName.add("Select");
                 district_adapter.notifyDataSetChanged();
+                district_adapter = new ArrayAdapter<String>(this,
+                        android.R.layout.simple_spinner_item, mListDistrict);
+                district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                binding.spinnerDistrict.setAdapter(district_adapter);
+
                 taluka_adapter = new ArrayAdapter<String>(this,
                         android.R.layout.simple_spinner_item, mListTaluka);
                 taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -8,16 +8,16 @@ import android.net.Uri;
 
 public class Constants {
 
-    /* Production
+    /* Production*/
     public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com";
     public static String REPORTID = "a1L7F000000YNK4";
-    public static String ISSUEID = "a1L7F000000YNJz";*/
-    /* Sandbox*/
+    public static String ISSUEID = "a1L7F000000YNJz";
+    /* Sandbox
     public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
     public static String REPORTID = "a1G0k000000522K";
-    public static String ISSUEID = "a1G0k000000522F";
+    public static String ISSUEID = "a1G0k000000522F";*/
 
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
@@ -148,20 +148,20 @@ public class Constants {
     public static final String GetprocessAnswerDataUrl = "/services/apexrest/getprocessAnswerDataNew";
     public static final String GetprocessTaskUrl = "/services/apexrest/getprocessTaskNew";
 
-    public static final String DeleteTaskAnswerUrl =  "/services/apexrest/DeleteTaskAnswer/";
+    public static final String DeleteTaskAnswerUrl = "/services/apexrest/DeleteTaskAnswer/";
     public static final String ApproveCommentforProcessUrl = "/services/apexrest/ApproveCommentforProcess";
     public static final String GetprocessAnswerTaskfoApprovalUrl = "/services/apexrest/getprocessAnswerTaskfoApproval";
     public static final String GetProjectDataUrl = "/services/apexrest/getProjectData";
     public static final String MV_RoleUrl = "/services/data/v36.0/query/?q=select+Id,Juridictions__c,Name+from+MV_Role__c+where+Organisation__c='";
     public static final String MTRegisterUrl = "/services/apexrest/MTRegisterNew";
 
-    public static final String GetApprovalDataUrl =     "/services/apexrest/getApprovalData";
-    public  static final String WS_getProcessAprovalUserUrl ="/services/apexrest/WS_getProcessAprovalUser";
-    public  static final String MV_GeTemplates_cUrl = "/services/apexrest/MV_GeTemplates_c";
-    public  static final String ApproveCommentUrl = "/services/apexrest/ApproveComment";
-    public  static final String SharedRecordsUrl =   "/services/apexrest/sharedRecords";
-    public  static final String RemoveLikeUrl = "/services/apexrest/removeLike";
-    public  static final String InsertLikeUrl = "/services/apexrest/InsertLike";
+    public static final String GetApprovalDataUrl = "/services/apexrest/getApprovalData";
+    public static final String WS_getProcessAprovalUserUrl = "/services/apexrest/WS_getProcessAprovalUser";
+    public static final String MV_GeTemplates_cUrl = "/services/apexrest/MV_GeTemplates_c";
+    public static final String ApproveCommentUrl = "/services/apexrest/ApproveComment";
+    public static final String SharedRecordsUrl = "/services/apexrest/sharedRecords";
+    public static final String RemoveLikeUrl = "/services/apexrest/removeLike";
+    public static final String InsertLikeUrl = "/services/apexrest/InsertLike";
     public static final String SpamContentUrl = "/services/apexrest/spamContent";
 }
 

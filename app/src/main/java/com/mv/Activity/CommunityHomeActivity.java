@@ -620,7 +620,10 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
         binding.swipeRefreshLayout.setRefreshing(false);
         getChats(false);
-
+        btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+        btn_allposts.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
+        btn_mylocation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+        btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
 
     }
 

@@ -27,7 +27,7 @@ public class PreferenceHelper {
     public static final String NOTIFICATION = "notification";
     public static final String MOBILEAPPVERSION = "mobileappversion";
     public static final String UserData = "UserData";
-    public static final String UserRole = "UserRole";
+
     public static final String AccessToken = "AccessToken";
     public static final String InstanceUrl = "InstanceUrl";
     public static final String SalesforceUserId = "SalesforceUserId";
@@ -85,7 +85,9 @@ public class PreferenceHelper {
         Map<String, ?> prefs = pref.getAll();
         for (Map.Entry<String, ?> prefToReset : prefs.entrySet()) {
             if (prefToReset.getKey().equalsIgnoreCase(PreferenceHelper.TOKEN)
-                    || prefToReset.getKey().equalsIgnoreCase(PreferenceHelper.InstanceUrl)) {
+                    || prefToReset.getKey().equalsIgnoreCase(PreferenceHelper.InstanceUrl)
+                    || prefToReset.getKey().equalsIgnoreCase(PreferenceHelper.FIRSTTIME_V_2_7)
+                    ) {
             } else {
                 editor.remove(prefToReset.getKey()).commit();
             }

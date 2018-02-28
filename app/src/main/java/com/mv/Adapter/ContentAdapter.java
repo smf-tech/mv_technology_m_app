@@ -325,7 +325,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     MenuItem delete= (MenuItem) popup.getMenu().findItem(R.id.delete);
                     spam.setVisible(true);
 
-                    Log.e("title 111->",mActivity.HoSupportCommunity);
+
 
                     if (mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
                         delete.setVisible(true);
@@ -366,11 +366,16 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                                     mContext.startActivity(intent);
                                 }
                             }else     if (mDataList.get(position).getPostUserDidSpam().equals(false)){
-                                Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),true);
 
+                                Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),true);
+                                //mDataList.get(position).getPostUserDidSpam().
+                                mDataList.get(position).setPostUserDidSpam(!mDataList.get(position).getPostUserDidSpam());
+                                notifyDataSetChanged();
                             }else {
                                 Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),false);
+                                mDataList.get(position).setPostUserDidSpam(!mDataList.get(position).getPostUserDidSpam());
 
+                                notifyDataSetChanged();
                             }
                             return true;
                         }
@@ -1210,6 +1215,44 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             }
         });
 
+    }
+    public static void spamContent(Context mContext, PreferenceHelper preferenceHelper, String ID, String UserId, Boolean isSpam) {
+        String url = "";
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
+        /*UserDetails Url for getting community members*/
+
+        url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.SpamContentUrl + "?Id=" + ID + "&userId=" + UserId + "&isSpam=" + isSpam;
+
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                String data = null;
+                try {
+                    data = response.body().string();
+                    if (data != null && data.length() > 0) {
+                        JSONObject jsonObject = new JSONObject(data);
+
+
+
+
+                    }
+
+                } catch (IOException e) {
+
+                    e.printStackTrace();
+                } catch (JSONException e) {
+
+                }
+            }
+
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
     }
 
  /*   public  void spamContent(){

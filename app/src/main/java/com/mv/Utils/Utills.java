@@ -12,7 +12,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,7 +21,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -99,6 +97,12 @@ public class Utills {
                 setupUI(innerView, activity);
             }
         }
+    }
+
+    public static String getDeviceId(Context context) {
+        String deviceId = Settings.Secure.getString(context.getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+        return deviceId;
     }
 
     public static String getCurrentDate() {
@@ -287,8 +291,7 @@ public class Utills {
      */
 
 
-    public static void scheduleJob(Context context)
-    {
+    public static void scheduleJob(Context context) {
 
         FirebaseJobDispatcher dispatcher = new FirebaseJobDispatcher(new GooglePlayDriver(context));
 
@@ -321,6 +324,7 @@ public class Utills {
 
         dispatcher.mustSchedule(myJob);
     }
+
     public static boolean isConnected(Context cntxt) {
         NetworkInfo activeNetwork = getNetworkInfo(cntxt);
         return activeNetwork != null
@@ -395,24 +399,25 @@ public class Utills {
         }
     }
 
-    public static  String milliSecondsToTimer(long milliseconds){
+    public static String milliSecondsToTimer(long milliseconds) {
         String finalTimerString = "";
         String secondsString = "";
 
         // Convert total duration into time
-        int hours = (int)( milliseconds / (1000*60*60));
-        int minutes = (int)(milliseconds % (1000*60*60)) / (1000*60);
-        int seconds = (int) ((milliseconds % (1000*60*60)) % (1000*60) / 1000);
+        int hours = (int) (milliseconds / (1000 * 60 * 60));
+        int minutes = (int) (milliseconds % (1000 * 60 * 60)) / (1000 * 60);
+        int seconds = (int) ((milliseconds % (1000 * 60 * 60)) % (1000 * 60) / 1000);
         // Add hours if there
-        if(hours > 0){
+        if (hours > 0) {
             finalTimerString = hours + ":";
         }
 
         // Prepending 0 to seconds if it is one digit
-        if(seconds < 10){
+        if (seconds < 10) {
             secondsString = "0" + seconds;
-        }else{
-            secondsString = "" + seconds;}
+        } else {
+            secondsString = "" + seconds;
+        }
 
         finalTimerString = finalTimerString + minutes + ":" + secondsString;
 
@@ -422,17 +427,18 @@ public class Utills {
 
     /**
      * Function to get Progress percentage
+     *
      * @param currentDuration
      * @param totalDuration
-     * */
-    public static int getProgressPercentage(long currentDuration, long totalDuration){
+     */
+    public static int getProgressPercentage(long currentDuration, long totalDuration) {
         Double percentage = (double) 0;
 
         long currentSeconds = (int) (currentDuration / 1000);
         long totalSeconds = (int) (totalDuration / 1000);
 
         // calculating percentage
-        percentage =(((double)currentSeconds)/totalSeconds)*100;
+        percentage = (((double) currentSeconds) / totalSeconds) * 100;
 
         // return percentage
         return percentage.intValue();
@@ -440,26 +446,26 @@ public class Utills {
 
     /**
      * Function to change progress to timer
-     * @param progress -
-     * @param totalDuration
-     * returns current duration in milliseconds
-     * */
+     *
+     * @param progress      -
+     * @param totalDuration returns current duration in milliseconds
+     */
     public static int progressToTimer(int progress, int totalDuration) {
         int currentDuration = 0;
         totalDuration = (int) (totalDuration / 1000);
-        currentDuration = (int) ((((double)progress) / 100) * totalDuration);
+        currentDuration = (int) ((((double) progress) / 100) * totalDuration);
 
         // return current duration in milliseconds
         return currentDuration * 1000;
     }
 
-    public static void showImageZoomInDialog(Context context,String id){
+    public static void showImageZoomInDialog(Context context, String id) {
         LayoutInflater inflater = LayoutInflater.from(context);
         final View view = inflater.inflate(R.layout.image_zoom_dialog, null);
 
-        TouchImageView img_post=(TouchImageView) view.findViewById(R.id.img_post);
-        RelativeLayout rel_dialog =(RelativeLayout)view.findViewById(R.id.rel_dialog);
-        ImageView close_dialog  = (ImageView)view.findViewById(R.id.close_dialog);
+        TouchImageView img_post = (TouchImageView) view.findViewById(R.id.img_post);
+        RelativeLayout rel_dialog = (RelativeLayout) view.findViewById(R.id.rel_dialog);
+        ImageView close_dialog = (ImageView) view.findViewById(R.id.close_dialog);
         Glide.with(context)
                 .load(Constants.IMAGEURL + id + ".png")
                 .placeholder(context.getResources().getDrawable(R.drawable.mulya_bg))
@@ -480,12 +486,12 @@ public class Utills {
 
     }
 
-    public static void showImagewithheaderZoomDialog(Context context, GlideUrl url){
+    public static void showImagewithheaderZoomDialog(Context context, GlideUrl url) {
         LayoutInflater inflater = LayoutInflater.from(context);
         final View view = inflater.inflate(R.layout.image_zoom_dialog, null);
-        final ImageView close_dialog  = (ImageView)view.findViewById(R.id.close_dialog);
-        TouchImageView img_post=(TouchImageView) view.findViewById(R.id.img_post);
-        RelativeLayout rel_dialog =(RelativeLayout)view.findViewById(R.id.rel_dialog);
+        final ImageView close_dialog = (ImageView) view.findViewById(R.id.close_dialog);
+        TouchImageView img_post = (TouchImageView) view.findViewById(R.id.img_post);
+        RelativeLayout rel_dialog = (RelativeLayout) view.findViewById(R.id.rel_dialog);
         Glide.with(context)
                 .load(url)
                 .placeholder(context.getResources().getDrawable(R.drawable.mulya_bg))
@@ -507,9 +513,7 @@ public class Utills {
     }
 
 
-
-
-    public  static void AddTagDialog(Context context){
+    public static void AddTagDialog(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         final View view = inflater.inflate(R.layout.each_tag, null);
         final AlertDialog alertDialog = new AlertDialog.Builder(view.getContext()).create();
@@ -542,17 +546,14 @@ public class Utills {
     }
 
 
-
-
-
-    public static void spamContent(Context mContext, PreferenceHelper preferenceHelper, String ID,String UserId, Boolean isSpam){
+    public static void spamContent(Context mContext, PreferenceHelper preferenceHelper, String ID, String UserId, Boolean isSpam) {
         String url = "";
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
         /*UserDetails Url for getting community members*/
 
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.SpamContentUrl+"?Id=" +ID +"&userId=" + UserId + "&isSpam=" +isSpam;
+                + Constants.SpamContentUrl + "?Id=" + ID + "&userId=" + UserId + "&isSpam=" + isSpam;
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -570,7 +571,7 @@ public class Utills {
                 } catch (IOException e) {
 
                     e.printStackTrace();
-                }catch(JSONException e){
+                } catch (JSONException e) {
 
                 }
             }

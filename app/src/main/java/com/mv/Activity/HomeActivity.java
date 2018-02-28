@@ -152,13 +152,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         date = new Date(System.currentTimeMillis());
 
 
-        if ((User.getCurrentUser(getApplicationContext()).getMvUser().getRoll().equals("TC")) || (User.getCurrentUser(getApplicationContext()).getMvUser().getRoll().equals("MT"))) {
-            if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("true")) {
+        if (User.getCurrentUser(HomeActivity.this).getRolePermssion().getIsLocationTrackingAllow__c().equalsIgnoreCase("true")) {
+            if (User.getCurrentUser(HomeActivity.this).getMvUser().getIsApproved() != null && User.getCurrentUser(HomeActivity.this).getMvUser().getIsApproved().equalsIgnoreCase("true")) {
 
 
                 if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     // LocationPopup();
-                    SampleDialog();
+                    LocationGPSDialog();
                     LocatonFlag = 0;
 
                 } else {
@@ -226,7 +226,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                 if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     //LocationPopup();
-                    SampleDialog();
+                    LocationGPSDialog();
                     LocatonFlag = 0;
 
                 } else {
@@ -270,10 +270,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
-        if (User.getCurrentUser(this).getMvUser().getUserMobileAppVersion() != null &&
-                User.getCurrentUser(this).getMvUser().getUserMobileAppVersion().equalsIgnoreCase(getAppVersion())) {
+        if (
+                User.getCurrentUser(this).getMvUser().getUserMobileAppVersion() != null &&
+                        User.getCurrentUser(this).getMvUser().getUserMobileAppVersion().equalsIgnoreCase(getAppVersion()) &&
+                        User.getCurrentUser(this).getMvUser().getPhoneId() != null &&
+                        User.getCurrentUser(this).getMvUser().getPhoneId().equalsIgnoreCase(Utills.getDeviceId(HomeActivity.this))
+
+                ) {
 
         } else {
+            User.getCurrentUser(this).getMvUser().setPhoneId(Utills.getDeviceId(HomeActivity.this));
             User.getCurrentUser(this).getMvUser().setUserMobileAppVersion(getAppVersion());
             sendData();
         }
@@ -335,7 +341,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                                 preferenceHelper.insertString(PreferenceHelper.UserData, data);
                                 User.clearUser();
-                                preferenceHelper.insertString(PreferenceHelper.UserRole, User.getCurrentUser(HomeActivity.this).getMvUser().getRoll());
                             }
                         }
                             /*JSONObject response1 = new JSONObject(response.body().string());
@@ -387,7 +392,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         menulist = new ArrayList<>();
 
         if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
-            if (!User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equals(""))
+            if (!User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().equals(""))
                 allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().split(";")));
             showApprovedDilaog();
         } else {
@@ -570,6 +575,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         return super.onCreateOptionsMenu(menu);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+       if (alertLocationDialog!=null)
+           alertLocationDialog.dismiss();
+
+       if( alertDialogApproved!=null)
+           alertDialogApproved.dismiss();
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -936,7 +951,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         String data = response.body().string();
                         preferenceHelper.insertString(PreferenceHelper.UserData, data);
                         User.clearUser();
-
                         if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
                         } else {
                             if (alertDialogApproved != null && alertDialogApproved.isShowing())
@@ -1013,7 +1027,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private void SampleDialog() {
+    private void LocationGPSDialog() {
         if (alertLocationDialog == null) {
             alertLocationDialog = new AlertDialog.Builder(this).create();
 
@@ -1139,7 +1153,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         Intent dial = new Intent();
                         dial.setAction("android.intent.action.DIAL");
                         try {
-                            dial.setData(Uri.parse(User.getCurrentUser(getApplicationContext()).getAppConfig().getContact_No__c()));
+                            dial.setData(Uri.parse("tel:" + User.getCurrentUser(getApplicationContext()).getAppConfig().getContact_No__c()));
                             startActivity(dial);
                         } catch (Exception e) {
                             Log.e("Calling", "" + e.getMessage());

@@ -124,7 +124,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getComments?contentId=" + conetentId;
+                + "/services/apexrest/getComments?contentId=" + conetentId ;
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

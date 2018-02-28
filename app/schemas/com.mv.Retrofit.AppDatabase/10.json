@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 10,
-    "identityHash": "33712056951bda86e18bc1ad2bd03956",
+    "identityHash": "2fdaa760dbe685611fdb26d433f6efbb",
     "entities": [
       {
         "tableName": "table_community",
@@ -204,7 +204,7 @@
       },
       {
         "tableName": "table_process",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `template_id` TEXT, `template_name` TEXT, `answerCount` TEXT, `Targated_Date__c` TEXT, `Location` INTEGER, `LocationLevel` TEXT, `type` TEXT, `url` TEXT, `MV_Process__c` TEXT, `MV_User__c` TEXT, `P1F1__c` TEXT, `P1F2__c` TEXT, `P1F3__c` TEXT, `P1F4__c` TEXT, `P1F5__c` TEXT, `Is_Editable__c` INTEGER, `Is_Multiple_Entry_Allowed__c` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `template_id` TEXT, `template_name` TEXT, `answerCount` TEXT, `expectedCount` TEXT, `submittedCount` TEXT, `Targated_Date__c` TEXT, `Location` INTEGER, `LocationLevel` TEXT, `type` TEXT, `url` TEXT, `MV_Process__c` TEXT, `MV_User__c` TEXT, `P1F1__c` TEXT, `P1F2__c` TEXT, `P1F3__c` TEXT, `P1F4__c` TEXT, `P1F5__c` TEXT, `Is_Editable__c` INTEGER, `Is_Multiple_Entry_Allowed__c` INTEGER)",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -224,6 +224,16 @@
           {
             "fieldPath": "answerCount",
             "columnName": "answerCount",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "expectedCount",
+            "columnName": "expectedCount",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "submittedCount",
+            "columnName": "submittedCount",
             "affinity": "TEXT"
           },
           {
@@ -505,7 +515,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"33712056951bda86e18bc1ad2bd03956\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"2fdaa760dbe685611fdb26d433f6efbb\")"
     ]
   }
 }
