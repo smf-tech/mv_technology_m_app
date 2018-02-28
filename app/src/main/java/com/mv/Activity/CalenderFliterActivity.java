@@ -86,6 +86,10 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         selectedRole = User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
 
         initViews();
+        if (Utills.isConnected(this))
+         getCalendeEvents();
+        else
+            Utills.showToast(getString(R.string.error_no_internet),CalenderFliterActivity.this);
     }
 
     @Override
@@ -502,7 +506,12 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             case R.id.spinner_organization:
                 mSelectOrganization = i;
                 if (mSelectOrganization != 0) {
+                    if (Utills.isConnected(this))
                     getRole();
+                }
+                else
+                {
+                    mListRoleName.add(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll());
                 }
 
                 break;
@@ -778,6 +787,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         }
         final boolean[] mSelection = new boolean[items.length];
         Arrays.fill(mSelection, false);
+            if(mListRoleName.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll())>0)
         mSelection[mListRoleName.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll())] = true;
 
 // arraylist to keep the selected items
@@ -787,6 +797,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
                         if (mSelection != null && which < mSelection.length) {
                             mSelection[which] = isChecked;
 
@@ -877,7 +888,57 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         });
     }
 
+    private void getCalendeEvents() {
+        Utills.showProgressDialog(context, "Loading ", getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
 
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetCalenderEvents+"?userId=" + User.getCurrentUser(CalenderFliterActivity.this).getMvUser().getId() ;
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+
+               /* try {
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(data);
+                            calenderEventUserArrayList = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                EventUser eventUser = new EventUser();
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                eventUser.setRole(jsonObject.getString("role"));
+                                eventUser.setUserID(jsonObject.getString("Id"));
+                                eventUser.setUserName(jsonObject.getString("userName"));
+                                eventUser.setUserSelected(false);
+                                calenderEventUserArrayList.add(eventUser);
+
+
+                            }
+                            Intent intent = new Intent(CalenderFliterActivity.this, EventUserListActivity.class);
+                            intent.putParcelableArrayListExtra(Constants.PROCESS_ID, calenderEventUserArrayList);
+                            startActivityForResult(intent, 1);
+
+
+                        }
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }*/
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+            }
+        });
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
