@@ -198,10 +198,12 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                     public boolean onMenuItemClick(MenuItem item) {
                         if (mDataList.get(position).getPostUserDidSpam().equals(false)){
                             Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),true);
-
+                            mDataList.get(position).setPostUserDidSpam(!mDataList.get(position).getPostUserDidSpam());
+                            notifyDataSetChanged();
                         }else {
                             Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),false);
-
+                            mDataList.get(position).setPostUserDidSpam(!mDataList.get(position).getPostUserDidSpam());
+                            notifyDataSetChanged();
                         }
                         return true;
                     }
