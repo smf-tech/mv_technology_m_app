@@ -404,9 +404,11 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                                 showDeletePopUp();
                             }else     if (mDataList.get(position).getPostUserDidSpam().equals(false)){
                                 Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),true);
-                               notifyDataSetChanged();
+                                mDataList.get(position).setPostUserDidSpam(!mDataList.get(position).getPostUserDidSpam());
+                                notifyDataSetChanged();
                                }else {
                                 Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),false);
+                                mDataList.get(position).setPostUserDidSpam(!mDataList.get(position).getPostUserDidSpam());
                                 notifyDataSetChanged();
                                 }
                             return true;

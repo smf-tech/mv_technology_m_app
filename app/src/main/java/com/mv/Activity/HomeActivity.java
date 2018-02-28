@@ -951,7 +951,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         String data = response.body().string();
                         preferenceHelper.insertString(PreferenceHelper.UserData, data);
                         User.clearUser();
-
                         if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
                         } else {
                             if (alertDialogApproved != null && alertDialogApproved.isShowing())
