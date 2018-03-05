@@ -141,6 +141,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                     if (mListProject.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getProject_Name__c())) {
                                         spinner_project.setSelection(i);
                                         break;
+
                                     }
                                 }
                             }

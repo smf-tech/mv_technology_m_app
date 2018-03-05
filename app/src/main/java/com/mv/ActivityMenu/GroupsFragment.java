@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -74,7 +75,6 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
         binding.setFragment(this);
         //here data must be an instance of the class MarsDataProvider
         Utills.setupUI(findViewById(R.id.layout_main), context);
-
         initViews();
         getCommunities(true);
     }
@@ -106,6 +106,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
 
 
     private void initViews() {
+        Intent receivedIntent = getIntent();
         setActionbar(getString(R.string.community));
         textNoData = (TextView) findViewById(R.id.textNoData);
         binding.editTextEmail.addTextChangedListener(watch);
@@ -123,7 +124,21 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(mAdapter);
-
+        String receivedAction = receivedIntent.getAction();
+        String receivedType = receivedIntent.getType();
+        //make sure it's an action and type we can handle
+        if (receivedAction != null && receivedAction.equals(Intent.ACTION_SEND)) {
+            if (receivedType.startsWith("text/")) {
+                //handle sent text
+            } else if (receivedType.startsWith("image/")) {
+                //handle sent image
+                Constants.shareUri = (Uri) receivedIntent.getParcelableExtra(Intent.EXTRA_STREAM);
+            }
+            //content is being shared
+        } else {
+            //app has been launched directly, not from share list
+            Constants.shareUri = null;
+        }
     }
 
     private void setActionbar(String Title) {
@@ -313,11 +328,13 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
                 preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Issue");
                 preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, Constants.ISSUEID);
                 intent = new Intent(context, IssueTemplateActivity.class);
+                intent.putExtra("EDIT", false);
                 context.startActivity(intent);
             } else {
                 preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Report");
                 preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, Constants.REPORTID);
                 intent = new Intent(context, ReportingTemplateActivity.class);
+                intent.putExtra("EDIT", false);
                 context.startActivity(intent);
             }
         } else {

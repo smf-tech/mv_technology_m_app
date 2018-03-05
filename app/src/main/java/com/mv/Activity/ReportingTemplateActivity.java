@@ -152,6 +152,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         // Showing Alert Message
         alertDialog.show();
     }
+
     private void getDistrict() {
 
         Utills.showProgressDialog(this, "Loading Districts", getString(R.string.progress_please_wait));
@@ -185,8 +186,6 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             }
         });
     }
-
-
 
 
     private void getTaluka() {
