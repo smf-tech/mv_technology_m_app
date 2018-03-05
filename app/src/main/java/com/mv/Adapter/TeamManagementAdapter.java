@@ -35,13 +35,14 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
     private PreferenceHelper preferenceHelper;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView txtCommunityName;
+        public TextView txtCommunityName,textViewColor;
         public LinearLayout layout;
 
         public MyViewHolder(View view) {
             super(view);
             txtCommunityName = (TextView) view.findViewById(R.id.txtTemplateName);
             layout = (LinearLayout) view.findViewById(R.id.layoutTemplate);
+            textViewColor = (TextView) view.findViewById(R.id.temp_color);
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -111,7 +112,20 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Template template = teplateList.get(position);
+
         holder.txtCommunityName.setText(template.getName());
+        if(mContext instanceof TeamManagementUserProfileListActivity) {
+            if(TeamManagementUserProfileListActivity.approvalType.equals(Constants.USER_APPROVAL)) {
+
+                if (template.getStatus() != null) {
+                    if (template.getStatus()) {
+                        holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
+                    } else {
+                        holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.red));
+                    }
+                }
+            }
+        }
     }
 
     @Override
