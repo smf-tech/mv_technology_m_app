@@ -1,7 +1,5 @@
 package com.mv.Adapter;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,10 +11,7 @@ import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.opengl.Visibility;
-import android.os.AsyncTask;
 import android.os.Environment;
-import android.provider.Settings;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -29,9 +24,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -41,9 +36,10 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mv.Activity.AddThetSavadActivity;
 import com.mv.Activity.CommentActivity;
 import com.mv.Activity.CommunityDetailsActivity;
 import com.mv.Activity.CommunityHomeActivity;
@@ -54,6 +50,7 @@ import com.mv.Model.Content;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
+import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Service.DownloadService;
 import com.mv.Utils.Constants;
@@ -65,13 +62,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
 import okhttp3.ResponseBody;
@@ -98,11 +93,11 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
     private String value;
     private JSONArray jsonArrayAttchment = new JSONArray();
     private Bitmap theBitmap;
-    int temp = 555500,deletePosition;
+    int temp = 555500, deletePosition;
     MediaPlayer mPlayer = new MediaPlayer();
     private String postId;
     private AlertDialog alertLocationDialog;
-    private static final Pattern urlPattern = Pattern.compile( "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
+    private static final Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
             + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
 
@@ -267,8 +262,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
                     }
                 });
-            } else  if (mDataList.get(position).getId()!=null)
-            {
+            } else if (mDataList.get(position).getId() != null) {
                 Glide.with(mContext)
                         .load(Constants.IMAGEURL + mDataList.get(position).getId() + ".png")
                         .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
@@ -284,7 +278,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             holder.txt_template_type.setText("Template Type : " + mDataList.get(position).getTemplate());*/
         holder.txt_template_type.setText("Title : " + mDataList.get(position).getTitle());
         holder.txt_desc.setText("Description : " + mDataList.get(position).getDescription());
-        Linkify.addLinks(holder.txt_desc,urlPattern,mDataList.get(position).getDescription());
+        Linkify.addLinks(holder.txt_desc, urlPattern, mDataList.get(position).getDescription());
         holder.txt_time.setText(mDataList.get(position).getTime().toString());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");
         holder.txtCommentCount.setText(mDataList.get(position).getCommentCount() + " Comments");
@@ -292,6 +286,14 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
 
         holder.txt_type.setText(mDataList.get(position).getIssue_priority());
+
+        if (mDataList.get(position).getStatus() != null && !(TextUtils.isEmpty(mDataList.get(position).getStatus()))) {
+            holder.txt_status.setVisibility(View.VISIBLE);
+            holder.txt_status.setText("Status : " + mDataList.get(position).getStatus());
+        } else {
+            holder.txt_status.setVisibility(View.GONE);
+        }
+
         if (mDataList.get(position).getIsLike())
             holder.imgLike.setImageResource(R.drawable.like);
         else
@@ -313,78 +315,174 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
         }
         holder.imgMore.setVisibility(View.VISIBLE);
-    holder.imgMore.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    PopupMenu popup = new PopupMenu(mContext,holder.imgMore);
-                    //Inflating the Popup using xml file
-                    popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
-                 //   popup.getMenu().getItem(R.id.spam).setVisible(true);
-                    MenuItem spam= (MenuItem) popup.getMenu().findItem(R.id.spam);
-                    MenuItem edit= (MenuItem) popup.getMenu().findItem(R.id.edit);
-                    MenuItem delete= (MenuItem) popup.getMenu().findItem(R.id.delete);
-                    spam.setVisible(true);
-
-
-
-                    if (mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
-                        delete.setVisible(true);
-                        edit.setVisible(true);
-
-                    }else {
-                        delete.setVisible(false);
-                        edit.setVisible(false);
-                    }
-                    if (mDataList.get(position).getPostUserDidSpam().equals(false)){
-                        spam.setTitle("Mark As Spam");
-                    }else {
-                        spam.setTitle("Mark As Unspam");
-                    }
-
-
-
-                    //registering popup with OnMenuItemClickListener
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem item) {
-                            if (item.getTitle().toString().equalsIgnoreCase("Delete")) {
-                                postId = mDataList.get(position).getId();
-                                deletePosition = position;
-                                showDeletePopUp();
-                            }else if (item.getTitle().toString().equalsIgnoreCase("Edit")) {
-                                if (mActivity.HoSupportCommunity.equalsIgnoreCase("Ho Support")){
-                                    Intent intent;
-                                    intent = new Intent(mContext, IssueTemplateActivity.class);
-                                    intent.putExtra("EDIT", true);
-                                    intent.putExtra(Constants.CONTENT, mDataList.get(position));
-                                    mContext.startActivity(intent);
-
-                                }else {
-                                    Intent intent;
-                                    intent = new Intent(mContext, ReportingTemplateActivity.class);
-                                    intent.putExtra("EDIT", true);
-                                    intent.putExtra(Constants.CONTENT, mDataList.get(position));
-                                    mContext.startActivity(intent);
-                                }
-                            }else     if (mDataList.get(position).getPostUserDidSpam().equals(false)){
-
-                                Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),true);
-                                //mDataList.get(position).getPostUserDidSpam().
-                                mDataList.get(position).setPostUserDidSpam(!mDataList.get(position).getPostUserDidSpam());
-                                notifyDataSetChanged();
-                            }else {
-                                Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),false);
-                                mDataList.get(position).setPostUserDidSpam(!mDataList.get(position).getPostUserDidSpam());
-
-                                notifyDataSetChanged();
-                            }
-                            return true;
-                        }
-                    });
-                 popup.show();
+        holder.imgMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final PopupMenu popup = new PopupMenu(mContext, holder.imgMore);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
+                //   popup.getMenu().getItem(R.id.spam).setVisible(true);
+                MenuItem spam = (MenuItem) popup.getMenu().findItem(R.id.spam);
+                MenuItem edit = (MenuItem) popup.getMenu().findItem(R.id.edit);
+                MenuItem delete = (MenuItem) popup.getMenu().findItem(R.id.delete);
+                MenuItem status = (MenuItem) popup.getMenu().findItem(R.id.status);
+                spam.setVisible(true);
+                if (mActivity.HoSupportCommunity.equalsIgnoreCase("Ho Support")) {
+                    status.setVisible(true);
                 }
-            });
+
+                if (mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
+                    delete.setVisible(true);
+                    edit.setVisible(true);
+
+                } else {
+                    delete.setVisible(false);
+                    edit.setVisible(false);
+                }
+                if (mDataList.get(position).getPostUserDidSpam().equals(false)) {
+                    spam.setTitle("Mark As Spam");
+                } else {
+                    spam.setTitle("Mark As Unspam");
+                }
 
 
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getTitle().toString().equalsIgnoreCase("Delete")) {
+                            postId = mDataList.get(position).getId();
+                            deletePosition = position;
+                            showDeletePopUp();
+                        } else if (item.getTitle().toString().equalsIgnoreCase("Change Status")) {
+                            showStatusDialog(position);
+                        } else if (item.getTitle().toString().equalsIgnoreCase("Edit")) {
+                            if (mActivity.HoSupportCommunity.equalsIgnoreCase("Ho Support")) {
+                                Intent intent;
+                                intent = new Intent(mContext, IssueTemplateActivity.class);
+                                intent.putExtra("EDIT", true);
+                                intent.putExtra(Constants.CONTENT, mDataList.get(position));
+                                mContext.startActivity(intent);
+
+                            } else {
+                                Intent intent;
+                                intent = new Intent(mContext, ReportingTemplateActivity.class);
+                                intent.putExtra("EDIT", true);
+                                intent.putExtra(Constants.CONTENT, mDataList.get(position));
+                                mContext.startActivity(intent);
+                            }
+                        } else if (mDataList.get(position).getPostUserDidSpam().equals(false)) {
+
+                            Utills.spamContent(mContext, preferenceHelper, mDataList.get(position).getId(), User.getCurrentUser(mContext).getMvUser().getId(), true);
+                            //mDataList.get(position).getPostUserDidSpam().
+                            mDataList.get(position).setPostUserDidSpam(!mDataList.get(position).getPostUserDidSpam());
+                            notifyDataSetChanged();
+                        } else {
+                            Utills.spamContent(mContext, preferenceHelper, mDataList.get(position).getId(), User.getCurrentUser(mContext).getMvUser().getId(), false);
+                            mDataList.get(position).setPostUserDidSpam(!mDataList.get(position).getPostUserDidSpam());
+
+                            notifyDataSetChanged();
+                        }
+                        return true;
+                    }
+                });
+                popup.show();
+            }
+        });
+
+
+    }
+
+    private void showStatusDialog(final int Position) {
+
+        final String[] items = {"Resolved", "Pending", "Reject"};
+        final ArrayList seletedItems = new ArrayList();
+
+        int checkId = -1;
+        int i = 0;
+        for (String str : items) {
+            if (mDataList.get(Position).getStatus() != null && !(TextUtils.isEmpty(mDataList.get(Position).getStatus()))) {
+                if (str.equalsIgnoreCase(mDataList.get(Position).getStatus())) {
+                    checkId = i;
+                    break;
+                }
+            } else {
+                break;
+            }
+            i++;
+        }
+       /* if (preferenceHelper.getString(Constants.LANGUAGE).equalsIgnoreCase(Constants.LANGUAGE_MARATHI)) {
+            checkId = 1;
+        } else if (preferenceHelper.getString(Constants.LANGUAGE).equalsIgnoreCase(Constants.LANGUAGE_HINDI)) {
+            checkId = 2;
+        }*/
+
+        android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(mContext)
+                .setTitle(mContext.getString(R.string.select_status))
+                .setSingleChoiceItems(items, checkId, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                })
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        if (Utills.isConnected(mContext)) {
+                            ListView lw = ((android.app.AlertDialog) dialog).getListView();
+                            String str = items[lw.getCheckedItemPosition()];
+                            try {
+                                mDataList.get(Position).setStatus(str);
+                                mDataList.get(Position).setTemplate(Constants.ISSUEID);
+                                Utills.showProgressDialog(mContext);
+                                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                                String json = gson.toJson(mDataList.get(Position));
+                                JSONObject jsonObject = new JSONObject();
+                                JSONArray jsonArray = new JSONArray();
+                                JSONObject jsonObject1 = new JSONObject(json);
+                                JSONArray jsonArrayAttchment = new JSONArray();
+                                jsonObject1.put("attachments", jsonArrayAttchment);
+                                jsonArray.put(jsonObject1);
+                                jsonObject.put("listVisitsData", jsonArray);
+                                ServiceRequest apiService =
+                                        ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
+                                JsonParser jsonParser = new JsonParser();
+                                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
+                                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.InsertContentUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
+                                    @Override
+                                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                                        Utills.hideProgressDialog();
+                                        try {
+                                            notifyItemChanged(Position);
+                                            AppDatabase.getAppDatabase(mContext).userDao().updateContent(mDataList.get(Position));
+                                        } catch (Exception e) {
+                                            Utills.hideProgressDialog();
+                                            e.printStackTrace();
+                                            Utills.showToast(mContext.getString(R.string.error_something_went_wrong), mContext);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                                        Utills.hideProgressDialog();
+                                        Utills.showToast(mContext.getString(R.string.error_something_went_wrong), mContext);
+                                    }
+                                });
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                                Utills.hideProgressDialog();
+                                Utills.showToast(mContext.getString(R.string.error_something_went_wrong), mContext);
+                            }
+                        } else {
+                            Utills.showToast(mContext.getString(R.string.error_no_internet), mContext);
+                        }
+                        dialog.dismiss();
+
+                    }
+
+                }).create();
+        dialog.setCancelable(true);
+        dialog.show();
     }
 
     @Override
@@ -488,6 +586,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         }
         return sb.toString();
     }
+
     /*It calls sharedRecords api. ContentId is id of particular posts. */
     private void sendShareRecord(String contentId) {
         if (Utills.isConnected(mContext)) {
@@ -546,16 +645,17 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public ImageView picture, userImage, imgLike, img_comment,play,imgMore;
+        public ImageView picture, userImage, imgLike, img_comment, play, imgMore;
         public CardView card_view;
         public RelativeLayout audioLayout, layout_Video;
-        public TextView txt_id,txt_audio_txt,txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type,txt_tag,txt_detail;
-        public LinearLayout layout_like, mediaLayout, layout_comment, layout_share, layout_download,layout_download_file;
+        public TextView txt_status, txt_id, txt_audio_txt, txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type, txt_tag, txt_detail;
+        public LinearLayout layout_like, mediaLayout, layout_comment, layout_share, layout_download, layout_download_file;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
             txt_audio_txt = (TextView) itemLayoutView.findViewById(R.id.audio_text);
             txt_title = (TextView) itemLayoutView.findViewById(R.id.txt_title);
+            txt_status = (TextView) itemLayoutView.findViewById(R.id.txt_status);
             txt_template_type = (TextView) itemLayoutView.findViewById(R.id.txt_template_type);
             txt_desc = (TextView) itemLayoutView.findViewById(R.id.txt_desc);
             txt_time = (TextView) itemLayoutView.findViewById(R.id.txt_time);
@@ -576,7 +676,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             txt_tag = (TextView) itemLayoutView.findViewById(R.id.txt_tag);
             txt_detail = (TextView) itemLayoutView.findViewById(R.id.txt_detail);
             imgMore = (ImageView) itemLayoutView.findViewById(R.id.imgMore);
-            txt_id =(TextView) itemLayoutView.findViewById(R.id.txt_id);
+            txt_id = (TextView) itemLayoutView.findViewById(R.id.txt_id);
             /*Add the comment to particular posts by calling api. */
             layout_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -586,7 +686,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     mContext.startActivity(intent);
                 }
             });
-
 
 
             txt_detail.setOnClickListener(new View.OnClickListener() {
@@ -604,8 +703,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                         intent.putExtra("flag", "forward_flag");
                         intent.putExtra(Constants.LIST, mActivity.json);
                         mContext.startActivity(intent);
-                    } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("true")){
-                        if (mDataList.get(getAdapterPosition()).getContentType()!=null){
+                    } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("true")) {
+                        if (mDataList.get(getAdapterPosition()).getContentType() != null) {
                             if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image")) {
                                 Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
                                 intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
@@ -613,7 +712,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                                 intent.putExtra(Constants.LIST, mActivity.json);
                                 mContext.startActivity(intent);
                             }
-                        }else {
+                        } else {
                             Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
                             intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
                             intent.putExtra("flag", "forward_flag");
@@ -663,7 +762,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 public void onClick(View view) {
                     if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("true")) {
                         String filePath = "";
-                        if (mDataList.get(getAdapterPosition()).getContentType()!=null) {
+                        if (mDataList.get(getAdapterPosition()).getContentType() != null) {
 
                             if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("audio")) {
                                 filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".mp3";
@@ -689,7 +788,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
                             intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
                             mContext.startActivity(Intent.createChooser(intent, "Share Content"));
-                        }else {
+                        } else {
                             filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".png";
                             Intent intent = new Intent();
                             intent.setAction(Intent.ACTION_SEND);
@@ -701,9 +800,9 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                             intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
                             mContext.startActivity(Intent.createChooser(intent, "Share Content"));
                         }
-                    }else if (mDataList.get(getAdapterPosition()).getAttachmentId() != null) {
+                    } else if (mDataList.get(getAdapterPosition()).getAttachmentId() != null) {
                         // if (mDataList.get(position).getFileType().equalsIgnoreCase("zip")) {
-                        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId()+".png";
+                        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId() + ".png";
                         Intent intent = new Intent();
                         intent.setAction(Intent.ACTION_SEND);
                         intent.setType("application/*");
@@ -722,8 +821,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     }
 
 
-
-
                 }
             });
 
@@ -732,10 +829,10 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             layout_download_file.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("true")){
+                    if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("true")) {
                         startDownload(getAdapterPosition());
-                    }else {
-                        if (mDataList.get(getAdapterPosition()).getAttachmentId()!=null){
+                    } else {
+                        if (mDataList.get(getAdapterPosition()).getAttachmentId() != null) {
                             downloadImage(getAdapterPosition());
                         }
 
@@ -749,7 +846,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
                         startDownload(getAdapterPosition());
                     }*/
-
 
 
                 }
@@ -828,12 +924,12 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             picture.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")){
-                        if (mDataList.get(getAdapterPosition()).getAttachmentId()!=null) {
+                    if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) {
+                        if (mDataList.get(getAdapterPosition()).getAttachmentId() != null) {
                             Utills.showImagewithheaderZoomDialog(v.getContext(), getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(getAdapterPosition()).getAttachmentId() + "/Body"));
                         }
-                    }else if ( mDataList.get(getAdapterPosition()).getId()!=null){
-                        Utills.showImageZoomInDialog(v.getContext(),mDataList.get(getAdapterPosition()).getId());
+                    } else if (mDataList.get(getAdapterPosition()).getId() != null) {
+                        Utills.showImageZoomInDialog(v.getContext(), mDataList.get(getAdapterPosition()).getId());
 
                     }
 
@@ -872,7 +968,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         }
 
 
-
     }
 
     private void downloadImage(final int adapterPosition) {
@@ -895,7 +990,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                         byte[] decodedString = Base64.decode(str, Base64.DEFAULT);
                         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
-                        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" +mDataList.get(adapterPosition).getAttachmentId()+".png");
+                        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(adapterPosition).getAttachmentId() + ".png");
                         FileOutputStream out = new FileOutputStream(file);
                         decodedByte.compress(Bitmap.CompressFormat.PNG, 90, out);
                         out.close();
@@ -987,6 +1082,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             Utills.showToast(mContext.getString(R.string.error_no_internet), mContext);
         }
     }
+
     /*It calls the InsertLike api for like the particular post.Here content Id is Id of posts. It is called on layout_like click.*/
     private void sendLikeAPI(String cotentId, Boolean isLike) {
         if (Utills.isConnected(mContext)) {
@@ -1036,6 +1132,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             Utills.showToast(mContext.getString(R.string.error_no_internet), mContext);
         }
     }
+
     /*It is used for starting mediaplayer by passing audio url.*/
     public void startAudio(String url) {
         if (mPlayer == null)
@@ -1074,8 +1171,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         Utills.showToast("Downloading Started...", mContext);
         Intent intent = new Intent(mContext, DownloadService.class);
         intent.putExtra("fragment_flag", "My_Community");
-        if((mDataList.get(position).getIsAttachmentPresent().equalsIgnoreCase("true")) ) {
-            if ( (mDataList.get(position).getContentType()!=null)) {
+        if ((mDataList.get(position).getIsAttachmentPresent().equalsIgnoreCase("true"))) {
+            if ((mDataList.get(position).getContentType() != null)) {
                 if (mDataList.get(position).getContentType().equalsIgnoreCase("zip")) {
                     intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".zip");
                     intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "zip");
@@ -1097,7 +1194,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "Image");
                     intent.putExtra("URL", Constants.IMAGEURL + mDataList.get(position).getId() + ".png");
                 }
-            }else {
+            } else {
                 intent.putExtra("FILENAME", mDataList.get(position).getTitle() + ".png");
                 intent.putExtra("FILETYPE", mDataList.get(position).getContentType() + "Image");
                 intent.putExtra("URL", Constants.IMAGEURL + mDataList.get(position).getId() + ".png");
@@ -1108,7 +1205,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
     /*Check if file is available or not in respective folder.*/
     private boolean isFileAvalible(int position) {
-        if (mDataList.get(position).getIsAttachmentPresent().equalsIgnoreCase("true")){
+        if (mDataList.get(position).getIsAttachmentPresent().equalsIgnoreCase("true")) {
             if (mDataList.get(position).getContentType() != null) {
                 if (mDataList.get(position).getContentType().equalsIgnoreCase("zip")) {
                     String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/UnZip/" + mDataList.get(position).getTitle();
@@ -1137,16 +1234,16 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                         return true;
                     return false;
                 }
-            }else {
+            } else {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getTitle() + ".png";
                 //   Log.e("Image path-->" +m)
                 if (new File(filePath).exists())
                     return true;
             }
 
-        }  else if (mDataList.get(position).getAttachmentId() != null) {
+        } else if (mDataList.get(position).getAttachmentId() != null) {
             // if (mDataList.get(position).getFileType().equalsIgnoreCase("zip")) {
-            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(position).getAttachmentId()+".png";
+            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(position).getAttachmentId() + ".png";
             if (new File(filePath).exists())
                 return true;
             return false;
@@ -1216,6 +1313,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         });
 
     }
+
     public static void spamContent(Context mContext, PreferenceHelper preferenceHelper, String ID, String UserId, Boolean isSpam) {
         String url = "";
         ServiceRequest apiService =
@@ -1233,8 +1331,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     data = response.body().string();
                     if (data != null && data.length() > 0) {
                         JSONObject jsonObject = new JSONObject(data);
-
-
 
 
                     }

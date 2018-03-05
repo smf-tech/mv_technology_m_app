@@ -7,7 +7,7 @@
     <string name="error_something_went_wrong">कुछ गया गलत, कृपया पुन: प्रयास करें</string>
     <string name="error_no_internet">कृपया अपना इंटरनेट जांचे</string>
     <string name="error_login">गलत परिचय.</string>
-
+    <string name="select_status"> Select Status</string>
     <string name="text_choosepicture">फोटो चुनें</string>
     <string name="text_choosevideo">वीडियो चुनें</string>
     <string name="text_gallary">गैलेरी</string>
