@@ -55,7 +55,6 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.kobakei.ratethisapp.RateThisApp;
-import com.mv.Adapter.HomeAdapter;
 import com.mv.ActivityMenu.CommunityHomeFragment;
 import com.mv.ActivityMenu.GroupsFragment;
 import com.mv.ActivityMenu.IndicatorListFragmet;
@@ -63,6 +62,7 @@ import com.mv.ActivityMenu.ProgrammeManagmentFragment;
 import com.mv.ActivityMenu.TeamManagementFragment;
 import com.mv.ActivityMenu.ThetSavandFragment;
 import com.mv.ActivityMenu.TrainingCalender;
+import com.mv.Adapter.HomeAdapter;
 import com.mv.Model.HomeModel;
 import com.mv.Model.User;
 import com.mv.R;
@@ -121,13 +121,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
         binding.setActivity(this);
         preferenceHelper = new PreferenceHelper(this);
         alertDialogApproved = new AlertDialog.Builder(this).create();
-        ;
         ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
         ///setActionbar(getString(R.string.app_name));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -384,7 +383,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initViews() {
-        Intent receivedIntent = getIntent();
+
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         iv_logo = (ImageView) findViewById(R.id.iv_logo);
         iv_home_animate = (ImageView) findViewById(R.id.iv_home_animate);
@@ -465,28 +464,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
         }
 
-
-        String receivedAction = receivedIntent.getAction();
-        String receivedType = receivedIntent.getType();
-        //make sure it's an action and type we can handle
-        if (receivedAction != null && receivedAction.equals(Intent.ACTION_SEND)) {
-            Intent intent;
-            intent = new Intent(HomeActivity.this, ThetSavandFragment.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.right_in, R.anim.left_out);
-            finish();
-
-            if (receivedType.startsWith("text/")) {
-                //handle sent text
-            } else if (receivedType.startsWith("image/")) {
-                //handle sent image
-                Constants.shareUri = (Uri) receivedIntent.getParcelableExtra(Intent.EXTRA_STREAM);
-            }
-            //content is being shared
-        } else {
-            //app has been launched directly, not from share list
-            Constants.shareUri = null;
-        }
 
     }
 
@@ -578,11 +555,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
-       if (alertLocationDialog!=null)
-           alertLocationDialog.dismiss();
+        if (alertLocationDialog != null)
+            alertLocationDialog.dismiss();
 
-       if( alertDialogApproved!=null)
-           alertDialogApproved.dismiss();
+        if (alertDialogApproved != null)
+            alertDialogApproved.dismiss();
 
     }
 

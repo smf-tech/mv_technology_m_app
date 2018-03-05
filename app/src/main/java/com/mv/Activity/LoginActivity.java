@@ -110,7 +110,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 if (user.getMvUser().getPassword().trim().equals(binding.edtOtp.getText().toString().trim())) {
                     preferenceHelper.insertString(PreferenceHelper.UserData, data);
                     yourCountDownTimer.cancel();
-                    if (user.getMvUser().getRoll() != null) {
+                    if (user.getMvUser().getRoll() != null && !(TextUtils.isEmpty(user.getMvUser().getRoll()))) {
                         Utills.showToast("Login Successful...", LoginActivity.this);
                         Intent intent;
                         intent = new Intent(LoginActivity.this, HomeActivity.class);
