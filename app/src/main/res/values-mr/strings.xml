@@ -12,7 +12,7 @@
     <string name="text_record">ऑडिओ रेकॉर्ड करा</string>
     <string name="text_select_audio">ऑडिओ निवडा</string>
     <string name="text_chooseaudio">ऑडिओ निवडा</string>
-
+    <string name="select_status"> Select Status</string>
     <string name="progress_loading">लोडिंग</string>
     <string name="progress_please_wait">कृपया थांबा</string>
     <string name="error_something_went_wrong">काहीतरी चूक झाली, कृपया पुन्हा प्रयत्न करा</string>

@@ -73,14 +73,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="image/*" />
-                <data android:mimeType="text/*" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".Activity.ImageTemplateActivity"
@@ -244,7 +237,15 @@
         <activity
             android:name=".ActivityMenu.GroupsFragment"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="image/*" />
+                <data android:mimeType="text/*" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ActivityMenu.IndicatorListFragmet"
             android:screenOrientation="portrait"
@@ -285,7 +286,8 @@
             android:name=".Activity.EventUserListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".Activity.OverallReportActivity"
+        <activity
+            android:name=".Activity.OverallReportActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity

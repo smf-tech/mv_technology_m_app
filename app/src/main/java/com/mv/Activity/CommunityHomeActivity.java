@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -170,7 +169,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                                     }
                                     if (isPresent) {
                                         chatList.set(j, temp.get(i));
-                                            AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().updateContent(temp.get(i));
+                                        AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().updateContent(temp.get(i));
 
                                     } else {
 
@@ -178,13 +177,13 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                                         chatList.add(temp.get(i));
 
                                         temp.get(i).setCommunity_id(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
-                                            AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().insertChats(temp.get(i));
+                                        AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().insertChats(temp.get(i));
                                     }
 
                                 }
 
 
-                                AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().deletepost(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),false,true);
+                                AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().deletepost(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), false, true);
                                 List<Content> contentList_fromDb = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
 
                               /*  chatList.clear();
@@ -349,7 +348,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 mySelection = false;
                 filterflag = 0;
-                chatList = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),true,false);
+                chatList = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), true, false);
 
 
                 adapter = new ContentAdapter(CommunityHomeActivity.this, chatList);
@@ -367,7 +366,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 myLocation = true;
                 filterflag = 2;
-                chatList = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),true,false);
+                chatList = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), true, false);
                 for (int i = 0; i < chatList.size(); i++) {
 
 
@@ -396,7 +395,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 myLocation = false;
                 filterflag = 3;
-                chatList = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),true,false);
+                chatList = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), true, false);
                 for (int i = 0; i < chatList.size(); i++) {
 
                     if (chatList.get(i).getTaluka() != null) {
@@ -440,7 +439,6 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         img_filter = (ImageView) findViewById(R.id.img_filter);
         if (Title != null) {
             if (Title.equalsIgnoreCase("HO Support")) {
-
                 img_logout.setVisibility(View.GONE);
             } else {
                 img_logout.setVisibility(View.VISIBLE);

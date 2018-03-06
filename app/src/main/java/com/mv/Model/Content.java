@@ -22,7 +22,6 @@ public class Content implements Serializable {
     private int Unique_Id;
 
 
-
     @ColumnInfo(name = "isAttachmentPresent")
     @SerializedName("isAttachmentPresent")
     @Expose
@@ -38,6 +37,8 @@ public class Content implements Serializable {
     @SerializedName("UserId")
     @Expose
     String user_id;
+
+
     @ColumnInfo(name = "CommunityId")
     @SerializedName("CommunityId")
     @Expose
@@ -121,7 +122,7 @@ public class Content implements Serializable {
     @ColumnInfo(name = "isMediaPlay")
     @SerializedName("isMediaPlay")
     @Expose
-    Boolean mediaPlay=false;
+    Boolean mediaPlay = false;
 
     @ColumnInfo(name = "isActive")
     @SerializedName("isActive")
@@ -161,9 +162,23 @@ public class Content implements Serializable {
     @Expose
     Boolean isDelete;
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @ColumnInfo(name = "status")
+    @SerializedName("status")
+    @Expose
+    String status;
+
     @SerializedName("isPostUserDidSpam")
     @Expose
-    Boolean  isPostUserDidSpam;
+    Boolean isPostUserDidSpam;
+
     public String getIsAttachmentPresent() {
         return isAttachmentPresent;
     }

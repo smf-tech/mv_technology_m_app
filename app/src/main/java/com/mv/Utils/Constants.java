@@ -8,12 +8,14 @@ import android.net.Uri;
 
 public class Constants {
 
-    /* Production
-    public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
+    /* Production*/
+
+  /*  public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com";
     public static String REPORTID = "a1L7F000000YNK4";
-    public static String ISSUEID = "a1L7F000000YNJz";*/
-    /* Sandbox*/
+    public static String ISSUEID = "a1L7F000000YNJ z";*/
+
+    /* Sandbox */
     public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
     public static String REPORTID = "a1G0k000000522K";
@@ -88,12 +90,10 @@ public class Constants {
 
     public static final String State = "State";
     public static final String DISTRICT = "District";
-/*
     public static final String TALUKA = "Taluka";
     public static final String CLUSTER = "Cluster";
     public static final String VILlAGE = "Village";
     public static final String SCHOOL = "School";
-*/
 
     public static String TASK_ANSWER = "answer";
     public static String TASK_QUESTION = "question";

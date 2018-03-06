@@ -101,6 +101,7 @@
 
     <string name="backExit">Please click BACK again to exit </string>
     <string name="select_lang"> Select Language</string>
+    <string name="select_status"> Select Status</string>
     <string name="broadcast">Broadcast\nMessage</string>
     <string name="community">My\nCommunity</string>
     <string name="programme_management">Programme\nManagement</string>
