@@ -20,8 +20,7 @@ import com.mv.Activity.TemplatesActivity;
 import com.mv.ActivityMenu.ProgrammeManagmentFragment;
 import com.mv.Model.CalenderEvent;
 import com.mv.Model.OverAllModel;
-import com.mv.Model.PiaChartModel;
-import com.mv.Model.Template;
+
 import com.mv.R;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;

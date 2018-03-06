@@ -8,14 +8,14 @@ import android.net.Uri;
 
 public class Constants {
 
-    /* Production
+    /* Production*/
 
-    public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
+  /*  public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com";
     public static String REPORTID = "a1L7F000000YNK4";
     public static String ISSUEID = "a1L7F000000YNJ z";*/
 
-    /* Sandbox*/
+    /* Sandbox */
     public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
     public static String REPORTID = "a1G0k000000522K";
@@ -132,7 +132,8 @@ public class Constants {
     public static final String MV_Role__c_URL = "/services/data/v36.0/query/?q=select+Name+from+MV_Role__c";
     public static final String GetOrganizationUrl = "/services/apexrest/getOrganization";
     public static final String GetUserDataForCalnder = "/services/apexrest/getUserDataForCalnder";
-    public static final String InsertEventcalender_Url = "/services/apexrest/InsertEventcalender";
+    public static final String GetCalenderEvents = "/services/apexrest/getProcessForCalendarEvent";
+    public static final String InsertEventcalender_Url = "/services/apexrest/InsertEventcalenderNew";
     public static final String Userdetails_Url = "/services/apexrest/userdetails";
     public static final String MV_GetCommunities_c_Url = "/services/apexrest/MV_GetCommunities_c";
     public static final String DoLogout_url = "/services/apexrest/doLogout/";
