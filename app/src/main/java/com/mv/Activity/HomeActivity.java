@@ -278,9 +278,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 ) {
 
         } else {
-            User.getCurrentUser(this).getMvUser().setPhoneId(Utills.getDeviceId(HomeActivity.this));
-            User.getCurrentUser(this).getMvUser().setUserMobileAppVersion(getAppVersion());
-            sendData();
+            if (Utills.isConnected(this)) {
+                User.getCurrentUser(this).getMvUser().setPhoneId(Utills.getDeviceId(HomeActivity.this));
+                User.getCurrentUser(this).getMvUser().setUserMobileAppVersion(getAppVersion());
+                sendData();
+            } else {
+                Utills.showToast(getString(R.string.error_no_internet), this);
+            }
         }
 
         Intent intent = new Intent(this, LocationService.class);
@@ -291,6 +295,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void sendData() {
+
         JSONObject jsonObject1 = new JSONObject();
         try {
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
