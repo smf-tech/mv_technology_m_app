@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mv.Model.EventUser;
+import com.mv.Model.Template;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -56,16 +57,18 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
     private int mSelectOrganization = 0, mSelectRole = 0, mSelectState = 1, mSelectDistrict = 1, mSelectTaluka = 0, mSelectCluster = 0, mSelectVillage = 0, mSelectSchoolName = 0;
     private List<String> mListOrganization, mListRoleName, mListDistrict, mListTaluka, mListCluster, mListVillage, mListSchoolName, mStateList;
     ArrayList<EventUser> selectedUser = new ArrayList<>();
-    private ArrayAdapter<String> district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, state_adapter, organization_adapter, role_adapter,catagory_adapter;
+    private ArrayAdapter<String> district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, state_adapter, organization_adapter, role_adapter, catagory_adapter;
     private PreferenceHelper preferenceHelper;
     private RelativeLayout mToolBar;
     private Spinner selectedSpinner;
     String msg = "";
     private int locationState;
-    public String selectedState = "", selectedDisrict = "", selectedTaluka = "", selectedCluster = "", selectedVillage = "", selectedSchool = "", selectedRole = "", selectedOrganization = "", selectedUserId = "",selectedUserName="",selectedCatagory="";
+    public String selectedState = "", selectedDisrict = "", selectedTaluka = "", selectedCluster = "", selectedVillage = "", selectedSchool = "", selectedRole = "", selectedOrganization = "", selectedUserId = "", selectedUserName = "", selectedCatagory = "";
 
     ArrayList<EventUser> calenderEventUserArrayList;
 
+    ArrayList<Template> processList;
+    private String processId="";
 
     Activity context;
 
@@ -86,6 +89,10 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         selectedRole = User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
 
         initViews();
+        if (Utills.isConnected(this))
+            getCalendeEvents();
+        else
+            Utills.showToast(getString(R.string.error_no_internet), CalenderFliterActivity.this);
     }
 
     @Override
@@ -104,7 +111,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         binding.spinnerCluster.setOnItemSelectedListener(this);
         binding.spinnerVillage.setOnItemSelectedListener(this);
         binding.spinnerSchoolName.setOnItemSelectedListener(this);
-        binding.spinnerCatogory.setOnItemSelectedListener(this);
+        binding.spinnerCatogory.setOnClickListener(this);
         binding.btnSubmit.setOnClickListener(this);
         binding.spinnerOrganization.setOnItemSelectedListener(this);
         binding.tvEventAddUser.setOnClickListener(this);
@@ -140,8 +147,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         if (mStateList.size() == 0) {
             if (Utills.isConnected(this))
                 getState();
-        }
-        else {
+        } else {
             mStateList = AppDatabase.getAppDatabase(context).userDao().getState();
             mStateList.add(0, "Select");
             setSpinnerAdapter(mStateList, state_adapter, binding.spinnerState, selectedState);
@@ -153,7 +159,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         mStateList.add(0, "Select");
         setSpinnerAdapter(mStateList, state_adapter, binding.spinnerState, selectedState);
         //  mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
-        ArrayList<String> catagory=new ArrayList<>();
+        ArrayList<String> catagory = new ArrayList<>();
         catagory.add("Select");
         catagory.add("Training Observation");
         catagory.add("Classroom Observation");
@@ -161,7 +167,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         catagory.add("School and Classroom Observation");
         catagory.add("Training");
 
-        setSpinnerAdapter(catagory, catagory_adapter, binding.spinnerCatogory, "");
+        // setSpinnerAdapter(catagory, catagory_adapter, binding.spinnerCatogory, "");
         setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
         setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
         setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster, selectedCluster);
@@ -183,6 +189,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
+
     private void getState() {
 
         Utills.showProgressDialog(this, "Loading States", getString(R.string.progress_please_wait));
@@ -222,6 +229,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             }
         });
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -231,29 +239,20 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
             case R.id.btn_submit:
-                String msg="";
-                if(selectedCatagory.equals("")||selectedCatagory.equals("Select"))
-                {
-                    msg="Please Select Category";
+                String msg = "";
+                if (binding.spinnerCatogory.getText().equals("") || binding.spinnerCatogory.getText().equals("Select")) {
+                    msg = "Please Select Category";
+                } else if (binding.etEventTitle.getText().toString().equals("")) {
+                    msg = "Please Enter Title";
+                } else if (binding.etEventDate.getText().toString().equals("")) {
+                    msg = "Please Select Date";
+                } else if (binding.etEventDiscription.getText().toString().equals("")) {
+                    msg = "Please Enter Description";
                 }
-               else if(binding.etEventTitle.getText().toString().equals(""))
-                {
-                    msg="Please Enter  Title";
-                }else if(binding.etEventDate.getText().toString().equals(""))
-                {
-                    msg="Please Select  Date";
-                }
-                else if(binding.etEventDiscription.getText().toString().equals(""))
-                {
-                    msg="Please Enter  Description";
-                }
-                if(msg.isEmpty())
-                {
+                if (msg.isEmpty()) {
                     submitEventDetail();
-                }
-                else
-                {
-                    Utills.showToast(msg,context);
+                } else {
+                    Utills.showToast(msg, context);
                 }
 
                 //  sendLocation();
@@ -284,13 +283,13 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                     binding.llLoacationlayout.setVisibility(View.GONE);
                 } else
                     binding.llLoacationlayout.setVisibility(View.VISIBLE);
-                // sendData();
-                break;
 
+                break;
+            case R.id.spinner_catogory:
+                showProcessDialog();
+                break;
         }
     }
-
-
 
 
     @Override
@@ -318,8 +317,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
                         }
                     }
-                }
-                else {
+                } else {
                     mListDistrict = new ArrayList<>();
                     mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(selectedState);
                     mListDistrict.removeAll(Collections.singleton(null));
@@ -393,26 +391,26 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                     selectedSchool="";*/
 
 
-                        mListCluster.clear();
-                        mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
-                        mListCluster.removeAll(Collections.singleton(null));
-                        if (mListCluster.size() == 0) {
-                            mListCluster.add(0, "Select");
-                            if (Utills.isConnected(this))
-                                getCluster();
-                            else {
+                    mListCluster.clear();
+                    mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
+                    mListCluster.removeAll(Collections.singleton(null));
+                    if (mListCluster.size() == 0) {
+                        mListCluster.add(0, "Select");
+                        if (Utills.isConnected(this))
+                            getCluster();
+                        else {
 
-                                mListCluster.clear();
-                                mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
-                                mListCluster.add(0, "Select");
-                                mListCluster.removeAll(Collections.singleton(null));
-                                setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster, selectedCluster);
-                            }
-                        } else {
+                            mListCluster.clear();
+                            mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
                             mListCluster.add(0, "Select");
+                            mListCluster.removeAll(Collections.singleton(null));
                             setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster, selectedCluster);
-
                         }
+                    } else {
+                        mListCluster.add(0, "Select");
+                        setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster, selectedCluster);
+
+                    }
 
                 } else {
                     mListCluster.clear();
@@ -433,23 +431,23 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                     selectedSchool="";*/
 
 
-                        mListVillage.clear();
-                        mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
-                        mListVillage.removeAll(Collections.singleton(null));
-                        if (mListVillage.size() == 0) {
-                            if (Utills.isConnected(this))
-                                getVillage();
-                            else {
-                                mListVillage.clear();
-                                mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
-                                mListVillage.add(0, "Select");
-                                mListVillage.removeAll(Collections.singleton(null));
-                                setSpinnerAdapter(mListVillage, village_adapter, binding.spinnerVillage, selectedVillage);
-                            }
-                        } else {
+                    mListVillage.clear();
+                    mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
+                    mListVillage.removeAll(Collections.singleton(null));
+                    if (mListVillage.size() == 0) {
+                        if (Utills.isConnected(this))
+                            getVillage();
+                        else {
+                            mListVillage.clear();
+                            mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
                             mListVillage.add(0, "Select");
+                            mListVillage.removeAll(Collections.singleton(null));
                             setSpinnerAdapter(mListVillage, village_adapter, binding.spinnerVillage, selectedVillage);
                         }
+                    } else {
+                        mListVillage.add(0, "Select");
+                        setSpinnerAdapter(mListVillage, village_adapter, binding.spinnerVillage, selectedVillage);
+                    }
 
                 } else {
                     mListVillage.clear();
@@ -468,24 +466,24 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                     selectedVillage = mListVillage.get(mSelectVillage);
                     // selectedSchool="";
 
-                        mListSchoolName.clear();
-                        mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
-                        mListSchoolName.removeAll(Collections.singleton(null));
-                        if (mListSchoolName.size() == 0) {
-                            if (Utills.isConnected(this))
-                                getSchool();
-                            else {
-                                mListSchoolName.clear();
-                                mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
-                                mListSchoolName.add(0, "Select");
-                                mListSchoolName.removeAll(Collections.singleton(null));
-                                setSpinnerAdapter(mListSchoolName, school_adapter, binding.spinnerSchoolName, selectedSchool);
-                            }
-                        } else {
+                    mListSchoolName.clear();
+                    mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
+                    mListSchoolName.removeAll(Collections.singleton(null));
+                    if (mListSchoolName.size() == 0) {
+                        if (Utills.isConnected(this))
+                            getSchool();
+                        else {
+                            mListSchoolName.clear();
+                            mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
                             mListSchoolName.add(0, "Select");
+                            mListSchoolName.removeAll(Collections.singleton(null));
                             setSpinnerAdapter(mListSchoolName, school_adapter, binding.spinnerSchoolName, selectedSchool);
-
                         }
+                    } else {
+                        mListSchoolName.add(0, "Select");
+                        setSpinnerAdapter(mListSchoolName, school_adapter, binding.spinnerSchoolName, selectedSchool);
+
+                    }
 
                 } else {
                     mListSchoolName.clear();
@@ -502,12 +500,15 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             case R.id.spinner_organization:
                 mSelectOrganization = i;
                 if (mSelectOrganization != 0) {
-                    getRole();
+                    if (Utills.isConnected(this))
+                        getRole();
+                } else {
+                    mListRoleName.add(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll());
                 }
 
                 break;
             case R.id.spinner_catogory:
-                selectedCatagory=adapterView.getItemAtPosition(i).toString();
+                selectedCatagory = adapterView.getItemAtPosition(i).toString();
 
                 break;
 
@@ -528,6 +529,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         String abc;
 
     }
+
     private void getDistrict() {
 
         Utills.showProgressDialog(this, getString(R.string.loding_district), getString(R.string.progress_please_wait));
@@ -561,6 +563,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             }
         });
     }
+
     private void getRole() {
         Utills.showProgressDialog(this, getString(R.string.Loading_Roles), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
@@ -778,7 +781,8 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         }
         final boolean[] mSelection = new boolean[items.length];
         Arrays.fill(mSelection, false);
-        mSelection[mListRoleName.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll())] = true;
+        if (mListRoleName.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll()) > 0)
+            mSelection[mListRoleName.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll())] = true;
 
 // arraylist to keep the selected items
         final ArrayList seletedItems = new ArrayList();
@@ -787,6 +791,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
                         if (mSelection != null && which < mSelection.length) {
                             mSelection[which] = isChecked;
 
@@ -831,7 +836,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
 
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetUserDataForCalnder+"?state=" + binding.spinnerState.getSelectedItem().toString() + "&dist=" + binding.spinnerDistrict.getSelectedItem().toString() + "&tal=" + binding.spinnerTaluka.getSelectedItem().toString() + "&cluster=" + binding.spinnerCluster.getSelectedItem().toString() + "&village=" + binding.spinnerVillage.getSelectedItem().toString() + "&school=" + binding.spinnerSchoolName.getSelectedItem().toString() + "&role=" + selectedRole;
+                + Constants.GetUserDataForCalnder + "?state=" + binding.spinnerState.getSelectedItem().toString() + "&dist=" + binding.spinnerDistrict.getSelectedItem().toString() + "&tal=" + binding.spinnerTaluka.getSelectedItem().toString() + "&cluster=" + binding.spinnerCluster.getSelectedItem().toString() + "&village=" + binding.spinnerVillage.getSelectedItem().toString() + "&school=" + binding.spinnerSchoolName.getSelectedItem().toString() + "&role=" + selectedRole;
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -877,6 +882,51 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         });
     }
 
+    private void getCalendeEvents() {
+        Utills.showProgressDialog(context, "Loading ", getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetCalenderEvents + "?userId=" + User.getCurrentUser(CalenderFliterActivity.this).getMvUser().getId();
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+
+                try {
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(data);
+                            processList = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                Template process = new Template();
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                process.setName(jsonObject.getString("Name"));
+                                process.setMV_Process__c(jsonObject.getString("Id"));
+                                processList.add(process);
+
+                            }
+
+
+                        }
+
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+            }
+        });
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -899,11 +949,9 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             }
             selectedUserId = sb.toString();
             selectedUserName = sbName.toString();
-            if(calenderEventUserArrayList.size()==selectedUser.size()) {
+            if (calenderEventUserArrayList.size() == selectedUser.size()) {
                 binding.tvEventAddUser.setText("All Selected");
-            }
-            else
-            {
+            } else {
                 binding.tvEventAddUser.setText(selectedUserName);
             }
             Log.e("StringId", selectedUserId);
@@ -913,6 +961,69 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
     }
 
+
+    private void showProcessDialog() {
+
+
+        //  final List<Community> temp = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities();
+        final String[] items = new String[processList.size()];
+        for (int i = 0; i < processList.size(); i++) {
+            items[i] = processList.get(i).getName();
+        }
+        final boolean[] mSelection = new boolean[items.length];
+        Arrays.fill(mSelection, false);
+
+
+      /* if(temp.contains(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll()))
+        mSelection[temp.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll())] = true;
+*/
+// arraylist to keep the selected items
+        final ArrayList seletedItems = new ArrayList();
+        android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(CalenderFliterActivity.this)
+                .setTitle("Select Role")
+                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (mSelection != null && which < mSelection.length) {
+                            mSelection[which] = isChecked;
+
+
+                        } else {
+                            throw new IllegalArgumentException(
+                                    "Argument 'which' is out of bounds.");
+                        }
+                    }
+                })
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        StringBuffer sb = new StringBuffer();
+                        StringBuffer roleId = new StringBuffer();
+                        String prefix = "";
+                        for (int i = 0; i < items.length; i++) {
+                            if (mSelection[i]) {
+                                sb.append(prefix);
+                                roleId.append(prefix);
+                                prefix = ",";
+                                sb.append(processList.get(i).getName());
+                                roleId.append(processList.get(i).getMV_Process__c());
+                                //now original string is changed
+                            }
+                        }
+
+                        processId = roleId.toString();
+                        binding.spinnerCatogory.setText(sb.toString());
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Your code when user clicked on Cancel
+                    }
+                }).create();
+
+
+        dialog.show();
+    }
 
     private void submitEventDetail() {
         if (Utills.isConnected(this)) {
@@ -927,7 +1038,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 jsonObject1.put("Cluster__c", selectedCluster);
                 jsonObject1.put("Date__c", binding.etEventDate.getText().toString());
 
-                jsonObject1.put("Description_New__c",binding.etEventDiscription.getText().toString() );
+                jsonObject1.put("Description_New__c", binding.etEventDiscription.getText().toString());
                 jsonObject1.put("District__c", selectedDisrict);
                 if (selectedUserId.equals(""))
                     jsonObject1.put("Is_Event_for_All_Role__c", true);
@@ -935,10 +1046,11 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                     jsonObject1.put("Is_Event_for_All_Role__c", false);
 
                 jsonObject1.put("Role__c", selectedRole);
-                jsonObject1.put("School__c",selectedSchool);
-
-                jsonObject1.put("State__c",selectedState);
+                jsonObject1.put("School__c", selectedSchool);
+                jsonObject1.put("MV_Process__c", processId);
+                jsonObject1.put("State__c", selectedState);
                 jsonObject1.put("Taluka__c", selectedTaluka);
+                jsonObject1.put("Village__c", selectedVillage);
                 jsonObject1.put("category", selectedCatagory);
                 jsonObject1.put("Title__c", binding.etEventTitle.getText().toString());
 
@@ -952,7 +1064,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.InsertEventcalender_Url, gsonObject).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            Utills.hideProgressDialog();
+                        Utills.hideProgressDialog();
                         try {
                             finish();
                         } catch (Exception e) {
@@ -977,6 +1089,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             Utills.showToast(getString(R.string.error_no_internet), CalenderFliterActivity.this);
         }
     }
+
     public void showDateDialog(Context context) {
 
 
@@ -990,7 +1103,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        binding.etEventDate.setText( year+"-" + getTwoDigit(monthOfYear + 1)+"-"+getTwoDigit(dayOfMonth)  );
+                        binding.etEventDate.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
 
 
                     }

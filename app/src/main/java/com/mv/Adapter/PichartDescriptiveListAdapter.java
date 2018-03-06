@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ public class PichartDescriptiveListAdapter extends RecyclerView.Adapter<PichartD
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView state, district, taluka, name, detail, index,title;
         public LinearLayout layout;
+        ImageView delete;
 
         public MyViewHolder(View view) {
             super(view);
@@ -40,6 +42,13 @@ public class PichartDescriptiveListAdapter extends RecyclerView.Adapter<PichartD
             title = (TextView) view.findViewById(R.id.tv_piachart);
             detail = (TextView) view.findViewById(R.id.tv_piachart_description);
             index = (TextView) view.findViewById(R.id.tv_piachart_number);
+            delete = (ImageView) view.findViewById(R.id.iv_calender_delete);
+            delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
         }
     }
@@ -62,23 +71,24 @@ public class PichartDescriptiveListAdapter extends RecyclerView.Adapter<PichartD
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-      /*  holder.state.setText(piaChartModelsList.get(position).getState());
-        holder.district.setText(piaChartModelsList.get(position).getDistrict());
-        holder.taluka.setText(piaChartModelsList.get(position).getTaluka());
-        holder.name.setText(piaChartModelsList.get(position).getName());*/
+
         holder.index.setText(String.valueOf(position + 1));
         if(piaChartModelsList.get(position)instanceof PiaChartModel)
         {
             PiaChartModel piaChartModel= (PiaChartModel) piaChartModelsList.get(position);
             holder.detail.setText(piaChartModel.getDetail());
             holder.title.setVisibility(View.GONE);
+            holder.delete.setVisibility(View.GONE);
         }
         else
         {
             holder.title.setVisibility(View.VISIBLE);
+            holder.delete.setVisibility(View.VISIBLE);
             CalenderEvent piaChartModel= (CalenderEvent) piaChartModelsList.get(position);
             holder.detail.setText(piaChartModel.getDescription());
             holder.title.setText(piaChartModel.getTitle());
+            holder.delete.setImageResource(R.drawable.form_delete);
+
 
         }
 
