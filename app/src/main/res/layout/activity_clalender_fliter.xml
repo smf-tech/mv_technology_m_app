@@ -297,7 +297,7 @@
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/medium_text" />
 
-                <Spinner
+                <TextView
                     android:id="@+id/spinner_catogory"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -308,7 +308,7 @@
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
                     android:prompt="@string/state"
-                    android:spinnerMode="dialog" />
+                     />
 
                 <android.support.design.widget.TextInputLayout
 

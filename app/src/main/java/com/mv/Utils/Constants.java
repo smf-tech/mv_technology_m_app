@@ -8,16 +8,16 @@ import android.net.Uri;
 
 public class Constants {
 
-    /* Production*/
+    /* Production
     public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com";
     public static String REPORTID = "a1L7F000000YNK4";
-    public static String ISSUEID = "a1L7F000000YNJz";
-    /* Sandbox
+    public static String ISSUEID = "a1L7F000000YNJz";*/
+    /* Sandbox*/
     public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
     public static String REPORTID = "a1G0k000000522K";
-    public static String ISSUEID = "a1G0k000000522F";*/
+    public static String ISSUEID = "a1G0k000000522F";
 
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
@@ -88,10 +88,12 @@ public class Constants {
 
     public static final String State = "State";
     public static final String DISTRICT = "District";
+/*
     public static final String TALUKA = "Taluka";
     public static final String CLUSTER = "Cluster";
     public static final String VILlAGE = "Village";
     public static final String SCHOOL = "School";
+*/
 
     public static String TASK_ANSWER = "answer";
     public static String TASK_QUESTION = "question";
@@ -131,7 +133,7 @@ public class Constants {
     public static final String GetOrganizationUrl = "/services/apexrest/getOrganization";
     public static final String GetUserDataForCalnder = "/services/apexrest/getUserDataForCalnder";
     public static final String GetCalenderEvents = "/services/apexrest/getProcessForCalendarEvent";
-    public static final String InsertEventcalender_Url = "/services/apexrest/InsertEventcalender";
+    public static final String InsertEventcalender_Url = "/services/apexrest/InsertEventcalenderNew";
     public static final String Userdetails_Url = "/services/apexrest/userdetails";
     public static final String MV_GetCommunities_c_Url = "/services/apexrest/MV_GetCommunities_c";
     public static final String DoLogout_url = "/services/apexrest/doLogout/";
