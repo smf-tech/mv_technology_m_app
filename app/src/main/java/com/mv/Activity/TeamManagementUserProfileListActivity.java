@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -150,6 +151,10 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
                                     processList.setName(jsonArray.getJSONObject(i).getString("username"));
                                 else if (jsonArray.getJSONObject(i).has("name"))
                                     processList.setName(jsonArray.getJSONObject(i).getString("username"));
+                                   if  (jsonArray.getJSONObject(i).has("status"))
+                                    processList.setStatus(jsonArray.getJSONObject(i).getBoolean("status"));
+
+
                                 processAllList.add(processList);
                             }
                             AppDatabase.getAppDatabase(context).userDao().deleteTable();
@@ -213,4 +218,13 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         mAdapter = new TeamManagementAdapter( repplicaCahart,context);
         binding.recyclerView.setAdapter(mAdapter);
     }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (Utills.isConnected(context))
+            getAllProcess();
+    }
+
+
 }
