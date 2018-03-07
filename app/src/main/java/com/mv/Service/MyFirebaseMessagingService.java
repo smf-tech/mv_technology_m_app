@@ -21,11 +21,14 @@ import com.google.gson.GsonBuilder;
 import com.mv.Activity.CommunityHomeActivity;
 import com.mv.Activity.SplashScreenActivity;
 import com.mv.Model.Community;
+import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -37,6 +40,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseMsgService";
     private PreferenceHelper preferenceHelper;
     private String mId = "";
+    List<String> allTab = new ArrayList<>();
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -47,9 +51,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             try {
                 preferenceHelper = new PreferenceHelper(getApplicationContext());
                 mId = remoteMessage.getData().get("Id");
+                allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().split(";")));
+
                 if (preferenceHelper != null) {
                     if (preferenceHelper.getBoolean(PreferenceHelper.NOTIFICATION)) {
-                        sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
+                     //sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
+                      //  Log.e("Approv",User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved());
+
+                        if ((User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("true")) )
+                              {
+                               if (allTab.contains(Constants.My_Community)){
+                                     sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
+
+                               }
+
+                        }
                     }
                 } else {
                     sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
@@ -126,5 +142,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
         notificationManager.notify(0, notificationBuilder.build());
+    }
+
+    public static String[] getColumnIdex(String[] value) {
+
+        for (int i = 0; i < value.length; i++) {
+            value[i] = value[i].trim();
+        }
+        return value;
+
     }
 }
