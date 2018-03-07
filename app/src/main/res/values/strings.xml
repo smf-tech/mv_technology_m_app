@@ -93,6 +93,9 @@
     <string name="resend"> <u>Resend OTP</u></string>
     <string name="check_otp">Please Check OTP</string>
 
+    <string name="cannotLogout">You cannot logout</string>
+    <string name="submitAllForms">Please submit all forms and then logout...</string>
+
     <string name="Submit">Submit</string>
     <string name="Save">Save</string>
 

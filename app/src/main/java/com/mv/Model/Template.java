@@ -109,7 +109,6 @@ public class Template implements Serializable, Parcelable {
     }
 
 
-
     public String getLocationLevel() {
         return LocationLevel;
     }
@@ -241,7 +240,7 @@ public class Template implements Serializable, Parcelable {
     @Expose
     private String P1F5__c;
 
-    private  Boolean Is_Editable__c;
+    private Boolean Is_Editable__c;
 
     public Boolean getIs_Editable__c() {
         return Is_Editable__c;
@@ -259,10 +258,24 @@ public class Template implements Serializable, Parcelable {
         Is_Multiple_Entry_Allowed__c = is_Multiple_Entry_Allowed__c;
     }
 
-    private  Boolean Is_Multiple_Entry_Allowed__c;
+    private Boolean Is_Multiple_Entry_Allowed__c;
 
     public Template() {
     }
+
+    @ColumnInfo(name = "status")
+    @SerializedName("status")
+    @Expose
+    private Boolean status;
+
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
 
     @Override
     public int describeContents() {
@@ -289,6 +302,8 @@ public class Template implements Serializable, Parcelable {
         dest.writeString(this.P1F5__c);
         dest.writeValue(this.Is_Editable__c);
         dest.writeValue(this.Is_Multiple_Entry_Allowed__c);
+        dest.writeValue(this.getStatus());
+
     }
 
     protected Template(Parcel in) {
@@ -308,6 +323,7 @@ public class Template implements Serializable, Parcelable {
         this.P1F3__c = in.readString();
         this.P1F4__c = in.readString();
         this.P1F5__c = in.readString();
+        this.status = Boolean.valueOf(in.readString());
         this.Is_Editable__c = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.Is_Multiple_Entry_Allowed__c = (Boolean) in.readValue(Boolean.class.getClassLoader());
     }

@@ -264,9 +264,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onResume() {
         super.onResume();
-        if (mAdapter != null) {
-            mAdapter.notifyDataSetChanged();
-        }
+        getCommunities(false);
     }
 
     @Override
