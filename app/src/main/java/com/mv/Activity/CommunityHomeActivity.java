@@ -151,6 +151,19 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                     if (response.body() != null) {
                         String data = response.body().string();
                         if (data != null && data.length() > 0) {
+                            List<Community> list = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities();
+                            Community community = new Community();
+                            for (int i = 0; i < list.size(); i++) {
+                                if (list.get(i).getId().equalsIgnoreCase(preferenceHelper.getString(PreferenceHelper.COMMUNITYID))) {
+                                    community = list.get(i);
+                                    break;
+                                }
+                            }
+                            if (community != null) {
+                                community.setCount("" + 0);
+                                AppDatabase.getAppDatabase(getApplicationContext()).userDao().updateCommunities(community);
+                            }
+                            AppDatabase.getAppDatabase(getApplicationContext()).userDao().updateCommunities(community);
                             JSONArray jsonArray = new JSONArray(data);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));

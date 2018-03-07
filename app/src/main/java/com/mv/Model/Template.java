@@ -111,6 +111,12 @@ public class Template implements Serializable, Parcelable {
     @ColumnInfo(name = "LocationLevel")
     private String LocationLevel;
 
+    @ColumnInfo(name = "status")
+    @SerializedName("status")
+    @Expose
+    private Boolean status;
+
+
 
     public int getUnique_Id() {
         return Unique_Id;
@@ -292,6 +298,14 @@ public class Template implements Serializable, Parcelable {
         return 0;
     }
 
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.Unique_Id);
@@ -316,6 +330,7 @@ public class Template implements Serializable, Parcelable {
         dest.writeString(this.P1F5__c);
         dest.writeValue(this.Is_Editable__c);
         dest.writeValue(this.Is_Multiple_Entry_Allowed__c);
+        dest.writeValue(this.getStatus());
     }
 
     protected Template(Parcel in) {
@@ -341,6 +356,7 @@ public class Template implements Serializable, Parcelable {
         this.P1F5__c = in.readString();
         this.Is_Editable__c = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.Is_Multiple_Entry_Allowed__c = (Boolean) in.readValue(Boolean.class.getClassLoader());
+        this.status = Boolean.valueOf(in.readString());
     }
 
     public static final Creator<Template> CREATOR = new Creator<Template>() {

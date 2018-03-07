@@ -29,6 +29,9 @@
     <string name="text_audio">ध्वनी</string>
     <string name="text_video">वीडियो</string>
 
+    <string name="cannotLogout">आप लॉगआउट नहीं कर सकते</string>
+    <string name="submitAllForms">कृपया सभी फ़ॉर्म सबमिट करें और लॉग आउट करें</string>
+
     <string name="text_record">ध्वनि रिकॉर्ड करें</string>
     <string name="text_select_audio">ऑडियो चुनें</string>
     <string name="text_chooseaudio">ऑडियो चुनें</string>

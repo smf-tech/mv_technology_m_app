@@ -138,6 +138,9 @@
     <string name="loding_district">जिल्हे लोड करीत आहे</string>
     <string name="loding_taluka">तालुका लोड करीत आहे</string>
 
+    <string name="cannotLogout">आपण लॉगआउट करू शकत नाही</string>
+    <string name="submitAllForms">कृपया सर्व फॉर्म सबमिट करा आणि लॉगआउट करा</string>
+
     <string name="loding_cluster">क्लस्टर लोड करीत आहे</string>
     <string name="loding_school">शाळा लोड होत आहे</string>
     <string name="loding_village">गाव लोड होत आहे</string>
