@@ -55,6 +55,7 @@ public class LocationService extends IntentService {
 
         if (locationModelArrayList.size()<=1)
             getAllLocation();
+            //size equal to 1 means its default state
         else if(locationState.size()==1)
             getState();
 
@@ -97,6 +98,8 @@ public class LocationService extends IntentService {
                         locationModelArrayList.removeAll(Collections.singleton(null));
                         AppDatabase.getAppDatabase(getApplicationContext()).userDao().insertLoaction(locationModelArrayList);
 
+
+                        //size equal to 1 means its default state
                         if (AppDatabase.getAppDatabase(getApplicationContext()).userDao().getState().size() == 1)
                             getState();
                     }

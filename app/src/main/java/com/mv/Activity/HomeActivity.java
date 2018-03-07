@@ -64,6 +64,7 @@ import com.mv.ActivityMenu.ThetSavandFragment;
 import com.mv.ActivityMenu.TrainingCalender;
 import com.mv.Adapter.HomeAdapter;
 import com.mv.Model.HomeModel;
+import com.mv.Model.LocationModel;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -122,6 +123,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
+
+
+
+
+
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
         binding.setActivity(this);
@@ -770,6 +776,43 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         alertDialog.show();
     }
 
+    private void showUpdateDataPopup() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+
+        // Setting Dialog Title
+        alertDialog.setTitle(getString(R.string.app_name));
+
+        // Setting Dialog Message
+        alertDialog.setMessage(getString(R.string.update_data_string));
+
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.drawable.logomulya);
+
+        // Setting CANCEL Button
+        alertDialog.setButton2(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+        // Setting OK Button
+        alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                List<LocationModel> districts = AppDatabase.getAppDatabase(HomeActivity.this).userDao().getDistinctDistrict();
+                AppDatabase.getAppDatabase(HomeActivity.this).userDao().clearLocation();
+                for(int i=0;i<districts.size();i++)
+                {
+                    Intent intent = new Intent(getApplicationContext(), LocationService.class);
+                    // add infos for the service which file to download and where to store
+                    intent.putExtra(Constants.State,districts.get(i).getState());
+                    intent.putExtra(Constants.DISTRICT,districts.get(i).getDistrict());
+                    startService(intent);
+                }
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
     private void sendLogOutRequest() {
         if (Utills.isConnected(this)) {
             Utills.showProgressDialog(this);
@@ -1157,7 +1200,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (id == R.id.action_lang) {
             showDialog();
 
-
         } else if (id == R.id.action_profile) {
             Intent intent;
             intent = new Intent(this, RegistrationActivity.class);
@@ -1171,7 +1213,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             ShareApp();
         } else if (id == R.id.action_rate) {
             RateThisApp.showRateDialog(HomeActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
-
         } else if (id == R.id.action_add_school) {
             String role = User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
             if ((User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationAllow__c().equals("true"))) {
@@ -1183,9 +1224,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         } else if (id == R.id.action_callus) {
             CallUSDialog();
-           /* Uri uri = Uri.parse("https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2"); // missing 'http://' will cause crashed
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);*/
+
+        }
+        else if (id == R.id.action_update_user_data) {
+
+            showUpdateDataPopup();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

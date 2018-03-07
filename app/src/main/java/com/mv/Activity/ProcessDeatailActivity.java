@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -225,6 +226,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 /*    if(dashaBoardListModel.get(i).getIsSave().equals(Constants.PROCESS_STATE_SUBMIT))
                     dashaBoardListModel.get(i).setIsSave(Constants.PROCESS_STATE_MODIFIED);
                     else*/
+                    Log.d("pos",""+i);
                     taskList.get(i).setIsSave(Constants.PROCESS_STATE_SAVE);
                     taskList.get(i).setTimestamp__c(timestamp);
                     if ( taskList.get(i).getIsHeader().equals("true"))

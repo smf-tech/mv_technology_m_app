@@ -267,8 +267,6 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
     private void sendApprovedData() {
         if (Utills.isConnected(this)) {
             try {
-
-
                 Utills.showProgressDialog(this, getString(R.string.share_post), getString(R.string.progress_please_wait));
                 JSONObject jsonObject1 = new JSONObject();
 

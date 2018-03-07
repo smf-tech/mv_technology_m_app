@@ -222,5 +222,8 @@
     <string name="call_us">Call Us</string>
     <string name="call_on_hangout">Call on Hangout</string>
     <string name="call_on_landline">Call on Landline(10AM to 6PM)</string>
+    <string name="update_user_data">Update Data</string>
+    <string name="update_data_string">Do you want to Update Data?</string>
+    <string name="app_versio_report">APP Version Report</string>
 
 </resources>

@@ -157,6 +157,7 @@ public class Constants {
     public static final String MV_RoleUrl = "/services/data/v36.0/query/?q=select+Id,Juridictions__c,Name+from+MV_Role__c+where+Organisation__c='";
     public static final String MTRegisterUrl = "/services/apexrest/MTRegisterNew";
 
+    public static final String GetUserForVersionReport = "/services/apexrest/getuser";
     public static final String GetApprovalDataUrl = "/services/apexrest/getApprovalData";
     public static final String WS_getProcessAprovalUserUrl = "/services/apexrest/WS_getProcessAprovalUser";
     public static final String MV_GeTemplates_cUrl = "/services/apexrest/MV_GeTemplates_c";

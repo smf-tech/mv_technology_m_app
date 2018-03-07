@@ -28,11 +28,23 @@ public class Template implements Serializable, Parcelable {
     @Expose
     private String Id;
 
+    public String getUser_Mobile_App_Version__c() {
+        return User_Mobile_App_Version__c;
+    }
+
+    public void setUser_Mobile_App_Version__c(String user_Mobile_App_Version__c) {
+        User_Mobile_App_Version__c = user_Mobile_App_Version__c;
+    }
+
+    @ColumnInfo(name = "User_Mobile_App_Version__c")
+    @SerializedName("User_Mobile_App_Version__c")
+    @Expose
+    private String User_Mobile_App_Version__c;
+
     @ColumnInfo(name = "template_name")
     @SerializedName("template_name")
     @Expose
     private String Name;
-
     public String getAnswerCount() {
         return answerCount;
     }
@@ -212,6 +224,17 @@ public class Template implements Serializable, Parcelable {
         P1F5__c = p1F5__c;
     }
 
+    public Boolean getStatus() {
+        return status;
+    }
+
+    public void setStatus(Boolean status) {
+        this.status = status;
+    }
+
+    @SerializedName("status")
+    @Expose
+    private Boolean status;
     @SerializedName("MV_Process__c")
     @Expose
     private String MV_Process__c;
@@ -273,13 +296,17 @@ public class Template implements Serializable, Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.Unique_Id);
         dest.writeString(this.Id);
+        dest.writeString(this.User_Mobile_App_Version__c);
         dest.writeString(this.Name);
         dest.writeString(this.answerCount);
+        dest.writeString(this.expectedCount);
+        dest.writeString(this.submittedCount);
         dest.writeString(this.Targated_Date__c);
         dest.writeValue(this.Location);
         dest.writeString(this.LocationLevel);
         dest.writeString(this.type);
         dest.writeString(this.url);
+        dest.writeValue(this.status);
         dest.writeString(this.MV_Process__c);
         dest.writeString(this.MV_User__c);
         dest.writeString(this.P1F1__c);
@@ -294,13 +321,17 @@ public class Template implements Serializable, Parcelable {
     protected Template(Parcel in) {
         this.Unique_Id = in.readInt();
         this.Id = in.readString();
+        this.User_Mobile_App_Version__c = in.readString();
         this.Name = in.readString();
         this.answerCount = in.readString();
+        this.expectedCount = in.readString();
+        this.submittedCount = in.readString();
         this.Targated_Date__c = in.readString();
         this.Location = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.LocationLevel = in.readString();
         this.type = in.readString();
         this.url = in.readString();
+        this.status = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.MV_Process__c = in.readString();
         this.MV_User__c = in.readString();
         this.P1F1__c = in.readString();

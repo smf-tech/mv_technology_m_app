@@ -72,9 +72,7 @@
             android:name=".Activity.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden|adjustPan">
-
-        </activity>
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity
             android:name=".Activity.ImageTemplateActivity"
             android:screenOrientation="portrait"
@@ -240,6 +238,7 @@
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:mimeType="image/*" />
@@ -293,7 +292,8 @@
         <activity
             android:name=".Activity.AddSchoolActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity android:name=".Activity.VersionReportActivity"></activity>
     </application>
 
 </manifest>

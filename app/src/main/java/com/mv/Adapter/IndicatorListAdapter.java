@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.mv.Activity.IndicatorTask;
 import com.mv.Activity.IndicatorTrainingFeedBackTaskList;
+import com.mv.Activity.OverallReportActivity;
+import com.mv.Activity.VersionReportActivity;
 import com.mv.Model.DashaBoardListModel;
 import com.mv.R;
 import com.mv.Utils.Constants;
@@ -66,11 +68,18 @@ public class IndicatorListAdapter extends RecyclerView.Adapter<IndicatorListAdap
             layoutMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(getAdapterPosition()==0) {
+                        Intent intent = new Intent(mContext, VersionReportActivity.class);
+                         intent.putExtra(Constants.PROCESS_ID, "");
+                        mContext.startActivity(intent);
 
+
+                    }else
+                    {
                         Intent intent = new Intent(mContext, IndicatorTask.class);
                         intent.putExtra(Constants.PROCESS_ID, processAllList.get(getAdapterPosition()));
                         mContext.startActivity(intent);
-
+                    }
 
                 }
             });

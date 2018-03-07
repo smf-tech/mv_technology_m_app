@@ -55,6 +55,9 @@ public interface UserDao {
     @Query("SELECT DISTINCT Section FROM " + Constants.TABLE_DOWNLOAD_CONTENT + " where Lang = :lang")
     List<String> getDistinctDownloadContent(String lang);
 
+    @Query("SELECT DISTINCT District,State FROM " + Constants.TABLE_LOCATION + " where Taluka != '' AND State != ''")
+    List<LocationModel> getDistinctDistrict();
+
     @Query("SELECT *  FROM " + Constants.TABLE_DOWNLOAD_CONTENT + " where Section = :section AND Lang = :lang")
     List<DownloadContent> getDownloadContent(String section, String lang);
 

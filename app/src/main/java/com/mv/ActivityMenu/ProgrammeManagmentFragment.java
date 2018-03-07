@@ -200,7 +200,7 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                                     if (resultJsonObj.getString("isHeader").equals("true"))
                                         headerPosition = i;
 
-                                    taskList.setIsEditable__c(resultJsonObj.getString("isHeader"));
+                                    taskList.setIsHeader(resultJsonObj.getString("isHeader"));
                                     if (resultJsonObj.has("isEditable")) {
                                         taskList.setIsEditable__c(resultJsonObj.getString("isEditable"));
                                     }

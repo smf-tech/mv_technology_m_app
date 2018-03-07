@@ -205,6 +205,9 @@
     <string name="call_us">आम्हाला कॉल करा</string>
     <string name="call_on_hangout">हँगआऊट वर कॉल करा</string>
     <string name="call_on_landline">लँडलाइनवर कॉल करा (सकाळी 10 ते संध्याकाळी 6)</string>
+    <string name="update_user_data">Update Data</string>
+    <string name="update_data_string">Are sure you want to update data?</string>
+    <string name="app_versio_report">APP Version Report</string>
 
 
 </resources>

@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 12,
-    "identityHash": "f563ae6846937ef0617ac8cc09c31858",
+    "version": 13,
+    "identityHash": "a70475fb1367581142cda507850d7f08",
     "entities": [
       {
         "tableName": "table_community",
@@ -209,7 +209,7 @@
       },
       {
         "tableName": "table_process",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `template_id` TEXT, `template_name` TEXT, `answerCount` TEXT, `expectedCount` TEXT, `submittedCount` TEXT, `Targated_Date__c` TEXT, `Location` INTEGER, `LocationLevel` TEXT, `type` TEXT, `url` TEXT, `status` INTEGER, `MV_Process__c` TEXT, `MV_User__c` TEXT, `P1F1__c` TEXT, `P1F2__c` TEXT, `P1F3__c` TEXT, `P1F4__c` TEXT, `P1F5__c` TEXT, `Is_Editable__c` INTEGER, `Is_Multiple_Entry_Allowed__c` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `template_id` TEXT, `User_Mobile_App_Version__c` TEXT, `template_name` TEXT, `answerCount` TEXT, `expectedCount` TEXT, `submittedCount` TEXT, `Targated_Date__c` TEXT, `Location` INTEGER, `LocationLevel` TEXT, `type` TEXT, `url` TEXT, `status` INTEGER, `MV_Process__c` TEXT, `MV_User__c` TEXT, `P1F1__c` TEXT, `P1F2__c` TEXT, `P1F3__c` TEXT, `P1F4__c` TEXT, `P1F5__c` TEXT, `Is_Editable__c` INTEGER, `Is_Multiple_Entry_Allowed__c` INTEGER)",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -219,6 +219,11 @@
           {
             "fieldPath": "Id",
             "columnName": "template_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "User_Mobile_App_Version__c",
+            "columnName": "User_Mobile_App_Version__c",
             "affinity": "TEXT"
           },
           {
@@ -525,7 +530,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"f563ae6846937ef0617ac8cc09c31858\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"a70475fb1367581142cda507850d7f08\")"
     ]
   }
 }
