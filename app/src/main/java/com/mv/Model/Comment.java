@@ -28,6 +28,14 @@ public class Comment {
     @Expose
     String time;
 
+    @SerializedName("errorMsg")
+    @Expose
+    String errorMsg;
+
+    @SerializedName("error")
+    @Expose
+    String error;
+
     public String getId() {
         return id;
     }

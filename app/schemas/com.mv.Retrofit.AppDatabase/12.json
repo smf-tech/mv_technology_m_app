@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 12,
-    "identityHash": "c7d6c2c3610fd5efe2940cb673f5e81f",
+    "identityHash": "ec3ec573c7a60d85869bfcdd6c08746c",
     "entities": [
       {
         "tableName": "table_community",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`community_id` TEXT, `community_name` TEXT, `timestamp` TEXT, `unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Count` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`community_id` TEXT, `community_name` TEXT, `timestamp` TEXT, `unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Count` TEXT, `errorMsg` TEXT)",
         "fields": [
           {
             "fieldPath": "Id",
@@ -32,6 +32,11 @@
             "fieldPath": "Count",
             "columnName": "Count",
             "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "errorMsg",
+            "columnName": "errorMsg",
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -45,7 +50,7 @@
       },
       {
         "tableName": "table_content",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `isAttachmentPresent` TEXT, `synchStatus` TEXT, `Id` TEXT, `UserId` TEXT, `CommunityId` TEXT, `District` TEXT, `taluka` TEXT, `likeCount` INTEGER, `commentCount` INTEGER, `isLike` INTEGER, `Issue_Type` TEXT, `Report_Type` TEXT, `Priority` TEXT, `Title` TEXT, `Description` TEXT, `TemplateId` TEXT, `TemplateName` TEXT, `userAttachmentId` TEXT, `CreatedDate` TEXT, `isbroadcast` TEXT, `userName` TEXT, `isMediaPlay` INTEGER, `isActive` INTEGER, `contentType` TEXT, `isTheatMessage` TEXT, `isDelete` INTEGER, `status` TEXT, `isPostUserDidSpam` INTEGER, `attachmentId` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `isAttachmentPresent` TEXT, `synchStatus` TEXT, `Id` TEXT, `UserId` TEXT, `CommunityId` TEXT, `District` TEXT, `taluka` TEXT, `likeCount` INTEGER, `commentCount` INTEGER, `isLike` INTEGER, `Issue_Type` TEXT, `Report_Type` TEXT, `Priority` TEXT, `Title` TEXT, `Description` TEXT, `TemplateId` TEXT, `TemplateName` TEXT, `userAttachmentId` TEXT, `CreatedDate` TEXT, `isbroadcast` TEXT, `userName` TEXT, `isMediaPlay` INTEGER, `isActive` INTEGER, `errorMsg` TEXT, `contentType` TEXT, `isTheatMessage` TEXT, `isDelete` INTEGER, `status` TEXT, `isPostUserDidSpam` INTEGER, `attachmentId` TEXT)",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -168,6 +173,11 @@
             "affinity": "INTEGER"
           },
           {
+            "fieldPath": "errorMsg",
+            "columnName": "errorMsg",
+            "affinity": "TEXT"
+          },
+          {
             "fieldPath": "contentType",
             "columnName": "contentType",
             "affinity": "TEXT"
@@ -209,7 +219,7 @@
       },
       {
         "tableName": "table_process",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `template_id` TEXT, `template_name` TEXT, `answerCount` TEXT, `expectedCount` TEXT, `submittedCount` TEXT, `Targated_Date__c` TEXT, `Location` INTEGER, `LocationLevel` TEXT, `type` TEXT, `url` TEXT, `MV_Process__c` TEXT, `MV_User__c` TEXT, `P1F1__c` TEXT, `P1F2__c` TEXT, `P1F3__c` TEXT, `P1F4__c` TEXT, `P1F5__c` TEXT, `Is_Editable__c` INTEGER, `Is_Multiple_Entry_Allowed__c` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `template_id` TEXT, `template_name` TEXT, `answerCount` TEXT, `expectedCount` TEXT, `submittedCount` TEXT, `Targated_Date__c` TEXT, `Location` INTEGER, `LocationLevel` TEXT, `status` TEXT, `type` TEXT, `url` TEXT, `MV_Process__c` TEXT, `MV_User__c` TEXT, `P1F1__c` TEXT, `P1F2__c` TEXT, `P1F3__c` TEXT, `P1F4__c` TEXT, `P1F5__c` TEXT, `Is_Editable__c` INTEGER, `Is_Multiple_Entry_Allowed__c` INTEGER)",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -254,6 +264,11 @@
           {
             "fieldPath": "LocationLevel",
             "columnName": "LocationLevel",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
             "affinity": "TEXT"
           },
           {
@@ -520,7 +535,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c7d6c2c3610fd5efe2940cb673f5e81f\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ec3ec573c7a60d85869bfcdd6c08746c\")"
     ]
   }
 }

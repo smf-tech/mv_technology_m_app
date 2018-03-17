@@ -164,7 +164,7 @@ public class Utills {
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        text.setText(getTwoDigit(dayOfMonth) + "/" + getTwoDigit(monthOfYear + 1) + "/" + year);
+                        text.setText(year + "-"  + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth)   );
 
 
                     }
@@ -550,7 +550,7 @@ public class Utills {
         String url = "";
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
-        /*UserDetails Url for getting community members*/
+
 
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.SpamContentUrl + "?Id=" + ID + "&userId=" + UserId + "&isSpam=" + isSpam;

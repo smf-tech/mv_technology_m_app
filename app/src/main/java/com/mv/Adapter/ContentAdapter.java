@@ -1331,8 +1331,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     data = response.body().string();
                     if (data != null && data.length() > 0) {
                         JSONObject jsonObject = new JSONObject(data);
-
-
                     }
 
                 } catch (IOException e) {

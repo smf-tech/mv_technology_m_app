@@ -118,11 +118,11 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
             if(TeamManagementUserProfileListActivity.approvalType.equals(Constants.USER_APPROVAL)) {
 
                 if (template.getStatus() != null) {
-                    if (template.getStatus()) {
+                   /* if (template.getStatus()) {
                         holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                     } else {
                         holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.red));
-                    }
+                    }*/
                 }
             }
         }

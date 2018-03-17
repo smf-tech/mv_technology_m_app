@@ -61,6 +61,9 @@ public class Community {
     @Expose
     private String Count;
 
+    @SerializedName("errorMsg")
+    @Expose
+    private String errorMsg;
     public String getId() {
         return Id;
     }
@@ -75,5 +78,13 @@ public class Community {
 
     public void setName(String name) {
         Name = name;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
     }
 }

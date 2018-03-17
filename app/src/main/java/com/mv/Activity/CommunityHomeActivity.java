@@ -157,6 +157,18 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                             List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
                             if ((temp.size() != 0) || (contentList.size() != 0)) {
                                 for (int i = 0; i < temp.size(); i++) {
+                                  /*  if (temp.get(i).getErrorMsg().equalsIgnoreCase("User is Inactive")) {
+                                        AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().clearTableCommunity();
+                                        AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().clearTableCotent();
+                                        AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().clearProcessTable();
+                                        AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().clearTaskContainer();
+                                        AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().clearLocation();
+                                        User.clearUser();
+
+                                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                        startActivity(intent);
+                                        break;
+                                    }*/
                                     int j;
                                     boolean isPresent = false;
                                     for (j = 0; j < contentList.size(); j++) {

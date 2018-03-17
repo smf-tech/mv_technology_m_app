@@ -29,6 +29,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mv.Activity.CommunityHomeActivity;
 import com.mv.Activity.IssueTemplateActivity;
+import com.mv.Activity.LoginActivity;
 import com.mv.Activity.ReportingTemplateActivity;
 import com.mv.Adapter.GroupAdapter;
 import com.mv.Model.Community;
@@ -187,6 +188,18 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
                             List<Community> list = AppDatabase.getAppDatabase(context).userDao().getAllCommunities();
                             if ((temp.size() != 0) || (list.size() != 0)) {
                                 for (int i = 0; i < temp.size(); i++) {
+                                   /* if (temp.get(i).getErrorMsg().equalsIgnoreCase("User is Inactive")) {
+                                        AppDatabase.getAppDatabase(context).userDao().clearTableCommunity();
+                                        AppDatabase.getAppDatabase(context).userDao().clearTableCotent();
+                                        AppDatabase.getAppDatabase(context).userDao().clearProcessTable();
+                                        AppDatabase.getAppDatabase(context).userDao().clearTaskContainer();
+                                        AppDatabase.getAppDatabase(context).userDao().clearLocation();
+                                        User.clearUser();
+                                        binding.recyclerView.setAdapter(null);
+                                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                        startActivity(intent);
+                                        break;
+                                    }*/
                                     int j;
                                     boolean isPresent = false;
                                     for (j = 0; j < list.size(); j++) {
@@ -196,17 +209,18 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
                                             break;
                                         }
                                     }
-                                    if (isPresent) {
-                                        communityList.set(j, temp.get(i));
-                                        replicaCommunityList.set(j, temp.get(i));
-                                        AppDatabase.getAppDatabase(context).userDao().updateCommunities(temp.get(i));
-                                    } else {
-                                        communityList.add(temp.get(i));
-                                        replicaCommunityList.add(temp.get(i));
-                                        AppDatabase.getAppDatabase(context).userDao().insertCommunities(temp.get(i));
+
+                                        if (isPresent) {
+                                            communityList.set(j, temp.get(i));
+                                            replicaCommunityList.set(j, temp.get(i));
+                                            AppDatabase.getAppDatabase(context).userDao().updateCommunities(temp.get(i));
+                                        } else {
+                                            communityList.add(temp.get(i));
+                                            replicaCommunityList.add(temp.get(i));
+                                            AppDatabase.getAppDatabase(context).userDao().insertCommunities(temp.get(i));
+                                        }
                                     }
-                                }
-                                mAdapter.notifyDataSetChanged();
+                           mAdapter.notifyDataSetChanged();
                                 textNoData.setVisibility(View.GONE);
                             } else {
                                 textNoData.setVisibility(View.VISIBLE);

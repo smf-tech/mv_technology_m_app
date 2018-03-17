@@ -46,6 +46,7 @@
     <string name="middle_name">Middle Name</string>
     <string name="last_name">Last Name</string>
     <string name="mobile_no">Mobile Number *</string>
+
     <string name="email">Email Id</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
@@ -216,11 +217,26 @@
     \n\n<b>Aim</b>\n\nEnabling schools to provide child-friendly and value-based education to nurture caring, responsible, productive democratic citizens.\n\n<b>Rationale</b>\n\nWhile several educational policy documents, framed in India since Independence, have emphasized the need for value education in schools, there is no model of large-scale implementation of value education across states, school bodies and contexts.
    \n\nMulyavardhan fills this critical gap with a contemporary approach aligned to national and international policies.\n\n<b>Approach</b>\n\nMulyavardhan adopts a whole-school approach, whereby the entire school ethos and all school processes are guided by core democratic values. Under this approach, values are not “taught”, but absorbed by students from the school ethos, processes and practices.\n\n</string>
     <string name="add_the_sanvad">पोस्ट जोडा</string>
-    <string name="accept">स्वीकार करो</string>
+    <string name="accept">Accept</string>
     <string name="detail"><u>Detail...</u></string>
 
     <string name="call_us">Call Us</string>
     <string name="call_on_hangout">Call on Hangout</string>
     <string name="call_on_landline">Call on Landline(10AM to 6PM)</string>
+
+
+    <string name="asset_name">Select Asset</string>
+    <string name="asset_model_no">Model No.</string>
+    <string name="asset_quantity">Quantity</string>
+    <string name="asset_issue_date">Issue Date</string>
+    <string name="asset_tentative_return_date">Tentative Return Date</string>
+    <string name="asset_remarks">Remarks</string>
+    <string name="asset_request">Assets</string>
+    <string name="asset_management">Asset\nManagement</string>
+    <string name="asset_name__">Asset name</string>
+    <string name="asset_code">Code</string>
+    <string name="specification">Specification</string>
+    <string name="select_model_no">Select Model No.</string>
+
 
 </resources>

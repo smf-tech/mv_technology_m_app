@@ -21,6 +21,8 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mv.Activity.BroadCastActivity;
+import com.mv.Activity.HomeActivity;
+import com.mv.Activity.LoginActivity;
 import com.mv.Adapter.FragmentContentAdapter;
 import com.mv.Model.Content;
 import com.mv.Model.User;
@@ -191,8 +193,22 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
 
 
                                 }
+                                for (int i=0;i<chatList.size();i++) {
+                                    if (chatList.get(i).getErrorMsg().equalsIgnoreCase("User is Inactive")) {
+                                        AppDatabase.getAppDatabase(context).userDao().clearTableCommunity();
+                                        AppDatabase.getAppDatabase(context).userDao().clearTableCotent();
+                                        AppDatabase.getAppDatabase(context).userDao().clearProcessTable();
+                                        AppDatabase.getAppDatabase(context).userDao().clearTaskContainer();
+                                        AppDatabase.getAppDatabase(context).userDao().clearLocation();
+                                        User.clearUser();
+                                        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                                        startActivity(intent);
+                                    }
+                                }
                                 chatList.clear();
+
                                 chatList.addAll(AppDatabase.getAppDatabase(context).userDao().getAllBroadcastChats(true));
+
                                 adapter.notifyDataSetChanged();
                                 textNoData.setVisibility(View.GONE);
                             } else {

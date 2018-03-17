@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.mv.Activity.AssetAllocatedListActivity">
+
+    <LinearLayout
+        android:id="@+id/layout_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/app_bg"
+        android:orientation="vertical">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+    <include
+        layout="@layout/custom_searchbox"
+        android:id="@+id/searchbox"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/fab_margin"
+        android:paddingTop="@dimen/fab_margin"
+        android:scrollbars="vertical" />
+
+    </LinearLayout>
+    <android.support.design.widget.FloatingActionButton
+
+        android:id="@+id/fab_send_asset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_gravity="bottom|end"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dimen_10dp"
+        android:layout_marginRight="@dimen/dimen_10dp"
+        android:src="@android:drawable/ic_input_add" />
+
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/textNoData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="No Data Available"
+        android:textColor="@color/dark_grey"
+        android:layout_gravity="center|center_vertical"
+        android:gravity="center_vertical"
+        android:textSize="@dimen/large_text" />
+</RelativeLayout>

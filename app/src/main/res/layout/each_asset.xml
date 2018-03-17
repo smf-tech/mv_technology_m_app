@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:my_font="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/dimen_5dp"
+    android:foreground="?attr/selectableItemBackground"
+    app:cardBackgroundColor="@color/white">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="10dp">
+        <com.mv.Widgets.MyTextView
+            android:id="@+id/txt_status"
+            android:layout_width="@dimen/dimen_20dp"
+            android:layout_height="@dimen/dimen_20dp"
+            android:layout_marginLeft="10dp"
+            android:gravity="center_vertical"
+            android:layout_marginTop="30dp"
+
+        />
+        <com.mv.Widgets.MyTextView
+            android:id="@+id/txt_asset_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/txt_status"
+            android:textSize="@dimen/article_subheading"
+            android:text="name"
+            android:textColor="@color/dark_grey"
+            my_font:typeface="Abel-Regular.ttf" />
+
+        <com.mv.Widgets.MyTextView
+            android:id="@+id/txt_asset_id"
+            android:layout_below="@+id/txt_asset_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/txt_status"
+            android:textSize="@dimen/article_subheading"
+            android:text="id"
+            android:visibility="gone"
+            android:textColor="@color/dark_grey"
+            my_font:typeface="Abel-Regular.ttf" />
+
+        <com.mv.Widgets.MyTextView
+            android:id="@+id/txt_asset_issue_date"
+            android:layout_below="@+id/txt_asset_id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/txt_status"
+            android:textSize="@dimen/article_subheading"
+            android:text="name"
+
+            android:textColor="@color/dark_grey"
+            my_font:typeface="Abel-Regular.ttf" />
+
+
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>
