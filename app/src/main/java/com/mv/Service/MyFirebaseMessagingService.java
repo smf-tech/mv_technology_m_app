@@ -104,13 +104,23 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     break;
                 }
             }
-            if (position > 0)
-                list.remove(position);
-            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-            String json = gson.toJson(list);
-            intent = new Intent(getApplicationContext(), CommunityHomeActivity.class);
-            intent.putExtra(Constants.TITLE, community.getName());
-            intent.putExtra(Constants.LIST, json);
+            if (community != null) {
+                int count;
+                if (community.getCount() == null || TextUtils.isEmpty(community.getCount()))
+                    count = 0;
+                else
+                    count = Integer.parseInt(community.getCount());
+                count = count + 1;
+                community.setCount("" + count);
+                AppDatabase.getAppDatabase(getApplicationContext()).userDao().updateCommunities(community);
+                if (position > 0)
+                    list.remove(position);
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                String json = gson.toJson(list);
+                intent = new Intent(getApplicationContext(), CommunityHomeActivity.class);
+                intent.putExtra(Constants.TITLE, community.getName());
+                intent.putExtra(Constants.LIST, json);
+            }
         }
 
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);

@@ -741,35 +741,52 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showLogoutPopUp() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 
-        // Setting Dialog Title
-        alertDialog.setTitle(getString(R.string.app_name));
+        if (AppDatabase.getAppDatabase(HomeActivity.this).userDao().getOfflineTaskCount(Constants.TASK_ANSWER, "true") == 0) {
+            final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 
-        // Setting Dialog Message
-        alertDialog.setMessage(getString(R.string.logout_string));
+            // Setting Dialog Title
+            alertDialog.setTitle(getString(R.string.app_name));
 
-        // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.logomulya);
+            // Setting Dialog Message
+            alertDialog.setMessage(getString(R.string.logout_string));
 
-        // Setting CANCEL Button
-        alertDialog.setButton2(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                // Write your code here to execute after dialog closed
+            // Setting Icon to Dialog
+            alertDialog.setIcon(R.drawable.logomulya);
+
+            // Setting CANCEL Button
+            alertDialog.setButton2(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    alertDialog.dismiss();
+                    // Write your code here to execute after dialog closed
               /*  listOfWrongQuestions.add(mPosition);
                 prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
-            }
-        });
-        // Setting OK Button
-        alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                sendLogOutRequest();
-            }
-        });
+                }
+            });
+            // Setting OK Button
+            alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    sendLogOutRequest();
+                }
+            });
 
-        // Showing Alert Message
-        alertDialog.show();
+            // Showing Alert Message
+            alertDialog.show();
+        } else {
+            AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+
+            alertDialog.setTitle(getString(R.string.cannotLogout));
+            alertDialog.setMessage(getString(R.string.submitAllForms));
+
+            alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            alertDialog.show();
+        }
+
+
     }
 
     private void sendLogOutRequest() {
