@@ -238,7 +238,6 @@
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
-
                 <category android:name="android.intent.category.DEFAULT" />
 
                 <data android:mimeType="image/*" />
@@ -292,6 +291,42 @@
         <activity
             android:name=".Activity.AddSchoolActivity"
             android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+
+
+        <activity
+            android:name=".Activity.AccountSectionActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity
+            android:name=".Activity.VoucherListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity
+            android:name=".Activity.VoucherNewActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity
+            android:name=".Activity.ExpenseListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity
+            android:name=".Activity.ExpenseNewActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity
+            android:name=".Activity.AdavanceListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+
+        <activity
+            android:name=".Activity.AdavanceNewActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity
+            android:name=".Activity.SalaryListActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".Activity.AssetAllocatedListActivity"

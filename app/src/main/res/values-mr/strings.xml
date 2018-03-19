@@ -101,6 +101,7 @@
     <string name="training_calendar">प्रशिक्षण \n दिनदर्शिका</string>
     <string name="team_management">संघ \n व्यवस्थापन</string>
     <string name="about_us">मुल्यवर्धन\nबद्दल</string>
+    <string name="account_section">खाते\nविभाग</string>
     <string name="notification">सूचना</string>
     <string name="rate">दर्जा ठरवा</string>
     <string name="share">शेयर अॅप</string>
@@ -209,5 +210,16 @@
     <string name="call_on_hangout">हँगआऊट वर कॉल करा</string>
     <string name="call_on_landline">लँडलाइनवर कॉल करा (सकाळी 10 ते संध्याकाळी 6)</string>
 
+
+    <!--Accout Section Activity-->
+    <string name="adavance">Adavance</string>
+    <string name="voucher">Voucher</string>
+    <string name="salary">Salary</string>
+    <!--Voucher List Activity-->
+    <string name="voucher_list">Voucher List</string>
+    <!--Voucher New Activity-->
+    <string name="voucher_new">Voucher New</string>
+    <!--Expense New Activity-->
+    <string name="expense_new">Expense New</string>
 
 </resources>

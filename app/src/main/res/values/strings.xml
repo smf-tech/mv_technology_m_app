@@ -53,6 +53,7 @@
     <string name="role">Role</string>
     <string name="mandatory_role">Role *</string>
     <string name="project">Project</string>
+    <string name="particulars">Particulars</string>
     <string name="organization">Organization</string>
     <string name="disrict">District </string>
     <string name="mandatory_district">District *</string>
@@ -242,4 +243,30 @@
     <string name="select_model_no">Select Model No.</string>
 
 
+    <!--Accout Section Activity-->
+    <string name="adavance">Adavance</string>
+    <string name="voucher">Voucher</string>
+    <string name="salary">Salary</string>
+    <!--Voucher List Activity-->
+    <string name="voucher_list">Voucher List</string>
+    <!--Voucher New Activity-->
+    <string name="voucher_new">Voucher New</string>
+    <string name="date">Date</string>
+    <string name="projectDesription">Description of tour</string>
+    <string name="countOfPeople">Number of People Travelled</string>
+    <!--Expense New Activity-->
+    <string name="expense_new">Expense New</string>
+    <string name="amount">Amount</string>
+    <!--Expense List Activity-->
+    <string name="expense_list">Expense List</string>
+    <!--Adavance List Activity-->
+    <string name="adavance_list">Adavance List</string>
+
+    <!--Adavance New Activity-->
+    <string name="adavance_new">Adavance New</string>
+    <string name="adavanceDesription">Description of Adavance</string>
+
+
+    <!--Salary List Activity-->
+    <string name="salary_list">Salary List</string>
 </resources>

@@ -128,6 +128,7 @@
     <string name="programme_management">कार्यक्रम\nप्रबंधक</string>
     <string name="training_content">प्रशिक्षण\nसामग्री</string>
     <string name="about_us">मुल्यवर्धन\nके बारे में</string>
+    <string name="account_section">खाता\nअनुभाग</string>
     <string name="indicator">मेरी\nरिपोर्ट</string>
     <string name="training_calendar">प्रशिक्षण\nकॅलेंडर</string>
     <string name="notification">अधिसूचना</string>
@@ -216,4 +217,16 @@
     <string name="detail"><u>Deatail...</u></string>
     <string name="call_on_hangout">हँगआऊट पर कॉल करें</string>
     <string name="call_on_landline">लैंडलाइन पर कॉल करें(10 बजे से शाम 6 बजे)</string>
+
+
+    <!--Accout Section Activity-->
+    <string name="adavance">Adavance</string>
+    <string name="voucher">Voucher</string>
+    <string name="salary">Salary</string>
+    <!--Voucher List Activity-->
+    <string name="voucher_list">Voucher List</string>
+    <!--Voucher New Activity-->
+    <string name="voucher_new">Voucher New</string>
+    <!--Expense New Activity-->
+    <string name="expense_new">Expense New</string>
 </resources>
