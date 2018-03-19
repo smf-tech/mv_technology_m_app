@@ -429,6 +429,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         homeModel.setMenuIcon(R.drawable.ic_about_us);
         homeModel.setDestination(AccountSectionActivity.class);
         homeModel.setAccessible(true);
+        homeModel.setMenuName(getString(R.string.asset_management));
+        homeModel.setMenuIcon(R.drawable.ic_about_us);
+        homeModel.setDestination(AssetAllocatedListActivity.class);
+        homeModel.setAccessible(true);
         menulist.add(homeModel);
         mAdapter = new HomeAdapter(menulist, HomeActivity.this);
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
@@ -1088,7 +1092,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                 JSONObject jsonObject = new JSONObject(data);
                                 String statusofmap = jsonObject.getString("status");
                                 String message = jsonObject.getString("msg");
-                                Utills.showToast(statusofmap, HomeActivity.this);
+
                                 if (statusofmap.equals("Success")) {
 
 

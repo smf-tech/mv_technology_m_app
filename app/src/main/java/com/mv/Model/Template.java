@@ -102,7 +102,7 @@ public class Template implements Serializable, Parcelable {
     @ColumnInfo(name = "status")
     @SerializedName("status")
     @Expose
-    private Boolean status;
+    private String status;
 
 
 
@@ -275,11 +275,11 @@ public class Template implements Serializable, Parcelable {
         return 0;
     }
 
-    public Boolean getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -325,7 +325,7 @@ public class Template implements Serializable, Parcelable {
         this.P1F5__c = in.readString();
         this.Is_Editable__c = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.Is_Multiple_Entry_Allowed__c = (Boolean) in.readValue(Boolean.class.getClassLoader());
-        this.status = Boolean.valueOf(in.readString());
+        this.status = in.readString();
     }
 
     public static final Creator<Template> CREATOR = new Creator<Template>() {
