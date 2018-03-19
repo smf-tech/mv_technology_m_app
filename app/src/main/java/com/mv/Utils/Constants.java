@@ -40,6 +40,7 @@ public class Constants {
     public static String LIST = "list";
     public static String CONTENT = "content";
 
+
     public static final String TABLE_CALANDER = "table_calender";
     public static final String TABLE_TASK = "table_task";
     public static final String TABLE_PROCESS = "table_process";
@@ -53,7 +54,10 @@ public class Constants {
     public static final String TABLE_TEMPLATE = "table_template";
     public static final String TABLE_COMMUNITY = "table_community";
     public static final String TABLE_CONTENT = "table_content";
-
+    public static final String TABLE_VOUCHER = "table_voucher";
+    public static final String TABLE_EXPENSE = "table_expense";
+    public static final String TABLE_ADAVANCE = "table_adavance";
+    public static final String TABLE_SALARY = "table_salary";
 
     public static Integer CHOOSE_IMAGE_FROM_CAMERA = 100;
     public static Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
@@ -69,7 +73,10 @@ public class Constants {
     public static String IS_LOCATION = "isEditableLocation";
     public static String IS_MULTIPLE = "isMultiple";
     public static String STATE_LOCATION_LEVEL = "locationTest";
-
+    public static String VOUCHER = "voucher";
+    public static String EXPENSE = "expense";
+    public static String VOUCHERID = "voucherid";
+    public static String ADAVANCE = "adavance";
 
     public static final String TASK_TEXT = "Text";
     public static final String TASK_SELECTION = "Selection";
@@ -149,7 +156,8 @@ public class Constants {
     public static final String New_upload_phpUrl = "http://mobileapp.mulyavardhan.org/new_upload.php";
     public static final String GetprocessAnswerDataUrl = "/services/apexrest/getprocessAnswerDataNew";
     public static final String GetprocessTaskUrl = "/services/apexrest/getprocessTaskNew";
-
+    public static final String GetUserSalaryData = "/services/apexrest/getUserSalaryData";
+    public static final String GetUserAdavanceData = "/services/apexrest/getUserAdavanceData";
     public static final String DeleteTaskAnswerUrl = "/services/apexrest/DeleteTaskAnswer/";
     public static final String ApproveCommentforProcessUrl = "/services/apexrest/ApproveCommentforProcess";
     public static final String GetprocessAnswerTaskfoApprovalUrl = "/services/apexrest/getprocessAnswerTaskfoApproval";

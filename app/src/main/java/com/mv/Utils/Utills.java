@@ -107,7 +107,7 @@ public class Utills {
 
     public static String getCurrentDate() {
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = df.format(c.getTime());
         return formattedDate;
     }
@@ -563,7 +563,6 @@ public class Utills {
                     data = response.body().string();
                     if (data != null && data.length() > 0) {
                         JSONObject jsonObject = new JSONObject(data);
-
 
 
                     }

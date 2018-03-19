@@ -7,13 +7,17 @@ import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
+import com.mv.Model.Adavance;
 import com.mv.Model.CalenderEvent;
 import com.mv.Model.Community;
 import com.mv.Model.Content;
 import com.mv.Model.DownloadContent;
+import com.mv.Model.Expense;
 import com.mv.Model.LocationModel;
+import com.mv.Model.Salary;
 import com.mv.Model.TaskContainerModel;
 import com.mv.Model.Template;
+import com.mv.Model.Voucher;
 import com.mv.Utils.Constants;
 
 import java.util.List;
@@ -24,6 +28,58 @@ import java.util.List;
 
 @Dao
 public interface UserDao {
+
+
+    @Query("SELECT * FROM " + Constants.TABLE_VOUCHER)
+    List<Voucher> getAllVoucher();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long[] insertVoucher(Voucher... vouchers);
+
+    @Delete
+    void deleteVoucher(Voucher... vouchers);
+
+    @Query("SELECT * FROM " + Constants.TABLE_ADAVANCE)
+    List<Adavance> getAllAdavance();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long[] insertAdavance(Adavance... adavances);
+
+    @Delete
+    void deleteAdavance(Adavance... adavances);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long[] insertAdavance(List<Adavance> adavances);
+
+    @Query("DELETE FROM " + Constants.TABLE_ADAVANCE)
+    public void deleteAllAdavance();
+
+    @Query("SELECT * FROM " + Constants.TABLE_SALARY)
+    List<Salary> getAllSalary();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long[] insertSalary(List<Salary> salaries);
+
+    @Query("DELETE FROM " + Constants.TABLE_SALARY)
+    public void deleteAllSalary();
+
+    @Query("SELECT * FROM " + Constants.TABLE_EXPENSE)
+    List<Expense> getAllExpense();
+
+    @Query("SELECT * FROM " + Constants.TABLE_EXPENSE + " where voucherId = :voucherId")
+    List<Expense> getAllExpense(int voucherId);
+
+    @Query("SELECT unique_Id FROM " + Constants.TABLE_VOUCHER + " ORDER BY unique_Id DESC LIMIT 1")
+    int getIdofLastVoucher();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long[] insertExpense(Expense... expenses);
+
+    @Query("DELETE FROM " + Constants.TABLE_EXPENSE + " where voucherId = :voucherId")
+    int deleteExpense(int voucherId);
+
+    @Delete
+    void deleteExpense(Expense... expenses);
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     long[] insertCalendr(List<CalenderEvent> tasks);
