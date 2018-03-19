@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.mv.Activity.AdavanceNewActivity" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:background="@drawable/app_bg"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar_layout"
+            layout="@layout/toolbar"></include>
+
+
+        <LinearLayout
+            android:id="@+id/layoutVoucherDetail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <com.mv.Widgets.MyTextView
+                android:id="@+id/txtDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/lighter_grey_box"
+                android:padding="10dp"
+                android:text="@string/date"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/medium_text" />
+
+            <com.mv.Widgets.MyTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/project"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/small_text" />
+
+            <Spinner
+                android:id="@+id/spinnerProject"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:background="@drawable/grey_box"
+                android:entries="@array/array_of_project"
+                android:padding="10dp"
+                android:prompt="@string/project"
+                android:spinnerMode="dialog" />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_count"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/lighter_grey_box"
+                android:padding="10dp">
+
+                <com.mv.Widgets.MyEditTextView
+                    android:id="@+id/edit_text_count"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:digits="0123456789"
+                    android:hint="@string/amount"
+                    android:inputType="phone"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/medium_text" />
+            </android.support.design.widget.TextInputLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/lighter_grey_box"
+                android:padding="10dp">
+
+                <com.mv.Widgets.MyEditTextView
+                    android:id="@+id/edit_text_description"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:gravity="top|left"
+                    android:hint="@string/adavanceDesription"
+                    android:inputType="textMultiLine"
+                    android:minLines="3"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/medium_text" />
+            </android.support.design.widget.TextInputLayout>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <com.mv.Widgets.MyFontButton
+                android:id="@+id/btn_submit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@color/colorPink"
+                android:onClick="@{()->activity.onSubmitClick()}"
+                android:text="Submit"
+                android:textColor="#ffffff"
+                android:textSize="22sp" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>

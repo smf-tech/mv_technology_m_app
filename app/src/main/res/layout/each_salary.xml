@@ -1,0 +1,92 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginBottom="10dp"
+    android:foreground="?attr/selectableItemBackground">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/tvSalaryAmountTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="left|center_vertical"
+            android:text="Salary :-"
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/large_text" />
+
+        <TextView
+            android:id="@+id/tvSalaryAmountName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/tvSalaryAmountTitle"
+            android:gravity="left|center_vertical"
+            android:singleLine="true"
+            android:text="Rs. 10,000 "
+            android:textColor="@color/dark_grey"
+            android:textSize="@dimen/large_text" />
+
+        <TextView
+            android:id="@+id/tvSalaryDateTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvSalaryAmountTitle"
+            android:layout_marginTop="5dp"
+            android:gravity="left|center_vertical"
+            android:text="Date :-"
+            android:textColor="@color/medium_grey"
+            android:textSize="@dimen/medium_text" />
+
+        <TextView
+            android:id="@+id/tvSalaryDateName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvSalaryAmountName"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/tvSalaryDateTitle"
+            android:gravity="left|center_vertical"
+            android:singleLine="true"
+            android:text="11/09/1992"
+            android:textColor="@color/medium_grey"
+            android:textSize="@dimen/medium_text" />
+
+        <TextView
+            android:id="@+id/tvSalaryMonthTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvSalaryDateTitle"
+            android:layout_marginTop="5dp"
+            android:gravity="left|center_vertical"
+            android:text="Month :-"
+            android:textColor="@color/medium_grey"
+            android:textSize="@dimen/medium_text" />
+
+        <TextView
+            android:id="@+id/tvSalaryMonthName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvSalaryDateName"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_toRightOf="@+id/tvSalaryMonthTitle"
+            android:gravity="left|center_vertical"
+            android:singleLine="true"
+            android:text="March"
+            android:textColor="@color/medium_grey"
+            android:textSize="@dimen/medium_text" />
+
+
+    </RelativeLayout>
+</android.support.v7.widget.CardView>
