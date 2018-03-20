@@ -12,18 +12,35 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.mv.Model.User;
 import com.mv.Model.Voucher;
 import com.mv.R;
+import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
+import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
+import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityVoucherNewBinding;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Rohit Gujar on 08-03-2018.
@@ -39,8 +56,8 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
     private List<String> projectList = new ArrayList<>();
     private Voucher mVoucher;
     private boolean isAdd;
-    private int voucherId = -1;
 
+    private PreferenceHelper preferenceHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,12 +73,12 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
         setActionbar(getString(R.string.voucher_new));
         binding.txtDate.setOnClickListener(this);
         binding.spinnerProject.setOnItemSelectedListener(this);
+        preferenceHelper = new PreferenceHelper(this);
         if (getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
             isAdd = true;
         } else {
             isAdd = false;
             mVoucher = (Voucher) getIntent().getSerializableExtra(Constants.VOUCHER);
-            voucherId = mVoucher.getUniqueId();
             binding.txtDate.setText(mVoucher.getDate());
             binding.editTextCount.setText(mVoucher.getNoOfPeople());
             binding.editTextDescription.setText(mVoucher.getDecription());
@@ -110,19 +127,81 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
     public void onSubmitClick() {
         if (isValid()) {
             Voucher voucher = new Voucher();
-            if (!isAdd)
+            if (!isAdd) {
                 voucher.setUniqueId(mVoucher.getUniqueId());
+                voucher.setId(mVoucher.getId());
+            }
             voucher.setProject(projectList.get(mProjectSelect));
             voucher.setDate(binding.txtDate.getText().toString().trim());
             voucher.setDecription(binding.editTextDescription.getText().toString().trim());
             voucher.setNoOfPeople(binding.editTextCount.getText().toString().trim());
-            AppDatabase.getAppDatabase(this).userDao().insertVoucher(voucher);
-            Utills.showToast("Voucher Added successfully", this);
-            finish();
-            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            voucher.setUser(User.getCurrentUser(this).getMvUser().getId());
+            addVoucher(voucher);
+
+
         }
     }
 
+    private void addVoucher(final Voucher voucher) {
+        if (Utills.isConnected(this)) {
+            try {
+
+                Utills.showProgressDialog(this);
+                JSONObject jsonObject = new JSONObject();
+                JSONArray jsonArray = new JSONArray();
+
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                String json = gson.toJson(voucher);
+                JSONObject jsonObject1 = new JSONObject(json);
+                jsonArray.put(jsonObject1);
+                jsonObject.put("listtaskanswerlist", jsonArray);
+
+                ServiceRequest apiService =
+                        ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+                JsonParser jsonParser = new JsonParser();
+                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertVoucher", gsonObject).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Utills.hideProgressDialog();
+                        try {
+                            if (response.body() != null) {
+                                String data = response.body().string();
+                                if (data != null && data.length() > 0) {
+                                    JSONObject object = new JSONObject(data);
+                                    JSONArray array = object.getJSONArray("Records");
+                                    if (array.length() != 0) {
+                                        voucher.setId(array.getJSONObject(0).getString("Id"));
+                                    }
+                                    AppDatabase.getAppDatabase(VoucherNewActivity.this).userDao().insertVoucher(voucher);
+                                    Utills.showToast("Voucher Added successfully", VoucherNewActivity.this);
+                                    finish();
+                                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                                }
+                            }
+                        } catch (Exception e) {
+                            Utills.hideProgressDialog();
+                            Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Utills.hideProgressDialog();
+                        Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Utills.hideProgressDialog();
+                Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+
+            }
+        } else {
+            Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
+        }
+
+    }
 
     private boolean isValid() {
         String str = "";

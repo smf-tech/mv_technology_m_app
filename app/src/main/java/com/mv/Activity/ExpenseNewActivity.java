@@ -5,7 +5,6 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
@@ -13,18 +12,36 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mv.Model.Expense;
+import com.mv.Model.User;
+import com.mv.Model.Voucher;
 import com.mv.R;
+import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
+import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
+import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityExpenseNewBinding;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Rohit Gujar on 08-03-2018.
@@ -40,7 +57,8 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
     private List<String> particularList = new ArrayList<>();
     private Expense mExpense;
     private boolean isAdd;
-    private int voucherId;
+    private Voucher voucher;
+    private PreferenceHelper preferenceHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +70,10 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void initViews() {
-        voucherId = getIntent().getExtras().getInt(Constants.VOUCHERID);
+        voucher = (Voucher) getIntent().getSerializableExtra(Constants.VOUCHER);
         particularList = Arrays.asList(getResources().getStringArray(R.array.array_of_particulars));
         setActionbar(getString(R.string.expense_new));
+        preferenceHelper = new PreferenceHelper(this);
         binding.txtDate.setOnClickListener(this);
         binding.spinnerParticular.setOnItemSelectedListener(this);
         if (getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
@@ -115,19 +134,81 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
     public void onSubmitClick() {
         if (isValid()) {
             Expense expense = new Expense();
-            if (!isAdd)
+            if (!isAdd) {
                 expense.setUniqueId(mExpense.getUniqueId());
+                expense.setId(mExpense.getId());
+            }
             expense.setPartuculars(particularList.get(mParticularSelect));
             expense.setDate(binding.txtDate.getText().toString().trim());
             expense.setDecription(binding.editTextDescription.getText().toString().trim());
             expense.setAmount(binding.editTextAmount.getText().toString().trim());
-            Log.i("voucherId", "" + voucherId);
-            expense.setVoucherId("" + voucherId);
-            AppDatabase.getAppDatabase(this).userDao().insertExpense(expense);
-            Utills.showToast("Expense Added successfully", this);
-            finish();
-            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            expense.setVoucherId("" + voucher.getId());
+            voucher.setUser(User.getCurrentUser(this).getMvUser().getId());
+            addExpense(expense);
+
+
         }
+    }
+
+    private void addExpense(final Expense expense) {
+        if (Utills.isConnected(this)) {
+            try {
+
+                Utills.showProgressDialog(this);
+                JSONObject jsonObject = new JSONObject();
+                JSONArray jsonArray = new JSONArray();
+
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                String json = gson.toJson(expense);
+                JSONObject jsonObject1 = new JSONObject(json);
+                jsonArray.put(jsonObject1);
+                jsonObject.put("listtaskanswerlist", jsonArray);
+
+                ServiceRequest apiService =
+                        ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+                JsonParser jsonParser = new JsonParser();
+                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertExpense", gsonObject).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Utills.hideProgressDialog();
+                        try {
+                            if (response.body() != null) {
+                                String data = response.body().string();
+                                if (data != null && data.length() > 0) {
+                                    JSONObject object = new JSONObject(data);
+                                    JSONArray array = object.getJSONArray("Records");
+                                    if (array.length() != 0) {
+                                        expense.setId(array.getJSONObject(0).getString("Id"));
+                                    }
+                                    AppDatabase.getAppDatabase(ExpenseNewActivity.this).userDao().insertExpense(expense);
+                                    Utills.showToast("Expense Added successfully", ExpenseNewActivity.this);
+                                    finish();
+                                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                                }
+                            }
+                        } catch (Exception e) {
+                            Utills.hideProgressDialog();
+                            Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Utills.hideProgressDialog();
+                        Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Utills.hideProgressDialog();
+                Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+
+            }
+        } else {
+            Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
+        }
+
     }
 
     private boolean isValid() {

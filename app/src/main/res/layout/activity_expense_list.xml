@@ -20,40 +20,31 @@
             android:id="@+id/toolbar_layout"
             layout="@layout/toolbar"></include>
 
-        <ScrollView
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="@dimen/dimen_10dp"
-            android:fillViewport="true">
+            android:layout_margin="10dp"
+            android:animateLayoutChanges="true"
+            android:orientation="vertical">
 
-            <RelativeLayout
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_expense"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/toolbar"
+                android:layout_marginTop="10dp"
+                android:scrollbars="vertical" />
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_expense"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/toolbar"
-                    android:layout_marginTop="10dp"
-                    android:scrollbars="vertical" />
-
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/fab_add_process"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_gravity="bottom|end"
-                    android:onClick="@{()->activity.onAddClick()}"
-                    android:src="@android:drawable/ic_input_add" />
-
-            </RelativeLayout>
-
-
-        </ScrollView>
-
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_add_process"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="bottom|end"
+                android:onClick="@{()->activity.onAddClick()}"
+                android:src="@android:drawable/ic_input_add" />
+        </RelativeLayout>
 
     </LinearLayout>
 </layout>

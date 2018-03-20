@@ -75,22 +75,22 @@ public class Expense implements Serializable {
     }
 
     @ColumnInfo(name = "Amount")
-    @SerializedName("Amount")
+    @SerializedName("Amount__c")
     @Expose
     private String Amount;
 
     @ColumnInfo(name = "Date")
-    @SerializedName("Date")
+    @SerializedName("Request_Date__c")
     @Expose
     private String Date;
 
     @ColumnInfo(name = "Decription")
-    @SerializedName("Decription")
+    @SerializedName("Description__c")
     @Expose
     private String Decription;
 
     @ColumnInfo(name = "voucherId")
-    @SerializedName("voucherId")
+    @SerializedName("Voucher__c")
     @Expose
     private String voucherId;
 
@@ -103,9 +103,22 @@ public class Expense implements Serializable {
     }
 
     @ColumnInfo(name = "partuculars")
-    @SerializedName("partuculars")
+    @SerializedName("Particulars__c")
     @Expose
     private String partuculars;
+
+    @ColumnInfo(name = "User")
+    @SerializedName("MV_User__c")
+    @Expose
+    private String User;
+
+    public String getUser() {
+        return User;
+    }
+
+    public void setUser(String user) {
+        User = user;
+    }
 
     public Expense() {
     }

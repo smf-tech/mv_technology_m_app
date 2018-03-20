@@ -51,8 +51,17 @@ public interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     long[] insertAdavance(List<Adavance> adavances);
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long[] insertVoucher(List<Voucher> vouchers);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long[] insertExpense(List<Expense> expenses);
+
     @Query("DELETE FROM " + Constants.TABLE_ADAVANCE)
     public void deleteAllAdavance();
+
+    @Query("DELETE FROM " + Constants.TABLE_VOUCHER)
+    public void deleteAllVoucher();
 
     @Query("SELECT * FROM " + Constants.TABLE_SALARY)
     List<Salary> getAllSalary();
@@ -67,7 +76,7 @@ public interface UserDao {
     List<Expense> getAllExpense();
 
     @Query("SELECT * FROM " + Constants.TABLE_EXPENSE + " where voucherId = :voucherId")
-    List<Expense> getAllExpense(int voucherId);
+    List<Expense> getAllExpense(String voucherId);
 
     @Query("SELECT unique_Id FROM " + Constants.TABLE_VOUCHER + " ORDER BY unique_Id DESC LIMIT 1")
     int getIdofLastVoucher();
@@ -76,7 +85,7 @@ public interface UserDao {
     long[] insertExpense(Expense... expenses);
 
     @Query("DELETE FROM " + Constants.TABLE_EXPENSE + " where voucherId = :voucherId")
-    int deleteExpense(int voucherId);
+    int deleteExpense(String voucherId);
 
     @Delete
     void deleteExpense(Expense... expenses);

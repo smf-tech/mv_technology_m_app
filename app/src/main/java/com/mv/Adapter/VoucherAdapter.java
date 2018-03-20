@@ -93,7 +93,7 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
                 public void onClick(View view) {
                     Intent intent;
                     intent = new Intent(mContext, ExpenseListActivity.class);
-                    intent.putExtra(Constants.VOUCHERID, mDataList.get(getAdapterPosition()).getUniqueId());
+                    intent.putExtra(Constants.VOUCHER, mDataList.get(getAdapterPosition()));
                     mActivity.startActivity(intent);
                 }
             });
@@ -136,7 +136,7 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Voucher voucher = mDataList.get(position);
-        List<Expense> expenses = AppDatabase.getAppDatabase(mContext).userDao().getAllExpense(voucher.getUniqueId());
+        List<Expense> expenses = AppDatabase.getAppDatabase(mContext).userDao().getAllExpense(voucher.getId());
         double amount = 0;
         for (Expense temp : expenses) {
             if (temp.getAmount() != null && temp.getAmount().length() > 0)

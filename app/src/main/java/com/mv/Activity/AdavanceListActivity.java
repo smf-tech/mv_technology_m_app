@@ -6,6 +6,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -58,6 +59,17 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         setActionbar(getString(R.string.adavance_list));
         preferenceHelper = new PreferenceHelper(this);
+        binding.rvAdavance.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy < -5 && binding.fabAddProcess.getVisibility() != View.VISIBLE) {
+                    binding.fabAddProcess.show();
+                } else if (dy > 5 && binding.fabAddProcess.getVisibility() == View.VISIBLE) {
+                    binding.fabAddProcess.hide();
+                }
+            }
+        });
         if (Utills.isConnected(this))
             getUserAdavanceData();
     }

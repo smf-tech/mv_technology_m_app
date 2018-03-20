@@ -124,10 +124,20 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
                         try {
-                            AppDatabase.getAppDatabase(AdavanceNewActivity.this).userDao().insertAdavance(adavance);
-                            Utills.showToast("Adavance Added successfully", AdavanceNewActivity.this);
-                            finish();
-                            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                            if (response.body() != null) {
+                                String data = response.body().string();
+                                if (data != null && data.length() > 0) {
+                                    JSONObject object = new JSONObject(data);
+                                    JSONArray array = object.getJSONArray("Records");
+                                    if (array.length() != 0) {
+                                        adavance.setId(array.getJSONObject(0).getString("Id"));
+                                    }
+                                    AppDatabase.getAppDatabase(AdavanceNewActivity.this).userDao().insertAdavance(adavance);
+                                    Utills.showToast("Adavance Added successfully", AdavanceNewActivity.this);
+                                    finish();
+                                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                                }
+                            }
                         } catch (Exception e) {
                             Utills.hideProgressDialog();
                             Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());

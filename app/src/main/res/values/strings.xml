@@ -242,7 +242,7 @@
     <string name="specification">Specification</string>
     <string name="select_model_no">Select Model No.</string>
 
-
+    <string name="account_section">Account\nSection</string>
     <!--Accout Section Activity-->
     <string name="adavance">Adavance</string>
     <string name="voucher">Voucher</string>

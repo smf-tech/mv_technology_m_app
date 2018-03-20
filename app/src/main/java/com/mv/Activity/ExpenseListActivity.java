@@ -6,23 +6,37 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mv.Adapter.ExpenseAdapter;
 import com.mv.Model.Expense;
+import com.mv.Model.Voucher;
 import com.mv.R;
+import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
+import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
+import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityExpenseListBinding;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by Rohit Gujar on 08-03-2018.
@@ -36,7 +50,8 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
     private ActivityExpenseListBinding binding;
     private ExpenseAdapter adapter;
     private List<Expense> mList = new ArrayList<>();
-    private int voucherId = -1;
+    private Voucher voucher;
+    private PreferenceHelper preferenceHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,12 +60,63 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
         binding.setActivity(this);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         setActionbar(getString(R.string.expense_list));
-        voucherId = getIntent().getExtras().getInt(Constants.VOUCHERID);
+        preferenceHelper = new PreferenceHelper(this);
+        voucher = (Voucher) getIntent().getSerializableExtra(Constants.VOUCHER);
+        binding.rvExpense.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                Log.i("Dy", "" + dy);
+                if (dy < -5 && binding.fabAddProcess.getVisibility() == View.GONE) {
+                    binding.fabAddProcess.setVisibility(View.VISIBLE);
+                } else if (dy > 5 && binding.fabAddProcess.getVisibility() == View.VISIBLE) {
+                    binding.fabAddProcess.setVisibility(View.GONE);
+                }
+            }
+        });
+        if (Utills.isConnected(this))
+            getUserExpenseData();
+    }
+
+    private void getUserExpenseData() {
+        Utills.showProgressDialog(this, "Loading Data", getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetUserExpenseData + "?voucherId=" + voucher.getId();
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                try {
+                    String str = response.body().string();
+                    if (str != null && str.length() > 0) {
+                        if (response.isSuccess()) {
+                            if (Arrays.asList(gson.fromJson(str, Expense[].class)) != null) {
+                                AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().deleteExpense(voucher.getId());
+                                AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().insertExpense(Arrays.asList(gson.fromJson(str, Expense[].class)));
+                                setRecyclerView();
+                            }
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
     }
 
     private void setRecyclerView() {
         Log.i("Count", "" + AppDatabase.getAppDatabase(this).userDao().getAllExpense());
-        mList = AppDatabase.getAppDatabase(this).userDao().getAllExpense(voucherId);
+        mList = AppDatabase.getAppDatabase(this).userDao().getAllExpense(voucher.getId());
         adapter = new ExpenseAdapter(this, mList);
         binding.rvExpense.setAdapter(adapter);
         binding.rvExpense.setHasFixedSize(true);
@@ -69,7 +135,7 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
     public void onAddClick() {
         Intent intent;
         intent = new Intent(this, ExpenseNewActivity.class);
-        intent.putExtra(Constants.VOUCHERID, voucherId);
+        intent.putExtra(Constants.VOUCHER, voucher);
         intent.putExtra(Constants.ACTION, Constants.ACTION_ADD);
         startActivity(intent);
     }
@@ -110,10 +176,9 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void editExpense(int adapterPosition) {
-        Log.i("voucherId", "" + voucherId);
         Intent intent;
         intent = new Intent(this, ExpenseNewActivity.class);
-        intent.putExtra(Constants.VOUCHERID, voucherId);
+        intent.putExtra(Constants.VOUCHER, voucher);
         intent.putExtra(Constants.EXPENSE, mList.get(adapterPosition));
         intent.putExtra(Constants.ACTION, Constants.ACTION_EDIT);
         startActivity(intent);

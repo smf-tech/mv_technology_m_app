@@ -75,24 +75,37 @@ public class Voucher implements Serializable {
     private String Id;
 
     @ColumnInfo(name = "Project")
-    @SerializedName("Project")
+    @SerializedName("Project__c")
     @Expose
     private String Project;
 
     @ColumnInfo(name = "Date")
-    @SerializedName("Date")
+    @SerializedName("Date__c")
     @Expose
     private String Date;
 
     @ColumnInfo(name = "Decription")
-    @SerializedName("Decription")
+    @SerializedName("Description__c")
     @Expose
     private String Decription;
 
     @ColumnInfo(name = "NoOfPeople")
-    @SerializedName("NoOfPeople")
+    @SerializedName("No_Of_Peopel_Travelled__c")
     @Expose
     private String NoOfPeople;
+
+    @ColumnInfo(name = "User")
+    @SerializedName("MV_User__c")
+    @Expose
+    private String User;
+
+    public String getUser() {
+        return User;
+    }
+
+    public void setUser(String user) {
+        User = user;
+    }
 
     public Voucher() {
     }

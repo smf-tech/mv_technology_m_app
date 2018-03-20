@@ -158,10 +158,14 @@ public class Constants {
     public static final String GetprocessTaskUrl = "/services/apexrest/getprocessTaskNew";
     public static final String GetUserSalaryData = "/services/apexrest/getUserSalaryData";
     public static final String GetUserAdavanceData = "/services/apexrest/getUserAdavanceData";
+    public static final String GetUserVoucherData = "/services/apexrest/getUserVoucherData";
+
+   public static final String GetUserExpenseData = "/services/apexrest/getUserExpenseData";
+
     public static final String DeleteTaskAnswerUrl = "/services/apexrest/DeleteTaskAnswer/";
     public static final String ApproveCommentforProcessUrl = "/services/apexrest/ApproveCommentforProcess";
     public static final String GetprocessAnswerTaskfoApprovalUrl = "/services/apexrest/getprocessAnswerTaskfoApproval";
-    public static final String GetProjectDataUrl = "/services/apexrest/getProjectData";
+    public static final String GetProjectDataUrl = "/services/apexrest/getPro6jectData";
     public static final String MV_RoleUrl = "/services/data/v36.0/query/?q=select+Id,Juridictions__c,Name+from+MV_Role__c+where+Organisation__c='";
     public static final String MTRegisterUrl = "/services/apexrest/MTRegisterNew";
 

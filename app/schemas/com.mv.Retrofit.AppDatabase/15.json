@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 15,
-    "identityHash": "86a74b0faa9a4177080f901950848b2d",
+    "identityHash": "c090cd82ccb94f4b8c44b33389a86b3d",
     "entities": [
       {
         "tableName": "table_community",
@@ -534,7 +534,7 @@
       },
       {
         "tableName": "table_voucher",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `Decription` TEXT, `NoOfPeople` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `Decription` TEXT, `NoOfPeople` TEXT, `User` TEXT)",
         "fields": [
           {
             "fieldPath": "UniqueId",
@@ -565,6 +565,11 @@
             "fieldPath": "NoOfPeople",
             "columnName": "NoOfPeople",
             "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "User",
+            "columnName": "User",
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -578,7 +583,7 @@
       },
       {
         "tableName": "table_expense",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Amount` TEXT, `Date` TEXT, `Decription` TEXT, `voucherId` TEXT, `partuculars` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Amount` TEXT, `Date` TEXT, `Decription` TEXT, `voucherId` TEXT, `partuculars` TEXT, `User` TEXT)",
         "fields": [
           {
             "fieldPath": "UniqueId",
@@ -613,6 +618,11 @@
           {
             "fieldPath": "partuculars",
             "columnName": "partuculars",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "User",
+            "columnName": "User",
             "affinity": "TEXT"
           }
         ],
@@ -716,7 +726,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"86a74b0faa9a4177080f901950848b2d\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c090cd82ccb94f4b8c44b33389a86b3d\")"
     ]
   }
 }
