@@ -50,9 +50,9 @@ import retrofit2.Response;
 public class SendAssetRequestActivity extends AppCompatActivity implements View.OnClickListener {
     private  Spinner spinner_Assetname;
     private TextInputLayout input_quantity,input_tentative_return_date;
-    private EditText edit_text_quantity,edit_text_issue_date,edit_text_tentative_return_date,edit_text_remarks;
+    private EditText edit_text_quantity,edit_text_remarks;
     private ImageView img_back, img_list, img_logout;
-    private TextView toolbar_title;
+    private TextView toolbar_title,edit_text_tentative_return_date,edit_text_issue_date;
     private RelativeLayout mToolBar;
     Button btn_send_request;
     private PreferenceHelper preferenceHelper;
@@ -83,8 +83,8 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
         preferenceHelper = new PreferenceHelper(this);
 
         edit_text_quantity = (EditText) findViewById(R.id.edit_text_quantity);
-        edit_text_issue_date = (EditText) findViewById(R.id.edit_text_issue_date);
-        edit_text_tentative_return_date = (EditText) findViewById(R.id.edit_text_tentative_return_date);
+        edit_text_issue_date = (TextView )findViewById(R.id.edit_text_issue_date);
+        edit_text_tentative_return_date = (TextView) findViewById(R.id.edit_text_tentative_return_date);
         edit_text_remarks = (EditText) findViewById(R.id.edit_text_remarks);
         input_quantity = (TextInputLayout)findViewById(R.id.input_quantity);
         input_tentative_return_date = (TextInputLayout) findViewById(R.id.input_tentative_return_date);
@@ -127,12 +127,13 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
 
                             final List<Asset> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Asset[].class));
 
-
+                            assetnameList.add("select");
 
                             for (int i =0;i<temp.size();i++){
                                 assetnameList.add(temp.get(i).getName());
 
                             }
+
 
                        asset_name_adapter = new ArrayAdapter<String>(SendAssetRequestActivity.this,
                         android.R.layout.simple_spinner_item, assetnameList);
@@ -142,22 +143,28 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
+                                    selectAssetName =i ;
 
                                    //String selected = spinner_Assetname.getSelectedItem().toString();
+                                    if (i!=0) {
 
-                                        id = temp.get(i).getAsset_id();
-                                        String type = temp.get(i).getType();
+
+                                        id = temp.get(selectAssetName-1).getAsset_id();
+                                        String type = temp.get(selectAssetName-1).getType();
                                         if (type.equalsIgnoreCase("MultiEntry")) {
                                             input_quantity.setVisibility(View.VISIBLE);
                                             input_tentative_return_date.setVisibility(View.GONE);
+                                            AssetQuantity = edit_text_quantity.getText().toString().trim();
 
 
                                         } else {
+                                            AssetQuantity ="1";
                                             input_quantity.setVisibility(View.GONE);
                                             input_tentative_return_date.setVisibility(View.VISIBLE);
 
                                         }
 
+                                    }
 
                                 }
 
@@ -249,7 +256,7 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
             case R.id.edit_text_issue_date:
-               Utills.showDateDialog(edit_text_issue_date,SendAssetRequestActivity.this);
+              Utills.showDateDialog(edit_text_issue_date,SendAssetRequestActivity.this);
                 break;
             case  R.id.edit_text_tentative_return_date:
                 Utills.showDateDialog(edit_text_tentative_return_date,SendAssetRequestActivity.this);

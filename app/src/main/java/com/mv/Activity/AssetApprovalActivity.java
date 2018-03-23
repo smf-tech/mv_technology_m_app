@@ -5,10 +5,12 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.google.gson.JsonObject;
@@ -26,6 +28,10 @@ import com.mv.Utils.Utills;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,6 +46,9 @@ public class AssetApprovalActivity extends AppCompatActivity  implements View.On
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     private TextInputLayout input_specification;
+    Spinner spinner_assetstaus;
+    String asset_status;
+    List<String> asset_statuslist = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,12 +61,14 @@ public class AssetApprovalActivity extends AppCompatActivity  implements View.On
     private void InitViews(){
         setActionbar("Asset Approval");
         asset = (Asset) getIntent().getExtras().getSerializable("Assets");
+        asset_statuslist = Arrays.asList(getResources().getStringArray(R.array.array_of_asset_status));
 
         edit_text_assetname = (EditText) findViewById(R.id.edit_text_assetname);
         edit_text_modelno = (EditText) findViewById(R.id.edit_text_modelno);
         edit_text_issue_date = (EditText) findViewById(R.id.edit_text_issue_date);
         input_specification = (TextInputLayout) findViewById(R.id.input_specification);
         edit_text_specification = (EditText) findViewById(R.id.edit_text_specification);
+        spinner_assetstaus = (Spinner) findViewById(R.id.spinner_assetstaus);
         reject = (Button) findViewById(R.id.reject);
         accept = (Button) findViewById(R.id.accept);
         accept.setOnClickListener(this);
@@ -67,7 +78,18 @@ public class AssetApprovalActivity extends AppCompatActivity  implements View.On
        // edit_text_issue_date.setText(asset.getExpectedIssueDate());
         edit_text_specification.setText(asset.getSpecification());
 
+        spinner_assetstaus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
+                asset_status =  asset_statuslist.get(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     private void setActionbar(String Title) {
@@ -80,6 +102,8 @@ public class AssetApprovalActivity extends AppCompatActivity  implements View.On
         img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
+
+
     }
     private void AcceptAsset(String status){
         Utills.showProgressDialog(this, "Sending", getString(R.string.progress_please_wait));
@@ -89,8 +113,10 @@ public class AssetApprovalActivity extends AppCompatActivity  implements View.On
             jsonObject1.put("Allocation_Quantity__c", "1");
             jsonObject1.put("Allocation_Status__c", status);
             jsonObject1.put("id", asset.getAssetAllocationId());
+            jsonObject1.put("Asset_Condition__c",asset_status);
             JSONObject jsonObject2 = new JSONObject();
             jsonObject2.put("assetAlloc", jsonObject1);
+
 
             ServiceRequest apiService =
                     ApiClient.getClientWitHeader(this).create(ServiceRequest.class);

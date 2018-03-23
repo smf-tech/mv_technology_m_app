@@ -103,16 +103,26 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
                         intent.putExtra("Assets", assetList.get(getAdapterPosition()));
                         mContext.startActivity(intent);
                     }else if (assetList.get(getAdapterPosition()).getAllocationStatus().equalsIgnoreCase("Requested")){
+
+                        if (User.getCurrentUser(mContext).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")){
+
                             Intent intent = new Intent(mContext, AssetAllocation_Activity.class);
                             intent.putExtra("Assets", assetList.get(getAdapterPosition()));
                             mContext.startActivity(intent);
 
                     }
-                }
-            });
+                }else if (assetList.get(getAdapterPosition()).getAllocationStatus().equalsIgnoreCase("Accepted")){
+                        Intent intent = new Intent(mContext, AssetAllocation_Activity.class);
+                        intent.putExtra("Assets", assetList.get(getAdapterPosition()));
+                        mContext.startActivity(intent);
+
+                    }
+            }
 
 
 
+
+        });
         }
 
     }

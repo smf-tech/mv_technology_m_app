@@ -206,4 +206,13 @@
         <item>Maharashtra</item>
 
     </string-array>
+
+    <string-array name="array_of_asset_status">
+        <item>Select</item>
+        <item>Working</item>
+        <item>NotWorking</item>
+        <item>ForRepair</item>
+        <item>Damaged</item>
+
+    </string-array>
 </resources>

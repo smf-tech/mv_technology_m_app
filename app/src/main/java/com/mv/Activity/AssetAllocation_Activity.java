@@ -61,6 +61,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
     TextInputLayout input_no,input_name;
     LinearLayout lnr_asset_manager,lnr_user;
     String Fname, Lname;
+    int selectstockid =0;
 
 
     @Override
@@ -128,6 +129,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
                             JSONArray jsonArray = new JSONArray(data);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             final List<Asset> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Asset[].class));
+                            stocklist.add("Select");
                             for (int i = 0; i < temp.size(); i++) {
                                 stocklist.add(temp.get(i).getModelNo());
 
@@ -141,7 +143,11 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
                             spinner_stock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                    stock_id = temp.get(i).getStockId();
+                                    selectstockid = i;
+                                    if (i!=0) {
+                                        stock_id = temp.get(selectstockid-1).getStockId();
+                                    }
+
                                 }
 
                                 @Override
@@ -180,10 +186,14 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
             if (User.getCurrentUser(AssetAllocation_Activity.this).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")){
                 jsonObject1.put("stockId", stock_id);
             }else {
-                jsonObject1.put("mobileNo", stock_id);
+                jsonObject1.put("mobileNo", edit_text_no.getText().toString());
             }
 
                 jsonObject1.put("Allocation_Status__c", "Allocated");
+            jsonObject1.put("ASSET__c", asset_id);
+            jsonObject1.put("specification",edit_text_specification.getText().toString());
+            jsonObject1.put("remarks",edit_text_remarks.getText().toString().trim());
+            jsonObject1.put("Asset_Condition__c","");
 
             JSONObject jsonObject2 = new JSONObject();
             jsonObject2.put("assetAlloc", jsonObject1);
@@ -211,7 +221,8 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                    Utills.hideProgressDialog();
+                    Utills.showToast(getString(R.string.error_something_went_wrong),AssetAllocation_Activity.this);
                 }
             });
 

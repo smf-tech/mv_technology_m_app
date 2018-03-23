@@ -151,7 +151,7 @@ public class Utills {
         return result.trim();
     }
 
-    public static void showDateDialog(final EditText text, Context context) {
+    public static void showDateDialog(final TextView text, Context context) {
 
 
         final Calendar c = Calendar.getInstance();
