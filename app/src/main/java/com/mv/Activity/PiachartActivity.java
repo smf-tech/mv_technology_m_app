@@ -661,7 +661,6 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
                                     }
 
-
                                     binding.piachartChartView.setVisibility(View.VISIBLE);
                                     binding.piachartRecyclerView.setVisibility(View.GONE);
                                     if (key.size() > 0) {

@@ -211,6 +211,14 @@
     <string name="update_user_data">Update Data</string>
     <string name="update_data_string">Are sure you want to update data?</string>
     <string name="app_versio_report">APP Version Report</string>
+    <string name="next_login">नेक्स्ट</string>
+    <string name="from_date">From Date</string>
+    <string name="to_date">To Date</string>
+    <string name="reason">Reason</string>
+    <string name="type_of_leaves">Type Of Leves</string>
+    <string name="pending">Pending</string>
+    <string name="leave_detail">Leave Detail</string>
+    <string name="leave">Leave</string>
 
 
 </resources>

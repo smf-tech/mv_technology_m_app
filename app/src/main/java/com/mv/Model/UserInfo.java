@@ -82,10 +82,34 @@ public class UserInfo {
     @Expose
     private String approval_role = "";
 
+    public String getApprover_Comment__c() {
+        return Approver_Comment__c;
+    }
+
+    public void setApprover_Comment__c(String approver_Comment__c) {
+        Approver_Comment__c = approver_Comment__c;
+    }
+
+    public String getRole_Juridiction__c() {
+        return Role_Juridiction__c;
+    }
+
+    public void setRole_Juridiction__c(String role_Juridiction__c) {
+        Role_Juridiction__c = role_Juridiction__c;
+    }
+
     @SerializedName("Gender__c")
     @Expose
     private String gender = "";
 
+
+    @SerializedName("Approver_Comment__c")
+    @Expose
+    private String Approver_Comment__c = "";
+
+    @SerializedName("Role_Juridiction__c")
+    @Expose
+    private String Role_Juridiction__c = "";
     public String getPhoneId() {
         return PhoneId;
     }

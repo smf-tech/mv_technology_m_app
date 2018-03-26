@@ -72,7 +72,7 @@
             android:name=".Activity.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
-            android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".Activity.ImageTemplateActivity"
             android:screenOrientation="portrait"
@@ -293,7 +293,9 @@
             android:name=".Activity.AddSchoolActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".Activity.VersionReportActivity"></activity>
+        <activity android:name=".Activity.VersionReportActivity" />
+        <activity android:name=".Activity.LeaveApprovalActivity" />
+        <activity android:name=".Activity.LeaveDetailActivity"></activity>
     </application>
 
 </manifest>

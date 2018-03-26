@@ -152,7 +152,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
                                 else if (jsonArray.getJSONObject(i).has("name"))
                                     processList.setName(jsonArray.getJSONObject(i).getString("username"));
                                    if  (jsonArray.getJSONObject(i).has("status"))
-                                    processList.setStatus(jsonArray.getJSONObject(i).getBoolean("status"));
+                                    processList.setStatus(jsonArray.getJSONObject(i).getString("status"));
                                 processAllList.add(processList);
                             }
                        ///     AppDatabase.getAppDatabase(context).userDao().deleteTable();

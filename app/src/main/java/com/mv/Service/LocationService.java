@@ -97,7 +97,7 @@ public class LocationService extends IntentService {
 
                         locationModelArrayList.removeAll(Collections.singleton(null));
                         AppDatabase.getAppDatabase(getApplicationContext()).userDao().insertLoaction(locationModelArrayList);
-
+                        Utills.showToast(district+" data updated successfully.",getApplicationContext());
 
                         //size equal to 1 means its default state
                         if (AppDatabase.getAppDatabase(getApplicationContext()).userDao().getState().size() == 1)

@@ -230,7 +230,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llHeaderLay.setVisibility(View.GONE);
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
-                holder.questionResponse.setSingleLine(true);
+
                 holder.llDate.setVisibility(View.GONE);
                 // holder.questionResponse.setHint(task.getTask_Text___Lan_c());
                 if (task.getIs_Response_Mnadetory__c())
@@ -245,6 +245,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 } else if (task.getValidation().equals("Number")) {
                     holder.questionResponse.setInputType(InputType.TYPE_CLASS_NUMBER);
                 }
+                holder.questionResponse.setSingleLine(true);
                 break;
             case Constants.TASK_SELECTION:
 
@@ -478,9 +479,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llDate.setVisibility(View.VISIBLE);
                 // holder.questionResponse.setHint(task.getTask_Text___Lan_c());
                 if (task.getIs_Response_Mnadetory__c())
-                    holder.dateHeader.setText("*" + "abhi");
+                    holder.dateHeader.setText("*" + task.getTask_Text___Lan_c());
                 else
-                    holder.dateHeader.setText("Abhi");
+                    holder.dateHeader.setText(task.getTask_Text___Lan_c());
                 holder.date.setText(task.getTask_Response__c());
                 holder.date.setTag(position);
                 holder.date.setFocusable(false);
@@ -566,7 +567,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 // arraylist to keep the selected items
         final ArrayList seletedItems = new ArrayList();
         AlertDialog dialog = new AlertDialog.Builder(mContext)
-                .setTitle("Select template type")
+                .setTitle(taskList.get(pos).getTask_Text___Lan_c())
                 .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {

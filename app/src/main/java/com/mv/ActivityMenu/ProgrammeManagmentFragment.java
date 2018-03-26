@@ -60,7 +60,7 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
     ArrayList<Task> taskList = new ArrayList<>();
     TaskContainerModel taskContainerModel;
     Activity context;
-    public int headerPosition = 999999999;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context=this;
@@ -178,6 +178,8 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                                 taskContainerModel = new TaskContainerModel();
                                 taskList = new ArrayList<>();
                                 User user= User.getCurrentUser(getApplicationContext());
+                                StringBuffer sb = new StringBuffer();
+                                String prefix = "";
                                 for (int i = 0; i < resultArray.length(); i++) {
                                     JSONObject resultJsonObj = resultArray.getJSONObject(i);
 
@@ -197,9 +199,12 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                                     if (resultJsonObj.has("status")) {
                                         taskList.setStatus__c(resultJsonObj.getString("status"));
                                     }
-                                    if (resultJsonObj.getString("isHeader").equals("true"))
-                                        headerPosition = i;
 
+                                    if (resultJsonObj.getString("isHeader").equals("true")) {
+                                        sb.append(prefix);
+                                        prefix = ",";
+                                        sb.append(taskList.getTask_Response__c());
+                                    }
                                     taskList.setIsHeader(resultJsonObj.getString("isHeader"));
                                     if (resultJsonObj.has("isEditable")) {
                                         taskList.setIsEditable__c(resultJsonObj.getString("isEditable"));
@@ -229,7 +234,13 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                                             taskList.setTask_Response__c(user.getMvUser().getSchool_Name());
                                             //  LocationSelectionActity.selectedSchool = user.getMvUser().getSchool_Name();
                                         }
-
+                                        if (resultJsonObj.getString("isHeader").equals("true")) {
+                                            if(!taskList.getTask_Response__c().equals("Select")) {
+                                                sb.append(prefix);
+                                                prefix = " , ";
+                                                sb.append(taskList.getTask_Response__c());
+                                            }
+                                        }
                                     }
                                     taskList.setMV_Process__c(resultJsonObj.getString("mVProcess"));
                                     taskList.setTask_Text__c(resultJsonObj.getString("taskText"));
@@ -246,7 +257,7 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                                 }
                                 // each task list  convert to String and stored in process task filled
                                 taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
-                                taskContainerModel.setHeaderPosition(headerPosition);
+                                taskContainerModel.setHeaderPosition(sb.toString());
                                 taskContainerModel.setIsSave(Constants.PROCESS_STATE_SAVE);
                                 //task without answer
                                 taskContainerModel.setTaskType(Constants.TASK_QUESTION);

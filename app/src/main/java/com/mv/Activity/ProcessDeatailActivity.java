@@ -78,7 +78,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     String timestamp;
     Activity context;
-    public int headerPosition = 999999999;
+
     Button submit, save, approve, reject;
 
     ProcessDetailAdapter adapter;
@@ -222,6 +222,9 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 sendToCamera();
                 break;
             case R.id.btn_save:
+
+                StringBuffer sb = new StringBuffer();
+                String prefix = "";
                 for (int i = 0; i < taskList.size(); i++) {
                 /*    if(dashaBoardListModel.get(i).getIsSave().equals(Constants.PROCESS_STATE_SUBMIT))
                     dashaBoardListModel.get(i).setIsSave(Constants.PROCESS_STATE_MODIFIED);
@@ -230,7 +233,12 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     taskList.get(i).setIsSave(Constants.PROCESS_STATE_SAVE);
                     taskList.get(i).setTimestamp__c(timestamp);
                     if ( taskList.get(i).getIsHeader().equals("true"))
-                        headerPosition = i;
+                    {    if(!taskList.get(i).getTask_Response__c().equals("Select")) {
+                        sb.append(prefix);
+                        prefix = " , ";
+                        sb.append(taskList.get(i).getTask_Response__c());
+                    }
+                    }
                     taskList.get(i).setMTUser__c(User.getCurrentUser(context).getMvUser().getId());
                     if (preferenceHelper.getBoolean(Constants.NEW_PROCESS))
                         taskList.get(i).setId(null);
@@ -242,7 +250,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 TaskContainerModel taskContainerModel = new TaskContainerModel();
                 taskContainerModel.setTaskListString(json);
                 taskContainerModel.setTaskType(Constants.TASK_ANSWER);
-                taskContainerModel.setHeaderPosition(headerPosition);
+                taskContainerModel.setHeaderPosition(sb.toString());
                 taskContainerModel.setIsSave(Constants.PROCESS_STATE_SAVE);
                 taskContainerModel.setMV_Process__c(taskList.get(0).getMV_Process__c());
 

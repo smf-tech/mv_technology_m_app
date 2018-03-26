@@ -179,6 +179,7 @@ public interface UserDao {
     @Query("DELETE FROM " + Constants.TABLE_CALANDER)
     public void deleteCalender();
 
+
     @Query("DELETE FROM " + Constants.TABLE_COMMUNITY)
     public void clearTableCommunity();
 
@@ -225,4 +226,6 @@ public interface UserDao {
     @Query("DELETE FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId AND  (isActive = :flag OR isDelete =:deleteflag)")
     int deletepost(String communityId, Boolean flag, Boolean deleteflag);
 
+    @Query("DELETE FROM " + Constants.TABLE_CALANDER + " where Id = :calenderId")
+    public int deleteCalenderEvent(String calenderId);
 }

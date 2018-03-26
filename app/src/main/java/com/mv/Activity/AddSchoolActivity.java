@@ -80,7 +80,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void initViews() {
-        setActionbar("Select Location");
+        setActionbar(getString(R.string.add_location));
         Utills.setupUI(findViewById(R.id.layout_main), this);
         preferenceHelper = new PreferenceHelper(this);
 

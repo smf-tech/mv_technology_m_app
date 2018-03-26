@@ -105,6 +105,14 @@
         <item>Cluster 6</item>
     </string-array>
 
+
+    <string-array name="array_of_leaves">
+        <item>CL/SL</item>
+        <item>Paid</item>
+        <item>Unpaid</item>
+        <item>Compoff</item>
+
+    </string-array>
     <string-array name="places">
         <item>Palais Garnie</item>
         <item>Piazza del Duomo</item>

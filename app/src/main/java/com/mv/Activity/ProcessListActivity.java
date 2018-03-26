@@ -53,7 +53,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     String proceesId, Processname;
     Context mContext;
     TextView textNoData;
-    public int headerPosition = 999999999;
+
 
     TaskContainerModel taskContainerModel;
     List<TaskContainerModel> resultList = new ArrayList<>();
@@ -153,6 +153,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
 
         //get latest question
+        preferenceHelper.insertString(Constants.UNIQUE, "");
         if (Utills.isConnected(this))
             getAllTask();
         else {
@@ -216,6 +217,9 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 JSONArray jsonArray = resultArray.getJSONArray(j);
                                 taskContainerModel = new TaskContainerModel();
                                 taskList = new ArrayList<Task>();
+                                StringBuffer sb = new StringBuffer();
+                                String prefix = "";
+
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     Task processList = new Task();
                                     processList.setId(jsonArray.getJSONObject(i).getString("Id"));
@@ -224,9 +228,9 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     processList.setIs_Response_Mnadetory__c(jsonArray.getJSONObject(i).getBoolean("Is_Mandotory"));
                                     processList.setTask_type__c(jsonArray.getJSONObject(i).getString("Task_Type"));
                                     processList.setTask_Text__c(jsonArray.getJSONObject(i).getString("Question"));
-                                    if (jsonArray.getJSONObject(i).getString("isHeader").equals("true")) {
-                                        headerPosition = i;
-                                    }
+
+
+
                                     processList.setIsHeader(jsonArray.getJSONObject(i).getString("isHeader"));
 
                                     if (!jsonArray.getJSONObject(i).getString("lanTsaskText").equals("null"))
@@ -239,7 +243,13 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
                                     if (jsonArray.getJSONObject(i).has("Answer"))
                                         processList.setTask_Response__c(jsonArray.getJSONObject(i).getString("Answer"));
-
+                                    if (jsonArray.getJSONObject(i).getString("isHeader").equals("true")) {
+                                        if(!processList.getTask_Response__c().equals("Select")) {
+                                            sb.append(prefix);
+                                            prefix = " , ";
+                                            sb.append(processList.getTask_Response__c());
+                                        }
+                                    }
                                     processList.setMV_Process__c(jsonArray.getJSONObject(i).getString("MV_Process"));
                                     if (jsonArray.getJSONObject(i).has("Location_Level"))
                                         processList.setLocationLevel(jsonArray.getJSONObject(i).getString("Location_Level"));
@@ -263,7 +273,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
                                 taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
                                 taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
-                                taskContainerModel.setHeaderPosition(headerPosition);
+
+                                taskContainerModel.setHeaderPosition(sb.toString());
                                 //task is with answer
                                 taskContainerModel.setTaskType(Constants.TASK_ANSWER);
                                 taskContainerModel.setMV_Process__c(proceesId);
@@ -326,6 +337,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                             taskContainerModel = new TaskContainerModel();
                             taskList = new ArrayList<>();
                             User user = User.getCurrentUser(getApplicationContext());
+                            StringBuffer sb = new StringBuffer();
+                            String prefix = "";
                             for (int i = 0; i < resultArray.length(); i++) {
                                 JSONObject resultJsonObj = resultArray.getJSONObject(i);
 
@@ -334,10 +347,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 processList.setMV_Task__c_Id(resultJsonObj.getString("id"));
                                 processList.setName(resultJsonObj.getString("name"));
                                 processList.setIs_Completed__c(resultJsonObj.getBoolean("isCompleted"));
-                                if (resultJsonObj.getString("isHeader").equals("true")) {
-                                    headerPosition = i;
 
-                                }
                                 processList.setIsHeader(resultJsonObj.getString("isHeader"));
                                 processList.setIs_Response_Mnadetory__c(resultJsonObj.getBoolean("isResponseMnadetory"));
                                 if (!resultJsonObj.getString("lanTsaskText").equals("null"))
@@ -383,6 +393,14 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                         //  LocationSelectionActity.selectedSchool = user.getSchool_Name();
                                     }
 
+                                    if (resultJsonObj.getString("isHeader").equals("true")) {
+                                        if(!processList.getTask_Response__c().equals("Select")) {
+                                            sb.append(prefix);
+                                            prefix = " , ";
+
+                                            sb.append(processList.getTask_Response__c());
+                                        }
+                                    }
                                 }
                                 processList.setMV_Process__c(resultJsonObj.getString("mVProcess"));
                                 processList.setTask_Text__c(resultJsonObj.getString("taskText"));
@@ -399,7 +417,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                             }
                             // each task list  convert to String and stored in process task filled
                             taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
-                            taskContainerModel.setHeaderPosition(headerPosition);
+                            taskContainerModel.setHeaderPosition(sb.toString());
                             taskContainerModel.setIsSave(Constants.PROCESS_STATE_SAVE);
                             //task without answer
                             taskContainerModel.setTaskType(Constants.TASK_QUESTION);

@@ -50,8 +50,9 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:hint="@string/name"
-                        android:inputType="textPersonName"
+                        android:inputType="text"
                         android:singleLine="true"
                         android:textColor="@color/black"
 
@@ -74,8 +75,9 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:hint="@string/middle_name"
-                        android:inputType="textPersonName"
+                        android:inputType="text"
                         android:singleLine="true"
                         android:textColor="@color/black"
 
@@ -98,11 +100,11 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
+                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:hint="@string/last_name"
-                        android:inputType="textPersonName"
+                        android:inputType="text"
                         android:singleLine="true"
                         android:textColor="@color/black"
-
                         android:textSize="@dimen/medium_text" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -220,27 +222,27 @@
                     android:text="@string/organization"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/small_text" />
+
                 <RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:paddingBottom="10dp"
-                    >
+                    android:paddingBottom="10dp">
 
-                <Spinner
-                    android:id="@+id/spinner_organization"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:prompt="@string/organization"
-                    android:spinnerMode="dialog" />
+                    <Spinner
+                        android:id="@+id/spinner_organization"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="3dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:prompt="@string/organization"
+                        android:spinnerMode="dialog" />
                 </RelativeLayout>
 
                 <com.mv.Widgets.MyTextView
@@ -252,27 +254,27 @@
                     android:text="@string/project"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/small_text" />
+
                 <RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:paddingBottom="10dp"
-                    >
+                    android:paddingBottom="10dp">
 
-                <Spinner
-                    android:id="@+id/spinner_project"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:prompt="@string/project"
-                    android:spinnerMode="dialog" />
+                    <Spinner
+                        android:id="@+id/spinner_project"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="3dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:prompt="@string/project"
+                        android:spinnerMode="dialog" />
                 </RelativeLayout>
 
                 <com.mv.Widgets.MyTextView
@@ -284,26 +286,27 @@
                     android:text="@string/mandatory_role"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/small_text" />
+
                 <RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/grey_box"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
+                    android:background="@drawable/grey_box"
                     android:paddingBottom="10dp">
 
-                <Spinner
-                    android:id="@+id/spinner_role"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:prompt="@string/role"
-                    android:spinnerMode="dialog" />
+                    <Spinner
+                        android:id="@+id/spinner_role"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="3dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:prompt="@string/role"
+                        android:spinnerMode="dialog" />
                 </RelativeLayout>
 
 
@@ -316,27 +319,27 @@
                     android:text="@string/mandatory_state"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/small_text" />
+
                 <RelativeLayout
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:paddingBottom="10dp"
-                    >
+                    android:paddingBottom="10dp">
 
-                <Spinner
-                    android:id="@+id/spinner_state"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:prompt="@string/state"
-                    android:spinnerMode="dialog" />
+                    <Spinner
+                        android:id="@+id/spinner_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="3dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:prompt="@string/state"
+                        android:spinnerMode="dialog" />
 
 
                 </RelativeLayout>
@@ -352,27 +355,28 @@
                     android:text="@string/disrict"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/small_text" />
+
                 <RelativeLayout
                     android:id="@+id/rel_district"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:paddingBottom="10dp"
-                    >
-                <Spinner
-                    android:id="@+id/spinner_district"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:prompt="@string/disrict"
-                    android:spinnerMode="dialog" />
+                    android:paddingBottom="10dp">
+
+                    <Spinner
+                        android:id="@+id/spinner_district"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="3dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:prompt="@string/disrict"
+                        android:spinnerMode="dialog" />
                 </RelativeLayout>
 
                 <com.mv.Widgets.MyTextView
@@ -385,29 +389,29 @@
                     android:text="@string/mandatory_taluka"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/small_text" />
+
                 <RelativeLayout
                     android:id="@+id/rel_taluka"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:paddingBottom="10dp"
-                    >
+                    android:paddingBottom="10dp">
 
-                <Spinner
-                    android:id="@+id/spinner_taluka"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
+                    <Spinner
+                        android:id="@+id/spinner_taluka"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="3dp"
 
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:prompt="@string/taluka"
-                    android:spinnerMode="dialog" />
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:prompt="@string/taluka"
+                        android:spinnerMode="dialog" />
                 </RelativeLayout>
 
                 <com.mv.Widgets.MyTextView
@@ -420,27 +424,28 @@
                     android:text="@string/mandatory_cluster"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/small_text" />
+
                 <RelativeLayout
                     android:id="@+id/rel_cluster"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:paddingBottom="10dp"
-                    >
-                <Spinner
-                    android:id="@+id/spinner_cluster"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:prompt="@string/cluster"
-                    android:spinnerMode="dialog" />
+                    android:paddingBottom="10dp">
+
+                    <Spinner
+                        android:id="@+id/spinner_cluster"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="3dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:prompt="@string/cluster"
+                        android:spinnerMode="dialog" />
                 </RelativeLayout>
 
                 <com.mv.Widgets.MyTextView
@@ -453,28 +458,29 @@
                     android:text="@string/mandatory_village"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/small_text" />
+
                 <RelativeLayout
                     android:id="@+id/rel_villgae"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:paddingBottom="10dp"
-                    >
-                <Spinner
-                    android:id="@+id/spinner_village"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
+                    android:paddingBottom="10dp">
 
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:prompt="@string/village"
-                    android:spinnerMode="dialog" />
+                    <Spinner
+                        android:id="@+id/spinner_village"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="3dp"
+
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:prompt="@string/village"
+                        android:spinnerMode="dialog" />
                 </RelativeLayout>
 
                 <com.mv.Widgets.MyTextView
@@ -487,28 +493,29 @@
                     android:text="@string/mandatory_school_name"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/small_text" />
+
                 <RelativeLayout
                     android:id="@+id/rel_school_name"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:paddingBottom="10dp"
-                    >
-                <Spinner
-                    android:id="@+id/spinner_school_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
+                    android:paddingBottom="10dp">
 
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:prompt="@string/school_name"
-                    android:spinnerMode="dialog" />
+                    <Spinner
+                        android:id="@+id/spinner_school_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="3dp"
+
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:prompt="@string/school_name"
+                        android:spinnerMode="dialog" />
                 </RelativeLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -531,7 +538,7 @@
                         android:editable="false"
                         android:focusable="false"
                         android:hint="@string/school_code"
-                        android:inputType="textPersonName"
+                        android:inputType="text"
                         android:singleLine="true"
                         android:textColor="@color/black"
                         android:textSize="@dimen/medium_text" />

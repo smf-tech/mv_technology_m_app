@@ -40,7 +40,7 @@ public class OverallReportAdapter extends RecyclerView.Adapter<OverallReportAdap
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView txtCommunityName,txt_targeted_date,txt_targeted_count;
-        public LinearLayout layout;
+        public LinearLayout layout,expectedLayout;
         ImageView arraow;
 
         public MyViewHolder(View view) {
@@ -50,6 +50,7 @@ public class OverallReportAdapter extends RecyclerView.Adapter<OverallReportAdap
             txt_targeted_count = (TextView) view.findViewById(R.id.txt_traget_count);
             arraow = (ImageView) view.findViewById(R.id.row_img);
             layout = (LinearLayout) view.findViewById(R.id.layoutTemplate);
+            expectedLayout = (LinearLayout) view.findViewById(R.id.ll_expected);
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -112,6 +113,7 @@ public class OverallReportAdapter extends RecyclerView.Adapter<OverallReportAdap
     public void onBindViewHolder(OverallReportAdapter.MyViewHolder holder, int position) {
         Log.d("Position",""+position);
         OverAllModel template = teplateList.get(position);
+        holder.expectedLayout.setVisibility(View.GONE);
         holder.arraow.setVisibility(View.GONE);
         holder.txtCommunityName.setText(template.getTalukaName());
         if(template.getExpectedCount()!=null)

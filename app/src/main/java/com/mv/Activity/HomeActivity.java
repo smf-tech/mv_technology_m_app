@@ -125,10 +125,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
 
-
-
-
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
         binding.setActivity(this);
         preferenceHelper = new PreferenceHelper(this);
@@ -435,7 +431,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         HomeModel homeModel = new HomeModel();
         homeModel.setMenuName(getString(R.string.about_us));
         homeModel.setMenuIcon(R.drawable.ic_about_us);
-        homeModel.setDestination(AboutUsActivity.class);
+        homeModel.setDestination(LeaveApprovalActivity.class);
         homeModel.setAccessible(true);
         menulist.add(homeModel);
         mAdapter = new HomeAdapter(menulist, HomeActivity.this);
@@ -814,20 +810,22 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(DialogInterface dialog, int which) {
                 List<LocationModel> districts = AppDatabase.getAppDatabase(HomeActivity.this).userDao().getDistinctDistrict();
                 AppDatabase.getAppDatabase(HomeActivity.this).userDao().clearLocation();
-                for(int i=0;i<districts.size();i++)
-                {
+                for (int i = 0; i < districts.size(); i++) {
                     Intent intent = new Intent(getApplicationContext(), LocationService.class);
                     // add infos for the service which file to download and where to store
-                    intent.putExtra(Constants.State,districts.get(i).getState());
-                    intent.putExtra(Constants.DISTRICT,districts.get(i).getDistrict());
+                    intent.putExtra(Constants.State, districts.get(i).getState());
+                    intent.putExtra(Constants.DISTRICT, districts.get(i).getDistrict());
                     startService(intent);
                 }
+                if (Utills.isConnected(HomeActivity.this))
+                    getUserData();
             }
         });
 
         // Showing Alert Message
         alertDialog.show();
     }
+
     private void sendLogOutRequest() {
         if (Utills.isConnected(this)) {
             Utills.showProgressDialog(this);
@@ -908,7 +906,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         // Setting Dialog Message
         if (User.getCurrentUser(getApplicationContext()).getMvUser().getApproval_role() != null) {
-            message = getString(R.string.approve_profile) + "\n" + User.getCurrentUser(getApplicationContext()).getMvUser().getApproval_role() + " " + getString(R.string.approve_profile2);
+            if (!User.getCurrentUser(getApplicationContext()).getMvUser().getApprover_Comment__c().equals(""))
+                message = getString(R.string.approve_profile) + "\n"+User.getCurrentUser(getApplicationContext()).getMvUser().getApprover_Comment__c();
+            else
+                message = getString(R.string.approve_profile) + "\n" + User.getCurrentUser(getApplicationContext()).getMvUser().getApproval_role() + " " + getString(R.string.approve_profile2);
+
         } else {
             message = getString(R.string.approve_profile);
         }
@@ -1133,7 +1135,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                 JSONObject jsonObject = new JSONObject(data);
                                 String statusofmap = jsonObject.getString("status");
                                 String message = jsonObject.getString("msg");
-                                Utills.showToast(statusofmap, HomeActivity.this);
+
                                 if (statusofmap.equals("Success")) {
 
 
@@ -1240,8 +1242,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else if (id == R.id.action_callus) {
             CallUSDialog();
 
-        }
-        else if (id == R.id.action_update_user_data) {
+        } else if (id == R.id.action_update_user_data) {
 
             showUpdateDataPopup();
         }

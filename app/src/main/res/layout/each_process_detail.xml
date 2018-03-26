@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:inputType="textPersonName"
-
+                android:textIsSelectable="true"
                 android:textColor="@color/black"
 
                 android:textSize="@dimen/medium_text" />
@@ -96,8 +96,9 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:inputType="textPersonName"
 
+                android:inputType="textPersonName"
+                android:textIsSelectable="true"
                 android:textColor="@color/black"
 
                 android:textSize="@dimen/medium_text" />
