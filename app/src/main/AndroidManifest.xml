@@ -294,10 +294,18 @@
             android:name=".Activity.AddSchoolActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".Activity.VersionReportActivity" />
-        <activity android:name=".Activity.LeaveApprovalActivity" />
-        <activity android:name=".Activity.LeaveDetailActivity"></activity>
-
+        <activity
+            android:name=".Activity.VersionReportActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".Activity.LeaveApprovalActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".Activity.LeaveDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
 
 
         <activity
@@ -334,7 +342,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"></activity>
 
-        android:windowSoftInputMode="stateHidden|adjustPan" />
+
         <activity
             android:name=".Activity.AssetAllocatedListActivity"
             android:screenOrientation="portrait"
