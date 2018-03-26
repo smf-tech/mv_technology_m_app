@@ -414,7 +414,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         menuListName.add(Constants.My_Reports);
         menuListName.add(Constants.My_Calendar);
 
-
+        menuListName.add(Constants.HR_MODULE);
+        menuListName.add(Constants.Account_Section);
+        menuListName.add(Constants.Asset_management);
         //for loop for adding accessible tab
         for (int i = 0; i < allTab.size(); i++) {
 
@@ -431,11 +433,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         HomeModel homeModel = new HomeModel();
         homeModel.setMenuName(getString(R.string.about_us));
         homeModel.setMenuIcon(R.drawable.ic_about_us);
-        homeModel.setDestination(AccountSectionActivity.class);
-        homeModel.setAccessible(true);
-        homeModel.setMenuName(getString(R.string.asset_management));
-        homeModel.setMenuIcon(R.drawable.ic_about_us);
-        homeModel.setDestination(AssetAllocatedListActivity.class);
+        homeModel.setDestination(AboutUsActivity.class);
         homeModel.setAccessible(true);
         menulist.add(homeModel);
         mAdapter = new HomeAdapter(menulist, HomeActivity.this);
@@ -520,6 +518,21 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             homeModel.setMenuName(getString(R.string.training_calendar));
             homeModel.setMenuIcon(R.drawable.ic_calender);
             homeModel.setDestination(TrainingCalender.class);
+
+        }
+        else if (allTab.get(i).equals(Constants.HR_MODULE)) {
+            homeModel.setMenuName(getString(R.string.leave));
+            homeModel.setMenuIcon(R.drawable.ic_team_management);
+            homeModel.setDestination(LeaveApprovalActivity.class);
+        } else if (allTab.get(i).equals(Constants.Account_Section)) {
+            homeModel.setMenuName(getString(R.string.account_section));
+            homeModel.setMenuIcon(R.drawable.ic_reports);
+            homeModel.setDestination(AccountSectionActivity.class);
+
+        } else if (allTab.get(i).equals(Constants.Asset_management)) {
+            homeModel.setMenuName(getString(R.string.asset_management));
+            homeModel.setMenuIcon(R.drawable.ic_calender);
+            homeModel.setDestination(AssetAllocatedListActivity.class);
 
         }
         return homeModel;

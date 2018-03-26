@@ -130,6 +130,9 @@ public class Constants {
     public static final String Team_Management = "Team Management";
     public static final String My_Reports = "My Reports";
     public static final String My_Calendar = "My Calendar";
+    public static final String HR_MODULE = "HR Module";
+    public static final String Account_Section = "Account Section";
+    public static final String Asset_management = "Asset management";
 
     public static final String IMAGEURL = "http://mobileapp.mulyavardhan.org/images/";
     public static final String InsertContentUrl = "/services/apexrest/insertContent";
