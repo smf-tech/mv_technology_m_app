@@ -24,33 +24,34 @@
             android:id="@+id/rv_process"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
             android:layout_below="@+id/toolbar"
+            android:layout_marginLeft="15dp"
             android:layout_marginRight="15dp"
             android:layout_marginTop="15dp"
             android:scrollbars="vertical" />
+
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_add_process"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:layout_gravity="bottom|end"
             android:layout_marginBottom="@dimen/dimen_10dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
             android:layout_marginRight="@dimen/dimen_10dp"
             android:onClick="@{()->processlist.onAddClick()}"
             android:src="@android:drawable/ic_input_add" />
 
         <TextView
-            android:visibility="gone"
             android:id="@+id/textNoData"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="No Data Available"
             android:textColor="@color/dark_grey"
-            android:textSize="@dimen/large_text" />
+            android:textSize="@dimen/large_text"
+            android:visibility="gone" />
 
     </RelativeLayout>
 </layout>

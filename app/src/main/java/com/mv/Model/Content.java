@@ -129,6 +129,9 @@ public class Content implements Serializable {
     @Expose
     private boolean isActive;
 
+    @SerializedName("errorMsg")
+    @Expose
+    private String errorMsg;
 
     public String getContentType() {
         return contentType;
@@ -391,5 +394,13 @@ public class Content implements Serializable {
 
     public void setPostUserDidSpam(Boolean postUserDidSpam) {
         isPostUserDidSpam = postUserDidSpam;
+    }
+
+    public String getErrorMsg() {
+        return errorMsg;
+    }
+
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
     }
 }

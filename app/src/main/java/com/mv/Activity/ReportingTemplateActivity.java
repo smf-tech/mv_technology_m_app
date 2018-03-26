@@ -705,6 +705,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             File imageFile = new File(imageFilePath);
             outputUri = Uri.fromFile(imageFile); // convert path to Uri
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+
             startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
         } catch (ActivityNotFoundException anfe) {
             //display an error message

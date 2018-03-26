@@ -107,7 +107,7 @@ public class Utills {
 
     public static String getCurrentDate() {
         Calendar c = Calendar.getInstance();
-        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         String formattedDate = df.format(c.getTime());
         return formattedDate;
     }
@@ -151,7 +151,7 @@ public class Utills {
         return result.trim();
     }
 
-    public static void showDateDialog(final EditText text, Context context) {
+    public static void showDateDialog(final TextView text, Context context) {
 
 
         final Calendar c = Calendar.getInstance();
@@ -164,7 +164,7 @@ public class Utills {
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        text.setText(getTwoDigit(dayOfMonth) + "/" + getTwoDigit(monthOfYear + 1) + "/" + year);
+                        text.setText(year + "-"  + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth)   );
 
 
                     }
@@ -550,7 +550,7 @@ public class Utills {
         String url = "";
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
-        /*UserDetails Url for getting community members*/
+
 
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.SpamContentUrl + "?Id=" + ID + "&userId=" + UserId + "&isSpam=" + isSpam;
@@ -563,7 +563,6 @@ public class Utills {
                     data = response.body().string();
                     if (data != null && data.length() > 0) {
                         JSONObject jsonObject = new JSONObject(data);
-
 
 
                     }

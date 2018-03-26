@@ -72,6 +72,7 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                     }else if(mContext instanceof TeamManagementUserProfileListActivity) {
                         if(TeamManagementUserProfileListActivity.approvalType.equals(Constants.USER_APPROVAL)) {
                             Intent openClass = new Intent(mContext, UserApproveDetail.class);
+
                             openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
                             mContext.startActivity(openClass);
                             mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);

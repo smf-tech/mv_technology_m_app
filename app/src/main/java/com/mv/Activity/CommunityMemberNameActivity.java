@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -43,6 +44,7 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
     private TextView toolbar_title,textNoData;
     private ImageView img_back, img_logout;
     EditText edit_text_email;
+    String Member_count="";
 
 
     @Override
@@ -53,11 +55,14 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
         initViews(getString(R.string.Community_member));
         preferenceHelper = new PreferenceHelper(this);
         /*Check Network Connectivity and Call GetCommunityMember()*/
-        if (Utills.isConnected(this))
+        if (Utills.isConnected(this)) {
             GetCommunityMember();
-        else
+
+        }else {
             /*No Internet Connection Popup*/
             Utills.showInternetPopUp(CommunityMemberNameActivity.this);
+        }
+
     }
 
 
@@ -71,7 +76,7 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
     private void initViews(String title){
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(title);
+       toolbar_title.setText(title);
         img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
@@ -118,6 +123,8 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
                              adapter = new CommunityMemberAdapter(getApplicationContext(), CommunityMemberList);
                              recyclerView.setAdapter(adapter);
 
+                             Member_count =String.valueOf(CommunityMemberList.size());
+                             toolbar_title.setText(getString(R.string.Community_member)+" " + Member_count);
 
                              textNoData.setVisibility(View.GONE);
                          } else {

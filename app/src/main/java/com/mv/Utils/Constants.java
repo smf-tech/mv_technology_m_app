@@ -8,14 +8,14 @@ import android.net.Uri;
 
 public class Constants {
 
-    /* Production
+    /* Production*/
 
-   public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
+  /*  public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com";
     public static String REPORTID = "a1L7F000000YNK4";
     public static String ISSUEID = "a1L7F000000YNJ z";*/
 
-    /* Sandbox*/
+    /* Sandbox */
     public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
     public static String REPORTID = "a1G0k000000522K";
@@ -53,7 +53,10 @@ public class Constants {
     public static final String TABLE_TEMPLATE = "table_template";
     public static final String TABLE_COMMUNITY = "table_community";
     public static final String TABLE_CONTENT = "table_content";
-
+    public static final String TABLE_VOUCHER = "table_voucher";
+    public static final String TABLE_EXPENSE = "table_expense";
+    public static final String TABLE_ADAVANCE = "table_adavance";
+    public static final String TABLE_SALARY = "table_salary";
 
     public static Integer CHOOSE_IMAGE_FROM_CAMERA = 100;
     public static Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
@@ -69,7 +72,10 @@ public class Constants {
     public static String IS_LOCATION = "isEditableLocation";
     public static String IS_MULTIPLE = "isMultiple";
     public static String STATE_LOCATION_LEVEL = "locationTest";
-
+    public static String VOUCHER = "voucher";
+    public static String EXPENSE = "expense";
+    public static String VOUCHERID = "voucherid";
+    public static String ADAVANCE = "adavance";
 
     public static final String TASK_TEXT = "Text";
     public static final String TASK_SELECTION = "Selection";
@@ -149,11 +155,15 @@ public class Constants {
     public static final String New_upload_phpUrl = "http://mobileapp.mulyavardhan.org/new_upload.php";
     public static final String GetprocessAnswerDataUrl = "/services/apexrest/getprocessAnswerDataNew";
     public static final String GetprocessTaskUrl = "/services/apexrest/getprocessTaskNew";
+    public static final String GetUserSalaryData = "/services/apexrest/getUserSalaryData";
+    public static final String GetUserAdavanceData = "/services/apexrest/getUserAdavanceData";
+    public static final String GetUserVoucherData = "/services/apexrest/getUserVoucherData";
+
+   public static final String GetUserExpenseData = "/services/apexrest/getUserExpenseData";
 
     public static final String DeleteTaskAnswerUrl = "/services/apexrest/DeleteTaskAnswer/";
     public static final String ApproveCommentforProcessUrl = "/services/apexrest/ApproveCommentforProcess";
     public static final String GetprocessAnswerTaskfoApprovalUrl = "/services/apexrest/getprocessAnswerTaskfoApproval";
-
     public static final String GetProjectDataUrl = "/services/apexrest/getProjectData";
     public static final String MV_RoleUrl = "/services/data/v36.0/query/?q=select+Id,Juridictions__c,Name+from+MV_Role__c+where+Organisation__c='";
     public static final String MTRegisterUrl = "/services/apexrest/MTRegisterNew";
@@ -167,6 +177,10 @@ public class Constants {
     public static final String RemoveLikeUrl = "/services/apexrest/removeLike";
     public static final String InsertLikeUrl = "/services/apexrest/InsertLike";
     public static final String SpamContentUrl = "/services/apexrest/spamContent";
+    public static final String saveAssetRequest = "/services/apexrest/saveAssetRequest";
+    public static final String AssetStock = "/services/apexrest/getStock";
+    public static final String GetUserThroughMobileNo = "/services/apexrest/getUserThroughMobileNo";
+
 
     public static final String GetAllMyLeave = "/services/apexrest/getAllLeave";
     public static final String SendHRLeavesDataToServer = "/services/apexrest/saveLeaveApplication";

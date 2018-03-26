@@ -431,7 +431,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         HomeModel homeModel = new HomeModel();
         homeModel.setMenuName(getString(R.string.about_us));
         homeModel.setMenuIcon(R.drawable.ic_about_us);
-        homeModel.setDestination(LeaveApprovalActivity.class);
+        homeModel.setDestination(AccountSectionActivity.class);
+        homeModel.setAccessible(true);
+        homeModel.setMenuName(getString(R.string.asset_management));
+        homeModel.setMenuIcon(R.drawable.ic_about_us);
+        homeModel.setDestination(AssetAllocatedListActivity.class);
         homeModel.setAccessible(true);
         menulist.add(homeModel);
         mAdapter = new HomeAdapter(menulist, HomeActivity.this);
@@ -1217,6 +1221,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (id == R.id.action_lang) {
             showDialog();
 
+
         } else if (id == R.id.action_profile) {
             Intent intent;
             intent = new Intent(this, RegistrationActivity.class);
@@ -1230,6 +1235,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             ShareApp();
         } else if (id == R.id.action_rate) {
             RateThisApp.showRateDialog(HomeActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
+
         } else if (id == R.id.action_add_school) {
             String role = User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
             if ((User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationAllow__c().equals("true"))) {

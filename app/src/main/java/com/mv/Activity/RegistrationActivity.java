@@ -1294,7 +1294,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             for (int i = 0; i < jsonArr.length(); i++) {
                        /* JSONObject jsonObject = jsonArr.getJSONObject(i);
                         mListSchoolName.add(jsonObject.getString("school_name"));
-                        mListCode.add(jsonObject.getString("school_code"));*/
+                        .add(jsonObject.getString("school_code"));*/
                                 mListSchoolName.add(jsonArr.getString(i));
                             }
                             school_adapter.notifyDataSetChanged();

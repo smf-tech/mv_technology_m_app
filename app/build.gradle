@@ -30,7 +30,7 @@ android {
             storePassword 'mulyavardhan'
         }
     }
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion '26.0.2'
     // used by Room, to test migrations
     sourceSets {
@@ -67,6 +67,12 @@ android {
     }
     dataBinding {
         enabled = true
+    }
+    dexOptions {
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 

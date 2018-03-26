@@ -1,0 +1,114 @@
+package com.mv.Model;
+
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+import com.mv.Utils.Constants;
+
+import java.io.Serializable;
+
+/**
+ * Created by nanostuffs on 03-02-2018.
+ */
+@Entity(tableName = Constants.TABLE_ADAVANCE)
+public class Adavance implements Serializable {
+
+
+    public String getProject() {
+        return Project;
+    }
+
+    public void setProject(String project) {
+        Project = project;
+    }
+
+    public String getDate() {
+        return Date;
+    }
+
+    public void setDate(String date) {
+        Date = date;
+    }
+
+    public String getDecription() {
+        return Decription;
+    }
+
+    public void setDecription(String decription) {
+        Decription = decription;
+    }
+
+    public String getAmount() {
+        return Amount;
+    }
+
+    public void setAmount(String amount) {
+        Amount = amount;
+    }
+
+    public int getUniqueId() {
+        return UniqueId;
+    }
+
+    public void setUniqueId(int uniqueId) {
+        UniqueId = uniqueId;
+    }
+
+    public String getId() {
+        return Id;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "unique_Id")
+    private int UniqueId;
+
+    @ColumnInfo(name = "Id")
+    @SerializedName("Id")
+    @Expose
+    private String Id;
+
+    @ColumnInfo(name = "Project")
+    @SerializedName("Project__c")
+    @Expose
+    private String Project;
+
+    @ColumnInfo(name = "Date")
+    @SerializedName("Request_Date__c")
+    @Expose
+    private String Date;
+
+    @ColumnInfo(name = "Decription")
+    @SerializedName("Description__c")
+    @Expose
+    private String Decription;
+
+    @ColumnInfo(name = "amount")
+    @SerializedName("Amount__c")
+    @Expose
+    private String Amount;
+
+    public String getUser() {
+        return User;
+    }
+
+    public void setUser(String user) {
+        User = user;
+    }
+
+    @ColumnInfo(name = "User")
+    @SerializedName("MV_User__c")
+    @Expose
+    private String User;
+
+    public Adavance() {
+    }
+
+
+}
