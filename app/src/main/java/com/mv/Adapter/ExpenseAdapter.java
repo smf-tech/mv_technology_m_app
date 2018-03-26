@@ -35,7 +35,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
         mContext = context;
         resources = context.getResources();
         mDataList = list;
-        mActivity = (ExpenseListActivity) context;
+        if (context instanceof ExpenseListActivity)
+            mActivity = (ExpenseListActivity) context;
     }
 
     @Override
@@ -58,6 +59,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
 
         TextView tvProjectName, tvDateName, tvNoOfPeopleName;
         ImageView imgEdit, imgDelete;
+        View view;
 
         public ViewHolder(View itemLayoutView) {
 
@@ -71,13 +73,17 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
             imgEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mActivity.editExpense(getAdapterPosition());
+                    if (mContext instanceof ExpenseListActivity)
+                        mActivity.editExpense(getAdapterPosition());
+
                 }
             });
+            view = itemLayoutView.findViewById(R.id.view1);
             imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showLogoutPopUp(getAdapterPosition());
+                    if (mContext instanceof ExpenseListActivity)
+                        showLogoutPopUp(getAdapterPosition());
                 }
             });
         }
@@ -119,7 +125,26 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         Expense expense = mDataList.get(position);
         holder.tvProjectName.setText(expense.getPartuculars());
-        holder.tvDateName.setText(expense.getAmount());
+        holder.tvDateName.setText(expense.getDate());
+        holder.tvNoOfPeopleName.setText(expense.getAmount());
+        if (expense.getStatus().equalsIgnoreCase("Pending")) {
+            holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.purple));
+        } else if (expense.getStatus().equalsIgnoreCase("Approved")) {
+            holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.green));
+        } else if (expense.getStatus().equalsIgnoreCase("Verified")) {
+            holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.orrange2));
+        } else if (expense.getStatus().equalsIgnoreCase("Rejected")) {
+            holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.red));
+        } else if (expense.getStatus().equalsIgnoreCase("Paid")) {
+            holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.colorPink));
+        }
+        if (mContext instanceof ExpenseListActivity) {
+            holder.imgDelete.setImageResource(R.drawable.form_delete);
+            holder.imgEdit.setImageResource(R.drawable.ic_form);
+        } else {
+            holder.imgDelete.setImageResource(R.drawable.ic_reject);
+            holder.imgEdit.setImageResource(R.drawable.ic_approve);
+        }
     }
 
 }

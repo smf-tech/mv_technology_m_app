@@ -90,12 +90,10 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
                 try {
                     String str = response.body().string();
                     if (str != null && str.length() > 0) {
-                        if (response.isSuccess()) {
-                            if (Arrays.asList(gson.fromJson(str, Voucher[].class)) != null) {
-                                AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().deleteAllVoucher();
-                                AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().insertVoucher(Arrays.asList(gson.fromJson(str, Voucher[].class)));
-                                setRecyclerView();
-                            }
+                        if (Arrays.asList(gson.fromJson(str, Voucher[].class)) != null) {
+                            AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().deleteAllVoucher();
+                            AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().insertVoucher(Arrays.asList(gson.fromJson(str, Voucher[].class)));
+                            setRecyclerView();
                         }
                     }
                 } catch (IOException e) {

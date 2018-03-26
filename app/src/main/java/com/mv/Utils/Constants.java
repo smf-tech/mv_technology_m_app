@@ -16,10 +16,10 @@ public class Constants {
     public static String ISSUEID = "a1L7F000000YNJ z";*/
 
     /* Sandbox */
-   public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
-   public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
+    public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
+    public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
     public static String REPORTID = "a1G0k000000522K";
-   public static String ISSUEID = "a1G0k000000522F";
+    public static String ISSUEID = "a1G0k000000522F";
 
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
@@ -160,7 +160,9 @@ public class Constants {
     public static final String GetUserAdavanceData = "/services/apexrest/getUserAdavanceData";
     public static final String GetUserVoucherData = "/services/apexrest/getUserVoucherData";
 
-   public static final String GetUserExpenseData = "/services/apexrest/getUserExpenseData";
+    public static final String GetUserExpenseData = "/services/apexrest/getUserExpenseData";
+    public static final String GetPendingExpenseData = "/services/apexrest/getPendingExpenseData";
+    public static final String GetPendingAdavanceData = "/services/apexrest/getPendingAdavanceData";
 
     public static final String DeleteTaskAnswerUrl = "/services/apexrest/DeleteTaskAnswer/";
     public static final String ApproveCommentforProcessUrl = "/services/apexrest/ApproveCommentforProcess";

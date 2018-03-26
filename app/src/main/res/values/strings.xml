@@ -199,6 +199,8 @@
     <string name="Schedule_training">Schedule Training</string>
     <string name="team_user_approval">User Approval</string>
     <string name="team_form_approval">Form Approval</string>
+    <string name="expense_approval">Expense Approval</string>
+    <string name="adavance_approval">Adavance Approval</string>
     <string name="Registration">Registration</string>
     <string name="about_us">About\nMulyavardhan</string>
 

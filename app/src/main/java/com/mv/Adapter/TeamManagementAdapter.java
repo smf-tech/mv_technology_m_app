@@ -12,7 +12,9 @@ import android.widget.TextView;
 import com.mv.Activity.ProcessApprovalActivity;
 import com.mv.Activity.ProcessListApproval;
 import com.mv.Activity.TeamManagementUserProfileListActivity;
+import com.mv.Activity.UserAdavanceListActivity;
 import com.mv.Activity.UserApproveDetail;
+import com.mv.Activity.UserExpenseListActivity;
 import com.mv.ActivityMenu.TeamManagementFragment;
 import com.mv.Model.Task;
 import com.mv.Model.Template;
@@ -35,7 +37,7 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
     private PreferenceHelper preferenceHelper;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView txtCommunityName,textViewColor;
+        public TextView txtCommunityName, textViewColor;
         public LinearLayout layout;
 
         public MyViewHolder(View view) {
@@ -48,42 +50,49 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                 public void onClick(View view) {
 
 
-                    if(mContext instanceof TeamManagementFragment)
-                    {
-                        if(getAdapterPosition()==0) {
+                    if (mContext instanceof TeamManagementFragment) {
+                        if (getAdapterPosition() == 0) {
                             //User Approval
-                        Intent openClass = new Intent(mContext, TeamManagementUserProfileListActivity.class);
-                        openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
+                            Intent openClass = new Intent(mContext, TeamManagementUserProfileListActivity.class);
+                            openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
                             openClass.putExtra(Constants.APPROVAL_TYPE, Constants.USER_APPROVAL);
-                        //  openClass.putExtra(Constants.PROCESS_ID, taskList);
-                        // openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
-                        //  openClass.putExtra("stock_list", resultList.get(indicatortaskList()).get(0));
-                        mContext.startActivity(openClass);
-                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        }
-                        else if(getAdapterPosition()==1)
-                        {
+                            //  openClass.putExtra(Constants.PROCESS_ID, taskList);
+                            // openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
+                            //  openClass.putExtra("stock_list", resultList.get(indicatortaskList()).get(0));
+                            mContext.startActivity(openClass);
+                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                        } else if (getAdapterPosition() == 1) {
                             //redirect to user Approval Process List
                             Intent openClass = new Intent(mContext, ProcessApprovalActivity.class);
                             openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
                             mContext.startActivity(openClass);
                             mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                        } else if (getAdapterPosition() == 2) {
+                            //redirect to user Approval Process List
+                            Intent openClass = new Intent(mContext, UserExpenseListActivity.class);
+                            mContext.startActivity(openClass);
+                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                        } else if (getAdapterPosition() == 3) {
+                            //redirect to user Approval Process List
+                            Intent openClass = new Intent(mContext, UserAdavanceListActivity.class);
+                            mContext.startActivity(openClass);
+                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
                         }
-                    }else if(mContext instanceof TeamManagementUserProfileListActivity) {
-                        if(TeamManagementUserProfileListActivity.approvalType.equals(Constants.USER_APPROVAL)) {
+                    } else if (mContext instanceof TeamManagementUserProfileListActivity) {
+                        if (TeamManagementUserProfileListActivity.approvalType.equals(Constants.USER_APPROVAL)) {
                             Intent openClass = new Intent(mContext, UserApproveDetail.class);
 
                             openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
                             mContext.startActivity(openClass);
                             mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        }else if(TeamManagementUserProfileListActivity.approvalType.equals(Constants.PROCESS_APPROVAL)) {
+                        } else if (TeamManagementUserProfileListActivity.approvalType.equals(Constants.PROCESS_APPROVAL)) {
                             Intent openClass = new Intent(mContext, ProcessListApproval.class);
                             openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
-                            openClass.putExtra(Constants.PROCESS_ID,TeamManagementUserProfileListActivity.id );
-                            openClass.putExtra(Constants.PROCESS_NAME,TeamManagementUserProfileListActivity.processTitle);
+                            openClass.putExtra(Constants.PROCESS_ID, TeamManagementUserProfileListActivity.id);
+                            openClass.putExtra(Constants.PROCESS_NAME, TeamManagementUserProfileListActivity.processTitle);
                             mContext.startActivity(openClass);
                             mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                                      }
+                        }
 
 
                     }
@@ -114,8 +123,8 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
         Template template = teplateList.get(position);
 
         holder.txtCommunityName.setText(template.getName());
-        if(mContext instanceof TeamManagementUserProfileListActivity) {
-            if(TeamManagementUserProfileListActivity.approvalType.equals(Constants.USER_APPROVAL)) {
+        if (mContext instanceof TeamManagementUserProfileListActivity) {
+            if (TeamManagementUserProfileListActivity.approvalType.equals(Constants.USER_APPROVAL)) {
 
                 if (template.getStatus() != null) {
                    /* if (template.getStatus()) {
@@ -132,9 +141,6 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
     public int getItemCount() {
         return teplateList.size();
     }
-
-
-
 
 
 }

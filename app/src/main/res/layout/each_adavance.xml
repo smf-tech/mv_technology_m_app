@@ -7,88 +7,98 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:padding="10dp">
+        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/tvProjectNameTitle"
-            android:layout_width="wrap_content"
+        <View
+            android:id="@+id/view1"
+            android:layout_width="5dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="left|center_vertical"
-            android:text="Project Name :-"
-            android:textColor="@color/dark_grey"
-            android:textSize="@dimen/large_text" />
+            android:layout_alignBottom="@+id/textLayout"
+            android:layout_alignTop="@+id/textLayout"
+            android:background="@color/red" />
 
-        <TextView
-            android:id="@+id/tvProjectName"
+        <RelativeLayout
+            android:id="@+id/textLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_centerVertical="true"
             android:layout_toLeftOf="@+id/imgLayout"
-            android:layout_toRightOf="@+id/tvProjectNameTitle"
-            android:gravity="left|center_vertical"
-            android:singleLine="true"
-            android:text="SMF"
-            android:textColor="@color/dark_grey"
-            android:textSize="@dimen/large_text" />
+            android:layout_toRightOf="@+id/view1"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/tvProjectDateTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvProjectNameTitle"
-            android:layout_marginTop="5dp"
-            android:gravity="left|center_vertical"
-            android:text="Date :-"
-            android:textColor="@color/medium_grey"
-            android:textSize="@dimen/medium_text" />
+            <TextView
+                android:id="@+id/tvProjectNameTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="left|center_vertical"
+                android:text="Project Name :-"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/large_text" />
 
-        <TextView
-            android:id="@+id/tvDateName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvProjectName"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_toLeftOf="@+id/imgLayout"
-            android:layout_toRightOf="@+id/tvProjectDateTitle"
-            android:gravity="left|center_vertical"
-            android:singleLine="true"
-            android:text="11/09/1992"
-            android:textColor="@color/medium_grey"
-            android:textSize="@dimen/medium_text" />
+            <TextView
+                android:id="@+id/tvProjectName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/tvProjectNameTitle"
+                android:gravity="left|center_vertical"
+                android:singleLine="true"
+                android:text="SMF"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/large_text" />
 
-        <TextView
-            android:id="@+id/tvAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvProjectDateTitle"
-            android:layout_marginTop="5dp"
-            android:gravity="left|center_vertical"
-            android:text="Amount :-"
-            android:textColor="@color/medium_grey"
-            android:textSize="@dimen/medium_text" />
+            <TextView
+                android:id="@+id/tvProjectDateTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvProjectNameTitle"
+                android:layout_marginTop="5dp"
+                android:gravity="left|center_vertical"
+                android:text="Date :-"
+                android:textColor="@color/medium_grey"
+                android:textSize="@dimen/medium_text" />
 
-        <TextView
-            android:id="@+id/tvAmountName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvDateName"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_toLeftOf="@+id/imgLayout"
-            android:layout_toRightOf="@+id/tvAmount"
-            android:gravity="left|center_vertical"
-            android:singleLine="true"
-            android:text="SMF"
-            android:textColor="@color/medium_grey"
-            android:textSize="@dimen/medium_text" />
+            <TextView
+                android:id="@+id/tvDateName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvProjectName"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/tvProjectDateTitle"
+                android:gravity="left|center_vertical"
+                android:singleLine="true"
+                android:text="11/09/1992"
+                android:textColor="@color/medium_grey"
+                android:textSize="@dimen/medium_text" />
+
+            <TextView
+                android:id="@+id/tvAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvProjectDateTitle"
+                android:layout_marginTop="5dp"
+                android:gravity="left|center_vertical"
+                android:text="Amount :-"
+                android:textColor="@color/medium_grey"
+                android:textSize="@dimen/medium_text" />
+
+            <TextView
+                android:id="@+id/tvAmountName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvDateName"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/tvAmount"
+                android:gravity="left|center_vertical"
+                android:singleLine="true"
+                android:text="SMF"
+                android:textColor="@color/medium_grey"
+                android:textSize="@dimen/medium_text" />
+        </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/imgLayout"
@@ -96,6 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
             android:orientation="vertical">
 
             <ImageView

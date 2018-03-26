@@ -143,7 +143,7 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
             expense.setDecription(binding.editTextDescription.getText().toString().trim());
             expense.setAmount(binding.editTextAmount.getText().toString().trim());
             expense.setVoucherId("" + voucher.getId());
-            voucher.setUser(User.getCurrentUser(this).getMvUser().getId());
+            expense.setUser(User.getCurrentUser(this).getMvUser().getId());
             addExpense(expense);
 
 
@@ -180,6 +180,7 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                                     JSONArray array = object.getJSONArray("Records");
                                     if (array.length() != 0) {
                                         expense.setId(array.getJSONObject(0).getString("Id"));
+                                        expense.setStatus(array.getJSONObject(0).getString("Status__c"));
                                     }
                                     AppDatabase.getAppDatabase(ExpenseNewActivity.this).userDao().insertExpense(expense);
                                     Utills.showToast("Expense Added successfully", ExpenseNewActivity.this);

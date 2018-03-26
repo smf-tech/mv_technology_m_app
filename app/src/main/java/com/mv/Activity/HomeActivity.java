@@ -427,11 +427,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         HomeModel homeModel = new HomeModel();
         homeModel.setMenuName(getString(R.string.about_us));
         homeModel.setMenuIcon(R.drawable.ic_about_us);
-        homeModel.setDestination(AccountSectionActivity.class);
+        homeModel.setDestination(AboutUsActivity.class);
         homeModel.setAccessible(true);
+        menulist.add(homeModel);
+        homeModel = new HomeModel();
         homeModel.setMenuName(getString(R.string.asset_management));
         homeModel.setMenuIcon(R.drawable.ic_about_us);
         homeModel.setDestination(AssetAllocatedListActivity.class);
+        homeModel.setAccessible(true);
+        menulist.add(homeModel);
+        homeModel = new HomeModel();
+        homeModel.setMenuName(getString(R.string.account_section));
+        homeModel.setMenuIcon(R.drawable.ic_account);
+        homeModel.setDestination(AccountSectionActivity.class);
         homeModel.setAccessible(true);
         menulist.add(homeModel);
         mAdapter = new HomeAdapter(menulist, HomeActivity.this);
@@ -442,7 +450,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         GridLayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
         Animation textAnimation = (AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink));
         iv_logo.startAnimation(textAnimation);
-
 
         iv_home_animate.setBackgroundResource(R.drawable.home_progress);
 

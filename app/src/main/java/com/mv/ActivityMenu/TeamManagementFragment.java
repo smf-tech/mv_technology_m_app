@@ -98,6 +98,8 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
         menuList = new ArrayList<>();
         menuList.add(getString(R.string.team_user_approval));
         menuList.add(getString(R.string.team_form_approval));
+        menuList.add(getString(R.string.expense_approval));
+        menuList.add(getString(R.string.adavance_approval));
         processAllList.clear();
         for (int i = 0; i < menuList.size(); i++) {
             Template processList = new Template();

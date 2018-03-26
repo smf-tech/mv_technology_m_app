@@ -107,6 +107,58 @@ public class Adavance implements Serializable {
     @Expose
     private String User;
 
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
+    }
+
+    public String getRespondDate() {
+        return RespondDate;
+    }
+
+    public void setRespondDate(String respondDate) {
+        RespondDate = respondDate;
+    }
+
+    public String getComment() {
+        return Comment;
+    }
+
+    public void setComment(String comment) {
+        Comment = comment;
+    }
+
+    public String getApprovalPerson() {
+        return ApprovalPerson;
+    }
+
+    public void setApprovalPerson(String approvalPerson) {
+        ApprovalPerson = approvalPerson;
+    }
+
+    @ColumnInfo(name = "Status")
+    @SerializedName("Status__c")
+    @Expose
+    private String Status;
+
+    @ColumnInfo(name = "Respond_Date")
+    @SerializedName("Respond_Date__c")
+    @Expose
+    private String RespondDate;
+
+    @ColumnInfo(name = "Comment")
+    @SerializedName("Comment__c")
+    @Expose
+    private String Comment;
+
+    @ColumnInfo(name = "ApprovalPerson")
+    @SerializedName("Approval_Person__c")
+    @Expose
+    private String ApprovalPerson;
+
     public Adavance() {
     }
 

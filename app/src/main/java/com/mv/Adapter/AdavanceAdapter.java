@@ -35,7 +35,8 @@ public class AdavanceAdapter extends RecyclerView.Adapter<AdavanceAdapter.ViewHo
         mContext = context;
         resources = context.getResources();
         mDataList = list;
-        mActivity = (AdavanceListActivity) context;
+        if (context instanceof AdavanceListActivity)
+            mActivity = (AdavanceListActivity) context;
     }
 
 
@@ -59,6 +60,7 @@ public class AdavanceAdapter extends RecyclerView.Adapter<AdavanceAdapter.ViewHo
 
         TextView tvProjectName, tvDateName, tvAmountName;
         ImageView imgEdit, imgDelete;
+        View view;
 
         public ViewHolder(View itemLayoutView) {
 
@@ -66,20 +68,22 @@ public class AdavanceAdapter extends RecyclerView.Adapter<AdavanceAdapter.ViewHo
 
             imgEdit = (ImageView) itemLayoutView.findViewById(R.id.imgEdit);
             imgDelete = (ImageView) itemLayoutView.findViewById(R.id.imgDelete);
-
+            view = itemLayoutView.findViewById(R.id.view1);
             tvProjectName = (TextView) itemLayoutView.findViewById(R.id.tvProjectName);
             tvDateName = (TextView) itemLayoutView.findViewById(R.id.tvDateName);
             tvAmountName = (TextView) itemLayoutView.findViewById(R.id.tvAmountName);
             imgEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mActivity.editAdavance(getAdapterPosition());
+                    if (mContext instanceof AdavanceListActivity)
+                        mActivity.editAdavance(getAdapterPosition());
                 }
             });
             imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    showLogoutPopUp(getAdapterPosition());
+                    if (mContext instanceof AdavanceListActivity)
+                        showLogoutPopUp(getAdapterPosition());
                 }
             });
 
@@ -125,6 +129,24 @@ public class AdavanceAdapter extends RecyclerView.Adapter<AdavanceAdapter.ViewHo
         holder.tvProjectName.setText(adavance.getProject());
         holder.tvDateName.setText(adavance.getDate());
         holder.tvAmountName.setText(adavance.getAmount());
+        if (adavance.getStatus().equalsIgnoreCase("Pending")) {
+            holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.purple));
+        } else if (adavance.getStatus().equalsIgnoreCase("Approved")) {
+            holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.green));
+        } else if (adavance.getStatus().equalsIgnoreCase("Verified")) {
+            holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.orrange2));
+        } else if (adavance.getStatus().equalsIgnoreCase("Rejected")) {
+            holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.red));
+        } else if (adavance.getStatus().equalsIgnoreCase("Paid")) {
+            holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.colorPink));
+        }
+        if (mContext instanceof AdavanceListActivity) {
+            holder.imgDelete.setImageResource(R.drawable.form_delete);
+            holder.imgEdit.setImageResource(R.drawable.ic_form);
+        } else {
+            holder.imgDelete.setImageResource(R.drawable.ic_reject);
+            holder.imgEdit.setImageResource(R.drawable.ic_approve);
+        }
     }
 
 }

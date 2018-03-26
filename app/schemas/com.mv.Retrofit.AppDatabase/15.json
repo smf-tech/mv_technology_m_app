@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 15,
-    "identityHash": "c090cd82ccb94f4b8c44b33389a86b3d",
+    "identityHash": "686f661d2e48904b43bfbdd9cffe9f09",
     "entities": [
       {
         "tableName": "table_community",
@@ -583,7 +583,7 @@
       },
       {
         "tableName": "table_expense",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Amount` TEXT, `Date` TEXT, `Decription` TEXT, `voucherId` TEXT, `partuculars` TEXT, `User` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Amount` TEXT, `Date` TEXT, `Decription` TEXT, `voucherId` TEXT, `partuculars` TEXT, `User` TEXT, `Status` TEXT, `Respond_Date` TEXT, `Comment` TEXT, `ApprovalPerson` TEXT)",
         "fields": [
           {
             "fieldPath": "UniqueId",
@@ -624,6 +624,26 @@
             "fieldPath": "User",
             "columnName": "User",
             "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Status",
+            "columnName": "Status",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "RespondDate",
+            "columnName": "Respond_Date",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Comment",
+            "columnName": "Comment",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "ApprovalPerson",
+            "columnName": "ApprovalPerson",
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -637,7 +657,7 @@
       },
       {
         "tableName": "table_adavance",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `Decription` TEXT, `amount` TEXT, `User` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `Decription` TEXT, `amount` TEXT, `User` TEXT, `Status` TEXT, `Respond_Date` TEXT, `Comment` TEXT, `ApprovalPerson` TEXT)",
         "fields": [
           {
             "fieldPath": "UniqueId",
@@ -672,6 +692,26 @@
           {
             "fieldPath": "User",
             "columnName": "User",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Status",
+            "columnName": "Status",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "RespondDate",
+            "columnName": "Respond_Date",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Comment",
+            "columnName": "Comment",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "ApprovalPerson",
+            "columnName": "ApprovalPerson",
             "affinity": "TEXT"
           }
         ],
@@ -726,7 +766,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c090cd82ccb94f4b8c44b33389a86b3d\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"686f661d2e48904b43bfbdd9cffe9f09\")"
     ]
   }
 }

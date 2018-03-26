@@ -88,12 +88,10 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
                 try {
                     String str = response.body().string();
                     if (str != null && str.length() > 0) {
-                        if (response.isSuccess()) {
-                            if (Arrays.asList(gson.fromJson(str, Adavance[].class)) != null) {
-                                AppDatabase.getAppDatabase(AdavanceListActivity.this).userDao().deleteAllAdavance();
-                                AppDatabase.getAppDatabase(AdavanceListActivity.this).userDao().insertAdavance(Arrays.asList(gson.fromJson(str, Adavance[].class)));
-                                setRecyclerView();
-                            }
+                        if (Arrays.asList(gson.fromJson(str, Adavance[].class)) != null) {
+                            AppDatabase.getAppDatabase(AdavanceListActivity.this).userDao().deleteAllAdavance();
+                            AppDatabase.getAppDatabase(AdavanceListActivity.this).userDao().insertAdavance(Arrays.asList(gson.fromJson(str, Adavance[].class)));
+                            setRecyclerView();
                         }
                     }
 

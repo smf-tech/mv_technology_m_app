@@ -92,12 +92,10 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
                 try {
                     String str = response.body().string();
                     if (str != null && str.length() > 0) {
-                        if (response.isSuccess()) {
-                            if (Arrays.asList(gson.fromJson(str, Expense[].class)) != null) {
-                                AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().deleteExpense(voucher.getId());
-                                AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().insertExpense(Arrays.asList(gson.fromJson(str, Expense[].class)));
-                                setRecyclerView();
-                            }
+                        if (Arrays.asList(gson.fromJson(str, Expense[].class)) != null) {
+                            AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().deleteExpense(voucher.getId());
+                            AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().insertExpense(Arrays.asList(gson.fromJson(str, Expense[].class)));
+                            setRecyclerView();
                         }
                     }
                 } catch (IOException e) {
