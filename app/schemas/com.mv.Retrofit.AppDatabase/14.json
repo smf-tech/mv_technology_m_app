@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 14,
-    "identityHash": "6a826baf4b0185af058a9894ff2a942b",
+    "identityHash": "a70475fb1367581142cda507850d7f08",
     "entities": [
       {
         "tableName": "table_community",
@@ -209,7 +209,7 @@
       },
       {
         "tableName": "table_process",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `template_id` TEXT, `template_name` TEXT, `answerCount` TEXT, `expectedCount` TEXT, `submittedCount` TEXT, `Targated_Date__c` TEXT, `Location` INTEGER, `LocationLevel` TEXT, `status` INTEGER, `type` TEXT, `url` TEXT, `MV_Process__c` TEXT, `MV_User__c` TEXT, `P1F1__c` TEXT, `P1F2__c` TEXT, `P1F3__c` TEXT, `P1F4__c` TEXT, `P1F5__c` TEXT, `Is_Editable__c` INTEGER, `Is_Multiple_Entry_Allowed__c` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `template_id` TEXT, `User_Mobile_App_Version__c` TEXT, `template_name` TEXT, `answerCount` TEXT, `expectedCount` TEXT, `submittedCount` TEXT, `Targated_Date__c` TEXT, `Location` INTEGER, `LocationLevel` TEXT, `type` TEXT, `url` TEXT, `status` INTEGER, `MV_Process__c` TEXT, `MV_User__c` TEXT, `P1F1__c` TEXT, `P1F2__c` TEXT, `P1F3__c` TEXT, `P1F4__c` TEXT, `P1F5__c` TEXT, `Is_Editable__c` INTEGER, `Is_Multiple_Entry_Allowed__c` INTEGER)",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -219,6 +219,11 @@
           {
             "fieldPath": "Id",
             "columnName": "template_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "User_Mobile_App_Version__c",
+            "columnName": "User_Mobile_App_Version__c",
             "affinity": "TEXT"
           },
           {
@@ -257,11 +262,6 @@
             "affinity": "TEXT"
           },
           {
-            "fieldPath": "status",
-            "columnName": "status",
-            "affinity": "INTEGER"
-          },
-          {
             "fieldPath": "type",
             "columnName": "type",
             "affinity": "TEXT"
@@ -270,6 +270,11 @@
             "fieldPath": "url",
             "columnName": "url",
             "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "MV_Process__c",
@@ -521,187 +526,11 @@
         },
         "indices": [],
         "foreignKeys": []
-      },
-      {
-        "tableName": "table_voucher",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `Decription` TEXT, `NoOfPeople` TEXT)",
-        "fields": [
-          {
-            "fieldPath": "UniqueId",
-            "columnName": "unique_Id",
-            "affinity": "INTEGER"
-          },
-          {
-            "fieldPath": "Id",
-            "columnName": "Id",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "Project",
-            "columnName": "Project",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "Date",
-            "columnName": "Date",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "Decription",
-            "columnName": "Decription",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "NoOfPeople",
-            "columnName": "NoOfPeople",
-            "affinity": "TEXT"
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "unique_Id"
-          ],
-          "autoGenerate": true
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "table_expense",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Amount` TEXT, `Date` TEXT, `Decription` TEXT, `voucherId` TEXT, `partuculars` TEXT)",
-        "fields": [
-          {
-            "fieldPath": "UniqueId",
-            "columnName": "unique_Id",
-            "affinity": "INTEGER"
-          },
-          {
-            "fieldPath": "Id",
-            "columnName": "Id",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "Amount",
-            "columnName": "Amount",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "Date",
-            "columnName": "Date",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "Decription",
-            "columnName": "Decription",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "voucherId",
-            "columnName": "voucherId",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "partuculars",
-            "columnName": "partuculars",
-            "affinity": "TEXT"
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "unique_Id"
-          ],
-          "autoGenerate": true
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "table_adavance",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `Decription` TEXT, `amount` TEXT)",
-        "fields": [
-          {
-            "fieldPath": "UniqueId",
-            "columnName": "unique_Id",
-            "affinity": "INTEGER"
-          },
-          {
-            "fieldPath": "Id",
-            "columnName": "Id",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "Project",
-            "columnName": "Project",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "Date",
-            "columnName": "Date",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "Decription",
-            "columnName": "Decription",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "Amount",
-            "columnName": "amount",
-            "affinity": "TEXT"
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "unique_Id"
-          ],
-          "autoGenerate": true
-        },
-        "indices": [],
-        "foreignKeys": []
-      },
-      {
-        "tableName": "table_adavance",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `SalaryDate` TEXT, `SalaryMonth` TEXT, `Amount` TEXT)",
-        "fields": [
-          {
-            "fieldPath": "UniqueId",
-            "columnName": "unique_Id",
-            "affinity": "INTEGER"
-          },
-          {
-            "fieldPath": "Id",
-            "columnName": "Id",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "Date",
-            "columnName": "SalaryDate",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "Month",
-            "columnName": "SalaryMonth",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "Amount",
-            "columnName": "Amount",
-            "affinity": "TEXT"
-          }
-        ],
-        "primaryKey": {
-          "columnNames": [
-            "unique_Id"
-          ],
-          "autoGenerate": true
-        },
-        "indices": [],
-        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"6a826baf4b0185af058a9894ff2a942b\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"a70475fb1367581142cda507850d7f08\")"
     ]
   }
 }

@@ -30,7 +30,7 @@ android {
             storePassword 'mulyavardhan'
         }
     }
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion '26.0.2'
     // used by Room, to test migrations
     sourceSets {
@@ -41,8 +41,8 @@ android {
         applicationId "com.mv"
         minSdkVersion 17
         targetSdkVersion 22
-        versionCode 21
-        versionName "2.9"
+        versionCode 22
+        versionName "3.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "BASEURL", "\"http://mobileapp.mulyavardhan.org/mv_gov/index.php/\""
         multiDexEnabled true
@@ -67,6 +67,12 @@ android {
     }
     dataBinding {
         enabled = true
+    }
+    dexOptions {
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 

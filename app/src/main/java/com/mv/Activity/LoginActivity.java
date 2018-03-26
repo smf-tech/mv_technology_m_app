@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private PreferenceHelper preferenceHelper;
     private BroadcastReceiver mIntentReceiver;
     private String data;
-    User user = new User();
+    User user ;
     String msg = "";
     CountDownTimer yourCountDownTimer;
     private static ViewPager mPager;
@@ -83,6 +83,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        try {
+            user= (User) Class.forName("User").newInstance();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);
 
@@ -412,9 +423,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private boolean isValidate(EditText view, int charlimit, String errorMEssage) {
         msg = "";
         if (view.getText().toString().trim().length() == 0) {
-            msg = getString(R.string.please_enter) + "" + errorMEssage;
+            msg = getString(R.string.please_enter) + " " + errorMEssage;
         } else if (view.getText().toString().trim().length() != charlimit) {
-            msg = getString(R.string.please_enter) + " " + charlimit + getString(R.string.digit) + errorMEssage;
+            msg = getString(R.string.please_enter) + " " + charlimit+" " + getString(R.string.digit)+" " + errorMEssage;
         }
         if (TextUtils.isEmpty(msg))
             return true;

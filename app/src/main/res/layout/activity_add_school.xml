@@ -14,7 +14,7 @@
 
         android:id="@+id/layout_main"
         android:layout_width="match_parent"
-        android:padding="@dimen/dimen_10dp"
+
         android:weightSum="10"
         android:focusableInTouchMode="true"
         android:animateLayoutChanges="true"
@@ -23,14 +23,13 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/toolbar"
-            android:visibility="gone"/>
+            layout="@layout/toolbar"/>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="9"
-
+            android:padding="@dimen/dimen_10dp"
 
             android:fillViewport="true">
 
@@ -38,11 +37,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
-
-
-
-
-
 
                 <com.mv.Widgets.MyTextView
                     android:id="@+id/tv_state"

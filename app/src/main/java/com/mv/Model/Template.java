@@ -28,11 +28,23 @@ public class Template implements Serializable, Parcelable {
     @Expose
     private String Id;
 
+    public String getUser_Mobile_App_Version__c() {
+        return User_Mobile_App_Version__c;
+    }
+
+    public void setUser_Mobile_App_Version__c(String user_Mobile_App_Version__c) {
+        User_Mobile_App_Version__c = user_Mobile_App_Version__c;
+    }
+
+    @ColumnInfo(name = "User_Mobile_App_Version__c")
+    @SerializedName("User_Mobile_App_Version__c")
+    @Expose
+    private String User_Mobile_App_Version__c;
+
     @ColumnInfo(name = "template_name")
     @SerializedName("template_name")
     @Expose
     private String Name;
-
     public String getAnswerCount() {
         return answerCount;
     }
@@ -99,10 +111,7 @@ public class Template implements Serializable, Parcelable {
     @ColumnInfo(name = "LocationLevel")
     private String LocationLevel;
 
-    @ColumnInfo(name = "status")
-    @SerializedName("status")
-    @Expose
-    private String status;
+
 
 
 
@@ -218,6 +227,17 @@ public class Template implements Serializable, Parcelable {
         P1F5__c = p1F5__c;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @SerializedName("status")
+    @Expose
+    private String status;
     @SerializedName("MV_Process__c")
     @Expose
     private String MV_Process__c;
@@ -270,30 +290,27 @@ public class Template implements Serializable, Parcelable {
     public Template() {
     }
 
+
     @Override
     public int describeContents() {
         return 0;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.Unique_Id);
         dest.writeString(this.Id);
+        dest.writeString(this.User_Mobile_App_Version__c);
         dest.writeString(this.Name);
         dest.writeString(this.answerCount);
+        dest.writeString(this.expectedCount);
+        dest.writeString(this.submittedCount);
         dest.writeString(this.Targated_Date__c);
         dest.writeValue(this.Location);
         dest.writeString(this.LocationLevel);
         dest.writeString(this.type);
         dest.writeString(this.url);
+        dest.writeString(this.status);
         dest.writeString(this.MV_Process__c);
         dest.writeString(this.MV_User__c);
         dest.writeString(this.P1F1__c);
@@ -303,19 +320,22 @@ public class Template implements Serializable, Parcelable {
         dest.writeString(this.P1F5__c);
         dest.writeValue(this.Is_Editable__c);
         dest.writeValue(this.Is_Multiple_Entry_Allowed__c);
-        dest.writeValue(this.getStatus());
     }
 
     protected Template(Parcel in) {
         this.Unique_Id = in.readInt();
         this.Id = in.readString();
+        this.User_Mobile_App_Version__c = in.readString();
         this.Name = in.readString();
         this.answerCount = in.readString();
+        this.expectedCount = in.readString();
+        this.submittedCount = in.readString();
         this.Targated_Date__c = in.readString();
         this.Location = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.LocationLevel = in.readString();
         this.type = in.readString();
         this.url = in.readString();
+        this.status = in.readString();
         this.MV_Process__c = in.readString();
         this.MV_User__c = in.readString();
         this.P1F1__c = in.readString();
@@ -325,7 +345,6 @@ public class Template implements Serializable, Parcelable {
         this.P1F5__c = in.readString();
         this.Is_Editable__c = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.Is_Multiple_Entry_Allowed__c = (Boolean) in.readValue(Boolean.class.getClassLoader());
-        this.status = in.readString();
     }
 
     public static final Creator<Template> CREATOR = new Creator<Template>() {

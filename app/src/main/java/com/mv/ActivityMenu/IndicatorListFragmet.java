@@ -177,6 +177,9 @@ public class IndicatorListFragmet extends AppCompatActivity implements View.OnCl
                             processAllList.add(processList);
                         }
 
+                        processList = new DashaBoardListModel();
+                        processList.setName(getString(R.string.app_versio_report));
+                        processAllList.add(0,processList);
                         mAdapter.notifyDataSetChanged();
                     }
                 } catch (JSONException e) {

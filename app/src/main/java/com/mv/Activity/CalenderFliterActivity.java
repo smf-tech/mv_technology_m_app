@@ -89,6 +89,11 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         selectedRole = User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
 
         initViews();
+        processList = new ArrayList<>();
+        Template process = new Template();
+        process.setName("Other");
+        process.setMV_Process__c("Other");
+        processList.add(process);
         if (Utills.isConnected(this))
             getCalendeEvents();
         else
@@ -166,7 +171,42 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         catagory.add("School Visit");
         catagory.add("School and Classroom Observation");
         catagory.add("Training");
+        if(User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.State))
+        {
 
+        }
+        else if(User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.DISTRICT))
+        {
+            binding.spinnerState.setEnabled(false);
+
+        }  else if(User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.TALUKA))
+        {
+            binding.spinnerState.setEnabled(false);
+            binding.spinnerDistrict.setEnabled(false);
+
+        }
+        else if(User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.CLUSTER))
+        {
+            binding.spinnerState.setEnabled(false);
+            binding.spinnerDistrict.setEnabled(false);
+            binding.spinnerTaluka.setEnabled(false);
+
+        }
+        else if(User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.VILlAGE))
+        {
+            binding.spinnerState.setEnabled(false);
+            binding.spinnerDistrict.setEnabled(false);
+            binding.spinnerTaluka.setEnabled(false);
+            binding.spinnerCluster.setEnabled(false);
+
+        }
+        else if(User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.SCHOOL))
+        {  binding.spinnerState.setEnabled(false);
+            binding.spinnerDistrict.setEnabled(false);
+            binding.spinnerTaluka.setEnabled(false);
+            binding.spinnerCluster.setEnabled(false);
+            binding.spinnerVillage.setEnabled(false);
+        }
         // setSpinnerAdapter(catagory, catagory_adapter, binding.spinnerCatogory, "");
         setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
         setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
@@ -174,6 +214,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         setSpinnerAdapter(mListVillage, village_adapter, binding.spinnerVillage, selectedVillage);
         setSpinnerAdapter(mListSchoolName, school_adapter, binding.spinnerSchoolName, selectedSchool);
         setSpinnerAdapter(mListOrganization, organization_adapter, binding.spinnerOrganization, selectedOrganization);
+
 
     }
 
@@ -899,7 +940,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                         String data = response.body().string();
                         if (data != null && data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
-                            processList = new ArrayList<>();
+
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 Template process = new Template();
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -908,8 +949,6 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                                 processList.add(process);
 
                             }
-
-
                         }
 
                     }
@@ -980,7 +1019,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 // arraylist to keep the selected items
         final ArrayList seletedItems = new ArrayList();
         android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(CalenderFliterActivity.this)
-                .setTitle("Select Role")
+                .setTitle("Select Category")
                 .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {

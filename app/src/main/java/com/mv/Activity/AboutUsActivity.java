@@ -1,6 +1,7 @@
 package com.mv.Activity;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.mv.R;
 import com.mv.Utils.LocaleManager;
+import com.mv.Widgets.FontManager;
 
 public class AboutUsActivity extends AppCompatActivity  implements View.OnClickListener{
     private ImageView img_back, img_list,img_logout;
@@ -21,6 +23,8 @@ public class AboutUsActivity extends AppCompatActivity  implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_us);
         setActionbar(getString(R.string.about_us));
+      /*  Typeface iconFont = FontManager.getTypeface(getApplicationContext(), FontManager.FONTAWESOME);
+        FontManager.markAsIconContainer(findViewById(R.id.icons_container), iconFont);*/
     }
     @Override
     protected void attachBaseContext(Context base) {

@@ -192,16 +192,12 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                             calenderEvent.setTitle(jsonArray.getJSONObject(i).getString("Title__c"));
                             //  calenderEvent.setMV_User1__c(jsonArray.getJSONObject(i).getString("MV_User1__c"));
                             CalendarDay day = CalendarDay.from(formatter.parse(jsonArray.getJSONObject(i).getString("Date__c")));
-
                             if (eventMap.get(jsonArray.getJSONObject(i).getString("Date__c")) != null)
                                 dateList = eventMap.get(jsonArray.getJSONObject(i).getString("Date__c"));
                             dateList.add(calenderEvent);
                             eventMap.put(day, dateList);
                             dates.add(day);
-
                         }
-
-
                         AppDatabase.getAppDatabase(context).userDao().deleteCalender();
                         AppDatabase.getAppDatabase(context).userDao().insertCalendr(dateList);
                         binding.calendarView.addDecorator(new EventDecorator(Color.RED, dates));
@@ -226,5 +222,23 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
 
             }
         });
+    }
+
+    public void removeEvent(String date)
+    {
+
+     if( AppDatabase.getAppDatabase(getApplicationContext()).userDao().getCalenderList(date).size()==0)
+     {
+         try {
+             binding.calendarView.removeDecorators();
+             CalendarDay day = CalendarDay.from(formatter.parse(date));
+             dates.remove(day);
+             binding.calendarView.addDecorator(new EventDecorator(Color.RED, dates));
+         } catch (ParseException e) {
+             e.printStackTrace();
+         }
+
+     }
+
     }
 }

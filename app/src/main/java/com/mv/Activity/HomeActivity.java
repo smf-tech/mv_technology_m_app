@@ -64,6 +64,7 @@ import com.mv.ActivityMenu.ThetSavandFragment;
 import com.mv.ActivityMenu.TrainingCalender;
 import com.mv.Adapter.HomeAdapter;
 import com.mv.Model.HomeModel;
+import com.mv.Model.LocationModel;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -122,6 +123,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
+
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
         binding.setActivity(this);
@@ -412,7 +414,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         menuListName.add(Constants.My_Reports);
         menuListName.add(Constants.My_Calendar);
 
-
+        menuListName.add(Constants.HR_MODULE);
+        menuListName.add(Constants.Account_Section);
+        menuListName.add(Constants.Asset_management);
         //for loop for adding accessible tab
         for (int i = 0; i < allTab.size(); i++) {
 
@@ -424,22 +428,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 menulist.add(checkList(menuListName, i, false));
             }
         }
+
+
         HomeModel homeModel = new HomeModel();
         homeModel.setMenuName(getString(R.string.about_us));
         homeModel.setMenuIcon(R.drawable.ic_about_us);
         homeModel.setDestination(AboutUsActivity.class);
-        homeModel.setAccessible(true);
-        menulist.add(homeModel);
-        homeModel = new HomeModel();
-        homeModel.setMenuName(getString(R.string.asset_management));
-        homeModel.setMenuIcon(R.drawable.ic_about_us);
-        homeModel.setDestination(AssetAllocatedListActivity.class);
-        homeModel.setAccessible(true);
-        menulist.add(homeModel);
-        homeModel = new HomeModel();
-        homeModel.setMenuName(getString(R.string.account_section));
-        homeModel.setMenuIcon(R.drawable.ic_account);
-        homeModel.setDestination(AccountSectionActivity.class);
         homeModel.setAccessible(true);
         menulist.add(homeModel);
         mAdapter = new HomeAdapter(menulist, HomeActivity.this);
@@ -450,6 +444,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         GridLayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
         Animation textAnimation = (AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink));
         iv_logo.startAnimation(textAnimation);
+
 
         iv_home_animate.setBackgroundResource(R.drawable.home_progress);
 
@@ -523,6 +518,21 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             homeModel.setMenuName(getString(R.string.training_calendar));
             homeModel.setMenuIcon(R.drawable.ic_calender);
             homeModel.setDestination(TrainingCalender.class);
+
+        }
+        else if (allTab.get(i).equals(Constants.HR_MODULE)) {
+            homeModel.setMenuName(getString(R.string.leave));
+            homeModel.setMenuIcon(R.drawable.ic_team_management);
+            homeModel.setDestination(LeaveApprovalActivity.class);
+        } else if (allTab.get(i).equals(Constants.Account_Section)) {
+            homeModel.setMenuName(getString(R.string.account_section));
+            homeModel.setMenuIcon(R.drawable.ic_reports);
+            homeModel.setDestination(AccountSectionActivity.class);
+
+        } else if (allTab.get(i).equals(Constants.Asset_management)) {
+            homeModel.setMenuName(getString(R.string.asset_management));
+            homeModel.setMenuIcon(R.drawable.ic_calender);
+            homeModel.setDestination(AssetAllocatedListActivity.class);
 
         }
         return homeModel;
@@ -794,6 +804,45 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private void showUpdateDataPopup() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+
+        // Setting Dialog Title
+        alertDialog.setTitle(getString(R.string.app_name));
+
+        // Setting Dialog Message
+        alertDialog.setMessage(getString(R.string.update_data_string));
+
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.drawable.logomulya);
+
+        // Setting CANCEL Button
+        alertDialog.setButton2(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+            }
+        });
+        // Setting OK Button
+        alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                List<LocationModel> districts = AppDatabase.getAppDatabase(HomeActivity.this).userDao().getDistinctDistrict();
+                AppDatabase.getAppDatabase(HomeActivity.this).userDao().clearLocation();
+                for (int i = 0; i < districts.size(); i++) {
+                    Intent intent = new Intent(getApplicationContext(), LocationService.class);
+                    // add infos for the service which file to download and where to store
+                    intent.putExtra(Constants.State, districts.get(i).getState());
+                    intent.putExtra(Constants.DISTRICT, districts.get(i).getDistrict());
+                    startService(intent);
+                }
+                if (Utills.isConnected(HomeActivity.this))
+                    getUserData();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
+
     private void sendLogOutRequest() {
         if (Utills.isConnected(this)) {
             Utills.showProgressDialog(this);
@@ -874,7 +923,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         // Setting Dialog Message
         if (User.getCurrentUser(getApplicationContext()).getMvUser().getApproval_role() != null) {
-            message = getString(R.string.approve_profile) + "\n" + User.getCurrentUser(getApplicationContext()).getMvUser().getApproval_role() + " " + getString(R.string.approve_profile2);
+            if (!User.getCurrentUser(getApplicationContext()).getMvUser().getApprover_Comment__c().equals(""))
+                message = getString(R.string.approve_profile) + "\n"+User.getCurrentUser(getApplicationContext()).getMvUser().getApprover_Comment__c();
+            else
+                message = getString(R.string.approve_profile) + "\n" + User.getCurrentUser(getApplicationContext()).getMvUser().getApproval_role() + " " + getString(R.string.approve_profile2);
+
         } else {
             message = getString(R.string.approve_profile);
         }
@@ -1207,9 +1260,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         } else if (id == R.id.action_callus) {
             CallUSDialog();
-           /* Uri uri = Uri.parse("https://hangouts.google.com/group/AXhIbyg2tO8QkfDY2"); // missing 'http://' will cause crashed
-            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);*/
+
+        } else if (id == R.id.action_update_user_data) {
+
+            showUpdateDataPopup();
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

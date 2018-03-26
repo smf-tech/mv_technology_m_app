@@ -124,6 +124,14 @@
         <item>Cluster 6</item>
     </string-array>
 
+
+    <string-array name="array_of_leaves">
+        <item>CL/SL</item>
+        <item>Paid</item>
+        <item>Unpaid</item>
+        <item>Compoff</item>
+
+    </string-array>
     <string-array name="places">
         <item>Palais Garnie</item>
         <item>Piazza del Duomo</item>
@@ -204,6 +212,15 @@
         <item>Select</item>
         <item>Goa</item>
         <item>Maharashtra</item>
+
+    </string-array>
+
+    <string-array name="array_of_asset_status">
+        <item>Select</item>
+        <item>Working</item>
+        <item>NotWorking</item>
+        <item>ForRepair</item>
+        <item>Damaged</item>
 
     </string-array>
 </resources>

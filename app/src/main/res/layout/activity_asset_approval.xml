@@ -134,6 +134,31 @@
 
 
 
+                <RelativeLayout
+                    android:id="@+id/rel_AssetName"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/grey_box"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:padding="10dp"
+                    >
+
+                    <Spinner
+                        android:id="@+id/spinner_assetstaus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="3dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:prompt="@string/asset_name"
+                        android:entries="@array/array_of_asset_status"
+
+                        android:spinnerMode="dialog" />
+                </RelativeLayout>
 
             </LinearLayout>
 

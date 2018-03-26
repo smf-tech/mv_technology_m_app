@@ -120,6 +120,9 @@ public interface UserDao {
     @Query("SELECT DISTINCT Section FROM " + Constants.TABLE_DOWNLOAD_CONTENT + " where Lang = :lang")
     List<String> getDistinctDownloadContent(String lang);
 
+    @Query("SELECT DISTINCT District,State FROM " + Constants.TABLE_LOCATION + " where Taluka != '' AND State != ''")
+    List<LocationModel> getDistinctDistrict();
+
     @Query("SELECT *  FROM " + Constants.TABLE_DOWNLOAD_CONTENT + " where Section = :section AND Lang = :lang")
     List<DownloadContent> getDownloadContent(String section, String lang);
 
@@ -241,6 +244,7 @@ public interface UserDao {
     @Query("DELETE FROM " + Constants.TABLE_CALANDER)
     public void deleteCalender();
 
+
     @Query("DELETE FROM " + Constants.TABLE_COMMUNITY)
     public void clearTableCommunity();
 
@@ -287,4 +291,6 @@ public interface UserDao {
     @Query("DELETE FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId AND  (isActive = :flag OR isDelete =:deleteflag)")
     int deletepost(String communityId, Boolean flag, Boolean deleteflag);
 
+    @Query("DELETE FROM " + Constants.TABLE_CALANDER + " where Id = :calenderId")
+    public int deleteCalenderEvent(String calenderId);
 }

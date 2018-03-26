@@ -153,12 +153,10 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
                                     processList.setName(jsonArray.getJSONObject(i).getString("username"));
                                    if  (jsonArray.getJSONObject(i).has("status"))
                                     processList.setStatus(jsonArray.getJSONObject(i).getString("status"));
-
-
                                 processAllList.add(processList);
                             }
-                            AppDatabase.getAppDatabase(context).userDao().deleteTable();
-                            AppDatabase.getAppDatabase(context).userDao().insertProcess(processAllList);
+                       ///     AppDatabase.getAppDatabase(context).userDao().deleteTable();
+                          //  AppDatabase.getAppDatabase(context).userDao().insertProcess(processAllList);
                             mAdapter.notifyDataSetChanged();
                             textNoData.setVisibility(View.GONE);
                         }else {
@@ -219,12 +217,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         binding.recyclerView.setAdapter(mAdapter);
     }
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        if (Utills.isConnected(context))
-            getAllProcess();
-    }
+
 
 
 }

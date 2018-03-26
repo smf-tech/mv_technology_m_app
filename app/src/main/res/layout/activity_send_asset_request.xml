@@ -39,6 +39,7 @@
             android:layout_marginTop="3dp"
             android:paddingBottom="10dp"
             >
+
             <Spinner
                 android:id="@+id/spinner_Assetname"
                 android:layout_width="match_parent"
@@ -88,7 +89,7 @@
             android:background="@drawable/lighter_grey_box"
             android:padding="10dp">
 
-            <com.mv.Widgets.MyEditTextView
+            <com.mv.Widgets.MyTextView
                 android:id="@+id/edit_text_issue_date"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -97,7 +98,6 @@
                 android:inputType="textCapWords"
                 android:singleLine="true"
                 android:textColor="@color/black"
-                android:focusable="true"
 
                 android:textSize="@dimen/medium_text" />
         </android.support.design.widget.TextInputLayout>
@@ -114,7 +114,7 @@
             android:visibility="gone"
             android:padding="10dp">
 
-            <com.mv.Widgets.MyEditTextView
+            <com.mv.Widgets.MyTextView
                 android:id="@+id/edit_text_tentative_return_date"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -122,7 +122,6 @@
                 android:hint="@string/asset_tentative_return_date"
                 android:inputType="textCapWords"
                 android:singleLine="true"
-                android:focusable="false"
                 android:textColor="@color/black"
 
                 android:textSize="@dimen/medium_text" />

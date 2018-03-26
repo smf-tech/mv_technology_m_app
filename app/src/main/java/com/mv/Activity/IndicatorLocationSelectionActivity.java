@@ -222,7 +222,13 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 intent.putExtra(Constants.LOCATION, locationModel);
                 startActivity(intent);
                 finish();
-            } else {
+            }
+            if (processId.equals("version")) {
+                Intent intent = new Intent(IndicatorLocationSelectionActivity.this, VersionReportActivity.class);
+                intent.putExtra(Constants.LOCATION, locationModel);
+                startActivity(intent);
+                finish();
+            }else {
                 Intent intent = new Intent(IndicatorLocationSelectionActivity.this, OverallReportActivity.class);
                 intent.putExtra(Constants.TITLE, title);
                 intent.putExtra(Constants.INDICATOR_TASK, task);
@@ -610,33 +616,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         });
     }
 
-    private void getCluster() {
-        Utills.showProgressDialog(this, getString(R.string.loding_cluster), getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getCluster(User.getCurrentUser(IndicatorLocationSelectionActivity.this).getMvUser().getState(), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka)).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
-                try {
-                    mListCluster.clear();
-                    mListCluster.add("Select");
-                    JSONArray jsonArr = new JSONArray(response.body().string());
-                    for (int i = 0; i < jsonArr.length(); i++) {
-                        mListCluster.add(jsonArr.getString(i));
-                    }
-                  //  setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster, selectedCluster);
-                } catch (JSONException | IOException e) {
-                    e.printStackTrace();
-                }
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Utills.hideProgressDialog();
-            }
-        });
-    }
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
 

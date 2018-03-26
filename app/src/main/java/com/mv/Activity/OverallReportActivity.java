@@ -85,6 +85,7 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
         title = getIntent().getExtras().getString(Constants.TITLE);
         locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
         processId = getIntent().getExtras().getString(Constants.PROCESS_ID);
+
         if (locationModel == null) {
             locationModel = new LocationModel();
             locationModel.setState(User.getCurrentUser(getApplicationContext()).getMvUser().getState());

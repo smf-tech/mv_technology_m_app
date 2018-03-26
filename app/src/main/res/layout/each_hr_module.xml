@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="processlistApprove"
+            type="com.mv.Activity.ProcessListApproval" />
+    </data>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+    <LinearLayout
+        android:id="@+id/ll_spinner_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/grey_box"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+  >
+
+        <TextView
+            android:id="@+id/tv_pd_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="@dimen/dimen_5dp"
+            android:text="@string/type_of_leaves" />
+
+        <Spinner
+            android:id="@+id/sp_type_of_leaves"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:layout_marginLeft="@dimen/dimen_5dp"
+            android:layout_marginRight="@dimen/dimen_5dp"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:background="@drawable/grey_box"
+            android:minHeight="40dp"
+            android:padding="@dimen/dimen_5dp"
+            android:prompt="@string/question_5"
+            android:spinnerMode="dialog" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/ll_date_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/grey_box"
+        android:gravity="center_vertical"
+        android:weightSum="10"
+        android:orientation="horizontal"
+   >
+
+
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="0dp"
+            android:layout_weight="5"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_view1"
+            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/lighter_grey_box"
+            android:padding="10dp">
+
+            <com.mv.Widgets.MyEditTextView
+                android:id="@+id/input_hr_form_date"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="@string/from_date"
+                android:inputType="textPersonName"
+                android:textIsSelectable="true"
+                android:textColor="@color/black"
+
+                android:textSize="@dimen/medium_text" />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_view1"
+            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_weight="5"
+            android:layout_marginTop="10dp"
+
+            android:background="@drawable/lighter_grey_box"
+            android:padding="10dp">
+
+            <com.mv.Widgets.MyEditTextView
+                android:id="@+id/input_hr_to_date"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:hint="@string/to_date"
+                android:inputType="textPersonName"
+                android:textIsSelectable="true"
+                android:textColor="@color/black"
+
+                android:textSize="@dimen/medium_text" />
+        </android.support.design.widget.TextInputLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_edittext_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/grey_box"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+       >
+
+        <TextView
+            android:id="@+id/tv_edittext_question"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dimen_5dp"
+            android:layout_marginLeft="5dp"
+
+            android:layout_marginTop="@dimen/dimen_5dp"
+            android:text="@string/reason" />
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/input_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/txt_view1"
+            android:layout_marginBottom="@dimen/dimen_10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="10dp"
+
+            android:background="@drawable/lighter_grey_box"
+            android:padding="10dp">
+
+        <com.mv.Widgets.MyEditTextView
+            android:id="@+id/et_process_detail"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:minLines="3"
+            android:inputType="textPersonName"
+            android:textIsSelectable="true"
+            android:textColor="@color/black"
+
+            android:textSize="@dimen/medium_text" />
+    </android.support.design.widget.TextInputLayout>
+
+
+    </LinearLayout>
+
+    <com.mv.Widgets.MyFontButton
+        android:id="@+id/btn_hr_submit"
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorPink"
+        android:gravity="center_horizontal|center_vertical"
+        android:singleLine="true"
+        android:text="@string/Submit"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="@dimen/large_text" />
+</LinearLayout>
+</layout>
