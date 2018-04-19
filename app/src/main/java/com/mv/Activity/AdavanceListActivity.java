@@ -86,15 +86,16 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
                 Utills.hideProgressDialog();
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 try {
-                    String str = response.body().string();
-                    if (str != null && str.length() > 0) {
-                        if (Arrays.asList(gson.fromJson(str, Adavance[].class)) != null) {
-                            AppDatabase.getAppDatabase(AdavanceListActivity.this).userDao().deleteAllAdavance();
-                            AppDatabase.getAppDatabase(AdavanceListActivity.this).userDao().insertAdavance(Arrays.asList(gson.fromJson(str, Adavance[].class)));
-                            setRecyclerView();
+                    if (response != null && response.isSuccess()) {
+                        String str = response.body().string();
+                        if (str != null && str.length() > 0) {
+                            if (Arrays.asList(gson.fromJson(str, Adavance[].class)) != null) {
+                                AppDatabase.getAppDatabase(AdavanceListActivity.this).userDao().deleteAllAdavance();
+                                AppDatabase.getAppDatabase(AdavanceListActivity.this).userDao().insertAdavance(Arrays.asList(gson.fromJson(str, Adavance[].class)));
+                                setRecyclerView();
+                            }
                         }
                     }
-
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -178,9 +179,46 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void deleteAdavance(int position) {
-        AppDatabase.getAppDatabase(this).userDao().deleteAdavance(mList.get(position));
-        mList.remove(position);
-        adapter.notifyItemRemoved(position);
-        Utills.showToast("Adavance Deleted Successfully", this);
+        if (Utills.isConnected(this)) {
+            deleteRecord(position);
+        } else {
+            Utills.showInternetPopUp(this);
+        }
+    }
+
+    private void deleteRecord(int position) {
+        Utills.showProgressDialog(this, "Deleting Adavance", getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.DeleteAccountData + "?Id=" + mList.get(position).getId() + "&Object=Adavance";
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                try {
+                    if (response != null && response.isSuccess()) {
+                        String str = response.body().string();
+                        if (str.contains("deleted")) {
+                            AppDatabase.getAppDatabase(AdavanceListActivity.this).userDao().deleteAdavance(mList.get(position));
+                            mList.remove(position);
+                            adapter.notifyItemRemoved(position);
+                            Utills.showToast("Adavance Deleted Successfully", AdavanceListActivity.this);
+                        }
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
     }
 }

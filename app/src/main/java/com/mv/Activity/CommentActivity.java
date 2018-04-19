@@ -1,17 +1,13 @@
 package com.mv.Activity;
 
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,9 +17,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mv.Adapter.CommentAdapter;
-import com.mv.Adapter.ContentAdapter;
 import com.mv.Model.Comment;
-import com.mv.Model.Content;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -33,14 +27,12 @@ import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityCommentBinding;
-import com.mv.databinding.ActivityMainBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -253,6 +245,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                             comment.setTime(formattedDate);
                             commentList.add(comment);
                             adapter.notifyDataSetChanged();
+                            textNoData.setVisibility(View.GONE);
                             Utills.showToast(getString(R.string.comment_add), getApplicationContext());
                             binding.edtComment.setText("");
                             Utills.hideSoftKeyboard(CommentActivity.this);

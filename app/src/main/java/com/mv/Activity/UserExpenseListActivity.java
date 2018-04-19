@@ -110,6 +110,11 @@ public class UserExpenseListActivity extends AppCompatActivity implements View.O
     }
 
     private void setRecyclerView() {
+        if (mList.size() == 0) {
+            binding.txtNDA.setVisibility(View.VISIBLE);
+        } else {
+            binding.txtNDA.setVisibility(View.GONE);
+        }
         adapter = new ExpenseAdapter(this, mList);
         binding.rvExpense.setAdapter(adapter);
         binding.rvExpense.setHasFixedSize(true);

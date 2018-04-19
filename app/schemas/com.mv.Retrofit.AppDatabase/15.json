@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 15,
-    "identityHash": "686f661d2e48904b43bfbdd9cffe9f09",
+    "identityHash": "e3741552d7c237ff33b045b6362daa50",
     "entities": [
       {
         "tableName": "table_community",
@@ -219,7 +219,7 @@
       },
       {
         "tableName": "table_process",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `template_id` TEXT, `template_name` TEXT, `answerCount` TEXT, `expectedCount` TEXT, `submittedCount` TEXT, `Targated_Date__c` TEXT, `Location` INTEGER, `LocationLevel` TEXT, `status` TEXT, `type` TEXT, `url` TEXT, `MV_Process__c` TEXT, `MV_User__c` TEXT, `P1F1__c` TEXT, `P1F2__c` TEXT, `P1F3__c` TEXT, `P1F4__c` TEXT, `P1F5__c` TEXT, `Is_Editable__c` INTEGER, `Is_Multiple_Entry_Allowed__c` INTEGER)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `template_id` TEXT, `User_Mobile_App_Version__c` TEXT, `template_name` TEXT, `answerCount` TEXT, `expectedCount` TEXT, `submittedCount` TEXT, `Targated_Date__c` TEXT, `Location` INTEGER, `LocationLevel` TEXT, `type` TEXT, `url` TEXT, `status` TEXT, `MV_Process__c` TEXT, `MV_User__c` TEXT, `P1F1__c` TEXT, `P1F2__c` TEXT, `P1F3__c` TEXT, `P1F4__c` TEXT, `P1F5__c` TEXT, `Is_Editable__c` INTEGER, `Is_Multiple_Entry_Allowed__c` INTEGER)",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -229,6 +229,11 @@
           {
             "fieldPath": "Id",
             "columnName": "template_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "User_Mobile_App_Version__c",
+            "columnName": "User_Mobile_App_Version__c",
             "affinity": "TEXT"
           },
           {
@@ -267,11 +272,6 @@
             "affinity": "TEXT"
           },
           {
-            "fieldPath": "status",
-            "columnName": "status",
-            "affinity": "TEXT"
-          },
-          {
             "fieldPath": "type",
             "columnName": "type",
             "affinity": "TEXT"
@@ -279,6 +279,11 @@
           {
             "fieldPath": "url",
             "columnName": "url",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
             "affinity": "TEXT"
           },
           {
@@ -338,7 +343,7 @@
       },
       {
         "tableName": "table_container",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` TEXT, `taskListString` TEXT, `isSave` TEXT, `MV_Process__c` TEXT, `TaskType` TEXT, `headerPosition` INTEGER, PRIMARY KEY(`unique_Id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` TEXT, `taskListString` TEXT, `isSave` TEXT, `MV_Process__c` TEXT, `TaskType` TEXT, `headerPosition` TEXT, PRIMARY KEY(`unique_Id`))",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -368,7 +373,7 @@
           {
             "fieldPath": "headerPosition",
             "columnName": "headerPosition",
-            "affinity": "INTEGER"
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -534,7 +539,7 @@
       },
       {
         "tableName": "table_voucher",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `Decription` TEXT, `NoOfPeople` TEXT, `User` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `Decription` TEXT, `NoOfPeople` TEXT, `User` TEXT, `FromDate` TEXT, `ToDate` TEXT, `Place` TEXT)",
         "fields": [
           {
             "fieldPath": "UniqueId",
@@ -570,6 +575,21 @@
             "fieldPath": "User",
             "columnName": "User",
             "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "FromDate",
+            "columnName": "FromDate",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "ToDate",
+            "columnName": "ToDate",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Place",
+            "columnName": "Place",
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -583,7 +603,7 @@
       },
       {
         "tableName": "table_expense",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Amount` TEXT, `Date` TEXT, `Decription` TEXT, `voucherId` TEXT, `partuculars` TEXT, `User` TEXT, `Status` TEXT, `Respond_Date` TEXT, `Comment` TEXT, `ApprovalPerson` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Amount` TEXT, `Date` TEXT, `Decription` TEXT, `voucherId` TEXT, `partuculars` TEXT, `User` TEXT, `Status` TEXT, `Respond_Date` TEXT, `Comment` TEXT, `ApprovalPerson` TEXT, `AttachmentPresent` TEXT)",
         "fields": [
           {
             "fieldPath": "UniqueId",
@@ -643,6 +663,11 @@
           {
             "fieldPath": "ApprovalPerson",
             "columnName": "ApprovalPerson",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "AttachmentPresent",
+            "columnName": "AttachmentPresent",
             "affinity": "TEXT"
           }
         ],
@@ -766,7 +791,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"686f661d2e48904b43bfbdd9cffe9f09\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e3741552d7c237ff33b045b6362daa50\")"
     ]
   }
 }

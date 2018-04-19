@@ -46,6 +46,7 @@ import com.mv.Model.Content;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
+import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Service.DownloadService;
 import com.mv.Utils.Constants;
@@ -363,62 +364,61 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             holder.imgMore.setVisibility(View.GONE);
         }*/
 
-            holder.imgMore.setVisibility(View.VISIBLE);
-            holder.imgMore.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    PopupMenu popup = new PopupMenu(mContext, holder.imgMore);
-                    //Inflating the Popup using xml file
-                    popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
-                    MenuItem edit= (MenuItem) popup.getMenu().findItem(R.id.edit);
-                    MenuItem delete= (MenuItem) popup.getMenu().findItem(R.id.delete);
-                    MenuItem spam= (MenuItem) popup.getMenu().findItem(R.id.spam);
-                    spam.setVisible(true);
-                    if (mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
+        holder.imgMore.setVisibility(View.VISIBLE);
+        holder.imgMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PopupMenu popup = new PopupMenu(mContext, holder.imgMore);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
+                MenuItem edit = (MenuItem) popup.getMenu().findItem(R.id.edit);
+                MenuItem delete = (MenuItem) popup.getMenu().findItem(R.id.delete);
+                MenuItem spam = (MenuItem) popup.getMenu().findItem(R.id.spam);
+                spam.setVisible(true);
+                if (mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
 
-                        edit.setVisible(true);
-                        delete.setVisible(true);
-                    }else {
-                        edit.setVisible(false);
-                        delete.setVisible(false);
-                    }
-                    if (mDataList.get(position).getPostUserDidSpam().equals(false)){
-                        spam.setTitle("Mark As Spam");
-                    }else {
-                        spam.setTitle("Mark As Unspam");
-                    }
-
-
-                        //registering popup with OnMenuItemClickListener
-                    popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                        public boolean onMenuItemClick(MenuItem item) {
-                            if (item.getTitle().toString().equalsIgnoreCase("Edit")) {
-                                Intent intent;
-                                intent = new Intent(mContext, AddThetSavadActivity.class);
-                                intent.putExtra("EDIT", true);
-                                intent.putExtra(Constants.CONTENT, mDataList.get(position));
-                                mContext.startActivity(intent);
-                            } else if (item.getTitle().toString().equalsIgnoreCase("Delete")) {
-                                postId = mDataList.get(position).getId();
-                                deletePosition = position;
-                                showDeletePopUp();
-                            }else     if (mDataList.get(position).getPostUserDidSpam().equals(false)){
-                                Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),true);
-                                mDataList.get(position).setPostUserDidSpam(!mDataList.get(position).getPostUserDidSpam());
-                                notifyDataSetChanged();
-                               }else {
-                                Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),false);
-                                mDataList.get(position).setPostUserDidSpam(!mDataList.get(position).getPostUserDidSpam());
-                                notifyDataSetChanged();
-                                }
-                            return true;
-                        }
-                    });
-
-                    popup.show();//showing popup menu
+                    edit.setVisible(true);
+                    delete.setVisible(true);
+                } else {
+                    edit.setVisible(false);
+                    delete.setVisible(false);
                 }
-            });
+                if (mDataList.get(position).getPostUserDidSpam().equals(false)) {
+                    spam.setTitle("Mark As Spam");
+                } else {
+                    spam.setTitle("Mark As Unspam");
+                }
 
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+                        if (item.getTitle().toString().equalsIgnoreCase("Edit")) {
+                            Intent intent;
+                            intent = new Intent(mContext, AddThetSavadActivity.class);
+                            intent.putExtra("EDIT", true);
+                            intent.putExtra(Constants.CONTENT, mDataList.get(position));
+                            mContext.startActivity(intent);
+                        } else if (item.getTitle().toString().equalsIgnoreCase("Delete")) {
+                            postId = mDataList.get(position).getId();
+                            deletePosition = position;
+                            showDeletePopUp();
+                        } else if (mDataList.get(position).getPostUserDidSpam().equals(false)) {
+                            Utills.spamContent(mContext, preferenceHelper, mDataList.get(position).getId(), User.getCurrentUser(mContext).getMvUser().getId(), true);
+                            mDataList.get(position).setPostUserDidSpam(!mDataList.get(position).getPostUserDidSpam());
+                            notifyDataSetChanged();
+                        } else {
+                            Utills.spamContent(mContext, preferenceHelper, mDataList.get(position).getId(), User.getCurrentUser(mContext).getMvUser().getId(), false);
+                            mDataList.get(position).setPostUserDidSpam(!mDataList.get(position).getPostUserDidSpam());
+                            notifyDataSetChanged();
+                        }
+                        return true;
+                    }
+                });
+
+                popup.show();//showing popup menu
+            }
+        });
 
 
     }
@@ -502,7 +502,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView picture, userImage, imgLike, img_comment, imageThumbnail;
         public CardView card_view;
-        public TextView txt_audio_txt, txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type,txt_detail;
+        public TextView txt_audio_txt, txt_title, txt_template_type, txt_desc, txt_time, textViewLike, txtLikeCount, txtCommentCount, txt_type, txt_detail;
         public LinearLayout mediaLayout, layout_like, layout_comment, layout_share, layout_download, layout_download_file;
         public RelativeLayout audioLayout, layout_Video;
         public ImageView play, imgMore;
@@ -768,6 +768,8 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 Utills.hideProgressDialog();
                 try {
                     //AppDatabase.getAppDatabase(mContext).userDao().deletePost(postId);
+                    mDataList.get(deletePosition).setDelete(true);
+                    AppDatabase.getAppDatabase(mContext).userDao().updateContent(mDataList.get(deletePosition));
                     Utills.showToast("Post Deleted Successfully...", mContext);
                     mDataList.remove(deletePosition);
                     notifyItemRemoved(deletePosition);

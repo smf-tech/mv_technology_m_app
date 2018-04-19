@@ -137,11 +137,12 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
             @Override
             public void onClick(View v) {
                 mypostlist.clear();
-
+                chatList.clear();
+                chatList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true, false);
                 btn_mypost.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
                 btn_allposts.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 for (int i = 0; i < chatList.size(); i++) {
-                    if (chatList.get(i).getUser_id().equals(User.getCurrentUser(context).getMvUser().getId())) {
+                    if (chatList.get(i).getUser_id() != null && (chatList.get(i).getUser_id().equals(User.getCurrentUser(context).getMvUser().getId()))) {
                         mypostlist.add(chatList.get(i));
                     }
                 }
@@ -154,6 +155,8 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         btn_allposts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                chatList.clear();
+                chatList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true, false);
                 mySelection = false;
                 btn_allposts.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
                 btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
@@ -175,7 +178,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
     /*Get the Chat List from Database and set to the adapter , if No vales in table then get Chats from Server*/
     private void getChats(boolean isDialogShow) {
         chatList.clear();
-        chatList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true,false);
+        chatList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true, false);
 
         if (chatList.size() == 0) {
             if (Utills.isConnected(context))
@@ -214,10 +217,10 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         if (isTimePresent)
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId()
-                    + "&timestamp=" + chatList.get(0).getTime();
+                    + "&timestamp=" + AppDatabase.getAppDatabase(context).userDao().getThetSavandChats().get(0).getTime();
         else
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/getTheatSawandContent?userId=" +User.getCurrentUser(this).getMvUser().getId();
+                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -229,7 +232,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
                             JSONArray jsonArray = new JSONArray(str);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));
-                            List<Content> contentList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats();
+                            List<Content> contentList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true, false);
                             if ((temp.size() != 0) || (contentList.size() != 0)) {
                                 for (int i = 0; i < temp.size(); i++) {
                                     int j;
@@ -250,13 +253,13 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
                                         AppDatabase.getAppDatabase(context).userDao().insertChats(temp.get(i));
                                     }
                                 }
-                           List<Content> ActivePost=     AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true,false);
+                                List<Content> ActivePost = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true, false);
 
                                 mypostlist.clear();
 
                                 for (int i = 0; i < ActivePost.size(); i++) {
 
-                                    if (ActivePost.get(i).getUser_id().equals(User.getCurrentUser(context).getMvUser().getId())) {
+                                    if (ActivePost.get(i).getUser_id() != null && (ActivePost.get(i).getUser_id().equals(User.getCurrentUser(context).getMvUser().getId()))) {
                                         mypostlist.add(ActivePost.get(i));
                                     }
                                 }

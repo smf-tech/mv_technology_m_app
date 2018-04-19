@@ -32,9 +32,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -72,14 +76,21 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
         projectList = Arrays.asList(getResources().getStringArray(R.array.array_of_project));
         setActionbar(getString(R.string.voucher_new));
         binding.txtDate.setOnClickListener(this);
+        binding.txtDateFrom.setOnClickListener(this);
+        binding.txtDateTo.setOnClickListener(this);
         binding.spinnerProject.setOnItemSelectedListener(this);
         preferenceHelper = new PreferenceHelper(this);
+        binding.txtDate.setText(Utills.getCurrentDate());
         if (getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
             isAdd = true;
+
         } else {
             isAdd = false;
             mVoucher = (Voucher) getIntent().getSerializableExtra(Constants.VOUCHER);
             binding.txtDate.setText(mVoucher.getDate());
+            binding.txtDateFrom.setText(mVoucher.getFromDate());
+            binding.editTextPlace.setText(mVoucher.getPlace());
+            binding.txtDateTo.setText(mVoucher.getToDate());
             binding.editTextCount.setText(mVoucher.getNoOfPeople());
             binding.editTextDescription.setText(mVoucher.getDecription());
             mProjectSelect = projectList.indexOf(mVoucher.getProject());
@@ -96,12 +107,18 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
             case R.id.txtDate:
-                showDateDialog();
+                showDateDialog(binding.txtDate);
+                break;
+            case R.id.txtDateFrom:
+                showDateDialog(binding.txtDateFrom);
+                break;
+            case R.id.txtDateTo:
+                showDateDialog(binding.txtDateTo);
                 break;
         }
     }
 
-    private void showDateDialog() {
+    private void showDateDialog(TextView textView) {
         final Calendar c = Calendar.getInstance();
         final int mYear = c.get(Calendar.YEAR);
         final int mMonth = c.get(Calendar.MONTH);
@@ -112,7 +129,8 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        binding.txtDate.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
+
+                        textView.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
                     }
                 }, mYear, mMonth, mDay);
         dpd.show();
@@ -133,6 +151,9 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
             }
             voucher.setProject(projectList.get(mProjectSelect));
             voucher.setDate(binding.txtDate.getText().toString().trim());
+            voucher.setPlace(binding.editTextPlace.getText().toString().trim());
+            voucher.setFromDate(binding.txtDateFrom.getText().toString().trim());
+            voucher.setToDate(binding.txtDateTo.getText().toString().trim());
             voucher.setDecription(binding.editTextDescription.getText().toString().trim());
             voucher.setNoOfPeople(binding.editTextCount.getText().toString().trim());
             voucher.setUser(User.getCurrentUser(this).getMvUser().getId());
@@ -165,18 +186,20 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
                         try {
-                            if (response.body() != null) {
-                                String data = response.body().string();
-                                if (data != null && data.length() > 0) {
-                                    JSONObject object = new JSONObject(data);
-                                    JSONArray array = object.getJSONArray("Records");
-                                    if (array.length() != 0) {
-                                        voucher.setId(array.getJSONObject(0).getString("Id"));
+                            if (response != null && response.isSuccess()) {
+                                if (response.body() != null) {
+                                    String data = response.body().string();
+                                    if (data != null && data.length() > 0) {
+                                        JSONObject object = new JSONObject(data);
+                                        JSONArray array = object.getJSONArray("Records");
+                                        if (array.length() != 0) {
+                                            voucher.setId(array.getJSONObject(0).getString("Id"));
+                                        }
+                                        AppDatabase.getAppDatabase(VoucherNewActivity.this).userDao().insertVoucher(voucher);
+                                        Utills.showToast("Voucher Added successfully", VoucherNewActivity.this);
+                                        finish();
+                                        overridePendingTransition(R.anim.left_in, R.anim.right_out);
                                     }
-                                    AppDatabase.getAppDatabase(VoucherNewActivity.this).userDao().insertVoucher(voucher);
-                                    Utills.showToast("Voucher Added successfully", VoucherNewActivity.this);
-                                    finish();
-                                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
                                 }
                             }
                         } catch (Exception e) {
@@ -204,11 +227,20 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
     }
 
     private boolean isValid() {
+
         String str = "";
         if (mProjectSelect == 0) {
             str = "Please select Project";
-        } else if (binding.txtDate.getText().toString().trim().length() == 0) {
-            str = "Please select Date";
+        } else if (binding.editTextPlace.getText().toString().trim().length() == 0) {
+            str = "Please enter Place";
+        } else if (binding.txtDate.getText().toString().trim().length() == 4) {
+            str = "Please select the date";
+        } else if (binding.txtDateFrom.getText().toString().trim().length() == 0) {
+            str = "Please select the From date";
+        } else if (binding.txtDateTo.getText().toString().trim().length() == 0) {
+            str = "Please select the To date";
+        } else if (!isDatesAreValid(binding.txtDateFrom.getText().toString().trim(), binding.txtDateTo.getText().toString().trim())) {
+            str = "Please select proper To date";
         } else if (binding.editTextDescription.getText().toString().trim().length() == 0) {
             str = "Please enter Description Of Tour";
         } else if (binding.editTextCount.getText().toString().trim().length() == 0) {
@@ -221,6 +253,20 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
         return true;
     }
 
+    private boolean isDatesAreValid(String startDate, String endDate) {
+        try {
+            DateFormat formatter;
+            Date fromDate, toDate;
+            formatter = new SimpleDateFormat("yyyy-MM-dd");
+            fromDate = formatter.parse(startDate);
+            toDate = formatter.parse(endDate);
+            if (fromDate.before(toDate))
+                return true;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     @Override
     public void onBackPressed() {

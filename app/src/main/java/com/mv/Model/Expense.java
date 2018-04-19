@@ -164,7 +164,18 @@ public class Expense implements Serializable {
     @Expose
     private String ApprovalPerson;
 
+    public String getAttachmentPresent() {
+        return AttachmentPresent;
+    }
 
+    public void setAttachmentPresent(String attachmentPresent) {
+        AttachmentPresent = attachmentPresent;
+    }
+
+    @ColumnInfo(name = "AttachmentPresent")
+    @SerializedName("isAttachmentPresent__c")
+    @Expose
+    private String AttachmentPresent;
 
     public String getUser() {
         return User;

@@ -164,9 +164,7 @@ public class Utills {
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-                        text.setText(year + "-"  + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth)   );
-
-
+                        text.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
                     }
                 }, mYear, mMonth, mDay);
         dpd.show();
@@ -184,7 +182,8 @@ public class Utills {
      * @param cntxt
      */
     public static void showProgressDialog(Context cntxt) {
-        if (pgDialog == null) {
+        if (pgDialog == null && cntxt != null) {
+            Log.i("Dialog", "Show");
             pgDialog = new Dialog(cntxt);
             pgDialog.setContentView(R.layout.custome_progress_dialog);
             pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -221,7 +220,8 @@ public class Utills {
     }
 
     public static void showProgressDialog(Context cntxt, String Msg, String Title) {
-        if (pgDialog == null) {
+        if (pgDialog == null && cntxt != null) {
+            Log.i("Dialog", "Show");
             pgDialog = new Dialog(cntxt);
             pgDialog.setContentView(R.layout.custome_progress_dialog);
             pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -233,7 +233,6 @@ public class Utills {
             tv_desc.setText(Title);
             ImageView proImg = (ImageView) pgDialog.findViewById(R.id.img_progress);
             proImg.setBackgroundResource(R.drawable.progress_dialog);
-
             AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
             rocketAnimation = (AnimationDrawable) proImg.getBackground();
             rocketAnimation.start();
@@ -277,7 +276,8 @@ public class Utills {
 
     public static void hideProgressDialog() {
         if (pgDialog != null) {
-            if (pgDialog.isShowing()) {
+            if (pgDialog.isShowing() && pgDialog.getWindow() != null) {
+                Log.i("Dialog", "Dismiss");
                 pgDialog.dismiss();
                 pgDialog = null;
             }

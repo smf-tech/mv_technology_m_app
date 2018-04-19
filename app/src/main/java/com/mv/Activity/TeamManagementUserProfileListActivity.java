@@ -2,15 +2,14 @@ package com.mv.Activity;
 
 import android.app.Activity;
 import android.databinding.DataBindingUtil;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -21,7 +20,6 @@ import com.mv.Model.Template;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
-import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
@@ -78,7 +76,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
             id=getIntent().getExtras().getString(Constants.ID);
             processTitle= getIntent().getExtras().getString(Constants.TITLE);
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                  + Constants.WS_getProcessAprovalUserUrl+"?UserId="+ User.getCurrentUser(context).getMvUser().getId()+ "&processId="+id ;;
+                      + Constants.WS_getProcessAprovalUserUrl+"?UserId="+ User.getCurrentUser(context).getMvUser().getId()+ "&processId="+id ;;
             setActionbar(processTitle);
         }
         binding.swiperefresh.setOnRefreshListener(
@@ -125,7 +123,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         }
     }
     private void getAllProcess() {
-        Utills.showProgressDialog(context, "Loading Process", getString(R.string.progress_please_wait));
+        Utills.showProgressDialog(context, "Loading Users", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
        // String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -217,7 +215,9 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         binding.recyclerView.setAdapter(mAdapter);
     }
 
-
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getAllProcess();
+    }
 }

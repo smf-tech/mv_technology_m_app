@@ -7,7 +7,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,17 +33,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CommunityMemberNameActivity extends AppCompatActivity implements View.OnClickListener{
+public class CommunityMemberNameActivity extends AppCompatActivity implements View.OnClickListener {
     private PreferenceHelper preferenceHelper;
-    public ArrayList<String> CommunityMemberList=new ArrayList<>();
+    public ArrayList<String> CommunityMemberList = new ArrayList<>();
     ArrayList<String> repplicaCahart = new ArrayList<>();
     CommunityMemberAdapter adapter;
     private CommunityMemberNameActivity binding;
     RecyclerView recyclerView;
-    private TextView toolbar_title,textNoData;
+    private TextView toolbar_title, textNoData;
     private ImageView img_back, img_logout;
     EditText edit_text_email;
-    String Member_count="";
+    String Member_count = "";
 
 
     @Override
@@ -58,7 +57,7 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
         if (Utills.isConnected(this)) {
             GetCommunityMember();
 
-        }else {
+        } else {
             /*No Internet Connection Popup*/
             Utills.showInternetPopUp(CommunityMemberNameActivity.this);
         }
@@ -66,17 +65,16 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
     }
 
 
-
-
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
+
     /*Initialize all  views */
-    private void initViews(String title){
+    private void initViews(String title) {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-       toolbar_title.setText(title);
+        toolbar_title.setText(title);
         img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
@@ -92,7 +90,7 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
 
 
     /*Get Community members by calling userdetails api*/
-    public void GetCommunityMember(){
+    public void GetCommunityMember() {
         Utills.showProgressDialog(this, getString(R.string.loading_members), getString(R.string.progress_please_wait));
         String url = "";
         ServiceRequest apiService =
@@ -100,39 +98,39 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
         /*UserDetails Url for getting community members*/
 
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.Userdetails_Url+"?communityId=" + preferenceHelper.getString(PreferenceHelper.COMMUNITYID);
+                + Constants.Userdetails_Url + "?communityId=" + preferenceHelper.getString(PreferenceHelper.COMMUNITYID);
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                     CommunityMemberList = new ArrayList<>();
+                    CommunityMemberList = new ArrayList<>();
 
-                     if(response.body()!=null) {
-                         String strResponse = response.body().string();
-                         JSONArray jsonArray = new JSONArray(strResponse);
-                         if (jsonArray.length() != 0) {
+                    if (response.body() != null) {
+                        String strResponse = response.body().string();
+                        JSONArray jsonArray = new JSONArray(strResponse);
+                        if (jsonArray.length() != 0) {
 
-                             final int numberOfItemsInResp = jsonArray.length();
-                             for (int i = 0; i < numberOfItemsInResp; i++) {
-                                 CommunityMemberList.add(jsonArray.getString(i));   // add response in CommunityMemberList
-                             }
+                            final int numberOfItemsInResp = jsonArray.length();
+                            for (int i = 0; i < numberOfItemsInResp; i++) {
+                                CommunityMemberList.add(jsonArray.getString(i));   // add response in CommunityMemberList
+                            }
 
-                             // set List To Adapter
-                             adapter = new CommunityMemberAdapter(getApplicationContext(), CommunityMemberList);
-                             recyclerView.setAdapter(adapter);
+                            // set List To Adapter
+                            adapter = new CommunityMemberAdapter(getApplicationContext(), CommunityMemberList);
+                            recyclerView.setAdapter(adapter);
 
-                             Member_count =String.valueOf(CommunityMemberList.size());
-                             toolbar_title.setText(getString(R.string.Community_member)+" " + Member_count);
+                            Member_count = String.valueOf(CommunityMemberList.size());
+                            toolbar_title.setText(getString(R.string.Community_member) + " (" + Member_count + ")");
 
-                             textNoData.setVisibility(View.GONE);
-                         } else {
-                             textNoData.setVisibility(View.VISIBLE);
-                         }
+                            textNoData.setVisibility(View.GONE);
+                        } else {
+                            textNoData.setVisibility(View.VISIBLE);
+                        }
 
 
-                     }
+                    }
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -192,12 +190,9 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
         }
         adapter = new CommunityMemberAdapter(getApplicationContext(), repplicaCahart);
         recyclerView.setAdapter(adapter);
-        if(repplicaCahart.size()==0)
-        {
+        if (repplicaCahart.size() == 0) {
             textNoData.setVisibility(View.VISIBLE);
-        }
-        else
-        {
+        } else {
             textNoData.setVisibility(View.GONE);
 
         }
@@ -215,6 +210,7 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
                 break;
         }
     }
+
     @Override
     public void onBackPressed() {
         finish();

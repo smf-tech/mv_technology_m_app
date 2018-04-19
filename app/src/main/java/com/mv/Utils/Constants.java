@@ -10,16 +10,16 @@ public class Constants {
 
     /* Production*/
 
-  /*  public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
+    public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com";
     public static String REPORTID = "a1L7F000000YNK4";
-    public static String ISSUEID = "a1L7F000000YNJ z";*/
+    public static String ISSUEID = "a1L7F000000YNJz";
 
-    /* Sandbox */
+    /* Sandbox
     public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
     public static String REPORTID = "a1G0k000000522K";
-    public static String ISSUEID = "a1G0k000000522F";
+    public static String ISSUEID = "a1G0k000000522F";*/
 
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
@@ -161,7 +161,7 @@ public class Constants {
     public static final String GetUserSalaryData = "/services/apexrest/getUserSalaryData";
     public static final String GetUserAdavanceData = "/services/apexrest/getUserAdavanceData";
     public static final String GetUserVoucherData = "/services/apexrest/getUserVoucherData";
-
+    public static final String DeleteAccountData = "/services/apexrest/DeleteAccountData";
     public static final String GetUserExpenseData = "/services/apexrest/getUserExpenseData";
     public static final String GetPendingExpenseData = "/services/apexrest/getPendingExpenseData";
     public static final String GetPendingAdavanceData = "/services/apexrest/getPendingAdavanceData";
@@ -185,7 +185,6 @@ public class Constants {
     public static final String saveAssetRequest = "/services/apexrest/saveAssetRequest";
     public static final String AssetStock = "/services/apexrest/getStock";
     public static final String GetUserThroughMobileNo = "/services/apexrest/getUserThroughMobileNo";
-
 
     public static final String GetAllMyLeave = "/services/apexrest/getAllLeave";
     public static final String SendHRLeavesDataToServer = "/services/apexrest/saveLeaveApplication";

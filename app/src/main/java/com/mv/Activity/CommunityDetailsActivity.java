@@ -73,14 +73,15 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
     private Content mContent;
     private PreferenceHelper preferenceHelper;
     private List<Community> communityList = new ArrayList<>();
-    LinearLayout layout_forward,layout_download_file,layout_share;
+    LinearLayout layout_forward, layout_download_file, layout_share;
     private boolean[] mSelection = null;
     String value;
     private JSONArray jsonArrayAttchment = new JSONArray();
-    private static final Pattern urlPattern = Pattern.compile( "(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
+    private static final Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
             + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
     private Bitmap theBitmap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +99,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+
             case R.id.img_back:
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
@@ -108,59 +110,59 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                 startActivity(intent);
                 break;
             case R.id.layout_download_file:
-                if (mContent.getIsAttachmentPresent()!=null){
+                if (mContent.getIsAttachmentPresent() != null) {
 
-                if (mContent.getIsAttachmentPresent().equalsIgnoreCase("true")) {
+                    if (mContent.getIsAttachmentPresent().equalsIgnoreCase("true")) {
 
-                    if (mContent.getAttachmentId() == null) {
+                        if (mContent.getAttachmentId() == null) {
 
-                        new AsyncTask<Void, Void, Void>() {
-                            @Override
-                            protected void onPreExecute() {
-                                Utills.showProgressDialog(CommunityDetailsActivity.this, "Downloading", getString(R.string.progress_please_wait));
+                            new AsyncTask<Void, Void, Void>() {
+                                @Override
+                                protected void onPreExecute() {
+                                    Utills.showProgressDialog(CommunityDetailsActivity.this, "Downloading", getString(R.string.progress_please_wait));
 
-                                theBitmap = null;
-                            }
-
-
-                            @Override
-
-                            protected Void doInBackground(Void... params) {
-                                try {
-                                    theBitmap = Glide.
-                                            with(getApplicationContext()).
-                                            load("http://mobileapp.mulyavardhan.org/images/" + mContent.getId() + ".png").
-
-                                            asBitmap().
-                                            into(200, 200).
-                                            get();
-                                } catch (final ExecutionException e) {
-
-                                } catch (final InterruptedException e) {
-
+                                    theBitmap = null;
                                 }
-                                return null;
-                            }
-
-                            @Override
-                            protected void onPostExecute(Void dummy) {
-                                if (theBitmap != null) {
-                                    Utills.hideProgressDialog();
 
 
+                                @Override
+
+                                protected Void doInBackground(Void... params) {
                                     try {
-                                        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mContent.getId() + ".png");
-                                        FileOutputStream out = null;
-                                        out = new FileOutputStream(file);
-                                        theBitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
-                                        out.close();
+                                        theBitmap = Glide.
+                                                with(getApplicationContext()).
+                                                load("http://mobileapp.mulyavardhan.org/images/" + mContent.getId() + ".png").
 
+                                                asBitmap().
+                                                into(200, 200).
+                                                get();
+                                    } catch (final ExecutionException e) {
 
-                                    } catch (FileNotFoundException e) {
-                                        e.printStackTrace();
-                                    } catch (IOException e) {
-                                        e.printStackTrace();
+                                    } catch (final InterruptedException e) {
+
                                     }
+                                    return null;
+                                }
+
+                                @Override
+                                protected void onPostExecute(Void dummy) {
+                                    if (theBitmap != null) {
+                                        Utills.hideProgressDialog();
+
+
+                                        try {
+                                            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mContent.getId() + ".png");
+                                            FileOutputStream out = null;
+                                            out = new FileOutputStream(file);
+                                            theBitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
+                                            out.close();
+
+
+                                        } catch (FileNotFoundException e) {
+                                            e.printStackTrace();
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
 
 
                                    /* Intent i = new Intent(Intent.ACTION_SEND);
@@ -169,17 +171,17 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                                     i.putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(theBitmap, getAdapterPosition()));
                                     Utills.hideProgressDialog();
                                     mContext.startActivity(Intent.createChooser(i, "Share Post"));*/
-                                } else {
-                                    Utills.hideProgressDialog();
+                                    } else {
+                                        Utills.hideProgressDialog();
+                                    }
                                 }
-                            }
-                        }.execute();
-                    } else {
-                        downloadImage();
+                            }.execute();
+                        } else {
+                            downloadImage();
+                        }
                     }
-                }
-        }else {
-                    if (mContent.getAttachmentId()!=null){
+                } else {
+                    if (mContent.getAttachmentId() != null) {
                         downloadImage();
                     }
                 }
@@ -187,7 +189,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
 
                 break;
             case R.id.layout_share:
-                if (mContent.getIsAttachmentPresent()!=null) {
+                if (mContent.getIsAttachmentPresent() != null) {
 
                     if (mContent.getIsAttachmentPresent().equalsIgnoreCase("true")) {
                         if (mContent.getAttachmentId() == null) {
@@ -217,8 +219,8 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                         startActivity(Intent.createChooser(i, "Share Post"));
 
                     }
-                }else {
-                    if (mContent.getAttachmentId()!=null){
+                } else {
+                    if (mContent.getAttachmentId() != null) {
                         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mContent.getAttachmentId() + ".png";
 
                         //String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId()+".png";
@@ -229,7 +231,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
 
                         shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
                         startActivity(Intent.createChooser(shareIntent, "Share Content"));
-                    }else {
+                    } else {
                         Intent i = new Intent(Intent.ACTION_SEND);
                         i.setType("image*//**//*");
                         i.putExtra(Intent.EXTRA_TEXT, "Title : " + mContent.getTitle() + "\n\nDescription : " + mContent.getDescription());
@@ -264,7 +266,6 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                         Utills.showToast(getString(R.string.error_no_internet), CommunityDetailsActivity.this);
                     }
                 }
-
 
 
         }
@@ -404,15 +405,14 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
     }
 
     public void onPostImageClick() {
-       /* if (TextUtils.isEmpty(mContent.getAttachmentId())
-                || mContent.getAttachmentId().equalsIgnoreCase("null")) {
-        } else {
-            Intent intent;
-            intent = new Intent(this, ActivityImageView.class);
-            intent.putExtra(Constants.ID, mContent.getAttachmentId());
-            startActivity(intent);
-        }*/
+        if (mContent.getIsAttachmentPresent().equalsIgnoreCase("false")) {
+            if (mContent.getAttachmentId() != null) {
+                Utills.showImagewithheaderZoomDialog(CommunityDetailsActivity.this, getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mContent.getAttachmentId() + "/Body"));
+            }
+        } else if (mContent.getId() != null) {
+            Utills.showImageZoomInDialog(CommunityDetailsActivity.this, mContent.getId());
 
+        }
     }
 
     public void onProfileImageClick() {
@@ -525,12 +525,12 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         layout_forward = (LinearLayout) findViewById(R.id.layout_forward);
         layout_download_file = (LinearLayout) findViewById(R.id.layout_download_file);
         layout_share = (LinearLayout) findViewById(R.id.layout_share);
-        if(getIntent().getExtras().getString("flag").equalsIgnoreCase("forward_flag") ){
+        if (getIntent().getExtras().getString("flag").equalsIgnoreCase("forward_flag")) {
             layout_forward.setVisibility(View.VISIBLE);
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-            String   json = getIntent().getExtras().getString(Constants.LIST);
+            String json = getIntent().getExtras().getString(Constants.LIST);
             communityList = Arrays.asList(gson.fromJson(json, Community[].class));
-        }else {
+        } else {
             layout_forward.setVisibility(View.GONE);
         }
         layout_forward.setOnClickListener(this);
@@ -613,10 +613,12 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
             binding.type.setText(getString(R.string.template_type)+" : " + mContent.getTemplateName());
         else
             binding.type.setText(getString(R.string.template_type)+" : " + mContent.getTemplate());*/
-
-        binding.type.setText("" + mContent.getUserName());
+        if (mContent.getUserName() == null)
+            binding.type.setText("Admin");
+        else
+            binding.type.setText("" + mContent.getUserName());
         binding.Description.setText(getString(R.string.description) + " : " + mContent.getDescription());
-        Linkify.addLinks(binding.Description,urlPattern,mContent.getDescription());
+        Linkify.addLinks(binding.Description, urlPattern, mContent.getDescription());
         binding.postDate.setText(mContent.getTime());
 
         // binding.userName.setText(mContent.g);
@@ -626,18 +628,19 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
             mPlacePictures[i] = a.getDrawable(i);
         }
         a.recycle();
-        binding.cardImagedetails.setImageDrawable(mPlacePictures[getIntent().getExtras().getInt("Position") % mPlacePictures.length]);
+        //  binding.cardImagedetails.setImageDrawable(mPlacePictures[getIntent().getExtras().getInt("Position") % mPlacePictures.length]);
 
         if (mContent.getIsAttachmentPresent() == null
                 || TextUtils.isEmpty(mContent.getIsAttachmentPresent())
-                || mContent.getIsAttachmentPresent().equalsIgnoreCase("false") || isFileAvalible()){
-          layout_download_file.setVisibility(View.GONE);
+                || mContent.getIsAttachmentPresent().equalsIgnoreCase("false") || isFileAvalible()) {
+            layout_download_file.setVisibility(View.GONE);
             layout_share.setVisibility(View.VISIBLE);
-        }else {
-           layout_download_file.setVisibility(View.VISIBLE);
-           layout_share.setVisibility(View.GONE);
+        } else {
+            layout_download_file.setVisibility(View.VISIBLE);
+            layout_share.setVisibility(View.GONE);
         }
     }
+
 
     private void setActionbar(String Title) {
         mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
@@ -672,7 +675,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
                         Utills.showToast("Image Downloaded Successfully...", getApplicationContext());
-                        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" +mContent.getAttachmentId()+".png");
+                        File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mContent.getAttachmentId() + ".png");
                         FileOutputStream out = new FileOutputStream(file);
                         decodedByte.compress(Bitmap.CompressFormat.PNG, 90, out);
                         out.close();
@@ -712,6 +715,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         }
         return bmpUri;
     }
+
     private void showDialog() {
         final String[] items = new String[communityList.size()];
         for (int i = 0; i < communityList.size(); i++) {
@@ -767,6 +771,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         }
         return sb.toString();
     }
+
     private boolean isFileAvalible() {
         if (mContent.getIsAttachmentPresent().equalsIgnoreCase("true")) {
             if (mContent.getAttachmentId() == null) {
@@ -774,7 +779,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                 if (new File(filepath).exists())
                     return true;
                 return false;
-            }else {
+            } else {
                 String filepath = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mContent.getAttachmentId() + ".png");
                 if (new File(filepath).exists())
                     return true;
@@ -785,6 +790,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         }
         return false;
     }
+
     @Override
     protected void onResume() {
         super.onResume();

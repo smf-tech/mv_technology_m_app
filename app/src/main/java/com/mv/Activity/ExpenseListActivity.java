@@ -90,12 +90,14 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
                 Utills.hideProgressDialog();
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 try {
-                    String str = response.body().string();
-                    if (str != null && str.length() > 0) {
-                        if (Arrays.asList(gson.fromJson(str, Expense[].class)) != null) {
-                            AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().deleteExpense(voucher.getId());
-                            AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().insertExpense(Arrays.asList(gson.fromJson(str, Expense[].class)));
-                            setRecyclerView();
+                    if (response != null && response.isSuccess()) {
+                        String str = response.body().string();
+                        if (str != null && str.length() > 0) {
+                            if (Arrays.asList(gson.fromJson(str, Expense[].class)) != null) {
+                                AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().deleteExpense(voucher.getId());
+                                AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().insertExpense(Arrays.asList(gson.fromJson(str, Expense[].class)));
+                                setRecyclerView();
+                            }
                         }
                     }
                 } catch (IOException e) {
@@ -183,9 +185,46 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void deleteExpense(int position) {
-        AppDatabase.getAppDatabase(this).userDao().deleteExpense(mList.get(position));
-        mList.remove(position);
-        adapter.notifyItemRemoved(position);
-        Utills.showToast("Expense Deleted Successfully", this);
+        if (Utills.isConnected(this)) {
+            deleteRecord(position);
+        } else {
+            Utills.showInternetPopUp(this);
+        }
+    }
+
+    private void deleteRecord(int position) {
+        Utills.showProgressDialog(this, "Deleting Expense", getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.DeleteAccountData + "?Id=" + mList.get(position).getId() + "&Object=Expense";
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                try {
+                    if (response != null && response.isSuccess()) {
+                        String str = response.body().string();
+                        if (str.contains("deleted")) {
+                            AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().deleteExpense(mList.get(position));
+                            mList.remove(position);
+                            adapter.notifyItemRemoved(position);
+                            Utills.showToast("Expense Deleted Successfully", ExpenseListActivity.this);
+                        }
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
     }
 }

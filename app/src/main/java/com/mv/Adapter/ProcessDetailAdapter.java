@@ -267,7 +267,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     dimen_adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, selectedLanList);
                 else
                     dimen_adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, myList);
-                dimen_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                dimen_adapter.setDropDownViewResource(R.layout.spinnerlayout);
                 holder.spinnerResponse.setPrompt(task.getTask_Text___Lan_c());
                 holder.spinnerResponse.setAdapter(dimen_adapter);
                 //      if (!preferenceHelper.getBoolean(Constants.NEW_PROCESS))
@@ -306,7 +306,6 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.header.setText(task.getTask_Text___Lan_c());
                 break;
             case Constants.LOCATION:
-
 
 
                 if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equalsIgnoreCase(task.getTask_Text__c())) {

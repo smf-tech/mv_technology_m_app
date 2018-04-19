@@ -66,7 +66,6 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -96,7 +95,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
     private ArrayAdapter<String> district_adapter, taluka_adapter;
     private PreferenceHelper preferenceHelper;
     private Content content;
-    
+
 
     private Dialog dialogrecord;
     private static File auxFile, auxFileAudio, imgGallaery;
@@ -196,7 +195,6 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
             }
         });
     }
-
 
 
     private void getTaluka() {
@@ -517,6 +515,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
             overridePendingTransition(R.anim.left_in, R.anim.right_out);
         }*/
     }
+
     private void sendImageToServer(JSONArray jsonArray) {
         Utills.showProgressDialog(this);
         JsonParser jsonParser = new JsonParser();
@@ -556,7 +555,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         if (mSelectIssuePriority == 0) {
             str = "Please select issue Priority ";
         } else if (binding.editTextContent.getText().toString().trim().length() == 0) {
-            str = "Please enter Content";
+            str = "Please enter Title";
         } else if (binding.editTextDescription.getText().toString().trim().length() == 0) {
             str = "Please enter Description";
         }
@@ -648,7 +647,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(binding.addImage);
         } else if (requestCode == Constants.CHOOSE_VIDEO_FROM_CAMERA && resultCode == RESULT_OK) {
-            String selectedImagePath = getPath(outputUri);
+            String selectedImagePath = outputUri.getPath();
             if (checkSizeExceed(selectedImagePath)) {
                 outputUri = null;
                 Utills.showToast(getString(R.string.text_size_exceed), this);
@@ -777,6 +776,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         } else
             return null;
     }
+
     private void showMediaDialog() {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(getString(R.string.text_mediatype));

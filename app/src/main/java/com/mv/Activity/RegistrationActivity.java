@@ -15,6 +15,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -87,6 +88,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private boolean isProjectSet = false, isOrganizationSet = false, isStateSet = false, isDistrictSet = false, isTalukaSet = false, isClusterSet = false, isVillageSet = false, isSchoolSet = false, isRollSet = false;
     private RadioGroup radioGroup;
     private RelativeLayout rel_district, rel_taluka, rel_cluster, rel_villgae, rel_school_name;
+    private boolean isBackPress = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,7 +111,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     * API to get all Projects From server
     * */
     private void getProject() {
-        Utills.showProgressDialog(this, "Loading Projects", getString(R.string.progress_please_wait));
+        if (!isBackPress)
+            Utills.showProgressDialog(this, "Loading Projects", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -168,7 +171,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     * API to get all Roles From server
     * */
     private void getRole() {
-        Utills.showProgressDialog(this, getString(R.string.Loading_Roles), getString(R.string.progress_please_wait));
+        if (!isBackPress)
+            Utills.showProgressDialog(this, getString(R.string.Loading_Roles), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -231,7 +235,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     * API to get all Organization From server
     * */
     private void getOrganization() {
-        Utills.showProgressDialog(this, "Loading Organization", getString(R.string.progress_please_wait));
+        if (!isBackPress)
+            Utills.showProgressDialog(this, "Loading Organization", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -326,9 +331,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     * API to get all States From server
     * */
     private void getState() {
-
-        Utills.showProgressDialog(this, "Loading States", getString(R.string.progress_please_wait));
-        Utills.showProgressDialog(this);
+        if (!isBackPress)
+            Utills.showProgressDialog(this, "Loading States", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
         apiService.getState().enqueue(new Callback<ResponseBody>() {
@@ -377,8 +381,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     * API to get all Districts From server
     * */
     private void getDistrict() {
-
-        Utills.showProgressDialog(this, getString(R.string.loding_district), getString(R.string.progress_please_wait));
+        if (!isBackPress)
+            Utills.showProgressDialog(this, getString(R.string.loding_district), getString(R.string.progress_please_wait));
 
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
@@ -631,6 +635,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
+                Log.i("Dialog", "Back pressed");
+                isBackPress = true;
+                Utills.hideProgressDialog();
                 setResult(RESULT_CANCELED);
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
@@ -650,8 +657,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     * */
     private void sendData() {
         if (isValidate()) {
-
-            Utills.showProgressDialog(this);
+            if (!isBackPress)
+                Utills.showProgressDialog(this);
             ServiceRequest apiService =
                     ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
             user = new User();
@@ -795,6 +802,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 */
                                     if (!isAdd) {
                                         AppDatabase.getAppDatabase(RegistrationActivity.this).userDao().clearTableCommunity();
+                                        AppDatabase.getAppDatabase(RegistrationActivity.this).userDao().clearProcessTable();
+                                        AppDatabase.getAppDatabase(RegistrationActivity.this).userDao().clearTaskContainer();
                                     }
                                     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                                     preferenceHelper.insertString(PreferenceHelper.UserData, data);
@@ -900,6 +909,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     @Override
     public void onBackPressed() {
+        Log.i("Dialog", "Back pressed");
+        isBackPress = true;
+        Utills.hideProgressDialog();
         setResult(RESULT_CANCELED);
         finish();
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
@@ -1047,6 +1059,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 mListCluster.add("Select");
                 mListVillage.add("Select");
                 mListSchoolName.add("Select");
+                mSelectDistrict = 0;
+                mSelectCluster = 0;
+                mSelectTaluka = 0;
+                mSelectVillage = 0;
+                mSelectSchoolName = 0;
                 district_adapter.notifyDataSetChanged();
                 taluka_adapter.notifyDataSetChanged();
                 cluster_adapter.notifyDataSetChanged();
@@ -1067,6 +1084,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 mListCluster.add("Select");
                 mListVillage.add("Select");
                 mListSchoolName.add("Select");
+
+                mSelectTaluka = 0;
+                mSelectCluster = 0;
+                mSelectVillage = 0;
+                mSelectSchoolName = 0;
                 taluka_adapter.notifyDataSetChanged();
                 cluster_adapter.notifyDataSetChanged();
                 village_adapter.notifyDataSetChanged();
@@ -1084,6 +1106,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 mListCluster.add("Select");
                 mListVillage.add("Select");
                 mListSchoolName.add("Select");
+                mSelectCluster = 0;
+                mSelectVillage = 0;
+                mSelectSchoolName = 0;
                 cluster_adapter.notifyDataSetChanged();
                 village_adapter.notifyDataSetChanged();
                 school_adapter.notifyDataSetChanged();
@@ -1099,6 +1124,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 mListSchoolName.clear();
                 mListVillage.add("Select");
                 mListSchoolName.add("Select");
+                mSelectVillage = 0;
+                mSelectSchoolName = 0;
                 village_adapter.notifyDataSetChanged();
                 school_adapter.notifyDataSetChanged();
                 edit_text_school_code.setText("");
@@ -1109,6 +1136,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     getSchool();
                 }
                 mListSchoolName.clear();
+                mSelectSchoolName = 0;
                 mListSchoolName.add("Select");
                 school_adapter.notifyDataSetChanged();
                 edit_text_school_code.setText("");
@@ -1128,7 +1156,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     * API to get all Clusters From server
     * */
     private void getCluster() {
-        Utills.showProgressDialog(this, getString(R.string.loding_cluster), getString(R.string.progress_please_wait));
+        if (!isBackPress)
+            Utills.showProgressDialog(this, getString(R.string.loding_cluster), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
         apiService.getCluster(mListState.get(mSelectState), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka)).enqueue(new Callback<ResponseBody>() {
@@ -1176,8 +1205,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     * API to get all Talukas From server
     * */
     private void getTaluka() {
-
-        Utills.showProgressDialog(this, getString(R.string.loding_taluka), getString(R.string.progress_please_wait));
+        if (!isBackPress)
+            Utills.showProgressDialog(this, getString(R.string.loding_taluka), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
 
@@ -1226,7 +1255,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     * API to get all Villages From server
     * */
     private void getVillage() {
-        Utills.showProgressDialog(this, getString(R.string.loding_village), getString(R.string.progress_please_wait));
+        if (!isBackPress)
+            Utills.showProgressDialog(this, getString(R.string.loding_village), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
 
@@ -1275,7 +1305,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     * API to get all Schools From server
     * */
     private void getSchool() {
-        Utills.showProgressDialog(this, getString(R.string.loding_school), getString(R.string.progress_please_wait));
+        if (!isBackPress)
+            Utills.showProgressDialog(this, getString(R.string.loding_school), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
         apiService.getSchool(mListState.get(mSelectState), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage)).enqueue(new Callback<ResponseBody>() {

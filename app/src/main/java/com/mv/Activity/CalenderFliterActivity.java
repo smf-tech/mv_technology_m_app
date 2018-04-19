@@ -68,7 +68,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
     ArrayList<EventUser> calenderEventUserArrayList;
 
     ArrayList<Template> processList;
-    private String processId="";
+    private String processId = "";
 
     Activity context;
 
@@ -171,37 +171,28 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         catagory.add("School Visit");
         catagory.add("School and Classroom Observation");
         catagory.add("Training");
-        if(User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.State))
-        {
+        if (User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.State)) {
 
-        }
-        else if(User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.DISTRICT))
-        {
+        } else if (User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.DISTRICT)) {
             binding.spinnerState.setEnabled(false);
 
-        }  else if(User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.TALUKA))
-        {
+        } else if (User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.TALUKA)) {
             binding.spinnerState.setEnabled(false);
             binding.spinnerDistrict.setEnabled(false);
 
-        }
-        else if(User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.CLUSTER))
-        {
+        } else if (User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.CLUSTER)) {
             binding.spinnerState.setEnabled(false);
             binding.spinnerDistrict.setEnabled(false);
             binding.spinnerTaluka.setEnabled(false);
 
-        }
-        else if(User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.VILlAGE))
-        {
+        } else if (User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.VILlAGE)) {
             binding.spinnerState.setEnabled(false);
             binding.spinnerDistrict.setEnabled(false);
             binding.spinnerTaluka.setEnabled(false);
             binding.spinnerCluster.setEnabled(false);
 
-        }
-        else if(User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.SCHOOL))
-        {  binding.spinnerState.setEnabled(false);
+        } else if (User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.SCHOOL)) {
+            binding.spinnerState.setEnabled(false);
             binding.spinnerDistrict.setEnabled(false);
             binding.spinnerTaluka.setEnabled(false);
             binding.spinnerCluster.setEnabled(false);
@@ -1147,6 +1138,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
                     }
                 }, mYear, mMonth, mDay);
+        dpd.getDatePicker().setMinDate(System.currentTimeMillis()-10000);
         dpd.show();
     }
 

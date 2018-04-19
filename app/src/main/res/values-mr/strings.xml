@@ -83,9 +83,9 @@
     <string name="nahi">नाही</string>
     <string name="question_4">प्रश्न 4</string>
     <string name="msg_enter_mobile">प्रारंभ करण्यासाठी आपला मोबाईल नंबर प्रविष्ट करा!</string>
-    <string name="msg_manual_otp">(आम्ही स्वयंचलितपणे SMS शोधण्यात अयशस्वी झाल्यास खालील OTP प्रविष्ट करा)</string>
-    <string name="resend"> <u>OTP पुन्हा पाठवा</u></string>
-    <string name="check_otp">कृपया OTP तपासा</string>
+    <string name="msg_manual_otp">(आम्ही स्वयंचलितपणे SMS शोधण्यात अयशस्वी झाल्यास खालील Password प्रविष्ट करा)</string>
+    <string name="resend"> <u>Password पुन्हा पाठवा</u></string>
+    <string name="check_otp">कृपया Password तपासा</string>
     <string name="download">डाऊनलोड</string>
     <string name="Submit"> सबमिट</string>
     <string name="Save">जतन करा</string>
@@ -201,7 +201,7 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="detail"><u>विस्तार...</u></string>
+    <string name="detail"><u>विस्तार</u></string>
     <string name="aboutus_info"><b>संस्थेविषयी:</b>\n\nशांतीलाल मुथ्था फाउंडेशन (एसएमएफ) ही शिक्षणाच्या क्षेत्रात मोलाचे योगदान देणारी आणि नफा डोळ्यासमोर न ठेवता सामाजिक क्षेत्रात  भरीव योगदान देणारी सामाजिक संस्था आहे. शालेय शिक्षणामध्ये मुलभूत बदल घडून यावेत यासाठी ती प्रयत्नशील आहे. श्री. शांतीलाल मुथ्था यांनी या संस्थेची सुरुवात केलेली आहे. एसएमएफच्या माध्यमातून सध्या दोन महत्वाचे कार्यक्रम हाती घेण्यात आले आहेत.\n\n१. मूल्यवर्धन (एमव्ही)\n\n२. सिस्टीम ऑफ एनरीचमेंट ऑफ स्कूल क्वालिटी (एसइएसक्यू)\n\n<b>संकल्पना :</b>\n\nमुलांमध्ये घटनात्मक मूल्ये शालेय वयातच रुजायला हवीत, तसेच भविष्यात त्यांच्यामधून चांगले लोकशाहीभिमुख नागरिक घडायला हवेत, या उद्देशाने शाळांसाठी मूल्यवर्धनाचा कार्यक्रम तयार करण्यात आला आहे.\n\nसामाजिक क्षेत्रात तीन दशकाहून अधिक वर्षे कार्यरत असलेल्या श्री. शांतीलाल मुथ्था यांनी विद्यार्थ्यांच्या उज्ज्वल भविष्यासाठी मूल्यवर्धनचे बीज रोवले आहे.\n\nशिक्षक या घटकाला केंद्रबिंदू ठेऊन मूल्यवर्धन हा उपक्रम सुरू करण्यात आला आहे. महाराष्ट्र सरकारने हा उपक्रम स्वीकारला असून जिल्हा परिषदेच्या शाळांमध्ये याची प्रभावी अंमलबजावणी सुरू झाली आहे.\n\n<b>मूल्यवर्धनचा उद्देश :</b>
      \n\nराज्यघटनेतील मूल्ये शालेय स्तरावरच विद्यार्थ्यांमध्ये रुजावित आणि हेच विद्यार्थी भविष्यात सुजाण नागरिक व्हावेत हा या उपक्रमामागील उद्देश आहे.\n\nमुलांमध्ये घटनात्मक मूल्ये रुजावीत यासाठी शाळा प्रयत्न करत असतातच. मूल्यवर्धन कार्यक्रमामुळे या प्रयत्नांना आणखी बळकटी मिळेल.\n\nमूल्यवर्धनाच्या माध्यमातून शाळा हे उद्दिष्ट नियोजित, पद्धतशीर आणि नियमित रीतीने साध्य करू शकतील. त्यातून मुलांमध्ये अमुलाग्र असे परिवर्तन होईल.\n\n<b>मूल्यवर्धनची वैशिष्ट्ये :</b>\n\nमूल्यवर्धन कार्यक्रम राष्ट्रीय अभ्यासक्रम आराखडा 2005, शिक्षण हक्क कायदा 2009 राज्याच्या प्राथमिक शिक्षण अभ्यासक्रमाची उद्दिष्टे तसेच इतर महत्त्वाच्या राष्ट्रीय आणि आंतरराष्ट्रीय शैक्षणिक दस्तावेजांतील अपेक्षांशी सुसंगत आहे.\n\n
      राज्य घटनेतील मूल्ये मुलांमध्ये रुजावित हे शालेय शिक्षणाचे मूलभूत उद्दिष्ट आहे. भारतीय संविधानात ठळकपणे नमूद केलेल्या स्वातंत्र्य, न्याय, समता आणि बंधूता या चार मुख्य मूल्यांचा मूल्यवर्धनच्या उपक्रमात समावेश केलेला आहे.\n\nयासाठी शाळांचा, शिक्षकांचा सकारात्मक प्रतिसाद मिळणेही तेवढेच आवश्यक आहे. मूल्यवर्धन या उपक्रमाद्वारे शाळा हे उद्दिष्ट नियोजित, पद्धतशीर आणि नियमित रितीने साध्य करू शकतात.\n\n राष्ट्रीय अभ्यासक्रम आराखडा 2005मध्ये घटनात्मक मूल्यांच्या आधारावर आठ मूल्ये शालेय शिक्षणाच्या संदर्भात सुचविलेली आहेत. मूल्यवर्धन या आठ मूल्यांवर आधारित आहेत. मानवी प्रतिष्ठेचा आदर, स्वायतत्ता, जबाबदारी, चिकित्सक आणि सर्जनशील विचार, विविधतेचा आदर, सुसंवादी नातेसंबंध, इतरांबद्दल आस्था आणि सक्रिय योगदान ही ती मुल्ये आहेत.
@@ -209,17 +209,17 @@
     <string name="call_us">आम्हाला कॉल करा</string>
     <string name="call_on_hangout">हँगआऊट वर कॉल करा</string>
     <string name="call_on_landline">लँडलाइनवर कॉल करा (सकाळी 10 ते संध्याकाळी 6)</string>
-    <string name="update_user_data">Update Data</string>
-    <string name="update_data_string">Are sure you want to update data?</string>
+    <string name="update_user_data">डेटा अद्यतनित करा</string>
+    <string name="update_data_string">आपण डेटा अद्यतनित करू इच्छित असल्याची आपल्याला खात्री आहे?</string>
     <string name="app_versio_report">APP Version Report</string>
     <string name="next_login">नेक्स्ट</string>
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
     <string name="reason">Reason</string>
-    <string name="type_of_leaves">Type Of Leves</string>
-    <string name="pending">Pending</string>
+    <string name="type_of_leaves">Type Of Leaves</string>
+    <string name="pending">प्रलंबित</string>
     <string name="leave_detail">Leave Detail</string>
-    <string name="leave">Leave</string>
+    <string name="leave">सुट्टी\nव्यवस्थापन</string>
 
     <string name="asset_name">Select Asset</string>
     <string name="asset_model_no">Model No.</string>
@@ -228,22 +228,43 @@
     <string name="asset_tentative_return_date">Tentative Return Date</string>
     <string name="asset_remarks">Remarks</string>
     <string name="asset_request">Assets</string>
-    <string name="asset_management">Asset\nManagement</string>
+    <string name="asset_management">मालमत्ता\nव्यवस्थापन</string>
     <string name="asset_name__">Asset name</string>
     <string name="asset_code">Code</string>
     <string name="specification">Specification</string>
     <string name="select_model_no">Select Model No.</string>
 
+    <string name="login_successful">लॉगिन यशस्वी...</string>
 
     <!--Accout Section Activity-->
-    <string name="adavance">Adavance</string>
-    <string name="voucher">Voucher</string>
-    <string name="salary">Salary</string>
+    <string name="adavance">आगाऊ</string>
+    <string name="voucher">पोच पावती</string>
+    <string name="salary">पगार</string>
     <!--Voucher List Activity-->
-    <string name="voucher_list">Voucher List</string>
+    <string name="voucher_list">व्हॉर्चर्स यादी</string>
     <!--Voucher New Activity-->
-    <string name="voucher_new">Voucher New</string>
+    <string name="voucher_new">नवीन व्हाउचर</string>
     <!--Expense New Activity-->
-    <string name="expense_new">Expense New</string>
+    <string name="expense_new">नवीन खर्च</string>
 
+
+    <!--Expense List Activity-->
+    <string name="expense_list">खर्च यादी</string>
+    <!--Adavance List Activity-->
+    <string name="adavance_list">आगाऊ यादी</string>
+
+    <string name="particulars">Particulars</string>
+    <string name="Approve">Approve</string>
+    <string name="Reject">Reject</string>
+    <string name="adavance_approval">आगाऊ मंजुरी</string>
+    <string name="expense_approval">खर्च मान्यता</string>
+    <string name="date">Date</string>
+    <string name="projectDesription">Description of tour</string>
+    <string name="countOfPeople">Number of People Travelled</string>
+    <string name="amount">Amount</string>
+    <string name="adavance_new">खर्च आगाऊ</string>
+    <string name="adavanceDesription">Description of Adavance</string>
+    <string name="place">Place</string>
+    <!--Salary List Activity-->
+    <string name="salary_list">पगार यादी</string>
 </resources>

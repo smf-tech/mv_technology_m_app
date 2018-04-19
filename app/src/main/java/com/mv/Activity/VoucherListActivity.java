@@ -88,12 +88,14 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
                 Utills.hideProgressDialog();
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 try {
-                    String str = response.body().string();
-                    if (str != null && str.length() > 0) {
-                        if (Arrays.asList(gson.fromJson(str, Voucher[].class)) != null) {
-                            AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().deleteAllVoucher();
-                            AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().insertVoucher(Arrays.asList(gson.fromJson(str, Voucher[].class)));
-                            setRecyclerView();
+                    if (response != null && response.isSuccess()) {
+                        String str = response.body().string();
+                        if (str != null && str.length() > 0) {
+                            if (Arrays.asList(gson.fromJson(str, Voucher[].class)) != null) {
+                                AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().deleteAllVoucher();
+                                AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().insertVoucher(Arrays.asList(gson.fromJson(str, Voucher[].class)));
+                                setRecyclerView();
+                            }
                         }
                     }
                 } catch (IOException e) {
@@ -178,10 +180,47 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
     }
 
     public void deleteVoucher(int position) {
-        AppDatabase.getAppDatabase(this).userDao().deleteVoucher(mList.get(position));
-        AppDatabase.getAppDatabase(this).userDao().deleteExpense(mList.get(position).getId());
-        mList.remove(position);
-        adapter.notifyItemRemoved(position);
-        Utills.showToast("Voucher Deleted Successfully", this);
+        if (Utills.isConnected(this)) {
+            deleteRecord(position);
+        } else {
+            Utills.showInternetPopUp(this);
+        }
+
+    }
+    private void deleteRecord(int position) {
+        Utills.showProgressDialog(this, "Deleting Voucher", getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.DeleteAccountData + "?Id=" + mList.get(position).getId() + "&Object=Voucher";
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                try {
+                    if (response != null && response.isSuccess()) {
+                        String str = response.body().string();
+                        if (str.contains("deleted")) {
+                            AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().deleteVoucher(mList.get(position));
+                            AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().deleteExpense(mList.get(position).getId());
+                            mList.remove(position);
+                            adapter.notifyItemRemoved(position);
+                            Utills.showToast("Voucher Deleted Successfully", VoucherListActivity.this);
+                        }
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
     }
 }

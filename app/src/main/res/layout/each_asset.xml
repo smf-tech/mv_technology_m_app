@@ -1,73 +1,131 @@
-<?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:my_font="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/card_view"
+    android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:layout_margin="@dimen/dimen_5dp"
-    android:foreground="?attr/selectableItemBackground"
-    app:cardBackgroundColor="@color/white">
 
+    android:layout_marginBottom="10dp"
+    android:foreground="?attr/selectableItemBackground">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:padding="10dp">
-        <com.mv.Widgets.MyTextView
-            android:id="@+id/txt_status"
-            android:layout_width="@dimen/dimen_20dp"
-            android:layout_height="@dimen/dimen_20dp"
-            android:layout_marginLeft="10dp"
-            android:gravity="center_vertical"
-            android:layout_marginTop="30dp"
+        android:layout_height="wrap_content">
 
-        />
-        <com.mv.Widgets.MyTextView
-            android:id="@+id/txt_asset_name"
+        <View
+            android:id="@+id/view1"
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textLayout"
+            android:layout_alignTop="@+id/textLayout"
+            android:background="@color/red" />
+
+        <RelativeLayout
+            android:id="@+id/textLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_toRightOf="@+id/txt_status"
-            android:textSize="@dimen/article_subheading"
-            android:text="name"
-            android:textColor="@color/dark_grey"
-            my_font:typeface="Abel-Regular.ttf" />
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/imgLayout"
+            android:layout_toRightOf="@+id/view1"
+            android:padding="10dp">
 
-        <com.mv.Widgets.MyTextView
-            android:id="@+id/txt_asset_id"
-            android:layout_below="@+id/txt_asset_name"
-            android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tvProjectNameTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="left|center_vertical"
+                android:text="Asset Name :-"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/large_text" />
+
+            <TextView
+                android:id="@+id/txt_asset_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+
+                android:layout_toRightOf="@+id/tvProjectNameTitle"
+                android:gravity="left|center_vertical"
+                android:singleLine="true"
+                android:text="Food/Snacks"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/large_text" />
+
+            <TextView
+                android:id="@+id/tvProjectDateTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvProjectNameTitle"
+                android:layout_marginTop="5dp"
+                android:gravity="left|center_vertical"
+                android:text="Date :-"
+                android:textColor="@color/medium_grey"
+                android:textSize="@dimen/medium_text" />
+
+            <TextView
+                android:id="@+id/txt_asset_id"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_asset_name"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/tvProjectDateTitle"
+                android:gravity="left|center_vertical"
+                android:singleLine="true"
+                android:text="11/09/1992"
+                android:textColor="@color/medium_grey"
+                android:textSize="@dimen/medium_text" />
+
+            <TextView
+                android:id="@+id/tvNoOfPeopleTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvProjectDateTitle"
+                android:layout_marginTop="5dp"
+                android:gravity="left|center_vertical"
+                android:text="Time :-"
+                android:textColor="@color/medium_grey"
+                android:textSize="@dimen/medium_text" />
+
+            <TextView
+                android:id="@+id/txt_asset_issue_date"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txt_asset_id"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toRightOf="@+id/tvNoOfPeopleTitle"
+                android:gravity="left|center_vertical"
+                android:singleLine="true"
+                android:text="Requested"
+                android:textColor="@color/medium_grey"
+                android:textSize="@dimen/medium_text" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/imgLayout"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_toRightOf="@+id/txt_status"
-            android:textSize="@dimen/article_subheading"
-            android:text="id"
-            android:visibility="gone"
-            android:textColor="@color/dark_grey"
-            my_font:typeface="Abel-Regular.ttf" />
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:orientation="vertical">
 
-        <com.mv.Widgets.MyTextView
-            android:id="@+id/txt_asset_issue_date"
-            android:layout_below="@+id/txt_asset_id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_toRightOf="@+id/txt_status"
-            android:textSize="@dimen/article_subheading"
-            android:text="name"
+            <ImageView
+                android:id="@+id/imgEdit"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/ic_form" />
 
-            android:textColor="@color/dark_grey"
-            my_font:typeface="Abel-Regular.ttf" />
-
-
+            <ImageView
+                android:id="@+id/imgDelete"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_marginTop="20dp"
+                android:src="@drawable/ic_delete" />
+        </LinearLayout>
     </RelativeLayout>
-
 
 </android.support.v7.widget.CardView>

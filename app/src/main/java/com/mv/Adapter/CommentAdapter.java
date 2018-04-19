@@ -1,46 +1,24 @@
 package com.mv.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.mv.Activity.CommunityDetailsActivity;
 import com.mv.Model.Comment;
-import com.mv.Model.Content;
-import com.mv.Model.User;
 import com.mv.R;
-import com.mv.Retrofit.ApiClient;
-import com.mv.Retrofit.ServiceRequest;
-import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
-import com.mv.Utils.Utills;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 
 /**
@@ -87,7 +65,6 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
         if (TextUtils.isEmpty(mDataList.get(position).getUserUrl())
                 || mDataList.get(position).getUserUrl().equalsIgnoreCase("null")) {
         } else {
@@ -96,11 +73,9 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                     .placeholder(mContext.getResources().getDrawable(R.drawable.logomulya))
                     .into(holder.userImage);
         }
-
         holder.txt_username.setText(mDataList.get(position).getUserName());
         holder.txt_comment.setText(mDataList.get(position).getComment());
         holder.txt_time.setText(mDataList.get(position).getTime());
-
     }
 
 

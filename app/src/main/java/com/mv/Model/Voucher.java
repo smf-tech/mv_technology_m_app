@@ -110,5 +110,39 @@ public class Voucher implements Serializable {
     public Voucher() {
     }
 
+    public String getFromDate() {
+        return FromDate;
+    }
+
+    public void setFromDate(String fromDate) {
+        FromDate = fromDate;
+    }
+
+    public String getToDate() {
+        return ToDate;
+    }
+
+    public void setToDate(String toDate) {
+        ToDate = toDate;
+    }
+
+    @ColumnInfo(name = "FromDate")
+    @SerializedName("FromDate__c")
+    @Expose
+    private String FromDate;
+    @ColumnInfo(name = "ToDate")
+    @SerializedName("ToDate__c")
+    @Expose
+    private String ToDate;
+    public String getPlace() {
+        return Place;
+    }
+    public void setPlace(String place) {
+        Place = place;
+    }
+    @ColumnInfo(name = "Place")
+    @SerializedName("Place__c")
+    @Expose
+    private String Place;
 
 }

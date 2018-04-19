@@ -89,6 +89,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
     private List<Content> mDataList;
     private PreferenceHelper preferenceHelper;
     private int mPosition;
+    public PopupMenu popup;
     private boolean[] mSelection = null;
     private String value;
     private JSONArray jsonArrayAttchment = new JSONArray();
@@ -182,6 +183,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                             .into(holder.picture);
                 }
             }
+            holder.txt_detail.setVisibility(View.VISIBLE);
         } else {
 
 
@@ -194,7 +196,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 holder.picture.setVisibility(View.VISIBLE);
                 holder.layout_Video.setVisibility(View.GONE);
                 holder.audioLayout.setVisibility(View.GONE);
-
+                holder.txt_detail.setVisibility(View.VISIBLE);
 
                 Glide.with(mContext)
                         .load(Constants.IMAGEURL + mDataList.get(position).getId() + ".png")
@@ -206,7 +208,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 holder.picture.setVisibility(View.GONE);
                 holder.audioLayout.setVisibility(View.GONE);
                 holder.layout_Video.setVisibility(View.VISIBLE);
-
+                holder.txt_detail.setVisibility(View.GONE);
               /*  holder.card_video.setVideoPath(Constants.IMAGEURL + mDataList.get(position).getId() + ".mp4");
                 holder.card_video.start();*/
 
@@ -215,7 +217,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 holder.picture.setVisibility(View.GONE);
                 holder.audioLayout.setVisibility(View.VISIBLE);
                 holder.layout_Video.setVisibility(View.GONE);
-
+                holder.txt_detail.setVisibility(View.GONE);
                 holder.play.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -263,6 +265,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     }
                 });
             } else if (mDataList.get(position).getId() != null) {
+                holder.txt_detail.setVisibility(View.VISIBLE);
                 Glide.with(mContext)
                         .load(Constants.IMAGEURL + mDataList.get(position).getId() + ".png")
                         .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
@@ -318,7 +321,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         holder.imgMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final PopupMenu popup = new PopupMenu(mContext, holder.imgMore);
+                popup = new PopupMenu(mContext, holder.imgMore);
                 //Inflating the Popup using xml file
                 popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
                 //   popup.getMenu().getItem(R.id.spam).setVisible(true);
@@ -331,7 +334,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     status.setVisible(true);
                 }
 
-                if (mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
+                if (mDataList.get(position).getUser_id() != null && mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
                     delete.setVisible(true);
                     edit.setVisible(true);
 
@@ -397,7 +400,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         final String[] items = {"Resolved", "Pending", "Reject"};
         final ArrayList seletedItems = new ArrayList();
 
-        int checkId = -1;
+        int checkId = 1;
         int i = 0;
         for (String str : items) {
             if (mDataList.get(Position).getStatus() != null && !(TextUtils.isEmpty(mDataList.get(Position).getStatus()))) {
@@ -1296,6 +1299,9 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 Utills.hideProgressDialog();
                 try {
                     //AppDatabase.getAppDatabase(mContext).userDao().deletePost(postId);
+                    mDataList.get(deletePosition).setDelete(true);
+                    AppDatabase.getAppDatabase(mContext).userDao().updateContent(mDataList.get(deletePosition));
+
                     Utills.showToast("Post Deleted Successfully...", mContext);
                     mDataList.remove(deletePosition);
                     notifyItemRemoved(deletePosition);

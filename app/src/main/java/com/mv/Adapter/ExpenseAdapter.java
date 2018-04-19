@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mv.Activity.ExpenseListActivity;
+import com.mv.Activity.UserExpenseListActivity;
 import com.mv.Model.Expense;
 import com.mv.R;
 
@@ -60,6 +62,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
         TextView tvProjectName, tvDateName, tvNoOfPeopleName;
         ImageView imgEdit, imgDelete;
         View view;
+        CardView cardView;
 
         public ViewHolder(View itemLayoutView) {
 
@@ -84,6 +87,15 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
                 public void onClick(View view) {
                     if (mContext instanceof ExpenseListActivity)
                         showLogoutPopUp(getAdapterPosition());
+                }
+            });
+            cardView = (CardView) itemLayoutView.findViewById(R.id.cardView);
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (mContext instanceof UserExpenseListActivity) {
+
+                    }
                 }
             });
         }

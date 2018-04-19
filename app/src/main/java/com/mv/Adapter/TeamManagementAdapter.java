@@ -130,16 +130,14 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                     if (template.getStatus().equals("true")) {
                         holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                         holder.textViewColor.setVisibility(View.VISIBLE);
-                    } else if (template.getStatus().equals("false"))
-                    {
-                        holder.textViewColor.setVisibility(View.INVISIBLE);
-                    }
-                    else if(template.getStatus().equals("Rejected"))
-                    {
+                    } else if (template.getStatus().equals("false")) {
+                        holder.textViewColor.setVisibility(View.VISIBLE);
+                        holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.purple));
+                    } else if (template.getStatus().equals("Rejected")) {
                         holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.red));
-                        holder.textViewColor.setVisibility(View.INVISIBLE);
+                        holder.textViewColor.setVisibility(View.VISIBLE);
                     }
-                  //  else if (template.getStatus().equals("false"))
+                    //  else if (template.getStatus().equals("false"))
                 }
             }
         }

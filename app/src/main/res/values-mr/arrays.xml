@@ -30,6 +30,40 @@
     </string-array>
 
 
+    <string-array name="array_of_project">
+        <item>Select</item>
+        <item>Project 1</item>
+        <item>Project 2</item>
+        <item>Project 3</item>
+    </string-array>
+
+    <string-array name="array_of_particulars">
+        <item>Select</item>
+        <item>Travelling/Parking/Toll</item>
+        <item>Food/Snacks</item>
+        <item>Tele/Fax</item>
+        <item>Xerox/Print &amp; stationary</item>
+        <item>Lodging</item>
+        <item>Book &amp; periodical</item>
+        <item>Local Conveyance</item>
+        <item>Postage &amp; Courier</item>
+    </string-array>
+    <string-array name="array_of_leaves">
+        <item>CL/SL</item>
+        <item>Paid</item>
+        <item>Unpaid</item>
+        <item>Comp Off</item>
+    </string-array>
+    <string-array name="array_of_asset_status">
+        <item>Select</item>
+        <item>Working</item>
+        <item>NotWorking</item>
+        <item>ForRepair</item>
+        <item>Damaged</item>
+
+    </string-array>
+
+
     <string-array name="array_of_issue">
         <item>Select</item>
         <item>Training related</item>

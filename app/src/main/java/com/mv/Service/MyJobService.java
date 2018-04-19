@@ -18,7 +18,6 @@ import com.mv.Model.User;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.PreferenceHelper;
-import com.mv.Utils.Utills;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,6 +69,7 @@ public class MyJobService extends JobService {
             jsonObject.put("lat", latitude);
             jsonObject.put("lon", longitude);
             jsonObject.put("id", User.getCurrentUser(this).getMvUser().getId());
+
             JsonParser jsonParser = new JsonParser();
             JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
 

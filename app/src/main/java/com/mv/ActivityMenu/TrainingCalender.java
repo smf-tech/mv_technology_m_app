@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -105,7 +106,19 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                 new HighlightWeekendsDecorator(),
                 oneDayDecorator
         );
+        binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
 
+
+                if (dy < -5 && binding.fabAddBroadcast.getVisibility() != View.VISIBLE) {
+                    binding.fabAddBroadcast.show();
+                } else if (dy > 5 && binding.fabAddBroadcast.getVisibility() == View.VISIBLE) {
+                    binding.fabAddBroadcast.hide();
+                }
+            }
+        });
 
     }
 
@@ -224,21 +237,19 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
         });
     }
 
-    public void removeEvent(String date)
-    {
+    public void removeEvent(String date) {
 
-     if( AppDatabase.getAppDatabase(getApplicationContext()).userDao().getCalenderList(date).size()==0)
-     {
-         try {
-             binding.calendarView.removeDecorators();
-             CalendarDay day = CalendarDay.from(formatter.parse(date));
-             dates.remove(day);
-             binding.calendarView.addDecorator(new EventDecorator(Color.RED, dates));
-         } catch (ParseException e) {
-             e.printStackTrace();
-         }
+        if (AppDatabase.getAppDatabase(getApplicationContext()).userDao().getCalenderList(date).size() == 0) {
+            try {
+                binding.calendarView.removeDecorators();
+                CalendarDay day = CalendarDay.from(formatter.parse(date));
+                dates.remove(day);
+                binding.calendarView.addDecorator(new EventDecorator(Color.RED, dates));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
 
-     }
+        }
 
     }
 }

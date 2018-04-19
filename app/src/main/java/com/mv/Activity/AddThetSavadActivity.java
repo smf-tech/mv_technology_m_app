@@ -119,10 +119,12 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
 
 
     }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
+
     private void showPopUp() {
         final android.app.AlertDialog alertDialog = new android.app.AlertDialog.Builder(this).create();
 
@@ -994,7 +996,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
             }
 
         } else if (requestCode == Constants.CHOOSE_VIDEO_FROM_CAMERA && resultCode == RESULT_OK) {
-            String selectedImagePath = getPath(outputUri);
+            String selectedImagePath = outputUri.getPath();
             if (checkSizeExceed(selectedImagePath)) {
                 outputUri = null;
                 Utills.showToast(getString(R.string.text_size_exceed), this);

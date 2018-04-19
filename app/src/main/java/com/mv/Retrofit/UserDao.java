@@ -218,17 +218,17 @@ public interface UserDao {
     @Query("SELECT DISTINCT State FROM " + Constants.TABLE_LOCATION)
     List<String> getState();
 
-    @Query("SELECT DISTINCT District FROM " + Constants.TABLE_LOCATION + " where State = :state")
+    @Query("SELECT DISTINCT District FROM " + Constants.TABLE_LOCATION + " where State = :state  ORDER BY District ASC")
     List<String> getDistrict(String state);
 
-    @Query("SELECT DISTINCT Taluka FROM " + Constants.TABLE_LOCATION + " where State = :state AND District = :district")
+    @Query("SELECT DISTINCT Taluka FROM " + Constants.TABLE_LOCATION + " where State = :state AND District = :district ORDER BY Taluka ASC")
     List<String> getTaluka(String state, String district);
 
-    @Query("SELECT DISTINCT Cluster FROM " + Constants.TABLE_LOCATION + " where State = :state AND District = :district AND Taluka = :taluka")
+    @Query("SELECT DISTINCT Cluster FROM " + Constants.TABLE_LOCATION + " where State = :state AND District = :district AND Taluka = :taluka  ORDER BY Cluster ASC")
     List<String> getCluster(String state, String district, String taluka);
 
     @Query("SELECT DISTINCT Village FROM " + Constants.TABLE_LOCATION + " where State = :state AND " +
-            "District = :district AND Taluka = :taluka AND Cluster = :cluster")
+            "District = :district AND Taluka = :taluka AND Cluster = :cluster ORDER BY Village ASC")
     List<String> getVillage(String state, String district, String taluka, String cluster);
 
     @Query("SELECT DISTINCT SchoolName FROM " + Constants.TABLE_LOCATION + " where State = :state AND " +

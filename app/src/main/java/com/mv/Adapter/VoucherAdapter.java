@@ -144,7 +144,7 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
         }
         holder.tvProjectName.setText(voucher.getProject());
         holder.tvDateName.setText(voucher.getDate());
-        holder.tvNoOfPeopleName.setText(voucher.getNoOfPeople());
+        holder.tvNoOfPeopleName.setText(voucher.getPlace());
         holder.tvTotalExpenseName.setText("" + amount);
     }
 

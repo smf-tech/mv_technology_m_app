@@ -125,17 +125,20 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
                         Utills.hideProgressDialog();
                         try {
                             if (response.body() != null) {
-                                String data = response.body().string();
-                                if (data != null && data.length() > 0) {
-                                    JSONObject object = new JSONObject(data);
-                                    JSONArray array = object.getJSONArray("Records");
-                                    if (array.length() != 0) {
-                                        adavance.setId(array.getJSONObject(0).getString("Id"));
+                                if (response != null && response.isSuccess()) {
+                                    String data = response.body().string();
+                                    if (data != null && data.length() > 0) {
+                                        JSONObject object = new JSONObject(data);
+                                        JSONArray array = object.getJSONArray("Records");
+                                        if (array.length() != 0) {
+                                            adavance.setId(array.getJSONObject(0).getString("Id"));
+                                            adavance.setStatus("Pending");
+                                        }
+                                        AppDatabase.getAppDatabase(AdavanceNewActivity.this).userDao().insertAdavance(adavance);
+                                        Utills.showToast("Adavance Added successfully", AdavanceNewActivity.this);
+                                        finish();
+                                        overridePendingTransition(R.anim.left_in, R.anim.right_out);
                                     }
-                                    AppDatabase.getAppDatabase(AdavanceNewActivity.this).userDao().insertAdavance(adavance);
-                                    Utills.showToast("Adavance Added successfully", AdavanceNewActivity.this);
-                                    finish();
-                                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
                                 }
                             }
                         } catch (Exception e) {
@@ -193,6 +196,7 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
                 adavance.setUniqueId(mAdavance.getUniqueId());
                 adavance.setId(mAdavance.getId());
             }
+            adavance.setProject(projectList.get(mProjectSelect));
             adavance.setProject(projectList.get(mProjectSelect));
             adavance.setDate(binding.txtDate.getText().toString().trim());
             adavance.setDecription(binding.editTextDescription.getText().toString().trim());

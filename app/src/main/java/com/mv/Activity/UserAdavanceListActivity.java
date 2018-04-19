@@ -58,7 +58,7 @@ public class UserAdavanceListActivity extends AppCompatActivity implements View.
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_adavance_list);
         binding.setActivity(this);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
-        setActionbar(getString(R.string.expense_list));
+        setActionbar(getString(R.string.adavance_list));
         preferenceHelper = new PreferenceHelper(this);
 
         if (Utills.isConnected(this))
@@ -107,6 +107,11 @@ public class UserAdavanceListActivity extends AppCompatActivity implements View.
     }
 
     private void setRecyclerView() {
+        if (mList.size() == 0) {
+            binding.txtNDA.setVisibility(View.VISIBLE);
+        } else {
+            binding.txtNDA.setVisibility(View.GONE);
+        }
         adapter = new AdavanceAdapter(this, mList);
         binding.rvExpense.setAdapter(adapter);
         binding.rvExpense.setHasFixedSize(true);

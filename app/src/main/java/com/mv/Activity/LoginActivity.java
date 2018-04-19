@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private PreferenceHelper preferenceHelper;
     private BroadcastReceiver mIntentReceiver;
     private String data;
-    User user ;
+    User user;
     String msg = "";
     CountDownTimer yourCountDownTimer;
     private static ViewPager mPager;
@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
 
         try {
-            user= (User) Class.forName("User").newInstance();
+            user = (User) Class.forName("User").newInstance();
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
@@ -122,7 +122,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     preferenceHelper.insertString(PreferenceHelper.UserData, data);
                     yourCountDownTimer.cancel();
                     if (user.getMvUser().getRoll() != null && !(TextUtils.isEmpty(user.getMvUser().getRoll()))) {
-                        Utills.showToast("Login Successful...", LoginActivity.this);
+                        Utills.showToast(getString(R.string.login_successful), LoginActivity.this);
                         Intent intent;
                         intent = new Intent(LoginActivity.this, HomeActivity.class);
                         startActivity(intent);
@@ -291,7 +291,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if (user.getMvUser().getPhoneId() != null
                                     && user.getMvUser().getPhoneId().equalsIgnoreCase(Utills.getDeviceId(LoginActivity.this))) {
                                 preferenceHelper.insertString(PreferenceHelper.UserData, data);
-                                Utills.showToast("Login Successful...", LoginActivity.this);
+                                Utills.showToast(getString(R.string.login_successful), LoginActivity.this);
                                 Intent intent;
                                 intent = new Intent(LoginActivity.this, HomeActivity.class);
                                 startActivity(intent);
@@ -341,7 +341,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onBackPressed() {
         if (binding.edtOtp.isShown()) {
-
+            binding.edtOtp.setText("");
             slideOut(binding.edtUsername, binding.edtOtp, getString(R.string.msg_enter_mobile));
             if (yourCountDownTimer != null)
                 yourCountDownTimer.cancel();
@@ -357,7 +357,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Runtime.getRuntime().gc();
                 startActivity(startMain);
                 System.exit(0);
-
 
                 finish();
                 return;
@@ -425,7 +424,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (view.getText().toString().trim().length() == 0) {
             msg = getString(R.string.please_enter) + " " + errorMEssage;
         } else if (view.getText().toString().trim().length() != charlimit) {
-            msg = getString(R.string.please_enter) + " " + charlimit+" " + getString(R.string.digit)+" " + errorMEssage;
+            msg = getString(R.string.please_enter) + " " + charlimit + " " + getString(R.string.digit) + " " + errorMEssage;
         }
         if (TextUtils.isEmpty(msg))
             return true;

@@ -11,6 +11,8 @@
     <string name="text_audio">Audio</string>
     <string name="text_video">Video</string>
 
+    <string name="login_successful">Login Successful...</string>
+
     <string name="text_record">Record Audio</string>
     <string name="text_select_audio">Select Audio</string>
     <string name="text_chooseaudio">Choose Audio</string>
@@ -74,7 +76,7 @@
     <string name="profile_pic">Add Profile Picture</string>
     <string name="Approve">Approve</string>
     <string name="Reject">Reject</string>
-    <string name="thet_savnd">\"Thet Sanwand\"with\nMr.Shantilal Muttha</string>
+    <string name="thet_savnd">\"Thet Sanwand\" with\nMr.Shantilal Muttha</string>
     <string name="update_profile">Update Profile</string>
     <string name="approve_profile"> You are not approved yet. </string>
     <string name="approve_profile2">will approve you.</string>
@@ -91,9 +93,9 @@
     <string name="nahi">No</string>
     <string name="question_4">Question 4</string>
     <string name="msg_enter_mobile">Enter your mobile number to get started!</string>
-    <string name="msg_manual_otp">(Enter the OTP below in case if we fail to detect the SMS automatically)</string>
-    <string name="resend"> <u>Resend OTP</u></string>
-    <string name="check_otp">Please Check OTP</string>
+    <string name="msg_manual_otp">(Enter the Password below in case if we fail to detect the SMS automatically)</string>
+    <string name="resend"> <u>Resend Password</u></string>
+    <string name="check_otp">Please Check Password</string>
 
     <string name="cannotLogout">You cannot logout</string>
     <string name="submitAllForms">Please submit all forms and then logout...</string>
@@ -224,7 +226,7 @@
    \n\nMulyavardhan fills this critical gap with a contemporary approach aligned to national and international policies.\n\n<b>Approach</b>\n\nMulyavardhan adopts a whole-school approach, whereby the entire school ethos and all school processes are guided by core democratic values. Under this approach, values are not “taught”, but absorbed by students from the school ethos, processes and practices.\n\n</string>
     <string name="add_the_sanvad">पोस्ट जोडा</string>
     <string name="accept">Accept</string>
-    <string name="detail"><u>Detail...</u></string>
+    <string name="detail"><u>Details</u></string>
 
     <string name="call_us">Call Us</string>
     <string name="call_on_hangout">Call on Hangout</string>
@@ -236,13 +238,13 @@
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
     <string name="reason">Reason</string>
-    <string name="type_of_leaves">Type Of Leves</string>
+    <string name="type_of_leaves">Type Of Leaves</string>
 
     <string name="pending">Pending</string>
     <string name="reject">Reject</string>
     <string name="approve">Approve</string>
     <string name="leave_detail">Leave Detail</string>
-    <string name="leave">Leave</string>
+    <string name="leave">Leave Management</string>
 
     <string name="asset_name">Select Asset</string>
     <string name="asset_model_no">Model No.</string>
@@ -265,10 +267,11 @@
     <!--Voucher List Activity-->
     <string name="voucher_list">Voucher List</string>
     <!--Voucher New Activity-->
-    <string name="voucher_new">Voucher New</string>
+    <string name="voucher_new">New Voucher</string>
     <string name="date">Date</string>
     <string name="projectDesription">Description of tour</string>
     <string name="countOfPeople">Number of People Travelled</string>
+    <string name="place">Place</string>
     <!--Expense New Activity-->
     <string name="expense_new">Expense New</string>
     <string name="amount">Amount</string>

@@ -413,24 +413,43 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         menuListName.add(Constants.Team_Management);
         menuListName.add(Constants.My_Reports);
         menuListName.add(Constants.My_Calendar);
-
         menuListName.add(Constants.HR_MODULE);
         menuListName.add(Constants.Account_Section);
         menuListName.add(Constants.Asset_management);
         //for loop for adding accessible tab
         for (int i = 0; i < allTab.size(); i++) {
-
-            menulist.add(checkList(allTab, i, true));
+            if (checkList(allTab, i, true).getDestination() != null)
+                menulist.add(checkList(allTab, i, true));
         }
 //for loop for adding non accessible tab
         for (int i = 0; i < menuListName.size(); i++) {
             if (!allTab.contains(menuListName.get(i))) {
-                menulist.add(checkList(menuListName, i, false));
+                if (checkList(menuListName, i, false).getDestination() != null)
+                    menulist.add(checkList(menuListName, i, false));
             }
         }
-
-
         HomeModel homeModel = new HomeModel();
+        if (User.getCurrentUser(HomeActivity.this).getMvUser().getRoll().equalsIgnoreCase("TC") ||
+                User.getCurrentUser(HomeActivity.this).getMvUser().getRoll().equalsIgnoreCase("MT")) {
+            homeModel.setAccessible(true);
+            homeModel.setMenuName(getString(R.string.leave));
+            homeModel.setMenuIcon(R.drawable.ic_hr);
+            homeModel.setDestination(LeaveApprovalActivity.class);
+            menulist.add(homeModel);
+            homeModel = new HomeModel();
+            homeModel.setAccessible(true);
+            homeModel.setMenuName(getString(R.string.account_section));
+            homeModel.setMenuIcon(R.drawable.ic_account);
+            homeModel.setDestination(AccountSectionActivity.class);
+            menulist.add(homeModel);
+            homeModel = new HomeModel();
+            homeModel.setAccessible(true);
+            homeModel.setMenuName(getString(R.string.asset_management));
+            homeModel.setMenuIcon(R.drawable.ic_asset);
+            homeModel.setDestination(AssetAllocatedListActivity.class);
+            menulist.add(homeModel);
+        }
+        homeModel = new HomeModel();
         homeModel.setMenuName(getString(R.string.about_us));
         homeModel.setMenuIcon(R.drawable.ic_about_us);
         homeModel.setDestination(AboutUsActivity.class);
@@ -513,27 +532,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             homeModel.setMenuName(getString(R.string.indicator));
             homeModel.setMenuIcon(R.drawable.ic_reports);
             homeModel.setDestination(IndicatorListFragmet.class);
-
         } else if (allTab.get(i).equals(Constants.My_Calendar)) {
             homeModel.setMenuName(getString(R.string.training_calendar));
             homeModel.setMenuIcon(R.drawable.ic_calender);
             homeModel.setDestination(TrainingCalender.class);
-
-        }
-        else if (allTab.get(i).equals(Constants.HR_MODULE)) {
-            homeModel.setMenuName(getString(R.string.leave));
-            homeModel.setMenuIcon(R.drawable.ic_team_management);
-            homeModel.setDestination(LeaveApprovalActivity.class);
-        } else if (allTab.get(i).equals(Constants.Account_Section)) {
-            homeModel.setMenuName(getString(R.string.account_section));
-            homeModel.setMenuIcon(R.drawable.ic_reports);
-            homeModel.setDestination(AccountSectionActivity.class);
-
-        } else if (allTab.get(i).equals(Constants.Asset_management)) {
-            homeModel.setMenuName(getString(R.string.asset_management));
-            homeModel.setMenuIcon(R.drawable.ic_calender);
-            homeModel.setDestination(AssetAllocatedListActivity.class);
-
         }
         return homeModel;
     }
@@ -924,7 +926,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         // Setting Dialog Message
         if (User.getCurrentUser(getApplicationContext()).getMvUser().getApproval_role() != null) {
             if (!User.getCurrentUser(getApplicationContext()).getMvUser().getApprover_Comment__c().equals(""))
-                message = getString(R.string.approve_profile) + "\n"+User.getCurrentUser(getApplicationContext()).getMvUser().getApprover_Comment__c();
+                message = getString(R.string.approve_profile) + "\n" + User.getCurrentUser(getApplicationContext()).getMvUser().getApprover_Comment__c();
             else
                 message = getString(R.string.approve_profile) + "\n" + User.getCurrentUser(getApplicationContext()).getMvUser().getApproval_role() + " " + getString(R.string.approve_profile2);
 

@@ -759,7 +759,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .into(binding.addImage);
         } else if (requestCode == Constants.CHOOSE_VIDEO_FROM_CAMERA && resultCode == RESULT_OK) {
-            String selectedImagePath = getPath(outputUri);
+            String selectedImagePath = outputUri.getPath();
             if (checkSizeExceed(selectedImagePath)) {
                 outputUri = null;
                 Utills.showToast(getString(R.string.text_size_exceed), this);

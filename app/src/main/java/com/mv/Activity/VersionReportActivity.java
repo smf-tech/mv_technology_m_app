@@ -4,9 +4,9 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.mv.Adapter.TeamManagementAdapter;
 import com.mv.Adapter.VersionReportAdapter;
 import com.mv.Model.LocationModel;
 import com.mv.Model.Task;
@@ -29,7 +28,6 @@ import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
-import com.mv.databinding.ActivityTeamManagementUserProfileActivityBinding;
 import com.mv.databinding.ActivityVersionReportBinding;
 
 import org.json.JSONArray;
@@ -187,10 +185,12 @@ public class VersionReportActivity extends AppCompatActivity implements View.OnC
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 Template processList = new Template();
 
-
-                                processList.setId(jsonArray.getJSONObject(i).getString("Id"));
-                                processList.setUser_Mobile_App_Version__c(jsonArray.getJSONObject(i).getString("User_Mobile_App_Version__c"));
-                                processList.setName(jsonArray.getJSONObject(i).getString("Full_Name__c"));
+                                if (jsonArray.getJSONObject(i).has("Id"))
+                                    processList.setId(jsonArray.getJSONObject(i).getString("Id"));
+                                if (jsonArray.getJSONObject(i).has("User_Mobile_App_Version__c"))
+                                    processList.setUser_Mobile_App_Version__c(jsonArray.getJSONObject(i).getString("User_Mobile_App_Version__c"));
+                                if (jsonArray.getJSONObject(i).has("Full_Name__c"))
+                                    processList.setName(jsonArray.getJSONObject(i).getString("Full_Name__c"));
 
                                 processAllList.add(processList);
                             }

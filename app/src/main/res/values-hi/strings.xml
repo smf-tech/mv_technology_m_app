@@ -115,9 +115,9 @@
     <string name="nahi">न</string>
     <string name="question_4">प्रश्न4</string>
     <string name="msg_enter_mobile">आरंभ करने के लिए अपना मोबाइल नंबर दर्ज करें!</string>
-    <string name="msg_manual_otp">(यदि हम एसएमएस को स्वचालित रूप से पहचानने में विफल रहते हैं तो नीचे दिए गए ओटीपी दर्ज करें)</string>
-    <string name="resend"><u>ओटीपी को भेजें</u></string>
-    <string name="check_otp">कृपया ओटीपी चेक करें</string>
+    <string name="msg_manual_otp">(यदि हम एसएमएस को स्वचालित रूप से पहचानने में विफल रहते हैं तो नीचे दिए गए पासवर्ड दर्ज करें)</string>
+    <string name="resend"><u>पासवर्ड को भेजें</u></string>
+    <string name="check_otp">कृपया पासवर्ड चेक करें</string>
     <string name="download">डाऊनलोड</string>
     <string name="locked">उपलब्ध नहीं</string>
     <string name="Submit">निवेदन करें</string>
@@ -214,20 +214,20 @@
        </string>
     <string name="call_us">हमें फोन करें</string>
 
-    <string name="detail"><u>Deatail...</u></string>
+    <string name="detail"><u>Deatails</u></string>
     <string name="call_on_hangout">हँगआऊट पर कॉल करें</string>
     <string name="call_on_landline">लैंडलाइन पर कॉल करें(10 बजे से शाम 6 बजे)</string>
-    <string name="update_user_data">Update Data</string>
-    <string name="update_data_string">Are sure you want to update data?</string>
+    <string name="update_user_data">डेटा को अद्यतन करें</string>
+    <string name="update_data_string">क्या आप डेटा अपडेट करना चाहते हैं?</string>
     <string name="app_versio_report">APP Version Report</string>
     <string name="next_login">नेक्स्ट</string>
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
     <string name="reason">Reason</string>
-    <string name="type_of_leaves">Type Of Leves</string>
-    <string name="pending">Pending</string>
+    <string name="type_of_leaves">Type Of Leaves</string>
+    <string name="pending">अपूर्ण</string>
     <string name="leave_detail">Leave Detail</string>
-    <string name="leave">Leave</string>
+    <string name="leave">छुट्टी\nप्रबंध</string>
 
     <string name="asset_name">Select Asset</string>
     <string name="asset_model_no">Model No.</string>
@@ -236,20 +236,43 @@
     <string name="asset_tentative_return_date">Tentative Return Date</string>
     <string name="asset_remarks">Remarks</string>
     <string name="asset_request">Assets</string>
-    <string name="asset_management">Asset\nManagement</string>
+    <string name="asset_management">संपत्ति\nप्रबंधन</string>
     <string name="asset_name__">Asset name</string>
     <string name="asset_code">Code</string>
     <string name="specification">Specification</string>
     <string name="select_model_no">Select Model No.</string>
 
+    <string name="login_successful">सफलतापूर्ण प्रवेश...</string>
+
     <!--Accout Section Activity-->
-    <string name="adavance">Adavance</string>
-    <string name="voucher">Voucher</string>
-    <string name="salary">Salary</string>
+    <string name="adavance">अग्रिम</string>
+    <string name="voucher">पावती प्रमाणक</string>
+    <string name="salary">वेतन</string>
     <!--Voucher List Activity-->
-    <string name="voucher_list">Voucher List</string>
+    <string name="voucher_list">वाउचर सूची</string>
     <!--Voucher New Activity-->
-    <string name="voucher_new">Voucher New</string>
+    <string name="voucher_new">नई वाउचर</string>
     <!--Expense New Activity-->
-    <string name="expense_new">Expense New</string>
+    <string name="expense_new">नवीन खर्च</string>
+
+
+    <!--Expense List Activity-->
+    <string name="expense_list">खर्च यादी</string>
+    <!--Adavance List Activity-->
+    <string name="adavance_list">अग्रिम यादी</string>
+
+    <string name="particulars">Particulars</string>
+    <string name="Approve">Approve</string>
+    <string name="Reject">Reject</string>
+    <string name="adavance_approval">अग्रिम स्वीकृति</string>
+    <string name="expense_approval">खर्च अनुमोदन</string>
+    <string name="date">Date</string>
+    <string name="projectDesription">Description of tour</string>
+    <string name="countOfPeople">Number of People Travelled</string>
+    <string name="amount">Amount</string>
+    <string name="adavance_new">नवीन अग्रिम</string>
+    <string name="adavanceDesription">Description of Adavance</string>
+    <string name="place">Place</string>
+    <!--Salary List Activity-->
+    <string name="salary_list">वेतन सूची</string>
 </resources>

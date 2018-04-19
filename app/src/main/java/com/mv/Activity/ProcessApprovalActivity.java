@@ -64,7 +64,7 @@ public class ProcessApprovalActivity extends AppCompatActivity implements View.O
     private void initViews() {
         //25023645110
         preferenceHelper = new PreferenceHelper(this);
-        setActionbar(getString(R.string.select_form));
+        setActionbar(getString(R.string.team_form_approval));
         textNoData = (TextView) findViewById(R.id.textNoData);
         mAdapter = new TemplateAdapter(programManagementProcessLists, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());

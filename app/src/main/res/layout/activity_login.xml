@@ -77,9 +77,8 @@
                     android:id="@+id/tv_user"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="20dp"
-                    android:layout_marginTop="20dp"
                     android:gravity="center"
+                    android:layout_margin="@dimen/dimen_10dp"
                     android:text="@string/msg_enter_mobile"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/medium_text" />
@@ -103,9 +102,9 @@
                         android:gravity="center_vertical"
                         android:hint="@string/mobile_no"
                         android:inputType="phone"
+                        android:maxLength="10"
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
-                        android:maxLength="10"
                         android:singleLine="true"
                         android:text=""
 
@@ -131,10 +130,7 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:singleLine="true"
-
-
                         android:textColor="@color/dark_grey"
-
                         android:textColorHint="@color/dark_grey"
                         android:textSize="@dimen/medium_text"
                         android:visibility="invisible" />
@@ -202,9 +198,9 @@
                     android:gravity="center_horizontal"
                     android:onClick="@{()->activity.onResendOtpClick()}"
                     android:text="@string/resend"
-                    android:visibility="gone"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="@dimen/medium_text" />
+                    android:textSize="@dimen/medium_text"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
