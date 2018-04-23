@@ -9,6 +9,10 @@ import android.os.Parcelable;
 
 public class EventUser implements Parcelable {
     private String role;
+    private String userName;
+    private String userID;
+    private Boolean isUserSelected;
+
 
     public Boolean getUserSelected() {
         return isUserSelected;
@@ -18,7 +22,7 @@ public class EventUser implements Parcelable {
         isUserSelected = userSelected;
     }
 
-    private Boolean isUserSelected;
+
     public String getRole() {
         return role;
     }
@@ -43,8 +47,7 @@ public class EventUser implements Parcelable {
         this.userID = userID;
     }
 
-    private String userName;
-    private String userID;
+
 
     public EventUser() {
     }

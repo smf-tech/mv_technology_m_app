@@ -17,8 +17,11 @@ import android.widget.TextView;
 
 import com.google.android.flexbox.AlignSelf;
 import com.google.android.flexbox.FlexboxLayoutManager;
+import com.mv.Activity.LeaveApprovalActivity;
 import com.mv.Model.HomeModel;
 import com.mv.R;
+import com.mv.Utils.Constants;
+import com.mv.Utils.PreferenceHelper;
 
 import java.util.List;
 
@@ -31,7 +34,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
     private List<HomeModel> menuList;
 
     private Context mContext;
-
+    private PreferenceHelper preferenceHelper;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView menu_name;
@@ -52,6 +55,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
                 @Override
                 public void onClick(View view) {
                     if (menuList.get(getAdapterPosition()).getAccessible()) {
+                        preferenceHelper.insertString(Constants.Leave,"");
                         Intent openClass = new Intent(mContext, menuList.get(getAdapterPosition()).getDestination());
                         mContext.startActivity(openClass);
                     } else {
@@ -77,6 +81,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
     public HomeAdapter(List<HomeModel> menuList, Context context) {
         this.menuList = menuList;
         this.mContext = context;
+        this.preferenceHelper = new PreferenceHelper(context);
 
     }
 

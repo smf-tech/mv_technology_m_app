@@ -287,4 +287,5 @@
 
     <!--Salary List Activity-->
     <string name="salary_list">Salary List</string>
+    <string name="leave_approoval">Leave Approval</string>
 </resources>

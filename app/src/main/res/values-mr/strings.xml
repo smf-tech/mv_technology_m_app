@@ -267,4 +267,5 @@
     <string name="place">Place</string>
     <!--Salary List Activity-->
     <string name="salary_list">पगार यादी</string>
+    <string name="leave_approoval">Leave Approval</string>
 </resources>

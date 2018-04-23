@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mv.Model.CalenderEvent;
 import com.mv.Model.EventUser;
 import com.mv.Model.Template;
 import com.mv.Model.User;
@@ -39,10 +40,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -64,12 +69,12 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
     String msg = "";
     private int locationState;
     public String selectedState = "", selectedDisrict = "", selectedTaluka = "", selectedCluster = "", selectedVillage = "", selectedSchool = "", selectedRole = "", selectedOrganization = "", selectedUserId = "", selectedUserName = "", selectedCatagory = "";
-
+    CalenderEvent calenderEvent = new CalenderEvent();
     ArrayList<EventUser> calenderEventUserArrayList;
 
     ArrayList<Template> processList;
     private String processId = "";
-
+    ArrayList<String> selectedProcessId=new ArrayList<>();
     Activity context;
 
     @Override
@@ -79,15 +84,46 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         // overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_clalender_fliter);
         binding.setActivity(this);
-        selectedState = User.getCurrentUser(getApplicationContext()).getMvUser().getState();
-        selectedDisrict = User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict();
-        selectedTaluka = User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka();
-        selectedCluster = User.getCurrentUser(getApplicationContext()).getMvUser().getCluster();
-        selectedVillage = User.getCurrentUser(getApplicationContext()).getMvUser().getVillage();
-        selectedSchool = User.getCurrentUser(getApplicationContext()).getMvUser().getSchool_Name();
-        selectedOrganization = User.getCurrentUser(getApplicationContext()).getMvUser().getOrganisation();
-        selectedRole = User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
 
+
+        List<Date> dates = getDates("2012-02-01", "2012-03-01");
+        for (Date date : dates)
+            System.out.println(date);
+
+
+        if (getIntent().getParcelableExtra(Constants.My_Calendar) != null) {
+            calenderEvent = getIntent().getParcelableExtra(Constants.My_Calendar);
+            selectedState = calenderEvent.getState__c();
+            selectedDisrict = calenderEvent.getDistrict__c();
+            selectedTaluka =calenderEvent.getTaluka__c();
+            selectedCluster =calenderEvent.getCluster__c();
+            selectedVillage = calenderEvent.getVillage__c();
+            selectedSchool = calenderEvent.getSchool__c();
+            if(calenderEvent.getOrganization__c()!=null)
+                selectedOrganization = calenderEvent.getOrganization__c();
+            else
+            selectedOrganization = User.getCurrentUser(getApplicationContext()).getMvUser().getOrganisation();
+
+
+            selectedRole = calenderEvent.getRole__c();
+            binding.etEventTitle.setText(calenderEvent.getTitle());
+            binding.etEventDate.setText(calenderEvent.getDate());
+            binding.etEventDiscription.setText(calenderEvent.getDescription());
+            if(calenderEvent.getMV_Process__c()!=null)
+            selectedProcessId = new ArrayList<String>(Arrays.asList(getColumnIdex((calenderEvent.getMV_Process__c()).split(","))));
+
+        } else {
+            selectedState = User.getCurrentUser(getApplicationContext()).getMvUser().getState();
+            selectedDisrict = User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict();
+            selectedTaluka = User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka();
+            selectedCluster = User.getCurrentUser(getApplicationContext()).getMvUser().getCluster();
+            selectedVillage = User.getCurrentUser(getApplicationContext()).getMvUser().getVillage();
+            selectedSchool = User.getCurrentUser(getApplicationContext()).getMvUser().getSchool_Name();
+            selectedOrganization = User.getCurrentUser(getApplicationContext()).getMvUser().getOrganisation();
+            selectedRole = User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
+            selectedProcessId = new ArrayList<String>(Arrays.asList(getColumnIdex(("Other").split(","))));
+            binding.spinnerCatogory.setText("Other");
+        }
         initViews();
         processList = new ArrayList<>();
         Template process = new Template();
@@ -95,9 +131,17 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         process.setMV_Process__c("Other");
         processList.add(process);
         if (Utills.isConnected(this))
-            getCalendeEvents();
+            getCalendeEventsProcess();
         else
             Utills.showToast(getString(R.string.error_no_internet), CalenderFliterActivity.this);
+    }
+    public static String[] getColumnIdex(String[] value) {
+
+        for (int i = 0; i < value.length; i++) {
+            value[i] = value[i].trim();
+        }
+        return value;
+
     }
 
     @Override
@@ -337,7 +381,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 mListDistrict.removeAll(Collections.singleton(null));
                 if (mListDistrict.size() == 0) {
 
-                    if (binding.spinnerDistrict.isShown()) {
+
                         if (Utills.isConnected(this))
                             getDistrict();
                         else {
@@ -348,7 +392,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                             setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
 
                         }
-                    }
+
                 } else {
                     mListDistrict = new ArrayList<>();
                     mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(selectedState);
@@ -380,7 +424,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                     mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
                     mListTaluka.removeAll(Collections.singleton(null));
                     if (mListTaluka.size() == 0) {
-                        if (binding.spinnerTaluka.isShown()) {
+
                             if (Utills.isConnected(this))
                                 getTaluka();
                             else {
@@ -391,7 +435,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                                 setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
 
                             }
-                        }
+
                     } else {
                         mListTaluka.clear();
                         mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
@@ -914,13 +958,13 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         });
     }
 
-    private void getCalendeEvents() {
+    private void getCalendeEventsProcess() {
         Utills.showProgressDialog(context, "Loading ", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
 
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetCalenderEvents + "?userId=" + User.getCurrentUser(CalenderFliterActivity.this).getMvUser().getId();
+                + Constants.GetCalenderEventsProcess + "?userId=" + User.getCurrentUser(CalenderFliterActivity.this).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -931,15 +975,35 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                         String data = response.body().string();
                         if (data != null && data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
-
+                            StringBuffer sb = new StringBuffer();
+                            String prefix = "";
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 Template process = new Template();
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                                 process.setName(jsonObject.getString("Name"));
                                 process.setMV_Process__c(jsonObject.getString("Id"));
+                                if(selectedProcessId.contains(jsonObject.getString("Id")))
+                                {
+                                        sb.append(prefix);
+
+                                        prefix = ",";
+                                        sb.append(jsonObject.getString("Name"));
+
+                                        //now original string is changed
+                                    }
                                 processList.add(process);
 
                             }
+                            if(selectedProcessId.contains("Other"))
+                            {
+                                sb.append(prefix);
+
+                                prefix = ",";
+                                sb.append("Other");
+
+                                //now original string is changed
+                            }
+                            binding.spinnerCatogory.setText(sb.toString());
                         }
 
                     }
@@ -997,11 +1061,15 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
         //  final List<Community> temp = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities();
         final String[] items = new String[processList.size()];
+        final boolean[] mSelection = new boolean[items.length];
+
         for (int i = 0; i < processList.size(); i++) {
             items[i] = processList.get(i).getName();
+            if(selectedProcessId.contains(processList.get(i).getMV_Process__c()))
+            mSelection[i] =true;
+            else
+                mSelection[i] =false;
         }
-        final boolean[] mSelection = new boolean[items.length];
-        Arrays.fill(mSelection, false);
 
 
       /* if(temp.contains(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll()))
@@ -1081,6 +1149,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 jsonObject1.put("State__c", selectedState);
                 jsonObject1.put("Taluka__c", selectedTaluka);
                 jsonObject1.put("Village__c", selectedVillage);
+                jsonObject1.put("MV_User__c", User.getCurrentUser(context).getMvUser().getId());
                 jsonObject1.put("category", selectedCatagory);
                 jsonObject1.put("Title__c", binding.etEventTitle.getText().toString());
 
@@ -1138,7 +1207,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
                     }
                 }, mYear, mMonth, mDay);
-        dpd.getDatePicker().setMinDate(System.currentTimeMillis()-10000);
+        dpd.getDatePicker().setMinDate(System.currentTimeMillis() - 10000);
         dpd.show();
     }
 
@@ -1148,4 +1217,31 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         return "" + i;
     }
 
+    private static List<Date> getDates(String dateString1, String dateString2) {
+        ArrayList<Date> dates = new ArrayList<Date>();
+        DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
+
+        Date date1 = null;
+        Date date2 = null;
+
+        try {
+            date1 = df1.parse(dateString1);
+            date2 = df1.parse(dateString2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(date1);
+
+
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(date2);
+
+        while (!cal1.after(cal2)) {
+            dates.add(cal1.getTime());
+            cal1.add(Calendar.DATE, 1);
+        }
+        return dates;
+    }
 }

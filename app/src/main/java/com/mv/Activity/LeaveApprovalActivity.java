@@ -15,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mv.Adapter.ExpandableApprovalListAdapter;
+import com.mv.Model.CalenderEvent;
 import com.mv.Model.LeavesModel;
 
 import com.mv.Model.User;
@@ -50,16 +51,16 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     ArrayList<String> idList;
-    private PreferenceHelper preferenceHelper;
+        private PreferenceHelper preferenceHelper;
     private ArrayList<String> headerList;
     HashMap<String, ArrayList<LeavesModel>> childList;
     ArrayList<LeavesModel> leaveList = new ArrayList<>();
     String proceesId, Processname;
-    Context mContext;
-    Activity context;
+    Activity mContext;
+
     TextView textNoData;
     private ExpandableApprovalListAdapter adapter;
-
+    String url = "";
 
 
     @Override
@@ -69,14 +70,15 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_leave_approval);
         binding.setProcesslist(this);
-        context=this;
 
-        context=this;
+
+
         headerList=new ArrayList<>();
         childList=new HashMap<>();
         headerList.add(getString(R.string.pending));
         headerList.add(getString(R.string.reject));
         headerList.add(getString(R.string.approve));
+
 /*        proceesId = getIntent().getExtras().getString(Constants.PROCESS_ID);
         Processname = getIntent().getExtras().getString(Constants.PROCESS_NAME);*/
         initViews();
@@ -92,6 +94,17 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
 
         preferenceHelper = new PreferenceHelper(this);
         //storing process Id to preference to use later
+        if(preferenceHelper.getString(Constants.Leave).equals(Constants.Leave_Approve)) {
+            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                    + Constants.GetApproveLeave+ "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
+            binding.fabAddProcess.setVisibility(View.GONE);
+        }
+        else {
+            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                    + Constants.GetAllMyLeave + "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
+            binding.fabAddProcess.setVisibility(View.VISIBLE);
+        }
+
         preferenceHelper.insertString(Constants.PROCESS_ID, proceesId);
         preferenceHelper.insertString(Constants.PROCESS_TYPE, Constants.MANGEMENT_PROCESS);
         textNoData = (TextView) findViewById(R.id.textNoData);
@@ -99,20 +112,83 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 /*        binding.rvProcess.setLayoutManager(mLayoutManager);
         binding.rvProcess.setItemAnimator(new DefaultItemAnimator());*/
-        adapter = new ExpandableApprovalListAdapter(context,headerList,childList );
+        adapter = new ExpandableApprovalListAdapter(mContext,headerList,childList );
         binding.rvProcess.setAdapter(adapter);
-        if (Utills.isConnected(this))
-        getAllProcess();
-        else
-            Utills.showToast(getString(R.string.error_no_internet),mContext);
 
 
     }
+    public void deleteLeave(final String id) {
+        Utills.showProgressDialog(mContext, "Loading ",mContext. getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + "/services/apexrest/deleteLeave?leaveId=" + id+ "&userId=" +User.getCurrentUser(mContext).getMvUser().getId();
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    if (response.body() != null) {
+                        String str = response.body().string();
+                        if (str != null && str.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(str);
 
+                            ArrayList <LeavesModel> pendingList=new ArrayList<>();
+                            ArrayList <LeavesModel> approveList=new ArrayList<>();
+                            ArrayList <LeavesModel> rejectList=new ArrayList<>();
+                            for(int i=0;i<jsonArray.length();i++)
+                            {
+                                JSONObject data=jsonArray.getJSONObject(i);
+
+                                LeavesModel leavesModel=new LeavesModel();
+                                leavesModel.setId(data.getString("Id"));
+                                leavesModel.setFromDate(data.getString("From__c"));
+                                leavesModel.setToDate(data.getString("To__c"));
+                                leavesModel.setReason(data.getString("Reason__c"));
+                                leavesModel.setTypeOfLeaves(data.getString("Leave_Type__c"));
+                                leavesModel.setStatus(data.getString("Status__c"));
+
+                                leavesModel.setRequested_User__c(data.getString("Requested_User__c"));
+                                if(data.has("Requested_User_Name__c"))
+                                    leavesModel.setRequested_User_Name__c(data.getString("Requested_User_Name__c"));
+                                if(leavesModel.getStatus().equals(Constants.LeaveStatusApprove))
+                                    approveList.add(leavesModel);
+                                if(leavesModel.getStatus().equals(Constants.LeaveStatusPending))
+                                    pendingList.add(leavesModel);
+                                if(leavesModel.getStatus().equals(Constants.LeaveStatusRejected))
+                                    rejectList.add(leavesModel);
+                            }
+                            childList.put(getString(R.string.pending),pendingList);
+                            childList.put(getString(R.string.reject),rejectList);
+                            childList.put(getString(R.string.approve),approveList);
+                            adapter = new ExpandableApprovalListAdapter(mContext,headerList,childList );
+                            binding.rvProcess.setAdapter(adapter);
+
+
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
+        if (Utills.isConnected(this))
+            getAllProcess();
+        else
+            Utills.showToast(getString(R.string.error_no_internet),mContext);
 
     }
 
@@ -157,11 +233,11 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
     }
 
     public void getAllProcess() {
+
         Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetAllMyLeave+"?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
+
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -185,18 +261,24 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                                 leavesModel.setFromDate(data.getString("From__c"));
                                 leavesModel.setToDate(data.getString("To__c"));
                                 leavesModel.setReason(data.getString("Reason__c"));
-                                leavesModel.setTypeOfLeaves(data.getString("Requested_User__c"));
+                                leavesModel.setTypeOfLeaves(data.getString("Leave_Type__c"));
                                 leavesModel.setStatus(data.getString("Status__c"));
-                                if(leavesModel.getStatus().equals(getString(R.string.approve)))
+
+                                leavesModel.setRequested_User__c(data.getString("Requested_User__c"));
+                                if(data.has("Requested_User_Name__c"))
+                                leavesModel.setRequested_User_Name__c(data.getString("Requested_User_Name__c"));
+                                if(leavesModel.getStatus().equals(Constants.LeaveStatusApprove))
                                     approveList.add(leavesModel);
-                                if(leavesModel.getStatus().equals(getString(R.string.pending)))
+                                if(leavesModel.getStatus().equals(Constants.LeaveStatusPending))
                                     pendingList.add(leavesModel);
-                                if(leavesModel.getStatus().equals(getString(R.string.reject)))
+                                if(leavesModel.getStatus().equals(Constants.LeaveStatusRejected))
                                     rejectList.add(leavesModel);
                             }
                             childList.put(getString(R.string.pending),pendingList);
                             childList.put(getString(R.string.reject),rejectList);
                             childList.put(getString(R.string.approve),approveList);
+                         adapter = new ExpandableApprovalListAdapter(mContext,headerList,childList );
+                         binding.rvProcess.setAdapter(adapter);
 
 
                      }

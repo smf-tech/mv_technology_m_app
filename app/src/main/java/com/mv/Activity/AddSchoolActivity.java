@@ -59,7 +59,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
     private Spinner selectedSpinner;
     String msg = "";
     private int locationState;
-    public static String selectedState = "", selectedDisrict = "", selectedTaluka = "", selectedCluster = "", selectedVillage = "", selectedSchool = "";
+    public  String selectedState = "", selectedDisrict = "", selectedTaluka = "", selectedCluster = "", selectedVillage = "", selectedSchool = "";
 
 
     Activity context;
@@ -270,14 +270,14 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
             msg = "Please Enter Cluster";
         }   else if (binding.spinnerVillage.getText().toString().equals("")) {
             if (mListCluster.contains(binding.spinnerCluster.getText().toString())) {
-                msg = "You can Add only new Cluster";
+                msg = "You can add only new Cluster";
             }
         } else if (binding.spinnerSchoolName.getText().toString().equals("")) {
             if (mListVillage.contains(binding.spinnerVillage.getText().toString())) {
-                msg = "You can Add only new Village";
+                msg = "You can add only new Village";
             }
         } else if (mListSchoolName.contains(binding.spinnerSchoolName.getText().toString())) {
-            msg = "You can Add only new School";
+            msg = "You can add only new School";
         }
 
         if (msg.equals("")) {

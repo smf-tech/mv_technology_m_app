@@ -66,6 +66,49 @@ public class LeavesModel implements Parcelable {
     private String typeOfLeaves;
     private String status;
 
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    private String comment;
+
+    private String Requested_User_Name__c;
+
+    public String getRequested_User_Name__c() {
+        return Requested_User_Name__c;
+    }
+
+    public void setRequested_User_Name__c(String requested_User_Name__c) {
+        Requested_User_Name__c = requested_User_Name__c;
+    }
+
+    public String getRequested_User__c() {
+        return Requested_User__c;
+    }
+
+    public void setRequested_User__c(String requested_User__c) {
+        Requested_User__c = requested_User__c;
+    }
+
+    private String Requested_User__c;
+
+    public String getMv_user() {
+        return mv_user;
+    }
+
+    public void setMv_user(String mv_user) {
+        this.mv_user = mv_user;
+    }
+
+    private String mv_user;
+
+    public LeavesModel() {
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -79,9 +122,10 @@ public class LeavesModel implements Parcelable {
         dest.writeString(this.reason);
         dest.writeString(this.typeOfLeaves);
         dest.writeString(this.status);
-    }
-
-    public LeavesModel() {
+        dest.writeString(this.comment);
+        dest.writeString(this.Requested_User_Name__c);
+        dest.writeString(this.Requested_User__c);
+        dest.writeString(this.mv_user);
     }
 
     protected LeavesModel(Parcel in) {
@@ -91,9 +135,13 @@ public class LeavesModel implements Parcelable {
         this.reason = in.readString();
         this.typeOfLeaves = in.readString();
         this.status = in.readString();
+        this.comment = in.readString();
+        this.Requested_User_Name__c = in.readString();
+        this.Requested_User__c = in.readString();
+        this.mv_user = in.readString();
     }
 
-    public static final Parcelable.Creator<LeavesModel> CREATOR = new Parcelable.Creator<LeavesModel>() {
+    public static final Creator<LeavesModel> CREATOR = new Creator<LeavesModel>() {
         @Override
         public LeavesModel createFromParcel(Parcel source) {
             return new LeavesModel(source);
