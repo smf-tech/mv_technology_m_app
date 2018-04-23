@@ -1,6 +1,7 @@
 package com.mv.Activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -22,6 +23,7 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
+import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityTeamManagementUserProfileActivityBinding;
@@ -50,33 +52,34 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
     private RelativeLayout mToolBar;
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
-    public static String approvalType,id,processTitle;
+    public static String approvalType, id, processTitle;
     String url;
     TextView textNoData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context=this;
+        context = this;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_team_management_user_profile_activity);
         binding.setActivity(this);
-        approvalType=getIntent().getExtras().getString(Constants.APPROVAL_TYPE);
+        approvalType = getIntent().getExtras().getString(Constants.APPROVAL_TYPE);
         initViews();
     }
 
     private void initViews() {
         textNoData = (TextView) findViewById(R.id.textNoData);
         preferenceHelper = new PreferenceHelper(context);
-        if(approvalType.equals(Constants.USER_APPROVAL)) {
+        if (approvalType.equals(Constants.USER_APPROVAL)) {
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + Constants.GetApprovalDataUrl+"?userId=" + User.getCurrentUser(context).getMvUser().getId();
+                    + Constants.GetApprovalDataUrl + "?userId=" + User.getCurrentUser(context).getMvUser().getId();
 
             setActionbar(getString(R.string.team_user_approval));
-        }else if(approvalType.equals(Constants.PROCESS_APPROVAL))
-        {
-            id=getIntent().getExtras().getString(Constants.ID);
-            processTitle= getIntent().getExtras().getString(Constants.TITLE);
+        } else if (approvalType.equals(Constants.PROCESS_APPROVAL)) {
+            id = getIntent().getExtras().getString(Constants.ID);
+            processTitle = getIntent().getExtras().getString(Constants.TITLE);
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                      + Constants.WS_getProcessAprovalUserUrl+"?UserId="+ User.getCurrentUser(context).getMvUser().getId()+ "&processId="+id ;;
+                    + Constants.WS_getProcessAprovalUserUrl + "?UserId=" + User.getCurrentUser(context).getMvUser().getId() + "&processId=" + id;
+            ;
             setActionbar(processTitle);
         }
         binding.swiperefresh.setOnRefreshListener(
@@ -97,11 +100,11 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         binding.recyclerView.setAdapter(mAdapter);
         if (Utills.isConnected(context))
             getAllProcess();
-        else
-        {
+        else {
             Utills.showInternetPopUp(context);
         }
     }
+
     private void setActionbar(String Title) {
         mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
@@ -113,6 +116,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -122,18 +126,24 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
                 break;
         }
     }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
+    }
+
     private void getAllProcess() {
         Utills.showProgressDialog(context, "Loading Users", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
-       // String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-         //       + "/services/apexrest/WS_getProcessAprovalUser?UserId="+ User.getCurrentUser(context).getMvUser().getId()+ "&processId=a1I7F000000VeJQUA0" ;;
+        // String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+        //       + "/services/apexrest/WS_getProcessAprovalUser?UserId="+ User.getCurrentUser(context).getMvUser().getId()+ "&processId=a1I7F000000VeJQUA0" ;;
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 binding.swiperefresh.setRefreshing(false);
-                if(response.isSuccess()) {
+                if (response.isSuccess()) {
                     try {
                         JSONArray jsonArray = new JSONArray(response.body().string());
                         if (jsonArray.length() != 0) {
@@ -149,15 +159,15 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
                                     processList.setName(jsonArray.getJSONObject(i).getString("username"));
                                 else if (jsonArray.getJSONObject(i).has("name"))
                                     processList.setName(jsonArray.getJSONObject(i).getString("username"));
-                                   if  (jsonArray.getJSONObject(i).has("status"))
+                                if (jsonArray.getJSONObject(i).has("status"))
                                     processList.setStatus(jsonArray.getJSONObject(i).getString("status"));
                                 processAllList.add(processList);
                             }
-                       ///     AppDatabase.getAppDatabase(context).userDao().deleteTable();
-                          //  AppDatabase.getAppDatabase(context).userDao().insertProcess(processAllList);
+                            ///     AppDatabase.getAppDatabase(context).userDao().deleteTable();
+                            //  AppDatabase.getAppDatabase(context).userDao().insertProcess(processAllList);
                             mAdapter.notifyDataSetChanged();
                             textNoData.setVisibility(View.GONE);
-                        }else {
+                        } else {
                             textNoData.setVisibility(View.VISIBLE);
                         }
                     } catch (JSONException e) {
@@ -174,7 +184,9 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
 
             }
         });
-    } TextWatcher watch = new TextWatcher() {
+    }
+
+    TextWatcher watch = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable arg0) {
@@ -196,6 +208,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
 
         }
     };
+
     private void setFilter(String s) {
         List<Template> list = new ArrayList<>();
         repplicaCahart.clear();
@@ -211,7 +224,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         for (int i = 0; i < list.size(); i++) {
             repplicaCahart.add(list.get(i));
         }
-        mAdapter = new TeamManagementAdapter( repplicaCahart,context);
+        mAdapter = new TeamManagementAdapter(repplicaCahart, context);
         binding.recyclerView.setAdapter(mAdapter);
     }
 

@@ -47,7 +47,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -171,7 +170,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             holder.layout_download.setVisibility(View.GONE);
             holder.layout_download_file.setVisibility(View.VISIBLE);
         }
-        holder.imgMore.setVisibility(View.VISIBLE);
+        holder.imgMore.setVisibility(View.GONE);
         holder.imgMore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

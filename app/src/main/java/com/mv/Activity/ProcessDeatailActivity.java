@@ -92,6 +92,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private Uri outputUri = null;
     private Uri FinalUri = null;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,6 +109,59 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
         initViews();
     }
+
+    @Override
+    public void onBackPressed() {
+        showPopUp();
+    }
+
+    private void savetoDB() {
+        StringBuffer sb = new StringBuffer();
+        String prefix = "";
+        for (int i = 0; i < taskList.size(); i++) {
+                /*    if(dashaBoardListModel.get(i).getIsSave().equals(Constants.PROCESS_STATE_SUBMIT))
+                    dashaBoardListModel.get(i).setIsSave(Constants.PROCESS_STATE_MODIFIED);
+                    else*/
+            Log.d("pos", "" + i);
+            taskList.get(i).setIsSave(Constants.PROCESS_STATE_SAVE);
+            taskList.get(i).setTimestamp__c(timestamp);
+            if (taskList.get(i).getIsHeader().equals("true")) {
+                if (!taskList.get(i).getTask_Response__c().equals("Select")) {
+                    sb.append(prefix);
+                    prefix = " , ";
+                    sb.append(taskList.get(i).getTask_Response__c());
+                }
+            }
+            taskList.get(i).setMTUser__c(User.getCurrentUser(context).getMvUser().getId());
+            if (preferenceHelper.getBoolean(Constants.NEW_PROCESS))
+                taskList.get(i).setId(null);
+
+
+        }
+        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        String json = gson.toJson(taskList);
+        TaskContainerModel taskContainerModel = new TaskContainerModel();
+        taskContainerModel.setTaskListString(json);
+        taskContainerModel.setTaskType(Constants.TASK_ANSWER);
+        taskContainerModel.setHeaderPosition(sb.toString());
+        taskContainerModel.setIsSave(Constants.PROCESS_STATE_SAVE);
+        taskContainerModel.setMV_Process__c(taskList.get(0).getMV_Process__c());
+
+        if (preferenceHelper.getBoolean(Constants.NEW_PROCESS)) {
+
+            //if process is new  INSERT it with timestmap as id
+
+            taskContainerModel.setUnique_Id(id);
+            AppDatabase.getAppDatabase(context).userDao().insertTask(taskContainerModel);
+        } else {
+            //if process is not new  UPDATE it with exiting id
+            taskContainerModel.setUnique_Id(preferenceHelper.getString(Constants.UNIQUE));
+            AppDatabase.getAppDatabase(context).userDao().updateTask(taskContainerModel);
+        }
+        finish();
+        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+    }
+
 
     private void initViews() {
 
@@ -212,8 +266,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                showPopUp();
                 break;
             case R.id.btn_submit:
                 submitAllData();
@@ -222,51 +275,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 sendToCamera();
                 break;
             case R.id.btn_save:
-
-                StringBuffer sb = new StringBuffer();
-                String prefix = "";
-                for (int i = 0; i < taskList.size(); i++) {
-                /*    if(dashaBoardListModel.get(i).getIsSave().equals(Constants.PROCESS_STATE_SUBMIT))
-                    dashaBoardListModel.get(i).setIsSave(Constants.PROCESS_STATE_MODIFIED);
-                    else*/
-                    Log.d("pos",""+i);
-                    taskList.get(i).setIsSave(Constants.PROCESS_STATE_SAVE);
-                    taskList.get(i).setTimestamp__c(timestamp);
-                    if ( taskList.get(i).getIsHeader().equals("true"))
-                    {    if(!taskList.get(i).getTask_Response__c().equals("Select")) {
-                        sb.append(prefix);
-                        prefix = " , ";
-                        sb.append(taskList.get(i).getTask_Response__c());
-                    }
-                    }
-                    taskList.get(i).setMTUser__c(User.getCurrentUser(context).getMvUser().getId());
-                    if (preferenceHelper.getBoolean(Constants.NEW_PROCESS))
-                        taskList.get(i).setId(null);
-
-
-                }
-                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                String json = gson.toJson(taskList);
-                TaskContainerModel taskContainerModel = new TaskContainerModel();
-                taskContainerModel.setTaskListString(json);
-                taskContainerModel.setTaskType(Constants.TASK_ANSWER);
-                taskContainerModel.setHeaderPosition(sb.toString());
-                taskContainerModel.setIsSave(Constants.PROCESS_STATE_SAVE);
-                taskContainerModel.setMV_Process__c(taskList.get(0).getMV_Process__c());
-
-                if (preferenceHelper.getBoolean(Constants.NEW_PROCESS)) {
-
-                    //if process is new  INSERT it with timestmap as id
-
-                    taskContainerModel.setUnique_Id(id);
-                    AppDatabase.getAppDatabase(context).userDao().insertTask(taskContainerModel);
-                } else {
-                    //if process is not new  UPDATE it with exiting id
-                    taskContainerModel.setUnique_Id(preferenceHelper.getString(Constants.UNIQUE));
-                    AppDatabase.getAppDatabase(context).userDao().updateTask(taskContainerModel);
-                }
-
-                finish();
+                savetoDB();
                 break;
 
             case R.id.btn_approve:
@@ -279,6 +288,38 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 break;
 
         }
+    }
+
+    private void showPopUp() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+
+        // Setting Dialog Title
+        alertDialog.setTitle(getString(R.string.app_name));
+
+        // Setting Dialog Message
+        alertDialog.setMessage(getString(R.string.are_you_really));
+
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.drawable.logomulya);
+
+        // Setting CANCEL Button
+        alertDialog.setButton2(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+                // Write your code here to execute after dialog closed
+              /*  listOfWrongQuestions.add(mPosition);
+                prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
+            }
+        });
+        // Setting OK Button
+        alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                savetoDB();
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
     }
 
     public void showDialog() {
@@ -323,7 +364,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         taskList.set(position, answer);
 
 
-
     }
 
     @Override
@@ -342,6 +382,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
         return super.dispatchTouchEvent(event);
     }
+
     private void submitAllData() {
         manditoryFlag = false;
 
@@ -509,7 +550,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         apiService.getSalesForceData(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                +Constants.DeleteTaskAnswerUrl + uniqueId).enqueue(new Callback<ResponseBody>() {
+                + Constants.DeleteTaskAnswerUrl + uniqueId).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();

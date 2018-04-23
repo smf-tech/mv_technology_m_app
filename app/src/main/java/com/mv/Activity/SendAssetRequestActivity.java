@@ -48,9 +48,9 @@ import retrofit2.Response;
 public class SendAssetRequestActivity extends AppCompatActivity implements View.OnClickListener {
     private Spinner spinner_Assetname;
     private TextInputLayout input_quantity, input_tentative_return_date;
-    private EditText edit_text_quantity, edit_text_remarks;
+    private EditText edit_text_quantity, edit_text_remarks, edit_text_issue_date, edit_text_tentative_return_date;
     private ImageView img_back, img_list, img_logout;
-    private TextView toolbar_title, edit_text_tentative_return_date, edit_text_issue_date;
+    private TextView toolbar_title;
     private RelativeLayout mToolBar;
     Button btn_send_request;
     private PreferenceHelper preferenceHelper;
@@ -84,8 +84,8 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
         preferenceHelper = new PreferenceHelper(this);
 
         edit_text_quantity = (EditText) findViewById(R.id.edit_text_quantity);
-        edit_text_issue_date = (TextView) findViewById(R.id.edit_text_issue_date);
-        edit_text_tentative_return_date = (TextView) findViewById(R.id.edit_text_tentative_return_date);
+        edit_text_issue_date = (EditText) findViewById(R.id.edit_text_issue_date);
+        edit_text_tentative_return_date = (EditText) findViewById(R.id.edit_text_tentative_return_date);
         edit_text_remarks = (EditText) findViewById(R.id.edit_text_remarks);
         input_quantity = (TextInputLayout) findViewById(R.id.input_quantity);
         input_tentative_return_date = (TextInputLayout) findViewById(R.id.input_tentative_return_date);

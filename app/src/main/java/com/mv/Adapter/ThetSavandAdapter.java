@@ -376,11 +376,12 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 MenuItem spam = (MenuItem) popup.getMenu().findItem(R.id.spam);
                 spam.setVisible(true);
                 if (mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
-
+                    spam.setVisible(false);
                     edit.setVisible(true);
                     delete.setVisible(true);
                 } else {
                     edit.setVisible(false);
+                    spam.setVisible(true);
                     delete.setVisible(false);
                 }
                 if (mDataList.get(position).getPostUserDidSpam().equals(false)) {

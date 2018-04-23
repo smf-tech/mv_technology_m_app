@@ -138,7 +138,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
         Expense expense = mDataList.get(position);
         holder.tvProjectName.setText(expense.getPartuculars());
         holder.tvDateName.setText(expense.getDate());
-        holder.tvNoOfPeopleName.setText(expense.getAmount());
+        holder.tvNoOfPeopleName.setText("₹ "+expense.getAmount());
         if (expense.getStatus().equalsIgnoreCase("Pending")) {
             holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.purple));
         } else if (expense.getStatus().equalsIgnoreCase("Approved")) {

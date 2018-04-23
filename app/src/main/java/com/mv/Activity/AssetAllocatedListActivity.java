@@ -1,5 +1,6 @@
 package com.mv.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -25,6 +26,7 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
+import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 
@@ -90,6 +92,11 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
     }
 
     @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         if (Utills.isConnected(AssetAllocatedListActivity.this)) {
@@ -100,10 +107,14 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
     }
 
     private void setActionbar(String Title) {
+        String str = Title;
+        if (str.contains("\n")) {
+            str = str.replace("\n", " ");
+        }
         mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(Title);
+        toolbar_title.setText(str);
         img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
@@ -130,7 +141,7 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
     }
 
     private void GetAssetTransactionList() {
-        Utills.showProgressDialog(this, getString(R.string.loading_chats), getString(R.string.progress_please_wait));
+        Utills.showProgressDialog(this, getString(R.string.loading_process), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = "";

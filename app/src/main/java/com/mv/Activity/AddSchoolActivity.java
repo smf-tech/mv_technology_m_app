@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,8 +15,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.mv.Model.LocationModel;
-import com.mv.Model.Task;
-import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
@@ -27,7 +25,6 @@ import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityAddSchoolBinding;
-import com.mv.databinding.ActivityLoactionSelectionActityBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +36,6 @@ import java.util.Collections;
 import java.util.List;
 
 import okhttp3.ResponseBody;
-import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -59,7 +55,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
     private Spinner selectedSpinner;
     String msg = "";
     private int locationState;
-    public static String selectedState = "", selectedDisrict = "", selectedTaluka = "", selectedCluster = "", selectedVillage = "", selectedSchool = "";
+    public String selectedState = "", selectedDisrict = "", selectedTaluka = "", selectedCluster = "", selectedVillage = "", selectedSchool = "";
 
 
     Activity context;
@@ -196,8 +192,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
         if (mStateList.size() == 0) {
             if (Utills.isConnected(this))
                 getState();
-        }
-        else {
+        } else {
             mStateList = AppDatabase.getAppDatabase(context).userDao().getState();
             mStateList.add(0, "Select");
             setSpinnerAdapter(mStateList, state_adapter, binding.spinnerState, selectedState);
@@ -268,23 +263,22 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
             msg = "Please Select Taluka";
         } else if (binding.spinnerCluster.getText().toString().equals("")) {
             msg = "Please Enter Cluster";
-        }   else if (binding.spinnerVillage.getText().toString().equals("")) {
-            if (mListCluster.contains(binding.spinnerCluster.getText().toString())) {
+        } else if (binding.spinnerVillage.getText().toString().equals("")) {
+            if (containsIgnoreCase(mListCluster, binding.spinnerCluster.getText().toString())) {
                 msg = "You can Add only new Cluster";
             }
         } else if (binding.spinnerSchoolName.getText().toString().equals("")) {
-            if (mListVillage.contains(binding.spinnerVillage.getText().toString())) {
+            if (containsIgnoreCase(mListVillage, binding.spinnerVillage.getText().toString())) {
                 msg = "You can Add only new Village";
             }
-        } else if (mListSchoolName.contains(binding.spinnerSchoolName.getText().toString())) {
+        } else if (containsIgnoreCase(mListSchoolName, binding.spinnerSchoolName.getText().toString())) {
             msg = "You can Add only new School";
         }
 
         if (msg.equals("")) {
             if (Utills.isConnected(context)) {
-             submitLocation();
-            }
-            else {
+                submitLocation();
+            } else {
                 Utills.showInternetPopUp(context);
             }
 
@@ -294,6 +288,14 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
 
     }
 
+    private boolean containsIgnoreCase(List<String> list, String soughtFor) {
+        for (String current : list) {
+            if (current.equalsIgnoreCase(soughtFor)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -320,8 +322,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
 
                         }
                     }
-                }
-                else {
+                } else {
                     mListDistrict = new ArrayList<>();
                     mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(selectedState);
                     mListDistrict.removeAll(Collections.singleton(null));
@@ -759,12 +760,12 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
 
     private void submitLocation() {
 
-        final LocationModel locationModel=new LocationModel();
+        final LocationModel locationModel = new LocationModel();
         locationModel.setState(selectedState);
         locationModel.setDistrict(selectedDisrict);
         locationModel.setTaluka(selectedTaluka);
         locationModel.setCluster(binding.spinnerCluster.getText().toString().toUpperCase());
-        locationModel.setVillage( binding.spinnerVillage.getText().toString().toUpperCase());
+        locationModel.setVillage(binding.spinnerVillage.getText().toString().toUpperCase());
         locationModel.setSchoolName(binding.spinnerSchoolName.getText().toString().toUpperCase());
 
         Utills.showProgressDialog(context, "Loading ", getString(R.string.progress_please_wait));
@@ -780,14 +781,13 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                         String data = response.body().string();
                         //    Type listType = new TypeToken<ArrayList<LocationModel>>() {}.getType();
                         JSONObject dataObject = new JSONObject(data);
-                       if( dataObject.getString("status").equals("1"))
-                       {
-                           AppDatabase.getAppDatabase(getApplicationContext()).userDao().insertLocation(locationModel);
+                        if (dataObject.getString("status").equals("1")) {
+                            AppDatabase.getAppDatabase(getApplicationContext()).userDao().insertLocation(locationModel);
 
-                           Utills.showToast("Location Inserted successfully",context);
+                            Utills.showToast("Location Inserted successfully", context);
 
-                           finish();
-                       }
+                            finish();
+                        }
 
                     }
                 } catch (IOException e) {

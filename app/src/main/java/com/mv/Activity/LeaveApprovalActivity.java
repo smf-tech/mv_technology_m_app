@@ -4,9 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -16,16 +15,13 @@ import android.widget.TextView;
 
 import com.mv.Adapter.ExpandableApprovalListAdapter;
 import com.mv.Model.LeavesModel;
-
 import com.mv.Model.User;
 import com.mv.R;
-
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
-
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityLeaveApprovalBinding;
 
@@ -61,7 +57,6 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
     private ExpandableApprovalListAdapter adapter;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,11 +64,11 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_leave_approval);
         binding.setProcesslist(this);
-        context=this;
+        context = this;
 
-        context=this;
-        headerList=new ArrayList<>();
-        childList=new HashMap<>();
+        context = this;
+        headerList = new ArrayList<>();
+        childList = new HashMap<>();
         headerList.add(getString(R.string.pending));
         headerList.add(getString(R.string.reject));
         headerList.add(getString(R.string.approve));
@@ -99,12 +94,12 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 /*        binding.rvProcess.setLayoutManager(mLayoutManager);
         binding.rvProcess.setItemAnimator(new DefaultItemAnimator());*/
-        adapter = new ExpandableApprovalListAdapter(context,headerList,childList );
+        adapter = new ExpandableApprovalListAdapter(context, headerList, childList);
         binding.rvProcess.setAdapter(adapter);
         if (Utills.isConnected(this))
-        getAllProcess();
+            getAllProcess();
         else
-            Utills.showToast(getString(R.string.error_no_internet),mContext);
+            Utills.showToast(getString(R.string.error_no_internet), mContext);
 
 
     }
@@ -117,11 +112,14 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
     }
 
 
-
     private void setActionbar(String Title) {
+        String str = Title;
+        if (str.contains("\n")) {
+            str = str.replace("\n", " ");
+        }
         mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(Title);
+        toolbar_title.setText(str);
         img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
@@ -144,7 +142,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
 
         Intent openClass = new Intent(mContext, LeaveDetailActivity.class);
         startActivity(openClass);
-       overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
     }
 
@@ -161,46 +159,45 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetAllMyLeave+"?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
+                + Constants.GetAllMyLeave + "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
-             try {
-                 if (response.body() != null) {
-                     String str = response.body().string();
-                     if (str != null && str.length() > 0) {
-                         JSONArray jsonArray = new JSONArray(str);
+                try {
+                    if (response.body() != null) {
+                        String str = response.body().string();
+                        if (str != null && str.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(str);
 
-                         ArrayList <LeavesModel> pendingList=new ArrayList<>();
-                         ArrayList <LeavesModel> approveList=new ArrayList<>();
-                         ArrayList <LeavesModel> rejectList=new ArrayList<>();
-                            for(int i=0;i<jsonArray.length();i++)
-                            {
-                                JSONObject data=jsonArray.getJSONObject(i);
+                            ArrayList<LeavesModel> pendingList = new ArrayList<>();
+                            ArrayList<LeavesModel> approveList = new ArrayList<>();
+                            ArrayList<LeavesModel> rejectList = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject data = jsonArray.getJSONObject(i);
 
-                                LeavesModel leavesModel=new LeavesModel();
+                                LeavesModel leavesModel = new LeavesModel();
                                 leavesModel.setId(data.getString("Id"));
                                 leavesModel.setFromDate(data.getString("From__c"));
                                 leavesModel.setToDate(data.getString("To__c"));
                                 leavesModel.setReason(data.getString("Reason__c"));
                                 leavesModel.setTypeOfLeaves(data.getString("Requested_User__c"));
                                 leavesModel.setStatus(data.getString("Status__c"));
-                                if(leavesModel.getStatus().equals(getString(R.string.approve)))
+                                if (leavesModel.getStatus().equals(getString(R.string.approve)))
                                     approveList.add(leavesModel);
-                                if(leavesModel.getStatus().equals(getString(R.string.pending)))
+                                if (leavesModel.getStatus().equals(getString(R.string.pending)))
                                     pendingList.add(leavesModel);
-                                if(leavesModel.getStatus().equals(getString(R.string.reject)))
+                                if (leavesModel.getStatus().equals(getString(R.string.reject)))
                                     rejectList.add(leavesModel);
                             }
-                            childList.put(getString(R.string.pending),pendingList);
-                            childList.put(getString(R.string.reject),rejectList);
-                            childList.put(getString(R.string.approve),approveList);
+                            childList.put(getString(R.string.pending), pendingList);
+                            childList.put(getString(R.string.reject), rejectList);
+                            childList.put(getString(R.string.approve), approveList);
 
 
-                     }
-                 }
+                        }
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

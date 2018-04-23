@@ -199,14 +199,19 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                         dateList = new ArrayList<>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             CalenderEvent calenderEvent = new CalenderEvent();
-                            calenderEvent.setId(jsonArray.getJSONObject(i).getString("Id"));
-                            calenderEvent.setDate(jsonArray.getJSONObject(i).getString("Date__c"));
-                            calenderEvent.setDescription(jsonArray.getJSONObject(i).getString("Description_New__c"));
+                            if (jsonArray.getJSONObject(i).has("Id"))
+                                calenderEvent.setId(jsonArray.getJSONObject(i).getString("Id"));
+                            if (jsonArray.getJSONObject(i).has("Date__c"))
+                                calenderEvent.setDate(jsonArray.getJSONObject(i).getString("Date__c"));
+                            if (jsonArray.getJSONObject(i).has("Description_New__c"))
+                                calenderEvent.setDescription(jsonArray.getJSONObject(i).getString("Description_New__c"));
                             calenderEvent.setTitle(jsonArray.getJSONObject(i).getString("Title__c"));
                             //  calenderEvent.setMV_User1__c(jsonArray.getJSONObject(i).getString("MV_User1__c"));
+
                             CalendarDay day = CalendarDay.from(formatter.parse(jsonArray.getJSONObject(i).getString("Date__c")));
-                            if (eventMap.get(jsonArray.getJSONObject(i).getString("Date__c")) != null)
+                            if (eventMap.get(jsonArray.getJSONObject(i).getString("Date__c")) != null) {
                                 dateList = eventMap.get(jsonArray.getJSONObject(i).getString("Date__c"));
+                            }
                             dateList.add(calenderEvent);
                             eventMap.put(day, dateList);
                             dates.add(day);

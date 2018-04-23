@@ -260,11 +260,13 @@
     <string name="expense_approval">खर्च मान्यता</string>
     <string name="date">Date</string>
     <string name="projectDesription">Description of tour</string>
-    <string name="countOfPeople">Number of People Travelled</string>
+    <string name="countOfPeople">Number of People</string>
     <string name="amount">Amount</string>
     <string name="adavance_new">खर्च आगाऊ</string>
     <string name="adavanceDesription">Description of Adavance</string>
     <string name="place">Place</string>
     <!--Salary List Activity-->
     <string name="salary_list">पगार यादी</string>
+    <string name="are_you_really">आपण फॉर्म जतन करू इच्छिता??</string>
+    <string name="loading_process">Loading Process</string>
 </resources>
