@@ -87,6 +87,7 @@ public class PreferenceHelper {
             if (prefToReset.getKey().equalsIgnoreCase(PreferenceHelper.TOKEN)
                     || prefToReset.getKey().equalsIgnoreCase(PreferenceHelper.InstanceUrl)
                     || prefToReset.getKey().equalsIgnoreCase(PreferenceHelper.FIRSTTIME_V_2_7)
+                    || prefToReset.getKey().equalsIgnoreCase(Constants.LANGUAGE)
                     ) {
             } else {
                 editor.remove(prefToReset.getKey()).commit();

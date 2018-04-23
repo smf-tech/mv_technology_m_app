@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -32,6 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -62,6 +64,7 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
     private boolean isAdd;
 
     private PreferenceHelper preferenceHelper;
+    private ArrayAdapter<String> project_adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +77,8 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
 
     private void initViews() {
         projectList = Arrays.asList(getResources().getStringArray(R.array.array_of_project));
+        projectList = new ArrayList<String>();
+        projectList.add("Select");
         setActionbar(getString(R.string.voucher_new));
         binding.txtDate.setOnClickListener(this);
         binding.txtDateFrom.setOnClickListener(this);
@@ -81,6 +86,12 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
         binding.spinnerProject.setOnItemSelectedListener(this);
         preferenceHelper = new PreferenceHelper(this);
         binding.txtDate.setText(Utills.getCurrentDate());
+        project_adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, projectList);
+        project_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerProject.setAdapter(project_adapter);
+        if (Utills.isConnected(this))
+            getProject();
         if (getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
             isAdd = true;
 
@@ -93,11 +104,56 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
             binding.txtDateTo.setText(mVoucher.getToDate());
             binding.editTextCount.setText(mVoucher.getNoOfPeople());
             binding.editTextDescription.setText(mVoucher.getDecription());
-            mProjectSelect = projectList.indexOf(mVoucher.getProject());
-            binding.spinnerProject.setSelection(mProjectSelect);
         }
     }
 
+    private void getProject() {
+
+        Utills.showProgressDialog(this, "Loading Projects", getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetProjectDataUrl;
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+
+                            JSONArray jsonArray = null;
+                            jsonArray = new JSONArray(data);
+                            projectList.clear();
+
+                            projectList.add("Select");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                projectList.add(object.getString("Project_Name__c"));
+                            }
+                            project_adapter.notifyDataSetChanged();
+                            if (!isAdd) {
+                                mProjectSelect = projectList.lastIndexOf(mVoucher.getProject());
+                                binding.spinnerProject.setSelection(mProjectSelect);
+                            }
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
+    }
 
     @Override
     public void onClick(View view) {
@@ -129,7 +185,6 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
                     @Override
                     public void onDateSet(DatePicker view, int year,
                                           int monthOfYear, int dayOfMonth) {
-
                         textView.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
                     }
                 }, mYear, mMonth, mDay);
@@ -150,7 +205,7 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
                 voucher.setId(mVoucher.getId());
             }
             voucher.setProject(projectList.get(mProjectSelect));
-            voucher.setDate(binding.txtDate.getText().toString().trim());
+           // voucher.setDate(binding.txtDate.getText().toString().trim());
             voucher.setPlace(binding.editTextPlace.getText().toString().trim());
             voucher.setFromDate(binding.txtDateFrom.getText().toString().trim());
             voucher.setToDate(binding.txtDateTo.getText().toString().trim());
@@ -158,8 +213,6 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
             voucher.setNoOfPeople(binding.editTextCount.getText().toString().trim());
             voucher.setUser(User.getCurrentUser(this).getMvUser().getId());
             addVoucher(voucher);
-
-
         }
     }
 

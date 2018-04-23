@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -32,6 +33,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -57,6 +60,7 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
     private Adavance mAdavance;
     private boolean isAdd;
     private PreferenceHelper preferenceHelper;
+    private ArrayAdapter<String> project_adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +74,16 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
     private void initViews() {
         preferenceHelper = new PreferenceHelper(this);
         projectList = Arrays.asList(getResources().getStringArray(R.array.array_of_project));
+        projectList = new ArrayList<String>();
+        projectList.add("Select");
+        if (Utills.isConnected(this))
+            getProject();
+        project_adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, projectList);
+        project_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerProject.setAdapter(project_adapter);
         setActionbar(getString(R.string.adavance_new));
-        binding.txtDate.setText(Utills.getCurrentDate());
+        binding.txtDate.setText(getCurrentDate());
         binding.txtDate.setOnClickListener(this);
         binding.spinnerProject.setOnItemSelectedListener(this);
         if (getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
@@ -87,6 +99,62 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    public String getCurrentDate() {
+        LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = df.format(c.getTime());
+        LocaleManager.setNewLocale(this, preferenceHelper.getString(Constants.LANGUAGE));
+        return formattedDate;
+    }
+
+    private void getProject() {
+
+        Utills.showProgressDialog(this, "Loading Projects", getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetProjectDataUrl;
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+
+                            JSONArray jsonArray = null;
+                            jsonArray = new JSONArray(data);
+                            projectList.clear();
+
+                            projectList.add("Select");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject object = jsonArray.getJSONObject(i);
+                                projectList.add(object.getString("Project_Name__c"));
+                            }
+                            project_adapter.notifyDataSetChanged();
+                            if (!isAdd) {
+                                mProjectSelect = projectList.lastIndexOf(mAdavance.getProject());
+                                binding.spinnerProject.setSelection(mProjectSelect);
+                            }
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
+    }
 
     @Override
     public void onClick(View view) {

@@ -337,10 +337,11 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 if (mDataList.get(position).getUser_id() != null && mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
                     delete.setVisible(true);
                     edit.setVisible(true);
-
+                    spam.setVisible(false);
                 } else {
                     delete.setVisible(false);
                     edit.setVisible(false);
+                    spam.setVisible(true);
                 }
                 if (mDataList.get(position).getPostUserDidSpam().equals(false)) {
                     spam.setTitle("Mark As Spam");

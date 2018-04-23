@@ -12,7 +12,7 @@ import com.mv.R;
 import com.mv.Utils.LocaleManager;
 
 public class AboutUsActivity extends AppCompatActivity implements View.OnClickListener {
-    private ImageView img_back, img_list, img_logout,img_filter;
+    private ImageView img_back, img_list, img_logout, img_filter;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
 
@@ -31,10 +31,13 @@ public class AboutUsActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void setActionbar(String Title) {
-
+        String str = Title;
+        if (str.contains("\n")) {
+            str = str.replace("\n", " ");
+        }
         mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(Title);
+        toolbar_title.setText(str);
         img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);

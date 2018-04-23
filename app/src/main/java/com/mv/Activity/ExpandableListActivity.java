@@ -30,6 +30,7 @@ import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Service.DownloadService;
+import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -249,7 +250,10 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
         listDataHeader.clear();
         listDataChild.clear();
         List<String> temp = new ArrayList<String>();
-        temp = AppDatabase.getAppDatabase(ExpandableListActivity.this).userDao().getDistinctDownloadContent(preferenceHelper.getString(LANGUAGE));
+        String lang = preferenceHelper.getString(LANGUAGE);
+        if (lang == null || lang.length() == 0)
+            lang = Constants.LANGUAGE_ENGLISH;
+        temp = AppDatabase.getAppDatabase(ExpandableListActivity.this).userDao().getDistinctDownloadContent(lang);
         for (String s : temp) {
             listDataHeader.add(s);
         }

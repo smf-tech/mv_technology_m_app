@@ -244,7 +244,7 @@
     <string name="reject">Reject</string>
     <string name="approve">Approve</string>
     <string name="leave_detail">Leave Detail</string>
-    <string name="leave">Leave Management</string>
+    <string name="leave">Leave\nManagement</string>
 
     <string name="asset_name">Select Asset</string>
     <string name="asset_model_no">Model No.</string>
@@ -270,7 +270,7 @@
     <string name="voucher_new">New Voucher</string>
     <string name="date">Date</string>
     <string name="projectDesription">Description of tour</string>
-    <string name="countOfPeople">Number of People Travelled</string>
+    <string name="countOfPeople">Number of People</string>
     <string name="place">Place</string>
     <!--Expense New Activity-->
     <string name="expense_new">Expense New</string>
