@@ -267,6 +267,6 @@
     <string name="place">Place</string>
     <!--Salary List Activity-->
     <string name="salary_list">पगार यादी</string>
-    <string name="are_you_really">आपण फॉर्म जतन करू इच्छिता??</string>
+    <string name="are_you_really">आपण फॉर्म जतन करू इच्छिता?</string>
     <string name="loading_process">Loading Process</string>
 </resources>

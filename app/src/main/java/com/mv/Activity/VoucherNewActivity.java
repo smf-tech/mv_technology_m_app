@@ -205,7 +205,7 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
                 voucher.setId(mVoucher.getId());
             }
             voucher.setProject(projectList.get(mProjectSelect));
-            voucher.setDate(binding.txtDate.getText().toString().trim());
+           // voucher.setDate(binding.txtDate.getText().toString().trim());
             voucher.setPlace(binding.editTextPlace.getText().toString().trim());
             voucher.setFromDate(binding.txtDateFrom.getText().toString().trim());
             voucher.setToDate(binding.txtDateTo.getText().toString().trim());
