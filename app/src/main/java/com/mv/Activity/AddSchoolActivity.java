@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -15,8 +15,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.mv.Model.LocationModel;
-import com.mv.Model.Task;
-import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
@@ -27,7 +25,6 @@ import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityAddSchoolBinding;
-import com.mv.databinding.ActivityLoactionSelectionActityBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,7 +36,6 @@ import java.util.Collections;
 import java.util.List;
 
 import okhttp3.ResponseBody;
-import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
