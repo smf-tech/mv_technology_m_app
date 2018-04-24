@@ -22,7 +22,7 @@ import com.mv.Model.Voucher;
  * Created by Rohit Gujar on 23-10-2017.
  */
 
-@Database(entities = {Community.class, Content.class, Template.class, TaskContainerModel.class, LocationModel.class, CalenderEvent.class, DownloadContent.class, Voucher.class, Expense.class, Adavance.class, Salary.class}, version = 16)
+@Database(entities = {Community.class, Content.class, Template.class, TaskContainerModel.class, LocationModel.class, CalenderEvent.class, DownloadContent.class, Voucher.class, Expense.class, Adavance.class, Salary.class}, version = 18)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;

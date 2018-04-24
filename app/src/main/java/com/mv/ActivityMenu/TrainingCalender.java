@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.mv.Activity.CalenderFliterActivity;
 import com.mv.Adapter.IndicatorListAdapter;
 import com.mv.Adapter.PichartDescriptiveListAdapter;
+import com.mv.Adapter.TraingCalenderAadapter;
 import com.mv.Model.CalenderEvent;
 import com.mv.Model.User;
 import com.mv.R;
@@ -67,7 +68,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
     ArrayList<CalendarDay> dates;
     HashMap<CalendarDay, List<CalenderEvent>> eventMap = new HashMap<>();
 
-    PichartDescriptiveListAdapter adapter;
+    TraingCalenderAadapter adapter;
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
     Activity context;
 
@@ -137,10 +138,10 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         if (eventMap.get(date) != null) {
-            adapter = new PichartDescriptiveListAdapter(context, AppDatabase.getAppDatabase(getApplicationContext()).userDao().getCalenderList(formatter.format(date.getDate())));
+            adapter = new TraingCalenderAadapter(context, AppDatabase.getAppDatabase(getApplicationContext()).userDao().getCalenderList(formatter.format(date.getDate())));
             binding.recyclerView.setAdapter(adapter);
         } else {
-            adapter = new PichartDescriptiveListAdapter(context, new ArrayList<CalenderEvent>());
+            adapter = new TraingCalenderAadapter(context, new ArrayList<CalenderEvent>());
             binding.recyclerView.setAdapter(adapter);
         }
 
@@ -199,19 +200,37 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                         dateList = new ArrayList<>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             CalenderEvent calenderEvent = new CalenderEvent();
-                            if (jsonArray.getJSONObject(i).has("Id"))
-                                calenderEvent.setId(jsonArray.getJSONObject(i).getString("Id"));
-                            if (jsonArray.getJSONObject(i).has("Date__c"))
-                                calenderEvent.setDate(jsonArray.getJSONObject(i).getString("Date__c"));
-                            if (jsonArray.getJSONObject(i).has("Description_New__c"))
-                                calenderEvent.setDescription(jsonArray.getJSONObject(i).getString("Description_New__c"));
+                            calenderEvent.setId(jsonArray.getJSONObject(i).getString("Id"));
+                            calenderEvent.setDate(jsonArray.getJSONObject(i).getString("Date__c"));
+                            calenderEvent.setDescription(jsonArray.getJSONObject(i).getString("Description_New__c"));
                             calenderEvent.setTitle(jsonArray.getJSONObject(i).getString("Title__c"));
-                            //  calenderEvent.setMV_User1__c(jsonArray.getJSONObject(i).getString("MV_User1__c"));
+                            if(jsonArray.getJSONObject(i).has("MV_User__c"))
+                            calenderEvent.setMV_User1__c(jsonArray.getJSONObject(i).getString("MV_User__c"));
+
+                            calenderEvent.setState__c(jsonArray.getJSONObject(i).getString("State__c"));
+                            calenderEvent.setDistrict__c(jsonArray.getJSONObject(i).getString("District__c"));
+                            calenderEvent.setTaluka__c(jsonArray.getJSONObject(i).getString("Taluka__c"));
+                            calenderEvent.setCluster__c(jsonArray.getJSONObject(i).getString("Cluster__c"));
+                            if(jsonArray.getJSONObject(i).has("Village__c"))
+                            calenderEvent.setVillage__c(jsonArray.getJSONObject(i).getString("Village__c"));
+                            calenderEvent.setSchool__c(jsonArray.getJSONObject(i).getString("School__c"));
+
+
+
+                            calenderEvent.setIs_Event_for_All_Role__c(jsonArray.getJSONObject(i).getString("Is_Event_for_All_Role__c"));
+                            calenderEvent.setRole__c(jsonArray.getJSONObject(i).getString("Role__c"));
+                            if(jsonArray.getJSONObject(i).has("Assigned_User_Ids__c"))
+                            calenderEvent.setAssigned_User_Ids__c(jsonArray.getJSONObject(i).getString("Assigned_User_Ids__c"));
+                            if(jsonArray.getJSONObject(i).has("Assign_id_name__c"))
+                            calenderEvent.setAssign_id_name__c(jsonArray.getJSONObject(i).getString("Assign_id_name__c"));
+                            if(jsonArray.getJSONObject(i).has("organization__c"))
+                                calenderEvent.setOrganization__c(jsonArray.getJSONObject(i).getString("organization__c"));
+                            if(jsonArray.getJSONObject(i).has("MV_Process__c"))
+                                calenderEvent.setMV_Process__c(jsonArray.getJSONObject(i).getString("MV_Process__c"));
 
                             CalendarDay day = CalendarDay.from(formatter.parse(jsonArray.getJSONObject(i).getString("Date__c")));
-                            if (eventMap.get(jsonArray.getJSONObject(i).getString("Date__c")) != null) {
+                            if (eventMap.get(jsonArray.getJSONObject(i).getString("Date__c")) != null)
                                 dateList = eventMap.get(jsonArray.getJSONObject(i).getString("Date__c"));
-                            }
                             dateList.add(calenderEvent);
                             eventMap.put(day, dateList);
                             dates.add(day);
@@ -221,7 +240,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                         binding.calendarView.addDecorator(new EventDecorator(Color.RED, dates));
                         Calendar instance = Calendar.getInstance();
                         if (eventMap.get(CalendarDay.from(instance)) != null) {
-                            adapter = new PichartDescriptiveListAdapter(context, AppDatabase.getAppDatabase(getApplicationContext()).userDao().getCalenderList(formatter.format(instance.getTime())));
+                            adapter = new TraingCalenderAadapter(context, AppDatabase.getAppDatabase(getApplicationContext()).userDao().getCalenderList(formatter.format(instance.getTime())));
                             binding.recyclerView.setAdapter(adapter);
                         }
                     }

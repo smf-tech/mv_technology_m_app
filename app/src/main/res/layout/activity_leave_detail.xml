@@ -168,20 +168,55 @@
 
         </LinearLayout>
 
-        <com.mv.Widgets.MyFontButton
-            android:id="@+id/btn_hr_submit"
-            android:layout_width="fill_parent"
-            android:layout_height="40dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginTop="20dp"
-            android:background="@color/colorPink"
-            android:gravity="center_horizontal|center_vertical"
-            android:singleLine="true"
-            android:text="@string/Submit"
-            android:textAllCaps="true"
-            android:textColor="@color/white"
-            android:textSize="@dimen/large_text" />
+        <LinearLayout
+            android:id="@+id/butt_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/dimen_5dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:weightSum="10">
+
+            <com.mv.Widgets.MyFontButton
+                    android:id="@+id/btn_submit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_5dp"
+                android:layout_weight="10"
+                android:background="@color/colorPink"
+                android:text="Submit"
+                android:textColor="#ffffff"
+                android:textSize="22sp" />
+
+
+
+            <com.mv.Widgets.MyFontButton
+                android:id="@+id/btn_approve"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_5dp"
+                android:layout_weight="5"
+                android:background="@color/colorPink"
+                android:text="@string/approve"
+                android:textColor="#ffffff"
+                android:textSize="22sp"
+                android:visibility="gone" />
+
+            <com.mv.Widgets.MyFontButton
+                android:id="@+id/btn_reject"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_5dp"
+                android:layout_weight="5"
+                android:background="@color/colorPink"
+                android:text="@string/reject"
+                android:textColor="#ffffff"
+
+                android:textSize="22sp"
+                android:visibility="gone" />
+
+        </LinearLayout>
     </LinearLayout>
 </layout>
 

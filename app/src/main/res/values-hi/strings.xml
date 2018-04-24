@@ -275,6 +275,7 @@
     <string name="place">Place</string>
     <!--Salary List Activity-->
     <string name="salary_list">वेतन सूची</string>
+    <string name="leave_approoval">Leave Approval</string>
     <string name="are_you_really">क्या आप फॉर्म को संचित  करना चाहते हैं??</string>
     <string name="loading_process">Loading Process</string>
 </resources>

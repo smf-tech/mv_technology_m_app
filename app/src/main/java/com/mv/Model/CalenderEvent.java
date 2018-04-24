@@ -3,6 +3,8 @@ package com.mv.Model;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
@@ -12,7 +14,7 @@ import com.mv.Utils.Constants;
  * Created by nanostuffs on 05-12-2017.
  */
 @Entity(tableName = Constants.TABLE_CALANDER)
-public class CalenderEvent {
+public class CalenderEvent implements Parcelable {
 
     public int getUnique_Id() {
         return Unique_Id;
@@ -41,16 +43,197 @@ public class CalenderEvent {
     @Expose
     String date;
 
+    public String getOrganization__c() {
+        return organization__c;
+    }
 
-    @ColumnInfo(name = "MV_User1__c")
-    @SerializedName("MV_User1__c")
+    public void setOrganization__c(String organization__c) {
+        this.organization__c = organization__c;
+    }
+
+    @ColumnInfo(name = "organization__c")
+    @SerializedName("organization__c")
+    @Expose
+    String organization__c;
+
+
+    @ColumnInfo(name = "MV_User__c")
+    @SerializedName("MV_User__c")
     @Expose
     String MV_User1__c;
 
-    @ColumnInfo(name = "Title")
-    @SerializedName("Title")
+    @ColumnInfo(name = "Title__c")
+    @SerializedName("Title__c")
     @Expose
     String title;
+
+    @ColumnInfo(name = "Village__c")
+    @SerializedName("Village__c")
+
+    @Expose
+    String Village__c;
+
+    @ColumnInfo(name = "Taluka__c")
+    @SerializedName("Taluka__c")
+    @Expose
+    String Taluka__c;
+
+    @ColumnInfo(name = "State__c")
+    @SerializedName("State__c")
+    @Expose
+    String State__c;
+
+    public String getDistrict__c() {
+        return District__c;
+    }
+
+    public void setDistrict__c(String district__c) {
+        District__c = district__c;
+    }
+
+    public String getRole__c() {
+        return Role__c;
+    }
+
+    public void setRole__c(String role__c) {
+        Role__c = role__c;
+    }
+
+    @ColumnInfo(name = "Role__c")
+    @SerializedName("Role__c")
+
+    @Expose
+    String Role__c;
+    @ColumnInfo(name = "Cluster__c")
+    @SerializedName("Cluster__c")
+
+    @Expose
+    String Cluster__c;
+
+    @ColumnInfo(name = "School__c")
+    @SerializedName("School__c")
+    @Expose
+    String School__c;
+
+    @ColumnInfo(name = "District__c")
+    @SerializedName("District__c")
+    @Expose
+    String District__c;
+
+    @ColumnInfo(name = "Description_New__c")
+    @SerializedName("Description_New__c")
+    @Expose
+    String Description_New__c;
+
+    @ColumnInfo(name = "Is_Event_for_All_Role__c")
+    @SerializedName("Is_Event_for_All_Role__c")
+    @Expose
+    String Is_Event_for_All_Role__c;
+
+
+    @ColumnInfo(name = "Assigned_User_Ids__c")
+    @SerializedName("Assigned_User_Ids__c")
+    @Expose
+
+    String Assigned_User_Ids__c;
+
+    @ColumnInfo(name = "Assign_id_name__c")
+    @SerializedName("Assign_id_name__c")
+    @Expose
+    String Assign_id_name__c;
+
+
+    @ColumnInfo(name = "MV_Process__c")
+    @SerializedName("MV_Process__c")
+    @Expose
+    String MV_Process__c;
+
+    public String getVillage__c() {
+        return Village__c;
+    }
+
+    public void setVillage__c(String village__c) {
+        Village__c = village__c;
+    }
+
+    public String getTaluka__c() {
+        return Taluka__c;
+    }
+
+    public void setTaluka__c(String taluka__c) {
+        Taluka__c = taluka__c;
+    }
+
+    public String getState__c() {
+        return State__c;
+    }
+
+    public void setState__c(String state__c) {
+        State__c = state__c;
+    }
+
+    public String getCluster__c() {
+        return Cluster__c;
+    }
+
+    public void setCluster__c(String cluster__c) {
+        Cluster__c = cluster__c;
+    }
+
+    public String getSchool__c() {
+        return School__c;
+    }
+
+    public void setSchool__c(String school__c) {
+        School__c = school__c;
+    }
+
+    public String getDescription_New__c() {
+        return Description_New__c;
+    }
+
+    public void setDescription_New__c(String description_New__c) {
+        Description_New__c = description_New__c;
+    }
+
+    public String getIs_Event_for_All_Role__c() {
+        return Is_Event_for_All_Role__c;
+    }
+
+    public void setIs_Event_for_All_Role__c(String is_Event_for_All_Role__c) {
+        Is_Event_for_All_Role__c = is_Event_for_All_Role__c;
+    }
+
+    public static Creator<CalenderEvent> getCREATOR() {
+        return CREATOR;
+    }
+
+
+
+    public String getAssigned_User_Ids__c() {
+        return Assigned_User_Ids__c;
+    }
+
+    public void setAssigned_User_Ids__c(String assigned_User_Ids__c) {
+        Assigned_User_Ids__c = assigned_User_Ids__c;
+    }
+
+    public String getAssign_id_name__c() {
+        return Assign_id_name__c;
+    }
+
+    public void setAssign_id_name__c(String assign_id_name__c) {
+        Assign_id_name__c = assign_id_name__c;
+    }
+
+    public String getMV_Process__c() {
+        return MV_Process__c;
+    }
+
+    public void setMV_Process__c(String MV_Process__c) {
+        this.MV_Process__c = MV_Process__c;
+    }
+
     public String getTitle() {
         return title;
     }
@@ -94,4 +277,68 @@ public class CalenderEvent {
     }
 
 
+    public CalenderEvent() {
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.Unique_Id);
+        dest.writeString(this.id);
+        dest.writeString(this.description);
+        dest.writeString(this.date);
+        dest.writeString(this.organization__c);
+        dest.writeString(this.MV_User1__c);
+        dest.writeString(this.title);
+        dest.writeString(this.Village__c);
+        dest.writeString(this.Taluka__c);
+        dest.writeString(this.State__c);
+        dest.writeString(this.Role__c);
+        dest.writeString(this.Cluster__c);
+        dest.writeString(this.School__c);
+        dest.writeString(this.District__c);
+        dest.writeString(this.Description_New__c);
+        dest.writeString(this.Is_Event_for_All_Role__c);
+        dest.writeString(this.Assigned_User_Ids__c);
+        dest.writeString(this.Assign_id_name__c);
+        dest.writeString(this.MV_Process__c);
+    }
+
+    protected CalenderEvent(Parcel in) {
+        this.Unique_Id = in.readInt();
+        this.id = in.readString();
+        this.description = in.readString();
+        this.date = in.readString();
+        this.organization__c = in.readString();
+        this.MV_User1__c = in.readString();
+        this.title = in.readString();
+        this.Village__c = in.readString();
+        this.Taluka__c = in.readString();
+        this.State__c = in.readString();
+        this.Role__c = in.readString();
+        this.Cluster__c = in.readString();
+        this.School__c = in.readString();
+        this.District__c = in.readString();
+        this.Description_New__c = in.readString();
+        this.Is_Event_for_All_Role__c = in.readString();
+        this.Assigned_User_Ids__c = in.readString();
+        this.Assign_id_name__c = in.readString();
+        this.MV_Process__c = in.readString();
+    }
+
+    public static final Creator<CalenderEvent> CREATOR = new Creator<CalenderEvent>() {
+        @Override
+        public CalenderEvent createFromParcel(Parcel source) {
+            return new CalenderEvent(source);
+        }
+
+        @Override
+        public CalenderEvent[] newArray(int size) {
+            return new CalenderEvent[size];
+        }
+    };
 }

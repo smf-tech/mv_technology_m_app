@@ -1,7 +1,9 @@
 package com.mv.Activity;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,11 +12,13 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mv.Model.LeavesModel;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -24,12 +28,14 @@ import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityLeaveDetailBinding;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -42,14 +48,16 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
     private ActivityLeaveDetailBinding binding;
     private PreferenceHelper preferenceHelper;
     String userId, comment;
-    String isSave;
+    String status;
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     ArrayAdapter spinnerAdapter;
     User mUser;
+    ArrayList<String> typeOfleaves=new ArrayList<>();
+    LeavesModel leavesModel;
     Context context;
-
+    String leaveId="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,21 +65,72 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
         binding = DataBindingUtil.setContentView(this, R.layout.activity_leave_detail);
         binding.setActivity(this);
         context = this;
+        preferenceHelper = new PreferenceHelper(this);
         binding.inputHrFormDate.setOnClickListener(this);
         binding.inputHrToDate.setOnClickListener(this);
-        binding.btnHrSubmit.setOnClickListener(this);
-        setActionbar(getString(R.string.leave_detail));
-        preferenceHelper = new PreferenceHelper(this);
-        // setActionbar(getString(R.string.team_user_approval));
-        if (Utills.isConnected(this)) {
+        binding.btnSubmit.setOnClickListener(this);
+        binding.btnApprove.setOnClickListener(this);
+        binding.btnReject.setOnClickListener(this);
 
-        }
+        // setActionbar(getString(R.string.team_user_approval));
         initViews();
+        if(getIntent().getParcelableExtra(Constants.Leave)!=null)
+        { leavesModel=getIntent().getParcelableExtra(Constants.Leave);
+           leaveId= leavesModel.getId();
+           binding.spTypeOfLeaves.setSelection(typeOfleaves.indexOf(leavesModel.getTypeOfLeaves()));
+           binding.inputHrFormDate.setText(leavesModel.getFromDate());
+            binding.inputHrToDate.setText(leavesModel.getToDate());
+            binding.etReason.setText(leavesModel.getReason());
+            if(preferenceHelper.getString(Constants.Leave).equals(Constants.Leave_Approve))
+            {
+                binding.btnSubmit.setVisibility(View.GONE);
+                binding.btnApprove.setVisibility(View.VISIBLE);
+                binding.btnReject.setVisibility(View.VISIBLE);
+                binding.inputHrFormDate.setEnabled(false);
+                binding.inputHrToDate.setEnabled(false);
+                binding.spTypeOfLeaves.setEnabled(false);
+                binding.etReason.setEnabled(false);
+            }
+            else
+            {
+                binding.btnSubmit.setVisibility(View.VISIBLE);
+                binding.btnApprove.setVisibility(View.GONE);
+                binding.btnReject.setVisibility(View.GONE);
+                if(leavesModel.getStatus().equals(Constants.LeaveStatusPending)) {
+                    binding.inputHrFormDate.setEnabled(true);
+                    binding.inputHrToDate.setEnabled(true);
+                    binding.spTypeOfLeaves.setEnabled(true);
+                    binding.etReason.setEnabled(true);
+                    binding.btnSubmit.setVisibility(View.VISIBLE);
+
+                }
+                else
+                {
+                    binding.inputHrFormDate.setEnabled(false);
+                    binding.inputHrToDate.setEnabled(false);
+                    binding.spTypeOfLeaves.setEnabled(false);
+                    binding.etReason.setEnabled(false);
+                    binding.btnSubmit.setVisibility(View.GONE);
+                }
+            }
+        }
+        else
+        {
+            leaveId=null;
+        }
+
 
     }
 
     private void initViews() {
-        spinnerAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, getResources().getStringArray(R.array.array_of_leaves));
+
+
+        typeOfleaves.add("CL/SL");
+        typeOfleaves.add("Paid");
+        typeOfleaves.add("Unpaid");
+        typeOfleaves.add("Comp Off<");
+        setActionbar(getString(R.string.leave_detail));
+        spinnerAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, typeOfleaves);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spTypeOfLeaves.setPrompt(getString(R.string.type_of_leaves));
         binding.spTypeOfLeaves.setAdapter(spinnerAdapter);
@@ -94,8 +153,29 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 showDateDialog(context, binding.inputHrToDate);
                 break;
 
-            case R.id.btn_hr_submit:
+            case R.id.btn_submit:
                 sendHRServer();
+                break;
+
+            case R.id.btn_approve:
+                if (leavesModel.getStatus() != null && leavesModel.getStatus().equalsIgnoreCase("true")) {
+                    Utills.showToast("User Already Approved", context);
+                } else {
+                    comment = "";
+                    status = "Approved";
+
+                    sendApprovedData();
+                }
+                break;
+
+            case R.id.btn_reject:
+                if (leavesModel.getStatus() != null && leavesModel.getStatus().equalsIgnoreCase("false")
+                        && leavesModel.getComment() != null
+                        && leavesModel.getComment().length() > 0) {
+                    Utills.showToast("User Already Rejected", context);
+                } else {
+                    showDialog();
+                }
                 break;
         }
     }
@@ -220,5 +300,77 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
         if (i < 10)
             return "0" + i;
         return "" + i;
+    }
+
+
+    private void sendApprovedData() {
+        if (Utills.isConnected(this)) {
+
+                Utills.showProgressDialog(this, getString(R.string.share_post), getString(R.string.progress_please_wait));
+                ServiceRequest apiService =
+                        ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+                String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                        + Constants.UpdateLeaveStatus+"?leaveId=" +leavesModel.getId() + "&status=" +status+ "&approvedUserId=" +User.getCurrentUser(getApplicationContext()).getMvUser().getId()+ "&comment=" +comment;
+
+                apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Utills.hideProgressDialog();
+                        try {
+                            Utills.showToast(getString(R.string.submitted_successfully), context);
+                            finish();
+                        } catch (Exception e) {
+                            Utills.hideProgressDialog();
+                            Utills.showToast(getString(R.string.error_something_went_wrong), context);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Utills.hideProgressDialog();
+                        Utills.showToast(getString(R.string.error_something_went_wrong), context);
+                    }
+                });
+
+        } else {
+            Utills.showToast(getString(R.string.error_no_internet), context);
+        }
+    }
+
+    public void showDialog() {
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
+        alertDialog.setTitle(getString(R.string.comments));
+        alertDialog.setMessage(getString(R.string.enter_comment));
+
+        final EditText input = new EditText(context);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        alertDialog.setView(input);
+
+        alertDialog.setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        status = "Rejected";
+                        comment = input.getText().toString();
+                        if (!comment.isEmpty()) {
+                            sendApprovedData();
+                        } else {
+                            Utills.showToast("Please Enter Comment", context);
+                        }
+                    }
+                });
+
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+        alertDialog.show();
+
     }
 }

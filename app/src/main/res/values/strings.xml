@@ -287,8 +287,5 @@
 
     <!--Salary List Activity-->
     <string name="salary_list">Salary List</string>
-    <string name="are_you_really">Do you want to save the form?</string>
-    <string name="loading_process">Loading Process</string>
-
-
+    <string name="leave_approoval">Leave Approval</string>
 </resources>

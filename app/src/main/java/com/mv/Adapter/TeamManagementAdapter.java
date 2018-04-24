@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mv.Activity.LeaveApprovalActivity;
 import com.mv.Activity.ProcessApprovalActivity;
 import com.mv.Activity.ProcessListApproval;
 import com.mv.Activity.TeamManagementUserProfileListActivity;
@@ -78,6 +79,13 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                             mContext.startActivity(openClass);
                             mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
                         }
+                        else if (getAdapterPosition() == 4) {
+                            //redirect to user Approval Process List
+                            Intent openClass = new Intent(mContext, LeaveApprovalActivity.class);
+                            mContext.startActivity(openClass);
+                            preferenceHelper.insertString(Constants.Leave,Constants.Leave_Approve);
+                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                        }
                     } else if (mContext instanceof TeamManagementUserProfileListActivity) {
                         if (TeamManagementUserProfileListActivity.approvalType.equals(Constants.USER_APPROVAL)) {
                             Intent openClass = new Intent(mContext, UserApproveDetail.class);
@@ -123,6 +131,7 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
         Template template = teplateList.get(position);
 
         holder.txtCommunityName.setText(template.getName());
+
         if (mContext instanceof TeamManagementUserProfileListActivity) {
             if (TeamManagementUserProfileListActivity.approvalType.equals(Constants.USER_APPROVAL)) {
 
