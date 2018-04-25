@@ -4,9 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,18 +14,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mv.Adapter.ExpandableApprovalListAdapter;
-import com.mv.Model.CalenderEvent;
 import com.mv.Model.LeavesModel;
-
 import com.mv.Model.User;
 import com.mv.R;
-
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
-
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityLeaveApprovalBinding;
 
@@ -195,9 +190,13 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
 
 
     private void setActionbar(String Title) {
+        String str = Title;
+        if (str.contains("\n")) {
+            str = str.replace("\n", " ");
+        }
         mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(Title);
+        toolbar_title.setText(str);
         img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);

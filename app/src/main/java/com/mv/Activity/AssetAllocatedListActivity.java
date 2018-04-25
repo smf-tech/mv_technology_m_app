@@ -141,7 +141,7 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
     }
 
     private void GetAssetTransactionList() {
-        Utills.showProgressDialog(this, getString(R.string.loading_process), getString(R.string.progress_please_wait));
+        Utills.showProgressDialog(this, "Loading Asset", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = "";
@@ -153,58 +153,68 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
-                String data = null;
                 try {
-                    data = response.body().string();
-                    if (data != null && data.length() > 0) {
-                        JSONArray jsonArray = new JSONArray(data);
-                        if (jsonArray.length() != 0) {
-                            assetList.clear();
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                Asset asset = new Asset();
-                                if (jsonArray.getJSONObject(i).has("assetId")) {
-                                    asset.setAsset_id(jsonArray.getJSONObject(i).getString("assetId"));
-                                }
+                    if (response.body() != null) {
+                        String data = null;
+                        data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(data);
+                            if (jsonArray.length() != 0) {
+                                assetList.clear();
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    Asset asset = new Asset();
+                                    if (jsonArray.getJSONObject(i).has("assetId")) {
+                                        asset.setAsset_id(jsonArray.getJSONObject(i).getString("assetId"));
+                                    }
 
-                                if (jsonArray.getJSONObject(i).has("assetName")) {
-                                    asset.setAssetName(jsonArray.getJSONObject(i).getString("assetName"));
-                                }
+                                    if (jsonArray.getJSONObject(i).has("assetName")) {
+                                        asset.setAssetName(jsonArray.getJSONObject(i).getString("assetName"));
+                                    }
 
-                                if (jsonArray.getJSONObject(i).has("assetModel")) {
-                                    asset.setAssetModel(jsonArray.getJSONObject(i).getString("assetModel"));
-                                }
+                                    if (jsonArray.getJSONObject(i).has("assetModel")) {
+                                        asset.setAssetModel(jsonArray.getJSONObject(i).getString("assetModel"));
+                                    }
 
-                                if (jsonArray.getJSONObject(i).has("assetCount")) {
-                                    asset.setAssetCount(jsonArray.getJSONObject(i).getString("assetCount"));
-                                }
-                                if (jsonArray.getJSONObject(i).has("expectedIssueDate")) {
-                                    asset.setExpectedIssueDate(jsonArray.getJSONObject(i).getString("expectedIssueDate"));
-                                }
-                                if (jsonArray.getJSONObject(i).has("assetAllocationId")) {
-                                    asset.setAssetAllocationId(jsonArray.getJSONObject(i).getString("assetAllocationId"));
-                                }
+                                    if (jsonArray.getJSONObject(i).has("assetCount")) {
+                                        asset.setAssetCount(jsonArray.getJSONObject(i).getString("assetCount"));
+                                    }
+                                    if (jsonArray.getJSONObject(i).has("expectedIssueDate")) {
+                                        asset.setExpectedIssueDate(jsonArray.getJSONObject(i).getString("expectedIssueDate"));
+                                    }
+                                    if (jsonArray.getJSONObject(i).has("assetAllocationId")) {
+                                        asset.setAssetAllocationId(jsonArray.getJSONObject(i).getString("assetAllocationId"));
+                                    }
 
-                                if (jsonArray.getJSONObject(i).has("allocationStatus")) {
-                                    asset.setAllocationStatus(jsonArray.getJSONObject(i).getString("allocationStatus"));
+                                    if (jsonArray.getJSONObject(i).has("allocationStatus")) {
+                                        asset.setAllocationStatus(jsonArray.getJSONObject(i).getString("allocationStatus"));
+                                    }
+
+                                    if (jsonArray.getJSONObject(i).has("specification")) {
+                                        asset.setSpecification(jsonArray.getJSONObject(i).getString("specification"));
+                                    }
+                                    if (jsonArray.getJSONObject(i).has("remark")) {
+                                        asset.setRemark(jsonArray.getJSONObject(i).getString("remark"));
+                                    }
+
+                                    if (jsonArray.getJSONObject(i).has("tentativeReturnDate")) {
+                                        asset.setTentativeReturnDate(jsonArray.getJSONObject(i).getString("tentativeReturnDate"));
+                                    }
+                                    if (jsonArray.getJSONObject(i).has("requestedUser")) {
+                                        asset.setUsername(jsonArray.getJSONObject(i).getString("requestedUser"));
+                                    }
+                                    if (jsonArray.getJSONObject(i).has("stockId")) {
+                                        asset.setStockId(jsonArray.getJSONObject(i).getString("stockId"));
+                                    }
+                                    assetList.add(asset);
+                                    repplicaCahart.add(asset);
                                 }
-
-                                if (jsonArray.getJSONObject(i).has("specification")) {
-                                    asset.setSpecification(jsonArray.getJSONObject(i).getString("specification"));
-                                }
-
-
-                                assetList.add(asset);
-                                repplicaCahart.add(asset);
+                                adapter.notifyDataSetChanged();
 
 
                             }
-                            adapter.notifyDataSetChanged();
-
 
                         }
-
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {

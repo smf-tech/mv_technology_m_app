@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.mv.Activity.AssetAllocation_Activity">
+
     <LinearLayout
         android:id="@+id/layout_main"
         android:layout_width="match_parent"
@@ -12,159 +13,182 @@
         android:background="@drawable/app_bg"
         android:orientation="vertical">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:background="@drawable/app_bg"
-        android:fillViewport="true">
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:animateLayoutChanges="true"
-        android:orientation="vertical">
-        <LinearLayout
-            android:id="@+id/lnr_asset_manager"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            android:orientation="vertical">
-    <RelativeLayout
-        android:id="@+id/rel_AssetName"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/grey_box"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="3dp"
-        android:paddingBottom="10dp"
-        >
-        <Spinner
-            android:id="@+id/spinner_stock"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="3dp"
-            android:paddingBottom="10dp"
-            android:paddingTop="10dp"
-            android:prompt="@string/select_model_no"
-            android:spinnerMode="dialog" />
-    </RelativeLayout>
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/app_bg"
+            android:fillViewport="true">
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_asset_specification"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_view1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:focusable="false"
-            android:background="@drawable/lighter_grey_box"
-            android:padding="10dp">
-
-            <com.mv.Widgets.MyEditTextView
-                android:id="@+id/edit_text_specification"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="@string/specification"
-                android:inputType="textCapWords"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textSize="@dimen/medium_text" />
-        </android.support.design.widget.TextInputLayout>
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/input_remarks"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_view1"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginTop="10dp"
-            android:focusable="false"
-            android:background="@drawable/lighter_grey_box"
-            android:padding="10dp">
-
-            <com.mv.Widgets.MyEditTextView
-                android:id="@+id/edit_text_remarks"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="@string/asset_remarks"
-                android:inputType="textCapWords"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textSize="@dimen/medium_text" />
-        </android.support.design.widget.TextInputLayout>
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/lnr_user"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:animateLayoutChanges="true"
-            android:orientation="vertical">
-
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_no"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_view1"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:focusable="false"
-                android:background="@drawable/lighter_grey_box"
-                android:padding="10dp">
+                android:layout_height="match_parent"
+                android:animateLayoutChanges="true"
+                android:orientation="vertical">
 
-                <com.mv.Widgets.MyEditTextView
-                    android:id="@+id/edit_text_no"
-                    android:layout_width="fill_parent"
+                <LinearLayout
+                    android:id="@+id/lnr_asset_manager"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:hint="Mobile No."
-                    android:inputType="textCapWords"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/medium_text" />
-            </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/input_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/txt_view1"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="10dp"
-                android:focusable="false"
-                android:background="@drawable/lighter_grey_box"
-                android:padding="10dp">
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
 
-                <com.mv.Widgets.MyEditTextView
-                    android:id="@+id/edit_text_name"
-                    android:layout_width="fill_parent"
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_username"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_view1"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/lighter_grey_box"
+                        android:focusable="false"
+                        android:padding="10dp">
+
+                        <com.mv.Widgets.MyEditTextView
+                            android:id="@+id/edit_text_username"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:hint="@string/asset_username"
+                            android:inputType="textCapWords"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/medium_text" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_asset_assetname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_view1"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/lighter_grey_box"
+                        android:focusable="false"
+                        android:padding="10dp">
+
+                        <com.mv.Widgets.MyEditTextView
+                            android:id="@+id/edit_text_assetname"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:hint="Asset Name"
+                            android:inputType="textCapWords"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/medium_text" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/select_model_no"
+                        android:textColor="@color/medium_grey" />
+
+                    <RelativeLayout
+                        android:id="@+id/rel_AssetName"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="3dp"
+                        android:background="@drawable/grey_box"
+                        android:padding="10dp">
+
+                        <Spinner
+                            android:id="@+id/spinner_stock"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="3dp"
+                            android:prompt="@string/select_model_no"
+                            android:spinnerMode="dialog" />
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lnr_user"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@null"
-                    android:hint="@string/asset_remarks"
-                    android:inputType="textCapWords"
-                    android:singleLine="true"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/medium_text" />
-            </android.support.design.widget.TextInputLayout>
+                    android:animateLayoutChanges="true"
+                    android:orientation="vertical">
 
-        </LinearLayout>
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_no"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_view1"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/lighter_grey_box"
+                        android:focusable="false"
+                        android:padding="10dp">
 
-    </LinearLayout>
+                        <com.mv.Widgets.MyEditTextView
+                            android:id="@+id/edit_text_no"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:hint="Mobile No."
+                            android:inputType="textCapWords"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/medium_text" />
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:id="@+id/input_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/txt_view1"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/lighter_grey_box"
+                        android:focusable="false"
+                        android:padding="10dp">
+
+                        <com.mv.Widgets.MyEditTextView
+                            android:id="@+id/edit_text_name"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:clickable="false"
+                            android:cursorVisible="false"
+                            android:focusable="false"
+                            android:focusableInTouchMode="false"
+                            android:hint="Name"
+                            android:inputType="textCapWords"
+                            android:singleLine="true"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/medium_text" />
+                    </android.support.design.widget.TextInputLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
 
 
-
-    </ScrollView>
+        </ScrollView>
 
         <com.mv.Widgets.MyFontButton
             android:id="@+id/btn_allocate_asset"
