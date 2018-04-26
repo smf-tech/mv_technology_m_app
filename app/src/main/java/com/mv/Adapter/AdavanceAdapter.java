@@ -128,7 +128,7 @@ public class AdavanceAdapter extends RecyclerView.Adapter<AdavanceAdapter.ViewHo
         Adavance adavance = mDataList.get(position);
         holder.tvProjectName.setText(adavance.getProject());
         holder.tvDateName.setText(adavance.getDate());
-        holder.tvAmountName.setText(adavance.getAmount());
+        holder.tvAmountName.setText("₹ "+adavance.getAmount());
         if (adavance.getStatus().equalsIgnoreCase("Pending")) {
             holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.purple));
         } else if (adavance.getStatus().equalsIgnoreCase("Approved")) {

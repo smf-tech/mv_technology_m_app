@@ -427,26 +427,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
         HomeModel homeModel = new HomeModel();
-        if (User.getCurrentUser(HomeActivity.this).getMvUser().getRoll().equalsIgnoreCase("TC") ||
-                User.getCurrentUser(HomeActivity.this).getMvUser().getRoll().equalsIgnoreCase("MT")) {
-            homeModel.setAccessible(true);
-            homeModel.setMenuName(getString(R.string.leave));
-            homeModel.setMenuIcon(R.drawable.ic_hr);
-            homeModel.setDestination(LeaveApprovalActivity.class);
-            menulist.add(homeModel);
-            homeModel = new HomeModel();
-            homeModel.setAccessible(true);
-            homeModel.setMenuName(getString(R.string.account_section));
-            homeModel.setMenuIcon(R.drawable.ic_account);
-            homeModel.setDestination(AccountSectionActivity.class);
-            menulist.add(homeModel);
-            homeModel = new HomeModel();
-            homeModel.setAccessible(true);
-            homeModel.setMenuName(getString(R.string.asset_management));
-            homeModel.setMenuIcon(R.drawable.ic_asset);
-            homeModel.setDestination(AssetAllocatedListActivity.class);
-            menulist.add(homeModel);
-        }
         homeModel = new HomeModel();
         homeModel.setMenuName(getString(R.string.about_us));
         homeModel.setMenuIcon(R.drawable.ic_about_us);
@@ -498,34 +478,26 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             homeModel.setMenuName(getString(R.string.thet_savnd));
             homeModel.setMenuIcon(R.drawable.ic_thet_sanvad);
             homeModel.setDestination(ThetSavandFragment.class);
-
-
         } else if (allTab.get(i).equals(Constants.Broadcast)) {
             homeModel.setMenuName(getString(R.string.broadcast));
             homeModel.setMenuIcon(R.drawable.ic_broadcast);
             homeModel.setDestination(CommunityHomeFragment.class);
-
         } else if (allTab.get(i).equals(Constants.My_Community)) {
             homeModel.setMenuName(getString(R.string.community));
             homeModel.setMenuIcon(R.drawable.ic_community);
             homeModel.setDestination(GroupsFragment.class);
-
-
         } else if (allTab.get(i).equals(Constants.Programme_Management)) {
             homeModel.setMenuName(getString(R.string.programme_management));
             homeModel.setMenuIcon(R.drawable.ic_program_mangement);
             homeModel.setDestination(ProgrammeManagmentFragment.class);
-
         } else if (allTab.get(i).equals(Constants.Training_Content)) {
             homeModel.setMenuName(getString(R.string.training_content));
             homeModel.setMenuIcon(R.drawable.ic_traing_content);
             homeModel.setDestination(ExpandableListActivity.class);
-
         } else if (allTab.get(i).equals(Constants.Team_Management)) {
             homeModel.setMenuName(getString(R.string.team_management));
             homeModel.setMenuIcon(R.drawable.ic_team_management);
             homeModel.setDestination(TeamManagementFragment.class);
-
         } else if (allTab.get(i).equals(Constants.My_Reports)) {
             homeModel.setMenuName(getString(R.string.indicator));
             homeModel.setMenuIcon(R.drawable.ic_reports);
@@ -534,6 +506,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             homeModel.setMenuName(getString(R.string.training_calendar));
             homeModel.setMenuIcon(R.drawable.ic_calender);
             homeModel.setDestination(TrainingCalender.class);
+        } else if (allTab.get(i).equals(Constants.Asset_management)) {
+            homeModel.setMenuName(getString(R.string.asset_management));
+            homeModel.setMenuIcon(R.drawable.ic_asset);
+            homeModel.setDestination(AssetAllocatedListActivity.class);
+        } else if (allTab.get(i).equals(Constants.HR_MODULE)) {
+            homeModel.setMenuName(getString(R.string.leave));
+            homeModel.setMenuIcon(R.drawable.ic_hr);
+            homeModel.setDestination(LeaveApprovalActivity.class);
+        } else if (allTab.get(i).equals(Constants.Account_Section)) {
+            homeModel.setMenuName(getString(R.string.account_section));
+            homeModel.setMenuIcon(R.drawable.ic_account);
+            homeModel.setDestination(AccountSectionActivity.class);
         }
         return homeModel;
     }

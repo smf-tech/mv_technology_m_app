@@ -59,7 +59,7 @@
                 android:layout_below="@+id/tvProjectNameTitle"
                 android:layout_marginTop="5dp"
                 android:gravity="left|center_vertical"
-                android:text="Date :-"
+                android:text="Stock Name :-"
                 android:textColor="@color/medium_grey"
                 android:textSize="@dimen/medium_text" />
 
@@ -84,7 +84,7 @@
                 android:layout_below="@+id/tvProjectDateTitle"
                 android:layout_marginTop="5dp"
                 android:gravity="left|center_vertical"
-                android:text="Time :-"
+                android:text="Date :-"
                 android:textColor="@color/medium_grey"
                 android:textSize="@dimen/medium_text" />
 

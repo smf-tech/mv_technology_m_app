@@ -45,7 +45,7 @@ import retrofit2.Response;
 
 public class AssetAllocation_Activity extends AppCompatActivity implements View.OnClickListener {
     Spinner spinner_stock;
-    EditText edit_text_specification, edit_text_remarks, edit_text_no, edit_text_name;
+    EditText edit_text_username, edit_text_assetname, edit_text_no, edit_text_name;
     Button btn_allocate_asset;
     PreferenceHelper preferenceHelper;
     Asset asset;
@@ -57,7 +57,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
     private RelativeLayout mToolBar;
     TextInputLayout input_no, input_name;
     LinearLayout lnr_asset_manager, lnr_user;
-    String Fname, Lname;
+    String Fname, Lname,Id;
     int selectstockid = 0;
 
 
@@ -73,8 +73,8 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
         asset = (Asset) getIntent().getExtras().getSerializable("Assets");
         asset_id = asset.getAsset_id();
         spinner_stock = (Spinner) findViewById(R.id.spinner_stock);
-        edit_text_specification = (EditText) findViewById(R.id.edit_text_specification);
-        edit_text_remarks = (EditText) findViewById(R.id.edit_text_specification);
+        edit_text_username = (EditText) findViewById(R.id.edit_text_username);
+        edit_text_assetname = (EditText) findViewById(R.id.edit_text_assetname);
         btn_allocate_asset = (Button) findViewById(R.id.btn_allocate_asset);
         edit_text_no = (EditText) findViewById(R.id.edit_text_no);
         edit_text_name = (EditText) findViewById(R.id.edit_text_name);
@@ -85,9 +85,13 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
         if (User.getCurrentUser(AssetAllocation_Activity.this).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
             lnr_asset_manager.setVisibility(View.VISIBLE);
             lnr_user.setVisibility(View.GONE);
+            btn_allocate_asset.setText("Allocate");
+            edit_text_username.setText(asset.getUsername());
+            edit_text_assetname.setText(asset.getAssetName());
         } else {
             lnr_user.setVisibility(View.VISIBLE);
             lnr_asset_manager.setVisibility(View.GONE);
+            btn_allocate_asset.setText("Re-Allocate");
         }
         GetStock();
         setActionbar("Asset Allocation");
@@ -146,7 +150,6 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
                                     if (i != 0) {
                                         stock_id = temp.get(selectstockid - 1).getStockId();
                                     }
-
                                 }
 
                                 @Override
@@ -183,20 +186,18 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
 
         try {
             if (User.getCurrentUser(AssetAllocation_Activity.this).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
-                jsonObject1.put("stockId", stock_id);
+                jsonObject1.put("ASSET_STOCK__c", stock_id);
             } else {
-                jsonObject1.put("mobileNo", edit_text_no.getText().toString());
+                jsonObject1.put("Requested_User__c", Id);
+                jsonObject1.put("Allocation_Quantity__c", "1");
+                jsonObject1.put("ASSET_STOCK__c", asset.getStockId());
             }
 
             jsonObject1.put("Allocation_Status__c", "Allocated");
             jsonObject1.put("ASSET__c", asset_id);
-            jsonObject1.put("specification", edit_text_specification.getText().toString());
-            jsonObject1.put("remarks", edit_text_remarks.getText().toString().trim());
-            jsonObject1.put("Asset_Condition__c", "");
-
+            jsonObject1.put("Id", asset.getAssetAllocationId());
             JSONObject jsonObject2 = new JSONObject();
             jsonObject2.put("assetAlloc", jsonObject1);
-
             ServiceRequest apiService =
                     ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
             JsonParser jsonParser = new JsonParser();
@@ -231,7 +232,6 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
 
     private void GetUSerName() {
         Utills.showProgressDialog(this, "Sending", getString(R.string.progress_please_wait));
-        Utills.showProgressDialog(this, getString(R.string.loading_chats), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = "";
@@ -251,12 +251,13 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
                         if (data != null && data.length() > 0) {
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             Asset asset = gson.fromJson(data, Asset.class);
-
+                            Id = asset.getAsset_id();
                             Fname = asset.getName();
                             Lname = asset.getLast_Name__c();
                             edit_text_name.setText(Fname + " " + Lname);
-
                         }
+                    } else {
+                        edit_text_name.setText("");
                     }
 
                 } catch (IOException e) {
@@ -305,9 +306,28 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
-
             case R.id.btn_allocate_asset:
-                AllocateStatus();
+                if (isValid())
+                    AllocateStatus();
         }
+    }
+
+    private boolean isValid() {
+        String str = "";
+        if (User.getCurrentUser(AssetAllocation_Activity.this).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
+            if (selectstockid == 0)
+                str = "Please select Stock";
+        } else {
+            if (edit_text_no.getText().toString().length() == 0)
+                str = "Please enter Mobile Number";
+            else if (edit_text_no.getText().toString().length() != 10)
+                str = "Please enter 10 digit Mobile Number";
+            else if (edit_text_name.getText().toString().length() == 0)
+                str = "Please enter mobile number of existing user";
+        }
+        if (str.length() == 0)
+            return true;
+        Utills.showToast(str, AssetAllocation_Activity.this);
+        return false;
     }
 }

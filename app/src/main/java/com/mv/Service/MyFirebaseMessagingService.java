@@ -55,15 +55,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 if (preferenceHelper != null) {
                     if (preferenceHelper.getBoolean(PreferenceHelper.NOTIFICATION)) {
-                     //sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
-                      //  Log.e("Approv",User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved());
+                        //sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
+                        //  Log.e("Approv",User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved());
 
-                        if ((User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("true")) )
-                              {
-                               if (allTab.contains(Constants.My_Community)){
-                                     sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
+                        if ((User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("true"))) {
+                            if (allTab.contains(Constants.My_Community)) {
+                                sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
 
-                               }
+                            }
 
                         }
                     }

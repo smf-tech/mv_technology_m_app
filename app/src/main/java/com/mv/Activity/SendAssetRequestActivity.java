@@ -102,6 +102,8 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
             isAdd = false;
             mAsset = (Asset) getIntent().getSerializableExtra(Constants.Asset_management);
             edit_text_issue_date.setText(mAsset.getExpectedIssueDate());
+            edit_text_remarks.setText(mAsset.getRemark());
+            edit_text_tentative_return_date.setText(mAsset.getTentativeReturnDate());
         }
     }
 
@@ -212,8 +214,8 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
             jsonObject1.put("ASSET__c", id);
             jsonObject1.put("Allocation_Quantity__c", "1");
             jsonObject1.put("Expected_Issue_Date__c", edit_text_issue_date.getText().toString().trim());
-            jsonObject1.put("tentativeReturnDate", edit_text_tentative_return_date.getText().toString().trim());
-            jsonObject1.put("Remark", edit_text_remarks.getText().toString().trim());
+            jsonObject1.put("TentativeReturnDate__c", edit_text_tentative_return_date.getText().toString().trim());
+            jsonObject1.put("Remark__c", edit_text_remarks.getText().toString().trim());
             jsonObject1.put("Allocation_Status__c", "Requested");
 
             JSONObject jsonObject2 = new JSONObject();

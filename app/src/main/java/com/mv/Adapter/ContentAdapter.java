@@ -143,7 +143,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
         if (TextUtils.isEmpty(mDataList.get(position).getUserAttachmentId())) {
             holder.userImage.setImageResource(R.drawable.logomulya);
-        } else if (mDataList.get(position).getAttachmentId().equalsIgnoreCase("null")) {
+        } else if (mDataList.get(position).getUserAttachmentId().equalsIgnoreCase("null")) {
             holder.userImage.setImageResource(R.drawable.logomulya);
         } else {
             Glide.with(mContext)

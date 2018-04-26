@@ -85,7 +85,7 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
         binding.txtDateTo.setOnClickListener(this);
         binding.spinnerProject.setOnItemSelectedListener(this);
         preferenceHelper = new PreferenceHelper(this);
-        binding.txtDate.setText(Utills.getCurrentDate());
+        binding.txtDate.setText(getCurrentDate());
         project_adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, projectList);
         project_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -105,6 +105,15 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
             binding.editTextCount.setText(mVoucher.getNoOfPeople());
             binding.editTextDescription.setText(mVoucher.getDecription());
         }
+    }
+
+    public String getCurrentDate() {
+        LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = df.format(c.getTime());
+        LocaleManager.setNewLocale(this, preferenceHelper.getString(Constants.LANGUAGE));
+        return formattedDate;
     }
 
     private void getProject() {
@@ -205,7 +214,7 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
                 voucher.setId(mVoucher.getId());
             }
             voucher.setProject(projectList.get(mProjectSelect));
-           // voucher.setDate(binding.txtDate.getText().toString().trim());
+            voucher.setDate(binding.txtDate.getText().toString().trim());
             voucher.setPlace(binding.editTextPlace.getText().toString().trim());
             voucher.setFromDate(binding.txtDateFrom.getText().toString().trim());
             voucher.setToDate(binding.txtDateTo.getText().toString().trim());

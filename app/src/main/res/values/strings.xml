@@ -76,7 +76,7 @@
     <string name="profile_pic">Add Profile Picture</string>
     <string name="Approve">Approve</string>
     <string name="Reject">Reject</string>
-    <string name="thet_savnd">\"Thet Sanwand\" with\nMr.Shantilal Muttha</string>
+    <string name="thet_savnd">\"Thet Sanvad\" with\nMr.Shantilal Muttha</string>
     <string name="update_profile">Update Profile</string>
     <string name="approve_profile"> You are not approved yet. </string>
     <string name="approve_profile2">will approve you.</string>
@@ -288,4 +288,9 @@
     <!--Salary List Activity-->
     <string name="salary_list">Salary List</string>
     <string name="leave_approoval">Leave Approval</string>
+
+    <string name="loading_process">Loading Process</string>
+
+
+    <string name="asset_username">Name</string>
 </resources>

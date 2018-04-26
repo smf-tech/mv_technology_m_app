@@ -176,7 +176,7 @@ public class Constants {
 
     public static final String GetUserForVersionReport = "/services/apexrest/getuser";
     public static final String GetApprovalDataUrl = "/services/apexrest/getApprovalData";
-    public static final String WS_getProcessAprovalUserUrl = "/services/apexrest/WS_getProcessAprovalUser";
+    public static final String WS_getProcessAprovalUserUrl = "/services/apexrest/WS_getProcessAprovalUserNew";
     public static final String MV_GeTemplates_cUrl = "/services/apexrest/MV_GeTemplates_c";
     public static final String ApproveCommentUrl = "/services/apexrest/ApproveComment";
     public static final String UpdateLeaveStatus = "/services/apexrest/UpdateLeaveStatus";
@@ -190,9 +190,9 @@ public class Constants {
     public static final String GetApproveLeave = "/services/apexrest/getLeaveApproval";
     public static final String GetAllMyLeave = "/services/apexrest/getAllLeave";
     public static final String SendHRLeavesDataToServer = "/services/apexrest/saveLeaveApplication";
-    public static String Leave_Approve="Leave_Approve";
-    public static String LeaveStatusApprove="Approved";
-    public static String LeaveStatusRejected="Rejected";
-    public static String LeaveStatusPending="Pending";
+    public static String Leave_Approve = "Leave_Approve";
+    public static String LeaveStatusApprove = "Approved";
+    public static String LeaveStatusRejected = "Rejected";
+    public static String LeaveStatusPending = "Pending";
 }
 

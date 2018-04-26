@@ -71,8 +71,11 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
             holder.view1.setBackgroundColor(mContext.getResources().getColor(R.color.orrange2));
         } else if (assetList.get(position).getAllocationStatus().equalsIgnoreCase("Rejected")) {
             holder.view1.setBackgroundColor(mContext.getResources().getColor(R.color.red));
+        } else if (assetList.get(position).getAllocationStatus().equalsIgnoreCase("Released")) {
+            holder.view1.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
         }
-        if (assetList.get(position).getAllocationStatus().equalsIgnoreCase("Requested")) {
+        if (assetList.get(position).getAllocationStatus().equalsIgnoreCase("Requested")
+                && !(User.getCurrentUser(mContext).getMvUser().getRoll().equalsIgnoreCase("Asset Manager"))) {
             holder.imgLayout.setVisibility(View.VISIBLE);
         } else {
             holder.imgLayout.setVisibility(View.GONE);
@@ -106,17 +109,19 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (assetList.get(getAdapterPosition()).getAllocationStatus().equalsIgnoreCase("Allocated")) {
+                    if (assetList.get(getAdapterPosition()).getAllocationStatus().equalsIgnoreCase("Allocated")
+                            && !(User.getCurrentUser(mContext).getMvUser().getRoll().equalsIgnoreCase("Asset Manager"))) {
                         Intent intent = new Intent(mContext, AssetApprovalActivity.class);
                         intent.putExtra("Assets", assetList.get(getAdapterPosition()));
                         mContext.startActivity(intent);
-                    } else if (assetList.get(getAdapterPosition()).getAllocationStatus().equalsIgnoreCase("Requested")) {
-                        if (User.getCurrentUser(mContext).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
-                            Intent intent = new Intent(mContext, AssetAllocation_Activity.class);
-                            intent.putExtra("Assets", assetList.get(getAdapterPosition()));
-                            mContext.startActivity(intent);
-                        }
-                    } else if (assetList.get(getAdapterPosition()).getAllocationStatus().equalsIgnoreCase("Accepted")) {
+                    } else if (assetList.get(getAdapterPosition()).getAllocationStatus().equalsIgnoreCase("Requested")
+                            && User.getCurrentUser(mContext).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
+                        Intent intent = new Intent(mContext, AssetAllocation_Activity.class);
+                        intent.putExtra("Assets", assetList.get(getAdapterPosition()));
+                        mContext.startActivity(intent);
+                    } else if (assetList.get(getAdapterPosition()).getAllocationStatus().equalsIgnoreCase("Accepted")
+                            && !(User.getCurrentUser(mContext).getMvUser().getRoll().equalsIgnoreCase("Asset Manager"))
+                            ) {
                         Intent intent = new Intent(mContext, AssetAllocation_Activity.class);
                         intent.putExtra("Assets", assetList.get(getAdapterPosition()));
                         mContext.startActivity(intent);

@@ -35,7 +35,7 @@ public class Asset implements Serializable {
     @Expose
     private String assetIDC;
 
-    @SerializedName("id")
+    @SerializedName("Id")
     @Expose
     private String Asset_id;
 
@@ -73,7 +73,7 @@ public class Asset implements Serializable {
     private String assetId;
     @SerializedName("assetCount")
     @Expose
-    private String  assetCount;
+    private String assetCount;
     @SerializedName("assetAllocationId")
     @Expose
     private String assetAllocationId;
@@ -85,9 +85,48 @@ public class Asset implements Serializable {
     @Expose
     private String specification;
 
+
+
+    public String getTentativeReturnDate() {
+        return tentativeReturnDate;
+    }
+
+    public void setTentativeReturnDate(String tentativeReturnDate) {
+        this.tentativeReturnDate = tentativeReturnDate;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    @SerializedName("tentativeReturnDate")
+    @Expose
+    private String tentativeReturnDate;
+
+    @SerializedName("remark")
+    @Expose
+    private String remark;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    @SerializedName("username")
+    @Expose
+    private String username;
+
     @SerializedName("stockId")
     @Expose
     private String stockId;
+
     @SerializedName("modelNo")
     @Expose
     private String modelNo;
@@ -114,7 +153,6 @@ public class Asset implements Serializable {
     public void setAssetName(String assetName) {
         this.assetName = assetName;
     }
-
 
 
     public String getAssetId() {
@@ -148,6 +186,7 @@ public class Asset implements Serializable {
     public void setAllocationStatus(String allocationStatus) {
         this.allocationStatus = allocationStatus;
     }
+
     public String getType() {
         return type;
     }
@@ -173,8 +212,6 @@ public class Asset implements Serializable {
     }
 
 
-
-
     public boolean isReturnable() {
         return isReturnable;
     }
@@ -182,8 +219,6 @@ public class Asset implements Serializable {
     public void setReturnable(boolean returnable) {
         isReturnable = returnable;
     }
-
-
 
 
     public String getExpectedIssueDateC() {
