@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 16,
-    "identityHash": "e3741552d7c237ff33b045b6362daa50",
+    "identityHash": "920dd57c075d5cd65a4fce7b063d25ec",
     "entities": [
       {
         "tableName": "table_community",
@@ -446,7 +446,7 @@
       },
       {
         "tableName": "table_calender",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Description__c` TEXT, `Date__c` TEXT, `MV_User1__c` TEXT, `Title` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Description__c` TEXT, `Date__c` TEXT, `MV_User__c` TEXT, `Title` TEXT, `Village__c` TEXT, `Taluka__c` TEXT, `State__c` TEXT, `Cluster__c` TEXT, `School__c` TEXT, `Description_New__c` TEXT, `Is_Event_for_All_Role__c` TEXT, `Assigned_User_Ids__c` TEXT)",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -470,12 +470,52 @@
           },
           {
             "fieldPath": "MV_User1__c",
-            "columnName": "MV_User1__c",
+            "columnName": "MV_User__c",
             "affinity": "TEXT"
           },
           {
             "fieldPath": "title",
             "columnName": "Title",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Village__c",
+            "columnName": "Village__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Taluka__c",
+            "columnName": "Taluka__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "State__c",
+            "columnName": "State__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Cluster__c",
+            "columnName": "Cluster__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "School__c",
+            "columnName": "School__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Description_New__c",
+            "columnName": "Description_New__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Is_Event_for_All_Role__c",
+            "columnName": "Is_Event_for_All_Role__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Assigned_User_Ids__c",
+            "columnName": "Assigned_User_Ids__c",
             "affinity": "TEXT"
           }
         ],
@@ -791,7 +831,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e3741552d7c237ff33b045b6362daa50\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"920dd57c075d5cd65a4fce7b063d25ec\")"
     ]
   }
 }

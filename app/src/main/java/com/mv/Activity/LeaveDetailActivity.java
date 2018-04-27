@@ -83,6 +83,17 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
             binding.etReason.setText(leavesModel.getReason());
             if(preferenceHelper.getString(Constants.Leave).equals(Constants.Leave_Approve))
             {
+                if(!leavesModel.getStatus().equals(Constants.LeaveStatusPending)) {
+                    binding.leaveRemark.setVisibility(View.VISIBLE);
+                    if(leavesModel.getComment()!=null&&!leavesModel.getComment().equals(""))
+                        binding.leaveRemark.setText("Remark : " +leavesModel.getComment());
+                    else
+                        binding.leaveRemark.setText("Remark : Approved " );
+                }
+                else
+                {
+                    binding.leaveRemark.setVisibility(View.GONE);
+                }
                 binding.btnSubmit.setVisibility(View.GONE);
                 binding.btnApprove.setVisibility(View.VISIBLE);
                 binding.btnReject.setVisibility(View.VISIBLE);
@@ -167,7 +178,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
 
             case R.id.btn_approve:
                 if (leavesModel.getStatus() != null && leavesModel.getStatus().equalsIgnoreCase("Approved")) {
-                    Utills.showToast("User Already Approved", context);
+                    Utills.showToast("Leave Already Approved", context);
                 } else {
                     comment = "";
                     status = "Approved";
@@ -180,7 +191,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 if (leavesModel.getStatus() != null && leavesModel.getStatus().equalsIgnoreCase("Rejected")
                         && leavesModel.getComment() != null
                         && leavesModel.getComment().length() > 0) {
-                    Utills.showToast("User Already Rejected", context);
+                    Utills.showToast("Leave Already Rejected", context);
                 } else {
                     showDialog();
                 }

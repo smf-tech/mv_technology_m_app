@@ -268,7 +268,8 @@
     <!--Salary List Activity-->
     <string name="salary_list">पगार यादी</string>
     <string name="leave_approoval">Leave Approval</string>
-    <string name="are_you_really">आपण फॉर्म जतन करू इच्छिता?</string>
+
     <string name="loading_process">Loading Process</string>
     <string name="asset_username">Name</string>
+    <string name="are_you_really">Are you really want exit</string>
 </resources>

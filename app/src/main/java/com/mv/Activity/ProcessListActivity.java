@@ -271,19 +271,19 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 }
 
 
-                                taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
-                                taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
+                                    taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
+                                    taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
 
-                                taskContainerModel.setHeaderPosition(sb.toString());
-                                //task is with answer
-                                taskContainerModel.setTaskType(Constants.TASK_ANSWER);
-                                taskContainerModel.setMV_Process__c(proceesId);
-                                taskContainerModel.setUnique_Id(taskList.get(0).getId());
-                                if (!idList.contains(taskContainerModel.getUnique_Id()))
-                                    resultList.add(taskContainerModel);
+                                    taskContainerModel.setHeaderPosition(sb.toString());
+                                    //task is with answer
+                                    taskContainerModel.setTaskType(Constants.TASK_ANSWER);
+                                    taskContainerModel.setMV_Process__c(proceesId);
+                                    taskContainerModel.setUnique_Id(taskList.get(0).getId());
+                                    if (!idList.contains(taskContainerModel.getUnique_Id()))
+                                        resultList.add(taskContainerModel);
 
 
-                            }
+                                }
 
 
                             AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().insertTask(resultList);

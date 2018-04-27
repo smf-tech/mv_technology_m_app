@@ -143,6 +143,7 @@ public class Constants {
     public static final String GetOrganizationUrl = "/services/apexrest/getOrganization";
     public static final String GetUserDataForCalnder = "/services/apexrest/getUserDataForCalnder";
     public static final String GetCalenderEventsProcess = "/services/apexrest/getProcessForCalendarEvent";
+    public static final String UpdatetEventcalender_Url = "/services/apexrest/UpdateEventcalender";
     public static final String InsertEventcalender_Url = "/services/apexrest/InsertEventcalenderNew";
     public static final String Userdetails_Url = "/services/apexrest/userdetails";
     public static final String MV_GetCommunities_c_Url = "/services/apexrest/MV_GetCommunities_c";

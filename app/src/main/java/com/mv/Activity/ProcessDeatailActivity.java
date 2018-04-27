@@ -298,7 +298,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
         // Setting Dialog Message
         alertDialog.setMessage(getString(R.string.are_you_really));
-
+   // <string name="are_you_really">क्या आप फॉर्म को संचित  करना चाहते हैं??</string>
+   //              <string name="are_you_really">आपण फॉर्म जतन करू इच्छिता?</string>
         // Setting Icon to Dialog
         alertDialog.setIcon(R.drawable.logomulya);
 
@@ -306,6 +307,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         alertDialog.setButton2(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 alertDialog.dismiss();
+                finish();
                 // Write your code here to execute after dialog closed
               /*  listOfWrongQuestions.add(mPosition);
                 prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
@@ -614,7 +616,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 Utills.showProgressDialog(this, getString(R.string.share_post), getString(R.string.progress_please_wait));
                 JSONObject jsonObject1 = new JSONObject();
 
-                jsonObject1.put("uniqueId", taskList.get(0).getUnique_Id__c());
+                jsonObject1.put("uniqueId", taskList.get(0).getId());
                 jsonObject1.put("ApprovedBy", User.getCurrentUser(getApplicationContext()).getMvUser().getId());
 
                 JSONArray jsonArrayAttchment = new JSONArray();
