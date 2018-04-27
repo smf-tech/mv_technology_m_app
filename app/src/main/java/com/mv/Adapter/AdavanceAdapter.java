@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mv.Activity.AdavanceListActivity;
+import com.mv.Activity.UserAdavanceListActivity;
 import com.mv.Model.Adavance;
 import com.mv.R;
 
@@ -30,6 +31,7 @@ public class AdavanceAdapter extends RecyclerView.Adapter<AdavanceAdapter.ViewHo
     private Resources resources;
     private List<Adavance> mDataList;
     private AdavanceListActivity mActivity;
+    private UserAdavanceListActivity userAdavanceListActivity;
 
     public AdavanceAdapter(Context context, List<Adavance> list) {
         mContext = context;
@@ -37,6 +39,8 @@ public class AdavanceAdapter extends RecyclerView.Adapter<AdavanceAdapter.ViewHo
         mDataList = list;
         if (context instanceof AdavanceListActivity)
             mActivity = (AdavanceListActivity) context;
+        else if (context instanceof UserAdavanceListActivity)
+            userAdavanceListActivity = (UserAdavanceListActivity) context;
     }
 
 
@@ -77,6 +81,8 @@ public class AdavanceAdapter extends RecyclerView.Adapter<AdavanceAdapter.ViewHo
                 public void onClick(View view) {
                     if (mContext instanceof AdavanceListActivity)
                         mActivity.editAdavance(getAdapterPosition());
+                    else if (mContext instanceof UserAdavanceListActivity)
+                        userAdavanceListActivity.changeStatus(getAdapterPosition(), userAdavanceListActivity.mAction);
                 }
             });
             imgDelete.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +90,8 @@ public class AdavanceAdapter extends RecyclerView.Adapter<AdavanceAdapter.ViewHo
                 public void onClick(View view) {
                     if (mContext instanceof AdavanceListActivity)
                         showLogoutPopUp(getAdapterPosition());
+                    else if (mContext instanceof UserAdavanceListActivity)
+                        userAdavanceListActivity.changeStatus(getAdapterPosition(), "Rejected");
                 }
             });
 
@@ -128,13 +136,13 @@ public class AdavanceAdapter extends RecyclerView.Adapter<AdavanceAdapter.ViewHo
         Adavance adavance = mDataList.get(position);
         holder.tvProjectName.setText(adavance.getProject());
         holder.tvDateName.setText(adavance.getDate());
-        holder.tvAmountName.setText("₹ "+adavance.getAmount());
+        holder.tvAmountName.setText("₹ " + adavance.getAmount());
         if (adavance.getStatus().equalsIgnoreCase("Pending")) {
             holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.purple));
         } else if (adavance.getStatus().equalsIgnoreCase("Approved")) {
             holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.green));
         } else if (adavance.getStatus().equalsIgnoreCase("Verified")) {
-            holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.orrange2));
+            holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
         } else if (adavance.getStatus().equalsIgnoreCase("Rejected")) {
             holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.red));
         } else if (adavance.getStatus().equalsIgnoreCase("Paid")) {

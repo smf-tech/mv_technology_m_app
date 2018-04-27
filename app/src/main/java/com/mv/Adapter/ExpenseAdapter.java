@@ -32,6 +32,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
     private Resources resources;
     private List<Expense> mDataList;
     private ExpenseListActivity mActivity;
+    private UserExpenseListActivity mUserExpenseListActivity;
 
     public ExpenseAdapter(Context context, List<Expense> list) {
         mContext = context;
@@ -39,6 +40,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
         mDataList = list;
         if (context instanceof ExpenseListActivity)
             mActivity = (ExpenseListActivity) context;
+        else if (context instanceof UserExpenseListActivity)
+            mUserExpenseListActivity = (UserExpenseListActivity) context;
     }
 
     @Override
@@ -78,6 +81,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
                 public void onClick(View view) {
                     if (mContext instanceof ExpenseListActivity)
                         mActivity.editExpense(getAdapterPosition());
+                    else if (mContext instanceof UserExpenseListActivity)
+                        mUserExpenseListActivity.changeStatus(getAdapterPosition(), mUserExpenseListActivity.mAction);
 
                 }
             });
@@ -87,6 +92,8 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
                 public void onClick(View view) {
                     if (mContext instanceof ExpenseListActivity)
                         showLogoutPopUp(getAdapterPosition());
+                    else if (mContext instanceof UserExpenseListActivity)
+                        mUserExpenseListActivity.changeStatus(getAdapterPosition(), "Rejected");
                 }
             });
             cardView = (CardView) itemLayoutView.findViewById(R.id.cardView);
@@ -138,13 +145,13 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
         Expense expense = mDataList.get(position);
         holder.tvProjectName.setText(expense.getPartuculars());
         holder.tvDateName.setText(expense.getDate());
-        holder.tvNoOfPeopleName.setText("₹ "+expense.getAmount());
+        holder.tvNoOfPeopleName.setText("₹ " + expense.getAmount());
         if (expense.getStatus().equalsIgnoreCase("Pending")) {
             holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.purple));
         } else if (expense.getStatus().equalsIgnoreCase("Approved")) {
             holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.green));
         } else if (expense.getStatus().equalsIgnoreCase("Verified")) {
-            holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.orrange2));
+            holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
         } else if (expense.getStatus().equalsIgnoreCase("Rejected")) {
             holder.view.setBackgroundColor(mContext.getResources().getColor(R.color.red));
         } else if (expense.getStatus().equalsIgnoreCase("Paid")) {
