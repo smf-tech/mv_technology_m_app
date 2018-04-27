@@ -28,7 +28,8 @@
                 android:layout_toLeftOf="@+id/imgGroup"
                 android:gravity="left"
                 android:text="123"
-                android:textSize="@dimen/large_text" />
+                android:textColor="@color/black"
+                android:textSize="@dimen/medium_text" />
 
             <ImageView
                 android:id="@+id/imgGroup"

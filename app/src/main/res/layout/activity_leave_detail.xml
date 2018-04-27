@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/dimen_5dp"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:text="@string/type_of_leaves" />
 
@@ -141,7 +141,7 @@
                 android:id="@+id/tv_edittext_question"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="10dp"
                 android:layout_marginTop="@dimen/dimen_5dp"
                 android:text="@string/reason" />
 
@@ -167,7 +167,14 @@
 
 
         </LinearLayout>
-
+        <TextView
+            android:id="@+id/leave_remark"
+            android:layout_width="match_parent"
+            android:textColor="@color/black"
+            android:text="Remark"
+            android:visibility="gone"
+            android:layout_margin="@dimen/dimen_20dp"
+            android:layout_height="wrap_content" />
         <LinearLayout
             android:id="@+id/butt_lay"
             android:layout_width="match_parent"
@@ -175,6 +182,7 @@
             android:layout_alignParentBottom="true"
             android:layout_margin="@dimen/dimen_5dp"
             android:orientation="horizontal"
+
             android:layout_marginTop="@dimen/dimen_10dp"
             android:weightSum="10">
 
@@ -186,6 +194,7 @@
                 android:layout_weight="10"
                 android:background="@color/colorPink"
                 android:text="Submit"
+                android:textAllCaps="false"
                 android:textColor="#ffffff"
                 android:textSize="22sp" />
 

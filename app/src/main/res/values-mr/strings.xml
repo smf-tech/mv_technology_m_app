@@ -212,7 +212,7 @@
     <string name="update_user_data">डेटा अद्यतनित करा</string>
     <string name="update_data_string">आपण डेटा अद्यतनित करू इच्छित असल्याची आपल्याला खात्री आहे?</string>
     <string name="app_versio_report">APP Version Report</string>
-    <string name="next_login">नेक्स्ट</string>
+    <string name="next_login">लॉगइन करा</string>
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
     <string name="reason">Reason</string>

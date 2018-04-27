@@ -234,7 +234,7 @@
     <string name="update_user_data">Update Data</string>
     <string name="update_data_string">Do you want to Update Data?</string>
     <string name="app_versio_report">APP Version Report</string>
-    <string name="next_login">Next</string>
+    <string name="next_login">Login</string>
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
     <string name="reason">Reason</string>
