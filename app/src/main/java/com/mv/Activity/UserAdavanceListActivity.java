@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mv.Adapter.AdavanceAdapter;
 import com.mv.Model.Adavance;
 import com.mv.Model.User;
@@ -24,6 +26,7 @@ import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityUserAdavanceListBinding;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -50,7 +53,9 @@ public class UserAdavanceListActivity extends AppCompatActivity implements View.
     private AdavanceAdapter adapter;
     private List<Adavance> mList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
-    String mAction;
+    public String mAction;
+    private int changePosition;
+    private String changeStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,4 +169,71 @@ public class UserAdavanceListActivity extends AppCompatActivity implements View.
     }
 
 
+    public void changeStatus(int position, String status) {
+        changePosition = position;
+        changeStatus = status;
+        if (mList.get(changePosition).getStatus().equalsIgnoreCase(changeStatus))
+            Utills.showToast("Already " + changeStatus, UserAdavanceListActivity.this);
+        else
+            changeExpense();
+    }
+
+
+    private void changeExpense() {
+        if (Utills.isConnected(this)) {
+            try {
+
+                Utills.showProgressDialog(this);
+                JSONObject jsonObject = new JSONObject();
+                JSONArray jsonArray = new JSONArray();
+                Adavance adavance = mList.get(changePosition);
+                adavance.setStatus(changeStatus);
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                String json = gson.toJson(adavance);
+                JSONObject jsonObject1 = new JSONObject(json);
+                jsonArray.put(jsonObject1);
+                jsonObject.put("listtaskanswerlist", jsonArray);
+
+                ServiceRequest apiService =
+                        ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+                JsonParser jsonParser = new JsonParser();
+                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertExpense", gsonObject).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Utills.hideProgressDialog();
+                        try {
+                            if (response != null && response.isSuccess()) {
+                                if (response.body() != null) {
+                                    String data = response.body().string();
+                                    if (data != null && data.length() > 0) {
+                                        mList.get(changePosition).setStatus(changeStatus);
+                                        adapter.notifyItemChanged(changePosition);
+                                        Utills.showToast("Status of expense changed successfully", UserAdavanceListActivity.this);
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            Utills.hideProgressDialog();
+                            Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Utills.hideProgressDialog();
+                        Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Utills.hideProgressDialog();
+                Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+
+            }
+        } else {
+            Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
+        }
+
+    }
 }
