@@ -291,37 +291,43 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     }
 
     private void showPopUp() {
-        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+        if (preferenceHelper.getString(Constants.PROCESS_TYPE).equals(Constants.MANGEMENT_PROCESS)) {
+            final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
 
-        // Setting Dialog Title
-        alertDialog.setTitle(getString(R.string.app_name));
+            // Setting Dialog Title
+            alertDialog.setTitle(getString(R.string.app_name));
 
-        // Setting Dialog Message
-        alertDialog.setMessage(getString(R.string.are_you_really));
-   // <string name="are_you_really">क्या आप फॉर्म को संचित  करना चाहते हैं??</string>
-   //              <string name="are_you_really">आपण फॉर्म जतन करू इच्छिता?</string>
-        // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.logomulya);
+            // Setting Dialog Message
+            alertDialog.setMessage(getString(R.string.are_you_really));
+            // <string name="are_you_really">क्या आप फॉर्म को संचित  करना चाहते हैं??</string>
+            //              <string name="are_you_really">आपण फॉर्म जतन करू इच्छिता?</string>
+            // Setting Icon to Dialog
+            alertDialog.setIcon(R.drawable.logomulya);
 
-        // Setting CANCEL Button
-        alertDialog.setButton2(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                // Write your code here to execute after dialog closed
+            // Setting CANCEL Button
+            alertDialog.setButton2(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    alertDialog.dismiss();
+                    finish();
+                    // Write your code here to execute after dialog closed
               /*  listOfWrongQuestions.add(mPosition);
                 prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
-            }
-        });
-        // Setting OK Button
-        alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                savetoDB();
-            }
-        });
+                }
+            });
+            // Setting OK Button
+            alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    savetoDB();
+                }
+            });
 
-        // Showing Alert Message
-        alertDialog.show();
+            // Showing Alert Message
+            alertDialog.show();
+        }
+        else
+        {
+            finish();
+        }
     }
 
     public void showDialog() {

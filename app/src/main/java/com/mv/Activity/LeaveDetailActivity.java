@@ -328,7 +328,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
     private void sendApprovedData() {
         if (Utills.isConnected(this)) {
 
-                Utills.showProgressDialog(this, getString(R.string.share_post), getString(R.string.progress_please_wait));
+                Utills.showProgressDialog(this, getString(R.string.leave_approoval), getString(R.string.progress_please_wait));
                 ServiceRequest apiService =
                         ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
                 String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
