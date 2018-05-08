@@ -271,5 +271,12 @@
 
     <string name="loading_process">प्रक्रिया लोड करीत आहे</string>
     <string name="asset_username">नाव</string>
-    <string name="are_you_really">आपण बाहेर पडू इच्छिता का</string>
+  <!-- <string name="are_you_really">आपण बाहेर पडू इच्छिता का</string>-->
+
+    <string name="are_you_really">आपण फॉर्म जतन करू इच्छिता?</string>
+  <!--  <string name="loading_process">Loading Process</string>
+    <string name="asset_username">Name</string>-->
+    <string name="attendance">Attendance</string>
+    <string name="checkin">Check In</string>
+    <string name="checkout">Check Out</string>
 </resources>

@@ -430,7 +430,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         homeModel = new HomeModel();
         homeModel.setMenuName(getString(R.string.about_us));
         homeModel.setMenuIcon(R.drawable.ic_about_us);
-        homeModel.setDestination(AboutUsActivity.class);
+        homeModel.setDestination(AttendanceActivity.class);
         homeModel.setAccessible(true);
         menulist.add(homeModel);
         mAdapter = new HomeAdapter(menulist, HomeActivity.this);

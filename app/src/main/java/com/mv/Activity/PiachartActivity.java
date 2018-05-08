@@ -19,13 +19,10 @@ import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.animation.Easing;
@@ -123,23 +120,17 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
             locationModel.setState(User.getCurrentUser(getApplicationContext()).getMvUser().getState());
             locationModel.setDistrict(User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
             locationModel.setTaluka(User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
-
         }
-
         initPicahrtView();
         if (task == null) {
-
             if (Utills.isConnected(this))
                 getAllIndicatorTask();
             llSpinner.setVisibility(View.GONE);
         } else {
-
             if (Utills.isConnected(this))
-              getDashBoardData(role.getText().toString());
+                getDashBoardData(role.getText().toString());
             llSpinner.setVisibility(View.VISIBLE);
         }
-
-
     }
 
     @Override
@@ -208,15 +199,14 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-
     private void showRoleDialog() {
 
 
         if (roleList != null && !roleList.isEmpty()) {
-          temp = new ArrayList<String>(Arrays.asList(roleList.split(";")));
+            temp = new ArrayList<String>(Arrays.asList(roleList.split(";")));
 
-                 }
-      //  final List<Community> temp = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities();
+        }
+        //  final List<Community> temp = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities();
         final String[] items = new String[temp.size()];
         for (int i = 0; i < temp.size(); i++) {
             items[i] = temp.get(i);
@@ -271,6 +261,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
         dialog.show();
     }
+
     private void setActionbar(String Title) {
         mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
@@ -685,8 +676,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                                         piaChartModel.setTaluka(jsonArray.getJSONObject(i).getString("taluka"));
                                         piaChartModel.setName(jsonArray.getJSONObject(i).getString("Name"));
                                         piaChartModel.setDetail(jsonArray.getJSONObject(i).getString("feedbackdetail"));
-                                        if(!jsonArray.getJSONObject(i).getString("feedbackdetail").equals("null"))
-                                        piaChartModelArrayList.add(piaChartModel);
+                                        if (!jsonArray.getJSONObject(i).getString("feedbackdetail").equals("null"))
+                                            piaChartModelArrayList.add(piaChartModel);
                                     }
                                     mChart.setVisibility(View.GONE);
                                     binding.tvPiaNoDataAvailable.setVisibility(View.GONE);

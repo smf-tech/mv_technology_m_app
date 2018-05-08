@@ -1,9 +1,12 @@
 package com.mv.decorators;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+
+import com.mv.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
-import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -13,11 +16,11 @@ import java.util.HashSet;
  */
 public class EventDecorator implements DayViewDecorator {
 
-    private int color;
+    private final Drawable drawable;
     private HashSet<CalendarDay> dates;
 
-    public EventDecorator(int color, Collection<CalendarDay> dates) {
-        this.color = color;
+    public EventDecorator(Context context, Collection<CalendarDay> dates) {
+        drawable = context.getResources().getDrawable(R.drawable.circle_background);
         this.dates = new HashSet<>(dates);
     }
 
@@ -28,6 +31,6 @@ public class EventDecorator implements DayViewDecorator {
 
     @Override
     public void decorate(DayViewFacade view) {
-        view.addSpan(new DotSpan(10, color));
+        view.setSelectionDrawable(drawable);
     }
 }
