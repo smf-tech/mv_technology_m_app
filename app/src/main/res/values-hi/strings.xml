@@ -281,4 +281,7 @@
 
     <string name="asset_username">Name</string>
     <string name="are_you_really">Are you really want exit</string>
+    <string name="attendance">उपस्थिति</string>
+    <string name="checkin">Check In</string>
+    <string name="checkout">Check Out</string>
 </resources>
