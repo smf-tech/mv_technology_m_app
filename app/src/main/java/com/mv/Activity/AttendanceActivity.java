@@ -67,6 +67,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     SimpleDateFormat formatter;
     ArrayList<CalendarDay> dates = new ArrayList<>();
     private GPSTracker gps;
+    private int checkInClickable = 0, checkOutClickable = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +91,13 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void checkInClick() {
+        if (checkInClickable == 1) {
+            Utills.showToast("Already Check In", AttendanceActivity.this);
+            return;
+        } else if (!gps.canGetLocation()) {
+            gps.showSettingsAlert();
+            return;
+        }
         Boolean isPresent;
         Attendance attendance;
         CalendarDay day = null;
@@ -157,6 +165,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                                                     Utills.showToast("Checked In Successfully...", AttendanceActivity.this);
                                                 else
                                                     Utills.showToast("Checked Out Successfully...", AttendanceActivity.this);
+                                                setButtonView();
                                             } else {
                                                 Utills.showToast(object.getString("Status"), AttendanceActivity.this);
                                             }
@@ -190,6 +199,16 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void checkOutClick() {
+        if (checkOutClickable == 1) {
+            Utills.showToast("Already Check Out", AttendanceActivity.this);
+            return;
+        } else if (checkOutClickable == 2) {
+            Utills.showToast("Please First Check In and then try to Check Out...", AttendanceActivity.this);
+            return;
+        } else if (!gps.canGetLocation()) {
+            gps.showSettingsAlert();
+            return;
+        }
         Attendance attendance;
         Boolean isPresent;
         CalendarDay day = null;
@@ -233,7 +252,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                 ApiClient.getClientWitHeader(AttendanceActivity.this).create(ServiceRequest.class);
 
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetAttendanceData + "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
+                + Constants.GetAttendanceData + "?userId=" + User.getCurrentUser(AttendanceActivity.this).getMvUser().getId();
 
         //  String url = "http://www.json-generator.com/api/json/get/bTUvLZXUjm?indent=2";
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
@@ -253,6 +272,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                             for (Attendance attendance : attendanceList) {
                                 dates.add(CalendarDay.from(formatter.parse(attendance.getDate())));
                             }
+                            setButtonView();
                             binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, dates));
                         }
                     }
@@ -273,6 +293,36 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
 
             }
         });
+    }
+
+    private void setButtonView() {
+        CalendarDay day = null;
+        try {
+            day = CalendarDay.from(formatter.parse(getCurrentDate()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (dates != null && dates.contains(day)) {
+            Attendance attendance = attendanceList.get(dates.indexOf(day));
+            if (attendance.getCheckInTime() == null) {
+                binding.chekInLayout.setBackgroundResource(R.drawable.orange_box);
+                checkInClickable = 0;
+            } else {
+                binding.chekInLayout.setBackgroundResource(R.drawable.orange_box_disabled);
+                checkInClickable = 1;
+            }
+
+            if (attendance.getCheckOutTime() == null) {
+                binding.chekOutLayout.setBackgroundResource(R.drawable.orange_box);
+                checkOutClickable = 0;
+            } else {
+                binding.chekOutLayout.setBackgroundResource(R.drawable.orange_box_disabled);
+                checkOutClickable = 1;
+            }
+        } else {
+            binding.chekOutLayout.setBackgroundResource(R.drawable.orange_box_disabled);
+            checkOutClickable = 2;
+        }
     }
 
     private void setCalendar() {

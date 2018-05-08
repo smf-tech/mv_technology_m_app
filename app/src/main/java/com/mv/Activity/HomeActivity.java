@@ -414,6 +414,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         menuListName.add(Constants.HR_MODULE);
         menuListName.add(Constants.Account_Section);
         menuListName.add(Constants.Asset_management);
+        menuListName.add(Constants.Attendance);
         //for loop for adding accessible tab
         for (int i = 0; i < allTab.size(); i++) {
             if (checkList(allTab, i, true).getDestination() != null)
@@ -426,13 +427,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     menulist.add(checkList(menuListName, i, false));
             }
         }
-        HomeModel homeModel = new HomeModel();
-        homeModel = new HomeModel();
-        homeModel.setMenuName(getString(R.string.about_us));
-        homeModel.setMenuIcon(R.drawable.ic_about_us);
-        homeModel.setDestination(AttendanceActivity.class);
-        homeModel.setAccessible(true);
-        menulist.add(homeModel);
+
         mAdapter = new HomeAdapter(menulist, HomeActivity.this);
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
         itemAnimator.setAddDuration(1000);
@@ -518,6 +513,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             homeModel.setMenuName(getString(R.string.account_section));
             homeModel.setMenuIcon(R.drawable.ic_account);
             homeModel.setDestination(AccountSectionActivity.class);
+        } else if (allTab.get(i).equals(Constants.Attendance)) {
+            homeModel.setMenuName(getString(R.string.attendance));
+            homeModel.setMenuIcon(R.drawable.ic_about_us);
+            homeModel.setDestination(AttendanceActivity.class);
         }
         return homeModel;
     }

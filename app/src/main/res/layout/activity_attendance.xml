@@ -31,6 +31,7 @@
             android:weightSum="2">
 
             <TextView
+                android:id="@+id/chekInLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="5dp"
@@ -44,6 +45,7 @@
                 android:textSize="@dimen/large_text" />
 
             <TextView
+                android:id="@+id/chekOutLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"

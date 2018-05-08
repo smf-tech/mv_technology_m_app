@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MV_27_04_2018.iml" filepath="$PROJECT_DIR$/MV_27_04_2018.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MV.iml" filepath="$PROJECT_DIR$/MV.iml" />
+      <module fileurl="file://C:\Newfolder\App\Rohit Mulya\MV-Gov\Code\MV-GovLatest\MV-Gov7thJune\MV\MV_27_04_2018.iml" filepath="C:\Newfolder\App\Rohit Mulya\MV-Gov\Code\MV-GovLatest\MV-Gov7thJune\MV\MV_27_04_2018.iml" />
       <module fileurl="file://C:\Newfolder\App\Rohit Mulya\MV Backup\MV_27_04_2018\Mulyavardhan.iml" filepath="C:\Newfolder\App\Rohit Mulya\MV Backup\MV_27_04_2018\Mulyavardhan.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>

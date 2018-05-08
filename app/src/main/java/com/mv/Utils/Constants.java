@@ -136,7 +136,7 @@ public class Constants {
     public static final String HR_MODULE = "HR Module";
     public static final String Account_Section = "Account Section";
     public static final String Asset_management = "Asset management";
-
+    public static final String Attendance = "Attendance";
     public static final String IMAGEURL = "http://mobileapp.mulyavardhan.org/images/";
     public static final String InsertContentUrl = "/services/apexrest/insertContent";
     public static final String DeletePostUrl = "/services/apexrest/DeletePost/";
