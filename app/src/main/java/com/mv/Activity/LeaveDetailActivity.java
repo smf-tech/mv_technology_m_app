@@ -83,6 +83,17 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
             binding.etReason.setText(leavesModel.getReason());
             if(preferenceHelper.getString(Constants.Leave).equals(Constants.Leave_Approve))
             {
+                if(!leavesModel.getStatus().equals(Constants.LeaveStatusPending)) {
+                    binding.leaveRemark.setVisibility(View.VISIBLE);
+                    if(leavesModel.getComment()!=null&&!leavesModel.getComment().equals(""))
+                        binding.leaveRemark.setText("Remark : " +leavesModel.getComment());
+                    else
+                        binding.leaveRemark.setText("Remark : Approved " );
+                }
+                else
+                {
+                    binding.leaveRemark.setVisibility(View.GONE);
+                }
                 binding.btnSubmit.setVisibility(View.GONE);
                 binding.btnApprove.setVisibility(View.VISIBLE);
                 binding.btnReject.setVisibility(View.VISIBLE);
@@ -97,6 +108,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 binding.btnApprove.setVisibility(View.GONE);
                 binding.btnReject.setVisibility(View.GONE);
                 if(leavesModel.getStatus().equals(Constants.LeaveStatusPending)) {
+                    binding.leaveRemark.setVisibility(View.GONE);
                     binding.inputHrFormDate.setEnabled(true);
                     binding.inputHrToDate.setEnabled(true);
                     binding.spTypeOfLeaves.setEnabled(true);
@@ -106,11 +118,17 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 }
                 else
                 {
+                    binding.leaveRemark.setVisibility(View.VISIBLE);
+                    if(leavesModel.getComment()!=null&&!leavesModel.getComment().equals(""))
+                    binding.leaveRemark.setText("Remark : " +leavesModel.getComment());
+                    else
+                        binding.leaveRemark.setText("Remark : Approved " );
                     binding.inputHrFormDate.setEnabled(false);
                     binding.inputHrToDate.setEnabled(false);
                     binding.spTypeOfLeaves.setEnabled(false);
                     binding.etReason.setEnabled(false);
                     binding.btnSubmit.setVisibility(View.GONE);
+
                 }
             }
         }
@@ -128,7 +146,8 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
         typeOfleaves.add("CL/SL");
         typeOfleaves.add("Paid");
         typeOfleaves.add("Unpaid");
-        typeOfleaves.add("Comp Off<");
+        typeOfleaves.add("Comp Off");
+        typeOfleaves.add("Half Day");
         setActionbar(getString(R.string.leave_detail));
         spinnerAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, typeOfleaves);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -158,8 +177,8 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.btn_approve:
-                if (leavesModel.getStatus() != null && leavesModel.getStatus().equalsIgnoreCase("true")) {
-                    Utills.showToast("User Already Approved", context);
+                if (leavesModel.getStatus() != null && leavesModel.getStatus().equalsIgnoreCase("Approved")) {
+                    Utills.showToast("Leave Already Approved", context);
                 } else {
                     comment = "";
                     status = "Approved";
@@ -169,10 +188,10 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.btn_reject:
-                if (leavesModel.getStatus() != null && leavesModel.getStatus().equalsIgnoreCase("false")
+                if (leavesModel.getStatus() != null && leavesModel.getStatus().equalsIgnoreCase("Rejected")
                         && leavesModel.getComment() != null
                         && leavesModel.getComment().length() > 0) {
-                    Utills.showToast("User Already Rejected", context);
+                    Utills.showToast("Leave Already Rejected", context);
                 } else {
                     showDialog();
                 }
@@ -207,7 +226,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
             formatter = new SimpleDateFormat("yyyy-MM-dd");
             fromDate = formatter.parse(startDate);
             toDate = formatter.parse(endDate);
-            if (fromDate.before(toDate))
+            if (fromDate.before(toDate)||fromDate.equals(toDate))
                 return true;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -223,6 +242,9 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
 
                 final JSONObject jsonObject = new JSONObject();
                 JSONObject jsonObject1 = new JSONObject();
+                if(leaveId!=null)
+                jsonObject.put("Id", leaveId);
+
                 jsonObject.put("Leave_Type__c", binding.spTypeOfLeaves.getSelectedItem());
                 jsonObject.put("Reason__c", binding.etReason.getText().toString());
                 jsonObject.put("Requested_User__c", User.getCurrentUser(getApplicationContext()).getMvUser().getId());
@@ -306,7 +328,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
     private void sendApprovedData() {
         if (Utills.isConnected(this)) {
 
-                Utills.showProgressDialog(this, getString(R.string.share_post), getString(R.string.progress_please_wait));
+                Utills.showProgressDialog(this, getString(R.string.leave_approoval), getString(R.string.progress_please_wait));
                 ServiceRequest apiService =
                         ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
                 String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)

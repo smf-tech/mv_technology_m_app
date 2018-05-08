@@ -103,6 +103,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                 new HighlightWeekendsDecorator(),
                 oneDayDecorator
         );
+        //rohit code for hide recyclerView
         binding.recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -133,6 +134,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
 
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+        binding.fabAddBroadcast.show();
         if (eventMap.get(date) != null) {
             adapter = new TraingCalenderAadapter(context, AppDatabase.getAppDatabase(getApplicationContext()).userDao().getCalenderList(formatter.format(date.getDate())));
             binding.recyclerView.setAdapter(adapter);

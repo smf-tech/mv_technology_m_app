@@ -127,7 +127,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
     }
 
-    /*Api Call of getChatContent */
+    /*Api Call of getChatContentNew */
     private void getAllChats(boolean isTimePresent, boolean isDialogShow) {
         if (isDialogShow)
             Utills.showProgressDialog(this, getString(R.string.loading_chats), getString(R.string.progress_please_wait));
@@ -138,11 +138,11 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
 
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/getChatContent?CommunityId=" + preferenceHelper.getString(PreferenceHelper.COMMUNITYID)
+                    + "/services/apexrest/getChatContentNew?CommunityId=" + preferenceHelper.getString(PreferenceHelper.COMMUNITYID)
                     + "&userId=" + User.getCurrentUser(this).getMvUser().getId() + "&timestamp=" + AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID)).get(0).getTime();
         else
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/getChatContent?CommunityId=" + preferenceHelper.getString(PreferenceHelper.COMMUNITYID) + "&userId=" + User.getCurrentUser(this).getMvUser().getId();
+                    + "/services/apexrest/getChatContentNew?CommunityId=" + preferenceHelper.getString(PreferenceHelper.COMMUNITYID) + "&userId=" + User.getCurrentUser(this).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

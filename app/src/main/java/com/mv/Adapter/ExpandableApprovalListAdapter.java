@@ -188,7 +188,7 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
         }
         TextView txtName = (TextView) convertView
                 .findViewById(R.id.txtName);
-        txtName.setTypeface(null, Typeface.BOLD);
+       // txtName.setTypeface(null, Typeface.BOLD);
         txtName.setText(headerTitle);
         return convertView;
     }

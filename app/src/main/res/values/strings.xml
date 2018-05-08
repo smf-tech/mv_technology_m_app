@@ -234,7 +234,7 @@
     <string name="update_user_data">Update Data</string>
     <string name="update_data_string">Do you want to Update Data?</string>
     <string name="app_versio_report">APP Version Report</string>
-    <string name="next_login">Next</string>
+    <string name="next_login">Login</string>
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
     <string name="reason">Reason</string>
@@ -244,7 +244,7 @@
     <string name="reject">Reject</string>
     <string name="approve">Approve</string>
     <string name="leave_detail">Leave Detail</string>
-    <string name="leave">Leave\nManagement</string>
+    <string name="leave">Leave\n Management</string>
 
     <string name="asset_name">Select Asset</string>
     <string name="asset_model_no">Model No.</string>
@@ -293,6 +293,7 @@
 
 
     <string name="asset_username">Name</string>
+    <string name="are_you_really">Do you want save data ?</string>
     <string name="attendance">Attendance</string>
     <string name="checkin">Check In</string>
     <string name="checkout">Check Out</string>

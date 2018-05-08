@@ -12,7 +12,7 @@
     <string name="text_record">ऑडिओ रेकॉर्ड करा</string>
     <string name="text_select_audio">ऑडिओ निवडा</string>
     <string name="text_chooseaudio">ऑडिओ निवडा</string>
-    <string name="select_status"> Select Status</string>
+    <string name="select_status"> स्थिती निवडा</string>
     <string name="progress_loading">लोडिंग</string>
     <string name="progress_please_wait">कृपया थांबा</string>
     <string name="error_something_went_wrong">काहीतरी चूक झाली, कृपया पुन्हा प्रयत्न करा</string>
@@ -39,7 +39,7 @@
     <string name="approve">मंजूर</string>
     <string name="reject">नाकारा</string>
     <string name="accept">स्वीकार करो</string>
-    <string name="text_size_exceed">File Size Cannot Be Greater than 5 MB</string>
+    <string name="text_size_exceed">फाइल आकार 5 एमबीपेक्षा जास्त असू शकत नाही</string>
     <!--Registration Activity-->
     <string name="name">पहिले नाव *</string>
     <string name="middle_name">मधले नाव</string>
@@ -83,8 +83,8 @@
     <string name="nahi">नाही</string>
     <string name="question_4">प्रश्न 4</string>
     <string name="msg_enter_mobile">प्रारंभ करण्यासाठी आपला मोबाईल नंबर प्रविष्ट करा!</string>
-    <string name="msg_manual_otp">(आम्ही स्वयंचलितपणे SMS शोधण्यात अयशस्वी झाल्यास खालील Password प्रविष्ट करा)</string>
-    <string name="resend"> <u>Password पुन्हा पाठवा</u></string>
+    <string name="msg_manual_otp">(आम्ही स्वयंचलितपणे SMS शोधण्यात अयशस्वी झाल्यास खालील पासवर्ड प्रविष्ट करा)</string>
+    <string name="resend"> <u>पासवर्ड पुन्हा पाठवा</u></string>
     <string name="check_otp">कृपया Password तपासा</string>
     <string name="download">डाऊनलोड</string>
     <string name="Submit"> सबमिट</string>
@@ -192,7 +192,7 @@
     <string name="profile">अपडेट  प्रोफाइल </string>
     <string name="logout">बाहेर पडणे</string>
     <string name="select_form">फॉर्म निवडा</string>
-    <string name="catagory">Categories</string>
+    <string name="catagory">श्रेण्या</string>
     <string name="add_location">स्थान जोडा</string>
     <string name="all_posts">सर्व पोस्ट</string>
     <string name="my_posts">माझ्या पोस्ट</string>
@@ -212,27 +212,27 @@
     <string name="update_user_data">डेटा अद्यतनित करा</string>
     <string name="update_data_string">आपण डेटा अद्यतनित करू इच्छित असल्याची आपल्याला खात्री आहे?</string>
     <string name="app_versio_report">APP Version Report</string>
-    <string name="next_login">नेक्स्ट</string>
+    <string name="next_login">लॉगइन करा</string>
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
-    <string name="reason">Reason</string>
+    <string name="reason">कारण</string>
     <string name="type_of_leaves">Type Of Leaves</string>
     <string name="pending">प्रलंबित</string>
-    <string name="leave_detail">Leave Detail</string>
+    <string name="leave_detail">सुट्टी तपशील</string>
     <string name="leave">सुट्टी\nव्यवस्थापन</string>
 
-    <string name="asset_name">Select Asset</string>
-    <string name="asset_model_no">Model No.</string>
-    <string name="asset_quantity">Quantity</string>
-    <string name="asset_issue_date">Issue Date</string>
-    <string name="asset_tentative_return_date">Tentative Return Date</string>
-    <string name="asset_remarks">Remarks</string>
-    <string name="asset_request">Assets</string>
+    <string name="asset_name">मालमत्ता निवडा</string>
+    <string name="asset_model_no">मॉडेल क्रमांक</string>
+    <string name="asset_quantity">संख्या</string>
+    <string name="asset_issue_date">जारी केल्याचा दिनांक</string>
+    <string name="asset_tentative_return_date">अंदाजे परत येण्याची तारिख</string>
+    <string name="asset_remarks">शेरा</string>
+    <string name="asset_request">मालमत्ता</string>
     <string name="asset_management">मालमत्ता\nव्यवस्थापन</string>
-    <string name="asset_name__">Asset name</string>
+    <string name="asset_name__">मालमत्ता नाव</string>
     <string name="asset_code">Code</string>
-    <string name="specification">Specification</string>
-    <string name="select_model_no">Select Model No.</string>
+    <string name="specification">तपशील</string>
+    <string name="select_model_no">मॉडेल क्रमांक निवडा</string>
 
     <string name="login_successful">लॉगिन यशस्वी...</string>
 
@@ -253,20 +253,25 @@
     <!--Adavance List Activity-->
     <string name="adavance_list">आगाऊ यादी</string>
 
-    <string name="particulars">Particulars</string>
-    <string name="Approve">Approve</string>
-    <string name="Reject">Reject</string>
+    <string name="particulars">तपशील</string>
+    <string name="Approve">मंजूर</string>
+    <string name="Reject">नाकारा</string>
     <string name="adavance_approval">आगाऊ मंजुरी</string>
     <string name="expense_approval">खर्च मान्यता</string>
-    <string name="date">Date</string>
-    <string name="projectDesription">Description of tour</string>
-    <string name="countOfPeople">Number of People</string>
-    <string name="amount">Amount</string>
+    <string name="date">दिनांक</string>
+    <string name="projectDesription">फेरफटका वर्णन</string>
+    <string name="countOfPeople">लोकांची संख्या</string>
+    <string name="amount">रक्कम</string>
     <string name="adavance_new">खर्च आगाऊ</string>
-    <string name="adavanceDesription">Description of Adavance</string>
-    <string name="place">Place</string>
+    <string name="adavanceDesription">अॅडव्हान्सचे वर्णन</string>
+    <string name="place">ठिकाण</string>
     <!--Salary List Activity-->
     <string name="salary_list">पगार यादी</string>
+    <string name="leave_approoval">सुट्टी मंजुरी</string>
+
+    <string name="loading_process">प्रक्रिया लोड करीत आहे</string>
+    <string name="asset_username">नाव</string>
+    <string name="are_you_really">आपण बाहेर पडू इच्छिता का</string>
     <string name="leave_approoval">Leave Approval</string>
     <string name="are_you_really">आपण फॉर्म जतन करू इच्छिता?</string>
     <string name="loading_process">Loading Process</string>

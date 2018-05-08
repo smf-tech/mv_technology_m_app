@@ -220,7 +220,7 @@
     <string name="update_user_data">डेटा को अद्यतन करें</string>
     <string name="update_data_string">क्या आप डेटा अपडेट करना चाहते हैं?</string>
     <string name="app_versio_report">APP Version Report</string>
-    <string name="next_login">नेक्स्ट</string>
+    <string name="next_login">लॉगइन करें</string>
     <string name="from_date">From Date</string>
     <string name="to_date">To Date</string>
     <string name="reason">Reason</string>
@@ -276,10 +276,11 @@
     <!--Salary List Activity-->
     <string name="salary_list">वेतन सूची</string>
     <string name="leave_approoval">Leave Approval</string>
-    <string name="are_you_really">क्या आप फॉर्म को संचित  करना चाहते हैं??</string>
+
     <string name="loading_process">Loading Process</string>
 
     <string name="asset_username">Name</string>
+    <string name="are_you_really">Are you really want exit</string>
     <string name="attendance">Attendance</string>
     <string name="checkin">Check In</string>
     <string name="checkout">Check Out</string>
