@@ -201,21 +201,24 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
              //   binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(Calendar.getInstance().getTime()));
 
                     binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))));
+                    selectDate(new SimpleDateFormat("yyyy-MM-dd").parse(binding.spinnerYear.getSelectedItem().toString()+"-0"+(i+1)+"-01"));
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
-                break;
+                 break;
 
             case R.id.spinner_year:
                 allDate.clear();
                 try {
-                    allDate.addAll(getDates(binding.spinnerYear.getSelectedItem().toString()+"-0"+(i+1)+"-01", binding.spinnerYear.getSelectedItem().toString()+"-0"+(i+2)+"-01"));
+                    allDate.addAll(getDates(binding.spinnerYear.getSelectedItem().toString()+"-0"+(MonthList.indexOf(binding.spinnerMonth.getSelectedItem().toString())+1)+"-01", binding.spinnerYear.getSelectedItem().toString()+"-0"+(MonthList.indexOf(binding.spinnerMonth.getSelectedItem().toString())+2)+"-01"));
                     horizontalCalenderAdapter=new HorizontalCalenderAdapter(context,allDate  ,allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))));
                     binding.recyclerViewHorizontal.setAdapter(horizontalCalenderAdapter);
                     //   binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(Calendar.getInstance().getTime()));
 
                     binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))));
+                    selectDate(new SimpleDateFormat("yyyy-MM-dd").parse(binding.spinnerYear.getSelectedItem().toString()+"-0"+(MonthList.indexOf(binding.spinnerMonth.getSelectedItem().toString())+1)+"-01"));
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
