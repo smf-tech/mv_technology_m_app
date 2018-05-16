@@ -949,8 +949,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             Runtime.getRuntime().gc();
             startActivity(startMain);
             System.exit(0);
-
-
             finish();
             return;
         }
