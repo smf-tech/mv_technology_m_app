@@ -2,6 +2,7 @@ package com.mv.Activity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.TimePicker;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -89,9 +91,9 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         binding.setActivity(this);
 
 
-        List<Date> dates = getDates("2012-02-01", "2012-03-01");
+     /*   List<Date> dates = getDates("2012-02-01", "2012-03-01");
         for (Date date : dates)
-            System.out.println(date);
+            System.out.println(date);*/
 
 
         if (getIntent().getParcelableExtra(Constants.My_Calendar) != null) {
@@ -114,11 +116,14 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             selectedRole = new ArrayList<String>(Arrays.asList(getColumnIdex((calenderEvent.getRole__c()).split(","))));
             selectedRolename=calenderEvent.getRole__c();
             binding.spinnerRole.setText(calenderEvent.getRole__c());
+            binding.etEventTime.setText(calenderEvent.getEvent_Time__c());
             binding.etEventTitle.setText(calenderEvent.getTitle());
             binding.etEventDate.setText(calenderEvent.getDate());
             binding.etEventDiscription.setText(calenderEvent.getDescription());
             if(calenderEvent.getMV_Process__c()!=null)
-            selectedProcessId = new ArrayList<String>(Arrays.asList(getColumnIdex((calenderEvent.getMV_Process__c()).split(","))));
+            selectedProcessId = new ArrayList<String>(Arrays.asList(getColumnIdex(("Other,"+calenderEvent.getMV_Process__c()).split(","))));
+            else
+                selectedProcessId = new ArrayList<String>(Arrays.asList(getColumnIdex(("Other,").split(","))));
 
         } else {
             id=null;
@@ -172,6 +177,9 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         binding.spinnerVillage.setOnItemSelectedListener(this);
         binding.spinnerSchoolName.setOnItemSelectedListener(this);
         binding.spinnerCatogory.setOnClickListener(this);
+        binding.etEventTime.setOnClickListener(this);
+        binding.etEventTime.setFocusable(false);
+        binding.etEventTime.setClickable(true);
         binding.btnSubmit.setOnClickListener(this);
         binding.spinnerOrganization.setOnItemSelectedListener(this);
         binding.tvEventAddUser.setOnClickListener(this);
@@ -352,6 +360,22 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
                 // sendData();
                 break;
+            case R.id.et_event_time:
+
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        binding.etEventTime.setText(updateTime(selectedHour, selectedMinute));
+                    }
+                }, hour, minute, false);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+
+                break;
             case R.id.et_event_date:
 
                 showDateDialog(CalenderFliterActivity.this);
@@ -378,7 +402,33 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         }
     }
 
+    private String updateTime(int hours, int mins) {
 
+        String timeSet = "";
+        if (hours > 12) {
+            hours -= 12;
+            timeSet = "PM";
+        } else if (hours == 0) {
+            hours += 12;
+            timeSet = "AM";
+        } else if (hours == 12)
+            timeSet = "PM";
+        else
+            timeSet = "AM";
+
+
+        String minutes = "";
+        if (mins < 10)
+            minutes = "0" + mins;
+        else
+            minutes = String.valueOf(mins);
+
+        // Append in a StringBuilder
+        String aTime = new StringBuilder().append(hours).append(':')
+                .append(minutes).append(" ").append(timeSet).toString();
+
+        return aTime;
+    }
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         switch (adapterView.getId()) {
@@ -869,7 +919,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
 
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetUserDataForCalnder + "?state=" + binding.spinnerState.getSelectedItem().toString() + "&dist=" + binding.spinnerDistrict.getSelectedItem().toString() + "&tal=" + binding.spinnerTaluka.getSelectedItem().toString() + "&cluster=" + binding.spinnerCluster.getSelectedItem().toString() + "&village=" + binding.spinnerVillage.getSelectedItem().toString() + "&school=" + binding.spinnerSchoolName.getSelectedItem().toString() + "&role=" + selectedRole;
+                + Constants.GetUserDataForCalnder + "?state=" + binding.spinnerState.getSelectedItem().toString() + "&dist=" + binding.spinnerDistrict.getSelectedItem().toString() + "&tal=" + binding.spinnerTaluka.getSelectedItem().toString() + "&cluster=" + binding.spinnerCluster.getSelectedItem().toString() + "&village=" + binding.spinnerVillage.getSelectedItem().toString() + "&school=" + binding.spinnerSchoolName.getSelectedItem().toString() + "&role=" + selectedRolename;
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -1024,7 +1074,6 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 mSelection[i] =false;
         }
 
-        Arrays.fill(mSelection, false);
         if (mListRoleName.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll()) > 0)
             mSelection[mListRoleName.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll())] = true;
 
@@ -1061,7 +1110,10 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                         }
                         selectedRolename = sb.toString();
                         binding.spinnerRole.setText(selectedRolename);
+                        selectedRole = new ArrayList<String>(Arrays.asList(getColumnIdex((selectedRolename).split(","))));
+
                         Log.e("StringValue", selectedRolename);
+
 
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -1124,8 +1176,8 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                                 //now original string is changed
                             }
                         }
-
-                        processId = roleId.toString();
+                               processId = roleId.toString();
+                        selectedProcessId = new ArrayList<String>(Arrays.asList(getColumnIdex((processId).split(","))));
                         binding.spinnerCatogory.setText(sb.toString());
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -1169,7 +1221,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 jsonObject1.put("MV_User__c", User.getCurrentUser(context).getMvUser().getId());
                 jsonObject1.put("category", selectedCatagory);
                 jsonObject1.put("Title__c", binding.etEventTitle.getText().toString());
-
+                jsonObject1.put("Event_Time__c", binding.etEventTime.getText().toString());
                 jsonArray.put(jsonObject1);
                 jsonObject.put("listtaskanswerlist", jsonArray);
 

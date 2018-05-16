@@ -10,15 +10,287 @@
     </data>
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
+        android:animateLayoutChanges="true"
         android:orientation="vertical">
 
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9"
+            android:background="@drawable/app_bg"
+            android:fillViewport="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="6.5"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:text="Leave Type"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1.5"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:text="Total"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:textColor="@color/black"
+                android:layout_height="wrap_content"
+                android:text="Available"/>
+        </LinearLayout>
+<TextView
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginRight="@dimen/dimen_10dp"
+    android:layout_marginLeft="@dimen/dimen_10dp"
+    android:background="@color/black"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="6.5"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_height="wrap_content"
+                android:text="CL/SL"/>
+            <TextView
+                android:id="@+id/cl_total"
+                android:layout_width="0dp"
+                android:layout_weight="1.5"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_height="wrap_content"
+
+                android:text=""/>
+            <TextView
+
+
+                android:id="@+id/cl_available"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+
+
+                android:layout_height="wrap_content"
+                android:text=""/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="6.5"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_height="wrap_content"
+                android:text="Paid"/>
+            <TextView
+                android:id="@+id/paid_total"
+                android:layout_width="0dp"
+                android:layout_weight="1.5"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_height="wrap_content"
+
+                android:text=""/>
+            <TextView
+                android:id="@+id/paid_available"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+
+
+                android:layout_height="wrap_content"
+                android:text=""/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="6.5"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_height="wrap_content"
+                android:text="Unpaid"/>
+            <TextView
+                android:id="@+id/unpaid_total"
+                android:layout_width="0dp"
+                android:layout_weight="1.5"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_height="wrap_content"
+
+                android:text=""/>
+            <TextView
+                android:id="@+id/unpaid_available"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+
+
+                android:layout_height="wrap_content"
+                android:text=""/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="6.5"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_height="wrap_content"
+                android:text="Comp Off"/>
+            <TextView
+                android:id="@+id/comp_off_total"
+                android:layout_width="0dp"
+                android:layout_weight="1.5"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_height="wrap_content"
+
+                android:text=""/>
+            <TextView
+                android:id="@+id/comp_off_available"
+
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+
+
+                android:layout_height="wrap_content"
+                android:text=""/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="10">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="6.5"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_height="wrap_content"
+                android:text="Half Day"/>
+            <TextView
+                android:id="@+id/half_day_total"
+                android:layout_width="0dp"
+                android:layout_weight="1.5"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+                android:layout_height="wrap_content"
+
+                android:text=""/>
+            <TextView
+                android:id="@+id/half_day_available"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_10dp"
+
+
+                android:layout_height="wrap_content"
+                android:text=""/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/grey_box"
+            android:gravity="center_vertical"
+            android:orientation="vertical">
+
+            <TextView
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="@dimen/dimen_5dp"
+                android:text="@string/catagory" />
+
+            <Spinner
+                android:id="@+id/sp_type_of_catagory"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:layout_marginLeft="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_5dp"
+                android:layout_marginTop="@dimen/dimen_10dp"
+                android:background="@drawable/grey_box"
+                android:minHeight="40dp"
+                android:padding="@dimen/dimen_5dp"
+                android:prompt="@string/question_5"
+                android:spinnerMode="dialog" />
+
+
+        </LinearLayout>
         <LinearLayout
             android:id="@+id/ll_spinner_layout"
             android:layout_width="match_parent"
@@ -133,6 +405,7 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
+
             android:background="@drawable/grey_box"
             android:gravity="center_vertical"
             android:orientation="vertical">
@@ -159,6 +432,8 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:background="@null"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     android:gravity="left|start"
                     android:minLines="4"
                     android:textColor="@color/black"
@@ -175,6 +450,8 @@
             android:visibility="gone"
             android:layout_margin="@dimen/dimen_20dp"
             android:layout_height="wrap_content" />
+    </LinearLayout>
+        </ScrollView>
         <LinearLayout
             android:id="@+id/butt_lay"
             android:layout_width="match_parent"

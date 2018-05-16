@@ -58,6 +58,11 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
         initViews();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+    }
+
     private void setActionbar(String Title) {
         String str = Title;
         if (str.contains("\n")) {

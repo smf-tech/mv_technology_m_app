@@ -67,6 +67,18 @@ public class CalenderEvent implements Parcelable {
     @Expose
     String title;
 
+    public String getEvent_Time__c() {
+        return Event_Time__c;
+    }
+
+    public void setEvent_Time__c(String event_Time__c) {
+        Event_Time__c = event_Time__c;
+    }
+
+    @ColumnInfo(name = "Event_Time__c")
+    @SerializedName("Event_Time__c")
+    @Expose
+    String Event_Time__c;
     @ColumnInfo(name = "Village__c")
     @SerializedName("Village__c")
 
@@ -294,6 +306,7 @@ public class CalenderEvent implements Parcelable {
         dest.writeString(this.organization__c);
         dest.writeString(this.MV_User1__c);
         dest.writeString(this.title);
+        dest.writeString(this.Event_Time__c);
         dest.writeString(this.Village__c);
         dest.writeString(this.Taluka__c);
         dest.writeString(this.State__c);
@@ -316,6 +329,7 @@ public class CalenderEvent implements Parcelable {
         this.organization__c = in.readString();
         this.MV_User1__c = in.readString();
         this.title = in.readString();
+        this.Event_Time__c = in.readString();
         this.Village__c = in.readString();
         this.Taluka__c = in.readString();
         this.State__c = in.readString();

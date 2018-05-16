@@ -58,6 +58,38 @@ public class Task implements Parcelable {
     @ColumnInfo(name = "Task_Text__c")
     private String Task_Text__c;
 
+    public String getProcess_Answer_Status__c() {
+        return Process_Answer_Status__c;
+    }
+
+    public void setProcess_Answer_Status__c(String process_Answer_Status__c) {
+        Process_Answer_Status__c = process_Answer_Status__c;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getIsEditable() {
+        return IsEditable;
+    }
+
+    public void setIsEditable(String isEditable) {
+        IsEditable = isEditable;
+    }
+
+    public static Creator<Task> getCREATOR() {
+        return CREATOR;
+    }
+
+    @SerializedName("Process_Answer_Status__c")
+    @Expose
+    @ColumnInfo(name = "Process_Answer_Status__c")
+    private String Process_Answer_Status__c;
 
     public String getTask_Text___Lan_c() {
         return Task_Text___Lan_c;
@@ -340,6 +372,7 @@ public class Task implements Parcelable {
         dest.writeString(this.MV_Process__c);
         dest.writeString(this.Task_Response__c);
         dest.writeString(this.Task_Text__c);
+        dest.writeString(this.Process_Answer_Status__c);
         dest.writeString(this.Task_Text___Lan_c);
         dest.writeString(this.Task_type__c);
         dest.writeString(this.Picklist_Value__c);
@@ -367,6 +400,7 @@ public class Task implements Parcelable {
         this.MV_Process__c = in.readString();
         this.Task_Response__c = in.readString();
         this.Task_Text__c = in.readString();
+        this.Process_Answer_Status__c = in.readString();
         this.Task_Text___Lan_c = in.readString();
         this.Task_type__c = in.readString();
         this.Picklist_Value__c = in.readString();

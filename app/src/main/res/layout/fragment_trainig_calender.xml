@@ -57,9 +57,9 @@
                     android:layout_weight="5"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
-                    android:prompt="@string/state"
+                    android:prompt="@string/month"
                     android:spinnerMode="dialog"
-                    android:text="Month" />
+                    android:text="@string/month" />
 
                 <TextView
 
@@ -71,9 +71,9 @@
                     android:layout_weight="5"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
-                    android:prompt="@string/state"
+                    android:prompt="@string/year"
                     android:spinnerMode="dialog"
-                    android:text="Year" />
+                    android:text="@string/year" />
             </LinearLayout>
 
             <LinearLayout

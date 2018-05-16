@@ -354,6 +354,30 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:inputType="textPersonName"
+                        android:hint="Enter Time"
+                        android:textColor="@color/black"
+
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+                <android.support.design.widget.TextInputLayout
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_view1"
+                    android:layout_marginBottom="@dimen/dimen_10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp"
+
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                    <com.mv.Widgets.MyEditTextView
+                        android:id="@+id/et_event_time"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:inputType="textPersonName"
                         android:hint="Enter Date"
                         android:textColor="@color/black"
 

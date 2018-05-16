@@ -114,7 +114,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             } else {
                 Utills.showInternetPopUp(this);
             }
-        } else if (binding.edtOtp.isShown() && isValidate(binding.edtOtp, 6, "OTP")) {
+        } else if (binding.edtOtp.isShown() && isValidate(binding.edtOtp, 6, getString(R.string.password))) {
 
             if (user.getMvUser().getPassword() != null) {
 
