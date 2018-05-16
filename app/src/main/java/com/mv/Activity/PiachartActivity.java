@@ -103,7 +103,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     String title;
     private String img_str;
     public static String selectedRole;
-
+    ArrayList<String> selectedRoleList=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,6 +113,9 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         binding.swipeRefreshLayout.setOnRefreshListener(this);
         task = getIntent().getParcelableExtra(Constants.INDICATOR_TASK);
         roleList = getIntent().getStringExtra(Constants.INDICATOR_TASK_ROLE);
+            selectedRoleList = new ArrayList<String>(Arrays.asList(getColumnIdex((roleList).split(","))));
+
+
         title = getIntent().getExtras().getString(Constants.TITLE);
         locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
         if (locationModel == null) {
@@ -131,6 +134,14 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 getDashBoardData(role.getText().toString());
             llSpinner.setVisibility(View.VISIBLE);
         }
+    }
+    public static String[] getColumnIdex(String[] value) {
+
+        for (int i = 0; i < value.length; i++) {
+            value[i] = value[i].trim();
+        }
+        return value;
+
     }
 
     @Override
@@ -206,6 +217,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
             temp = new ArrayList<String>(Arrays.asList(roleList.split(";")));
 
         }
+
         //  final List<Community> temp = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities();
         final String[] items = new String[temp.size()];
         for (int i = 0; i < temp.size(); i++) {
@@ -261,6 +273,68 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
         dialog.show();
     }
+
+/*
+    private void showrRoleDialog() {
+        final List<String> temp = selectedRoleList;
+        final String[] items = new String[temp.size()];
+        final boolean[] mSelection = new boolean[items.length];
+        for (int i = 0; i < temp.size(); i++) {
+            items[i] = temp.get(i);
+            if(selectedRole.contains(temp.get(i)))
+                mSelection[i] =true;
+            else
+                mSelection[i] =false;
+        }
+
+        if (mListRoleName.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll()) > 0)
+            mSelection[mListRoleName.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll())] = true;
+
+// arraylist to keep the selected items
+        final ArrayList seletedItems = new ArrayList();
+        android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(PiachartActivity.this)
+                .setTitle("Select ")
+                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+
+                        if (mSelection != null && which < mSelection.length) {
+                            mSelection[which] = isChecked;
+
+
+                        } else {
+                            throw new IllegalArgumentException(
+                                    "Argument 'which' is out of bounds.");
+                        }
+                    }
+                })
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        StringBuffer sb = new StringBuffer();
+                        String prefix = "";
+                        for (int i = 0; i < items.length; i++) {
+                            if (mSelection[i]) {
+                                sb.append(prefix);
+                                prefix = ",";
+                                sb.append(temp.get(i));
+                                //now original string is changed
+                            }
+                        }
+                        selectedRolename = sb.toString();
+                        binding.spinnerRole.setText(selectedRolename);
+                        Log.e("StringValue", selectedRolename);
+
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Your code when user clicked on Cancel
+                    }
+                }).create();
+        dialog.show();
+    }
+*/
 
     private void setActionbar(String Title) {
         mToolBar = (RelativeLayout) findViewById(R.id.toolbar);

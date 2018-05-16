@@ -207,7 +207,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
-
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));

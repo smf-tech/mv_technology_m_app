@@ -189,7 +189,10 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
                                 processList.setTask_Text___Lan_c(jsonArray.getJSONObject(i).getString("lanTsaskText"));
                             else
                                 processList.setTask_Text___Lan_c(jsonArray.getJSONObject(i).getString("Question"));
-                            processList.setPicklist_Value_Lan__c(jsonArray.getJSONObject(i).getString("lanPicklistValue"));
+                             processList.setPicklist_Value_Lan__c(jsonArray.getJSONObject(i).getString("lanPicklistValue"));
+                            if(jsonArray.getJSONObject(i).has("Process_Answer_Status__c"))
+                            processList.setProcess_Answer_Status__c(jsonArray.getJSONObject(i).getString("Process_Answer_Status__c"));
+
                             if (jsonArray.getJSONObject(i).has("Picklist_Value"))
                                 processList.setPicklist_Value__c(jsonArray.getJSONObject(i).getString("Picklist_Value"));
 

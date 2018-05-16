@@ -10,28 +10,45 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mv.ActivityMenu.TrainingCalender;
 import com.mv.Adapter.ExpandableApprovalListAdapter;
+import com.mv.Adapter.HorizontalCalenderAdapter;
+import com.mv.Adapter.TraingCalenderAadapter;
+import com.mv.Model.CalenderEvent;
+import com.mv.Model.HolidayListModel;
+import com.mv.Model.LeaveCountModel;
 import com.mv.Model.LeavesModel;
+import com.mv.Model.Template;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
+import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityLeaveApprovalBinding;
+import com.mv.decorators.EventDecorator;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -46,14 +63,16 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     ArrayList<String> idList;
-        private PreferenceHelper preferenceHelper;
+    private PreferenceHelper preferenceHelper;
     private ArrayList<String> headerList;
     HashMap<String, ArrayList<LeavesModel>> childList;
     ArrayList<LeavesModel> leaveList = new ArrayList<>();
     String proceesId, Processname;
     Activity mContext;
-
+   List<HolidayListModel> holidayListModels=new ArrayList<>();
+    LeaveCountModel leaveCountModel=new LeaveCountModel();
     TextView textNoData;
+
     private ExpandableApprovalListAdapter adapter;
     String url = "";
 
@@ -77,6 +96,8 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
 /*        proceesId = getIntent().getExtras().getString(Constants.PROCESS_ID);
         Processname = getIntent().getExtras().getString(Constants.PROCESS_NAME);*/
         initViews();
+
+       // getLeaveBalanceCount();
     }
 
     @Override
@@ -93,6 +114,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + Constants.GetApproveLeave+ "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
             binding.fabAddProcess.setVisibility(View.GONE);
+
         }
         else {
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -112,6 +134,26 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
 
 
     }
+    private void setActionbar(String Title) {
+        String str = Title;
+        if (str.contains("\n")) {
+            str = str.replace("\n", " ");
+        }
+        LinearLayout layoutList = (LinearLayout) findViewById(R.id.layoutList);
+
+        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        toolbar_title.setText(str);
+        ImageView img_back = (ImageView) findViewById(R.id.img_back);
+        img_back.setVisibility(View.VISIBLE);
+        img_back.setOnClickListener(this);
+        ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
+        img_logout.setVisibility(View.GONE);
+        img_logout.setImageResource(R.drawable.ic_action_calender);
+        img_logout.setOnClickListener(this);
+    }
+
+
     public void deleteLeave(final String id) {
         Utills.showProgressDialog(mContext, "Loading ",mContext. getString(R.string.progress_please_wait));
         ServiceRequest apiService =
@@ -191,21 +233,6 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
 
 
 
-    private void setActionbar(String Title) {
-        String str = Title;
-        if (str.contains("\n")) {
-            str = str.replace("\n", " ");
-        }
-        mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(str);
-        img_back = (ImageView) findViewById(R.id.img_back);
-        img_back.setVisibility(View.VISIBLE);
-        img_back.setOnClickListener(this);
-        img_logout = (ImageView) findViewById(R.id.img_logout);
-        img_logout.setVisibility(View.GONE);
-        img_logout.setOnClickListener(this);
-    }
 
     @Override
     public void onClick(View view) {
@@ -218,10 +245,14 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
     }
 
     public void onAddClick() {
-
-        Intent openClass = new Intent(mContext, LeaveDetailActivity.class);
-        startActivity(openClass);
-       overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        ArrayList<HolidayListModel> tem=new ArrayList<>();
+        for(int i=0;i<holidayListModels.size();i++)
+        {
+            tem.add(holidayListModels.get(i));
+        }
+        Intent intent = new Intent(mContext, LeaveDetailActivity.class);
+        intent.putParcelableArrayListExtra(Constants.PROCESS_ID, tem);
+        mContext.startActivity(intent);
 
     }
 
@@ -300,4 +331,32 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
         });
     }
 
+    private void getLeaveBalanceCount() {
+        Utills.showProgressDialog(mContext, "Loading Process", getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + "/services/apexrest/getTotalLeaveAndBalanace?userId=" + User.getCurrentUser(mContext).getMvUser().getId();
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    String data = response.body().string();
+                    Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                    leaveCountModel = gson.fromJson(data, LeaveCountModel.class);
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
+    }
 }

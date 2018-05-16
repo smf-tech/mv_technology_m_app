@@ -297,4 +297,7 @@
     <string name="attendance">Attendance</string>
     <string name="checkin">Check In</string>
     <string name="checkout">Check Out</string>
+    <string name="month">Month</string>
+     <string name="year">Year</string>
+    <string name="holiday_list">Holiday List</string>
 </resources>

@@ -194,6 +194,9 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                                     else
                                         taskList.setTask_Text___Lan_c(resultJsonObj.getString("taskText"));
                                     taskList.setPicklist_Value_Lan__c(resultJsonObj.getString("lanPicklistValue"));
+                                  if(resultJsonObj.has("Process_Answer_Status__c"))
+                                    taskList.setProcess_Answer_Status__c(resultJsonObj.getString("Process_Answer_Status__c"));
+
                                     if (resultJsonObj.has("picklistValue"))
                                         taskList.setPicklist_Value__c(resultJsonObj.getString("picklistValue"));
                                     if (resultJsonObj.has("status")) {

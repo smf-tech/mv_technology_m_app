@@ -69,7 +69,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
     List<CalenderEvent> dateList = new ArrayList<>();
 
     private FragmentTrainigCalenderBinding binding;
-    SimpleDateFormat formatter;
+        SimpleDateFormat formatter;
     SimpleDateFormat formatterNew;
     ArrayList<CalendarDay> dates;
     List<Date> allDate=new ArrayList<>();
@@ -77,6 +77,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
     List<String> MonthList=new ArrayList<>();
     List<String> YearList=new ArrayList<>();
     TraingCalenderAadapter adapter;
+    List<Date> eventDate=new ArrayList<>();
     HorizontalCalenderAdapter horizontalCalenderAdapter;
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
     Activity context;
@@ -157,6 +158,8 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
     //    binding.recyclerViewHorizontal.setAdapter(horizontalCalenderAdapter);
         try {
             binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))));
+
+
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -196,26 +199,35 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                 allDate.clear();
                 try {
                 allDate.addAll(getDates(binding.spinnerYear.getSelectedItem().toString()+"-0"+(i+1)+"-01", binding.spinnerYear.getSelectedItem().toString()+"-0"+(i+2)+"-01"));
-                horizontalCalenderAdapter=new HorizontalCalenderAdapter(context,allDate  ,allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))));
+            horizontalCalenderAdapter=new HorizontalCalenderAdapter(context,allDate  ,allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))),eventDate);
                 binding.recyclerViewHorizontal.setAdapter(horizontalCalenderAdapter);
              //   binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(Calendar.getInstance().getTime()));
 
                     binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))));
+                    if(allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime())))>0)
+                        selectDate(Calendar.getInstance().getTime());
+                    else
+                    selectDate(new SimpleDateFormat("yyyy-MM-dd").parse(binding.spinnerYear.getSelectedItem().toString()+"-0"+(i+1)+"-01"));
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
-                break;
+                 break;
 
             case R.id.spinner_year:
                 allDate.clear();
                 try {
-                    allDate.addAll(getDates(binding.spinnerYear.getSelectedItem().toString()+"-0"+(i+1)+"-01", binding.spinnerYear.getSelectedItem().toString()+"-0"+(i+2)+"-01"));
-                    horizontalCalenderAdapter=new HorizontalCalenderAdapter(context,allDate  ,allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))));
+                    allDate.addAll(getDates(binding.spinnerYear.getSelectedItem().toString()+"-0"+(MonthList.indexOf(binding.spinnerMonth.getSelectedItem().toString())+1)+"-01", binding.spinnerYear.getSelectedItem().toString()+"-0"+(MonthList.indexOf(binding.spinnerMonth.getSelectedItem().toString())+2)+"-01"));
+                    horizontalCalenderAdapter=new HorizontalCalenderAdapter(context,allDate  ,allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))),eventDate);
                     binding.recyclerViewHorizontal.setAdapter(horizontalCalenderAdapter);
                     //   binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(Calendar.getInstance().getTime()));
 
                     binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))));
+                    if(allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime())))>0)
+                        selectDate(Calendar.getInstance().getTime());
+                    else
+                    selectDate(new SimpleDateFormat("yyyy-MM-dd").parse(binding.spinnerYear.getSelectedItem().toString()+"-0"+(MonthList.indexOf(binding.spinnerMonth.getSelectedItem().toString())+1)+"-01"));
+
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -300,7 +312,7 @@ public void selectDate(Date date)
                 try {
                     if (response.isSuccess()) {
                         JSONArray jsonArray = new JSONArray(response.body().string());
-
+                        eventDate=new ArrayList<>();
                         eventMap = new HashMap<>();
                         dates = new ArrayList<>();
                         dateList = new ArrayList<>();
@@ -314,6 +326,7 @@ public void selectDate(Date date)
                                 calenderEvent.setMV_User1__c(jsonArray.getJSONObject(i).getString("MV_User__c"));
 
                             calenderEvent.setState__c(jsonArray.getJSONObject(i).getString("State__c"));
+                            calenderEvent.setEvent_Time__c(jsonArray.getJSONObject(i).getString("Event_Time__c"));
                             calenderEvent.setDistrict__c(jsonArray.getJSONObject(i).getString("District__c"));
                             calenderEvent.setTaluka__c(jsonArray.getJSONObject(i).getString("Taluka__c"));
                             calenderEvent.setCluster__c(jsonArray.getJSONObject(i).getString("Cluster__c"));
@@ -336,6 +349,7 @@ public void selectDate(Date date)
                             CalendarDay day = CalendarDay.from(formatter.parse(jsonArray.getJSONObject(i).getString("Date__c")));
                             if (eventMap.get(jsonArray.getJSONObject(i).getString("Date__c")) != null)
                                 dateList = eventMap.get(jsonArray.getJSONObject(i).getString("Date__c"));
+                            eventDate.add(formatterNew.parse(jsonArray.getJSONObject(i).getString("Date__c")));
                             dateList.add(calenderEvent);
                             eventMap.put(day, dateList);
                             dates.add(day);
@@ -343,6 +357,11 @@ public void selectDate(Date date)
                         AppDatabase.getAppDatabase(context).userDao().deleteCalender();
                         AppDatabase.getAppDatabase(context).userDao().insertCalendr(dateList);
                         binding.calendarView.addDecorator(new EventDecorator(TrainingCalender.this, dates));
+                        horizontalCalenderAdapter=new HorizontalCalenderAdapter(context,allDate  ,allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))),eventDate);
+                        binding.recyclerViewHorizontal.setAdapter(horizontalCalenderAdapter);
+                        binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))));
+                        selectDate(Calendar.getInstance().getTime());
+
                         Calendar instance = Calendar.getInstance();
                         if (eventMap.get(CalendarDay.from(instance)) != null) {
                             adapter = new TraingCalenderAadapter(context, AppDatabase.getAppDatabase(getApplicationContext()).userDao().getCalenderList(formatter.format(instance.getTime())));
@@ -374,6 +393,11 @@ public void selectDate(Date date)
                 CalendarDay day = CalendarDay.from(formatter.parse(date));
                 dates.remove(day);
                 binding.calendarView.addDecorator(new EventDecorator(TrainingCalender.this, dates));
+
+                horizontalCalenderAdapter=new HorizontalCalenderAdapter(context,allDate  ,allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))),eventDate);
+                binding.recyclerViewHorizontal.setAdapter(horizontalCalenderAdapter);
+                binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(formatter.parse(date)));
+                selectDate(Calendar.getInstance().getTime());
             } catch (ParseException e) {
                 e.printStackTrace();
             }

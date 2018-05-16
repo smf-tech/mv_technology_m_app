@@ -279,4 +279,7 @@
     <string name="attendance">उपस्थिती</string>
     <string name="checkin">Check In</string>
     <string name="checkout">Check Out</string>
+    <string name="year" >वर्ष</string>
+    <string name="month" >महिना</string>
+    <string name="holiday_list">Holiday List</string>
 </resources>

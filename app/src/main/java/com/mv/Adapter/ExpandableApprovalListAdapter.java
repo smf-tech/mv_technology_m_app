@@ -139,7 +139,7 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
         if(leavesModel.getRequested_User_Name__c()!=null)
         txtName.setText(leavesModel.getRequested_User_Name__c()+"("+leavesModel.getFromDate()+" : " +leavesModel.getToDate()+")");
         else
-            txtName.setText(leavesModel.getFromDate()+" : " +leavesModel.getToDate());
+            txtName.setText(leavesModel.getFromDate()+" : " +leavesModel.getToDate()+ " : "+leavesModel.getTypeOfLeaves());
 
         return convertView;
     }

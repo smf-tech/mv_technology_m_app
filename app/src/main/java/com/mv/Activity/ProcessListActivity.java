@@ -238,6 +238,9 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     else
                                         processList.setTask_Text___Lan_c(jsonArray.getJSONObject(i).getString("Question"));
                                     processList.setPicklist_Value_Lan__c(jsonArray.getJSONObject(i).getString("lanPicklistValue"));
+                                    if(jsonArray.getJSONObject(i).has("Process_Answer_Status__c"))
+                                    processList.setProcess_Answer_Status__c(jsonArray.getJSONObject(i).getString("Process_Answer_Status__c"));
+
                                     if (jsonArray.getJSONObject(i).has("Picklist_Value"))
                                         processList.setPicklist_Value__c(jsonArray.getJSONObject(i).getString("Picklist_Value"));
 
@@ -361,7 +364,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     processList.setIsEditable__c(resultJsonObj.getString("isEditable"));
                                 }
                                 processList.setPicklist_Value_Lan__c(resultJsonObj.getString("lanPicklistValue"));
-
+                                if(resultJsonObj.has("Process_Answer_Status__c"))
+                                    processList.setProcess_Answer_Status__c(resultJsonObj.getString("Process_Answer_Status__c"));
 
                                 if (resultJsonObj.has("picklistValue"))
                                     processList.setPicklist_Value__c(resultJsonObj.getString("picklistValue"));
