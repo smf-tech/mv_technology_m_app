@@ -59,6 +59,8 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
     TextView textNoData;
     ArrayList<Task> taskList = new ArrayList<>();
     TaskContainerModel taskContainerModel;
+
+    ArrayList<String> processCategory=new ArrayList<>();
     Activity context;
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,6 +170,10 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                                 processList.setIs_Editable__c(mainObj.getJSONObject("prc").getBoolean("Is_Editable__c"));
                                 processList.setIs_Multiple_Entry_Allowed__c(mainObj.getJSONObject("prc").getBoolean("Is_Multiple_Entry_Allowed__c"));
                                 processList.setLocation(mainObj.getJSONObject("prc").getBoolean("Location_Required__c"));
+                                    if(!processCategory.contains(mainObj.getJSONObject("prc").getString("Category__c")))
+                                {
+                                    processCategory.add(mainObj.getJSONObject("prc").getString("Category__c"));
+                                }
 
                                 if (mainObj.getJSONObject("prc").has("Location_Level__c"))
                                     processList.setLocationLevel(mainObj.getJSONObject("prc").getString("Location_Level__c"));

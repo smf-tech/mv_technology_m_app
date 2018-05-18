@@ -85,6 +85,22 @@ public class Template implements Serializable, Parcelable {
     @ColumnInfo(name = "submittedCount")
     private String submittedCount;
 
+    public String getCategory__c() {
+        return Category__c;
+    }
+
+    public void setCategory__c(String category__c) {
+        Category__c = category__c;
+    }
+
+    public static Creator<Template> getCREATOR() {
+        return CREATOR;
+    }
+
+    @SerializedName("Category__c")
+    @Expose
+    @ColumnInfo(name = "Category__c")
+    private String Category__c;
     public String getTargated_Date__c() {
         return Targated_Date__c;
     }
@@ -305,6 +321,7 @@ public class Template implements Serializable, Parcelable {
         dest.writeString(this.answerCount);
         dest.writeString(this.expectedCount);
         dest.writeString(this.submittedCount);
+        dest.writeString(this.Category__c);
         dest.writeString(this.Targated_Date__c);
         dest.writeValue(this.Location);
         dest.writeString(this.LocationLevel);
@@ -330,6 +347,7 @@ public class Template implements Serializable, Parcelable {
         this.answerCount = in.readString();
         this.expectedCount = in.readString();
         this.submittedCount = in.readString();
+        this.Category__c = in.readString();
         this.Targated_Date__c = in.readString();
         this.Location = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.LocationLevel = in.readString();
