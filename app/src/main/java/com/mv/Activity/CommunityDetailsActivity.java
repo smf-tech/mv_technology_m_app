@@ -405,13 +405,12 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
     }
 
     public void onPostImageClick() {
-        if (mContent.getIsAttachmentPresent().equalsIgnoreCase("false")) {
+        if (mContent.getIsAttachmentPresent() == null || mContent.getIsAttachmentPresent().equalsIgnoreCase("false")) {
             if (mContent.getAttachmentId() != null) {
                 Utills.showImagewithheaderZoomDialog(CommunityDetailsActivity.this, getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mContent.getAttachmentId() + "/Body"));
             }
         } else if (mContent.getId() != null) {
             Utills.showImageZoomInDialog(CommunityDetailsActivity.this, mContent.getId());
-
         }
     }
 
