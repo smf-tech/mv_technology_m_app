@@ -546,8 +546,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         layout_download_file.setOnClickListener(this);
         layout_share.setOnClickListener(this);
 
-        if (TextUtils.isEmpty(mContent.getUserAttachmentId())
-                ) {
+        if (TextUtils.isEmpty(mContent.getUserAttachmentId())) {
         } else if (mContent.getAttachmentId().equalsIgnoreCase("null")) {
         } else {
             // holder.picture.setImageDrawable(mPlacePictures[position % mPlacePictures.length]);
@@ -558,11 +557,8 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         }
         if (mContent.getIsAttachmentPresent() == null || TextUtils.isEmpty(mContent.getIsAttachmentPresent()) || mContent.getIsAttachmentPresent().equalsIgnoreCase("false")) {
 
-            if (TextUtils.isEmpty(mContent.getAttachmentId())
-                    ) {
+            if (TextUtils.isEmpty(mContent.getAttachmentId())) {
                 binding.cardImagedetails.setVisibility(View.GONE);
-
-
             } else if (mContent.getAttachmentId().equalsIgnoreCase("null")) {
                 binding.cardImagedetails.setVisibility(View.GONE);
             } else {
