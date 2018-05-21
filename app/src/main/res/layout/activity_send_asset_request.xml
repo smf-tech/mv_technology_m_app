@@ -54,6 +54,33 @@
                 </RelativeLayout>
 
                 <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_stock"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/txt_view1"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp"
+                    android:visibility="gone">
+
+                    <com.mv.Widgets.MyEditTextView
+                        android:id="@+id/edit_text_stock"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:enabled="false"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:hint="@string/asset_available_stock"
+                        android:inputType="number"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_quantity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

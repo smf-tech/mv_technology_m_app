@@ -282,4 +282,5 @@
     <string name="year" >वर्ष</string>
     <string name="month" >महिना</string>
     <string name="holiday_list">Holiday List</string>
+    <string name="asset_available_stock">Available Stock</string>
 </resources>

@@ -47,8 +47,8 @@ import retrofit2.Response;
 
 public class SendAssetRequestActivity extends AppCompatActivity implements View.OnClickListener {
     private Spinner spinner_Assetname;
-    private TextInputLayout input_quantity, input_tentative_return_date;
-    private EditText edit_text_quantity, edit_text_remarks, edit_text_issue_date, edit_text_tentative_return_date;
+    private TextInputLayout input_quantity, input_tentative_return_date, input_stock;
+    private EditText edit_text_stock, edit_text_quantity, edit_text_remarks, edit_text_issue_date, edit_text_tentative_return_date;
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
@@ -88,6 +88,8 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
         edit_text_tentative_return_date = (EditText) findViewById(R.id.edit_text_tentative_return_date);
         edit_text_remarks = (EditText) findViewById(R.id.edit_text_remarks);
         input_quantity = (TextInputLayout) findViewById(R.id.input_quantity);
+        input_stock = (TextInputLayout) findViewById(R.id.input_stock);
+        edit_text_stock = (EditText) findViewById(R.id.edit_text_stock);
         input_tentative_return_date = (TextInputLayout) findViewById(R.id.input_tentative_return_date);
         spinner_Assetname = (Spinner) findViewById(R.id.spinner_Assetname);
         btn_send_request = (Button) findViewById(R.id.btn_send_request);
@@ -135,13 +137,13 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
                         if (data != null && data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-
-                            final List<Asset> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Asset[].class));
+                            assetList.clear();
+                            assetList = Arrays.asList(gson.fromJson(jsonArray.toString(), Asset[].class));
 
                             assetnameList.add("select");
 
-                            for (int i = 0; i < temp.size(); i++) {
-                                assetnameList.add(temp.get(i).getName());
+                            for (int i = 0; i < assetList.size(); i++) {
+                                assetnameList.add(assetList.get(i).getName());
 
                             }
                             asset_name_adapter = new ArrayAdapter<String>(SendAssetRequestActivity.this,
@@ -159,9 +161,10 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
                                     //String selected = spinner_Assetname.getSelectedItem().toString();
                                     if (i != 0) {
 
-
-                                        id = temp.get(selectAssetName - 1).getAsset_id();
-                                        type = temp.get(selectAssetName - 1).getType();
+                                        input_stock.setVisibility(View.VISIBLE);
+                                        edit_text_stock.setText(assetList.get((i - 1)).getAvailableQuantity());
+                                        id = assetList.get(selectAssetName - 1).getAsset_id();
+                                        type = assetList.get(selectAssetName - 1).getType();
                                         if (type.equalsIgnoreCase("MultiEntry")) {
                                             input_quantity.setVisibility(View.VISIBLE);
                                             input_tentative_return_date.setVisibility(View.GONE);
@@ -172,6 +175,9 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
                                             input_tentative_return_date.setVisibility(View.VISIBLE);
                                         }
 
+                                    } else {
+                                        input_stock.setVisibility(View.GONE);
+                                        edit_text_stock.setText("");
                                     }
 
                                 }
