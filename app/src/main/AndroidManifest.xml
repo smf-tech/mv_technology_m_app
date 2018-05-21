@@ -246,7 +246,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ActivityMenu.IndicatorListFragmet"
+            android:name=".ActivityMenu.MyReportActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity

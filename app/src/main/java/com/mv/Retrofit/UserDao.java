@@ -172,6 +172,8 @@ public interface UserDao {
 
     @Query("SELECT * FROM " + Constants.TABLE_PROCESS)
     List<Template> getProcess();
+    @Query("SELECT * FROM " + Constants.TABLE_PROCESS + " where Category__c = :catagory")
+    List<Template> getProcessCatagry(String catagory);
 
     @Query("SELECT * FROM " + Constants.TABLE_LOCATION)
     List<LocationModel> getLocation();

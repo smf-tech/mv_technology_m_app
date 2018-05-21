@@ -57,7 +57,7 @@ import com.google.gson.JsonParser;
 import com.kobakei.ratethisapp.RateThisApp;
 import com.mv.ActivityMenu.CommunityHomeFragment;
 import com.mv.ActivityMenu.GroupsFragment;
-import com.mv.ActivityMenu.IndicatorListFragmet;
+import com.mv.ActivityMenu.MyReportActivity;
 import com.mv.ActivityMenu.ProgrammeManagmentFragment;
 import com.mv.ActivityMenu.TeamManagementFragment;
 import com.mv.ActivityMenu.ThetSavandFragment;
@@ -207,6 +207,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 
     }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
@@ -389,17 +390,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         iv_logo = (ImageView) findViewById(R.id.iv_logo);
         iv_home_animate = (ImageView) findViewById(R.id.iv_home_animate);
+        List<String> allTabNotApprove = new ArrayList<>();
         List<String> allTab = new ArrayList<>();
         menulist = new ArrayList<>();
+        if (!User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().equals(""))
+            allTabNotApprove = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().split(";")));
+        if (!User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().equals(""))
+            allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().split(";")));
 
         if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
-            if (!User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().equals(""))
-                allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().split(";")));
-            showApprovedDilaog();
-        } else {
-            if (!User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().equals(""))
-                allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().split(";")));
-
+                       showApprovedDilaog();
         }
         menuListName = new ArrayList<>();
         menuListName.add(Constants.Thet_Sanvad);
@@ -419,11 +419,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             if (checkList(allTab, i, true).getDestination() != null)
                 menulist.add(checkList(allTab, i, true));
         }
-//for loop for adding non accessible tab
-        for (int i = 0; i < menuListName.size(); i++) {
-            if (!allTab.contains(menuListName.get(i))) {
-                if (checkList(menuListName, i, false).getDestination() != null)
-                    menulist.add(checkList(menuListName, i, false));
+        //for loop for adding non accessible tab
+        for (int i = 0; i < allTabNotApprove.size(); i++) {
+            if (!allTab.contains(allTabNotApprove.get(i))) {
+
+                if (checkList(allTabNotApprove, i, false).getDestination() != null)
+                    menulist.add(checkList(allTabNotApprove, i, false));
             }
         }
 
@@ -495,7 +496,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else if (allTab.get(i).equals(Constants.My_Reports)) {
             homeModel.setMenuName(getString(R.string.indicator));
             homeModel.setMenuIcon(R.drawable.ic_reports);
-            homeModel.setDestination(IndicatorListFragmet.class);
+            homeModel.setDestination(MyReportActivity.class);
         } else if (allTab.get(i).equals(Constants.My_Calendar)) {
             homeModel.setMenuName(getString(R.string.training_calendar));
             homeModel.setMenuIcon(R.drawable.ic_calender);
