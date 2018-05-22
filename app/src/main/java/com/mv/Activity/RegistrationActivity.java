@@ -910,11 +910,20 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     @Override
     public void onBackPressed() {
         Log.i("Dialog", "Back pressed");
-        isBackPress = true;
-        Utills.hideProgressDialog();
-        setResult(RESULT_CANCELED);
-        finish();
-        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+        if (User.getCurrentUser(RegistrationActivity.this).getMvUser().getRoll() == null
+                || TextUtils.isEmpty(User.getCurrentUser(RegistrationActivity.this).getMvUser().getRoll())) {
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        } else {
+            isBackPress = true;
+            Utills.hideProgressDialog();
+            setResult(RESULT_CANCELED);
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+        }
     }
 
     @Override

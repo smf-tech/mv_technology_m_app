@@ -547,7 +547,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         layout_share.setOnClickListener(this);
 
         if (TextUtils.isEmpty(mContent.getUserAttachmentId())) {
-        } else if (mContent.getAttachmentId().equalsIgnoreCase("null")) {
+        } else if (mContent.getUserAttachmentId().equalsIgnoreCase("null")) {
         } else {
             // holder.picture.setImageDrawable(mPlacePictures[position % mPlacePictures.length]);
             Glide.with(this)
