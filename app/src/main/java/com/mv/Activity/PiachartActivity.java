@@ -131,7 +131,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
             llSpinner.setVisibility(View.GONE);
         } else {
             if (Utills.isConnected(this))
-                getDashBoardData(role.getText().toString());
+                getDashBoardDataForAll(role.getText().toString());
             llSpinner.setVisibility(View.VISIBLE);
         }
     }
@@ -260,7 +260,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                         }
 
                         if (Utills.isConnected(getApplicationContext()))
-                            getDashBoardData(sb.toString());
+                            getDashBoardDataForAll(sb.toString());
                         role.setText(sb.toString());
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -672,7 +672,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     }
 
 
-    private void getDashBoardData(String role) {
+    private void getDashBoardDataForAll(String role) {
         if (Utills.isConnected(this)) {
             try {
 

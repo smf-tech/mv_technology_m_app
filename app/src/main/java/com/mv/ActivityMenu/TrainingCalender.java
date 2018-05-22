@@ -326,6 +326,7 @@ public void selectDate(Date date)
                                 calenderEvent.setMV_User1__c(jsonArray.getJSONObject(i).getString("MV_User__c"));
 
                             calenderEvent.setState__c(jsonArray.getJSONObject(i).getString("State__c"));
+                            if(jsonArray.getJSONObject(i).has("Event_Time__c"))
                             calenderEvent.setEvent_Time__c(jsonArray.getJSONObject(i).getString("Event_Time__c"));
                             calenderEvent.setDistrict__c(jsonArray.getJSONObject(i).getString("District__c"));
                             calenderEvent.setTaluka__c(jsonArray.getJSONObject(i).getString("Taluka__c"));

@@ -46,7 +46,7 @@ import retrofit2.Response;
  * Created by nanostuffs on 14-11-2017.
  */
 
-public class IndicatorListFragmet extends AppCompatActivity implements View.OnClickListener {
+public class MyReportActivity extends AppCompatActivity implements View.OnClickListener {
     private PreferenceHelper preferenceHelper;
     List<DashaBoardListModel> processAllList = new ArrayList<>();
     private IndicatorListAdapter mAdapter;
@@ -111,7 +111,7 @@ public class IndicatorListFragmet extends AppCompatActivity implements View.OnCl
                     @Override
                     public void onRefresh() {
                         if (Utills.isConnected(context))
-                            getAllProcess();
+                            getAllReportProcess();
                     }
                 }
         );
@@ -123,14 +123,14 @@ public class IndicatorListFragmet extends AppCompatActivity implements View.OnCl
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(mAdapter);
         if (Utills.isConnected(context))
-            getAllProcess();
+            getAllReportProcess();
         else {
             Utills.showInternetPopUp(context);
         }
     }
 
 
-    private void getAllProcess() {
+    private void getAllReportProcess() {
         Utills.showProgressDialog(context, "Loading Process", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
@@ -180,7 +180,8 @@ public class IndicatorListFragmet extends AppCompatActivity implements View.OnCl
                         processList = new DashaBoardListModel();
                         processList.setName(getString(R.string.app_versio_report));
                         processAllList.add(0,processList);
-                        mAdapter.notifyDataSetChanged();
+                        mAdapter = new IndicatorListAdapter(context, processAllList);
+                        binding.recyclerView.setAdapter(mAdapter);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

@@ -354,7 +354,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:inputType="textPersonName"
-                        android:hint="Enter Time"
+                        android:hint="Enter Date"
                         android:textColor="@color/black"
 
                         android:textSize="@dimen/medium_text" />
@@ -378,7 +378,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:inputType="textPersonName"
-                        android:hint="Enter Date"
+                        android:hint="Enter Time"
                         android:textColor="@color/black"
 
                         android:textSize="@dimen/medium_text" />

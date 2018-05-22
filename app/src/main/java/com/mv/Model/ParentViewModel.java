@@ -3,7 +3,7 @@ package com.mv.Model;
 
 import com.mv.Activity.ProcessApprovalActivity;
 import com.mv.Activity.TemplatesActivity;
-import com.mv.ActivityMenu.IndicatorListFragmet;
+import com.mv.ActivityMenu.MyReportActivity;
 import com.mv.ActivityMenu.ProgrammeManagmentFragment;
 
 /**
@@ -13,7 +13,7 @@ import com.mv.ActivityMenu.ProgrammeManagmentFragment;
 public class ParentViewModel {
     TemplatesActivity templatesActivity;
     ProcessApprovalActivity processApprovalActivity;
-    IndicatorListFragmet indicatorListFragmet;
+    MyReportActivity myReportActivity;
     ProgrammeManagmentFragment programmeManagmentFragment;
 
 }

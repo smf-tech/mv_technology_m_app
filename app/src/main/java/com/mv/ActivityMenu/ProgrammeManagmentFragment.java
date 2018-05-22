@@ -19,8 +19,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mv.Adapter.ExpandableApprovalListAdapter;
+import com.mv.Adapter.ExpandableProcessListAdapter;
 import com.mv.Adapter.ProgramMangementAdapter;
 import com.mv.BR;
+import com.mv.Model.LeavesModel;
 import com.mv.Model.ParentViewModel;
 import com.mv.Model.Task;
 import com.mv.Model.TaskContainerModel;
@@ -35,6 +38,7 @@ import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityNewTemplateBinding;
+import com.mv.databinding.ActivityProgramManagementBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,6 +46,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -54,19 +59,20 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
     private PreferenceHelper preferenceHelper;
     List<Template> processAllList = new ArrayList<>();
     private ProgramMangementAdapter mAdapter;
-    private ActivityNewTemplateBinding binding;
+    private ActivityProgramManagementBinding binding;
     RecyclerView.LayoutManager mLayoutManager;
     TextView textNoData;
     ArrayList<Task> taskList = new ArrayList<>();
     TaskContainerModel taskContainerModel;
-
+    ExpandableProcessListAdapter adapter;
     ArrayList<String> processCategory=new ArrayList<>();
+    HashMap<String, List<Template>> childList=new HashMap<>();
     Activity context;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context=this;
-        binding =  DataBindingUtil.setContentView(this, R.layout.activity_new_template);
+        binding =  DataBindingUtil.setContentView(this, R.layout.activity_program_management);
         binding.setVariable(BR.vm, new ParentViewModel());
 
 
@@ -174,6 +180,7 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                                 {
                                     processCategory.add(mainObj.getJSONObject("prc").getString("Category__c"));
                                 }
+                                processList.setCategory__c(mainObj.getJSONObject("prc").getString("Category__c"));
 
                                 if (mainObj.getJSONObject("prc").has("Location_Level__c"))
                                     processList.setLocationLevel(mainObj.getJSONObject("prc").getString("Location_Level__c"));
@@ -280,8 +287,14 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                             }
                             AppDatabase.getAppDatabase(context).userDao().deleteTable();
                             AppDatabase.getAppDatabase(context).userDao().insertProcess(processAllList);
+                           for(int i=0;i<processCategory.size();i++)
+                           {
+                               childList.put(processCategory.get(i),AppDatabase.getAppDatabase(context).userDao().getProcessCatagry(processCategory.get(i)));
+                           }
                             mAdapter.notifyDataSetChanged();
                             textNoData.setVisibility(View.GONE);
+                            adapter = new ExpandableProcessListAdapter(context,processCategory,childList );
+                            binding.rvProcess.setAdapter(adapter);
                         }else {
                             textNoData.setVisibility(View.VISIBLE);
                         }
