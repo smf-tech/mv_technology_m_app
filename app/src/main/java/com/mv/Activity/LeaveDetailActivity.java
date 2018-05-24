@@ -211,17 +211,19 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.btn_submit:
-                sendHRServer();
+                sendHRServer(Constants.SendData);
                 break;
 
             case R.id.btn_approve:
                 if (leavesModel.getStatus() != null && leavesModel.getStatus().equalsIgnoreCase("Approved")) {
                     Utills.showToast("Leave Already Approved", context);
                 } else {
+
+
                     comment = "";
                     status = "Approved";
 
-                    sendApprovedData();
+                    sendHRServer(Constants.Approval);
                 }
                 break;
 
@@ -250,7 +252,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private void sendHRServer() {
+    private void sendHRServer(String methodeValue) {
         String msg = "";
         if (binding.spTypeOfLeaves.getSelectedItem().equals("") || binding.spTypeOfLeaves.getSelectedItem().equals("Select")) {
             msg = "Please Select Leave Type";
@@ -264,16 +266,16 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
             int dateSize = getDates(binding.inputHrFormDate.getText().toString(), binding.inputHrToDate.getText().toString()).size();
             if (binding.spTypeOfLeaves.getSelectedItem().equals("CL/SL") && leaveCountModel.getAvailable_CL_SL_Leave__c() < dateSize) {
 
-                msg = "You Dont Have CL/SL Available";
+                msg = " CL/SL Leaves Not Available";
 
             } else if (binding.spTypeOfLeaves.getSelectedItem().equals("Paid") && leaveCountModel.getAvailable_Paid_Leave__c() < dateSize) {
-                msg = "You Dont Have Paid Leaves Available";
+                msg = "Paid Leaves Leaves Not Available";
 
             } else if (binding.spTypeOfLeaves.getSelectedItem().equals("Unpaid") && leaveCountModel.getAvailable_Unpaid_Leave__c() < dateSize) {
-                msg = " You Dont Have Unpaid Leaves Available";
+                msg = "Unpaid Leaves  eLeaves Not Available";
 
             } else if (binding.spTypeOfLeaves.getSelectedItem().equals("Comp Off") && leaveCountModel.getAvailable_Comp_Off_Leave__c() < dateSize) {
-                msg = " You Dont Have Comp Off leaves Available";
+                msg = "Comp Off Leaves Not Available";
 
             } else if (binding.etReason.getText().toString().equals("")) {
                 msg = "Please Enter Reason Of Leave";
@@ -282,7 +284,11 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
 
 
         if (msg.isEmpty()) {
-            sendHRLeavesDataToServer();
+            if(methodeValue.equals(Constants.Approval))
+                sendApprovedData();
+            else if(methodeValue.equals(Constants.SendData))
+                sendHRLeavesDataToServer();
+
         } else {
             Utills.showToast(msg, context);
         }

@@ -73,6 +73,7 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
     String title,processId;
     Task task;
     private RelativeLayout mToolBar;
+    ArrayList<String> selectedRoleList=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,7 +86,8 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
         title = getIntent().getExtras().getString(Constants.TITLE);
         locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
         processId = getIntent().getExtras().getString(Constants.PROCESS_ID);
-
+        roleList = getIntent().getStringExtra(Constants.INDICATOR_TASK_ROLE);
+        selectedRoleList = new ArrayList<String>(Arrays.asList(getColumnIdex((roleList).split(";"))));
         if (locationModel == null) {
             locationModel = new LocationModel();
             locationModel.setState(User.getCurrentUser(getApplicationContext()).getMvUser().getState());
@@ -203,6 +205,7 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
                 openClass.putExtra(Constants.INDICATOR_TASK, task);
                 openClass.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
                 openClass.putExtra(Constants.PROCESS_ID, processId);
+
                 startActivity(openClass);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
@@ -213,23 +216,29 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
     private void showRoleDialog() {
 
 
-        if (roleList != null && !roleList.isEmpty()) {
-            temp = new ArrayList<String>(Arrays.asList(roleList.split(";")));
+        if (preferenceHelper.getString(Constants.RoleList) != null && !preferenceHelper.getString(Constants.RoleList).isEmpty()) {
+            temp = new ArrayList<String>(Arrays.asList(preferenceHelper.getString(Constants.RoleList).split(";")));
 
         }
+
         //  final List<Community> temp = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities();
         final String[] items = new String[temp.size()];
+        final boolean[] mSelection = new boolean[items.length];
         for (int i = 0; i < temp.size(); i++) {
             items[i] = temp.get(i);
+            if(selectedRoleList.contains(temp.get(i)))
+            {
+                mSelection[i]=true;
+            }
         }
-        final boolean[] mSelection = new boolean[items.length];
-        Arrays.fill(mSelection, true);
+
+
       /* if(temp.contains(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll()))
         mSelection[temp.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll())] = true;
 */
 // arraylist to keep the selected items
         final ArrayList seletedItems = new ArrayList();
-        android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(OverallReportActivity.this)
+        android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(context)
                 .setTitle("Select Role")
                 .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
@@ -254,13 +263,15 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
                                 sb.append(prefix);
                                 prefix = ";";
                                 sb.append(temp.get(i));
-                                //now original string is changed
+
                             }
                         }
 
                         if (Utills.isConnected(getApplicationContext()))
-                          getDashBoardData(sb.toString());
+                            getDashBoardData(sb.toString());
                         binding.spinnerRole.setText(sb.toString());
+                        roleList=sb.toString();
+                        selectedRoleList = new ArrayList<String>(Arrays.asList(getColumnIdex((roleList).split(";"))));
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
@@ -271,5 +282,13 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
 
 
         dialog.show();
+    }
+    public static String[] getColumnIdex(String[] value) {
+
+        for (int i = 0; i < value.length; i++) {
+            value[i] = value[i].trim();
+        }
+        return value;
+
     }
 }

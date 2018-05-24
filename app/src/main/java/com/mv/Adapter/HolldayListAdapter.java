@@ -88,10 +88,6 @@ public class HolldayListAdapter extends RecyclerView.Adapter<HolldayListAdapter.
 
     @Override
     public void onBindViewHolder(HolldayListAdapter.MyViewHolder holder, int position) {
-        if(calenderlsList.get(position).getCategory__c().equals("Weekly Off"))
-            holder.layout.setVisibility(View.GONE);
-        else
-            holder.layout.setVisibility(View.VISIBLE);
 
         holder.index.setVisibility(View.GONE);
         holder.title.setVisibility(View.VISIBLE);
@@ -117,11 +113,5 @@ public class HolldayListAdapter extends RecyclerView.Adapter<HolldayListAdapter.
 
 
 
-    public void removeAt(int position,CalenderEvent calenderEvent) {
-        calenderlsList.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, calenderlsList.size());
-        AppDatabase.getAppDatabase(mContext).userDao().deleteCalenderEvent(calenderEvent.getId());
-        ((TrainingCalender)mContext).removeEvent(calenderEvent.getDate());
-    }
+
 }

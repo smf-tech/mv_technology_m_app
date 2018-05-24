@@ -69,7 +69,7 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.MyView
 
                     } else if (mContext instanceof IndicatorTrainingFeedBackTaskList) {
 
-                            //my reports
+                        //my reports
                         Intent openClass = new Intent(mContext, PiachartActivity.class);
                         openClass.putExtra(Constants.TITLE, teplateList.get(getAdapterPosition()).getName());
                         mContext.startActivity(openClass);

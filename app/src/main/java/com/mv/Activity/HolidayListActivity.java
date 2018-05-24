@@ -39,7 +39,16 @@ public class HolidayListActivity extends AppCompatActivity implements View.OnCli
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
         holidayListModels = getIntent().getParcelableArrayListExtra(Constants.PROCESS_ID);
-        HolldayListAdapter holldayListAdapter=new HolldayListAdapter(context,holidayListModels);
+        List<HolidayListModel> temp=new ArrayList<>();
+        for(int i=0;i<holidayListModels.size();i++)
+        {
+            if(!holidayListModels.get(i).getCategory__c().equals("Weekly Off"))
+            {
+                temp.add(holidayListModels.get(i));
+            }
+
+        }
+        HolldayListAdapter holldayListAdapter=new HolldayListAdapter(context,temp);
         binding.recyclerView.setAdapter(holldayListAdapter);
         setActionbar(getString(R.string.holiday_list));
         binding.swiperefresh.setOnRefreshListener(

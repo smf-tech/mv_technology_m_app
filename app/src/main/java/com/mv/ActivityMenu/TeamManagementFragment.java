@@ -1,27 +1,37 @@
 package com.mv.ActivityMenu;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mv.Activity.HomeActivity;
 import com.mv.Adapter.TeamManagementAdapter;
 import com.mv.BR;
 import com.mv.Model.ParentViewModel;
 import com.mv.Model.Template;
+import com.mv.Model.User;
 import com.mv.R;
+import com.mv.Service.LocationService;
+import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
+import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityNewTemplateBinding;
 
 import java.util.ArrayList;
@@ -46,7 +56,7 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-
+        Log.d("cycled", "onCreate: B");
         binding = DataBindingUtil.setContentView(this, R.layout.activity_new_template);
         binding.setVariable(BR.vm, new ParentViewModel());
 
@@ -56,12 +66,11 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
     public void onResume() {
         super.onResume();
         initViews();
+        Log.d("cycled", "onResume: B");
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-    }
+
+
 
     private void setActionbar(String Title) {
         String str = Title;
@@ -129,4 +138,66 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
 
     }
 
+    @Override
+    protected void onStart() {
+        Log.d("cycled", "onStart:B ");
+        super.onStart();
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("cycled", "onPause: B");
+    }
+    @Override
+    protected void onStop() {
+        Log.d("cycled", "onStop: B");
+        super.onStop();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("cycled", "onDestroy: B");
+
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("cycled", "onRestart: B");
+    }
+
+    private void showPopUp() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+
+        // Setting Dialog Title
+        alertDialog.setTitle(getString(R.string.app_name));
+
+        // Setting Dialog Message
+        alertDialog.setMessage(getString(R.string.error_no_internet));
+
+        // Setting Icon to Dialog
+        alertDialog.setIcon(R.drawable.logomulya);
+
+        // Setting CANCEL Button
+        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+                finish();
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            }
+        });
+        // Setting OK Button
+        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                alertDialog.dismiss();
+                finish();
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+            }
+        });
+
+        // Showing Alert Message
+        alertDialog.show();
+    }
 }

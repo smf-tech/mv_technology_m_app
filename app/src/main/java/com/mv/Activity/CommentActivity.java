@@ -243,7 +243,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             String formattedDate = df.format(c.getTime());
                             comment.setTime(formattedDate);
-                            commentList.add(comment);
+                            commentList.add(0,comment);
                             adapter.notifyDataSetChanged();
                             textNoData.setVisibility(View.GONE);
                             Utills.showToast(getString(R.string.comment_add), getApplicationContext());
