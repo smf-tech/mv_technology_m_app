@@ -218,12 +218,13 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 Intent intent = new Intent(IndicatorLocationSelectionActivity.this, PiachartActivity.class);
                 intent.putExtra(Constants.TITLE, title);
                 intent.putExtra(Constants.INDICATOR_TASK, task);
+              //  preferenceHelper.insertString(Constants.RoleList,roleList);
                 intent.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
                 intent.putExtra(Constants.LOCATION, locationModel);
                 startActivity(intent);
                 finish();
             }
-            if (processId.equals("version")) {
+           else if (processId.equals("version")) {
                 Intent intent = new Intent(IndicatorLocationSelectionActivity.this, VersionReportActivity.class);
                 intent.putExtra(Constants.LOCATION, locationModel);
                 startActivity(intent);
@@ -232,6 +233,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 Intent intent = new Intent(IndicatorLocationSelectionActivity.this, OverallReportActivity.class);
                 intent.putExtra(Constants.TITLE, title);
                 intent.putExtra(Constants.INDICATOR_TASK, task);
+
                 intent.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
                 intent.putExtra(Constants.LOCATION, locationModel);
                 intent.putExtra(Constants.PROCESS_ID, processId);

@@ -113,7 +113,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         binding.swipeRefreshLayout.setOnRefreshListener(this);
         task = getIntent().getParcelableExtra(Constants.INDICATOR_TASK);
         roleList = getIntent().getStringExtra(Constants.INDICATOR_TASK_ROLE);
-            selectedRoleList = new ArrayList<String>(Arrays.asList(getColumnIdex((roleList).split(","))));
+        selectedRoleList = new ArrayList<String>(Arrays.asList(getColumnIdex((roleList).split(";"))));
 
 
         title = getIntent().getExtras().getString(Constants.TITLE);
@@ -213,18 +213,23 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     private void showRoleDialog() {
 
 
-        if (roleList != null && !roleList.isEmpty()) {
-            temp = new ArrayList<String>(Arrays.asList(roleList.split(";")));
+        if (preferenceHelper.getString(Constants.RoleList) != null && !preferenceHelper.getString(Constants.RoleList).isEmpty()) {
+            temp = new ArrayList<String>(Arrays.asList(preferenceHelper.getString(Constants.RoleList).split(";")));
 
         }
 
         //  final List<Community> temp = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities();
         final String[] items = new String[temp.size()];
+        final boolean[] mSelection = new boolean[items.length];
         for (int i = 0; i < temp.size(); i++) {
             items[i] = temp.get(i);
+            if(selectedRoleList.contains(temp.get(i)))
+            {
+                mSelection[i]=true;
+            }
         }
-        final boolean[] mSelection = new boolean[items.length];
-        Arrays.fill(mSelection, true);
+
+
       /* if(temp.contains(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll()))
         mSelection[temp.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll())] = true;
 */
@@ -255,13 +260,15 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                                 sb.append(prefix);
                                 prefix = ";";
                                 sb.append(temp.get(i));
-                                //now original string is changed
+
                             }
                         }
 
                         if (Utills.isConnected(getApplicationContext()))
                             getDashBoardDataForAll(sb.toString());
                         role.setText(sb.toString());
+                        roleList=sb.toString();
+                        selectedRoleList = new ArrayList<String>(Arrays.asList(getColumnIdex((roleList).split(";"))));
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override

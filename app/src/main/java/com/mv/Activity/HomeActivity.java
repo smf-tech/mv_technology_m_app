@@ -122,6 +122,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("cycled", "onCreate: A");
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
         binding.setActivity(this);
@@ -213,10 +214,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
 
-
+    @Override
+    protected void onStart() {
+        Log.d("cycled", "onStart:A ");
+        super.onStart();
+    }
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("cycled", "onResume: A");
         if (User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationTrackingAllow__c() != null
                 && User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationTrackingAllow__c().equals("true")) {
             if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("true")) {
@@ -291,6 +297,36 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         intent.putExtra(Constants.DISTRICT, User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
         startService(intent);
     }
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("cycled", "onPause: A");
+    }
+    @Override
+    protected void onStop() {
+        Log.d("cycled", "onStop: A");
+        super.onStop();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.d("cycled", "onDestroy: A");
+        if (alertLocationDialog != null)
+            alertLocationDialog.dismiss();
+
+        if (alertDialogApproved != null)
+            alertDialogApproved.dismiss();
+
+    }
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        Log.d("cycled", "onRestart: A");
+    }
+
+
 
     private void sendData() {
 
@@ -393,14 +429,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         List<String> allTabNotApprove = new ArrayList<>();
         List<String> allTab = new ArrayList<>();
         menulist = new ArrayList<>();
-        if (!User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().equals(""))
-            allTabNotApprove = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().split(";")));
-        if (!User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().equals(""))
-            allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().split(";")));
-
-        if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
-                       showApprovedDilaog();
-        }
         menuListName = new ArrayList<>();
         menuListName.add(Constants.Thet_Sanvad);
         menuListName.add(Constants.Broadcast);
@@ -414,19 +442,44 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         menuListName.add(Constants.Account_Section);
         menuListName.add(Constants.Asset_management);
         menuListName.add(Constants.Attendance);
-        //for loop for adding accessible tab
-        for (int i = 0; i < allTab.size(); i++) {
-            if (checkList(allTab, i, true).getDestination() != null)
-                menulist.add(checkList(allTab, i, true));
-        }
-        //for loop for adding non accessible tab
-        for (int i = 0; i < allTabNotApprove.size(); i++) {
-            if (!allTab.contains(allTabNotApprove.get(i))) {
+        if (!User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().equals(""))
+            allTabNotApprove = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().split(";")));
+        if (!User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().equals(""))
+            allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().split(";")));
+        if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
+                       showApprovedDilaog();
 
-                if (checkList(allTabNotApprove, i, false).getDestination() != null)
-                    menulist.add(checkList(allTabNotApprove, i, false));
+            for (int i = 0; i < allTabNotApprove.size(); i++) {
+                if (checkList(allTabNotApprove, i, true).getDestination() != null)
+                    menulist.add(checkList(allTabNotApprove, i, true));
             }
+            //for loop for adding non accessible tab
+            for (int i = 0; i < allTab.size(); i++) {
+                if (!allTabNotApprove.contains(allTab.get(i))) {
+                    if (checkList(allTab, i, false).getDestination() != null)
+                        menulist.add(checkList(allTab, i, false));
+                }
+            }
+
         }
+        else
+        {
+            for (int i = 0; i < allTab.size(); i++) {
+                if (checkList(allTab, i, true).getDestination() != null)
+                    menulist.add(checkList(allTab, i, true));
+            }
+            //for loop for adding non accessible tab
+            for (int i = 0; i < allTabNotApprove.size(); i++) {
+                if (!allTabNotApprove.contains(allTabNotApprove.get(i))) {
+                    if (checkList(allTabNotApprove, i, false).getDestination() != null)
+                        menulist.add(checkList(allTabNotApprove, i, false));
+                }
+            }
+
+        }
+
+        //for loop for adding accessible tab
+
 
         mAdapter = new HomeAdapter(menulist, HomeActivity.this);
         RecyclerView.ItemAnimator itemAnimator = new DefaultItemAnimator();
@@ -557,16 +610,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         return super.onCreateOptionsMenu(menu);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (alertLocationDialog != null)
-            alertLocationDialog.dismiss();
 
-        if (alertDialogApproved != null)
-            alertDialogApproved.dismiss();
-
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

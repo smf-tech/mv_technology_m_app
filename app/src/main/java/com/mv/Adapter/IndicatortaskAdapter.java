@@ -49,6 +49,7 @@ public class IndicatortaskAdapter extends RecyclerView.Adapter<IndicatortaskAdap
                     {
                         Intent openClass = new Intent(mContext, OverallReportActivity.class);
                         openClass.putExtra(Constants.INDICATOR_TASK_ROLE, moviesList.getMultiple_Role__c());
+                        preferenceHelper.insertString(Constants.RoleList,moviesList.getMultiple_Role__c());
                         openClass.putExtra(Constants.TITLE, indicatortaskList.get(getAdapterPosition()).getSection_Name__c());
                         openClass.putExtra(Constants.INDICATOR_TASK, indicatortaskList.get(getAdapterPosition()));
                         openClass.putExtra(Constants.PROCESS_ID, moviesList.getId());
@@ -59,6 +60,7 @@ public class IndicatortaskAdapter extends RecyclerView.Adapter<IndicatortaskAdap
                         openClass.putExtra(Constants.TITLE, indicatortaskList.get(getAdapterPosition()).getSection_Name__c());
                         openClass.putExtra(Constants.INDICATOR_TASK, indicatortaskList.get(getAdapterPosition()));
                         openClass.putExtra(Constants.INDICATOR_TASK_ROLE, moviesList.getMultiple_Role__c());
+                        preferenceHelper.insertString(Constants.RoleList,moviesList.getMultiple_Role__c());
                         mContext.startActivity(openClass);
                         mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
                     }
