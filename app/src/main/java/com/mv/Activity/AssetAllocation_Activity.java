@@ -1,5 +1,6 @@
 package com.mv.Activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,7 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
+import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 
@@ -57,7 +59,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
     private RelativeLayout mToolBar;
     TextInputLayout input_no, input_name;
     LinearLayout lnr_asset_manager, lnr_user;
-    String Fname, Lname,Id;
+    String Fname, Lname, Id;
     int selectstockid = 0;
 
 
@@ -310,6 +312,11 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
                 if (isValid())
                     AllocateStatus();
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
     }
 
     private boolean isValid() {

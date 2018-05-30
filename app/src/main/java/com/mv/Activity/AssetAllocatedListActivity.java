@@ -63,6 +63,12 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
         initViews();
     }
 
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
+    }
+
+
     private void initViews() {
         preferenceHelper = new PreferenceHelper(this);
         editTextEmail = (EditText) findViewById(R.id.edit_text_email);
@@ -89,11 +95,6 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
                 }
             }
         });
-    }
-
-    @Override
-    protected void attachBaseContext(Context base) {
-        super.attachBaseContext(LocaleManager.setLocale(base));
     }
 
     @Override
