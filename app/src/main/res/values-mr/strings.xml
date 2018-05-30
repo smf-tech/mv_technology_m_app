@@ -283,6 +283,10 @@
     <string name="month" >महिना</string>
     <string name="holiday_list">Holiday List</string>
     <string name="asset_available_stock">Available Stock</string>
+    <string name="birth_date">जन्मदिनांक</string>
+    <string name="Please_select_birthdate">कृपया जन्म तारीख निवडा</string>
+    <string name="work_location">Work Location</string>
+    <string name="please_refresh_location">Please Refresh Location</string>
     <string name="asset_request_screen">मालमत्तेची विनंती</string>
     <string name="Title">शीर्षक</string>
 </resources>

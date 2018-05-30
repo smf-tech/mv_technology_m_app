@@ -434,7 +434,7 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
         } else if (binding.editTextAmount.getText().toString().trim().length() == 0) {
             str = "Please enter Amount";
         } else if (binding.editTextDescription.getText().toString().trim().length() == 0) {
-            str = "Please enter Description Of Tour";
+            str = "Please enter Description";
         }
         if (str.length() != 0) {
             Utills.showToast(str, this);

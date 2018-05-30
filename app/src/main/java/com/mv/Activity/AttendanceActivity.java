@@ -420,7 +420,14 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         StringBuffer buffer = new StringBuffer();
         buffer.append("Check In Time : " + attendance.getCheckInTime());
         buffer.append("\n\n");
-        buffer.append("Check Out Time : " + attendance.getCheckOutTime());
+        if(attendance.getCheckOutTime()!=null)
+        {
+            if(!attendance.getCheckOutTime().equals("null"))
+            {
+                buffer.append("Check Out Time : " + attendance.getCheckOutTime());
+            }
+        }
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Date : " + attendance.getDate());
         builder.setMessage(buffer.toString());

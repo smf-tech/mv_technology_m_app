@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -61,6 +62,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
     private PreferenceHelper preferenceHelper;
     String userId, comment;
     String status;
+    String halfDayCheck="false";
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
@@ -120,6 +122,14 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
             binding.inputHrFormDate.setText(leavesModel.getFromDate());
             binding.inputHrToDate.setText(leavesModel.getToDate());
             binding.etReason.setText(leavesModel.getReason());
+            if(leavesModel.getIsHalfDayLeave().equals("true"))
+            {
+                binding.detailChk.setChecked(true);
+            }
+            else  if(leavesModel.getIsHalfDayLeave().equals("false"))
+            {
+                binding.detailChk.setChecked(false);
+            }
             if (preferenceHelper.getString(Constants.Leave).equals(Constants.Leave_Approve)) {
                 if (!leavesModel.getStatus().equals(Constants.LeaveStatusPending)) {
                     binding.leaveRemark.setVisibility(View.VISIBLE);
@@ -191,7 +201,20 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
         binding.spTypeOfLeaves.setPrompt(getString(R.string.type_of_leaves));
         binding.spTypeOfLeaves.setAdapter(spinnerAdapter);
 
-
+        binding.detailChk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (((CheckBox) v).isChecked()) {
+                   halfDayCheck="true";
+                   binding.inputHrToDate.setEnabled(false);
+                   binding.inputHrToDate.setText(binding.inputHrFormDate.getText().toString());
+                } else {
+                    halfDayCheck="false";
+                    binding.inputHrToDate.setEnabled(true);
+                    binding.inputHrToDate.setText("");
+                }
+            }
+        });
     }
 
     @Override
@@ -326,6 +349,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 jsonObject.put("Status__c", "Pending");
                 jsonObject.put("From__c", binding.inputHrFormDate.getText().toString());
                 jsonObject.put("To__c", binding.inputHrToDate.getText().toString());
+                jsonObject.put("isHalfDay__c", halfDayCheck);
                 jsonObject1.put("leave", jsonObject);
                 ServiceRequest apiService =
                         ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
@@ -432,7 +456,10 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                         //  taskList.get(Position).setTask_Response__c(getTwoDigit(dayOfMonth) + "/" + getTwoDigit(monthOfYear + 1) + "/" + year);
                         // notifyItemChanged(Position);
                         editText.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
-
+                        if(halfDayCheck.equals("true"))
+                        {
+                            binding.inputHrToDate.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
+                        }
                     }
                 }, mYear, mMonth, mDay);
         dpd.show();

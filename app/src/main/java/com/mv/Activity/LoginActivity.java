@@ -84,15 +84,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        try {
-            user = (User) Class.forName("User").newInstance();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }
+            user = new User();
+
 
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login);

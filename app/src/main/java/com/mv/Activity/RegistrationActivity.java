@@ -2,6 +2,7 @@ package com.mv.Activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
@@ -42,6 +44,7 @@ import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
+import com.mv.Utils.GPSTracker;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -57,6 +60,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -80,11 +84,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private ArrayAdapter<String> state_adapter, district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, role_adapter, organization_adapter, project_adapter;
     private PreferenceHelper preferenceHelper;
     private User user;
+    String SelectedLat ="",SelectedLon="";
     private String mGenderSelect = "";
     private Uri FinalUri = null;
     private Uri outputUri = null;
     private String imageFilePath;
     private Boolean isAdd;
+    private GPSTracker gps;
     private boolean isProjectSet = false, isOrganizationSet = false, isStateSet = false, isDistrictSet = false, isTalukaSet = false, isClusterSet = false, isVillageSet = false, isSchoolSet = false, isRollSet = false;
     private RadioGroup radioGroup;
     private RelativeLayout rel_district, rel_taluka, rel_cluster, rel_villgae, rel_school_name;
@@ -96,6 +102,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_registration);
         binding.setActivity(this);
+        gps = new GPSTracker(RegistrationActivity.this);
         initViews();
         if (Utills.isConnected(this)) {
             getState();
@@ -105,6 +112,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             showPopUp();
         }
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!gps.canGetLocation()) {
+            gps.showSettingsAlert();
+        }
     }
 
     /*
@@ -437,6 +452,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         preferenceHelper = new PreferenceHelper(this);
 
         radioGroup = (RadioGroup) findViewById(R.id.gender_group);
+        binding.birthDate.setOnClickListener(this);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
@@ -454,11 +470,23 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         edit_text_last_name = (EditText) findViewById(R.id.edit_text_last_name);
         edit_text_mobile_number = (EditText) findViewById(R.id.edit_text_mobile_number);
         edit_text_mobile_number.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getPhone());
-
+        binding.birthDate.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getBirth_Day__c());
         edit_text_email = (EditText) findViewById(R.id.edit_text_email);
         btn_submit = (Button) findViewById(R.id.btn_submit);
         btn_submit.setOnClickListener(this);
+        if(User.getCurrentUser(RegistrationActivity.this).getMvUser().getOrganisation().equals("SMF"))
+        {
+            binding.llWork.setVisibility(View.VISIBLE);
+            binding.editTextRefresh.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lat()+" , "+User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lng());
+            SelectedLon=User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lng();
+            SelectedLat=User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lat();
+        }
+        else
+        {
+            binding.llWork.setVisibility(View.GONE);
+        }
 
+        binding.btnRefreshLocation.setOnClickListener(this);
         spinner_role = (Spinner) findViewById(R.id.spinner_role);
         spinner_state = (Spinner) findViewById(R.id.spinner_state);
         spinner_district = (Spinner) findViewById(R.id.spinner_district);
@@ -648,6 +676,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
 
                 break;
+            case R.id.btn_refresh_location:
+                binding.editTextRefresh.setText( gps.getLatitude()+ " , "+gps.getLongitude());
+                SelectedLat=String.valueOf(gps.getLatitude());
+                SelectedLon=String.valueOf(gps.getLongitude());
+                break;
+            case R.id.birth_date:
+                showDateDialog(RegistrationActivity.this, binding.birthDate);
+                break;
 
         }
     }
@@ -685,10 +721,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 jsonObject2.put("Role_Name__c", mListRoleName.get(mSelectRole));
                 jsonObject2.put("Last_Name__c", edit_text_last_name.getText().toString().trim());
                 jsonObject2.put("Middle_Name__c", edit_text_midle_name.getText().toString().trim());
-
+                jsonObject2.put("Birth_Day__c", binding.birthDate.getText().toString().trim());
                 jsonObject2.put("User_State__c", mListState.get(mSelectState));
 
                 jsonObject2.put("Gender__c", mGenderSelect);
+
+                jsonObject2.put("Attendance_Loc__Longitude__s", SelectedLon);
+                jsonObject2.put("Attendance_Loc__Latitude__s", SelectedLat);
+
 
                 if (mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("School")) {
                     jsonObject2.put("User_Cluster__c", mListCluster.get(mSelectCluster));
@@ -857,7 +897,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             msg = getString(R.string.Please_Enter_valid_email_address);
         } else if (mGenderSelect.length() == 0) {
             msg = getString(R.string.Please_select_Gender);
-        } else if (mSelectState == 0) {
+        }
+        else if (binding.editTextRefresh.getText().toString().equals("")&&binding.spinnerOrganization.getSelectedItem().equals("SMF")) {
+            msg = getString(R.string.please_refresh_location);
+        }else if (mSelectState == 0) {
             msg = getString(R.string.Please_select_State);
         } else if ((mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("District"))) {
             if (mSelectDistrict == 0) {
@@ -944,6 +987,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 mListRoleJuridiction.add("");
                 mListRoleId.add("");
                 role_adapter.notifyDataSetChanged();
+                if(mListOrganization.get(mSelectOrganization).equals("SMF"))
+                {
+                    binding.llWork.setVisibility(View.VISIBLE);
+                }
+                else
+                {
+                    binding.llWork.setVisibility(View.GONE);
+                }
                 break;
             case R.id.spinner_role:
                 mSelectRole = i;
@@ -1451,7 +1502,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     e.printStackTrace();
                 }
             }
-        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+        }
+        else  if (requestCode == 100) {
+            if (!gps.canGetLocation()) {
+                gps.showSettingsAlert();
+            }
+        }else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             Glide.with(this)
                     .load(FinalUri)
                     .skipMemoryCache(true)
@@ -1462,5 +1518,35 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     public void onAddImageClick() {
         showPictureDialog();
+    }
+
+    public void showDateDialog(Context context, final EditText editText) {
+
+
+        final Calendar c = Calendar.getInstance();
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog dpd = new DatePickerDialog(context,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        //  taskList.get(Position).setTask_Response__c(getTwoDigit(dayOfMonth) + "/" + getTwoDigit(monthOfYear + 1) + "/" + year);
+                        // notifyItemChanged(Position);
+                        editText.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
+
+                    }
+                }, mYear, mMonth, mDay);
+
+        dpd.getDatePicker().setMaxDate(System.currentTimeMillis());
+        dpd.show();
+    }
+
+    public static String getTwoDigit(int i) {
+        if (i < 10)
+            return "0" + i;
+        return "" + i;
     }
 }

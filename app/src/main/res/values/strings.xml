@@ -226,7 +226,7 @@
    \n\nMulyavardhan fills this critical gap with a contemporary approach aligned to national and international policies.\n\n<b>Approach</b>\n\nMulyavardhan adopts a whole-school approach, whereby the entire school ethos and all school processes are guided by core democratic values. Under this approach, values are not “taught”, but absorbed by students from the school ethos, processes and practices.\n\n</string>
     <string name="add_the_sanvad">पोस्ट जोडा</string>
     <string name="accept">Accept</string>
-    <string name="detail"><u>Details</u></string>
+    <string name="detail"><u>Continue Reading</u></string>
 
     <string name="call_us">Call Us</string>
     <string name="call_on_hangout">Call on Hangout</string>
@@ -301,6 +301,10 @@
      <string name="year">Year</string>
     <string name="holiday_list">Holiday List</string>
     <string name="asset_available_stock">Available Stock</string>
+    <string name="birth_date">Birth Date</string>
+    <string name="Please_select_birthdate">Please select birth date</string>
+    <string name="work_location">Work Location</string>
+    <string name="please_refresh_location">Please Refresh Location</string>
     <string name="asset_request_screen">Asset Request</string>
     <string name="Title">Title</string>
 </resources>

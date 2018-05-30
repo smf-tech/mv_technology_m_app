@@ -184,7 +184,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                                 leavesModel.setReason(data.getString("Reason__c"));
                                 leavesModel.setTypeOfLeaves(data.getString("Leave_Type__c"));
                                 leavesModel.setStatus(data.getString("Status__c"));
-
+                                leavesModel.setIsHalfDayLeave(data.getString("isHalfDay__c"));
                                 leavesModel.setRequested_User__c(data.getString("Requested_User__c"));
                                 if(data.has("Requested_User_Name__c"))
                                     leavesModel.setRequested_User_Name__c(data.getString("Requested_User_Name__c"));
@@ -300,6 +300,13 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                                 leavesModel.setRequested_User__c(data.getString("Requested_User__c"));
                                 if(data.has("Requested_User_Name__c"))
                                 leavesModel.setRequested_User_Name__c(data.getString("Requested_User_Name__c"));
+                                if(data.has("isHalfDay__c")) {
+                                    leavesModel.setIsHalfDayLeave(data.getString("isHalfDay__c"));
+                                }
+                                else
+                                {
+                                    leavesModel.setIsHalfDayLeave("false");
+                                }
                                 if(leavesModel.getStatus().equals(Constants.LeaveStatusApprove))
                                     approveList.add(leavesModel);
                                 if(leavesModel.getStatus().equals(Constants.LeaveStatusPending))

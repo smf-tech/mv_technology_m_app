@@ -304,7 +304,7 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
         } else if (!isDatesAreValid(binding.txtDateFrom.getText().toString().trim(), binding.txtDateTo.getText().toString().trim())) {
             str = "Please select proper To date";
         } else if (binding.editTextDescription.getText().toString().trim().length() == 0) {
-            str = "Please enter Description Of Tour";
+            str = "Please enter Description ";
         } else if (binding.editTextCount.getText().toString().trim().length() == 0) {
             str = "Please enter No Of People Travelled";
         }
