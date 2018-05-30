@@ -301,4 +301,6 @@
      <string name="year">Year</string>
     <string name="holiday_list">Holiday List</string>
     <string name="asset_available_stock">Available Stock</string>
+    <string name="asset_request_screen">Asset Request</string>
+    <string name="Title">Title</string>
 </resources>

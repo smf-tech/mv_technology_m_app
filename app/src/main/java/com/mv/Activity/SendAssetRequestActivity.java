@@ -1,6 +1,7 @@
 package com.mv.Activity;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -24,6 +25,7 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
+import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 
@@ -78,7 +80,10 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
 
 
     }
-
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
+    }
 
     private void initviews() {
         preferenceHelper = new PreferenceHelper(this);
@@ -96,7 +101,7 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
         edit_text_issue_date.setOnClickListener(this);
         edit_text_tentative_return_date.setOnClickListener(this);
         btn_send_request.setOnClickListener(this);
-        setActionbar("Asset Request");
+        setActionbar(getResources().getString(R.string.asset_request_screen));
         if (getIntent().getExtras() == null) {
         } else if (getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
             isAdd = true;

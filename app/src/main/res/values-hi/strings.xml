@@ -232,7 +232,7 @@
     <string name="asset_name">Select Asset</string>
     <string name="asset_model_no">Model No.</string>
     <string name="asset_quantity">Quantity</string>
-    <string name="asset_issue_date">Issue Date</string>
+    <string name="asset_issue_date">जारी करण्याची तारीख</string>
     <string name="asset_tentative_return_date">Tentative Return Date</string>
     <string name="asset_remarks">Remarks</string>
     <string name="asset_request">Assets</string>
@@ -288,4 +288,6 @@
 <string name="month" >महिना</string>
     <string name="holiday_list">Holiday List</string>
     <string name="asset_available_stock">Available Stock</string>
+    <string name="asset_request_screen">मालमत्तेची विनंती</string>
+    <string name="Title">शीर्षक</string>
 </resources>

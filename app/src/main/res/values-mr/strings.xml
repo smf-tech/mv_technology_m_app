@@ -283,4 +283,6 @@
     <string name="month" >महिना</string>
     <string name="holiday_list">Holiday List</string>
     <string name="asset_available_stock">Available Stock</string>
+    <string name="asset_request_screen">मालमत्तेची विनंती</string>
+    <string name="Title">शीर्षक</string>
 </resources>
