@@ -48,6 +48,18 @@ public class UserInfo {
     @SerializedName("User_Taluka__c")
     @Expose
     private String Taluka = "";
+
+    public String getBirth_Day__c() {
+        return Birth_Day__c;
+    }
+
+    public void setBirth_Day__c(String birth_Day__c) {
+        Birth_Day__c = birth_Day__c;
+    }
+
+    @SerializedName("Birth_Day__c")
+    @Expose
+    private String Birth_Day__c = "";
     @SerializedName("User_Village__c")
     @Expose
     private String Village = "";
@@ -77,6 +89,36 @@ public class UserInfo {
     @SerializedName("Before_Approved_Tab_Names__c")
     @Expose
     private String tabNameNoteApproved = "";
+    @SerializedName("Attendance_Loc__Latitude__s")
+    @Expose
+    private String Attendance_Loc_Lat="";
+
+    @SerializedName("Attendance_Loc__Longitude__s")
+    @Expose
+    private String Attendance_Loc_Lng="";
+    public String getAttendance_Loc_Lat() {
+        return Attendance_Loc_Lat;
+    }
+
+    public void setAttendance_Loc_Lat(String attendance_Loc_Lat) {
+        Attendance_Loc_Lat = attendance_Loc_Lat;
+    }
+
+    public String getAttendance_Loc_Lng() {
+        return Attendance_Loc_Lng;
+    }
+
+    public void setAttendance_Loc_Lng(String attendance_Loc_Lng) {
+        Attendance_Loc_Lng = attendance_Loc_Lng;
+    }
+
+    public String getUser_Mobile_App_Version__c() {
+        return User_Mobile_App_Version__c;
+    }
+
+    public void setUser_Mobile_App_Version__c(String user_Mobile_App_Version__c) {
+        User_Mobile_App_Version__c = user_Mobile_App_Version__c;
+    }
 
     @SerializedName("Approval_Role_c__c")
     @Expose

@@ -66,6 +66,15 @@ public class LeavesModel implements Parcelable {
     private String typeOfLeaves;
     private String status;
 
+    public String getIsHalfDayLeave() {
+        return isHalfDayLeave;
+    }
+
+    public void setIsHalfDayLeave(String isHalfDayLeave) {
+        this.isHalfDayLeave = isHalfDayLeave;
+    }
+
+    private String isHalfDayLeave;
     public String getComment() {
         return comment;
     }
@@ -122,6 +131,7 @@ public class LeavesModel implements Parcelable {
         dest.writeString(this.reason);
         dest.writeString(this.typeOfLeaves);
         dest.writeString(this.status);
+        dest.writeString(this.isHalfDayLeave);
         dest.writeString(this.comment);
         dest.writeString(this.Requested_User_Name__c);
         dest.writeString(this.Requested_User__c);
@@ -135,6 +145,7 @@ public class LeavesModel implements Parcelable {
         this.reason = in.readString();
         this.typeOfLeaves = in.readString();
         this.status = in.readString();
+        this.isHalfDayLeave = in.readString();
         this.comment = in.readString();
         this.Requested_User_Name__c = in.readString();
         this.Requested_User__c = in.readString();
