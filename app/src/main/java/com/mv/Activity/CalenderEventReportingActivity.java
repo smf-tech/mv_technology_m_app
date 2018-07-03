@@ -3,27 +3,26 @@ package com.mv.Activity;
 import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mv.R;
 import com.mv.Utils.LocaleManager;
 import com.mv.databinding.ActivityCalenderEventReportingBinding;
-import com.mv.databinding.ActivityReportingTemplateBinding;
 
 public class CalenderEventReportingActivity extends AppCompatActivity implements View.OnClickListener {
     Activity context;
     private ActivityCalenderEventReportingBinding binding;
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calender_event_reporting);
-        context=this;
+        context = this;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_reporting_template);
         binding.setActivity(this);
 
@@ -34,10 +33,6 @@ public class CalenderEventReportingActivity extends AppCompatActivity implements
         setActionbar(getString(R.string.claender_reportinng));
         binding.btnSubmit.setOnClickListener(this);
         binding.etCalEventDate.setOnClickListener(this);
-
-
-
-
     }
 
 

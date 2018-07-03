@@ -5,14 +5,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mv.Adapter.AssetAdapter;
+import com.mv.Adapter.ExpandableAssetListAdapter;
 import com.mv.Model.Asset;
 import com.mv.Model.User;
 import com.mv.R;
@@ -35,6 +36,7 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -55,6 +57,10 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
     RecyclerView.LayoutManager mLayoutManager;
     ArrayList<Asset> repplicaCahart = new ArrayList<>();
     TextView textNoData;
+    private ArrayList<String> headerList;
+    private HashMap<String, ArrayList<Asset>> childList;
+    private ExpandableAssetListAdapter evAdapter;
+    private ExpandableListView evAsset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,19 +76,38 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
 
 
     private void initViews() {
+
+        headerList = new ArrayList<>();
+        childList = new HashMap<>();
+
+        headerList.add("Requested");
+        headerList.add("Accepted");
+        headerList.add("Allocated");
+        headerList.add("Rejected");
+        headerList.add("Released");
+
         preferenceHelper = new PreferenceHelper(this);
+
         editTextEmail = (EditText) findViewById(R.id.edit_text_email);
         editTextEmail.addTextChangedListener(watch);
+
+        evAsset = (ExpandableListView) findViewById(R.id.ev_asset);
+
         textNoData = (TextView) findViewById(R.id.textNoData);
         fab_send_asset = (FloatingActionButton) findViewById(R.id.fab_send_asset);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
         fab_send_asset.setOnClickListener(this);
         setActionbar(getString(R.string.asset_management));
-        adapter = new AssetAdapter(assetList, AssetAllocatedListActivity.this);
+
+      /*  adapter = new AssetAdapter(assetList, AssetAllocatedListActivity.this);
         mLayoutManager = new LinearLayoutManager(AssetAllocatedListActivity.this);
         recycler_view.setLayoutManager(mLayoutManager);
         recycler_view.setItemAnimator(new DefaultItemAnimator());
-        recycler_view.setAdapter(adapter);
+        recycler_view.setAdapter(adapter);*/
+
+        evAdapter = new ExpandableAssetListAdapter(this, headerList, childList);
+        evAsset.setAdapter(evAdapter);
+
         recycler_view.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -93,6 +118,30 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
                 } else if (dy > 5 && fab_send_asset.getVisibility() == View.VISIBLE) {
                     fab_send_asset.setVisibility(View.GONE);
                 }
+            }
+        });
+
+
+        evAsset.setOnScrollListener(new AbsListView.OnScrollListener() {
+            private int mLastFirstVisibleItem;
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+
+                if (mLastFirstVisibleItem < firstVisibleItem) {
+                    fab_send_asset.setVisibility(View.GONE);
+                }
+                if (mLastFirstVisibleItem > firstVisibleItem) {
+                    fab_send_asset.setVisibility(View.VISIBLE);
+                }
+                mLastFirstVisibleItem = firstVisibleItem;
+
             }
         });
     }
@@ -209,9 +258,32 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
                                     assetList.add(asset);
                                     repplicaCahart.add(asset);
                                 }
-                                adapter.notifyDataSetChanged();
+                                ArrayList<Asset> requestedList = new ArrayList<>();
+                                ArrayList<Asset> acceptedList = new ArrayList<>();
+                                ArrayList<Asset> allocatedList = new ArrayList<>();
+                                ArrayList<Asset> rejectedList = new ArrayList<>();
+                                ArrayList<Asset> releasedList = new ArrayList<>();
+                                childList.clear();
+                                for (Asset asset : assetList) {
+                                    if (asset.getAllocationStatus().equals(Constants.AssetStatusRequested))
+                                        requestedList.add(asset);
+                                    if (asset.getAllocationStatus().equals(Constants.AssetStatusAllocated))
+                                        allocatedList.add(asset);
+                                    if (asset.getAllocationStatus().equals(Constants.AssetStatusAccepted))
+                                        acceptedList.add(asset);
+                                    if (asset.getAllocationStatus().equals(Constants.AssetStatusRejected))
+                                        rejectedList.add(asset);
+                                    if (asset.getAllocationStatus().equals(Constants.AssetStatusReleased))
+                                        releasedList.add(asset);
+                                }
 
-
+                                childList.put("Requested", requestedList);
+                                childList.put("Accepted", acceptedList);
+                                childList.put("Allocated", allocatedList);
+                                childList.put("Rejected", rejectedList);
+                                childList.put("Released", releasedList);
+                                evAdapter = new ExpandableAssetListAdapter(AssetAllocatedListActivity.this, headerList, childList);
+                                evAsset.setAdapter(evAdapter);
                             }
 
                         }
@@ -281,12 +353,12 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
 
     }
 
-    private void deleteRecord(int position) {
+    private void deleteRecord(Asset asset) {
         Utills.showProgressDialog(this, "Deleting Expense", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.DeleteAccountData + "?Id=" + assetList.get(position).getAssetAllocationId() + "&Object=Asset";
+                + Constants.DeleteAccountData + "?Id=" + asset.getAssetAllocationId() + "&Object=Asset";
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -296,8 +368,43 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
                     if (response != null && response.isSuccess()) {
                         String str = response.body().string();
                         if (str.contains("deleted")) {
-                            assetList.remove(position);
-                            adapter.notifyItemRemoved(position);
+                            /*assetList.remove(position);
+                            adapter.notifyItemRemoved(position);*/
+                            childList.clear();
+                            int i = 0;
+                            for (Asset a : assetList) {
+                                if (a.getAsset_id().equalsIgnoreCase(asset.getAsset_id())) {
+                                    assetList.remove(i);
+                                    break;
+                                }
+                                i++;
+                            }
+                            ArrayList<Asset> requestedList = new ArrayList<>();
+                            ArrayList<Asset> acceptedList = new ArrayList<>();
+                            ArrayList<Asset> allocatedList = new ArrayList<>();
+                            ArrayList<Asset> rejectedList = new ArrayList<>();
+                            ArrayList<Asset> releasedList = new ArrayList<>();
+                            for (Asset asset : assetList) {
+                                if (asset.getAllocationStatus().equals(Constants.AssetStatusRequested))
+                                    requestedList.add(asset);
+                                if (asset.getAllocationStatus().equals(Constants.AssetStatusAllocated))
+                                    allocatedList.add(asset);
+                                if (asset.getAllocationStatus().equals(Constants.AssetStatusAccepted))
+                                    acceptedList.add(asset);
+                                if (asset.getAllocationStatus().equals(Constants.AssetStatusRejected))
+                                    rejectedList.add(asset);
+                                if (asset.getAllocationStatus().equals(Constants.AssetStatusReleased))
+                                    releasedList.add(asset);
+                            }
+
+                            childList.put("Requested", requestedList);
+                            childList.put("Accepted", acceptedList);
+                            childList.put("Allocated", allocatedList);
+                            childList.put("Rejected", rejectedList);
+                            childList.put("Released", releasedList);
+                            evAdapter = new ExpandableAssetListAdapter(AssetAllocatedListActivity.this, headerList, childList);
+                            evAsset.setAdapter(evAdapter);
+
                             Utills.showToast("Assest Deleted Successfully", AssetAllocatedListActivity.this);
                         }
                     }
@@ -316,18 +423,18 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
         });
     }
 
-    public void deleteExpense(int position) {
+    public void deleteExpense(Asset asset) {
         if (Utills.isConnected(this)) {
-            deleteRecord(position);
+            deleteRecord(asset);
         } else {
             Utills.showInternetPopUp(this);
         }
     }
 
-    public void editExpense(int adapterPosition) {
+    public void editExpense(Asset asset) {
         Intent intent = new Intent(getApplicationContext(), SendAssetRequestActivity.class);
         intent.putExtra(Constants.ACTION, Constants.ACTION_EDIT);
-        intent.putExtra(Constants.Asset_management, assetList.get(adapterPosition));
+        intent.putExtra(Constants.Asset_management, asset);
         startActivity(intent);
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }

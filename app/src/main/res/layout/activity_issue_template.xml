@@ -26,6 +26,7 @@
             android:layout_weight="1"
             android:background="@drawable/app_bg"
             android:fillViewport="true">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -86,9 +87,9 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/cluster"
-                    android:visibility="gone"
                     android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/small_text" />
+                    android:textSize="@dimen/small_text"
+                    android:visibility="gone" />
 
                 <Spinner
                     android:id="@+id/spinner_cluster"
@@ -100,10 +101,10 @@
                     android:background="@drawable/grey_box"
                     android:entries="@array/array_of_cluster"
                     android:paddingBottom="10dp"
-                    android:visibility="gone"
                     android:paddingTop="10dp"
                     android:prompt="@string/cluster"
-                    android:spinnerMode="dialog" />
+                    android:spinnerMode="dialog"
+                    android:visibility="gone" />
 
                 <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"
@@ -170,7 +171,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:hint="Title"
+                        android:hint="@string/title"
                         android:inputType="textPersonName"
                         android:singleLine="true"
                         android:textColor="@color/black"
@@ -195,7 +196,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="left|top"
-                        android:hint="Description"
+                        android:hint="@string/description"
                         android:minLines="3"
                         android:textColor="@color/black"
                         android:textSize="@dimen/medium_text" />
@@ -210,10 +211,18 @@
                     android:onClick="@{()->activity.onAddImageClick()}"
                     android:src="@drawable/add" />
 
-
+                <com.mv.Widgets.MyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:text="@string/addAttachment"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/large_text" />
             </LinearLayout>
         </ScrollView>
-
 
 
         <com.mv.Widgets.MyFontButton
@@ -223,7 +232,7 @@
             android:layout_margin="10dp"
             android:background="@color/colorPink"
             android:onClick="@{()->activity.onBtnSubmitClick()}"
-            android:text="Submit"
+            android:text="@string/Submit"
             android:textColor="#ffffff"
             android:textSize="22sp" />
 

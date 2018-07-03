@@ -53,8 +53,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     String proceesId, Processname;
     Context mContext;
     TextView textNoData;
-
-
     TaskContainerModel taskContainerModel;
     List<TaskContainerModel> resultList = new ArrayList<>();
 
@@ -77,7 +75,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
     private void initViews() {
 
-
         preferenceHelper = new PreferenceHelper(this);
         //storing process Id to preference to use later
         preferenceHelper.insertString(Constants.PROCESS_ID, proceesId);
@@ -87,7 +84,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         binding.rvProcess.setLayoutManager(mLayoutManager);
         binding.rvProcess.setItemAnimator(new DefaultItemAnimator());
-
 
     }
 
@@ -230,7 +226,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     processList.setTask_Text__c(jsonArray.getJSONObject(i).getString("Question"));
 
 
-
                                     processList.setIsHeader(jsonArray.getJSONObject(i).getString("isHeader"));
 
                                     if (!jsonArray.getJSONObject(i).getString("lanTsaskText").equals("null"))
@@ -238,8 +233,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     else
                                         processList.setTask_Text___Lan_c(jsonArray.getJSONObject(i).getString("Question"));
                                     processList.setPicklist_Value_Lan__c(jsonArray.getJSONObject(i).getString("lanPicklistValue"));
-                                    if(jsonArray.getJSONObject(i).has("Process_Answer_Status__c"))
-                                    processList.setProcess_Answer_Status__c(jsonArray.getJSONObject(i).getString("Process_Answer_Status__c"));
+                                    if (jsonArray.getJSONObject(i).has("Process_Answer_Status__c"))
+                                        processList.setProcess_Answer_Status__c(jsonArray.getJSONObject(i).getString("Process_Answer_Status__c"));
 
                                     if (jsonArray.getJSONObject(i).has("Picklist_Value"))
                                         processList.setPicklist_Value__c(jsonArray.getJSONObject(i).getString("Picklist_Value"));
@@ -247,7 +242,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     if (jsonArray.getJSONObject(i).has("Answer"))
                                         processList.setTask_Response__c(jsonArray.getJSONObject(i).getString("Answer"));
                                     if (jsonArray.getJSONObject(i).getString("isHeader").equals("true")) {
-                                        if(!processList.getTask_Response__c().equals("Select")) {
+                                        if (!processList.getTask_Response__c().equals("Select")) {
                                             sb.append(prefix);
                                             prefix = " , ";
                                             sb.append(processList.getTask_Response__c());
@@ -274,19 +269,19 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 }
 
 
-                                    taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
-                                    taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
+                                taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
+                                taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
 
-                                    taskContainerModel.setHeaderPosition(sb.toString());
-                                    //task is with answer
-                                    taskContainerModel.setTaskType(Constants.TASK_ANSWER);
-                                    taskContainerModel.setMV_Process__c(proceesId);
-                                    taskContainerModel.setUnique_Id(taskList.get(0).getId());
-                                    if (!idList.contains(taskContainerModel.getUnique_Id()))
-                                        resultList.add(taskContainerModel);
+                                taskContainerModel.setHeaderPosition(sb.toString());
+                                //task is with answer
+                                taskContainerModel.setTaskType(Constants.TASK_ANSWER);
+                                taskContainerModel.setMV_Process__c(proceesId);
+                                taskContainerModel.setUnique_Id(taskList.get(0).getId());
+                                if (!idList.contains(taskContainerModel.getUnique_Id()))
+                                    resultList.add(taskContainerModel);
 
 
-                                }
+                            }
 
 
                             AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().insertTask(resultList);
@@ -364,7 +359,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     processList.setIsEditable__c(resultJsonObj.getString("isEditable"));
                                 }
                                 processList.setPicklist_Value_Lan__c(resultJsonObj.getString("lanPicklistValue"));
-                                if(resultJsonObj.has("Process_Answer_Status__c"))
+                                if (resultJsonObj.has("Process_Answer_Status__c"))
                                     processList.setProcess_Answer_Status__c(resultJsonObj.getString("Process_Answer_Status__c"));
 
                                 if (resultJsonObj.has("picklistValue"))
@@ -398,7 +393,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     }
 
                                     if (resultJsonObj.getString("isHeader").equals("true")) {
-                                        if(!processList.getTask_Response__c().equals("Select")) {
+                                        if (!processList.getTask_Response__c().equals("Select")) {
                                             sb.append(prefix);
                                             prefix = " , ";
 

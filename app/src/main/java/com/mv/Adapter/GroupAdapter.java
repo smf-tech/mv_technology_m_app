@@ -18,7 +18,6 @@ import android.widget.TextView;
 import com.mv.ActivityMenu.GroupsFragment;
 import com.mv.Model.Community;
 import com.mv.R;
-import com.mv.Retrofit.AppDatabase;
 
 import java.util.List;
 
@@ -73,7 +72,13 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.MyViewHolder
             count = 0;
         else
             count = Integer.parseInt(community.getCount());
-        holder.txtCount.setText(count + "/" + AppDatabase.getAppDatabase(mContext).userDao().getCommunitySize(community.getId()));
+        String toalCount;
+
+        if (community.getTotalCount() == null || TextUtils.isEmpty(community.getTotalCount()))
+            toalCount = "0";
+        else
+            toalCount = community.getTotalCount();
+        holder.txtCount.setText(count + "/" + toalCount);
         holder.txtCount.setVisibility(View.VISIBLE);
         holder.imgNextArrow.setVisibility(View.GONE);
     }

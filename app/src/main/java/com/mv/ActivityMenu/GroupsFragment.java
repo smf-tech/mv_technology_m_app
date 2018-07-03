@@ -29,7 +29,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mv.Activity.CommunityHomeActivity;
 import com.mv.Activity.IssueTemplateActivity;
-import com.mv.Activity.LoginActivity;
 import com.mv.Activity.ReportingTemplateActivity;
 import com.mv.Adapter.GroupAdapter;
 import com.mv.Model.Community;
@@ -210,17 +209,17 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
                                         }
                                     }
 
-                                        if (isPresent) {
-                                            communityList.set(j, temp.get(i));
-                                            replicaCommunityList.set(j, temp.get(i));
-                                            AppDatabase.getAppDatabase(context).userDao().updateCommunities(temp.get(i));
-                                        } else {
-                                            communityList.add(temp.get(i));
-                                            replicaCommunityList.add(temp.get(i));
-                                            AppDatabase.getAppDatabase(context).userDao().insertCommunities(temp.get(i));
-                                        }
+                                    if (isPresent) {
+                                        communityList.set(j, temp.get(i));
+                                        replicaCommunityList.set(j, temp.get(i));
+                                        AppDatabase.getAppDatabase(context).userDao().updateCommunities(temp.get(i));
+                                    } else {
+                                        communityList.add(temp.get(i));
+                                        replicaCommunityList.add(temp.get(i));
+                                        AppDatabase.getAppDatabase(context).userDao().insertCommunities(temp.get(i));
                                     }
-                           mAdapter.notifyDataSetChanged();
+                                }
+                                mAdapter.notifyDataSetChanged();
                                 textNoData.setVisibility(View.GONE);
                             } else {
                                 textNoData.setVisibility(View.VISIBLE);

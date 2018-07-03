@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 20,
-    "identityHash": "2a1e6c18d8ae8305c13236855edd0bd7",
+    "identityHash": "67311c34bbe92758e55b4903b258c6e8",
     "entities": [
       {
         "tableName": "table_community",
@@ -757,7 +757,7 @@
       },
       {
         "tableName": "table_adavance",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `Decription` TEXT, `amount` TEXT, `User` TEXT, `Status` TEXT, `Respond_Date` TEXT, `Comment` TEXT, `ApprovalPerson` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `voucherId` TEXT, `Decription` TEXT, `amount` TEXT, `User` TEXT, `Status` TEXT, `Respond_Date` TEXT, `Comment` TEXT, `ApprovalPerson` TEXT)",
         "fields": [
           {
             "fieldPath": "UniqueId",
@@ -777,6 +777,11 @@
           {
             "fieldPath": "Date",
             "columnName": "Date",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "voucherId",
+            "columnName": "voucherId",
             "affinity": "TEXT"
           },
           {
@@ -866,7 +871,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"2a1e6c18d8ae8305c13236855edd0bd7\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"67311c34bbe92758e55b4903b258c6e8\")"
     ]
   }
 }

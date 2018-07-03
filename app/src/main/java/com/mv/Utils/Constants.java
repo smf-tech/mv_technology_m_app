@@ -2,6 +2,10 @@ package com.mv.Utils;
 
 import android.net.Uri;
 
+import com.mv.Model.Asset;
+
+import java.util.ArrayList;
+
 /**
  * Created by User on 6/1/2017.
  */
@@ -9,18 +13,16 @@ import android.net.Uri;
 public class Constants {
 
     /* Production
-*/
-    /* Production*/
     public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com";
     public static String REPORTID = "a1L7F000000YNK4";
-    public static String ISSUEID = "a1L7F000000YNJz";
+    public static String ISSUEID = "a1L7F000000YNJz";*/
 
-    /* Sandbox
+    /* Sandbox*/
     public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
     public static String REPORTID = "a1G0k000000522K";
-    public static String ISSUEID = "a1G0k000000522F";*/
+    public static String ISSUEID = "a1G0k000000522F";
 
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
@@ -61,7 +63,8 @@ public class Constants {
     public static final String TABLE_EXPENSE = "table_expense";
     public static final String TABLE_ADAVANCE = "table_adavance";
     public static final String TABLE_SALARY = "table_salary";
-
+    public static final String TABLE_ATTENDANCE = "table_attendance";
+    public static final String TABLE_SALARYTEMP = "table_salarytemp";
     public static Integer CHOOSE_IMAGE_FROM_CAMERA = 100;
     public static Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
     public static Integer CHOOSE_VIDEO_FROM_CAMERA = 102;
@@ -200,6 +203,19 @@ public class Constants {
     public static String LeaveStatusApprove = "Approved";
     public static String LeaveStatusRejected = "Rejected";
     public static String LeaveStatusPending = "Pending";
+
+    public static String AssetStatusRequested = "Requested";
+    public static String AssetStatusAccepted = "Accepted";
+    public static String AssetStatusAllocated = "Allocated";
+    public static String AssetStatusRejected = "Rejected";
+    public static String AssetStatusReleased = "Released";
+    public static String ALLUSER = "alluser";
+
+    ArrayList<Asset> requestedList = new ArrayList<>();
+    ArrayList<Asset> acceptedList = new ArrayList<>();
+    ArrayList<Asset> allocatedList = new ArrayList<>();
+    ArrayList<Asset> rejectedList = new ArrayList<>();
+    ArrayList<Asset> releasedList = new ArrayList<>();
 
     public static String saveAttendance = "saveAttendance";
 

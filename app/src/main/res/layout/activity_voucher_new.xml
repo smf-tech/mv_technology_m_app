@@ -214,7 +214,7 @@
                     android:layout_marginTop="20dp"
                     android:background="@color/colorPink"
                     android:onClick="@{()->activity.onSubmitClick()}"
-                    android:text="Submit"
+                    android:text="@string/Submit"
                     android:textColor="#ffffff"
                     android:textSize="22sp" />
 

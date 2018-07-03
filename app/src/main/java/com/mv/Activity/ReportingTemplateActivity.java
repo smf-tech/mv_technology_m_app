@@ -647,6 +647,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                         }
                     }
                 } catch (Exception e) {
+                    DeletePost();
                     Utills.hideProgressDialog();
                     Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
                 }
@@ -654,11 +655,38 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                DeletePost();
                 Utills.hideProgressDialog();
-                Utills.showToast("wrong", ReportingTemplateActivity.this);
+                Utills.showToast(getString(R.string.error_something_went_wrong), ReportingTemplateActivity.this);
                 // Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
             }
         });
+    }
+
+    private void DeletePost() {
+        Utills.showProgressDialog(ReportingTemplateActivity.this);
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(ReportingTemplateActivity.this).create(ServiceRequest.class);
+        apiService.getSalesForceData(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.DeletePostUrl + stringId).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+
+                } catch (Exception e) {
+                    Utills.hideProgressDialog();
+                    Utills.showToast(ReportingTemplateActivity.this.getString(R.string.error_something_went_wrong), ReportingTemplateActivity.this);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+                Utills.showToast(ReportingTemplateActivity.this.getString(R.string.error_something_went_wrong), ReportingTemplateActivity.this);
+            }
+        });
+
     }
 
     private boolean isValidate() {
@@ -744,6 +772,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                 File imageFile = new File(imageFilePath);
                 FinalUri = Uri.fromFile(imageFile);
                 Crop.of(outputUri, FinalUri).start(this);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -755,16 +784,23 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                     File imageFile = new File(imageFilePath);
                     FinalUri = Uri.fromFile(imageFile);
                     Crop.of(outputUri, FinalUri).start(this);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
-            Glide.with(this)
-                    .load(FinalUri)
-                    .skipMemoryCache(true)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)
-                    .into(binding.addImage);
+        } else if (requestCode == Crop.REQUEST_CROP) {
+            if (resultCode == RESULT_OK) {
+                Glide.with(this)
+                        .load(FinalUri)
+                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(binding.addImage);
+            } else {
+                FinalUri = null;
+                outputUri = null;
+            }
+
         } else if (requestCode == Constants.CHOOSE_VIDEO_FROM_CAMERA && resultCode == RESULT_OK) {
             String selectedImagePath = outputUri.getPath();
             if (checkSizeExceed(selectedImagePath)) {

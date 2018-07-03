@@ -192,7 +192,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@color/colorPink"
-            android:text="Submit"
+            android:text="@string/Submit"
             android:textColor="#ffffff"
             android:textSize="22sp" />
 

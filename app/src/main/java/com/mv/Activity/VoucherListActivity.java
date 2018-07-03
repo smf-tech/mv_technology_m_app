@@ -187,6 +187,7 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
         }
 
     }
+
     private void deleteRecord(int position) {
         Utills.showProgressDialog(this, "Deleting Voucher", getString(R.string.progress_please_wait));
         ServiceRequest apiService =

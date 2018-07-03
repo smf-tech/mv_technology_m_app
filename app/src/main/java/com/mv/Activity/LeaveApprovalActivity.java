@@ -16,37 +16,26 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mv.ActivityMenu.TrainingCalender;
 import com.mv.Adapter.ExpandableApprovalListAdapter;
-import com.mv.Adapter.HorizontalCalenderAdapter;
-import com.mv.Adapter.TraingCalenderAadapter;
-import com.mv.Model.CalenderEvent;
 import com.mv.Model.HolidayListModel;
 import com.mv.Model.LeaveCountModel;
 import com.mv.Model.LeavesModel;
-import com.mv.Model.Template;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
-import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityLeaveApprovalBinding;
-import com.mv.decorators.EventDecorator;
-import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -69,8 +58,8 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
     ArrayList<LeavesModel> leaveList = new ArrayList<>();
     String proceesId, Processname;
     Activity mContext;
-   List<HolidayListModel> holidayListModels=new ArrayList<>();
-    LeaveCountModel leaveCountModel=new LeaveCountModel();
+    List<HolidayListModel> holidayListModels = new ArrayList<>();
+    LeaveCountModel leaveCountModel = new LeaveCountModel();
     TextView textNoData;
 
     private ExpandableApprovalListAdapter adapter;
@@ -86,9 +75,8 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
         binding.setProcesslist(this);
 
 
-
-        headerList=new ArrayList<>();
-        childList=new HashMap<>();
+        headerList = new ArrayList<>();
+        childList = new HashMap<>();
         headerList.add(getString(R.string.pending));
         headerList.add(getString(R.string.reject));
         headerList.add(getString(R.string.approve));
@@ -97,7 +85,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
         Processname = getIntent().getExtras().getString(Constants.PROCESS_NAME);*/
         initViews();
 
-       // getLeaveBalanceCount();
+        // getLeaveBalanceCount();
     }
 
     @Override
@@ -110,13 +98,12 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
 
         preferenceHelper = new PreferenceHelper(this);
         //storing process Id to preference to use later
-        if(preferenceHelper.getString(Constants.Leave).equals(Constants.Leave_Approve)) {
+        if (preferenceHelper.getString(Constants.Leave).equals(Constants.Leave_Approve)) {
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + Constants.GetApproveLeave+ "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
+                    + Constants.GetApproveLeave + "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
             binding.fabAddProcess.setVisibility(View.GONE);
 
-        }
-        else {
+        } else {
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + Constants.GetAllMyLeave + "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
             binding.fabAddProcess.setVisibility(View.VISIBLE);
@@ -129,11 +116,12 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 /*        binding.rvProcess.setLayoutManager(mLayoutManager);
         binding.rvProcess.setItemAnimator(new DefaultItemAnimator());*/
-        adapter = new ExpandableApprovalListAdapter(mContext,headerList,childList );
+        adapter = new ExpandableApprovalListAdapter(mContext, headerList, childList);
         binding.rvProcess.setAdapter(adapter);
 
 
     }
+
     private void setActionbar(String Title) {
         String str = Title;
         if (str.contains("\n")) {
@@ -155,11 +143,11 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
 
 
     public void deleteLeave(final String id) {
-        Utills.showProgressDialog(mContext, "Loading ",mContext. getString(R.string.progress_please_wait));
+        Utills.showProgressDialog(mContext, "Loading ", mContext.getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/deleteLeave?leaveId=" + id+ "&userId=" +User.getCurrentUser(mContext).getMvUser().getId();
+                + "/services/apexrest/deleteLeave?leaveId=" + id + "&userId=" + User.getCurrentUser(mContext).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -170,14 +158,13 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                         if (str != null && str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
 
-                            ArrayList <LeavesModel> pendingList=new ArrayList<>();
-                            ArrayList <LeavesModel> approveList=new ArrayList<>();
-                            ArrayList <LeavesModel> rejectList=new ArrayList<>();
-                            for(int i=0;i<jsonArray.length();i++)
-                            {
-                                JSONObject data=jsonArray.getJSONObject(i);
+                            ArrayList<LeavesModel> pendingList = new ArrayList<>();
+                            ArrayList<LeavesModel> approveList = new ArrayList<>();
+                            ArrayList<LeavesModel> rejectList = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject data = jsonArray.getJSONObject(i);
 
-                                LeavesModel leavesModel=new LeavesModel();
+                                LeavesModel leavesModel = new LeavesModel();
                                 leavesModel.setId(data.getString("Id"));
                                 leavesModel.setFromDate(data.getString("From__c"));
                                 leavesModel.setToDate(data.getString("To__c"));
@@ -186,21 +173,21 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                                 leavesModel.setStatus(data.getString("Status__c"));
                                 leavesModel.setIsHalfDayLeave(data.getString("isHalfDay__c"));
                                 leavesModel.setRequested_User__c(data.getString("Requested_User__c"));
-                                if(data.has("Requested_User_Name__c"))
+                                if (data.has("Requested_User_Name__c"))
                                     leavesModel.setRequested_User_Name__c(data.getString("Requested_User_Name__c"));
-                                if(data.has("Comment__c"))
+                                if (data.has("Comment__c"))
                                     leavesModel.setComment(data.getString("Comment__c"));
-                                if(leavesModel.getStatus().equals(Constants.LeaveStatusApprove))
+                                if (leavesModel.getStatus().equals(Constants.LeaveStatusApprove))
                                     approveList.add(leavesModel);
-                                if(leavesModel.getStatus().equals(Constants.LeaveStatusPending))
+                                if (leavesModel.getStatus().equals(Constants.LeaveStatusPending))
                                     pendingList.add(leavesModel);
-                                if(leavesModel.getStatus().equals(Constants.LeaveStatusRejected))
+                                if (leavesModel.getStatus().equals(Constants.LeaveStatusRejected))
                                     rejectList.add(leavesModel);
                             }
-                            childList.put(getString(R.string.pending),pendingList);
-                            childList.put(getString(R.string.reject),rejectList);
-                            childList.put(getString(R.string.approve),approveList);
-                            adapter = new ExpandableApprovalListAdapter(mContext,headerList,childList );
+                            childList.put(getString(R.string.pending), pendingList);
+                            childList.put(getString(R.string.reject), rejectList);
+                            childList.put(getString(R.string.approve), approveList);
+                            adapter = new ExpandableApprovalListAdapter(mContext, headerList, childList);
                             binding.rvProcess.setAdapter(adapter);
 
 
@@ -227,11 +214,9 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
         if (Utills.isConnected(this))
             getAllProcess();
         else
-            Utills.showToast(getString(R.string.error_no_internet),mContext);
+            Utills.showToast(getString(R.string.error_no_internet), mContext);
 
     }
-
-
 
 
     @Override
@@ -245,9 +230,8 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
     }
 
     public void onAddClick() {
-        ArrayList<HolidayListModel> tem=new ArrayList<>();
-        for(int i=0;i<holidayListModels.size();i++)
-        {
+        ArrayList<HolidayListModel> tem = new ArrayList<>();
+        for (int i = 0; i < holidayListModels.size(); i++) {
             tem.add(holidayListModels.get(i));
         }
         Intent intent = new Intent(mContext, LeaveDetailActivity.class);
@@ -275,54 +259,51 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
-             try {
-                 if (response.body() != null) {
-                     String str = response.body().string();
-                     if (str != null && str.length() > 0) {
-                         JSONArray jsonArray = new JSONArray(str);
+                try {
+                    if (response.body() != null) {
+                        String str = response.body().string();
+                        if (str != null && str.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(str);
 
-                         ArrayList <LeavesModel> pendingList=new ArrayList<>();
-                         ArrayList <LeavesModel> approveList=new ArrayList<>();
-                         ArrayList <LeavesModel> rejectList=new ArrayList<>();
-                            for(int i=0;i<jsonArray.length();i++)
-                            {
-                                JSONObject data=jsonArray.getJSONObject(i);
+                            ArrayList<LeavesModel> pendingList = new ArrayList<>();
+                            ArrayList<LeavesModel> approveList = new ArrayList<>();
+                            ArrayList<LeavesModel> rejectList = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject data = jsonArray.getJSONObject(i);
 
-                                LeavesModel leavesModel=new LeavesModel();
+                                LeavesModel leavesModel = new LeavesModel();
                                 leavesModel.setId(data.getString("Id"));
                                 leavesModel.setFromDate(data.getString("From__c"));
                                 leavesModel.setToDate(data.getString("To__c"));
                                 leavesModel.setReason(data.getString("Reason__c"));
                                 leavesModel.setTypeOfLeaves(data.getString("Leave_Type__c"));
                                 leavesModel.setStatus(data.getString("Status__c"));
-                                if(data.has("Comment__c"))
+                                if (data.has("Comment__c"))
                                     leavesModel.setComment(data.getString("Comment__c"));
                                 leavesModel.setRequested_User__c(data.getString("Requested_User__c"));
-                                if(data.has("Requested_User_Name__c"))
-                                leavesModel.setRequested_User_Name__c(data.getString("Requested_User_Name__c"));
-                                if(data.has("isHalfDay__c")) {
+                                if (data.has("Requested_User_Name__c"))
+                                    leavesModel.setRequested_User_Name__c(data.getString("Requested_User_Name__c"));
+                                if (data.has("isHalfDay__c")) {
                                     leavesModel.setIsHalfDayLeave(data.getString("isHalfDay__c"));
-                                }
-                                else
-                                {
+                                } else {
                                     leavesModel.setIsHalfDayLeave("false");
                                 }
-                                if(leavesModel.getStatus().equals(Constants.LeaveStatusApprove))
+                                if (leavesModel.getStatus().equals(Constants.LeaveStatusApprove))
                                     approveList.add(leavesModel);
-                                if(leavesModel.getStatus().equals(Constants.LeaveStatusPending))
+                                if (leavesModel.getStatus().equals(Constants.LeaveStatusPending))
                                     pendingList.add(leavesModel);
-                                if(leavesModel.getStatus().equals(Constants.LeaveStatusRejected))
+                                if (leavesModel.getStatus().equals(Constants.LeaveStatusRejected))
                                     rejectList.add(leavesModel);
                             }
-                            childList.put(getString(R.string.pending),pendingList);
-                            childList.put(getString(R.string.reject),rejectList);
-                            childList.put(getString(R.string.approve),approveList);
-                         adapter = new ExpandableApprovalListAdapter(mContext,headerList,childList );
-                         binding.rvProcess.setAdapter(adapter);
+                            childList.put(getString(R.string.pending), pendingList);
+                            childList.put(getString(R.string.reject), rejectList);
+                            childList.put(getString(R.string.approve), approveList);
+                            adapter = new ExpandableApprovalListAdapter(mContext, headerList, childList);
+                            binding.rvProcess.setAdapter(adapter);
 
 
-                     }
-                 }
+                        }
+                    }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

@@ -80,6 +80,7 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
 
 
     }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
@@ -291,11 +292,11 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
         if (selectAssetName == 0) {
             str = "Please select Asset";
         } else if (edit_text_issue_date.getText().toString().trim().length() == 0) {
-            str = "Please select issue date";
+            str = "Please select " + getString(R.string.asset_issue_date);
         } else if (!type.equalsIgnoreCase("MultiEntry") && edit_text_tentative_return_date.getText().toString().trim().length() == 0) {
-            str = "Please select tentative return date";
+            str = "Please select " + getString(R.string.asset_issue_date);
         } else if (!type.equalsIgnoreCase("MultiEntry") && !isDatesAreValid(edit_text_issue_date.getText().toString().trim(), edit_text_tentative_return_date.getText().toString().trim())) {
-            str = "Please select proper tentative return date";
+            str = "Please select proper " + getString(R.string.asset_issue_date);
         }
         if (str.length() == 0)
             return true;

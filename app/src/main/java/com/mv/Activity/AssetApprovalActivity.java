@@ -1,5 +1,6 @@
 package com.mv.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -20,6 +21,7 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
+import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 
@@ -55,10 +57,13 @@ public class AssetApprovalActivity extends AppCompatActivity implements View.OnC
         preferenceHelper = new PreferenceHelper(this);
         InitViews();
     }
-
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
+    }
 
     private void InitViews() {
-        setActionbar("Asset Approval");
+        setActionbar(getString(R.string.asset_approval));
         asset = (Asset) getIntent().getExtras().getSerializable("Assets");
         asset_statuslist = Arrays.asList(getResources().getStringArray(R.array.array_of_asset_status));
 

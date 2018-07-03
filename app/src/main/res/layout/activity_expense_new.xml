@@ -79,11 +79,11 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:digits="0123456789."
+                        android:digits="0123456789"
                         android:gravity="top|left"
                         android:hint="@string/amount"
                         android:inputType="number"
-
+                        android:maxLength="5"
                         android:textColor="@color/black"
                         android:textSize="@dimen/medium_text" />
                 </android.support.design.widget.TextInputLayout>
@@ -102,7 +102,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="top|left"
-                        android:hint="@string/projectDesription"
+                        android:hint="@string/expenseDescription"
                         android:inputType="textMultiLine"
                         android:minLines="3"
                         android:textColor="@color/black"
@@ -125,7 +125,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:gravity="center"
-                    android:text="Add Attachment"
+                    android:text="@string/addAttachment"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/large_text" />
 
@@ -144,7 +144,7 @@
             android:layout_margin="10dp"
             android:background="@color/colorPink"
             android:onClick="@{()->activity.onSubmitClick()}"
-            android:text="Submit"
+            android:text="@string/Submit"
             android:textColor="#ffffff"
             android:textSize="22sp" />
 

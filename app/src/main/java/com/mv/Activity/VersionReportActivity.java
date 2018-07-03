@@ -293,7 +293,7 @@ public class VersionReportActivity extends AppCompatActivity implements View.OnC
                         }
                     }
                 })
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         StringBuffer sb = new StringBuffer();

@@ -50,67 +50,67 @@ public class LeaveCountModel implements Parcelable {
         Use_User_Leave_Detail__c = use_User_Leave_Detail__c;
     }
 
-    public Integer getTotal_CL_SL_Leave__c() {
+    public double getTotal_CL_SL_Leave__c() {
         return Total_CL_SL_Leave__c;
     }
 
-    public void setTotal_CL_SL_Leave__c(Integer total_CL_SL_Leave__c) {
+    public void setTotal_CL_SL_Leave__c(double total_CL_SL_Leave__c) {
         Total_CL_SL_Leave__c = total_CL_SL_Leave__c;
     }
 
-    public Integer getAvailable_CL_SL_Leave__c() {
+    public double getAvailable_CL_SL_Leave__c() {
         return Available_CL_SL_Leave__c;
     }
 
-    public void setAvailable_CL_SL_Leave__c(Integer available_CL_SL_Leave__c) {
+    public void setAvailable_CL_SL_Leave__c(double available_CL_SL_Leave__c) {
         Available_CL_SL_Leave__c = available_CL_SL_Leave__c;
     }
 
-    public Integer getAvailable_Comp_Off_Leave__c() {
+    public double getAvailable_Comp_Off_Leave__c() {
         return Available_Comp_Off_Leave__c;
     }
 
-    public void setAvailable_Comp_Off_Leave__c(Integer available_Comp_Off_Leave__c) {
+    public void setAvailable_Comp_Off_Leave__c(double available_Comp_Off_Leave__c) {
         Available_Comp_Off_Leave__c = available_Comp_Off_Leave__c;
     }
 
-    public Integer getTotal_Comp_Off_Leave__c() {
+    public double getTotal_Comp_Off_Leave__c() {
         return Total_Comp_Off_Leave__c;
     }
 
-    public void setTotal_Comp_Off_Leave__c(Integer total_Comp_Off_Leave__c) {
+    public void setTotal_Comp_Off_Leave__c(double total_Comp_Off_Leave__c) {
         Total_Comp_Off_Leave__c = total_Comp_Off_Leave__c;
     }
 
-    public Integer getTotal_Unpaid_Leave__c() {
+    public double getTotal_Unpaid_Leave__c() {
         return Total_Unpaid_Leave__c;
     }
 
-    public void setTotal_Unpaid_Leave__c(Integer total_Unpaid_Leave__c) {
+    public void setTotal_Unpaid_Leave__c(double total_Unpaid_Leave__c) {
         Total_Unpaid_Leave__c = total_Unpaid_Leave__c;
     }
 
-    public Integer getTotal_Paid_Leave__c() {
+    public double getTotal_Paid_Leave__c() {
         return Total_Paid_Leave__c;
     }
 
-    public void setTotal_Paid_Leave__c(Integer total_Paid_Leave__c) {
+    public void setTotal_Paid_Leave__c(double total_Paid_Leave__c) {
         Total_Paid_Leave__c = total_Paid_Leave__c;
     }
 
-    public Integer getAvailable_Paid_Leave__c() {
+    public double getAvailable_Paid_Leave__c() {
         return Available_Paid_Leave__c;
     }
 
-    public void setAvailable_Paid_Leave__c(Integer available_Paid_Leave__c) {
+    public void setAvailable_Paid_Leave__c(double available_Paid_Leave__c) {
         Available_Paid_Leave__c = available_Paid_Leave__c;
     }
 
-    public Integer getAvailable_Unpaid_Leave__c() {
+    public double getAvailable_Unpaid_Leave__c() {
         return Available_Unpaid_Leave__c;
     }
 
-    public void setAvailable_Unpaid_Leave__c(Integer available_Unpaid_Leave__c) {
+    public void setAvailable_Unpaid_Leave__c(double available_Unpaid_Leave__c) {
         Available_Unpaid_Leave__c = available_Unpaid_Leave__c;
     }
 
@@ -132,44 +132,43 @@ public class LeaveCountModel implements Parcelable {
     @ColumnInfo(name = "Total_CL_SL_Leave__c")
     @SerializedName("Total_CL_SL_Leave__c")
     @Expose
-    private Integer Total_CL_SL_Leave__c=0;
+    private double Total_CL_SL_Leave__c = 0;
 
     @ColumnInfo(name = "Available_CL_SL_Leave__c")
     @SerializedName("Available_CL_SL_Leave__c")
     @Expose
-    private Integer Available_CL_SL_Leave__c=0;
+    private double Available_CL_SL_Leave__c = 0;
 
     @ColumnInfo(name = "Available_Comp_Off_Leave__c")
     @SerializedName("Available_Comp_Off_Leave__c")
     @Expose
-    private Integer Available_Comp_Off_Leave__c=0;
-
+    private double Available_Comp_Off_Leave__c = 0;
 
 
     @ColumnInfo(name = "Total_Comp_Off_Leave__c")
     @SerializedName("Total_Comp_Off_Leave__c")
     @Expose
-    private Integer Total_Comp_Off_Leave__c=0;
+    private double Total_Comp_Off_Leave__c = 0;
 
     @ColumnInfo(name = "Total_Unpaid_Leave__c")
     @SerializedName("Total_Unpaid_Leave__c")
     @Expose
-    private Integer Total_Unpaid_Leave__c=0;
+    private double Total_Unpaid_Leave__c = 0;
 
     @ColumnInfo(name = "Total_Paid_Leave__c")
     @SerializedName("Total_Paid_Leave__c")
     @Expose
-    private Integer Total_Paid_Leave__c=0;
+    private double Total_Paid_Leave__c = 0;
 
     @ColumnInfo(name = "Available_Paid_Leave__c")
     @SerializedName("Available_Paid_Leave__c")
     @Expose
-    private Integer Available_Paid_Leave__c=0;
+    private double Available_Paid_Leave__c = 0;
 
     @ColumnInfo(name = "Available_Unpaid_Leave__c")
     @SerializedName("Available_Unpaid_Leave__c")
     @Expose
-    private Integer Available_Unpaid_Leave__c=0;
+    private double Available_Unpaid_Leave__c = 0;
 
 
     @Override
@@ -201,14 +200,14 @@ public class LeaveCountModel implements Parcelable {
         this.Id = in.readString();
         this.MV_Role__c = in.readString();
         this.Use_User_Leave_Detail__c = (Boolean) in.readValue(Boolean.class.getClassLoader());
-        this.Total_CL_SL_Leave__c = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.Available_CL_SL_Leave__c = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.Available_Comp_Off_Leave__c = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.Total_Comp_Off_Leave__c = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.Total_Unpaid_Leave__c = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.Total_Paid_Leave__c = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.Available_Paid_Leave__c = (Integer) in.readValue(Integer.class.getClassLoader());
-        this.Available_Unpaid_Leave__c = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.Total_CL_SL_Leave__c = (double) in.readValue(double.class.getClassLoader());
+        this.Available_CL_SL_Leave__c = (double) in.readValue(double.class.getClassLoader());
+        this.Available_Comp_Off_Leave__c = (double) in.readValue(double.class.getClassLoader());
+        this.Total_Comp_Off_Leave__c = (double) in.readValue(double.class.getClassLoader());
+        this.Total_Unpaid_Leave__c = (double) in.readValue(double.class.getClassLoader());
+        this.Total_Paid_Leave__c = (double) in.readValue(double.class.getClassLoader());
+        this.Available_Paid_Leave__c = (double) in.readValue(double.class.getClassLoader());
+        this.Available_Unpaid_Leave__c = (double) in.readValue(double.class.getClassLoader());
     }
 
     public static final Creator<LeaveCountModel> CREATOR = new Creator<LeaveCountModel>() {

@@ -80,7 +80,7 @@ public class AdavanceAdapter extends RecyclerView.Adapter<AdavanceAdapter.ViewHo
                 @Override
                 public void onClick(View view) {
                     if (mContext instanceof AdavanceListActivity)
-                        mActivity.editAdavance(getAdapterPosition());
+                        mActivity.editAdavance(mDataList.get(getAdapterPosition()));
                     else if (mContext instanceof UserAdavanceListActivity)
                         userAdavanceListActivity.changeStatus(getAdapterPosition(), userAdavanceListActivity.mAction);
                 }
@@ -123,7 +123,7 @@ public class AdavanceAdapter extends RecyclerView.Adapter<AdavanceAdapter.ViewHo
         // Setting OK Button
         alertDialog.setButton(mContext.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                mActivity.deleteAdavance(postion);
+                mActivity.deleteAdavance(mDataList.get(postion));
             }
         });
 
@@ -134,7 +134,7 @@ public class AdavanceAdapter extends RecyclerView.Adapter<AdavanceAdapter.ViewHo
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Adavance adavance = mDataList.get(position);
-        holder.tvProjectName.setText(adavance.getProject());
+        holder.tvProjectName.setText(adavance.getDecription());
         holder.tvDateName.setText(adavance.getDate());
         holder.tvAmountName.setText("₹ " + adavance.getAmount());
         if (adavance.getStatus().equalsIgnoreCase("Pending")) {

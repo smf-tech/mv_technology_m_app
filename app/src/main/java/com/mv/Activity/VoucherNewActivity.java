@@ -322,7 +322,7 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
             formatter = new SimpleDateFormat("yyyy-MM-dd");
             fromDate = formatter.parse(startDate);
             toDate = formatter.parse(endDate);
-            if (fromDate.before(toDate))
+            if (fromDate.before(toDate) || fromDate.equals(toDate))
                 return true;
         } catch (ParseException e) {
             e.printStackTrace();

@@ -126,7 +126,7 @@
     <string name="broadcast">प्रसारण</string>
     <string name="community">मेरा\nसमुदाय</string>
     <string name="programme_management">कार्यक्रम\nप्रबंधक</string>
-    <string name="training_content">प्रशिक्षण\nसामग्री</string>
+    <string name="training_content">मूल्यवर्धन\nसामग्री</string>
     <string name="about_us">मुल्यवर्धन\nके बारे में</string>
     <string name="account_section">खाता\nअनुभाग</string>
     <string name="indicator">मेरी\nरिपोर्ट</string>
@@ -284,8 +284,8 @@
     <string name="attendance">उपस्थिति</string>
     <string name="checkin">Check In</string>
     <string name="checkout">Check Out</string>
-    <string name="year" >वर्ष</string>
-<string name="month" >महिना</string>
+    <string name="year">वर्ष</string>
+    <string name="month">महिना</string>
     <string name="holiday_list">Holiday List</string>
     <string name="asset_available_stock">Available Stock</string>
     <string name="birth_date">जन्म तारीख</string>
@@ -294,4 +294,14 @@
     <string name="please_refresh_location">Please Refresh Location</string>
     <string name="asset_request_screen">मालमत्तेची विनंती</string>
     <string name="Title">शीर्षक</string>
+    <string name="allocate">Allocate</string>
+    <string name="reallocate">Re-Allocate</string>
+    <string name="asset_allocation">Asset Allocation</string>
+    <string name="expense">खर्च</string>
+    <string name="asset_reallocation">Asset Re-Allocation</string>
+    <string name="asset_approval">Asset Approval</string>
+    <string name="addAttachment">Add Attachment</string>
+    <string name="Please_select_multiple_taluka">Please select Multiple Taluka</string>
+    <string name="expenseDescription">खर्च वर्णन</string>
+    <string name="status">Status</string>
 </resources>

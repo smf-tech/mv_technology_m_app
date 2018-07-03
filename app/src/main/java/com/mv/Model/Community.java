@@ -61,9 +61,24 @@ public class Community {
     @Expose
     private String Count;
 
+    public String getTotalCount() {
+        return TotalCount;
+    }
+
+    public void setTotalCount(String totalCount) {
+        TotalCount = totalCount;
+    }
+
+    @ColumnInfo(name = "totalCount")
+    @SerializedName("totalCount")
+    @Expose
+    private String TotalCount;
+
+
     @SerializedName("errorMsg")
     @Expose
     private String errorMsg;
+
     public String getId() {
         return Id;
     }

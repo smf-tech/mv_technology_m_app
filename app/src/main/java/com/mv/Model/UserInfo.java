@@ -49,6 +49,19 @@ public class UserInfo {
     @Expose
     private String Taluka = "";
 
+    public String getMultipleTaluka() {
+        return MultipleTaluka;
+    }
+
+    public void setMultipleTaluka(String MultipleTaluka) {
+        MultipleTaluka = MultipleTaluka;
+    }
+
+    @SerializedName("User_Multiple_Taluka__c")
+    @Expose
+    private String MultipleTaluka = "";
+
+
     public String getBirth_Day__c() {
         return Birth_Day__c;
     }
@@ -59,7 +72,7 @@ public class UserInfo {
 
     @SerializedName("Birth_Day__c")
     @Expose
-    private String Birth_Day__c = "";
+    private String Birth_Day__c;
     @SerializedName("User_Village__c")
     @Expose
     private String Village = "";
@@ -91,11 +104,12 @@ public class UserInfo {
     private String tabNameNoteApproved = "";
     @SerializedName("Attendance_Loc__Latitude__s")
     @Expose
-    private String Attendance_Loc_Lat="";
+    private String Attendance_Loc_Lat = "";
 
     @SerializedName("Attendance_Loc__Longitude__s")
     @Expose
-    private String Attendance_Loc_Lng="";
+    private String Attendance_Loc_Lng = "";
+
     public String getAttendance_Loc_Lat() {
         return Attendance_Loc_Lat;
     }
@@ -152,6 +166,7 @@ public class UserInfo {
     @SerializedName("Role_Juridiction__c")
     @Expose
     private String Role_Juridiction__c = "";
+
     public String getPhoneId() {
         return PhoneId;
     }
@@ -232,6 +247,18 @@ public class UserInfo {
     @SerializedName("Hangout_URL__c")
     @Expose
     private String Hangout_URL__c = "";
+
+    public String getHide_Role_On_Calendar__c() {
+        return Hide_Role_On_Calendar__c;
+    }
+
+    public void setHide_Role_On_Calendar__c(String hide_Role_On_Calendar__c) {
+        Hide_Role_On_Calendar__c = hide_Role_On_Calendar__c;
+    }
+
+    @SerializedName("Hide_Role_On_Calendar__c")
+    @Expose
+    private String Hide_Role_On_Calendar__c = "";
 
     @SerializedName("Languges__c")
     @Expose

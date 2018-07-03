@@ -229,7 +229,16 @@
                     android:onClick="@{()->activity.onAddImageClick()}"
                     android:src="@drawable/add" />
 
-
+                <com.mv.Widgets.MyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:text="@string/addAttachment"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/large_text" />
             </LinearLayout>
 
 
@@ -243,7 +252,7 @@
             android:layout_margin="10dp"
             android:background="@color/colorPink"
             android:onClick="@{()->activity.onBtnSubmitClick()}"
-            android:text="Submit"
+            android:text="@string/Submit"
             android:textColor="#ffffff"
             android:textSize="22sp" />
 

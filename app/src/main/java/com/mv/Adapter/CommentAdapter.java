@@ -67,6 +67,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (TextUtils.isEmpty(mDataList.get(position).getUserUrl())
                 || mDataList.get(position).getUserUrl().equalsIgnoreCase("null")) {
+            holder.userImage.setImageResource(R.drawable.logomulya);
         } else {
             Glide.with(mContext)
                     .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(position).getUserUrl() + "/Body"))

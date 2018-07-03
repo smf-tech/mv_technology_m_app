@@ -103,7 +103,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     String title;
     private String img_str;
     public static String selectedRole;
-    ArrayList<String> selectedRoleList=new ArrayList<>();
+    ArrayList<String> selectedRoleList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,6 +136,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
             llSpinner.setVisibility(View.VISIBLE);
         }
     }
+
     public static String[] getColumnIdex(String[] value) {
 
         for (int i = 0; i < value.length; i++) {
@@ -177,7 +179,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                         }
                     }
                 })
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         ArrayList<Content> contentsList = new ArrayList<>();
@@ -223,9 +225,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         final boolean[] mSelection = new boolean[items.length];
         for (int i = 0; i < temp.size(); i++) {
             items[i] = temp.get(i);
-            if(selectedRoleList.contains(temp.get(i)))
-            {
-                mSelection[i]=true;
+            if (selectedRoleList.contains(temp.get(i))) {
+                mSelection[i] = true;
             }
         }
 
@@ -250,7 +251,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                         }
                     }
                 })
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         StringBuffer sb = new StringBuffer();
@@ -267,7 +268,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                         if (Utills.isConnected(getApplicationContext()))
                             getDashBoardDataForAll(sb.toString());
                         role.setText(sb.toString());
-                        roleList=sb.toString();
+                        roleList = sb.toString();
                         selectedRoleList = new ArrayList<String>(Arrays.asList(getColumnIdex((roleList).split(";"))));
                     }
                 }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -315,7 +316,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                         }
                     }
                 })
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         StringBuffer sb = new StringBuffer();
@@ -603,7 +604,6 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 openClass.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
                 openClass.putExtra(Constants.PROCESS_ID, "");
                 startActivity(openClass);
-
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
                 break;
@@ -713,8 +713,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                             else
                                 binding.captionName.setText("Caption : " + dataObject.getString("caption"));
                             binding.countOfDistrict.setText("Count of District : " + dataObject.getString("countOfDistrict"));
-                            binding.countOfTaluka.setText("Count of Taluka : " + dataObject.getString("countOfDistrict"));
-                            binding.countOfCluster.setText("Count of Cluster : " + dataObject.getString("countOfDistrict"));
+                            binding.countOfTaluka.setText("Count of Taluka : " + dataObject.getString("countOfTaluka"));
+                            binding.countOfCluster.setText("Count of State : " + "1");
                             binding.validFeedback.setText("Valid Feedback Count : " + dataObject.getString("validafeedbackCount"));
                             binding.totalFeedback.setText("Total Feedback Count : " + dataObject.getString("feedbackCount"));
 

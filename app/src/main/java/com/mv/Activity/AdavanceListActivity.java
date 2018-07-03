@@ -5,9 +5,9 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,8 +15,9 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mv.Adapter.AdavanceAdapter;
+import com.mv.Adapter.ExpandableAdvanceListAdapter;
 import com.mv.Model.Adavance;
-import com.mv.Model.User;
+import com.mv.Model.Voucher;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
@@ -30,6 +31,7 @@ import com.mv.databinding.ActivityAdavanceListBinding;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -50,14 +52,26 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
     private AdavanceAdapter adapter;
     private List<Adavance> mList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
+    private Voucher voucher;
+    private ArrayList<String> headerList;
+    private HashMap<String, ArrayList<Adavance>> childList;
+    private ExpandableAdvanceListAdapter evAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_adavance_list);
         binding.setActivity(this);
+
+        headerList = new ArrayList<>();
+        childList = new HashMap<>();
+        headerList.add(getString(R.string.pending));
+        headerList.add(getString(R.string.reject));
+        headerList.add(getString(R.string.approve));
+
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         setActionbar(getString(R.string.adavance_list));
+        voucher = (Voucher) getIntent().getSerializableExtra(Constants.VOUCHER);
         preferenceHelper = new PreferenceHelper(this);
         binding.rvAdavance.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -70,6 +84,28 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
                 }
             }
         });
+        binding.evAdavance.setOnScrollListener(new AbsListView.OnScrollListener() {
+            private int mLastFirstVisibleItem;
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+
+                if (mLastFirstVisibleItem < firstVisibleItem) {
+                    binding.fabAddProcess.setVisibility(View.GONE);
+                }
+                if (mLastFirstVisibleItem > firstVisibleItem) {
+                    binding.fabAddProcess.setVisibility(View.VISIBLE);
+                }
+                mLastFirstVisibleItem = firstVisibleItem;
+
+            }
+        });
         if (Utills.isConnected(this))
             getUserAdavanceData();
     }
@@ -79,7 +115,7 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetUserAdavanceData + "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
+                + Constants.GetUserAdavanceData + "?voucherId=" + voucher.getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -113,10 +149,28 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
 
     private void setRecyclerView() {
         mList = AppDatabase.getAppDatabase(this).userDao().getAllAdavance();
-        adapter = new AdavanceAdapter(this, mList);
+       /* adapter = new AdavanceAdapter(this, mList);
         binding.rvAdavance.setAdapter(adapter);
         binding.rvAdavance.setHasFixedSize(true);
         binding.rvAdavance.setLayoutManager(new LinearLayoutManager(this));
+*/
+        ArrayList<Adavance> pendingList = new ArrayList<>();
+        ArrayList<Adavance> approveList = new ArrayList<>();
+        ArrayList<Adavance> rejectList = new ArrayList<>();
+
+        for (Adavance adavance : mList) {
+            if (adavance.getStatus().equals(Constants.LeaveStatusApprove))
+                approveList.add(adavance);
+            if (adavance.getStatus().equals(Constants.LeaveStatusPending))
+                pendingList.add(adavance);
+            if (adavance.getStatus().equals(Constants.LeaveStatusRejected))
+                rejectList.add(adavance);
+        }
+        childList.put(getString(R.string.pending), pendingList);
+        childList.put(getString(R.string.reject), rejectList);
+        childList.put(getString(R.string.approve), approveList);
+        evAdapter = new ExpandableAdvanceListAdapter(this, headerList, childList);
+        binding.evAdavance.setAdapter(evAdapter);
     }
 
     @Override
@@ -132,6 +186,7 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
         Intent intent;
         intent = new Intent(this, AdavanceNewActivity.class);
         intent.putExtra(Constants.ACTION, Constants.ACTION_ADD);
+        intent.putExtra(Constants.VOUCHER, voucher);
         startActivity(intent);
     }
 
@@ -170,28 +225,29 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
         setRecyclerView();
     }
 
-    public void editAdavance(int position) {
+    public void editAdavance(Adavance adavance) {
         Intent intent;
         intent = new Intent(this, AdavanceNewActivity.class);
         intent.putExtra(Constants.ACTION, Constants.ACTION_EDIT);
-        intent.putExtra(Constants.ADAVANCE, mList.get(position));
+        intent.putExtra(Constants.VOUCHER, voucher);
+        intent.putExtra(Constants.ADAVANCE, adavance);
         startActivity(intent);
     }
 
-    public void deleteAdavance(int position) {
+    public void deleteAdavance(Adavance adavance) {
         if (Utills.isConnected(this)) {
-            deleteRecord(position);
+            deleteRecord(adavance);
         } else {
             Utills.showInternetPopUp(this);
         }
     }
 
-    private void deleteRecord(int position) {
+    private void deleteRecord(Adavance adavance) {
         Utills.showProgressDialog(this, "Deleting Adavance", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.DeleteAccountData + "?Id=" + mList.get(position).getId() + "&Object=Adavance";
+                + Constants.DeleteAccountData + "?Id=" + adavance.getId() + "&Object=Adavance";
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -201,9 +257,8 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
                     if (response != null && response.isSuccess()) {
                         String str = response.body().string();
                         if (str.contains("deleted")) {
-                            AppDatabase.getAppDatabase(AdavanceListActivity.this).userDao().deleteAdavance(mList.get(position));
-                            mList.remove(position);
-                            adapter.notifyItemRemoved(position);
+                            AppDatabase.getAppDatabase(AdavanceListActivity.this).userDao().deleteAdavance(adavance);
+                            setRecyclerView();
                             Utills.showToast("Adavance Deleted Successfully", AdavanceListActivity.this);
                         }
                     }

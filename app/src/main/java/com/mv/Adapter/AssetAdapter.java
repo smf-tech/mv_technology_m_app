@@ -139,7 +139,7 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
                 @Override
                 public void onClick(View view) {
                     if (activity != null)
-                        activity.editExpense(getAdapterPosition());
+                        activity.editExpense(assetList.get(getAdapterPosition()));
 
                 }
             });
@@ -171,7 +171,7 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
         // Setting OK Button
         alertDialog.setButton(mContext.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                activity.deleteExpense(postion);
+                activity.deleteExpense(assetList.get(postion));
             }
         });
 

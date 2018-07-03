@@ -33,6 +33,7 @@ import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
+import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityLeaveDetailBinding;
@@ -48,7 +49,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -62,7 +62,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
     private PreferenceHelper preferenceHelper;
     String userId, comment;
     String status;
-    String halfDayCheck="false";
+    String halfDayCheck = "false";
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
@@ -87,7 +87,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
         binding = DataBindingUtil.setContentView(this, R.layout.activity_leave_detail);
         binding.setActivity(this);
         context = this;
-        userId=User.getCurrentUser(context).getMvUser().getId();
+        userId = User.getCurrentUser(context).getMvUser().getId();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
         preferenceHelper = new PreferenceHelper(this);
@@ -110,10 +110,10 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
         if (getIntent().getParcelableExtra(Constants.Leave) != null) {
             leavesModel = getIntent().getParcelableExtra(Constants.Leave);
             leaveId = leavesModel.getId();
-            if(leavesModel.getRequested_User__c()!=null)
-                userId=leavesModel.getRequested_User__c();
+            if (leavesModel.getRequested_User__c() != null)
+                userId = leavesModel.getRequested_User__c();
 
-            if(leavesModel.getTypeOfLeaves().equals("Add Comp Off"))
+            if (leavesModel.getTypeOfLeaves().equals("Add Comp Off"))
                 binding.spTypeOfCatagory.setSelection(category.indexOf(leavesModel.getTypeOfLeaves()));
             else {
                 binding.spTypeOfCatagory.setSelection(category.indexOf(leavesModel.getTypeOfLeaves()));
@@ -122,12 +122,9 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
             binding.inputHrFormDate.setText(leavesModel.getFromDate());
             binding.inputHrToDate.setText(leavesModel.getToDate());
             binding.etReason.setText(leavesModel.getReason());
-            if(leavesModel.getIsHalfDayLeave().equals("true"))
-            {
+            if (leavesModel.getIsHalfDayLeave().equals("true")) {
                 binding.detailChk.setChecked(true);
-            }
-            else  if(leavesModel.getIsHalfDayLeave().equals("false"))
-            {
+            } else if (leavesModel.getIsHalfDayLeave().equals("false")) {
                 binding.detailChk.setChecked(false);
             }
             if (preferenceHelper.getString(Constants.Leave).equals(Constants.Leave_Approve)) {
@@ -176,8 +173,25 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
         } else {
             leaveId = null;
         }
-        getHolidayList();
+        if (AppDatabase.getAppDatabase(LeaveDetailActivity.this).userDao().getAllHolidayList().size() == 0) {
+            getHolidayList();
+        } else {
+            holidayListModels = AppDatabase.getAppDatabase(LeaveDetailActivity.this).userDao().getAllHolidayList();
+            holidayLiistDate.clear();
+            for (int i = 0; i < holidayListModels.size(); i++) {
+                try {
+                    holidayLiistDate.add(formatter.parse(holidayListModels.get(i).getHoliday_Date__c()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         getLeaveBalanceCount();
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
     }
 
     private void initViews() {
@@ -205,11 +219,11 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
             @Override
             public void onClick(View v) {
                 if (((CheckBox) v).isChecked()) {
-                   halfDayCheck="true";
-                   binding.inputHrToDate.setEnabled(false);
-                   binding.inputHrToDate.setText(binding.inputHrFormDate.getText().toString());
+                    halfDayCheck = "true";
+                    binding.inputHrToDate.setEnabled(false);
+                    binding.inputHrToDate.setText(binding.inputHrFormDate.getText().toString());
                 } else {
-                    halfDayCheck="false";
+                    halfDayCheck = "false";
                     binding.inputHrToDate.setEnabled(true);
                     binding.inputHrToDate.setText("");
                 }
@@ -261,15 +275,8 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.img_logout:
-                ArrayList<HolidayListModel> tem = new ArrayList<>();
-                for (int i = 0; i < holidayListModels.size(); i++) {
-                    tem.add(holidayListModels.get(i));
-                }
                 Intent intent = new Intent(context, HolidayListActivity.class);
-                intent.putParcelableArrayListExtra(Constants.PROCESS_ID, tem);
                 context.startActivity(intent);
-
-
                 break;
 
         }
@@ -307,9 +314,9 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
 
 
         if (msg.isEmpty()) {
-            if(methodeValue.equals(Constants.Approval))
+            if (methodeValue.equals(Constants.Approval))
                 sendApprovedData();
-            else if(methodeValue.equals(Constants.SendData))
+            else if (methodeValue.equals(Constants.SendData))
                 sendHRLeavesDataToServer();
 
         } else {
@@ -383,7 +390,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void getLeaveBalanceCount() {
-        Utills.showProgressDialog(context, "Loading Process", getString(R.string.progress_please_wait));
+        Utills.showProgressDialog(context, "Loading Leave Balance", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -456,8 +463,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                         //  taskList.get(Position).setTask_Response__c(getTwoDigit(dayOfMonth) + "/" + getTwoDigit(monthOfYear + 1) + "/" + year);
                         // notifyItemChanged(Position);
                         editText.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
-                        if(halfDayCheck.equals("true"))
-                        {
+                        if (halfDayCheck.equals("true")) {
                             binding.inputHrToDate.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
                         }
                     }
@@ -519,7 +525,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
         input.setLayoutParams(lp);
         alertDialog.setView(input);
 
-        alertDialog.setPositiveButton("OK",
+        alertDialog.setPositiveButton(getString(R.string.ok),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         status = "Rejected";
@@ -574,43 +580,47 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
 
 
     private void getHolidayList() {
-        Utills.showProgressDialog(context, "Loading Process", getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getAllHolidays?userId=" + userId;
-        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
-                try {
-                    String data = response.body().string();
-                    JSONArray jsonArray = new JSONArray(data);
+        if (Utills.isConnected(LeaveDetailActivity.this)) {
 
-                    Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                    holidayListModels = Arrays.asList(gson.fromJson(jsonArray.toString(), HolidayListModel[].class));
-                    for (int i = 0; i < holidayListModels.size(); i++) {
-                        try {
-                            holidayLiistDate.add(formatter.parse(holidayListModels.get(i).getHoliday_Date__c()));
-                        } catch (ParseException e) {
-                            e.printStackTrace();
+            Utills.showProgressDialog(context, "Loading Holidays", getString(R.string.progress_please_wait));
+            ServiceRequest apiService =
+                    ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
+            String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                    + "/services/apexrest/getAllHolidays?userId=" + userId;
+            apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Utills.hideProgressDialog();
+                    try {
+                        String data = response.body().string();
+                        JSONArray jsonArray = new JSONArray(data);
+                        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                        AppDatabase.getAppDatabase(LeaveDetailActivity.this).userDao().deleteHolidayList();
+                        holidayListModels = Arrays.asList(gson.fromJson(jsonArray.toString(), HolidayListModel[].class));
+                        AppDatabase.getAppDatabase(LeaveDetailActivity.this).userDao().insertAllHolidayList(holidayListModels);
+                        holidayLiistDate.clear();
+                        for (int i = 0; i < holidayListModels.size(); i++) {
+                            try {
+                                holidayLiistDate.add(formatter.parse(holidayListModels.get(i).getHoliday_Date__c()));
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
                         }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
 
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (JSONException e) {
-                    e.printStackTrace();
                 }
 
-            }
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Utills.hideProgressDialog();
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Utills.hideProgressDialog();
-
-            }
-        });
+                }
+            });
+        }
     }
 
     @Override

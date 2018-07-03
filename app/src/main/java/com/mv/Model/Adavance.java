@@ -65,6 +65,14 @@ public class Adavance implements Serializable {
         Id = id;
     }
 
+    public String getVoucherId() {
+        return voucherId;
+    }
+
+    public void setVoucherId(String voucherId) {
+        this.voucherId = voucherId;
+    }
+
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "unique_Id")
     private int UniqueId;
@@ -83,6 +91,11 @@ public class Adavance implements Serializable {
     @SerializedName("Request_Date__c")
     @Expose
     private String Date;
+
+    @ColumnInfo(name = "voucherId")
+    @SerializedName("Voucher__c")
+    @Expose
+    private String voucherId;
 
     @ColumnInfo(name = "Decription")
     @SerializedName("Description__c")

@@ -63,6 +63,8 @@ import com.mv.ActivityMenu.TeamManagementFragment;
 import com.mv.ActivityMenu.ThetSavandFragment;
 import com.mv.ActivityMenu.TrainingCalender;
 import com.mv.Adapter.HomeAdapter;
+import com.mv.Model.Attendance;
+import com.mv.Model.HolidayListModel;
 import com.mv.Model.HomeModel;
 import com.mv.Model.LocationModel;
 import com.mv.Model.User;
@@ -71,6 +73,7 @@ import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Service.LocationService;
+import com.mv.Service.SendAttendance;
 import com.mv.Utils.Constants;
 import com.mv.Utils.ForceUpdateChecker;
 import com.mv.Utils.LocaleManager;
@@ -206,6 +209,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 getUserData();
         }
 
+        // Send offline attendance to server
+        Attendance temp = AppDatabase.getAppDatabase(HomeActivity.this).userDao().getUnSynchAttendance();
+        if (Utills.isConnected(HomeActivity.this) && temp != null) {
+            Intent intent = new Intent(HomeActivity.this, SendAttendance.class);
+            startService(intent);
+        }
+        LocationManager locMan = (LocationManager) getSystemService(LOCATION_SERVICE);
+        if (locMan != null && locMan.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) != null) {
+            long networkTime = locMan.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getTime();
+            Log.i("networkTime", networkTime + "");
+        }
+        long deviceTime = System.currentTimeMillis();
+        Log.i("deviceTime", deviceTime + "");
 
     }
 
@@ -219,6 +235,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         Log.d("cycled", "onStart:A ");
         super.onStart();
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -228,29 +245,22 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("true")) {
                 final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-
                 if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     //LocationPopup();
                     LocationGPSDialog();
                     LocatonFlag = 0;
-
                 } else {
                     if (alertLocationDialog != null && alertLocationDialog.isShowing())
                         alertLocationDialog.dismiss();
                     if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-
                         // Utills.scheduleJob(getApplicationContext());
                         getAddress();
-
                        /* SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
-
                         try {
                             Date CURRENTDATE = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
-
                             long APICALLDATE = preferenceHelper.getLong(PreferenceHelper.APICALLTIME);
                             long different = CURRENTDATE.getTime() - APICALLDATE;
                             long hrs = (int) ((different / (1000 * 60 * 60)));
-
                             // getAddress();
                             if (hrs >= 5) {
                                 getAddress();
@@ -290,7 +300,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 Utills.showToast(getString(R.string.error_no_internet), this);
             }
         }
-
+        if (AppDatabase.getAppDatabase(HomeActivity.this).userDao().getAllHolidayList().size() == 0) {
+            getHolidayList();
+        }
         Intent intent = new Intent(this, LocationService.class);
         // add infos for the service which file to download and where to store
         intent.putExtra(Constants.State, User.getCurrentUser(getApplicationContext()).getMvUser().getState());
@@ -298,17 +310,57 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         startService(intent);
     }
 
+    private void getHolidayList() {
+        if (Utills.isConnected(HomeActivity.this)) {
+            Utills.showProgressDialog(HomeActivity.this, "Loading Holidays", getString(R.string.progress_please_wait));
+            ServiceRequest apiService =
+                    ApiClient.getClientWitHeader(HomeActivity.this).create(ServiceRequest.class);
+            String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                    + "/services/apexrest/getAllHolidays?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
+            apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Utills.hideProgressDialog();
+                    try {
+                        if (response.body() != null) {
+                            String data = response.body().string();
+                            if (data != null && data.length() > 0) {
+                                List<HolidayListModel> holidayListModels;
+                                JSONArray jsonArray = new JSONArray(data);
+                                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                                AppDatabase.getAppDatabase(HomeActivity.this).userDao().deleteHolidayList();
+                                holidayListModels = Arrays.asList(gson.fromJson(jsonArray.toString(), HolidayListModel[].class));
+                                AppDatabase.getAppDatabase(HomeActivity.this).userDao().insertAllHolidayList(holidayListModels);
+                            }
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Utills.hideProgressDialog();
+                }
+            });
+        }
+    }
 
     @Override
     protected void onPause() {
         super.onPause();
         Log.d("cycled", "onPause: A");
     }
+
     @Override
     protected void onStop() {
         Log.d("cycled", "onStop: A");
         super.onStop();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -320,12 +372,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             alertDialogApproved.dismiss();
 
     }
+
     @Override
     protected void onRestart() {
         super.onRestart();
         Log.d("cycled", "onRestart: A");
     }
-
 
 
     private void sendData() {
@@ -447,7 +499,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (!User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().equals(""))
             allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().split(";")));
         if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
-                       showApprovedDilaog();
+            showApprovedDilaog();
 
             for (int i = 0; i < allTabNotApprove.size(); i++) {
                 if (checkList(allTabNotApprove, i, true).getDestination() != null)
@@ -461,9 +513,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
 
-        }
-        else
-        {
+        } else {
             for (int i = 0; i < allTab.size(); i++) {
                 if (checkList(allTab, i, true).getDestination() != null)
                     menulist.add(checkList(allTab, i, true));
@@ -611,7 +661,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Take appropriate action for each action item click
@@ -717,7 +766,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                     }
                 })
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         ListView lw = ((AlertDialog) dialog).getListView();

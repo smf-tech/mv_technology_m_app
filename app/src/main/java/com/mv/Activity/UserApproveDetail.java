@@ -239,7 +239,7 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
         input.setLayoutParams(lp);
         alertDialog.setView(input);
 
-        alertDialog.setPositiveButton("OK",
+        alertDialog.setPositiveButton(getString(R.string.ok),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         isSave = "false";

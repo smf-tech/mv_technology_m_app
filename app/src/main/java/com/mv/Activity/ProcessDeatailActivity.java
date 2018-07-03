@@ -44,6 +44,7 @@ import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
+import com.mv.Utils.GPSTracker;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -75,7 +76,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     int i;
     private PreferenceHelper preferenceHelper;
     ArrayList<Task> taskList = new ArrayList<>();
-
+    private GPSTracker gps;
     String timestamp;
     Activity context;
 
@@ -132,6 +133,11 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     sb.append(taskList.get(i).getTask_Response__c());
                 }
             }
+            if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.LOCATION)) {
+                if (FinalUri != null) {
+                    taskList.get(i).setTask_Response__c(gps.getLatitude() + "," + gps.getLongitude());
+                }
+            }
             taskList.get(i).setMTUser__c(User.getCurrentUser(context).getMvUser().getId());
             if (preferenceHelper.getBoolean(Constants.NEW_PROCESS))
                 taskList.get(i).setId(null);
@@ -162,11 +168,18 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!gps.canGetLocation()) {
+            gps.showSettingsAlert();
+        }
+    }
 
     private void initViews() {
 
         setActionbar(getString(R.string.Task_List));
-
+        gps = new GPSTracker(ProcessDeatailActivity.this);
         rvProcessDetail = (RecyclerView) findViewById(R.id.rv_process_detail);
         rvProcessDetail.setNestedScrollingEnabled(false);
         rvProcessDetail.setHasFixedSize(true);
@@ -272,6 +285,10 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 submitAllData();
                 break;
             case R.id.img_add:
+                if (!gps.canGetLocation()) {
+                    gps.showSettingsAlert();
+                    return;
+                }
                 sendToCamera();
                 break;
             case R.id.btn_save:
@@ -323,9 +340,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
             // Showing Alert Message
             alertDialog.show();
-        }
-        else
-        {
+        } else {
             finish();
         }
     }
@@ -343,7 +358,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         input.setLayoutParams(lp);
         alertDialog.setView(input);
 
-        alertDialog.setPositiveButton("OK",
+        alertDialog.setPositiveButton(getString(R.string.ok),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         isSave = "false";
@@ -374,22 +389,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     }
 
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            View v = getCurrentFocus();
-            if (v instanceof EditText) {
-                Rect outRect = new Rect();
-                v.getGlobalVisibleRect(outRect);
-                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
-                    v.clearFocus();
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-                }
-            }
-        }
-        return super.dispatchTouchEvent(event);
-    }
 
     private void submitAllData() {
         manditoryFlag = false;
@@ -417,6 +416,11 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 }
 
             }
+            if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.LOCATION)) {
+                if (FinalUri != null) {
+                    taskList.get(i).setTask_Response__c(gps.getLatitude() + "," + gps.getLongitude());
+                }
+            }
         }
         if (!manditoryFlag) {
             // AppDatabase.getAppDatabase(context).userDao().insertTask(dashaBoardListModel);
@@ -427,7 +431,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } else
             Utills.showToast(msg, context);
     }
-
 
     private void callApiForSubmit(ArrayList<Task> temp) {
 
@@ -610,8 +613,11 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             adapter = new ProcessDetailAdapter(this, taskList);
             rvProcessDetail.setAdapter(adapter);
 
+        } else if (requestCode == 100) {
+            if (!gps.canGetLocation()) {
+                gps.showSettingsAlert();
+            }
         }
-
     }
 
     private void sendApprovedData() {
@@ -663,5 +669,22 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } else {
             Utills.showToast(getString(R.string.error_no_internet), ProcessDeatailActivity.this);
         }
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            View v = getCurrentFocus();
+            if (v instanceof EditText) {
+                Rect outRect = new Rect();
+                v.getGlobalVisibleRect(outRect);
+                if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
+                    v.clearFocus();
+                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event);
     }
 }

@@ -68,10 +68,12 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         initUI();
     }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
+
     private void setActionbar(String Title) {
         mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
@@ -127,7 +129,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     commentList.clear();
                     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                     List<Comment> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Comment[].class));
-                    if (temp.size()!=0) {
+                    if (temp.size() != 0) {
                         for (int i = 0; i < temp.size(); i++) {
                             commentList.add(temp.get(i));
                         }
@@ -238,12 +240,13 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                             Comment comment = new Comment();
                             comment.setComment(binding.edtComment.getText().toString().trim());
                             comment.setUserName(User.getCurrentUser(CommentActivity.this).getMvUser().getName());
+                            comment.setUserUrl(User.getCurrentUser(CommentActivity.this).getMvUser().getImageId());
                             Calendar c = Calendar.getInstance();
                             System.out.println("Current time => " + c.getTime());
                             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                             String formattedDate = df.format(c.getTime());
                             comment.setTime(formattedDate);
-                            commentList.add(0,comment);
+                            commentList.add(0, comment);
                             adapter.notifyDataSetChanged();
                             textNoData.setVisibility(View.GONE);
                             Utills.showToast(getString(R.string.comment_add), getApplicationContext());

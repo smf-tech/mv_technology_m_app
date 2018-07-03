@@ -85,7 +85,7 @@
             android:layout_margin="@dimen/dimen_5dp"
             android:layout_weight="5"
             android:background="@color/colorPink"
-            android:text="Submit"
+            android:text="@string/Submit"
             android:textColor="#ffffff"
             android:textSize="22sp" />
 
@@ -96,7 +96,7 @@
             android:layout_margin="@dimen/dimen_5dp"
             android:layout_weight="5"
             android:background="@color/colorPink"
-            android:text="Save "
+            android:text="@string/Save"
             android:textColor="#ffffff"
             android:textSize="22sp" />
 

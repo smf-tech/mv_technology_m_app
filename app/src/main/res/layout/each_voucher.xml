@@ -5,145 +5,217 @@
     android:layout_marginBottom="10dp"
     android:foreground="?attr/selectableItemBackground">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/lnr_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:padding="10dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvProjectNameTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:gravity="left|center_vertical"
-            android:text="Project Name :-"
-            android:textColor="@color/dark_grey"
-            android:textSize="@dimen/large_text" />
-
-        <TextView
-            android:id="@+id/tvProjectName"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_toLeftOf="@+id/imgLayout"
-            android:layout_toRightOf="@+id/tvProjectNameTitle"
-            android:gravity="left|center_vertical"
-            android:singleLine="true"
-            android:text="SMF"
-            android:textColor="@color/dark_grey"
-            android:textSize="@dimen/large_text" />
+            android:layout_margin="5dp"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/tvProjectDateTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvProjectNameTitle"
-            android:layout_marginTop="5dp"
-            android:gravity="left|center_vertical"
-            android:text="Date :-"
-            android:textColor="@color/medium_grey"
-            android:textSize="@dimen/medium_text" />
+            <TextView
+                android:id="@+id/tvProjectNameTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="left|center_vertical"
+                android:text="Project Name :-"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/large_text" />
 
-        <TextView
-            android:id="@+id/tvDateName"
+            <TextView
+                android:id="@+id/tvProjectName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toLeftOf="@+id/imgLayout"
+                android:layout_toRightOf="@+id/tvProjectNameTitle"
+                android:gravity="left|center_vertical"
+                android:singleLine="true"
+                android:text="SMF"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/large_text" />
+
+            <TextView
+                android:id="@+id/tvProjectDateTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvProjectNameTitle"
+                android:layout_marginTop="5dp"
+                android:gravity="left|center_vertical"
+                android:text="Date :-"
+                android:textColor="@color/medium_grey"
+                android:textSize="@dimen/medium_text" />
+
+            <TextView
+                android:id="@+id/tvDateName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvProjectName"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toLeftOf="@+id/imgLayout"
+                android:layout_toRightOf="@+id/tvProjectDateTitle"
+                android:gravity="left|center_vertical"
+                android:singleLine="true"
+                android:text="11/09/1992"
+                android:textColor="@color/medium_grey"
+                android:textSize="@dimen/medium_text" />
+
+            <TextView
+                android:id="@+id/tvNoOfPeopleTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvProjectDateTitle"
+                android:layout_marginTop="5dp"
+                android:gravity="left|center_vertical"
+                android:text="Place :-"
+                android:textColor="@color/medium_grey"
+                android:textSize="@dimen/medium_text" />
+
+            <TextView
+                android:id="@+id/tvNoOfPeopleName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvDateName"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toLeftOf="@+id/imgLayout"
+                android:layout_toRightOf="@+id/tvNoOfPeopleTitle"
+                android:gravity="left|center_vertical"
+                android:singleLine="true"
+                android:text="SMF"
+                android:textColor="@color/medium_grey"
+                android:textSize="@dimen/medium_text" />
+
+            <TextView
+                android:id="@+id/tvTotalExpenseTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvNoOfPeopleTitle"
+                android:layout_marginTop="5dp"
+                android:gravity="left|center_vertical"
+                android:text="Total Expenses :-"
+                android:textColor="@color/medium_grey"
+                android:textSize="@dimen/medium_text" />
+
+            <TextView
+                android:id="@+id/tvTotalExpenseName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvNoOfPeopleTitle"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toLeftOf="@+id/imgLayout"
+                android:layout_toRightOf="@+id/tvTotalExpenseTitle"
+                android:gravity="left|center_vertical"
+                android:singleLine="true"
+                android:text="SMF"
+                android:textColor="@color/medium_grey"
+                android:textSize="@dimen/medium_text" />
+
+            <LinearLayout
+                android:id="@+id/imgLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imgEdit"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:src="@drawable/ic_form" />
+
+                <ImageView
+                    android:id="@+id/imgDelete"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/form_delete" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvProjectName"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_toLeftOf="@+id/imgLayout"
-            android:layout_toRightOf="@+id/tvProjectDateTitle"
-            android:gravity="left|center_vertical"
-            android:singleLine="true"
-            android:text="11/09/1992"
-            android:textColor="@color/medium_grey"
-            android:textSize="@dimen/medium_text" />
-
-        <TextView
-            android:id="@+id/tvNoOfPeopleTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvProjectDateTitle"
-            android:layout_marginTop="5dp"
-            android:gravity="left|center_vertical"
-            android:text="Place :-"
-            android:textColor="@color/medium_grey"
-            android:textSize="@dimen/medium_text" />
-
-        <TextView
-            android:id="@+id/tvNoOfPeopleName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvDateName"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_toLeftOf="@+id/imgLayout"
-            android:layout_toRightOf="@+id/tvNoOfPeopleTitle"
-            android:gravity="left|center_vertical"
-            android:singleLine="true"
-            android:text="SMF"
-            android:textColor="@color/medium_grey"
-            android:textSize="@dimen/medium_text" />
-
-        <TextView
-            android:id="@+id/tvTotalExpenseTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvNoOfPeopleTitle"
-            android:layout_marginTop="5dp"
-            android:gravity="left|center_vertical"
-            android:text="Total Expense :-"
-            android:textColor="@color/medium_grey"
-            android:textSize="@dimen/medium_text" />
-
-        <TextView
-            android:id="@+id/tvTotalExpenseName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tvNoOfPeopleTitle"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_toLeftOf="@+id/imgLayout"
-            android:layout_toRightOf="@+id/tvTotalExpenseTitle"
-            android:gravity="left|center_vertical"
-            android:singleLine="true"
-            android:text="SMF"
-            android:textColor="@color/medium_grey"
-            android:textSize="@dimen/medium_text" />
+            android:layout_height="1dp"
+            android:background="@color/medium_grey"></View>
 
         <LinearLayout
-            android:id="@+id/imgLayout"
-            android:layout_width="wrap_content"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:orientation="vertical">
+            android:layout_centerHorizontal="true"
+            android:layout_margin="5dp"
+            android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/imgEdit"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:src="@drawable/ic_form" />
+            <LinearLayout
+                android:id="@+id/layout_expense"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/imgDelete"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/form_delete" />
+                <ImageView
+                    android:id="@+id/imgExpense"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/ic_expene"
+                    android:visibility="gone" />
 
-            <ImageView
-                android:id="@+id/imgExpense"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
-                android:layout_marginTop="20dp"
-                android:src="@drawable/ic_expene" />
+                <com.mv.Widgets.MyTextView
+                    android:id="@+id/txt_forward"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/expense"
+                    android:textColor="@color/medium_grey"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/dark_grey" />
+
+            <LinearLayout
+                android:id="@+id/layout_adavance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/img_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/comment"
+                    android:visibility="gone" />
+
+                <com.mv.Widgets.MyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text="@string/adavance"
+                    android:textColor="@color/medium_grey"
+                    android:textSize="12dp" />
+            </LinearLayout>
+
         </LinearLayout>
-    </RelativeLayout>
+
+    </LinearLayout>
 </android.support.v7.widget.CardView>

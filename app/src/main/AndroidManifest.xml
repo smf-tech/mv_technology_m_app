@@ -124,6 +124,8 @@
 
         <service android:name=".Service.DownloadService" />
 
+        <service android:name=".Service.SendAttendance" />
+
         <activity
             android:name=".Activity.ProcessDeatailActivity"
             android:screenOrientation="portrait"

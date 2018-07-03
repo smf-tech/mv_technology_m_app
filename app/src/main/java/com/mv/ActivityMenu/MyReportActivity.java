@@ -150,7 +150,6 @@ public class MyReportActivity extends AppCompatActivity implements View.OnClickL
                         for (int i = 0; i < jsonArray.length(); i++) {
                             processList = new DashaBoardListModel();
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-
                             JSONObject processObj = jsonObject.getJSONObject("process");
                             processList.setId(processObj.getString("Id"));
                             processList.setName(processObj.getString("Name"));
@@ -167,8 +166,6 @@ public class MyReportActivity extends AppCompatActivity implements View.OnClickL
 
                                 task.setMV_Process__c(tasklist.getJSONObject(j).getString("MV_Process__c"));
                                 processList.getTasksList().add(task);
-
-
                             }
                             Task task = new Task();
                             task.setSection_Name__c("Overall Report");

@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Enumeration;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -46,12 +47,13 @@ public class DownloadService extends IntentService {
     private NotificationCompat.Builder notificationBuilder;
     private NotificationManager notificationManager;
     private int totalFileSize;
-    private String url,fragment_flag;
+    private String url, fragment_flag;
     private String StorezipFileLocation = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/";
     private String fileName;
     private String DirectoryName = Environment.getExternalStorageDirectory() + "/MV/UnZip/";
     private String filetype;
     Intent intent;
+
     @Override
     protected void onHandleIntent(Intent intent) {
 
@@ -68,10 +70,15 @@ public class DownloadService extends IntentService {
                 .setContentTitle("Download")
                 .setContentText("Downloading " + fileName)
                 .setAutoCancel(true);
-        notificationManager.notify(0, notificationBuilder.build());
-
+        notificationManager.notify(getID(), notificationBuilder.build());
         initDownload();
 
+    }
+
+    private final static AtomicInteger c = new AtomicInteger(0);
+
+    public static int getID() {
+        return c.incrementAndGet();
     }
 
     private void initDownload() {
@@ -100,7 +107,7 @@ public class DownloadService extends IntentService {
 
         int count;
         byte data[] = new byte[1024 * 4];
-        if(body!=null) {
+        if (body != null) {
             long fileSize = body.contentLength();
 
             InputStream bis = new BufferedInputStream(body.byteStream(), 1024 * 8);
@@ -152,13 +159,13 @@ public class DownloadService extends IntentService {
 
     private void sendIntent(Download download) {
 
-        if (fragment_flag!=null){
-            if(fragment_flag.equalsIgnoreCase("ThetSanvad_Fragment")) {
-                 intent = new Intent(ThetSavandFragment.MESSAGE_PROGRESS);
-            }else if (fragment_flag.equalsIgnoreCase("Training_Fragment")){
-                 intent = new Intent(TrainingFragment.MESSAGE_PROGRESS);
+        if (fragment_flag != null) {
+            if (fragment_flag.equalsIgnoreCase("ThetSanvad_Fragment")) {
+                intent = new Intent(ThetSavandFragment.MESSAGE_PROGRESS);
+            } else if (fragment_flag.equalsIgnoreCase("Training_Fragment")) {
+                intent = new Intent(TrainingFragment.MESSAGE_PROGRESS);
 
-            }else if(fragment_flag.equalsIgnoreCase("My_Community")){
+            } else if (fragment_flag.equalsIgnoreCase("My_Community")) {
                 intent = new Intent(CommunityHomeActivity.MESSAGE_PROGRESS);
             }
             intent.putExtra("download", download);

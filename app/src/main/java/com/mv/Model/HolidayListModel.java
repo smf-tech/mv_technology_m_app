@@ -31,6 +31,19 @@ public class HolidayListModel implements Parcelable {
     @Expose
     private String Id;
 
+    public String getName() {
+        return Name;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    @ColumnInfo(name = "Name")
+    @SerializedName("Name")
+    @Expose
+    private String Name;
+
     @ColumnInfo(name = "Category__c")
     @SerializedName("Category__c")
     @Expose
@@ -119,6 +132,7 @@ public class HolidayListModel implements Parcelable {
         dest.writeString(this.Holiday_Date__c);
         dest.writeString(this.isActive__c);
         dest.writeString(this.Organisation__c);
+        dest.writeString(this.Name);
     }
 
     public HolidayListModel() {
@@ -132,6 +146,7 @@ public class HolidayListModel implements Parcelable {
         this.Holiday_Date__c = in.readString();
         this.isActive__c = in.readString();
         this.Organisation__c = in.readString();
+        this.Name = in.readString();
     }
 
     public static final Creator<HolidayListModel> CREATOR = new Creator<HolidayListModel>() {

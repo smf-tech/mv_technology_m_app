@@ -151,7 +151,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:hint="Title"
+                        android:hint="@string/title"
                         android:inputType="textPersonName"
                         android:singleLine="true"
                         android:textColor="@color/black"
@@ -176,7 +176,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="left|top"
-                        android:hint="Description"
+                        android:hint="@string/description"
                         android:minLines="3"
                         android:textColor="@color/black"
                         android:textSize="@dimen/medium_text" />
@@ -204,7 +204,7 @@
             android:layout_margin="10dp"
             android:background="@color/colorPink"
             android:onClick="@{()->activity.onBtnSubmitClick()}"
-            android:text="Submit"
+            android:text="@string/Submit"
             android:textColor="#ffffff"
             android:textSize="22sp" />
 

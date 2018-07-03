@@ -83,6 +83,7 @@
                     android:layout_marginTop="10dp"
                     android:foreground="?attr/selectableItemBackground"
                     android:onClick="@{()->activity.onAdavanceClick()}"
+                    android:visibility="gone"
                     app:cardBackgroundColor="@color/white">
 
                     <LinearLayout

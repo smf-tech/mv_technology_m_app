@@ -52,7 +52,8 @@
                         android:background="@null"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:hint="@string/name"
-                        android:inputType="text"
+                        android:inputType="text|textCapWords"
+
                         android:singleLine="true"
                         android:textColor="@color/black"
 
@@ -77,7 +78,7 @@
                         android:background="@null"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:hint="@string/middle_name"
-                        android:inputType="text"
+                        android:inputType="text|textCapWords"
                         android:singleLine="true"
                         android:textColor="@color/black"
 
@@ -102,7 +103,7 @@
                         android:background="@null"
                         android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:hint="@string/last_name"
-                        android:inputType="text"
+                        android:inputType="text|textCapWords"
                         android:singleLine="true"
                         android:textColor="@color/black"
                         android:textSize="@dimen/medium_text" />
@@ -484,6 +485,31 @@
                         android:spinnerMode="dialog" />
                 </RelativeLayout>
 
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_multiselect_taluka"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                    <com.mv.Widgets.MyEditTextView
+                        android:id="@+id/edit_multiselect_taluka"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:gravity="left|top"
+                        android:hint="@string/taluka"
+                        android:maxLines="3"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
                 <com.mv.Widgets.MyTextView
                     android:id="@+id/txt_cluster"
                     android:layout_width="wrap_content"
@@ -618,10 +644,10 @@
                     android:id="@+id/addImage"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:layout_gravity="center_horizontal"
+                    android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:onClick="@{()->activity.onAddImageClick()}"
-                    android:scaleType="fitXY" />
+                    android:src="@drawable/add" />
 
                 <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"
@@ -643,7 +669,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@color/colorPink"
-            android:text="Submit"
+            android:text="@string/Submit"
             android:textColor="#ffffff"
             android:textSize="22sp" />
     </LinearLayout>

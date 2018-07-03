@@ -19,6 +19,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mv.Model.Adavance;
 import com.mv.Model.User;
+import com.mv.Model.Voucher;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
@@ -61,6 +62,7 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
     private boolean isAdd;
     private PreferenceHelper preferenceHelper;
     private ArrayAdapter<String> project_adapter;
+    private Voucher mVoucher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +74,13 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void initViews() {
+        mVoucher = (Voucher) getIntent().getSerializableExtra(Constants.VOUCHER);
         preferenceHelper = new PreferenceHelper(this);
         projectList = Arrays.asList(getResources().getStringArray(R.array.array_of_project));
         projectList = new ArrayList<String>();
         projectList.add("Select");
-        if (Utills.isConnected(this))
-            getProject();
+      /*  if (Utills.isConnected(this))
+            getProject();*/
         project_adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, projectList);
         project_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -270,6 +273,7 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
             adavance.setDecription(binding.editTextDescription.getText().toString().trim());
             adavance.setAmount(binding.editTextCount.getText().toString().trim());
             adavance.setUser(User.getCurrentUser(this).getMvUser().getId());
+            adavance.setVoucherId("" + mVoucher.getId());
             addAdavance(adavance);
         }
     }
@@ -277,9 +281,7 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
 
     private boolean isValid() {
         String str = "";
-        if (mProjectSelect == 0) {
-            str = "Please select Project";
-        } else if (binding.editTextCount.getText().toString().trim().length() == 0) {
+        if (binding.editTextCount.getText().toString().trim().length() == 0) {
             str = "Please enter Amount";
         } else if (binding.editTextDescription.getText().toString().trim().length() == 0) {
             str = "Please enter Description Of Adavace";

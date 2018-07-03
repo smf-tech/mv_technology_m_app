@@ -43,6 +43,45 @@ public class CalenderEvent implements Parcelable {
     @Expose
     String date;
 
+    public String getEnd_Date__c() {
+        return End_Date__c;
+    }
+
+    public void setEnd_Date__c(String end_Date__c) {
+        End_Date__c = end_Date__c;
+    }
+
+    public String getEvent_End_Time__c() {
+        return Event_End_Time__c;
+    }
+
+    public void setEvent_End_Time__c(String event_End_Time__c) {
+        Event_End_Time__c = event_End_Time__c;
+    }
+
+    @ColumnInfo(name = "End_Date__c")
+    @SerializedName("End_Date__c")
+    @Expose
+    String End_Date__c;
+
+    @ColumnInfo(name = "Event_End_Time__c")
+    @SerializedName("Event_End_Time__c")
+    @Expose
+    String Event_End_Time__c;
+
+    public String getStatus() {
+        return Status;
+    }
+
+    public void setStatus(String status) {
+        Status = status;
+    }
+
+    @ColumnInfo(name = "Status__c")
+    @SerializedName("Status__c")
+    @Expose
+    String Status;
+
     public String getOrganization__c() {
         return organization__c;
     }
@@ -95,6 +134,45 @@ public class CalenderEvent implements Parcelable {
     @Expose
     String State__c;
 
+    public String getCreatedUserData() {
+        return CreatedUserData;
+    }
+
+    public void setCreatedUserData(String CreatedUserData) {
+        this.CreatedUserData = CreatedUserData;
+    }
+
+    public String getProceesTotalCount() {
+        return ProceesTotalCount;
+    }
+
+    public void setProceesTotalCount(String ProceesTotalCount) {
+        this.ProceesTotalCount = ProceesTotalCount;
+    }
+
+    public String getProceesSubmittedCount() {
+        return ProceesSubmittedCount;
+    }
+
+    public void setProceesSubmittedCount(String proceesSubmittedCount) {
+        this.ProceesSubmittedCount = proceesSubmittedCount;
+    }
+
+    @ColumnInfo(name = "CreatedRoleData")
+    @SerializedName("Assigned_By_Name__c")
+    @Expose
+    String CreatedUserData;
+
+    @ColumnInfo(name = "ProceesTotalCount")
+    @SerializedName("Total_Form__c")
+    @Expose
+    String ProceesTotalCount;
+
+    @ColumnInfo(name = "ProceesSubmittedCount")
+    @SerializedName("Filled_Form__c")
+    @Expose
+    String ProceesSubmittedCount;
+
     public String getDistrict__c() {
         return District__c;
     }
@@ -115,7 +193,7 @@ public class CalenderEvent implements Parcelable {
     @SerializedName("Role__c")
 
     @Expose
-    String Role__c;
+    String Role__c = "";
     @ColumnInfo(name = "Cluster__c")
     @SerializedName("Cluster__c")
 
@@ -221,7 +299,6 @@ public class CalenderEvent implements Parcelable {
     }
 
 
-
     public String getAssigned_User_Ids__c() {
         return Assigned_User_Ids__c;
     }
@@ -253,7 +330,6 @@ public class CalenderEvent implements Parcelable {
     public void setTitle(String title) {
         this.title = title;
     }
-
 
 
     public String getId() {
@@ -310,6 +386,7 @@ public class CalenderEvent implements Parcelable {
         dest.writeString(this.Village__c);
         dest.writeString(this.Taluka__c);
         dest.writeString(this.State__c);
+        dest.writeString(this.Status);
         dest.writeString(this.Role__c);
         dest.writeString(this.Cluster__c);
         dest.writeString(this.School__c);
@@ -319,6 +396,8 @@ public class CalenderEvent implements Parcelable {
         dest.writeString(this.Assigned_User_Ids__c);
         dest.writeString(this.Assign_id_name__c);
         dest.writeString(this.MV_Process__c);
+        dest.writeString(this.End_Date__c);
+        dest.writeString(this.Event_End_Time__c);
     }
 
     protected CalenderEvent(Parcel in) {
@@ -333,6 +412,7 @@ public class CalenderEvent implements Parcelable {
         this.Village__c = in.readString();
         this.Taluka__c = in.readString();
         this.State__c = in.readString();
+        this.Status = in.readString();
         this.Role__c = in.readString();
         this.Cluster__c = in.readString();
         this.School__c = in.readString();
@@ -342,6 +422,8 @@ public class CalenderEvent implements Parcelable {
         this.Assigned_User_Ids__c = in.readString();
         this.Assign_id_name__c = in.readString();
         this.MV_Process__c = in.readString();
+        this.End_Date__c = in.readString();
+        this.Event_End_Time__c = in.readString();
     }
 
     public static final Creator<CalenderEvent> CREATOR = new Creator<CalenderEvent>() {

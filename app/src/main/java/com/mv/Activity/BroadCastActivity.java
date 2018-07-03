@@ -219,7 +219,7 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
                         }
                     }
                 })
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         Log.i("value", "value");

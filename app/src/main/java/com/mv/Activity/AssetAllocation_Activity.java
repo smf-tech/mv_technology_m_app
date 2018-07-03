@@ -87,16 +87,18 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
         if (User.getCurrentUser(AssetAllocation_Activity.this).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
             lnr_asset_manager.setVisibility(View.VISIBLE);
             lnr_user.setVisibility(View.GONE);
-            btn_allocate_asset.setText("Allocate");
+            btn_allocate_asset.setText(getResources().getString(R.string.allocate));
             edit_text_username.setText(asset.getUsername());
             edit_text_assetname.setText(asset.getAssetName());
+            setActionbar(getResources().getString(R.string.asset_allocation));
         } else {
             lnr_user.setVisibility(View.VISIBLE);
             lnr_asset_manager.setVisibility(View.GONE);
-            btn_allocate_asset.setText("Re-Allocate");
+            btn_allocate_asset.setText(getResources().getString(R.string.reallocate));
+            setActionbar(getResources().getString(R.string.asset_reallocation));
         }
         GetStock();
-        setActionbar("Asset Allocation");
+
 
     }
 
@@ -114,7 +116,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
 
     private void GetStock() {
         Utills.showProgressDialog(this, "Sending", getString(R.string.progress_please_wait));
-        Utills.showProgressDialog(this, getString(R.string.loading_chats), getString(R.string.progress_please_wait));
+
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = "";
@@ -137,14 +139,11 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
                             stocklist.add("Select");
                             for (int i = 0; i < temp.size(); i++) {
                                 stocklist.add(temp.get(i).getModelNo());
-
                             }
-
                             stock_adapter = new ArrayAdapter<String>(AssetAllocation_Activity.this,
                                     android.R.layout.simple_spinner_item, stocklist);
                             stock_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spinner_stock.setAdapter(stock_adapter);
-
                             spinner_stock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

@@ -31,7 +31,13 @@
                 android:id="@+id/rv_expense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/toolbar"
+                android:layout_marginTop="10dp"
+                android:scrollbars="vertical" />
+
+            <ExpandableListView
+                android:id="@+id/ev_process"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:scrollbars="vertical" />
 

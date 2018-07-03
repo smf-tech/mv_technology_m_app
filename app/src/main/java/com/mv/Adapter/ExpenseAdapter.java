@@ -80,7 +80,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
                 @Override
                 public void onClick(View view) {
                     if (mContext instanceof ExpenseListActivity)
-                        mActivity.editExpense(getAdapterPosition());
+                        mActivity.editExpense(mDataList.get(getAdapterPosition()));
                     else if (mContext instanceof UserExpenseListActivity)
                         mUserExpenseListActivity.changeStatus(getAdapterPosition(), mUserExpenseListActivity.mAction);
 
@@ -132,7 +132,7 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
         // Setting OK Button
         alertDialog.setButton(mContext.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                mActivity.deleteExpense(postion);
+                mActivity.deleteExpense(mDataList.get(postion));
             }
         });
 

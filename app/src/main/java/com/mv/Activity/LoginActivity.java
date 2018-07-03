@@ -77,14 +77,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public static final String LANGUAGE_HINDI = "hi";
     public static final String LANGUAGE = "language";
     final Handler handler = new Handler();
-    Timer swipeTimer = new Timer();
-
+    Timer swipeTimer = null;
+    private Runnable Update;
+    private AlertDialog dialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-            user = new User();
+        user = new User();
 
 
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
@@ -225,8 +226,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             checkId = 2;
         }
 
-        AlertDialog dialog = new AlertDialog.Builder(this)
+        dialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.select_lang))
+                .setCancelable(false)
                 .setSingleChoiceItems(items, checkId, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
@@ -236,8 +238,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
+                        getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                                .edit()
+                                .putBoolean("firstrun", false)
+                                .commit();
                         ListView lw = ((AlertDialog) dialog).getListView();
-
                         if (lw.getCheckedItemPosition() == 0) {
                             LocaleManager.setNewLocale(getApplicationContext(), Constants.LANGUAGE_ENGLISH);
                             preferenceHelper.insertString(Constants.LANGUAGE, Constants.LANGUAGE_ENGLISH);
@@ -255,7 +260,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     }
 
                 }).create();
-        dialog.setCancelable(true);
         dialog.show();
     }
 
@@ -372,12 +376,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onResume() {
         super.onResume();
         boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
-        if (firstrun) {
-
-            getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                    .edit()
-                    .putBoolean("firstrun", false)
-                    .commit();
+        if (firstrun && dialog == null) {
             showDialog();
         }
 
@@ -463,7 +462,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         // Auto start of viewpager
 
-        final Runnable Update = new Runnable() {
+        Update = new Runnable() {
             public void run() {
                 if (currentPage == XMEN.length) {
                     currentPage = 0;
@@ -471,13 +470,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 mPager.setCurrentItem(currentPage++, true);
             }
         };
-
-        swipeTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(Update);
-            }
-        }, 2500, 2500);
+        if (swipeTimer == null) {
+            swipeTimer = new Timer();
+            swipeTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    handler.post(Update);
+                }
+            }, 2500, 2500);
+        }
     }
 
     private void setActionbar(String Title) {
@@ -589,5 +590,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     };
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (swipeTimer != null) {
+            swipeTimer.cancel();
+            swipeTimer = null;
+        }
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (swipeTimer == null) {
+            swipeTimer = new Timer();
+            swipeTimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    handler.post(Update);
+                }
+            }, 2500, 2500);
+        }
+    }
 }

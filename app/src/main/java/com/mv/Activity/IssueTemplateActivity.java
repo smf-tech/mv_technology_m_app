@@ -537,6 +537,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                         }
                     }
                 } catch (Exception e) {
+                    DeletePost();
                     Utills.hideProgressDialog();
                     Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
                 }
@@ -544,10 +545,37 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                DeletePost();
                 Utills.hideProgressDialog();
                 Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
             }
         });
+    }
+
+    private void DeletePost() {
+        Utills.showProgressDialog(IssueTemplateActivity.this);
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(IssueTemplateActivity.this).create(ServiceRequest.class);
+        apiService.getSalesForceData(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.DeletePostUrl + stringId).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+
+                } catch (Exception e) {
+                    Utills.hideProgressDialog();
+                    Utills.showToast(IssueTemplateActivity.this.getString(R.string.error_something_went_wrong), IssueTemplateActivity.this);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+                Utills.showToast(IssueTemplateActivity.this.getString(R.string.error_something_went_wrong), IssueTemplateActivity.this);
+            }
+        });
+
     }
 
     private boolean isValidate() {

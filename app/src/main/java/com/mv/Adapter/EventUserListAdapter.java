@@ -9,7 +9,6 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.mv.Activity.EventUserListActivity;
-import com.mv.Activity.ProcessDeatailActivity;
 import com.mv.Model.EventUser;
 import com.mv.R;
 
@@ -26,7 +25,7 @@ public class EventUserListAdapter extends RecyclerView.Adapter<EventUserListAdap
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView eventUserName,eventUserRole;
+        public TextView eventUserName, eventUserRole;
         public CheckBox checkBox;
 
 
@@ -34,19 +33,19 @@ public class EventUserListAdapter extends RecyclerView.Adapter<EventUserListAdap
             super(view);
             eventUserName = (TextView) view.findViewById(R.id.tv_event_user_name);
             eventUserRole = (TextView) view.findViewById(R.id.tv_event_user_role);
-            checkBox= (CheckBox) view.findViewById(R.id.cb_event_user_cb);
+            checkBox = (CheckBox) view.findViewById(R.id.cb_event_user_cb);
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (((CheckBox) v).isChecked()) {
-                      //  taskList.get(getAdapterPosition()).setTask_Response__c("true");
+                        //  taskList.get(getAdapterPosition()).setTask_Response__c("true");
                         eventUserList.get(getAdapterPosition()).setUserSelected(true);
 
-                     ((EventUserListActivity) mContext).saveDataToList(eventUserList.get(getAdapterPosition()),true);
+                        ((EventUserListActivity) mContext).saveDataToList(eventUserList.get(getAdapterPosition()), true);
                     } else {
-                      //  taskList.get(getAdapterPosition()).setTask_Response__c("false");
+                        //  taskList.get(getAdapterPosition()).setTask_Response__c("false");
                         eventUserList.get(getAdapterPosition()).setUserSelected(false);
-                        ((EventUserListActivity) mContext).saveDataToList(eventUserList.get(getAdapterPosition()),false);
+                        ((EventUserListActivity) mContext).saveDataToList(eventUserList.get(getAdapterPosition()), false);
                     }
                 }
             });
@@ -80,12 +79,6 @@ public class EventUserListAdapter extends RecyclerView.Adapter<EventUserListAdap
     public int getItemCount() {
         return eventUserList.size();
     }
-
-
-
-
-
-
 
 
 }

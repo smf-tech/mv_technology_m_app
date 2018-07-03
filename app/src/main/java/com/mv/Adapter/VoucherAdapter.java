@@ -12,8 +12,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mv.Activity.AdavanceListActivity;
 import com.mv.Activity.ExpenseListActivity;
 import com.mv.Activity.VoucherListActivity;
 import com.mv.Model.Expense;
@@ -64,6 +66,7 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
 
         TextView tvProjectName, tvDateName, tvNoOfPeopleName, tvTotalExpenseName;
         ImageView imgEdit, imgDelete, imgExpense;
+        LinearLayout layout_expense, layout_adavance;
 
         public ViewHolder(View itemLayoutView) {
 
@@ -71,11 +74,13 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
 
             imgEdit = (ImageView) itemLayoutView.findViewById(R.id.imgEdit);
             imgDelete = (ImageView) itemLayoutView.findViewById(R.id.imgDelete);
-            imgExpense = (ImageView) itemLayoutView.findViewById(R.id.imgExpense);
+
             tvProjectName = (TextView) itemLayoutView.findViewById(R.id.tvProjectName);
             tvDateName = (TextView) itemLayoutView.findViewById(R.id.tvDateName);
             tvNoOfPeopleName = (TextView) itemLayoutView.findViewById(R.id.tvNoOfPeopleName);
             tvTotalExpenseName = (TextView) itemLayoutView.findViewById(R.id.tvTotalExpenseName);
+            layout_expense = (LinearLayout) itemLayoutView.findViewById(R.id.layout_expense);
+            layout_adavance = (LinearLayout) itemLayoutView.findViewById(R.id.layout_adavance);
             imgEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -88,11 +93,20 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
                     showLogoutPopUp(getAdapterPosition());
                 }
             });
-            imgExpense.setOnClickListener(new View.OnClickListener() {
+            layout_expense.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent intent;
                     intent = new Intent(mContext, ExpenseListActivity.class);
+                    intent.putExtra(Constants.VOUCHER, mDataList.get(getAdapterPosition()));
+                    mActivity.startActivity(intent);
+                }
+            });
+            layout_adavance.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent;
+                    intent = new Intent(mContext, AdavanceListActivity.class);
                     intent.putExtra(Constants.VOUCHER, mDataList.get(getAdapterPosition()));
                     mActivity.startActivity(intent);
                 }

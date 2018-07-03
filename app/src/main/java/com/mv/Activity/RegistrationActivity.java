@@ -60,6 +60,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
@@ -84,17 +85,19 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private ArrayAdapter<String> state_adapter, district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, role_adapter, organization_adapter, project_adapter;
     private PreferenceHelper preferenceHelper;
     private User user;
-    String SelectedLat ="",SelectedLon="";
+    String SelectedLat = "", SelectedLon = "";
     private String mGenderSelect = "";
     private Uri FinalUri = null;
     private Uri outputUri = null;
     private String imageFilePath;
     private Boolean isAdd;
     private GPSTracker gps;
-    private boolean isProjectSet = false, isOrganizationSet = false, isStateSet = false, isDistrictSet = false, isTalukaSet = false, isClusterSet = false, isVillageSet = false, isSchoolSet = false, isRollSet = false;
+    private boolean isMultipleTalukatSet = false, isProjectSet = false, isOrganizationSet = false, isStateSet = false, isDistrictSet = false, isTalukaSet = false, isClusterSet = false, isVillageSet = false, isSchoolSet = false, isRollSet = false;
     private RadioGroup radioGroup;
     private RelativeLayout rel_district, rel_taluka, rel_cluster, rel_villgae, rel_school_name;
     private boolean isBackPress = false;
+    private boolean[] mSelection = null;
+    private String value = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -474,15 +477,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         edit_text_email = (EditText) findViewById(R.id.edit_text_email);
         btn_submit = (Button) findViewById(R.id.btn_submit);
         btn_submit.setOnClickListener(this);
-        if(User.getCurrentUser(RegistrationActivity.this).getMvUser().getOrganisation().equals("SMF"))
-        {
+        binding.editMultiselectTaluka.setOnClickListener(this);
+        if (User.getCurrentUser(RegistrationActivity.this).getMvUser().getOrganisation().equals("SMF")) {
             binding.llWork.setVisibility(View.VISIBLE);
-            binding.editTextRefresh.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lat()+" , "+User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lng());
-            SelectedLon=User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lng();
-            SelectedLat=User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lat();
-        }
-        else
-        {
+            binding.editTextRefresh.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lat() + " , " + User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lng());
+            SelectedLon = User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lng();
+            SelectedLat = User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lat();
+        } else {
             binding.llWork.setVisibility(View.GONE);
         }
 
@@ -670,16 +671,19 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
-            case R.id.btn_submit:
+            case R.id.edit_multiselect_taluka:
 
-                sendData();
-
+                showMultiselectDialog(mListTaluka);
 
                 break;
+            case R.id.btn_submit:
+                sendData();
+                break;
             case R.id.btn_refresh_location:
-                binding.editTextRefresh.setText( gps.getLatitude()+ " , "+gps.getLongitude());
-                SelectedLat=String.valueOf(gps.getLatitude());
-                SelectedLon=String.valueOf(gps.getLongitude());
+                gps = new GPSTracker(RegistrationActivity.this);
+                binding.editTextRefresh.setText(gps.getLatitude() + " , " + gps.getLongitude());
+                SelectedLat = String.valueOf(gps.getLatitude());
+                SelectedLon = String.valueOf(gps.getLongitude());
                 break;
             case R.id.birth_date:
                 showDateDialog(RegistrationActivity.this, binding.birthDate);
@@ -708,7 +712,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             user.getMvUser().setVillage(mListVillage.get(mSelectVillage));
             user.getMvUser().setSchool_Code(edit_text_school_code.getText().toString().trim());
             user.getMvUser().setSchool_Name(mListSchoolName.get(mSelectSchoolName));
-
+            user.getMvUser().setMultipleTaluka(value);
             JSONObject jsonObject1 = new JSONObject();
             JSONObject jsonObject2 = new JSONObject();
             try {
@@ -721,7 +725,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 jsonObject2.put("Role_Name__c", mListRoleName.get(mSelectRole));
                 jsonObject2.put("Last_Name__c", edit_text_last_name.getText().toString().trim());
                 jsonObject2.put("Middle_Name__c", edit_text_midle_name.getText().toString().trim());
-                jsonObject2.put("Birth_Day__c", binding.birthDate.getText().toString().trim());
+                if (binding.birthDate.getText().toString().trim().length() > 0)
+                    jsonObject2.put("Birth_Day__c", binding.birthDate.getText().toString().trim());
                 jsonObject2.put("User_State__c", mListState.get(mSelectState));
 
                 jsonObject2.put("Gender__c", mGenderSelect);
@@ -754,6 +759,19 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     jsonObject2.put("User_Taluka__c", mListTaluka.get(mSelectTaluka));
                     jsonObject2.put("User_Village__c", "Select");
                     jsonObject2.put("UserSchoolName__c", "Select");
+                } else if (mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("MultipleTaluka")) {
+                    jsonObject2.put("User_Cluster__c", "Select");
+                    jsonObject2.put("User_District__c", mListDistrict.get(mSelectDistrict));
+                    String taluka = "Select";
+                    if (value.length() > 0 && value.contains(",")) {
+                        String talukas[] = value.split(",");
+                        taluka = talukas[0];
+                    } else {
+                        taluka = value;
+                    }
+                    jsonObject2.put("User_Taluka__c", taluka);
+                    jsonObject2.put("User_Village__c", "Select");
+                    jsonObject2.put("UserSchoolName__c", "Select");
                 } else if (mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("District")) {
                     jsonObject2.put("User_Cluster__c", "Select");
                     jsonObject2.put("User_District__c", mListDistrict.get(mSelectDistrict));
@@ -773,9 +791,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     jsonObject2.put("User_Village__c", mListVillage.get(mSelectVillage));
                     jsonObject2.put("UserSchoolName__c", mListSchoolName.get(mSelectSchoolName));
                 }
-
-
-                jsonObject2.put("User_SchoolID__c", "Select");
+                jsonObject2.put("User_Multiple_Taluka__c", value);
 
 
                 if (mSelectProject > 0)
@@ -884,7 +900,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     * */
     private boolean isValidate() {
         String msg = "";
-
         if (edit_text_name.getText().toString().trim().length() == 0) {
             msg = getString(R.string.Please_Enter_Name);
         } else if (edit_text_mobile_number.getText().toString().trim().length() == 0) {
@@ -897,10 +912,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             msg = getString(R.string.Please_Enter_valid_email_address);
         } else if (mGenderSelect.length() == 0) {
             msg = getString(R.string.Please_select_Gender);
-        }
-        else if (binding.editTextRefresh.getText().toString().equals("")&&binding.spinnerOrganization.getSelectedItem().equals("SMF")) {
+        } else if (binding.editTextRefresh.getText().toString().equals("") && binding.spinnerOrganization.getSelectedItem().equals("SMF")) {
             msg = getString(R.string.please_refresh_location);
-        }else if (mSelectState == 0) {
+        } else if (mSelectState == 0) {
             msg = getString(R.string.Please_select_State);
         } else if ((mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("District"))) {
             if (mSelectDistrict == 0) {
@@ -911,6 +925,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 msg = getString(R.string.Please_select_district);
             } else if (mSelectTaluka == 0) {
                 msg = getString(R.string.Please_select_taluka);
+            }
+        } else if ((mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("MultipleTaluka"))) {
+            if (binding.editMultiselectTaluka.getText().toString().trim().length() == 0) {
+                msg = getString(R.string.Please_select_multiple_taluka);
             }
         } else if ((mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("Cluster"))) {
             if (mSelectDistrict == 0) {
@@ -987,12 +1005,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 mListRoleJuridiction.add("");
                 mListRoleId.add("");
                 role_adapter.notifyDataSetChanged();
-                if(mListOrganization.get(mSelectOrganization).equals("SMF"))
-                {
+                if (mListOrganization.get(mSelectOrganization).equals("SMF")) {
                     binding.llWork.setVisibility(View.VISIBLE);
-                }
-                else
-                {
+                } else {
                     binding.llWork.setVisibility(View.GONE);
                 }
                 break;
@@ -1006,11 +1021,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         spinner_taluka.setVisibility(View.VISIBLE);
                         txt_taluka.setVisibility(View.VISIBLE);
                         rel_taluka.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectTaluka.setVisibility(View.GONE);
                         spinner_cluster.setVisibility(View.VISIBLE);
                         txt_cluster.setVisibility(View.VISIBLE);
                         rel_cluster.setVisibility(View.VISIBLE);
                         spinner_village.setVisibility(View.VISIBLE);
                         txt_village.setVisibility(View.VISIBLE);
+                        value = "";
                         rel_villgae.setVisibility(View.VISIBLE);
                         spinner_school_name.setVisibility(View.VISIBLE);
                         txt_school.setVisibility(View.VISIBLE);
@@ -1020,6 +1037,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         spinner_district.setVisibility(View.VISIBLE);
                         txt_district.setVisibility(View.VISIBLE);
                         rel_district.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectTaluka.setVisibility(View.GONE);
                         spinner_taluka.setVisibility(View.VISIBLE);
                         txt_taluka.setVisibility(View.VISIBLE);
                         rel_taluka.setVisibility(View.VISIBLE);
@@ -1031,6 +1049,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         rel_villgae.setVisibility(View.VISIBLE);
                         spinner_school_name.setVisibility(View.GONE);
                         rel_school_name.setVisibility(View.GONE);
+                        value = "";
                         txt_school.setVisibility(View.GONE);
                         //  input_school_code.setVisibility(View.GONE);
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("Cluster")) {
@@ -1044,9 +1063,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         txt_cluster.setVisibility(View.VISIBLE);
                         rel_cluster.setVisibility(View.VISIBLE);
                         spinner_village.setVisibility(View.GONE);
+                        binding.inputMultiselectTaluka.setVisibility(View.GONE);
                         rel_villgae.setVisibility(View.GONE);
                         txt_village.setVisibility(View.GONE);
                         spinner_school_name.setVisibility(View.GONE);
+                        value = "";
                         rel_school_name.setVisibility(View.GONE);
                         txt_school.setVisibility(View.GONE);
                         //  input_school_code.setVisibility(View.GONE);
@@ -1057,6 +1078,31 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         spinner_taluka.setVisibility(View.VISIBLE);
                         txt_taluka.setVisibility(View.VISIBLE);
                         rel_taluka.setVisibility(View.VISIBLE);
+                        spinner_cluster.setVisibility(View.GONE);
+                        rel_cluster.setVisibility(View.GONE);
+                        binding.inputMultiselectTaluka.setVisibility(View.GONE);
+                        txt_cluster.setVisibility(View.GONE);
+                        spinner_village.setVisibility(View.GONE);
+                        rel_villgae.setVisibility(View.GONE);
+                        txt_village.setVisibility(View.GONE);
+                        spinner_school_name.setVisibility(View.GONE);
+                        rel_school_name.setVisibility(View.GONE);
+                        txt_school.setVisibility(View.GONE);
+                        value = "";
+                        //  input_school_code.setVisibility(View.GONE);
+                    } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("MultipleTaluka")) {
+                        spinner_district.setVisibility(View.VISIBLE);
+                        txt_district.setVisibility(View.VISIBLE);
+                        rel_district.setVisibility(View.VISIBLE);
+                        spinner_taluka.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectTaluka.setVisibility(View.VISIBLE);
+                        if (!isAdd && !isMultipleTalukatSet) {
+                            isMultipleTalukatSet = true;
+                            value = User.getCurrentUser(RegistrationActivity.this).getMvUser().getMultipleTaluka();
+                            binding.editMultiselectTaluka.setText(value);
+                        }
+                        txt_taluka.setVisibility(View.GONE);
+                        rel_taluka.setVisibility(View.GONE);
                         spinner_cluster.setVisibility(View.GONE);
                         rel_cluster.setVisibility(View.GONE);
                         txt_cluster.setVisibility(View.GONE);
@@ -1070,12 +1116,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("District")) {
                         spinner_district.setVisibility(View.VISIBLE);
                         txt_district.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectTaluka.setVisibility(View.GONE);
                         rel_district.setVisibility(View.VISIBLE);
                         spinner_taluka.setVisibility(View.GONE);
                         rel_taluka.setVisibility(View.GONE);
                         txt_taluka.setVisibility(View.GONE);
                         spinner_cluster.setVisibility(View.GONE);
                         rel_cluster.setVisibility(View.GONE);
+                        value = "";
                         txt_cluster.setVisibility(View.GONE);
                         spinner_village.setVisibility(View.GONE);
                         txt_village.setVisibility(View.GONE);
@@ -1087,8 +1135,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("State")) {
                         spinner_district.setVisibility(View.GONE);
                         rel_district.setVisibility(View.GONE);
+                        value = "";
                         txt_district.setVisibility(View.GONE);
                         spinner_taluka.setVisibility(View.GONE);
+                        binding.inputMultiselectTaluka.setVisibility(View.GONE);
                         rel_taluka.setVisibility(View.GONE);
                         txt_taluka.setVisibility(View.GONE);
                         spinner_cluster.setVisibility(View.GONE);
@@ -1114,6 +1164,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 mListCluster.clear();
                 mListVillage.clear();
                 mListSchoolName.clear();
+                value = "";
+                binding.editMultiselectTaluka.setText("");
                 mListTaluka.add("Select");
                 mListDistrict.add("Select");
                 mListCluster.add("Select");
@@ -1144,7 +1196,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 mListCluster.add("Select");
                 mListVillage.add("Select");
                 mListSchoolName.add("Select");
-
+                value = "";
+                binding.editMultiselectTaluka.setText("");
                 mSelectTaluka = 0;
                 mSelectCluster = 0;
                 mSelectVillage = 0;
@@ -1502,12 +1555,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     e.printStackTrace();
                 }
             }
-        }
-        else  if (requestCode == 100) {
+        } else if (requestCode == 100) {
             if (!gps.canGetLocation()) {
                 gps.showSettingsAlert();
             }
-        }else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             Glide.with(this)
                     .load(FinalUri)
                     .skipMemoryCache(true)
@@ -1548,5 +1600,71 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         if (i < 10)
             return "0" + i;
         return "" + i;
+    }
+
+
+    private void showMultiselectDialog(ArrayList<String> arrayList) {
+        ArrayList<String> list = arrayList;
+        if (list.contains("Select")) {
+            list.remove(list.indexOf("Select"));
+        }
+
+        final String[] items = arrayList.toArray(new String[list.size()]);
+        mSelection = new boolean[(items.length)];
+        Arrays.fill(mSelection, false);
+        if (value.length() != 0) {
+            String[] talukas = value.split(",");
+            for (int i = 0; i < talukas.length; i++) {
+                if (arrayList.contains(talukas[i].trim())) {
+                    mSelection[arrayList.indexOf(talukas[i].trim())] = true;
+                }
+            }
+        }
+
+// arraylist to keep the selected items
+        final ArrayList seletedItems = new ArrayList();
+        AlertDialog dialog = new AlertDialog.Builder(RegistrationActivity.this)
+                .setTitle(getString(R.string.taluka))
+                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (mSelection != null && which < mSelection.length) {
+                            mSelection[which] = isChecked;
+                            value = buildSelectedItemString(items);
+                        } else {
+                            throw new IllegalArgumentException(
+                                    "Argument 'which' is out of bounds.");
+                        }
+                    }
+                })
+                .setPositiveButton(RegistrationActivity.this.getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        binding.editMultiselectTaluka.setText(value);
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Your code when user clicked on Cancel
+                    }
+                }).create();
+        dialog.show();
+    }
+
+    private String buildSelectedItemString(String[] items) {
+        StringBuilder sb = new StringBuilder();
+        boolean foundOne = false;
+
+        for (int i = 0; i < items.length; ++i) {
+            if (mSelection[i]) {
+                if (foundOne) {
+                    sb.append(",");
+                }
+                foundOne = true;
+
+                sb.append(items[i]);
+            }
+        }
+        return sb.toString();
     }
 }

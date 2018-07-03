@@ -35,38 +35,42 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TraingCalenderAadapter  extends RecyclerView.Adapter<TraingCalenderAadapter.MyViewHolder> {
+public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderAadapter.MyViewHolder> {
 
     private List<CalenderEvent> calenderlsList;
     private Activity mContext;
     private PreferenceHelper preferenceHelper;
     private int position;
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView state, district, taluka, name, detail, index,title;
-        public LinearLayout layout;
-        ImageView delete;
+        public TextView tvProjectName, tvDateName, tvNoOfPeopleName, tvTotalExpenseName, tvStatusName;
+        public LinearLayout lnr_content;
+        ImageView imgDelete;
 
         public MyViewHolder(View view) {
             super(view);
 /*            state = (TextView) view.findViewById(R.id.txtTemplateName);
-            district = (TextView) view.findViewById(R.id.txtTemplateName);
-            taluka = (TextView) view.findViewById(R.id.txtTemplateName);*/
-            layout = (LinearLayout) view.findViewById(R.id.ll_calender_layout);
-            title = (TextView) view.findViewById(R.id.tv_piachart);
-            detail = (TextView) view.findViewById(R.id.tv_piachart_description);
-            index = (TextView) view.findViewById(R.id.tv_piachart_number);
-            delete = (ImageView) view.findViewById(R.id.iv_calender_delete);
-            delete.setOnClickListener(new View.OnClickListener() {
+            district = (TextView) view.findViewById(R.id.txtTemplateName);*/
+            tvTotalExpenseName = (TextView) view.findViewById(R.id.tvTotalExpenseName);
+            lnr_content = (LinearLayout) view.findViewById(R.id.lnr_content);
+            tvProjectName = (TextView) view.findViewById(R.id.tvProjectName);
+            tvDateName = (TextView) view.findViewById(R.id.tvDateName);
+            tvNoOfPeopleName = (TextView) view.findViewById(R.id.tvNoOfPeopleName);
+
+            tvStatusName = (TextView) view.findViewById(R.id.tvStatusName);
+
+            imgDelete = (ImageView) view.findViewById(R.id.imgDelete);
+            imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    position=getAdapterPosition();
+                    position = getAdapterPosition();
                     showDeleteDialog();
                 }
             });
-            layout.setOnClickListener(new View.OnClickListener() {
+            lnr_content.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(calenderlsList.get(position).getMV_User1__c()!=null) {
+                    if (calenderlsList.get(position).getMV_User1__c() != null) {
 
                         if (calenderlsList.get(getAdapterPosition()).getMV_User1__c().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
                             Intent intent = new Intent(mContext, CalenderFliterActivity.class);
@@ -92,7 +96,7 @@ public class TraingCalenderAadapter  extends RecyclerView.Adapter<TraingCalender
     @Override
     public TraingCalenderAadapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.each_trainning_calender, parent, false);
+                .inflate(R.layout.each_calendar, parent, false);
 
         return new TraingCalenderAadapter.MyViewHolder(itemView);
     }
@@ -101,25 +105,23 @@ public class TraingCalenderAadapter  extends RecyclerView.Adapter<TraingCalender
     public void onBindViewHolder(TraingCalenderAadapter.MyViewHolder holder, int position) {
 
 
-        holder.index.setText(String.valueOf(position + 1));
-         holder.title.setVisibility(View.VISIBLE);
-            holder.delete.setVisibility(View.VISIBLE);
-            CalenderEvent piaChartModel= (CalenderEvent) calenderlsList.get(position);
-            holder.detail.setText(piaChartModel.getDescription());
-            holder.title.setText(piaChartModel.getTitle());
-            if(calenderlsList.get(position).getMV_User1__c()!=null) {
-                if (calenderlsList.get(position).getMV_User1__c().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
-                    holder.delete.setImageResource(R.drawable.form_delete);
-                    holder.delete.setVisibility(View.VISIBLE);
-                } else {
-                    holder.delete.setVisibility(View.GONE);
-                }
+        CalenderEvent piaChartModel = (CalenderEvent) calenderlsList.get(position);
+        holder.tvProjectName.setText(piaChartModel.getTitle());
+        holder.tvDateName.setText(piaChartModel.getDescription());
+        holder.tvNoOfPeopleName.setText(piaChartModel.getProceesSubmittedCount() + "/" + piaChartModel.getProceesTotalCount());
+        holder.tvTotalExpenseName.setText(piaChartModel.getCreatedUserData());
+        holder.tvStatusName.setText(piaChartModel.getStatus());
+        if (calenderlsList.get(position).getMV_User1__c() != null) {
+            if (calenderlsList.get(position).getMV_User1__c().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
+                holder.imgDelete.setImageResource(R.drawable.form_delete);
+                holder.imgDelete.setVisibility(View.VISIBLE);
+            } else {
+                holder.imgDelete.setVisibility(View.GONE);
+            }
 
-            }
-            else
-            {
-                holder.delete.setVisibility(View.GONE);
-            }
+        } else {
+            holder.imgDelete.setVisibility(View.GONE);
+        }
 
     }
 
@@ -151,7 +153,7 @@ public class TraingCalenderAadapter  extends RecyclerView.Adapter<TraingCalender
         alertDialog.setButton(mContext.getString(R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
-                if(calenderlsList.get(position)instanceof CalenderEvent)
+                if (calenderlsList.get(position) instanceof CalenderEvent)
                     deleteEvent(((CalenderEvent) calenderlsList.get(position)));
 
             }
@@ -163,7 +165,7 @@ public class TraingCalenderAadapter  extends RecyclerView.Adapter<TraingCalender
 
 
     private void deleteEvent(final CalenderEvent calenderEvent) {
-        Utills.showProgressDialog(mContext, "Loading ",mContext. getString(R.string.progress_please_wait));
+        Utills.showProgressDialog(mContext, "Loading ", mContext.getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -176,16 +178,12 @@ public class TraingCalenderAadapter  extends RecyclerView.Adapter<TraingCalender
                 try {
                     if (response.isSuccess()) {
                         JSONObject jsonObject = new JSONObject(response.body().string());
-                        if( jsonObject.getString("Status").equals("true"))
-                        {
-                            removeAt(position,calenderEvent);
+                        if (jsonObject.getString("Status").equals("true")) {
+                            removeAt(position, calenderEvent);
                         }
 
 
-
                     }
-
-
 
 
                 } catch (JSONException e) {
@@ -204,12 +202,12 @@ public class TraingCalenderAadapter  extends RecyclerView.Adapter<TraingCalender
     }
 
 
-    public void removeAt(int position,CalenderEvent calenderEvent) {
+    public void removeAt(int position, CalenderEvent calenderEvent) {
         calenderlsList.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, calenderlsList.size());
         AppDatabase.getAppDatabase(mContext).userDao().deleteCalenderEvent(calenderEvent.getId());
-        ((TrainingCalender)mContext).removeEvent(calenderEvent.getDate());
+        ((TrainingCalender) mContext).removeEvent(calenderEvent.getDate());
     }
 }
 

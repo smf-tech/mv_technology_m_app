@@ -21,7 +21,6 @@ import android.widget.TextView;
 
 import com.mv.Activity.CalenderFliterActivity;
 import com.mv.Adapter.HorizontalCalenderAdapter;
-import com.mv.Adapter.IndicatorListAdapter;
 import com.mv.Adapter.TraingCalenderAadapter;
 import com.mv.Model.CalenderEvent;
 import com.mv.Model.User;
@@ -29,6 +28,7 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -50,7 +50,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -68,16 +67,16 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
     private PreferenceHelper preferenceHelper;
     List<CalenderEvent> dateList = new ArrayList<>();
 
-    private FragmentTrainigCalenderBinding binding;
-        SimpleDateFormat formatter;
+    public FragmentTrainigCalenderBinding binding;
+    SimpleDateFormat formatter;
     SimpleDateFormat formatterNew;
     ArrayList<CalendarDay> dates;
-    List<Date> allDate=new ArrayList<>();
+    List<Date> allDate = new ArrayList<>();
     HashMap<CalendarDay, List<CalenderEvent>> eventMap = new HashMap<>();
-    List<String> MonthList=new ArrayList<>();
-    List<String> YearList=new ArrayList<>();
+    List<String> MonthList = new ArrayList<>();
+    List<String> YearList = new ArrayList<>();
     TraingCalenderAadapter adapter;
-    List<Date> eventDate=new ArrayList<>();
+    List<Date> eventDate = new ArrayList<>();
     HorizontalCalenderAdapter horizontalCalenderAdapter;
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
     Activity context;
@@ -92,11 +91,11 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
         setActionbar(getString(R.string.training_calendar));
 
         Calendar.getInstance().get(Calendar.MONTH);
-        MonthList= Arrays.asList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
-        YearList= Arrays.asList("2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", "2031", "2032");
+        MonthList = Arrays.asList("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+        YearList = Arrays.asList("2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", "2031", "2032");
 
-        setSpinnerAdapter(MonthList, district_adapter, binding.spinnerMonth ,    MonthList.get(Calendar.getInstance().get(Calendar.MONTH)));
-        setSpinnerAdapter(YearList, district_adapter, binding.spinnerYear ,    String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
+        setSpinnerAdapter(MonthList, district_adapter, binding.spinnerMonth, MonthList.get(Calendar.getInstance().get(Calendar.MONTH)));
+        setSpinnerAdapter(YearList, district_adapter, binding.spinnerYear, String.valueOf(Calendar.getInstance().get(Calendar.YEAR)));
 
         //setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerYear, selectedDisrict);
 
@@ -148,14 +147,14 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                 }
             }
         });
-       formatterNew= new SimpleDateFormat("yyyy-MM-dd");
+        formatterNew = new SimpleDateFormat("yyyy-MM-dd");
 
-     //    allDate=  getDates(formatterNew.format(Calendar.getInstance().getTime()), "2018-06-08");
-     //   horizontalCalenderAdapter=new HorizontalCalenderAdapter(context, allDate );
+        //    allDate=  getDates(formatterNew.format(Calendar.getInstance().getTime()), "2018-06-08");
+        //   horizontalCalenderAdapter=new HorizontalCalenderAdapter(context, allDate );
 
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         binding.recyclerViewHorizontal.setLayoutManager(horizontalLayoutManager);
-    //    binding.recyclerViewHorizontal.setAdapter(horizontalCalenderAdapter);
+        //    binding.recyclerViewHorizontal.setAdapter(horizontalCalenderAdapter);
         try {
             binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))));
 
@@ -166,6 +165,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
 
 
     }
+
     public static String[] getColumnIdex(String[] value) {
 
         for (int i = 0; i < value.length; i++) {
@@ -174,6 +174,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
         return value;
 
     }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
@@ -184,6 +185,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
         super.onResume();
         getAllProcess();
     }
+
     public void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, itemList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -192,41 +194,42 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
 
             spinner.setSelection(itemList.indexOf(selectedValue));
     }
+
     @Override
     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
         switch (adapterView.getId()) {
             case R.id.spinner_month:
                 allDate.clear();
                 try {
-                allDate.addAll(getDates(binding.spinnerYear.getSelectedItem().toString()+"-0"+(i+1)+"-01", binding.spinnerYear.getSelectedItem().toString()+"-0"+(i+2)+"-01"));
-            horizontalCalenderAdapter=new HorizontalCalenderAdapter(context,allDate  ,allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))),eventDate);
-                binding.recyclerViewHorizontal.setAdapter(horizontalCalenderAdapter);
-             //   binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(Calendar.getInstance().getTime()));
-
-                    binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))));
-                    if(allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime())))>0)
-                        selectDate(Calendar.getInstance().getTime());
-                    else
-                    selectDate(new SimpleDateFormat("yyyy-MM-dd").parse(binding.spinnerYear.getSelectedItem().toString()+"-0"+(i+1)+"-01"));
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                 break;
-
-            case R.id.spinner_year:
-                allDate.clear();
-                try {
-                    allDate.addAll(getDates(binding.spinnerYear.getSelectedItem().toString()+"-0"+(MonthList.indexOf(binding.spinnerMonth.getSelectedItem().toString())+1)+"-01", binding.spinnerYear.getSelectedItem().toString()+"-0"+(MonthList.indexOf(binding.spinnerMonth.getSelectedItem().toString())+2)+"-01"));
-                    horizontalCalenderAdapter=new HorizontalCalenderAdapter(context,allDate  ,allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))),eventDate);
+                    allDate.addAll(getDates(binding.spinnerYear.getSelectedItem().toString() + "-0" + (i + 1) + "-01", binding.spinnerYear.getSelectedItem().toString() + "-0" + (i + 2) + "-01"));
+                    horizontalCalenderAdapter = new HorizontalCalenderAdapter(context, allDate, allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))), eventDate);
                     binding.recyclerViewHorizontal.setAdapter(horizontalCalenderAdapter);
                     //   binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(Calendar.getInstance().getTime()));
 
                     binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))));
-                    if(allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime())))>0)
+                    if (allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))) > 0)
                         selectDate(Calendar.getInstance().getTime());
                     else
-                    selectDate(new SimpleDateFormat("yyyy-MM-dd").parse(binding.spinnerYear.getSelectedItem().toString()+"-0"+(MonthList.indexOf(binding.spinnerMonth.getSelectedItem().toString())+1)+"-01"));
+                        selectDate(new SimpleDateFormat("yyyy-MM-dd").parse(binding.spinnerYear.getSelectedItem().toString() + "-0" + (i + 1) + "-01"));
+
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                break;
+
+            case R.id.spinner_year:
+                allDate.clear();
+                try {
+                    allDate.addAll(getDates(binding.spinnerYear.getSelectedItem().toString() + "-0" + (MonthList.indexOf(binding.spinnerMonth.getSelectedItem().toString()) + 1) + "-01", binding.spinnerYear.getSelectedItem().toString() + "-0" + (MonthList.indexOf(binding.spinnerMonth.getSelectedItem().toString()) + 2) + "-01"));
+                    horizontalCalenderAdapter = new HorizontalCalenderAdapter(context, allDate, allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))), eventDate);
+                    binding.recyclerViewHorizontal.setAdapter(horizontalCalenderAdapter);
+                    //   binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(Calendar.getInstance().getTime()));
+
+                    binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))));
+                    if (allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))) > 0)
+                        selectDate(Calendar.getInstance().getTime());
+                    else
+                        selectDate(new SimpleDateFormat("yyyy-MM-dd").parse(binding.spinnerYear.getSelectedItem().toString() + "-0" + (MonthList.indexOf(binding.spinnerMonth.getSelectedItem().toString()) + 1) + "-01"));
 
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -239,24 +242,32 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
     }
 
     @Override
-    public void onNothingSelected(AdapterView<  ?> adapterView) {
+    public void onNothingSelected(AdapterView<?> adapterView) {
 
     }
-public void selectDate(Date date)
-{
-    if (date != null) {
-        adapter = new TraingCalenderAadapter(context, AppDatabase.getAppDatabase(getApplicationContext()).userDao().getCalenderList(formatter.format(date)));
-        binding.recyclerView.setAdapter(adapter);
-    } else {
-        adapter = new TraingCalenderAadapter(context, new ArrayList<CalenderEvent>());
-        binding.recyclerView.setAdapter(adapter);
+
+    public void selectDate(Date date) {
+        CalendarDay day = CalendarDay.from(date);
+        if (eventMap.get(day) != null) {
+            LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            String formattedDate = df.format(cal.getTime());
+            LocaleManager.setNewLocale(this, preferenceHelper.getString(Constants.LANGUAGE));
+            adapter = new TraingCalenderAadapter(context, eventMap.get(day));
+            binding.recyclerView.setAdapter(adapter);
+        } else {
+            adapter = new TraingCalenderAadapter(context, new ArrayList<CalenderEvent>());
+            binding.recyclerView.setAdapter(adapter);
+        }
     }
-}
+
     @Override
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         binding.fabAddBroadcast.show();
         if (eventMap.get(date) != null) {
-            adapter = new TraingCalenderAadapter(context, AppDatabase.getAppDatabase(getApplicationContext()).userDao().getCalenderList(formatter.format(date.getDate())));
+            adapter = new TraingCalenderAadapter(context, eventMap.get(date));
             binding.recyclerView.setAdapter(adapter);
         } else {
             adapter = new TraingCalenderAadapter(context, new ArrayList<CalenderEvent>());
@@ -312,32 +323,49 @@ public void selectDate(Date date)
                 try {
                     if (response.isSuccess()) {
                         JSONArray jsonArray = new JSONArray(response.body().string());
-                        eventDate=new ArrayList<>();
-                        eventMap = new HashMap<>();
+                        eventDate = new ArrayList<>();
+
                         dates = new ArrayList<>();
-                        dateList = new ArrayList<>();
+
                         for (int i = 0; i < jsonArray.length(); i++) {
+                            dateList = new ArrayList<>();
                             CalenderEvent calenderEvent = new CalenderEvent();
-                            calenderEvent.setId(jsonArray.getJSONObject(i).getString("Id"));
-                            calenderEvent.setDate(jsonArray.getJSONObject(i).getString("Date__c"));
-                            calenderEvent.setDescription(jsonArray.getJSONObject(i).getString("Description_New__c"));
-                            calenderEvent.setTitle(jsonArray.getJSONObject(i).getString("Title__c"));
+                            if (jsonArray.getJSONObject(i).has("Id"))
+                                calenderEvent.setId(jsonArray.getJSONObject(i).getString("Id"));
+                            if (jsonArray.getJSONObject(i).has("Date__c"))
+                                calenderEvent.setDate(jsonArray.getJSONObject(i).getString("Date__c"));
+                            if (jsonArray.getJSONObject(i).has("Description_New__c"))
+                                calenderEvent.setDescription(jsonArray.getJSONObject(i).getString("Description_New__c"));
+                            if (jsonArray.getJSONObject(i).has("Title__c"))
+                                calenderEvent.setTitle(jsonArray.getJSONObject(i).getString("Title__c"));
                             if (jsonArray.getJSONObject(i).has("MV_User__c"))
                                 calenderEvent.setMV_User1__c(jsonArray.getJSONObject(i).getString("MV_User__c"));
-
-                            calenderEvent.setState__c(jsonArray.getJSONObject(i).getString("State__c"));
-                            if(jsonArray.getJSONObject(i).has("Event_Time__c"))
-                            calenderEvent.setEvent_Time__c(jsonArray.getJSONObject(i).getString("Event_Time__c"));
-                            calenderEvent.setDistrict__c(jsonArray.getJSONObject(i).getString("District__c"));
-                            calenderEvent.setTaluka__c(jsonArray.getJSONObject(i).getString("Taluka__c"));
-                            calenderEvent.setCluster__c(jsonArray.getJSONObject(i).getString("Cluster__c"));
+                            if (jsonArray.getJSONObject(i).has("State__c"))
+                                calenderEvent.setState__c(jsonArray.getJSONObject(i).getString("State__c"));
+                            if (jsonArray.getJSONObject(i).has("Event_Time__c"))
+                                calenderEvent.setEvent_Time__c(jsonArray.getJSONObject(i).getString("Event_Time__c"));
+                            if (jsonArray.getJSONObject(i).has("District__c"))
+                                calenderEvent.setDistrict__c(jsonArray.getJSONObject(i).getString("District__c"));
+                            if (jsonArray.getJSONObject(i).has("Taluka__c"))
+                                calenderEvent.setTaluka__c(jsonArray.getJSONObject(i).getString("Taluka__c"));
+                            if (jsonArray.getJSONObject(i).has("Cluster__c"))
+                                calenderEvent.setCluster__c(jsonArray.getJSONObject(i).getString("Cluster__c"));
+                            if (jsonArray.getJSONObject(i).has("Assigned_By_Name__c"))
+                                calenderEvent.setCreatedUserData(jsonArray.getJSONObject(i).getString("Assigned_By_Name__c"));
+                            if (jsonArray.getJSONObject(i).has("Total_Form__c"))
+                                calenderEvent.setProceesTotalCount(jsonArray.getJSONObject(i).getString("Total_Form__c"));
+                            if (jsonArray.getJSONObject(i).has("Filled_Form__c"))
+                                calenderEvent.setProceesSubmittedCount(jsonArray.getJSONObject(i).getString("Filled_Form__c"));
                             if (jsonArray.getJSONObject(i).has("Village__c"))
                                 calenderEvent.setVillage__c(jsonArray.getJSONObject(i).getString("Village__c"));
-                            calenderEvent.setSchool__c(jsonArray.getJSONObject(i).getString("School__c"));
-
-
-                            calenderEvent.setIs_Event_for_All_Role__c(jsonArray.getJSONObject(i).getString("Is_Event_for_All_Role__c"));
-                            calenderEvent.setRole__c(jsonArray.getJSONObject(i).getString("Role__c"));
+                            if (jsonArray.getJSONObject(i).has("Status__c"))
+                                calenderEvent.setStatus(jsonArray.getJSONObject(i).getString("Status__c"));
+                            if (jsonArray.getJSONObject(i).has("School__c"))
+                                calenderEvent.setSchool__c(jsonArray.getJSONObject(i).getString("School__c"));
+                            if (jsonArray.getJSONObject(i).has("Is_Event_for_All_Role__c"))
+                                calenderEvent.setIs_Event_for_All_Role__c(jsonArray.getJSONObject(i).getString("Is_Event_for_All_Role__c"));
+                            if (jsonArray.getJSONObject(i).has("Role__c"))
+                                calenderEvent.setRole__c(jsonArray.getJSONObject(i).getString("Role__c"));
                             if (jsonArray.getJSONObject(i).has("Assigned_User_Ids__c"))
                                 calenderEvent.setAssigned_User_Ids__c(jsonArray.getJSONObject(i).getString("Assigned_User_Ids__c"));
                             if (jsonArray.getJSONObject(i).has("Assign_id_name__c"))
@@ -346,26 +374,50 @@ public void selectDate(Date date)
                                 calenderEvent.setOrganization__c(jsonArray.getJSONObject(i).getString("organization__c"));
                             if (jsonArray.getJSONObject(i).has("MV_Process__c"))
                                 calenderEvent.setMV_Process__c(jsonArray.getJSONObject(i).getString("MV_Process__c"));
+                            if (jsonArray.getJSONObject(i).has("Event_End_Time__c"))
+                                calenderEvent.setEvent_End_Time__c(jsonArray.getJSONObject(i).getString("Event_End_Time__c"));
+                            if (jsonArray.getJSONObject(i).has("End_Date__c"))
+                                calenderEvent.setEnd_Date__c(jsonArray.getJSONObject(i).getString("End_Date__c"));
+                            if (jsonArray.getJSONObject(i).has("End_Date__c") && jsonArray.getJSONObject(i).has("Date__c")
+                                    && jsonArray.getJSONObject(i).getString("End_Date__c") != null
+                                    && jsonArray.getJSONObject(i).getString("End_Date__c").length() > 0
+                                    && jsonArray.getJSONObject(i).getString("Date__c") != null
+                                    && jsonArray.getJSONObject(i).getString("Date__c").length() > 0) {
+                                List<Date> Dates = getDaysBetweenDates(formatter.parse(jsonArray.getJSONObject(i).getString("Date__c")),
+                                        formatter.parse(jsonArray.getJSONObject(i).getString("End_Date__c")));
+                                for (Date date : Dates) {
+                                    dateList = new ArrayList<>();
+                                    CalendarDay day = CalendarDay.from(date);
+                                    Log.i("Current Date", formatter.format(date));
+                                    if (eventMap.get(day) != null)
+                                        dateList = eventMap.get(day);
+                                    eventDate.add(date);
+                                    dateList.add(calenderEvent);
+                                    eventMap.put(day, dateList);
+                                    dates.add(day);
+                                }
 
-                            CalendarDay day = CalendarDay.from(formatter.parse(jsonArray.getJSONObject(i).getString("Date__c")));
-                            if (eventMap.get(jsonArray.getJSONObject(i).getString("Date__c")) != null)
-                                dateList = eventMap.get(jsonArray.getJSONObject(i).getString("Date__c"));
-                            eventDate.add(formatterNew.parse(jsonArray.getJSONObject(i).getString("Date__c")));
-                            dateList.add(calenderEvent);
-                            eventMap.put(day, dateList);
-                            dates.add(day);
+                            } else {
+                                CalendarDay day = CalendarDay.from(formatter.parse(jsonArray.getJSONObject(i).getString("Date__c")));
+                                if (eventMap.get(day) != null)
+                                    dateList = eventMap.get(day);
+                                eventDate.add(formatterNew.parse(jsonArray.getJSONObject(i).getString("Date__c")));
+                                dateList.add(calenderEvent);
+                                eventMap.put(day, dateList);
+                                dates.add(day);
+                            }
                         }
                         AppDatabase.getAppDatabase(context).userDao().deleteCalender();
                         AppDatabase.getAppDatabase(context).userDao().insertCalendr(dateList);
-                        binding.calendarView.addDecorator(new EventDecorator(TrainingCalender.this, dates));
-                        horizontalCalenderAdapter=new HorizontalCalenderAdapter(context,allDate  ,allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))),eventDate);
+                        binding.calendarView.addDecorator(new EventDecorator(TrainingCalender.this, dates, null));
+                        horizontalCalenderAdapter = new HorizontalCalenderAdapter(context, allDate, allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))), eventDate);
                         binding.recyclerViewHorizontal.setAdapter(horizontalCalenderAdapter);
                         binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))));
                         selectDate(Calendar.getInstance().getTime());
 
                         Calendar instance = Calendar.getInstance();
                         if (eventMap.get(CalendarDay.from(instance)) != null) {
-                            adapter = new TraingCalenderAadapter(context, AppDatabase.getAppDatabase(getApplicationContext()).userDao().getCalenderList(formatter.format(instance.getTime())));
+                            adapter = new TraingCalenderAadapter(context, eventMap.get(CalendarDay.from(instance)));
                             binding.recyclerView.setAdapter(adapter);
                         }
                     }
@@ -386,6 +438,28 @@ public void selectDate(Date date)
         });
     }
 
+    public List<Date> getDaysBetweenDates(Date startdate, Date enddate) {
+        List<Date> dates = new ArrayList<Date>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startdate);
+        while (calendar.getTime().before(enddate)) {
+            Date result = calendar.getTime();
+            dates.add(result);
+            calendar.add(Calendar.DATE, 1);
+        }
+        dates.add(enddate);
+        return dates;
+    }
+
+    private String getCurrentDate() {
+        LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = df.format(c.getTime());
+        LocaleManager.setNewLocale(this, preferenceHelper.getString(Constants.LANGUAGE));
+        return formattedDate;
+    }
+
     public void removeEvent(String date) {
 
         if (AppDatabase.getAppDatabase(getApplicationContext()).userDao().getCalenderList(date).size() == 0) {
@@ -393,9 +467,9 @@ public void selectDate(Date date)
                 binding.calendarView.removeDecorators();
                 CalendarDay day = CalendarDay.from(formatter.parse(date));
                 dates.remove(day);
-                binding.calendarView.addDecorator(new EventDecorator(TrainingCalender.this, dates));
+                binding.calendarView.addDecorator(new EventDecorator(TrainingCalender.this, dates, null));
 
-                horizontalCalenderAdapter=new HorizontalCalenderAdapter(context,allDate  ,allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))),eventDate);
+                horizontalCalenderAdapter = new HorizontalCalenderAdapter(context, allDate, allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))), eventDate);
                 binding.recyclerViewHorizontal.setAdapter(horizontalCalenderAdapter);
                 binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(formatter.parse(date)));
                 selectDate(Calendar.getInstance().getTime());
@@ -407,9 +481,10 @@ public void selectDate(Date date)
 
     }
 
-    private static List<Date> getDates(String dateString1, String dateString2) {
-        Log.d("Start Date",dateString1);
-        Log.d("End Date",dateString2);
+    private List<Date> getDates(String dateString1, String dateString2) {
+        LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
+        Log.d("Start Date", dateString1);
+        Log.d("End Date", dateString2);
         ArrayList<Date> dates = new ArrayList<Date>();
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -434,6 +509,7 @@ public void selectDate(Date date)
             dates.add(cal1.getTime());
             cal1.add(Calendar.DATE, 1);
         }
+        LocaleManager.setNewLocale(this, preferenceHelper.getString(Constants.LANGUAGE));
         return dates;
     }
 

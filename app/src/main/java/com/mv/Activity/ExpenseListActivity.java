@@ -5,16 +5,17 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mv.Adapter.ExpandableExpenseListAdapter;
 import com.mv.Adapter.ExpenseAdapter;
 import com.mv.Model.Expense;
 import com.mv.Model.Voucher;
@@ -31,6 +32,7 @@ import com.mv.databinding.ActivityExpenseListBinding;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -52,12 +54,20 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
     private List<Expense> mList = new ArrayList<>();
     private Voucher voucher;
     private PreferenceHelper preferenceHelper;
+    private ArrayList<String> headerList;
+    private HashMap<String, ArrayList<Expense>> childList;
+    private ExpandableExpenseListAdapter evAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_expense_list);
         binding.setActivity(this);
+        headerList = new ArrayList<>();
+        childList = new HashMap<>();
+        headerList.add(getString(R.string.pending));
+        headerList.add(getString(R.string.reject));
+        headerList.add(getString(R.string.approve));
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         setActionbar(getString(R.string.expense_list));
         preferenceHelper = new PreferenceHelper(this);
@@ -68,12 +78,35 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
                 super.onScrolled(recyclerView, dx, dy);
                 Log.i("Dy", "" + dy);
                 if (dy < -5 && binding.fabAddProcess.getVisibility() == View.GONE) {
-                    binding.fabAddProcess.setVisibility(View.VISIBLE);
+
                 } else if (dy > 5 && binding.fabAddProcess.getVisibility() == View.VISIBLE) {
-                    binding.fabAddProcess.setVisibility(View.GONE);
+
                 }
             }
         });
+        binding.evProcess.setOnScrollListener(new AbsListView.OnScrollListener() {
+            private int mLastFirstVisibleItem;
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
+
+                if (mLastFirstVisibleItem < firstVisibleItem) {
+                    binding.fabAddProcess.setVisibility(View.GONE);
+                }
+                if (mLastFirstVisibleItem > firstVisibleItem) {
+                    binding.fabAddProcess.setVisibility(View.VISIBLE);
+                }
+                mLastFirstVisibleItem = firstVisibleItem;
+
+            }
+        });
+
         if (Utills.isConnected(this))
             getUserExpenseData();
     }
@@ -117,10 +150,27 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
     private void setRecyclerView() {
         Log.i("Count", "" + AppDatabase.getAppDatabase(this).userDao().getAllExpense());
         mList = AppDatabase.getAppDatabase(this).userDao().getAllExpense(voucher.getId());
-        adapter = new ExpenseAdapter(this, mList);
+       /* adapter = new ExpenseAdapter(this, mList);
         binding.rvExpense.setAdapter(adapter);
         binding.rvExpense.setHasFixedSize(true);
-        binding.rvExpense.setLayoutManager(new LinearLayoutManager(this));
+        binding.rvExpense.setLayoutManager(new LinearLayoutManager(this));*/
+        ArrayList<Expense> pendingList = new ArrayList<>();
+        ArrayList<Expense> approveList = new ArrayList<>();
+        ArrayList<Expense> rejectList = new ArrayList<>();
+
+        for (Expense expense : mList) {
+            if (expense.getStatus().equals(Constants.LeaveStatusApprove))
+                approveList.add(expense);
+            if (expense.getStatus().equals(Constants.LeaveStatusPending))
+                pendingList.add(expense);
+            if (expense.getStatus().equals(Constants.LeaveStatusRejected))
+                rejectList.add(expense);
+        }
+        childList.put(getString(R.string.pending), pendingList);
+        childList.put(getString(R.string.reject), rejectList);
+        childList.put(getString(R.string.approve), approveList);
+        evAdapter = new ExpandableExpenseListAdapter(this, headerList, childList);
+        binding.evProcess.setAdapter(evAdapter);
     }
 
     @Override
@@ -175,29 +225,31 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
         setRecyclerView();
     }
 
-    public void editExpense(int adapterPosition) {
+    public void editExpense(Expense expense) {
         Intent intent;
         intent = new Intent(this, ExpenseNewActivity.class);
         intent.putExtra(Constants.VOUCHER, voucher);
-        intent.putExtra(Constants.EXPENSE, mList.get(adapterPosition));
+        intent.putExtra(Constants.EXPENSE, expense);
         intent.putExtra(Constants.ACTION, Constants.ACTION_EDIT);
         startActivity(intent);
     }
 
-    public void deleteExpense(int position) {
+    public void deleteExpense(Expense expense) {
         if (Utills.isConnected(this)) {
-            deleteRecord(position);
+            deleteRecord(expense);
         } else {
             Utills.showInternetPopUp(this);
         }
     }
 
-    private void deleteRecord(int position) {
+    private void deleteRecord(Expense expense)
+
+    {
         Utills.showProgressDialog(this, "Deleting Expense", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.DeleteAccountData + "?Id=" + mList.get(position).getId() + "&Object=Expense";
+                + Constants.DeleteAccountData + "?Id=" + expense.getId() + "&Object=Expense";
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -207,9 +259,8 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
                     if (response != null && response.isSuccess()) {
                         String str = response.body().string();
                         if (str.contains("deleted")) {
-                            AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().deleteExpense(mList.get(position));
-                            mList.remove(position);
-                            adapter.notifyItemRemoved(position);
+                            AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().deleteExpense(expense);
+                            setRecyclerView();
                             Utills.showToast("Expense Deleted Successfully", ExpenseListActivity.this);
                         }
                     }

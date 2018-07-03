@@ -46,7 +46,8 @@
                 android:layout_marginTop="10dp"
                 android:text="@string/project"
                 android:textColor="@color/dark_grey"
-                android:textSize="@dimen/small_text" />
+                android:textSize="@dimen/small_text"
+                android:visibility="gone" />
 
             <Spinner
                 android:id="@+id/spinnerProject"
@@ -57,7 +58,8 @@
                 android:entries="@array/array_of_project"
                 android:padding="10dp"
                 android:prompt="@string/project"
-                android:spinnerMode="dialog" />
+                android:spinnerMode="dialog"
+                android:visibility="gone" />
 
 
             <android.support.design.widget.TextInputLayout
@@ -75,6 +77,7 @@
                     android:background="@null"
                     android:digits="0123456789"
                     android:hint="@string/amount"
+                    android:maxLength="5"
                     android:inputType="phone"
                     android:singleLine="true"
                     android:textColor="@color/black"
@@ -114,7 +117,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@color/colorPink"
                 android:onClick="@{()->activity.onSubmitClick()}"
-                android:text="Submit"
+                android:text="@string/Submit"
                 android:textColor="#ffffff"
                 android:textSize="22sp" />
 

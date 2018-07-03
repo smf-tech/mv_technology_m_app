@@ -1,10 +1,11 @@
 package com.mv.Activity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,22 +14,21 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mv.Adapter.HolldayListAdapter;
-import com.mv.Adapter.HorizontalCalenderAdapter;
 import com.mv.Model.HolidayListModel;
 import com.mv.R;
-import com.mv.Utils.Constants;
+import com.mv.Retrofit.AppDatabase;
+import com.mv.Utils.LocaleManager;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityHolidayListBinding;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 
 public class HolidayListActivity extends AppCompatActivity implements View.OnClickListener {
     protected ActivityHolidayListBinding binding;
     Activity context;
-    List<HolidayListModel> holidayListModels=new ArrayList<>();
+    List<HolidayListModel> holidayListModels = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,17 +38,15 @@ public class HolidayListActivity extends AppCompatActivity implements View.OnCli
         binding.setClander(this);
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        holidayListModels = getIntent().getParcelableArrayListExtra(Constants.PROCESS_ID);
-        List<HolidayListModel> temp=new ArrayList<>();
-        for(int i=0;i<holidayListModels.size();i++)
-        {
-            if(!holidayListModels.get(i).getCategory__c().equals("Weekly Off"))
-            {
+        holidayListModels = AppDatabase.getAppDatabase(HolidayListActivity.this).userDao().getAllHolidayList();
+        List<HolidayListModel> temp = new ArrayList<>();
+        for (int i = 0; i < holidayListModels.size(); i++) {
+            if (!holidayListModels.get(i).getCategory__c().equals("Weekly Off")) {
                 temp.add(holidayListModels.get(i));
             }
 
         }
-        HolldayListAdapter holldayListAdapter=new HolldayListAdapter(context,temp);
+        HolldayListAdapter holldayListAdapter = new HolldayListAdapter(context, temp);
         binding.recyclerView.setAdapter(holldayListAdapter);
         setActionbar(getString(R.string.holiday_list));
         binding.swiperefresh.setOnRefreshListener(
@@ -61,6 +59,11 @@ public class HolidayListActivity extends AppCompatActivity implements View.OnCli
                 }
         );
 
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
     }
 
     private void setActionbar(String Title) {
@@ -81,6 +84,7 @@ public class HolidayListActivity extends AppCompatActivity implements View.OnCli
         img_logout.setImageResource(R.drawable.ic_action_calender);
         img_logout.setOnClickListener(this);
     }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {

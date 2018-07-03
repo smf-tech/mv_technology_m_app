@@ -29,6 +29,11 @@
         <item>मूल्यवर्धन उपक्रम तुमच्या वर्गात सुरु करणे</item>
     </string-array>
 
+    <string-array name="array_of_status">
+        <item>New</item>
+        <item>Completed</item>
+        <item>Cancel</item>
+    </string-array>
 
     <string-array name="array_of_issue">
         <item>Select</item>
@@ -52,6 +57,7 @@
         <item>Tele/Fax</item>
         <item>Xerox/Print &amp; stationary</item>
         <item>Lodging</item>
+        <item>Room Rent</item>
         <item>Book &amp; periodical</item>
         <item>Local Conveyance</item>
         <item>Postage &amp; Courier</item>

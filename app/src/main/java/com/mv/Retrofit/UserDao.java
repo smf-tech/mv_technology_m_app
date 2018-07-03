@@ -8,11 +8,13 @@ import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
 
 import com.mv.Model.Adavance;
+import com.mv.Model.Attendance;
 import com.mv.Model.CalenderEvent;
 import com.mv.Model.Community;
 import com.mv.Model.Content;
 import com.mv.Model.DownloadContent;
 import com.mv.Model.Expense;
+import com.mv.Model.HolidayListModel;
 import com.mv.Model.LocationModel;
 import com.mv.Model.Salary;
 import com.mv.Model.TaskContainerModel;
@@ -29,6 +31,34 @@ import java.util.List;
 @Dao
 public interface UserDao {
 
+
+    @Query("SELECT * FROM " + Constants.TABLE_HOLIDAY)
+    List<HolidayListModel> getAllHolidayList();
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long[] insertAllHolidayList(List<HolidayListModel> holidayListModels);
+
+
+    @Query("DELETE FROM " + Constants.TABLE_HOLIDAY)
+    public void deleteHolidayList();
+
+    @Query("SELECT * FROM " + Constants.TABLE_ATTENDANCE)
+    List<Attendance> getAllAttendance();
+
+    @Query("SELECT * FROM " + Constants.TABLE_ATTENDANCE + " where Synch = 'false' ORDER BY unique_Id DESC")
+    Attendance getUnSynchAttendance();
+
+    @Delete
+    void deleteAttendance(Attendance... attendance);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long[] insertAllAttendance(List<Attendance> attendances);
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    long[] insertAttendance(Attendance... attendance);
+
+    @Query("DELETE FROM " + Constants.TABLE_ATTENDANCE)
+    public void deleteAllAttendance();
 
     @Query("SELECT * FROM " + Constants.TABLE_VOUCHER)
     List<Voucher> getAllVoucher();
@@ -172,6 +202,7 @@ public interface UserDao {
 
     @Query("SELECT * FROM " + Constants.TABLE_PROCESS)
     List<Template> getProcess();
+
     @Query("SELECT * FROM " + Constants.TABLE_PROCESS + " where Category__c = :catagory")
     List<Template> getProcessCatagry(String catagory);
 
@@ -194,6 +225,9 @@ public interface UserDao {
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  order by CreatedDate desc")
     List<Content> getAllChats(String communityId);
     //String strSQL = "UPDATE myTable SET Column1 = someValue WHERE columnId = "+ someValue;
+
+    @Query("SELECT CreatedDate FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  order by CreatedDate asc")
+    String getLastChatTime(String communityId);
 
 
     //String strSQL = "UPDATE myTable SET Column1 = someValue WHERE columnId = "+ someValue;

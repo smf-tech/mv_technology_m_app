@@ -1,70 +1,99 @@
 package com.mv.Model;
 
 import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.mv.Utils.Constants;
+
+import java.io.Serializable;
 
 /**
- * Created by Rohit Gujar on 30-04-2018.
+ * Created by nanostuffs on 03-02-2018.
  */
-
-public class Attendance {
+@Entity(tableName = Constants.TABLE_ATTENDANCE)
+public class Attendance implements Serializable {
 
 
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "unique_Id")
     private int Unique_Id;
 
-    @SerializedName("userInfo")
-    @Expose
-    private UserInfo userInfo;
-
-    @SerializedName("remarks__c")
-    @Expose
-    private String remarks;
-
-    @SerializedName("checkOutTime__c")
-    @Expose
-    private String checkOutTime;
-
-    @SerializedName("checkInTime__c")
-    @Expose
-    private String checkInTime;
-
-    @SerializedName("Id")
-    @Expose
-    private String id;
-
     @SerializedName("Attendance_Date__c")
     @Expose
+    @ColumnInfo(name = "Attendance_Date__c")
     private String date;
 
     @SerializedName("status__c")
     @Expose
+    @ColumnInfo(name = "status__c")
     private String status;
+
+    @SerializedName("MV_User__c")
+    @Expose
+    @ColumnInfo(name = "MV_User__c")
+    private String User;
+
+    @SerializedName("remarks__c")
+    @Expose
+    @ColumnInfo(name = "remarks__c")
+    private String remarks;
+
+    @SerializedName("checkOutTime__c")
+    @Expose
+    @ColumnInfo(name = "checkOutTime__c")
+    private String checkOutTime;
+
+    @SerializedName("checkInTime__c")
+    @Expose
+    @ColumnInfo(name = "checkInTime__c")
+    private String checkInTime;
+
+    @ColumnInfo(name = "Synch")
+    private String Synch;
+
+    @SerializedName("Id")
+    @Expose
+    @ColumnInfo(name = "Id")
+    private String Id;
 
     @SerializedName("checkInLoc__Latitude__s")
     @Expose
+    @ColumnInfo(name = "checkInLoc__Latitude__s")
     private String checkInLat;
 
     @SerializedName("checkInLoc__Longitude__s")
     @Expose
+    @ColumnInfo(name = "checkInLoc__Longitude__s")
     private String checkInLng;
 
     @SerializedName("checkOutLoc__Latitude__s")
     @Expose
+    @ColumnInfo(name = "checkOutLoc__Latitude__s")
     private String checkOutLat;
 
     @SerializedName("checkOutLoc__Longitude__s")
     @Expose
+    @ColumnInfo(name = "checkOutLoc__Longitude__s")
     private String checkOutLng;
 
+    public String getId() {
+        return Id;
+    }
 
-    @SerializedName("MV_User__c")
-    @Expose
-    private String User;
+    public void setId(String Id) {
+        this.Id = Id;
+    }
+
+    public String getSynch() {
+        return Synch;
+    }
+
+    public void setSynch(String synch) {
+        Synch = synch;
+    }
 
     public String getUser() {
         return User;
@@ -72,6 +101,47 @@ public class Attendance {
 
     public void setUser(String user) {
         User = user;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public String getCheckOutTime() {
+        return checkOutTime;
+    }
+
+    public void setCheckOutTime(String checkOutTime) {
+        this.checkOutTime = checkOutTime;
+    }
+
+    public String getCheckInTime() {
+        return checkInTime;
+    }
+
+    public void setCheckInTime(String checkInTime) {
+        this.checkInTime = checkInTime;
+    }
+
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public int getUnique_Id() {
@@ -82,13 +152,7 @@ public class Attendance {
         Unique_Id = unique_Id;
     }
 
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
+    public Attendance() {
     }
 
     public String getCheckInLat() {
@@ -121,54 +185,6 @@ public class Attendance {
 
     public void setCheckOutLng(String checkOutLng) {
         this.checkOutLng = checkOutLng;
-    }
-
-    public UserInfo getUserInfo() {
-        return userInfo;
-    }
-
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
-    }
-
-    public String getRemarks() {
-        return remarks;
-    }
-
-    public void setRemarks(String remarks) {
-        this.remarks = remarks;
-    }
-
-    public String getCheckOutTime() {
-        return checkOutTime;
-    }
-
-    public void setCheckOutTime(String checkOutTime) {
-        this.checkOutTime = checkOutTime;
-    }
-
-    public String getCheckInTime() {
-        return checkInTime;
-    }
-
-    public void setCheckInTime(String checkInTime) {
-        this.checkInTime = checkInTime;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
     }
 
 }

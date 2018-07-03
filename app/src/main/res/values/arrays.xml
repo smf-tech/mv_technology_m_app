@@ -9,7 +9,11 @@
         <item>MT</item>
         <item>TC</item>
     </string-array>
-
+    <string-array name="array_of_status">
+        <item>New</item>
+        <item>Completed</item>
+        <item>Cancel</item>
+    </string-array>
     <string-array name="array_of_training">
         <item>मूल्यवर्धन कार्यक्रमाची ओळख</item>
         <item>मूल्यवर्धन कार्यक्रमाचा आराखडा</item>
@@ -68,6 +72,7 @@
         <item>Tele/Fax</item>
         <item>Xerox/Print &amp; stationary</item>
         <item>Lodging</item>
+        <item>Room Rent</item>
         <item>Book &amp; periodical</item>
         <item>Local Conveyance</item>
         <item>Postage &amp; Courier</item>
@@ -136,7 +141,6 @@
         <item>Cluster 5</item>
         <item>Cluster 6</item>
     </string-array>
-
 
 
     <string-array name="places">
