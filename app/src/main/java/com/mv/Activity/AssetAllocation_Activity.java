@@ -138,7 +138,8 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
                             final List<Asset> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Asset[].class));
                             stocklist.add("Select");
                             for (int i = 0; i < temp.size(); i++) {
-                                stocklist.add(temp.get(i).getModelNo());
+                                if (temp.get(i).getCode() != null)
+                                    stocklist.add(temp.get(i).getCode());
                             }
                             stock_adapter = new ArrayAdapter<String>(AssetAllocation_Activity.this,
                                     android.R.layout.simple_spinner_item, stocklist);

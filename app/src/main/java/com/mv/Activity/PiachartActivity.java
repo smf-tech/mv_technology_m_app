@@ -829,10 +829,57 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
             shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + title );
 
             startActivity(Intent.createChooser(shareIntent, "Share Report"));*/
-            showCommunityDialog();
+
+            if (AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities().size() == 0
+                    && Utills.isConnected(PiachartActivity.this)) {
+                getAllCommunities();
+            } else {
+                showCommunityDialog();
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void getAllCommunities() {
+
+        Utills.showProgressDialog(context, "Loading Communities", getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
+        String url = "";
+        url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(context).getMvUser().getId();
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    if (response.body() != null) {
+                        String str = response.body().string();
+                        if (str != null && str.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(str);
+                            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                            List<Community> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Community[].class));
+                            for (int i = 0; i < temp.size(); i++) {
+                                AppDatabase.getAppDatabase(context).userDao().insertCommunities(temp.get(i));
+                            }
+                            showCommunityDialog();
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
     }
 
     private void setdDataToSalesForcce(ArrayList<Content> content) {

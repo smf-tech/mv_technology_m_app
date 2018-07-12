@@ -41,12 +41,38 @@ public class User {
     @SerializedName("mvUser")
     @Expose
     private UserInfo mvUser = new UserInfo();
+
     @SerializedName("mvr")
     @Expose
     private UserInfo rolePermssion = new UserInfo();
+
     @SerializedName("mac")
     @Expose
     private UserInfo appConfig = new UserInfo();
+
+    public UserInfo getExtendedUser() {
+        return ExtendedUser;
+    }
+
+    public void setExtendedUser(UserInfo extendedUser) {
+        ExtendedUser = extendedUser;
+    }
+
+    @SerializedName("eup")
+    @Expose
+    private UserInfo ExtendedUser = new UserInfo();
+
+    public String getDuplicateMobileNo() {
+        return duplicateMobileNo;
+    }
+
+    public void setDuplicateMobileNo(String duplicateMobileNo) {
+        this.duplicateMobileNo = duplicateMobileNo;
+    }
+
+    @SerializedName("duplicateMobileNo")
+    @Expose
+    private String duplicateMobileNo;
 
     public UserInfo getMvUser() {
         return mvUser;

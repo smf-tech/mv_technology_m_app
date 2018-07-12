@@ -264,6 +264,77 @@ public class UserInfo {
     @Expose
     private String Languges__c;
 
+    @SerializedName("Bank_Account_Number__c")
+    @Expose
+    private String Bank_Account_Number__c;
+
+    @SerializedName("Bank_Name__c")
+    @Expose
+    private String Bank_Name__c;
+
+    @SerializedName("Employee_Id__c")
+    @Expose
+    private String Employee_Id__c;
+
+    @SerializedName("IFSC_Code__c")
+    @Expose
+    private String IFSC_Code__c;
+
+    @SerializedName("UAN_Number__c")
+    @Expose
+    private String UAN_Number__c;
+
+    public String getPF_Number__c() {
+        return PF_Number__c;
+    }
+
+    public void setPF_Number__c(String PF_Number__c) {
+        this.PF_Number__c = PF_Number__c;
+    }
+
+    @SerializedName("PF_Number__c")
+    @Expose
+    private String PF_Number__c;
+
+    public String getBank_Account_Number__c() {
+        return Bank_Account_Number__c;
+    }
+
+    public void setBank_Account_Number__c(String bank_Account_Number__c) {
+        Bank_Account_Number__c = bank_Account_Number__c;
+    }
+
+    public String getBank_Name__c() {
+        return Bank_Name__c;
+    }
+
+    public void setBank_Name__c(String bank_Name__c) {
+        Bank_Name__c = bank_Name__c;
+    }
+
+    public String getEmployee_Id__c() {
+        return Employee_Id__c;
+    }
+
+    public void setEmployee_Id__c(String employee_Id__c) {
+        Employee_Id__c = employee_Id__c;
+    }
+
+    public String getIFSC_Code__c() {
+        return IFSC_Code__c;
+    }
+
+    public void setIFSC_Code__c(String IFSC_Code__c) {
+        this.IFSC_Code__c = IFSC_Code__c;
+    }
+
+    public String getUAN_Number__c() {
+        return UAN_Number__c;
+    }
+
+    public void setUAN_Number__c(String UAN_Number__c) {
+        this.UAN_Number__c = UAN_Number__c;
+    }
 
     public String getGender() {
         return gender;

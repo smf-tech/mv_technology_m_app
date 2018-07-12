@@ -42,7 +42,7 @@ public class Constants {
     public static String TITLE = "title";
     public static String LIST = "list";
     public static String CONTENT = "content";
-
+    public static String SALARY = "SALARY";
     public static final String TABLE_CALANDER = "table_calender";
     public static final String TABLE_TASK = "table_task";
     public static final String TABLE_HOLIDAY = "table_holiday";

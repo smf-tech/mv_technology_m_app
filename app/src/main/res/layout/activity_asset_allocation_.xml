@@ -99,7 +99,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"
-                        android:text="@string/select_model_no"
+                        android:text="@string/select_code"
                         android:textColor="@color/medium_grey" />
 
                     <RelativeLayout

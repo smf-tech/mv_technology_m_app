@@ -834,6 +834,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             if (response.body() != null) {
                                 String data = response.body().string();
                                 if (data != null && data.length() > 0) {
+                                    Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                                    User user = gson.fromJson(data, User.class);
+                                    if (user.getDuplicateMobileNo().equalsIgnoreCase("true")) {
+                                        showDuplicatePopUp();
+                                        return;
+                                    }
                                   /*  JSONObject object = new JSONObject(data);
                                     JSONArray array = object.getJSONArray("Records");
                                     for (int i = 0; i < array.length(); i++) {
@@ -861,7 +867,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                         AppDatabase.getAppDatabase(RegistrationActivity.this).userDao().clearProcessTable();
                                         AppDatabase.getAppDatabase(RegistrationActivity.this).userDao().clearTaskContainer();
                                     }
-                                    Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                                     preferenceHelper.insertString(PreferenceHelper.UserData, data);
                                     User.clearUser();
                                     setResult(RESULT_OK);
@@ -875,7 +880,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             } else {
                                 Utills.showToast(response1.getString("Message"), RegistrationActivity.this);
                             }*/
-                        } catch (Exception e) {
+                        } catch (
+                                Exception e)
+
+                        {
                             e.printStackTrace();
                             Utills.showToast(getString(R.string.error_something_went_wrong), RegistrationActivity.this);
                         }
@@ -892,6 +900,21 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 e.printStackTrace();
             }
         }
+
+    }
+
+    private void showDuplicatePopUp() {
+        AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+
+        alertDialog.setTitle(getString(R.string.alreadyPresent));
+        alertDialog.setMessage(getString(R.string.alreadyPresentDetail));
+
+        alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        alertDialog.show();
     }
 
 

@@ -3,15 +3,19 @@
 package com.mv.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.mv.Activity.SalaryDetailActivity;
 import com.mv.Model.Salary;
 import com.mv.R;
+import com.mv.Utils.Constants;
 
 import java.util.List;
 
@@ -53,16 +57,24 @@ public class SalaryAdapter extends RecyclerView.Adapter<SalaryAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvSalaryAmountName, tvSalaryDateName, tvSalaryMonthName;
-
+        CardView eachCard;
 
         public ViewHolder(View itemLayoutView) {
 
             super(itemLayoutView);
-
+            eachCard = (CardView) itemLayoutView.findViewById(R.id.eachCard);
             tvSalaryAmountName = (TextView) itemLayoutView.findViewById(R.id.tvSalaryAmountName);
             tvSalaryDateName = (TextView) itemLayoutView.findViewById(R.id.tvSalaryDateName);
             tvSalaryMonthName = (TextView) itemLayoutView.findViewById(R.id.tvSalaryMonthName);
-
+            eachCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent;
+                    intent = new Intent(mContext, SalaryDetailActivity.class);
+                    intent.putExtra(Constants.SALARY, mDataList.get(getAdapterPosition()));
+                    mContext.startActivity(intent);
+                }
+            });
         }
     }
 

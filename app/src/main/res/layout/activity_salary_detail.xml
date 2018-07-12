@@ -1,0 +1,753 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="activity"
+            type="com.mv.Activity.SalaryDetailActivity" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/app_bg"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar_layout"
+            layout="@layout/toolbar"></include>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="@dimen/dimen_10dp"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <TableLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/grey_box"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+
+                                android:text="Employee No : "
+                                android:textColor="@color/medium_grey"
+                                android:textSize="@dimen/small_text" />
+
+                            <TextView
+                                android:id="@+id/txtEmployeeNo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:singleLine="true"
+                                android:text="2038"
+                                android:textColor="@color/medium_grey"
+                                android:textSize="@dimen/small_text" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:text="Name : "
+                                android:textColor="@color/medium_grey"
+                                android:textSize="@dimen/small_text" />
+
+                            <TextView
+                                android:id="@+id/txtName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:singleLine="true"
+                                android:text="Rambhau Sangle"
+                                android:textColor="@color/medium_grey"
+                                android:textSize="@dimen/small_text" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:text="Bank Ac : "
+                                android:textColor="@color/medium_grey"
+                                android:textSize="@dimen/small_text" />
+
+                            <TextView
+                                android:id="@+id/txtBankAcc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:text="31821077877"
+                                android:textColor="@color/medium_grey"
+                                android:textSize="@dimen/small_text" />
+
+                        </TableRow>
+                    </TableLayout>
+
+                    <TableLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/grey_box"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:text="Present/Leave  \nDays:"
+                                android:textColor="@color/medium_grey"
+                                android:textSize="@dimen/small_text" />
+
+                            <TextView
+                                android:id="@+id/txtTotalPresenntDays"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:singleLine="true"
+                                android:text="15/12"
+                                android:textColor="@color/medium_grey"
+                                android:textSize="@dimen/small_text" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:text="PF A/C No : "
+                                android:textColor="@color/medium_grey"
+                                android:textSize="@dimen/small_text" />
+
+                            <TextView
+                                android:id="@+id/txtPfNo"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:singleLine="true"
+                                android:text="PUPUN148705300018"
+                                android:textColor="@color/medium_grey"
+                                android:textSize="@dimen/small_text" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:text="UAN : "
+                                android:textColor="@color/medium_grey"
+                                android:textSize="@dimen/small_text" />
+
+                            <TextView
+                                android:id="@+id/txtUAN"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:text="100303790976"
+                                android:textColor="@color/medium_grey"
+                                android:textSize="@dimen/small_text" />
+
+                        </TableRow>
+                    </TableLayout>
+
+                    <TableLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@drawable/grey_box"
+                        android:gravity="center"
+                        android:padding="5dp">
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:text="Paid Leave Days : "
+                                android:textColor="@color/medium_grey"
+                                android:textSize="@dimen/small_text" />
+
+                            <TextView
+                                android:id="@+id/txtPaidLeave"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:singleLine="true"
+                                android:text="6"
+                                android:textColor="@color/medium_grey"
+                                android:textSize="@dimen/small_text" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:text="Unpaid Leave Days : "
+                                android:textColor="@color/medium_grey"
+                                android:textSize="@dimen/small_text" />
+
+                            <TextView
+                                android:id="@+id/txtUnpaidLeave"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:singleLine="true"
+                                android:text="5"
+                                android:textColor="@color/medium_grey"
+                                android:textSize="@dimen/small_text" />
+
+                        </TableRow>
+
+                        <TableRow
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:text="Absent Days : "
+                                android:textColor="@color/medium_grey"
+                                android:textSize="@dimen/small_text" />
+
+                            <TextView
+                                android:id="@+id/txtAbsentDays"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_column="1"
+                                android:text="2"
+                                android:textColor="@color/medium_grey"
+                                android:textSize="@dimen/small_text" />
+
+                        </TableRow>
+                    </TableLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/grey_box"
+                    android:orientation="horizontal"
+                    android:padding="5dp"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="Earnings (A)"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="@dimen/large_text" />
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="1"
+
+                                    android:text="Consolidated Basic : "
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                                <TextView
+                                    android:id="@+id/txtConsolidated"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="2"
+                                    android:text="3466.00"
+                                    android:textColor="@color/medium_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="1"
+                                    android:text="HRA : "
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                                <TextView
+                                    android:id="@+id/txtHRA"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="2"
+                                    android:text="3466.00"
+                                    android:textColor="@color/medium_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="1"
+                                    android:text="Conveyance Allowance : "
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                                <TextView
+                                    android:id="@+id/txtConveyance"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="2"
+                                    android:text="3466.00"
+                                    android:textColor="@color/medium_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="1"
+                                    android:text="Special Allowance : "
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                                <TextView
+                                    android:id="@+id/txtSpecial"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="2"
+                                    android:text="3466.00"
+                                    android:textColor="@color/medium_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="1"
+                                    android:text="Medical Allowance : "
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                                <TextView
+                                    android:id="@+id/txtMedical"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="2"
+                                    android:text="3466.00"
+                                    android:textColor="@color/medium_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="1"
+                                    android:text="Arrears : "
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                                <TextView
+                                    android:id="@+id/txtArrears"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="2"
+                                    android:text="3466.00"
+                                    android:textColor="@color/medium_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="1"
+                                    android:text="Perks : "
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                                <TextView
+                                    android:id="@+id/txtPerks"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="2"
+                                    android:text="3466.00"
+                                    android:textColor="@color/medium_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="1"
+                                    android:text="Gross Earnings for the Month : "
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                                <TextView
+                                    android:id="@+id/txtGross"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="2"
+                                    android:text="3466.00"
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                            </TableRow>
+
+
+                        </TableLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="1dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="3dp"
+                        android:background="@color/medium_grey"></View>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:text="Deductions (B)"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="@dimen/large_text" />
+
+                        <TableLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="1"
+
+                                    android:text="Provident Fund : "
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                                <TextView
+                                    android:id="@+id/txtPF"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="2"
+                                    android:text="3466.00"
+                                    android:textColor="@color/medium_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="1"
+                                    android:text="Profession Tax : "
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                                <TextView
+                                    android:id="@+id/txtProfession"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="2"
+                                    android:text="3466.00"
+                                    android:textColor="@color/medium_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="1"
+                                    android:text="TDS : "
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                                <TextView
+                                    android:id="@+id/txtTDS"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="2"
+                                    android:text="3466.00"
+                                    android:textColor="@color/medium_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="1"
+                                    android:text="Salary Advance : "
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                                <TextView
+                                    android:id="@+id/txtSalaryAdvance"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="2"
+                                    android:text="3466.00"
+                                    android:textColor="@color/medium_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="1"
+                                    android:text="Telephone Usage : "
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                                <TextView
+                                    android:id="@+id/txtTelephone"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="2"
+                                    android:text="3466.00"
+                                    android:textColor="@color/medium_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="1"
+                                    android:text="Security Fund : "
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                                <TextView
+                                    android:id="@+id/txtSecurity"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="2"
+                                    android:text="3466.00"
+                                    android:textColor="@color/medium_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="1"
+                                    android:text="Other Deductions : "
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                                <TextView
+                                    android:id="@+id/txtOther"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="2"
+                                    android:text="3466.00"
+                                    android:textColor="@color/medium_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="1"
+                                    android:text="Total Deductions : "
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                                <TextView
+                                    android:id="@+id/txtDeductions"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_column="2"
+                                    android:text="3466.00"
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                            </TableRow>
+
+
+                        </TableLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/grey_box"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Net Salary: (A - B) : "
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/large_text" />
+
+                    <TextView
+                        android:id="@+id/txtNetSalary"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="6517.00"
+                        android:textColor="@color/dark_grey"
+                        android:textSize="@dimen/large_text" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </ScrollView>
+
+
+    </LinearLayout>
+</layout>
