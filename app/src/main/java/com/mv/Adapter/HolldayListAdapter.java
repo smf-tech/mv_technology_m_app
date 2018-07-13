@@ -58,15 +58,15 @@ public class HolldayListAdapter extends RecyclerView.Adapter<HolldayListAdapter.
     }
 
     @Override
-    public HolldayListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_trainning_calender, parent, false);
 
-        return new HolldayListAdapter.MyViewHolder(itemView);
+        return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(HolldayListAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, int position) {
 
         holder.index.setText("" + (position + 1));
         holder.title.setVisibility(View.VISIBLE);

@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.mv.Activity.EventUserAttendanceActivity;
 import com.mv.Activity.EventUserListActivity;
 import com.mv.Model.EventUser;
 import com.mv.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,7 +22,7 @@ import java.util.List;
 
 public class EventUserListAdapter extends RecyclerView.Adapter<EventUserListAdapter.MyViewHolder> {
 
-    private List<EventUser> eventUserList;
+    private List<EventUser> eventUserList,eventUsersOld;
     private Activity mContext;
 
 
@@ -38,14 +40,14 @@ public class EventUserListAdapter extends RecyclerView.Adapter<EventUserListAdap
                 @Override
                 public void onClick(View v) {
                     if (((CheckBox) v).isChecked()) {
-                        //  taskList.get(getAdapterPosition()).setTask_Response__c("true");
-                        eventUserList.get(getAdapterPosition()).setUserSelected(true);
-
                         ((EventUserListActivity) mContext).saveDataToList(eventUserList.get(getAdapterPosition()), true);
+                        eventUserList.get(getAdapterPosition()).setUserSelected(true);
+                        ((EventUserListActivity) mContext).checkAllSelected((ArrayList<EventUser>) eventUserList);
+
                     } else {
-                        //  taskList.get(getAdapterPosition()).setTask_Response__c("false");
-                        eventUserList.get(getAdapterPosition()).setUserSelected(false);
                         ((EventUserListActivity) mContext).saveDataToList(eventUserList.get(getAdapterPosition()), false);
+                        eventUserList.get(getAdapterPosition()).setUserSelected(false);
+                        ((EventUserListActivity) mContext).checkAllDeSelected();
                     }
                 }
             });
@@ -53,8 +55,9 @@ public class EventUserListAdapter extends RecyclerView.Adapter<EventUserListAdap
     }
 
 
-    public EventUserListAdapter(List<EventUser> ebentUserList, Activity context) {
+    public EventUserListAdapter(ArrayList<EventUser> eventUsersOld, List<EventUser> ebentUserList, Activity context) {
         this.eventUserList = ebentUserList;
+        this.eventUsersOld = eventUsersOld;
         this.mContext = context;
 
     }
@@ -73,6 +76,15 @@ public class EventUserListAdapter extends RecyclerView.Adapter<EventUserListAdap
         holder.eventUserName.setText(eventUserList.get(position).getUserName());
         holder.eventUserRole.setText(eventUserList.get(position).getRole());
         holder.checkBox.setChecked(eventUserList.get(position).getUserSelected());
+
+        if(eventUserList.get(position).getUserSelected()){
+            holder.checkBox.setChecked(true);
+            ((EventUserListActivity) mContext).saveDataToList(eventUserList.get(position), true);
+        } else {
+            holder.checkBox.setChecked(false);
+            ((EventUserListActivity) mContext).saveDataToList(eventUserList.get(position), false);
+        }
+
     }
 
     @Override

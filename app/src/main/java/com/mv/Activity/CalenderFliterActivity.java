@@ -2,6 +2,7 @@ package com.mv.Activity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -9,10 +10,16 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -22,6 +29,7 @@ import android.widget.TimePicker;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mv.Adapter.EventAttendanceListAdapter;
 import com.mv.Model.CalenderEvent;
 import com.mv.Model.EventUser;
 import com.mv.Model.Template;
@@ -82,6 +90,9 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
     Activity context;
     String url = "";
     String id = "";
+    //change made for event attendance
+    private ArrayList<EventUser> eventAttendanceUsers = new ArrayList<>();
+    String SelectedEventAttendanceIDs="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +112,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             calenderEvent = getIntent().getParcelableExtra(Constants.My_Calendar);
             id = calenderEvent.getId();
             url = Constants.UpdatetEventcalender_Url;
+            SelectedEventAttendanceIDs=calenderEvent.getPresent_User__c();
 
             selectedState = calenderEvent.getState__c();
             selectedDisrict = calenderEvent.getDistrict__c();
@@ -131,6 +143,25 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             else
                 selectedProcessId = new ArrayList<String>(Arrays.asList(getColumnIdex(("Other,").split(","))));
 
+            if (User.getCurrentUser(this).getMvUser().getHide_Role_On_Calendar__c().contains(User.getCurrentUser(this).getMvUser().getRoll())) {
+                binding.lyAttendance.setVisibility(View.GONE);
+            }
+
+
+            if (!calenderEvent.getMV_User1__c().equals(User.getCurrentUser(this).getMvUser().getId())) {
+                binding.etEventTime.setEnabled(false);
+                binding.etEventTitle.setEnabled(false);
+                binding.etEventDate.setEnabled(false);
+                binding.spinnerCatogory.setEnabled(false);
+                binding.etEventEndDate.setEnabled(false);
+                binding.etEventEndTime.setEnabled(false);
+                binding.etEventDiscription.setEnabled(false);
+                binding.spinnerStatus.setEnabled(false);
+                binding.lyAttendance.setVisibility(View.INVISIBLE);
+                binding.btnSubmit.setVisibility(View.GONE);
+
+            }
+
         } else {
             id = null;
             url = Constants.InsertEventcalender_Url;
@@ -147,6 +178,8 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             binding.spinnerRole.setText("Select");
             binding.spinnerCatogory.setText("Other");
         }
+
+
 
         binding.txtOrg.setVisibility(View.GONE);
         binding.txtRole.setVisibility(View.GONE);
@@ -203,6 +236,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         binding.btnSubmit.setOnClickListener(this);
         binding.spinnerOrganization.setOnItemSelectedListener(this);
         binding.tvEventAddUser.setOnClickListener(this);
+        binding.tvEventAttendance.setOnClickListener(this);
         binding.etEventDate.setOnClickListener(this);
         binding.etEventDate.setFocusable(false);
         binding.etEventDate.setClickable(true);
@@ -374,7 +408,12 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                     msg = "Please Enter Description";
                 }
                 if (msg.isEmpty()) {
-                    submitEventDetail();
+                    if(id==null){
+                        submitEventDetail();
+                    }else {
+                        updateEventDetail();
+                    }
+
                 } else {
                     Utills.showToast(msg, context);
                 }
@@ -432,6 +471,13 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             case R.id.tv_event_add_user:
 
                 getAllFilterUser();
+
+                // sendData();
+                break;
+
+            case R.id.tv_event_attendance:
+
+                setAttendance();
 
                 // sendData();
                 break;
@@ -958,8 +1004,18 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
     private void getAllFilterUser() {
         Intent intent = new Intent(CalenderFliterActivity.this, EventUserListActivity.class);
+        intent.putExtra("EventID",id);
         startActivityForResult(intent, 1);
     }
+
+    private void setAttendance() {
+        Intent intent = new Intent(CalenderFliterActivity.this, EventUserAttendanceActivity.class);
+        intent.putExtra("EventID",id);
+        intent.putExtra("presentUser",calenderEvent.getPresent_User__c());
+        startActivityForResult(intent, 2);
+
+    }
+
 
     private void getCalendeEventsProcess() {
         Utills.showProgressDialog(context, "Loading ", getString(R.string.progress_please_wait));
@@ -1026,34 +1082,61 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            // tvResult.setText(data.getIntExtra("result",-1)+"");
-            selectedUser = data.getParcelableArrayListExtra(Constants.PROCESS_ID);
-            calenderEventUserArrayList = data.getParcelableArrayListExtra(Constants.ALLUSER);
-            selectedRolename = data.getStringExtra("Role");
-            StringBuffer sb = new StringBuffer();
-            StringBuffer sbName = new StringBuffer();
-            String prefix = "";
-            for (int i = 0; i < selectedUser.size(); i++) {
-                sb.append(prefix);
-                sbName.append(prefix);
-                prefix = ",";
-                sb.append(selectedUser.get(i).getUserID());
-                sbName.append(selectedUser.get(i).getUserName());
-                //now original string is changed
-            }
-            selectedUserId = sb.toString();
-            selectedUserName = sbName.toString();
-            if (calenderEventUserArrayList.size() == selectedUser.size()) {
-                binding.tvEventAddUser.setText("All Selected");
-            } else {
-                binding.tvEventAddUser.setText(selectedUserName);
-            }
-            Log.e("StringId", selectedUserId);
+        if(requestCode==1){
+            if (resultCode == RESULT_OK) {
+                // tvResult.setText(data.getIntExtra("result",-1)+"");
+                selectedUser = data.getParcelableArrayListExtra(Constants.PROCESS_ID);
+                calenderEventUserArrayList = data.getParcelableArrayListExtra(Constants.ALLUSER);
+                selectedRolename = data.getStringExtra("Role");
+                StringBuffer sb = new StringBuffer();
+                StringBuffer sbName = new StringBuffer();
+                String prefix = "";
+                for (int i = 0; i < selectedUser.size(); i++) {
+                    sb.append(prefix);
+                    sbName.append(prefix);
+                    prefix = ",";
+                    sb.append(selectedUser.get(i).getUserID());
+                    sbName.append(selectedUser.get(i).getUserName());
+                    //now original string is changed
+                }
+                selectedUserId = sb.toString();
+                selectedUserName = sbName.toString();
+                if (calenderEventUserArrayList.size() == selectedUser.size()) {
+                    binding.tvEventAddUser.setText("All Selected");
+                } else {
+                    binding.tvEventAddUser.setText(selectedUserName);
+                }
+                Log.e("StringId", selectedUserId);
 
+
+            }
+        }else if(requestCode==2){
+            if (resultCode == RESULT_OK) {
+                eventAttendanceUsers = data.getParcelableArrayListExtra("EventSelectedUsers");
+
+                StringBuffer sb = new StringBuffer();
+                StringBuffer sbName = new StringBuffer();
+                String prefix = "";
+                for (int i = 0; i < eventAttendanceUsers.size(); i++) {
+                    sb.append(prefix);
+                    sbName.append(prefix);
+                    prefix = ",";
+                    sb.append(eventAttendanceUsers.get(i).getUserID());
+                    sbName.append(eventAttendanceUsers.get(i).getUserName());
+                    //now original string is changed
+                }
+                SelectedEventAttendanceIDs = sb.toString();
+             /*//   selectedUserName = sbName.toString();
+                if (calenderEventUserArrayList.size() == selectedUser.size()) {
+                 //   binding.tvEventAddUser.setText("All Selected");
+                } else {
+                   // binding.tvEventAddUser.setText(SelectedEventAttendanceIDs);
+                }*/
+                Log.e("StringId", SelectedEventAttendanceIDs);
+
+            }
 
         }
-
     }
 
     private void showrRoleDialog() {
@@ -1238,6 +1321,91 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 JsonParser jsonParser = new JsonParser();
                 JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
                 apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.InsertEventcalender_Url, gsonObject).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Utills.hideProgressDialog();
+                        try {
+                            finish();
+                        } catch (Exception e) {
+                            Utills.hideProgressDialog();
+                            Utills.showToast(getString(R.string.error_something_went_wrong), CalenderFliterActivity.this);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Utills.hideProgressDialog();
+                        Utills.showToast(getString(R.string.error_something_went_wrong), CalenderFliterActivity.this);
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Utills.hideProgressDialog();
+                Utills.showToast(getString(R.string.error_something_went_wrong), CalenderFliterActivity.this);
+
+            }
+        } else {
+            Utills.showToast(getString(R.string.error_no_internet), CalenderFliterActivity.this);
+        }
+    }
+
+    private void updateEventDetail() {
+        if (Utills.isConnected(this)) {
+            try {
+                Utills.showProgressDialog(context, "Loading ", getString(R.string.progress_please_wait));
+
+                JSONObject jsonObject = new JSONObject();
+                JSONArray jsonArray = new JSONArray();
+                JSONObject jsonObject1 = new JSONObject();
+                jsonObject1.put("Id", id);
+                //  jsonObject1.put("Assigned_User_Ids__c", selectedUserId);
+
+                jsonObject1.put("Cluster__c", selectedCluster);
+                jsonObject1.put("Date__c", binding.etEventDate.getText().toString());
+
+                jsonObject1.put("Description_New__c", binding.etEventDiscription.getText().toString());
+                jsonObject1.put("District__c", selectedDisrict);
+                if (selectedUserId.equals(""))
+                    jsonObject1.put("Is_Event_for_All_Role__c", true);
+                else
+                    jsonObject1.put("Is_Event_for_All_Role__c", false);
+
+                if (selectedUserId!=null && !selectedUserId.equals("")){
+                    selectedUserId = selectedUserId + "," + User.getCurrentUser(CalenderFliterActivity.this).getMvUser().getId();
+                    jsonObject1.put("Assigned_User_Ids__c", selectedUserId);
+                }/*else {
+                    selectedUserId = User.getCurrentUser(CalenderFliterActivity.this).getMvUser().getId();
+                    jsonObject1.put("Assigned_User_Ids__c", selectedUserId);
+                }*/
+
+//                if (SelectedEventAttendanceIDs.length() > 0||SelectedEventAttendanceIDs!="")
+                    jsonObject1.put("Present_User__c", SelectedEventAttendanceIDs);
+                jsonObject1.put("Role__c", selectedRolename);
+                jsonObject1.put("Status__c", binding.spinnerStatus.getSelectedItem().toString());
+                jsonObject1.put("School__c", selectedSchool);
+                if (processId.length() > 0)
+                    jsonObject1.put("MV_Process__c", processId);
+                else
+                    jsonObject1.put("MV_Process__c", "Other");
+                jsonObject1.put("State__c", selectedState);
+                jsonObject1.put("Taluka__c", selectedTaluka);
+                jsonObject1.put("Village__c", selectedVillage);
+                jsonObject1.put("MV_User__c", User.getCurrentUser(context).getMvUser().getId());
+                jsonObject1.put("category", selectedCatagory);
+                jsonObject1.put("Title__c", binding.etEventTitle.getText().toString());
+                jsonObject1.put("Event_Time__c", binding.etEventTime.getText().toString());
+
+                jsonObject1.put("End_Date__c", binding.etEventEndDate.getText().toString());
+                jsonObject1.put("Event_End_Time__c", binding.etEventEndTime.getText().toString());
+
+                jsonArray.put(jsonObject1);
+                jsonObject.put("listtaskanswerlist", jsonArray);
+
+                ServiceRequest apiService =
+                        ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+                JsonParser jsonParser = new JsonParser();
+                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.UpdatetEventcalender_Url, gsonObject).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();

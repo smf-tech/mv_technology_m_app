@@ -53,6 +53,10 @@ public interface ServiceRequest {
     Call<ResponseBody> getDistrict(@Field("state") String mState);
 
     @FormUrlEncoded
+    @POST("/services/apexrest/WS_DeleteComments")
+    Call<ResponseBody> deleteComment(@Field("commentId") String commentId);
+
+    @FormUrlEncoded
     @POST("user/app_get_taluka")
     Call<ResponseBody> getTaluka(@Field("state") String mState, @Field("district") String mDistrict);
 

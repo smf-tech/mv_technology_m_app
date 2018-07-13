@@ -42,7 +42,7 @@ public class Constants {
     public static String TITLE = "title";
     public static String LIST = "list";
     public static String CONTENT = "content";
-    public static String SALARY = "SALARY";
+
     public static final String TABLE_CALANDER = "table_calender";
     public static final String TABLE_TASK = "table_task";
     public static final String TABLE_HOLIDAY = "table_holiday";
@@ -113,6 +113,7 @@ public class Constants {
     public static final String STATUS_LOCAL = "status_local";
     public static final String TEMPLATES = "templates";
     public static final String UNIQUE = "UNIQUE";
+    public static String SALARY = "SALARY";
 
     public static String INDICATOR_TASK = "indicator_task";
     public static String INDICATOR_TASK_ROLE = "indicator_task_role";
@@ -152,6 +153,8 @@ public class Constants {
     public static final String GetCalenderEventsProcess = "/services/apexrest/getProcessForCalendarEvent";
     public static final String UpdatetEventcalender_Url = "/services/apexrest/UpdateEventcalender";
     public static final String InsertEventcalender_Url = "/services/apexrest/InsertEventcalenderNew";
+    public static final String GetEventCalenderMembers_Url = "/services/apexrest/getUserDataForCalnderAttendance";
+
     public static final String Userdetails_Url = "/services/apexrest/userdetails";
     public static final String MV_GetCommunities_c_Url = "/services/apexrest/MV_GetCommunities_c";
     public static final String DoLogout_url = "/services/apexrest/doLogout/";
@@ -222,5 +225,7 @@ public class Constants {
     public static String RoleList = "RoleList";
     public static String Approval = "Approval";
     public static String SendData = "SendData";
+    public static String AccountTeamCode;
+
 }
 

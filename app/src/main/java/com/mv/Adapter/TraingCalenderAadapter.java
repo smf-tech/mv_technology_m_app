@@ -42,6 +42,13 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
     private PreferenceHelper preferenceHelper;
     private int position;
 
+    public TraingCalenderAadapter(Activity context, List<CalenderEvent> moviesList) {
+        this.calenderlsList = moviesList;
+        this.mContext = context;
+        preferenceHelper = new PreferenceHelper(context);
+
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView tvProjectName, tvDateName, tvNoOfPeopleName, tvTotalExpenseName, tvStatusName;
         public LinearLayout lnr_content;
@@ -71,12 +78,12 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
                 @Override
                 public void onClick(View v) {
                     if (calenderlsList.get(position).getMV_User1__c() != null) {
-
-                        if (calenderlsList.get(getAdapterPosition()).getMV_User1__c().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
+                        CalenderEvent cc= calenderlsList.get(getAdapterPosition());
+                    //    if (calenderlsList.get(getAdapterPosition()).getMV_User1__c().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
                             Intent intent = new Intent(mContext, CalenderFliterActivity.class);
                             intent.putExtra(Constants.My_Calendar, calenderlsList.get(getAdapterPosition()));
                             mContext.startActivity(intent);
-                        }
+                     //   }
                     }
                 }
             });
@@ -86,23 +93,18 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
     }
 
 
-    public TraingCalenderAadapter(Activity context, List<CalenderEvent> moviesList) {
-        this.calenderlsList = moviesList;
-        this.mContext = context;
-        preferenceHelper = new PreferenceHelper(context);
 
-    }
 
     @Override
-    public TraingCalenderAadapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_calendar, parent, false);
 
-        return new TraingCalenderAadapter.MyViewHolder(itemView);
+        return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(TraingCalenderAadapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, int position) {
 
 
         CalenderEvent piaChartModel = (CalenderEvent) calenderlsList.get(position);

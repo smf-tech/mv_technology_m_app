@@ -71,6 +71,14 @@
                 android:textColor="@color/light_grey"
                 android:textSize="@dimen/small_text"
                 my_font:typeface="Abel-Regular.ttf" />
+
+            <ImageView
+                android:id="@+id/imgMore"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_more_vert_black_24dp"
+                android:visibility="gone" />
         </RelativeLayout>
 
     </LinearLayout>

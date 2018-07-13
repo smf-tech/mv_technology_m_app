@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mv.R;
+import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.databinding.ActivityAccoutSectionBinding;
 
@@ -37,6 +38,7 @@ public class AccountSectionActivity extends AppCompatActivity implements View.On
     public void onVoucherClick() {
         Intent intent;
         intent = new Intent(this, VoucherListActivity.class);
+        Constants.AccountTeamCode="Account";//to identify the section
         startActivity(intent);
     }
 

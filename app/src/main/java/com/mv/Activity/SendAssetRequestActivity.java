@@ -112,6 +112,7 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
             edit_text_issue_date.setText(mAsset.getExpectedIssueDate());
             edit_text_remarks.setText(mAsset.getRemark());
             edit_text_tentative_return_date.setText(mAsset.getTentativeReturnDate());
+//            id = mAsset.getAssetAllocationId();
         }
     }
 
@@ -169,6 +170,7 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
 
                                         input_stock.setVisibility(View.VISIBLE);
                                         edit_text_stock.setText(assetList.get((i - 1)).getAvailableQuantity());
+                                        //CHANGED
                                         id = assetList.get(selectAssetName - 1).getAsset_id();
                                         type = assetList.get(selectAssetName - 1).getType();
                                         if (type.equalsIgnoreCase("MultiEntry")) {
@@ -221,7 +223,7 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
             Utills.showProgressDialog(SendAssetRequestActivity.this, "Sending Request", "Please wait");
             JSONObject jsonObject1 = new JSONObject();
             if (!isAdd)
-                jsonObject1.put("Id", mAsset.getAsset_id());
+                jsonObject1.put("Id", mAsset.getAssetAllocationId());
             jsonObject1.put("Requested_User__c", User.getCurrentUser(SendAssetRequestActivity.this).getMvUser().getId());
             jsonObject1.put("ASSET__c", id);
             jsonObject1.put("Allocation_Quantity__c", "1");

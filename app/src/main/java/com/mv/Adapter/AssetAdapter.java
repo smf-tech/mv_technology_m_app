@@ -40,12 +40,12 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
     }
 
     @Override
-    public AssetAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemLayoutView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_asset, parent, false);
 
         // create ViewHolder
-        AssetAdapter.ViewHolder viewHolder = new AssetAdapter.ViewHolder(itemLayoutView);
+        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
         return viewHolder;
     }
 

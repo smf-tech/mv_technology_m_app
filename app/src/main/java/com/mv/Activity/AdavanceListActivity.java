@@ -106,8 +106,54 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
 
             }
         });
-        if (Utills.isConnected(this))
-            getUserAdavanceData();
+        if (Utills.isConnected(this)){
+            if(Constants.AccountTeamCode.equals("TeamManagement")){
+                getUserAdavanceDataForTeam();
+                binding.fabAddProcess.setVisibility(View.GONE);
+            } else {
+                getUserAdavanceData();
+            }
+        }
+
+    }
+
+    //Sapret call for Team Management
+    private void getUserAdavanceDataForTeam() {
+        Utills.showProgressDialog(this, "Loading Data", getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetUserAdavanceData + "?voucherId=" + voucher.getId();
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                try {
+                    if (response != null && response.isSuccess()) {
+                        String str = response.body().string();
+                        if (str != null && str.length() > 0) {
+                            if (Arrays.asList(gson.fromJson(str, Adavance[].class)) != null) {
+//                                AppDatabase.getAppDatabase(AdavanceListActivity.this).userDao().deleteAllAdavance();
+//                                AppDatabase.getAppDatabase(AdavanceListActivity.this).userDao().insertAdavance(Arrays.asList(gson.fromJson(str, Adavance[].class)));
+                                mList=Arrays.asList(gson.fromJson(str, Adavance[].class));
+                                setRecyclerViewForTeam();
+                            }
+                        }
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
     }
 
     private void getUserAdavanceData() {
@@ -154,6 +200,28 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
         binding.rvAdavance.setHasFixedSize(true);
         binding.rvAdavance.setLayoutManager(new LinearLayoutManager(this));
 */
+        ArrayList<Adavance> pendingList = new ArrayList<>();
+        ArrayList<Adavance> approveList = new ArrayList<>();
+        ArrayList<Adavance> rejectList = new ArrayList<>();
+
+        for (Adavance adavance : mList) {
+            if (adavance.getStatus().equals(Constants.LeaveStatusApprove))
+                approveList.add(adavance);
+            if (adavance.getStatus().equals(Constants.LeaveStatusPending))
+                pendingList.add(adavance);
+            if (adavance.getStatus().equals(Constants.LeaveStatusRejected))
+                rejectList.add(adavance);
+        }
+        childList.put(getString(R.string.pending), pendingList);
+        childList.put(getString(R.string.reject), rejectList);
+        childList.put(getString(R.string.approve), approveList);
+        evAdapter = new ExpandableAdvanceListAdapter(this, headerList, childList);
+        binding.evAdavance.setAdapter(evAdapter);
+    }
+
+    //Sapret call for Team Management
+    private void setRecyclerViewForTeam() {
+
         ArrayList<Adavance> pendingList = new ArrayList<>();
         ArrayList<Adavance> approveList = new ArrayList<>();
         ArrayList<Adavance> rejectList = new ArrayList<>();

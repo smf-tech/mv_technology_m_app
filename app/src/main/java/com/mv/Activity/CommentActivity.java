@@ -59,6 +59,8 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     private String conetentId;
     private PreferenceHelper preferenceHelper;
     TextView textNoData;
+    public String HoSupportCommunity = "";
+    String commentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,7 +86,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
-
+        binding.imgClear.setOnClickListener(this);
 
     }
 
@@ -209,8 +211,20 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     Utills.showToast(getString(R.string.please_comment), CommentActivity.this);
                 }
                 break;
+            case R.id.imgClear:
+                binding.edtComment.setText("");
+                binding.imgClear.setVisibility(View.GONE);
+                commentId=null;
+                break;
         }
     }
+
+    public  void editComment(String commentId, String commentData){
+        this.commentId = commentId;
+        binding.edtComment.setText(commentData);
+        binding.imgClear.setVisibility(View.VISIBLE);
+    }
+    //to delete the comment
 
     private void sendComment() {
         if (Utills.isConnected(this)) {
@@ -221,6 +235,8 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                 JSONArray jsonArray = new JSONArray();
                 JSONObject jsonObject1 = new JSONObject();
 
+                if(commentId!=null)
+                    jsonObject1.put("Id", commentId);
                 jsonObject1.put("MV_Content__c", conetentId);
                 jsonObject1.put("Comment__c", binding.edtComment.getText().toString().trim());
                 jsonObject1.put("MV_User__c", User.getCurrentUser(this).getMvUser().getId());
@@ -237,17 +253,22 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
                         try {
-                            Comment comment = new Comment();
-                            comment.setComment(binding.edtComment.getText().toString().trim());
-                            comment.setUserName(User.getCurrentUser(CommentActivity.this).getMvUser().getName());
-                            comment.setUserUrl(User.getCurrentUser(CommentActivity.this).getMvUser().getImageId());
-                            Calendar c = Calendar.getInstance();
-                            System.out.println("Current time => " + c.getTime());
-                            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                            String formattedDate = df.format(c.getTime());
-                            comment.setTime(formattedDate);
-                            commentList.add(0, comment);
-                            adapter.notifyDataSetChanged();
+                            if (Utills.isConnected(CommentActivity.this)) {
+                                getComments(true);
+                            }
+//                            Comment comment = new Comment();
+//                            comment.setComment(binding.edtComment.getText().toString().trim());
+//                            comment.setUserName(User.getCurrentUser(CommentActivity.this).getMvUser().getName());
+//                            comment.setUserUrl(User.getCurrentUser(CommentActivity.this).getMvUser().getImageId());
+//                            Calendar c = Calendar.getInstance();
+//                            System.out.println("Current time => " + c.getTime());
+//                            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//                            String formattedDate = df.format(c.getTime());
+//                            comment.setTime(formattedDate);
+//                            commentList.add(0, comment);
+//                            adapter.notifyDataSetChanged();
+                            binding.imgClear.setVisibility(View.GONE);
+                            commentId=null;
                             textNoData.setVisibility(View.GONE);
                             Utills.showToast(getString(R.string.comment_add), getApplicationContext());
                             binding.edtComment.setText("");
@@ -270,6 +291,49 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                 Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
 
             }
+        } else {
+            Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
+        }
+
+    }
+    public void deleteComment(String id) {
+        if (Utills.isConnected(this)) {
+
+            Utills.showProgressDialog(this);
+//                JSONObject jsonObject = new JSONObject();
+//                JSONArray jsonArray = new JSONArray();
+//                JSONObject jsonObject1 = new JSONObject();
+//
+//                    jsonObject1.put("commentId", id);
+
+            ServiceRequest apiService =
+                    ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+            JsonParser jsonParser = new JsonParser();
+//                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject1.toString());
+            apiService.getSalesForceData(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/WS_DeleteComments?commentId="+id).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Utills.hideProgressDialog();
+                    try {
+                        if (Utills.isConnected(CommentActivity.this)) {
+                            getComments(true);
+                        }
+
+                        Utills.showToast(getString(R.string.comment_delete), getApplicationContext());
+                        binding.edtComment.setText("");
+                        Utills.hideSoftKeyboard(CommentActivity.this);
+                    } catch (Exception e) {
+                        Utills.hideProgressDialog();
+                        Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Utills.hideProgressDialog();
+                    Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                }
+            });
         } else {
             Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
         }

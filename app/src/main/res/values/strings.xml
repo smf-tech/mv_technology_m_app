@@ -202,7 +202,7 @@
     <string name="team_user_approval">User Approval</string>
     <string name="team_form_approval">Form Approval</string>
     <string name="expense_approval">Expense Approval</string>
-    <string name="adavance_approval">Adavance Approval</string>
+    <string name="adavance_approval">Advance Approval</string>
     <string name="Registration">Registration</string>
     <string name="about_us">About\nMulyavardhan</string>
 
@@ -261,7 +261,7 @@
 
     <string name="account_section">Account\nSection</string>
     <!--Accout Section Activity-->
-    <string name="adavance">Adavance</string>
+    <string name="adavance">Advance</string>
     <string name="voucher">Voucher</string>
     <string name="salary">Salary</string>
     <!--Voucher List Activity-->
@@ -269,7 +269,7 @@
     <!--Voucher New Activity-->
     <string name="voucher_new">New Voucher</string>
     <string name="date">Date</string>
-    <string name="projectDesription">Description of tour</string>
+    <string name="projectDesription">Description</string>
     <string name="countOfPeople">Number of People</string>
     <string name="place">Place</string>
     <!--Expense New Activity-->
@@ -277,16 +277,17 @@
     <string name="amount">Amount</string>
     <!--Expense List Activity-->
     <string name="expense_list">Expense List</string>
-    <!--Adavance List Activity-->
-    <string name="adavance_list">Adavance List</string>
+    <!--Advance List Activity-->
+    <string name="advance_list">Advance List</string>
 
-    <!--Adavance New Activity-->
-    <string name="adavance_new">Adavance New</string>
-    <string name="adavanceDesription">Description of Adavance</string>
+    <!--Advance New Activity-->
+    <string name="adavance_new">Advance New</string>
+    <string name="adavanceDesription">Description of Advance</string>
 
 
     <!--Salary List Activity-->
     <string name="salary_list">Salary List</string>
+    <string name="voucher_approoval">Voucher Approval</string>
     <string name="leave_approoval">Leave Approval</string>
 
     <string name="loading_process">Loading Process</string>
@@ -317,6 +318,12 @@
     <string name="Please_select_multiple_taluka">Please select Multiple Taluka</string>
     <string name="expenseDescription">Description of Expense</string>
     <string name="status">Status</string>
+    <string name="comment_delete">Comment deleted successfully.</string>
+    <string name="leave_leave_approoval">Leave request sent successfully...</string>
+    <string name="compoff_leave_approoval">Comp Off request submitted successfully</string>
+    <string name="adavance_list">Advance List</string>
+
+
     <string name="select_code">Select Code</string>
     <string name="alreadyPresent">Mobile Number Already Present</string>
     <string name="alreadyPresentDetail">Mobile Number is already present. Please check your Mobile Number</string>

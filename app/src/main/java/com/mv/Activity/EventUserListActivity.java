@@ -58,6 +58,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
     private ImageView img_back, img_logout;
     private TextView toolbar_title;
     private ArrayList<EventUser> eventUsers = new ArrayList<>();
+    private ArrayList<EventUser> eventUsersOld = new ArrayList<>();
     private ArrayList<EventUser> eventUsersFliter = new ArrayList<>();
     private RelativeLayout mToolBar;
     //private ActivityProgrammeManagmentBinding binding;
@@ -72,6 +73,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
     private ArrayAdapter<String> district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, state_adapter, organization_adapter, role_adapter, catagory_adapter;
     private Activity context;
     private ArrayList<EventUser> calenderEventUserArrayList = new ArrayList<>();
+    String eventID;
     ;
 
     @Override
@@ -81,7 +83,9 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         context = this;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_event_user_list);
         binding.setActivity(this);
+        eventID=getIntent().getStringExtra("EventID");
         initViews();
+        getEventUser();
     }
 
 
@@ -153,11 +157,14 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
 
         setActionbar("User List");
 
-        mAdapter = new EventUserListAdapter(eventUsers, EventUserListActivity.this);
+        checkAllSelected(eventUsers);
+
+        mAdapter = new EventUserListAdapter(eventUsersOld, eventUsers, EventUserListActivity.this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(mAdapter);
+
         binding.btnSubmit.setOnClickListener(this);
         binding.editTextEmail.addTextChangedListener(watch);
         binding.cbEventSelectAll.setOnClickListener(this);
@@ -508,12 +515,24 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
             }
         }
 
-        mAdapter = new EventUserListAdapter(list, EventUserListActivity.this);
+        checkAllSelected((ArrayList<EventUser>) list);
+
+        mAdapter = new EventUserListAdapter(eventUsersOld, list, EventUserListActivity.this);
         binding.recyclerView.setAdapter(mAdapter);
     }
 
     public void saveDataToList(EventUser eventUser, boolean isSelected) {
         if (isSelected) {
+            Boolean prsent=false;
+            for (int i = 0; i < selectedUser.size(); i++) {
+                if (selectedUser.get(i).getUserID().equalsIgnoreCase(eventUser.getUserID())) {
+                    prsent=true;
+                    break;
+                } else {
+                    prsent=false;
+                }
+            }
+            if(!prsent)
             selectedUser.add(eventUser);
         } else {
             for (int i = 0; i < selectedUser.size(); i++) {
@@ -548,16 +567,20 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 finish();
                 break;
             case R.id.cb_event_select_all:
+
                 if (((CheckBox) view).isChecked()) {
                     for (EventUser eventUser : eventUsers) {
                         eventUser.setUserSelected(true);
+                        saveDataToList(eventUser, true);
                     }
                 } else {
                     for (EventUser eventUser : eventUsers) {
                         eventUser.setUserSelected(false);
+                        saveDataToList(eventUser, false);
                     }
                 }
                 mAdapter.notifyDataSetChanged();
+
                 break;
             case R.id.spinner_role:
 
@@ -974,7 +997,20 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                                 eventUsers.add(eventUser);
                                 calenderEventUserArrayList = new ArrayList<>();
                             }
-                            mAdapter = new EventUserListAdapter(eventUsers, EventUserListActivity.this);
+
+                            if(eventUsersOld!=null){
+                                for(int i=0;i<eventUsersOld.size();i++){
+                                    for(int j=0;j<eventUsers.size();j++) {
+                                        if (eventUsersOld.get(i).getUserID().equals(eventUsers.get(j).getUserID())) {
+                                            eventUsers.get(j).setUserSelected(true);
+                                        }
+                                    }
+                                }
+                            }
+
+                            checkAllSelected(eventUsers);
+
+                            mAdapter = new EventUserListAdapter(eventUsersOld, eventUsers, EventUserListActivity.this);
                             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
                             binding.recyclerView.setLayoutManager(mLayoutManager);
                             binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -994,6 +1030,98 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 Utills.hideProgressDialog();
             }
         });
+    }
+
+    private void getEventUser() {
+        Utills.showProgressDialog(context, "Loading ", getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+
+        StringBuffer buffer = new StringBuffer();
+        buffer.append(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetEventCalenderMembers_Url);
+        //   https://cs57.salesforce.com/services/apexrest/getUserDataForCalnderAttendance?eventId=a1C0k000000Sh1l
+        buffer.append("?eventId="+eventID);
+
+        Log.e("Url",buffer.toString());
+
+        apiService.getSalesForceData(buffer.toString()).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+
+                try {
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(data);
+                            eventUsers.clear();
+                            eventUsersOld.clear();
+                            calenderEventUserArrayList = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                EventUser eventUser = new EventUser();
+                                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                                eventUser.setRole(jsonObject.getString("role"));
+                                eventUser.setUserID(jsonObject.getString("Id"));
+                                eventUser.setUserName(jsonObject.getString("userName"));
+                                eventUser.setUserSelected(false);
+                                eventUsers.add(eventUser);
+                                calenderEventUserArrayList = new ArrayList<>();
+                            }
+                            eventUsersOld.addAll(eventUsers);
+
+                            if(eventUsersOld!=null){
+                                for(int i=0;i<eventUsersOld.size();i++){
+                                    for(int j=0;j<eventUsers.size();j++) {
+                                        if (eventUsersOld.get(i).getUserID().equals(eventUsers.get(j).getUserID())) {
+                                            eventUsers.get(j).setUserSelected(true);
+                                        }
+                                    }
+                                }
+                            }
+
+                            checkAllSelected(eventUsers);
+
+                            mAdapter = new EventUserListAdapter(eventUsersOld,eventUsers, EventUserListActivity.this);
+                            RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+                            binding.recyclerView.setLayoutManager(mLayoutManager);
+                            binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
+                            binding.recyclerView.setAdapter(mAdapter);
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+            }
+        });
+    }
+
+    // chech all the user in list are selected or not
+    public void checkAllSelected(ArrayList<EventUser> list){
+        boolean allCheck=true;
+        for(int i=0;i<list.size();i++){
+            if(!list.get(i).getUserSelected()){
+                allCheck=false;
+                break;
+            }
+        }
+        if(allCheck)
+            binding.cbEventSelectAll.setChecked(true);
+        else
+            binding.cbEventSelectAll.setChecked(false);
+    }
+
+    // uncheck chech all check box
+    public void checkAllDeSelected(){
+        binding.cbEventSelectAll.setChecked(false);
     }
 
     @Override

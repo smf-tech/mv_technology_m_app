@@ -12,6 +12,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -100,6 +101,19 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
             mProjectSelect = projectList.indexOf(mAdavance.getProject());
             binding.spinnerProject.setSelection(mProjectSelect);
         }
+
+        // to deseble and hide views for team mgmt section
+        if(Constants.AccountTeamCode.equals("TeamManagement")) {
+            binding.linearly.setVisibility(View.VISIBLE);
+            binding.btnSubmit.setVisibility(View.GONE);
+            binding.btnApprove.setOnClickListener(this);
+            binding.btnReject.setOnClickListener(this);
+
+            binding.txtDate.setEnabled(false);
+            binding.editTextCount.setEnabled(false);
+            binding.editTextDescription.setEnabled(false);
+        }
+
     }
 
     public String getCurrentDate() {
@@ -168,6 +182,12 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
                 break;
             case R.id.txtDate:
                 //showDateDialog();
+                break;
+            case R.id.btn_reject:
+                Toast.makeText(this,"Rected",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.btn_approve:
+                Toast.makeText(this,"approve",Toast.LENGTH_LONG).show();
                 break;
         }
     }

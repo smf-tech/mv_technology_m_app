@@ -36,15 +36,15 @@ public class VersionReportAdapter extends RecyclerView.Adapter<VersionReportAdap
     }
 
     @Override
-    public VersionReportAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_version_report, parent, false);
 
-        return new VersionReportAdapter.MyViewHolder(itemView);
+        return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(VersionReportAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, int position) {
         Template template = teplateList.get(position);
 
         holder.txtUserName.setText(template.getName());

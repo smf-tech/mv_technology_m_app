@@ -119,6 +119,7 @@
                     android:src="@drawable/add" />
 
                 <com.mv.Widgets.MyTextView
+                    android:id="@+id/tv_add_attchment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -147,6 +148,40 @@
             android:text="@string/Submit"
             android:textColor="#ffffff"
             android:textSize="22sp" />
+
+        <LinearLayout
+            android:id="@+id/linearly"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"
+            >
+
+            <com.mv.Widgets.MyFontButton
+                android:id="@+id/btn_approve"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@color/colorPink"
+                android:text="@string/approve"
+                android:textColor="#ffffff"
+                android:textSize="22sp" />
+
+            <com.mv.Widgets.MyFontButton
+                android:id="@+id/btn_reject"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:layout_weight="1"
+                android:background="@color/colorPink"
+                android:text="@string/reject"
+                android:textColor="#ffffff"
+                android:textSize="22sp" />
+
+
+        </LinearLayout>
 
     </RelativeLayout>
 </layout>

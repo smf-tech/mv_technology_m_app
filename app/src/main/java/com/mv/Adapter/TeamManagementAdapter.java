@@ -16,6 +16,7 @@ import com.mv.Activity.TeamManagementUserProfileListActivity;
 import com.mv.Activity.UserAdavanceListActivity;
 import com.mv.Activity.UserApproveDetail;
 import com.mv.Activity.UserExpenseListActivity;
+import com.mv.Activity.VoucherListActivity;
 import com.mv.ActivityMenu.TeamManagementFragment;
 import com.mv.Model.Task;
 import com.mv.Model.Template;
@@ -70,16 +71,20 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                             mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
                         } else if (getAdapterPosition() == 2) {
                             //redirect to user Approval Process List
-                            Intent openClass = new Intent(mContext, UserExpenseListActivity.class);
-                            mContext.startActivity(openClass);
-                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        } else if (getAdapterPosition() == 3) {
+                            Intent intent;
+                            intent = new Intent(mContext, VoucherListActivity.class);
+                            Constants.AccountTeamCode="TeamManagement";//to identify the section
+                            mContext.startActivity(intent);
+//                            Intent openClass = new Intent(mContext, UserExpenseListActivity.class);
+//                            mContext.startActivity(openClass);
+//                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                        } /*else if (getAdapterPosition() == 3) {
                             //redirect to user Approval Process List
                             Intent openClass = new Intent(mContext, UserAdavanceListActivity.class);
                             mContext.startActivity(openClass);
                             mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        }
-                        else if (getAdapterPosition() == 4) {
+                        }*/
+                        else if (getAdapterPosition() == 3) {
                             //redirect to user Approval Process List
                             Intent openClass = new Intent(mContext, LeaveApprovalActivity.class);
                             mContext.startActivity(openClass);

@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.mv.Activity.AdavanceListActivity;
 import com.mv.Activity.ExpenseListActivity;
 import com.mv.Activity.VoucherListActivity;
+import com.mv.Model.Adavance;
 import com.mv.Model.Expense;
 import com.mv.Model.Voucher;
 import com.mv.R;
@@ -45,6 +46,29 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
         mActivity = (VoucherListActivity) context;
     }
 
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        Voucher voucher = mDataList.get(position);
+        List<Expense> expenses = AppDatabase.getAppDatabase(mContext).userDao().getAllExpense(voucher.getId());
+        double amount = 0;
+        for (Expense temp : expenses) {
+            if (temp.getAmount() != null && temp.getAmount().length() > 0)
+                amount += Double.parseDouble(temp.getAmount());
+        }
+        List<Adavance> adavances = AppDatabase.getAppDatabase(mContext).userDao().getAllAdvance(voucher.getId(),"Approved" );
+        double adavanceAmount = 0;
+        for (Adavance temp : adavances) {
+            if (temp.getAmount() != null && temp.getAmount().length() > 0)
+                adavanceAmount += Double.parseDouble(temp.getAmount());
+        }
+
+        holder.tvProjectName.setText(voucher.getProject());
+        holder.tvDateName.setText(voucher.getDate());
+        holder.tvNoOfPeopleName.setText(voucher.getPlace());
+        holder.tvTotalExpenseName.setText("₹ " + amount);
+        holder.tvTotalAdvance.setText("₹ " + adavanceAmount);
+    }
+
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -64,7 +88,7 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvProjectName, tvDateName, tvNoOfPeopleName, tvTotalExpenseName;
+        TextView tvProjectName, tvDateName, tvNoOfPeopleName, tvTotalExpenseName,tvTotalAdvance;
         ImageView imgEdit, imgDelete, imgExpense;
         LinearLayout layout_expense, layout_adavance;
 
@@ -79,8 +103,16 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
             tvDateName = (TextView) itemLayoutView.findViewById(R.id.tvDateName);
             tvNoOfPeopleName = (TextView) itemLayoutView.findViewById(R.id.tvNoOfPeopleName);
             tvTotalExpenseName = (TextView) itemLayoutView.findViewById(R.id.tvTotalExpenseName);
+            tvTotalAdvance = (TextView) itemLayoutView.findViewById(R.id.tvTotalAdvance);
             layout_expense = (LinearLayout) itemLayoutView.findViewById(R.id.layout_expense);
             layout_adavance = (LinearLayout) itemLayoutView.findViewById(R.id.layout_adavance);
+
+            // hiding views for team mgmt section
+            if(Constants.AccountTeamCode.equals("TeamManagement")){
+                imgEdit.setVisibility(View.GONE);
+                imgDelete.setVisibility(View.GONE);
+            }
+
             imgEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -147,20 +179,6 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
         alertDialog.show();
     }
 
-    @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
-        Voucher voucher = mDataList.get(position);
-        List<Expense> expenses = AppDatabase.getAppDatabase(mContext).userDao().getAllExpense(voucher.getId());
-        double amount = 0;
-        for (Expense temp : expenses) {
-            if (temp.getAmount() != null && temp.getAmount().length() > 0)
-                amount += Double.parseDouble(temp.getAmount());
-        }
-        holder.tvProjectName.setText(voucher.getProject());
-        holder.tvDateName.setText(voucher.getDate());
-        holder.tvNoOfPeopleName.setText(voucher.getPlace());
-        holder.tvTotalExpenseName.setText("₹ " + amount);
-    }
 
 }
 

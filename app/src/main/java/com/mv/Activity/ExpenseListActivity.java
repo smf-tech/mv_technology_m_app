@@ -109,6 +109,54 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
 
         if (Utills.isConnected(this))
             getUserExpenseData();
+
+        if (Utills.isConnected(this)){
+            if(Constants.AccountTeamCode.equals("TeamManagement")){
+                getUserExpenseDataForTeam();
+                binding.fabAddProcess.setVisibility(View.GONE);
+            } else {
+                getUserExpenseData();
+            }
+        }
+    }
+
+    private void getUserExpenseDataForTeam() {
+
+        Utills.showProgressDialog(this, "Loading Data", getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetUserExpenseData + "?voucherId=" + voucher.getId();
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                try {
+                    if (response != null && response.isSuccess()) {
+                        String str = response.body().string();
+                        if (str != null && str.length() > 0) {
+                            if (Arrays.asList(gson.fromJson(str, Expense[].class)) != null) {
+//                                AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().deleteExpense(voucher.getId());
+//                                AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().insertExpense(Arrays.asList(gson.fromJson(str, Expense[].class)));
+                                mList=Arrays.asList(gson.fromJson(str, Expense[].class));
+                                setRecyclerViewForTeam();
+                            }
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
+
     }
 
     private void getUserExpenseData() {
@@ -172,6 +220,29 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
         evAdapter = new ExpandableExpenseListAdapter(this, headerList, childList);
         binding.evProcess.setAdapter(evAdapter);
     }
+
+    private void setRecyclerViewForTeam() {
+
+        ArrayList<Expense> pendingList = new ArrayList<>();
+        ArrayList<Expense> approveList = new ArrayList<>();
+        ArrayList<Expense> rejectList = new ArrayList<>();
+
+        for (Expense expense : mList) {
+            if (expense.getStatus().equals(Constants.LeaveStatusApprove))
+                approveList.add(expense);
+            if (expense.getStatus().equals(Constants.LeaveStatusPending))
+                pendingList.add(expense);
+            if (expense.getStatus().equals(Constants.LeaveStatusRejected))
+                rejectList.add(expense);
+        }
+        childList.put(getString(R.string.pending), pendingList);
+        childList.put(getString(R.string.reject), rejectList);
+        childList.put(getString(R.string.approve), approveList);
+        evAdapter = new ExpandableExpenseListAdapter(this, headerList, childList);
+        binding.evProcess.setAdapter(evAdapter);
+
+    }
+
 
     @Override
     public void onClick(View view) {

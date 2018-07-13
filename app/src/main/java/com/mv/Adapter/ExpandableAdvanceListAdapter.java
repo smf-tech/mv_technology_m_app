@@ -10,11 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mv.Activity.AdavanceListActivity;
 import com.mv.Model.Adavance;
 import com.mv.R;
+import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 
 import java.util.ArrayList;
@@ -66,6 +68,7 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
         }
         TextView tvProjectName, tvDateName, tvAmountName;
         ImageView imgEdit, imgDelete;
+        RelativeLayout textLayout;
         View view;
 
         imgEdit = (ImageView) convertView.findViewById(R.id.imgEdit);
@@ -74,6 +77,24 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
         tvProjectName = (TextView) convertView.findViewById(R.id.tvProjectName);
         tvDateName = (TextView) convertView.findViewById(R.id.tvDateName);
         tvAmountName = (TextView) convertView.findViewById(R.id.tvAmountName);
+        textLayout = (RelativeLayout) convertView.findViewById(R.id.textLayout);
+
+        // hiding views for team mgmt section
+        if(Constants.AccountTeamCode.equals("TeamManagement")){
+            imgEdit.setVisibility(View.GONE);
+            imgDelete.setVisibility(View.GONE);
+
+            textLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (_context instanceof AdavanceListActivity)
+                        _activity.editAdavance(adavance);
+                }
+            });
+
+        }
+
+
         imgEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

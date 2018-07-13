@@ -3,6 +3,8 @@ package com.mv.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.io.Serializable;
+
 /**
  * Created by nanostuffs on 03-02-2018.
  */

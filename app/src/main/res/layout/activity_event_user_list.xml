@@ -339,7 +339,6 @@
                             android:layout_marginTop="@dimen/dimen_5dp"
                             android:text="Select All" />
 
-
                     </LinearLayout>
 
                     <CheckBox

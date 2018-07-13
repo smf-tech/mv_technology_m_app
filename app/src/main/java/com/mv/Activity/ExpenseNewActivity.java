@@ -209,6 +209,26 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                         .into(binding.addImage);
             }
         }
+        // hiding views for team mgmt section
+        if(Constants.AccountTeamCode.equals("TeamManagement")) {
+
+        }
+        // to deseble and hide views for team mgmt section
+        if(Constants.AccountTeamCode.equals("TeamManagement")) {
+            binding.linearly.setVisibility(View.VISIBLE);
+            binding.btnSubmit.setVisibility(View.GONE);
+            binding.btnApprove.setOnClickListener(this);
+            binding.btnReject.setOnClickListener(this);
+
+            binding.txtDate.setEnabled(false);
+            binding.spinnerParticular.setEnabled(false);
+            binding.editTextAmount.setEnabled(false);
+            binding.editTextDescription.setEnabled(false);
+            binding.addImage.setEnabled(false);
+            binding.tvAddAttchment.setVisibility(View.GONE);
+        }
+
+
     }
 
     @Override
@@ -220,6 +240,12 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.txtDate:
                 showDateDialog();
+                break;
+            case R.id.btn_reject:
+                Toast.makeText(this,"Rected",Toast.LENGTH_LONG).show();
+                break;
+            case R.id.btn_approve:
+                Toast.makeText(this,"Approve",Toast.LENGTH_LONG).show();
                 break;
         }
     }

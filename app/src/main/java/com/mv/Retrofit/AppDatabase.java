@@ -26,7 +26,7 @@ import com.mv.Model.Voucher;
 
 @Database(entities = {Community.class, Content.class, Template.class, TaskContainerModel.class,
         LocationModel.class, CalenderEvent.class, DownloadContent.class, Voucher.class,
-        Expense.class, Adavance.class, Salary.class, Attendance.class, HolidayListModel.class}, version = 29)
+        Expense.class, Adavance.class, Salary.class, Attendance.class, HolidayListModel.class}, version = 27)
 public abstract class AppDatabase extends RoomDatabase {
 
     private static AppDatabase INSTANCE;

@@ -489,6 +489,12 @@
                     android:prompt="@string/status"
                     android:spinnerMode="dialog" />
 
+                <LinearLayout
+                    android:id="@+id/ly_attendance"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
                 <com.mv.Widgets.MyTextView
                     android:id="@+id/tv_event_add_user"
                     android:layout_width="fill_parent"
@@ -496,14 +502,32 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:layout_marginTop="10dp"
+                    android:layout_weight="1"
                     android:background="@null"
                     android:drawableLeft="@android:drawable/ic_menu_add"
                     android:gravity="left"
                     android:paddingBottom="@dimen/dimen_10dp"
                     android:text="Add People"
                     android:textColor="@color/black"
-
                     android:textSize="@dimen/medium_text" />
+
+                    <com.mv.Widgets.MyTextView
+                        android:id="@+id/tv_event_attendance"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:drawableLeft="@android:drawable/ic_menu_add"
+                        android:gravity="left"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:text="Attendance"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/medium_text" />
+
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
 

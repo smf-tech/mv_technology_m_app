@@ -21,8 +21,7 @@ public class AboutUsActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_us);
         setActionbar(getString(R.string.about_us));
-      /*  Typeface iconFont = FontManager.getTypeface(getApplicationContext(), FontManager.FONTAWESOME);
-        FontManager.markAsIconContainer(findViewById(R.id.icons_container), iconFont);*/
+
     }
 
     @Override
@@ -43,12 +42,12 @@ public class AboutUsActivity extends AppCompatActivity implements View.OnClickLi
         img_back.setOnClickListener(this);
         img_list = (ImageView) findViewById(R.id.img_list);
         img_list.setVisibility(View.GONE);
-
+        img_logout = (ImageView) findViewById(R.id.img_logout);
+        img_logout.setVisibility(View.GONE);
         img_filter = (ImageView) findViewById(R.id.img_filter);
         img_filter.setVisibility(View.GONE);
 
-        img_logout = (ImageView) findViewById(R.id.img_logout);
-        img_logout.setVisibility(View.GONE);
+
 
     }
 

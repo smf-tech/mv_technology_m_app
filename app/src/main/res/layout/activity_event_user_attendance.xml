@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools">
+
+<data>
+
+    <variable
+        name="activity"
+        type="com.mv.Activity.EventUserAttendanceActivity" />
+</data>
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
+    android:focusableInTouchMode="true">
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/btn_submit"
+        android:fastScrollEnabled="true"
+        android:fillViewport="true"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:id="@+id/layout_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/app_bg"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar" />
+
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/toolbar"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+
+                android:background="@drawable/search_rounded"
+                android:padding="5dp">
+
+                <com.mv.Widgets.MyEditTextView
+                    android:id="@+id/edit_text_email"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:drawableLeft="@drawable/search"
+                    android:drawablePadding="10dp"
+                    android:focusableInTouchMode="true"
+                    android:hint="Search User"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/medium_text" />
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/grey_box"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <LinearLayout
+                    android:id="@+id/ll_edittext_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="9"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_event_user_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dimen_5dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:text="Select All" />
+
+
+                </LinearLayout>
+
+                <CheckBox
+                    android:id="@+id/cb_event_select_all"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+
+                    android:layout_weight="1" />
+
+
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:scrollbars="vertical" />
+
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+    <com.mv.Widgets.MyFontButton
+        android:id="@+id/btn_submitt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="10dp"
+        android:background="@color/colorPink"
+        android:text="@string/Submit"
+        android:textColor="#ffffff"
+        android:textSize="22sp" />
+
+    <TextView
+        android:id="@+id/textNoData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="No Data Available"
+        android:textColor="@color/dark_grey"
+        android:textSize="@dimen/large_text"
+        android:visibility="gone" />
+
+
+</RelativeLayout>
+
+</layout>

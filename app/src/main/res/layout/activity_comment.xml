@@ -51,6 +51,15 @@
                     android:hint="Enter Comment Here"
                     android:padding="8dp"
                     android:textSize="@dimen/medium_text" />
+                <ImageView
+                    android:id="@+id/imgClear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:tint="@color/black"
+                    android:padding="8dp"
+                    android:src="@drawable/cancel"
+                    android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/imgSend"

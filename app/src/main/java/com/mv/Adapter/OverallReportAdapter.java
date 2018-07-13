@@ -102,15 +102,15 @@ public class OverallReportAdapter extends RecyclerView.Adapter<OverallReportAdap
     }
 
     @Override
-    public OverallReportAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_programe, parent, false);
 
-        return new OverallReportAdapter.MyViewHolder(itemView);
+        return new MyViewHolder(itemView);
     }
 
     @Override
-    public void onBindViewHolder(OverallReportAdapter.MyViewHolder holder, int position) {
+    public void onBindViewHolder(MyViewHolder holder, int position) {
         Log.d("Position",""+position);
         OverAllModel template = teplateList.get(position);
         holder.expectedLayout.setVisibility(View.GONE);

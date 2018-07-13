@@ -64,7 +64,6 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
-
                 if (dy < -5 && binding.fabAddProcess.getVisibility() != View.VISIBLE) {
                     binding.fabAddProcess.show();
                 } else if (dy > 5 && binding.fabAddProcess.getVisibility() == View.VISIBLE) {
@@ -72,8 +71,54 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
                 }
             }
         });
-        if (Utills.isConnected(this))
-            getUserVoucherData();
+
+        if (Utills.isConnected(this)){
+            if(Constants.AccountTeamCode.equals("TeamManagement")){
+                getUserVoucherDataForTeam();
+                binding.fabAddProcess.setVisibility(View.GONE);
+            } else {
+                getUserVoucherData();
+            }
+        }
+
+    }
+
+    //Sapret call for Team Management
+    private void getUserVoucherDataForTeam() {
+        Utills.showProgressDialog(this, "Loading Data", getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetUserVoucherData + "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                try {
+                    if (response != null && response.isSuccess()) {
+                        String str = response.body().string();
+                        if (str != null && str.length() > 0) {
+                            if (Arrays.asList(gson.fromJson(str, Voucher[].class)) != null) {
+//                                AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().deleteAllVoucher();
+//                                AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().insertVoucher();
+                                mList=Arrays.asList(gson.fromJson(str, Voucher[].class));
+                                setRecyclerViewForTeam();
+                            }
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
     }
 
     private void getUserVoucherData() {
@@ -114,6 +159,12 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
 
     private void setRecyclerView() {
         mList = AppDatabase.getAppDatabase(this).userDao().getAllVoucher();
+        adapter = new VoucherAdapter(this, mList);
+        binding.rvVoucher.setAdapter(adapter);
+        binding.rvVoucher.setHasFixedSize(true);
+        binding.rvVoucher.setLayoutManager(new LinearLayoutManager(this));
+    }
+    private void setRecyclerViewForTeam() {
         adapter = new VoucherAdapter(this, mList);
         binding.rvVoucher.setAdapter(adapter);
         binding.rvVoucher.setHasFixedSize(true);

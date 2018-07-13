@@ -294,21 +294,23 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
             msg = "Please select proper To date";
         } else {
             int dateSize = getDates(binding.inputHrFormDate.getText().toString(), binding.inputHrToDate.getText().toString()).size();
-            if (binding.spTypeOfLeaves.getSelectedItem().equals("CL/SL") && leaveCountModel.getAvailable_CL_SL_Leave__c() < dateSize) {
 
-                msg = " CL/SL Leaves Not Available";
+            if (binding.spTypeOfCatagory.getSelectedItem().equals("Leaves")) {
+                if (binding.spTypeOfLeaves.getSelectedItem().equals("CL/SL") && leaveCountModel.getAvailable_CL_SL_Leave__c() < dateSize) {
+                    msg = " CL/SL Leaves Not Available";
 
-            } else if (binding.spTypeOfLeaves.getSelectedItem().equals("Paid") && leaveCountModel.getAvailable_Paid_Leave__c() < dateSize) {
-                msg = "Paid Leaves Leaves Not Available";
+                } else if (binding.spTypeOfLeaves.getSelectedItem().equals("Paid") && leaveCountModel.getAvailable_Paid_Leave__c() < dateSize) {
+                    msg = "Paid Leaves Leaves Not Available";
 
-            } else if (binding.spTypeOfLeaves.getSelectedItem().equals("Unpaid") && leaveCountModel.getAvailable_Unpaid_Leave__c() < dateSize) {
-                msg = "Unpaid Leaves  eLeaves Not Available";
+                } else if (binding.spTypeOfLeaves.getSelectedItem().equals("Unpaid") && leaveCountModel.getAvailable_Unpaid_Leave__c() < dateSize) {
+                    msg = "Unpaid Leaves  eLeaves Not Available";
 
-            } else if (binding.spTypeOfLeaves.getSelectedItem().equals("Comp Off") && leaveCountModel.getAvailable_Comp_Off_Leave__c() < dateSize) {
-                msg = "Comp Off Leaves Not Available";
+                } else if (binding.spTypeOfLeaves.getSelectedItem().equals("Comp Off") && leaveCountModel.getAvailable_Comp_Off_Leave__c() < dateSize) {
+                    msg = "Comp Off Leaves Not Available";
 
-            } else if (binding.etReason.getText().toString().equals("")) {
-                msg = "Please Enter Reason Of Leave";
+                } else if (binding.etReason.getText().toString().equals("")) {
+                    msg = "Please Enter Reason Of Leave";
+                }
             }
         }
 
@@ -366,7 +368,12 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
-                        Utills.showToast("Leave Approval sent successfully...", LeaveDetailActivity.this);
+
+                        if (binding.spTypeOfCatagory.getSelectedItem().equals("Leaves")) {
+                            Utills.showToast(getString(R.string.leave_leave_approoval), LeaveDetailActivity.this);;
+                        } else {
+                            Utills.showToast(getString(R.string.compoff_leave_approoval), LeaveDetailActivity.this);
+                        }
                         finish();
                         overridePendingTransition(R.anim.left_in, R.anim.right_out);
                     }
@@ -635,6 +642,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 } else {
                     binding.llSpinnerLayout.setVisibility(View.GONE);
                     selected = binding.spTypeOfCatagory.getSelectedItem().toString();
+
                 }
                 break;
             case R.id.sp_type_of_leaves:

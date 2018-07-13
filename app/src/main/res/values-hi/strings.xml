@@ -266,8 +266,9 @@
     <string name="Reject">Reject</string>
     <string name="adavance_approval">अग्रिम स्वीकृति</string>
     <string name="expense_approval">खर्च अनुमोदन</string>
+    <string name="voucher_approoval">वाउचर अनुमोदन</string>
     <string name="date">Date</string>
-    <string name="projectDesription">Description</string>
+    <string name="projectDesription">विवरण</string>
     <string name="countOfPeople">Number of People</string>
     <string name="amount">Amount</string>
     <string name="adavance_new">नवीन अग्रिम</string>
@@ -304,6 +305,10 @@
     <string name="Please_select_multiple_taluka">Please select Multiple Taluka</string>
     <string name="expenseDescription">खर्च वर्णन</string>
     <string name="status">Status</string>
+    <string name="comment_delete">टिप्पणी सफलतापूर्वक हटा दी गई।</string>
+    <string name="leave_leave_approoval"> छुट्टी का अनुमोदन सफलतापूर्वक भेजा गया...</string>
+    <string name="compoff_leave_approoval" >कॉम्प ऑफ अनुरोध सफलतापूर्वक सबमिट किया गया</string>
+
     <string name="select_code">Select Code</string>
     <string name="alreadyPresent">Mobile Number Already Present</string>
     <string name="alreadyPresentDetail">Mobile Number is already present. Please check your Mobile Number</string>

@@ -43,12 +43,12 @@ public class HorizontalCalenderAdapter extends RecyclerView.Adapter<HorizontalCa
 
 
     @Override
-    public HorizontalCalenderAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemLayoutView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_horizontal_calender, parent, false);
 
         // create ViewHolder
-        HorizontalCalenderAdapter.ViewHolder viewHolder = new HorizontalCalenderAdapter.ViewHolder(itemLayoutView);
+        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
         return viewHolder;
     }
 
@@ -85,7 +85,7 @@ public class HorizontalCalenderAdapter extends RecyclerView.Adapter<HorizontalCa
     }
 
     @Override
-    public void onBindViewHolder(HorizontalCalenderAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
 
 
         holder.date.setText(dateFormat.format(dateList.get(position)));

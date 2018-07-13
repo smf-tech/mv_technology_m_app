@@ -322,6 +322,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
 
                 try {
                     if (response.isSuccess()) {
+                        eventMap.clear();
                         JSONArray jsonArray = new JSONArray(response.body().string());
                         eventDate = new ArrayList<>();
 
@@ -378,6 +379,10 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                                 calenderEvent.setEvent_End_Time__c(jsonArray.getJSONObject(i).getString("Event_End_Time__c"));
                             if (jsonArray.getJSONObject(i).has("End_Date__c"))
                                 calenderEvent.setEnd_Date__c(jsonArray.getJSONObject(i).getString("End_Date__c"));
+                            if (jsonArray.getJSONObject(i).has("Present_User__c")) {
+                                String ss = jsonArray.getJSONObject(i).getString("Present_User__c");
+                                calenderEvent.setPresent_User__c(jsonArray.getJSONObject(i).getString("Present_User__c"));
+                            }
                             if (jsonArray.getJSONObject(i).has("End_Date__c") && jsonArray.getJSONObject(i).has("Date__c")
                                     && jsonArray.getJSONObject(i).getString("End_Date__c") != null
                                     && jsonArray.getJSONObject(i).getString("End_Date__c").length() > 0

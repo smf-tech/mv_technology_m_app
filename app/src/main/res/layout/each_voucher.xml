@@ -123,6 +123,32 @@
                 android:textColor="@color/medium_grey"
                 android:textSize="@dimen/medium_text" />
 
+            <TextView
+                android:id="@+id/tvTotalAdvanceTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvTotalExpenseTitle"
+                android:layout_marginTop="5dp"
+                android:gravity="left|center_vertical"
+                android:text="Total Advance :-"
+                android:textColor="@color/medium_grey"
+                android:textSize="@dimen/medium_text" />
+
+            <TextView
+                android:id="@+id/tvTotalAdvance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tvTotalExpenseName"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toLeftOf="@+id/imgLayout"
+                android:layout_toRightOf="@+id/tvTotalAdvanceTitle"
+                android:gravity="left|center_vertical"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/medium_grey"
+                android:textSize="@dimen/medium_text" />
             <LinearLayout
                 android:id="@+id/imgLayout"
                 android:layout_width="wrap_content"

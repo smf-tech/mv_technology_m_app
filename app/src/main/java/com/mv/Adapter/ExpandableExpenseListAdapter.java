@@ -11,11 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mv.Activity.AdavanceListActivity;
 import com.mv.Activity.ExpenseListActivity;
 import com.mv.Model.Expense;
 import com.mv.R;
+import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 
 import java.util.ArrayList;
@@ -69,6 +72,7 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
         ImageView imgEdit, imgDelete;
         View view;
         CardView cardView;
+        RelativeLayout textLayout;
 
         imgEdit = (ImageView) convertView.findViewById(R.id.imgEdit);
         imgDelete = (ImageView) convertView.findViewById(R.id.imgDelete);
@@ -77,6 +81,22 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
         tvNoOfPeopleName = (TextView) convertView.findViewById(R.id.tvNoOfPeopleName);
         view = convertView.findViewById(R.id.view1);
         cardView = (CardView) convertView.findViewById(R.id.cardView);
+        textLayout = convertView.findViewById(R.id.textLayout);
+
+        // hiding views for team mgmt section
+        if(Constants.AccountTeamCode.equals("TeamManagement")){
+            imgEdit.setVisibility(View.GONE);
+            imgDelete.setVisibility(View.GONE);
+
+            textLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (_context instanceof ExpenseListActivity)
+                        _activity.editExpense(expense);
+                }
+            });
+
+        }
 
         imgDelete.setImageResource(R.drawable.form_delete);
         imgEdit.setImageResource(R.drawable.ic_form);

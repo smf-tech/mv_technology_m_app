@@ -238,6 +238,19 @@ public class CalenderEvent implements Parcelable {
     @Expose
     String MV_Process__c;
 
+    @ColumnInfo(name = "Present_User__c")
+    @SerializedName("Present_User__c")
+    @Expose
+    String Present_User__c;
+
+    public String getPresent_User__c() {
+        return Present_User__c;
+    }
+
+    public void setPresent_User__c(String present_User__c) {
+        Present_User__c = present_User__c;
+    }
+
     public String getVillage__c() {
         return Village__c;
     }
@@ -398,6 +411,7 @@ public class CalenderEvent implements Parcelable {
         dest.writeString(this.MV_Process__c);
         dest.writeString(this.End_Date__c);
         dest.writeString(this.Event_End_Time__c);
+        dest.writeString(this.Present_User__c);
     }
 
     protected CalenderEvent(Parcel in) {
@@ -424,6 +438,7 @@ public class CalenderEvent implements Parcelable {
         this.MV_Process__c = in.readString();
         this.End_Date__c = in.readString();
         this.Event_End_Time__c = in.readString();
+        this.Present_User__c = in.readString();
     }
 
     public static final Creator<CalenderEvent> CREATOR = new Creator<CalenderEvent>() {
