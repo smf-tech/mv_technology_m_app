@@ -35,19 +35,19 @@ public class AccountSectionActivity extends AppCompatActivity implements View.On
         setActionbar(getString(R.string.account_section));
     }
 
-    public void onVoucherClick() {
-        Intent intent;
-        intent = new Intent(this, VoucherListActivity.class);
-        Constants.AccountTeamCode="Account";//to identify the section
-        startActivity(intent);
-    }
+
 
     public void onAdavanceClick() {
         Intent intent;
         intent = new Intent(this, AdavanceListActivity.class);
         startActivity(intent);
     }
-
+    public void onVoucherClick() {
+        Intent intent;
+        intent = new Intent(this, VoucherListActivity.class);
+        Constants.AccountTeamCode="Account";//to identify the section
+        startActivity(intent);
+    }
     public void onSalaryClick() {
         Intent intent;
         intent = new Intent(this, SalaryListActivity.class);
