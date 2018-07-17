@@ -16,6 +16,7 @@ public class TaskContainerModel {
     @PrimaryKey()
     @ColumnInfo(name = "unique_Id")
     private String Unique_Id;
+
     public String getUnique_Id() {
         return Unique_Id;
     }
@@ -35,6 +36,7 @@ public class TaskContainerModel {
 
     @ColumnInfo(name = "taskListString")
     public String taskListString;
+
     public String getIsSave() {
         return isSave;
     }
@@ -51,6 +53,7 @@ public class TaskContainerModel {
     @SerializedName("MV_Process__c")
     @Expose
     private String MV_Process__c;
+
     public String getMV_Process__c() {
         return MV_Process__c;
     }
@@ -66,6 +69,7 @@ public class TaskContainerModel {
     public void setTaskType(String taskType) {
         TaskType = taskType;
     }
+
     @ColumnInfo(name = "TaskType")
     @SerializedName("TaskType")
     @Expose

@@ -58,17 +58,32 @@ public class Voucher implements Serializable {
     @SerializedName("ToDate__c")
     @Expose
     private String ToDate;
+
     public String getPlace() {
         return Place;
     }
+
     public void setPlace(String place) {
         Place = place;
     }
+
     @ColumnInfo(name = "Place")
     @SerializedName("Place__c")
     @Expose
     private String Place;
 
+    public String getUserName() {
+        return UserName;
+    }
+
+    public void setUserName(String userName) {
+        UserName = userName;
+    }
+
+    @ColumnInfo(name = "UserName")
+    @SerializedName("UserName__c")
+    @Expose
+    private String UserName;
 
 
     public String getProject() {

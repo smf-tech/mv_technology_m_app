@@ -105,6 +105,17 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
             binding.editTextCount.setText(mVoucher.getNoOfPeople());
             binding.editTextDescription.setText(mVoucher.getDecription());
         }
+        if (Constants.AccountTeamCode.equals("TeamManagement")) {
+            binding.btnSubmit.setVisibility(View.GONE);
+            binding.txtDate.setEnabled(false);
+            binding.txtDateFrom.setEnabled(false);
+            binding.editTextPlace.setEnabled(false);
+            binding.txtDateTo.setEnabled(false);
+            binding.editTextCount.setEnabled(false);
+            binding.editTextDescription.setEnabled(false);
+            binding.spinnerProject.setEnabled(false);
+        }
+
     }
 
     public String getCurrentDate() {

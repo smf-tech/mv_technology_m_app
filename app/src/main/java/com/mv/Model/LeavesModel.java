@@ -75,6 +75,7 @@ public class LeavesModel implements Parcelable {
     }
 
     private String isHalfDayLeave;
+
     public String getComment() {
         return comment;
     }

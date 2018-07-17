@@ -50,7 +50,6 @@ public class EventUser implements Parcelable {
     }
 
 
-
     public EventUser() {
     }
 

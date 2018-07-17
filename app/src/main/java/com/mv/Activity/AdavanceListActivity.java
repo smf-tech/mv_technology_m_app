@@ -17,6 +17,7 @@ import com.google.gson.GsonBuilder;
 import com.mv.Adapter.AdavanceAdapter;
 import com.mv.Adapter.ExpandableAdvanceListAdapter;
 import com.mv.Model.Adavance;
+import com.mv.Model.User;
 import com.mv.Model.Voucher;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -27,6 +28,8 @@ import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityAdavanceListBinding;
+
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -106,8 +109,8 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
 
             }
         });
-        if (Utills.isConnected(this)){
-            if(Constants.AccountTeamCode.equals("TeamManagement")){
+        if (Utills.isConnected(this)) {
+            if (Constants.AccountTeamCode.equals("TeamManagement")) {
                 getUserAdavanceDataForTeam();
                 binding.fabAddProcess.setVisibility(View.GONE);
             } else {
@@ -122,8 +125,12 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
         Utills.showProgressDialog(this, "Loading Data", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetUserAdavanceData + "?voucherId=" + voucher.getId();
+                + Constants.GetPendingAdavanceData + "?userId="
+                + User.getCurrentUser(AdavanceListActivity.this).getMvUser().getId()
+                + "&voucherId=" + voucher.getId();
+
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -133,16 +140,26 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
                     if (response != null && response.isSuccess()) {
                         String str = response.body().string();
                         if (str != null && str.length() > 0) {
-                            if (Arrays.asList(gson.fromJson(str, Adavance[].class)) != null) {
+                            JSONObject object = new JSONObject(str);
+                            if (object.has("salaries") && !(object.getString("salaries").equalsIgnoreCase("null"))) {
+                                mList = Arrays.asList(gson.fromJson(object.getString("salaries"), Adavance[].class));
+                            }
+                            if (object.has("action")) {
+                                Constants.USERACTION = object.getString("action");
+                            }
+                            setRecyclerViewForTeam();
+                           /* if (Arrays.asList(gson.fromJson(str, Adavance[].class)) != null) {
 //                                AppDatabase.getAppDatabase(AdavanceListActivity.this).userDao().deleteAllAdavance();
 //                                AppDatabase.getAppDatabase(AdavanceListActivity.this).userDao().insertAdavance(Arrays.asList(gson.fromJson(str, Adavance[].class)));
-                                mList=Arrays.asList(gson.fromJson(str, Adavance[].class));
+                                mList = Arrays.asList(gson.fromJson(str, Adavance[].class));
                                 setRecyclerViewForTeam();
-                            }
+                            }*/
                         }
                     }
 
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -290,7 +307,13 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
     @Override
     protected void onResume() {
         super.onResume();
-        setRecyclerView();
+
+        if (Constants.AccountTeamCode.equals("TeamManagement")) {
+            getUserAdavanceDataForTeam();
+            binding.fabAddProcess.setVisibility(View.GONE);
+        } else {
+            setRecyclerView();
+        }
     }
 
     public void editAdavance(Adavance adavance) {

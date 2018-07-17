@@ -5,13 +5,14 @@ package com.mv.Model;
  */
 
 public class PiaChartModel {
-    private String state ;
+    private String state;
     private String district;
     private String taluka;
     private String name;
     private String detail;
     private String key;
     private String value;
+
     public String getState() {
         return state;
     }
@@ -67,7 +68,6 @@ public class PiaChartModel {
     public void setValue(String value) {
         this.value = value;
     }
-
 
 
 }

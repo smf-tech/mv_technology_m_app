@@ -327,4 +327,5 @@
     <string name="select_code">Select Code</string>
     <string name="alreadyPresent">Mobile Number Already Present</string>
     <string name="alreadyPresentDetail">Mobile Number is already present. Please check your Mobile Number</string>
+    <string name="text_pdf">PDF</string>
 </resources>

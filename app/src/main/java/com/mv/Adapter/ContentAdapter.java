@@ -3,6 +3,7 @@ package com.mv.Adapter;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -212,6 +213,13 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
               /*  holder.card_video.setVideoPath(Constants.IMAGEURL + mDataList.get(position).getId() + ".mp4");
                 holder.card_video.start();*/
 
+            } else if (mDataList.get(position).getContentType() != null
+                    && mDataList.get(position).getContentType().equalsIgnoreCase("Pdf")) {
+                holder.picture.setVisibility(View.VISIBLE);
+                holder.picture.setImageResource(R.drawable.pdfattachment);
+                holder.audioLayout.setVisibility(View.GONE);
+                holder.layout_Video.setVisibility(View.GONE);
+                holder.txt_detail.setVisibility(View.GONE);
             } else if (mDataList.get(position).getContentType() != null
                     && mDataList.get(position).getContentType().equalsIgnoreCase("Audio")) {
                 holder.picture.setVisibility(View.GONE);
@@ -770,13 +778,10 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
                             if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("audio")) {
                                 filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".mp3";
-
                             } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("video")) {
                                 filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".mp4";
-
                             } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("pdf")) {
                                 filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".pdf";
-
                             } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("zip")) {
                                 filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".zip";
                             } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image")) {
@@ -787,9 +792,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                             intent.setAction(Intent.ACTION_SEND);
                             intent.setType("application/*");
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
                             intent.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
-
                             intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
                             mContext.startActivity(Intent.createChooser(intent, "Share Content"));
                         } else {
@@ -798,9 +801,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                             intent.setAction(Intent.ACTION_SEND);
                             intent.setType("application/*");
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
                             intent.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
-
                             intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
                             mContext.startActivity(Intent.createChooser(intent, "Share Content"));
                         }
@@ -811,9 +812,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                         intent.setAction(Intent.ACTION_SEND);
                         intent.setType("application/*");
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
                         intent.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
-
                         intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
                         mContext.startActivity(Intent.createChooser(intent, "Share Content"));
                     } else {
@@ -823,8 +822,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                         Utills.hideProgressDialog();
                         mContext.startActivity(Intent.createChooser(i, "Share Post"));
                     }
-
-
                 }
             });
 
@@ -933,10 +930,26 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                             Utills.showImagewithheaderZoomDialog(v.getContext(), getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(getAdapterPosition()).getAttachmentId() + "/Body"));
                         }
                     } else if (mDataList.get(getAdapterPosition()).getId() != null) {
-                        Utills.showImageZoomInDialog(v.getContext(), mDataList.get(getAdapterPosition()).getId());
-
+                        if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("image")) {
+                            Utills.showImageZoomInDialog(v.getContext(), mDataList.get(getAdapterPosition()).getId());
+                        } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("pdf")) {
+                            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".pdf";
+                            if (!(new File(filePath).exists())) {
+                                Utills.showToast("Unable to open PDF file. Please download it.", mContext);
+                                return;
+                            }
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_VIEW);
+                            intent.setDataAndType(Uri.fromFile(new File(filePath)), "application/pdf");
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            PackageManager packageManager = mContext.getPackageManager();
+                            if (intent.resolveActivity(packageManager) != null) {
+                                mContext.startActivity(intent);
+                            } else {
+                                Utills.showToast("No Application available to open PDF file", mContext);
+                            }
+                        }
                     }
-
                 }
             });
 

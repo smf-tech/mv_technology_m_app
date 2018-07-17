@@ -90,8 +90,15 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void onAddImageClick() {
-        showPictureDialog();
+        if (Constants.AccountTeamCode.equals("TeamManagement")) {
+            if (mExpense.getAttachmentPresent() != null || mExpense.getAttachmentPresent().equalsIgnoreCase("true")) {
+                Utills.showImageZoomInDialog(ExpenseNewActivity.this, mExpense.getId());
+            }
+        } else {
+            showPictureDialog();
+        }
     }
+
 
     /*
        * Show dialog to select image from camera or gallary
@@ -210,11 +217,11 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
             }
         }
         // hiding views for team mgmt section
-        if(Constants.AccountTeamCode.equals("TeamManagement")) {
+        if (Constants.AccountTeamCode.equals("TeamManagement")) {
 
         }
         // to deseble and hide views for team mgmt section
-        if(Constants.AccountTeamCode.equals("TeamManagement")) {
+        if (Constants.AccountTeamCode.equals("TeamManagement")) {
             binding.linearly.setVisibility(View.VISIBLE);
             binding.btnSubmit.setVisibility(View.GONE);
             binding.btnApprove.setOnClickListener(this);
@@ -224,7 +231,7 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
             binding.spinnerParticular.setEnabled(false);
             binding.editTextAmount.setEnabled(false);
             binding.editTextDescription.setEnabled(false);
-            binding.addImage.setEnabled(false);
+
             binding.tvAddAttchment.setVisibility(View.GONE);
         }
 
@@ -242,12 +249,70 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                 showDateDialog();
                 break;
             case R.id.btn_reject:
-                Toast.makeText(this,"Rected",Toast.LENGTH_LONG).show();
+                changeExpense("Rejected");
                 break;
             case R.id.btn_approve:
-                Toast.makeText(this,"Approve",Toast.LENGTH_LONG).show();
+                changeExpense(Constants.USERACTION);
                 break;
         }
+    }
+
+    private void changeExpense(String status) {
+        if (Utills.isConnected(this)) {
+            try {
+
+                Utills.showProgressDialog(this);
+                JSONObject jsonObject = new JSONObject();
+                JSONArray jsonArray = new JSONArray();
+                Expense expense = mExpense;
+                expense.setStatus(status);
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                String json = gson.toJson(expense);
+                JSONObject jsonObject1 = new JSONObject(json);
+                jsonArray.put(jsonObject1);
+                jsonObject.put("listtaskanswerlist", jsonArray);
+
+                ServiceRequest apiService =
+                        ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+                JsonParser jsonParser = new JsonParser();
+                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertExpense", gsonObject).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Utills.hideProgressDialog();
+                        try {
+                            if (response != null && response.isSuccess()) {
+                                if (response.body() != null) {
+                                    String data = response.body().string();
+                                    if (data != null && data.length() > 0) {
+                                        Utills.showToast("Status of expense changed successfully", ExpenseNewActivity.this);
+                                        finish();
+                                        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            Utills.hideProgressDialog();
+                            Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Utills.hideProgressDialog();
+                        Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Utills.hideProgressDialog();
+                Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+
+            }
+        } else {
+            Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
+        }
+
     }
 
     @Override
@@ -283,8 +348,7 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
         if (isValid()) {
             Expense expense = new Expense();
             if (!isAdd) {
-                expense.setUniqueId(mExpense.getUniqueId());
-                expense.setId(mExpense.getId());
+                expense = mExpense;
             }
             expense.setPartuculars(particularList.get(mParticularSelect));
             expense.setDate(binding.txtDate.getText().toString().trim());

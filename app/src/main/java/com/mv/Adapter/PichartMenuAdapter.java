@@ -1,7 +1,6 @@
 package com.mv.Adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +9,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.data.PieEntry;
-
 import com.mv.R;
-import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,8 +25,9 @@ public class PichartMenuAdapter extends RecyclerView.Adapter<PichartMenuAdapter.
 
     private PreferenceHelper preferenceHelper;
     List<Integer> colorList;
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView txtCommunityName,bacColor;
+        public TextView txtCommunityName, bacColor;
         public LinearLayout layout;
 
         public MyViewHolder(View view) {
@@ -46,7 +43,7 @@ public class PichartMenuAdapter extends RecyclerView.Adapter<PichartMenuAdapter.
     public PichartMenuAdapter(List<PieEntry> moviesList, List<Integer> colorList, Activity context) {
         this.teplateList = moviesList;
         this.mContext = context;
-        this.colorList=colorList;
+        this.colorList = colorList;
         preferenceHelper = new PreferenceHelper(context);
     }
 
@@ -60,20 +57,14 @@ public class PichartMenuAdapter extends RecyclerView.Adapter<PichartMenuAdapter.
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        holder.bacColor.setBackgroundColor(colorList.get(position));
-        holder.txtCommunityName.setText( teplateList.get(position).getLabel());
+        holder.bacColor.setBackgroundColor(colorList.get((position % colorList.size())));
+        holder.txtCommunityName.setText(teplateList.get(position).getLabel());
     }
 
     @Override
     public int getItemCount() {
         return teplateList.size();
     }
-
-
-
-
-
-
 
 
 }

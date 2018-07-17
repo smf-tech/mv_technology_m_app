@@ -18,6 +18,7 @@ import com.google.gson.GsonBuilder;
 import com.mv.Adapter.ExpandableExpenseListAdapter;
 import com.mv.Adapter.ExpenseAdapter;
 import com.mv.Model.Expense;
+import com.mv.Model.User;
 import com.mv.Model.Voucher;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -28,6 +29,9 @@ import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityExpenseListBinding;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -110,8 +114,8 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
         if (Utills.isConnected(this))
             getUserExpenseData();
 
-        if (Utills.isConnected(this)){
-            if(Constants.AccountTeamCode.equals("TeamManagement")){
+        if (Utills.isConnected(this)) {
+            if (Constants.AccountTeamCode.equals("TeamManagement")) {
                 getUserExpenseDataForTeam();
                 binding.fabAddProcess.setVisibility(View.GONE);
             } else {
@@ -125,8 +129,11 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
         Utills.showProgressDialog(this, "Loading Data", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetUserExpenseData + "?voucherId=" + voucher.getId();
+                + Constants.GetPendingExpenseData + "?userId="
+                + User.getCurrentUser(ExpenseListActivity.this).getMvUser().getId()
+                + "&voucherId=" + voucher.getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -136,15 +143,26 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
                     if (response != null && response.isSuccess()) {
                         String str = response.body().string();
                         if (str != null && str.length() > 0) {
-                            if (Arrays.asList(gson.fromJson(str, Expense[].class)) != null) {
+
+                            JSONObject object = new JSONObject(str);
+                            if (object.has("salaries") && !(object.getString("salaries").equalsIgnoreCase("null"))) {
+                                mList = Arrays.asList(gson.fromJson(object.getString("salaries"), Expense[].class));
+                            }
+                            if (object.has("action")) {
+                                Constants.USERACTION = object.getString("action");
+                            }
+                            setRecyclerViewForTeam();
+                            /*if (Arrays.asList(gson.fromJson(str, Expense[].class)) != null) {
 //                                AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().deleteExpense(voucher.getId());
 //                                AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().insertExpense(Arrays.asList(gson.fromJson(str, Expense[].class)));
-                                mList=Arrays.asList(gson.fromJson(str, Expense[].class));
+                                mList = Arrays.asList(gson.fromJson(str, Expense[].class));
                                 setRecyclerViewForTeam();
-                            }
+                            }*/
                         }
                     }
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
@@ -293,7 +311,13 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onResume() {
         super.onResume();
-        setRecyclerView();
+        if (Constants.AccountTeamCode.equals("TeamManagement")) {
+            getUserExpenseDataForTeam();
+            binding.fabAddProcess.setVisibility(View.GONE);
+        } else {
+            setRecyclerView();
+        }
+
     }
 
     public void editExpense(Expense expense) {

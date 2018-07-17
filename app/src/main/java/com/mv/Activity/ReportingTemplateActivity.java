@@ -109,6 +109,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
     private Content mContent;
     private TextView rectext;
     private Uri audioUri = null;
+    private Uri pdfUri = null;
     private String stringId = "";
 
     @Override
@@ -428,6 +429,15 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                } else if (pdfUri != null) {
+                    jsonObject1.put("contentType", "Pdf");
+                    jsonObject1.put("isAttachmentPresent", "true");
+                    try {
+                        InputStream iStream = null;
+                        iStream = getContentResolver().openInputStream(pdfUri);
+                        img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
+                    } catch (Exception e) {
+                    }
                 }
                 /*JSONObject jsonObjectAttachment = new JSONObject();
                 jsonArrayAttchment.put(jsonObjectAttachment);*/
@@ -450,7 +460,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                             JSONArray array = object.getJSONArray("Records");
                             if (array.length() > 0) {
                                 JSONObject object1 = array.getJSONObject(0);
-                                if (object1.has("Id") && (FinalUri != null || outputUri != null || audioUri != null)) {
+                                if (object1.has("Id") && (pdfUri != null || FinalUri != null || outputUri != null || audioUri != null)) {
                                     JSONObject object2 = new JSONObject();
                                     object2.put("id", object1.getString("Id"));
 
@@ -461,6 +471,8 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                                         object2.put("type", "mp4");
                                     else if (audioUri != null)
                                         object2.put("type", "mp3");
+                                    else if (pdfUri != null)
+                                        object2.put("type", "pdf");
                                     object2.put("img", img_str);
                                     JSONArray array1 = new JSONArray();
                                     array1.put(object2);
@@ -766,7 +778,22 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Bitmap bmThumbnail;
-        if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
+        if (requestCode == Constants.CHOOSE_PDF && resultCode == Activity.RESULT_OK) {
+
+            if (data != null) {
+                try {
+                    pdfUri = data.getData();
+                    String selectedVideoFilePath = GetFilePathFromDevice.getPath(this, pdfUri);
+                    if (checkSizeExceed(selectedVideoFilePath)) {
+                        pdfUri = null;
+                        Utills.showToast(getString(R.string.text_size_exceed), this);
+                    }
+                    binding.addImage.setImageResource(R.drawable.pdfattachment);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
             try {
                 String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture_crop.jpg";
                 File imageFile = new File(imageFilePath);
@@ -934,7 +961,9 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle(getString(R.string.text_mediatype));
         String[] items = {getString(R.string.text_image),
-                getString(R.string.text_audio), getString(R.string.text_video)};
+                getString(R.string.text_audio),
+                getString(R.string.text_video)
+        };
 
         dialog.setItems(items, new DialogInterface.OnClickListener() {
 
@@ -950,6 +979,13 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                         break;
                     case 2:
                         showVideoDialog();
+                        break;
+                    case 3:
+                        Intent intent = new Intent();
+                        intent.setType("application/pdf");
+                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                        intent.setAction(Intent.ACTION_GET_CONTENT);
+                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), Constants.CHOOSE_PDF);
                         break;
                 }
             }

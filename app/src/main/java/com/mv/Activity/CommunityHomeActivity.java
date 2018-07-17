@@ -135,7 +135,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = "";
-        if (isTimePresent) {
+        if (isTimePresent && AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID)).size() > 0) {
             if (!isPrevious) {
                 url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                         + "/services/apexrest/getChatContentNewLates?CommunityId=" + preferenceHelper.getString(PreferenceHelper.COMMUNITYID)

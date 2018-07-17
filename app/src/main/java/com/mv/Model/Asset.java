@@ -86,7 +86,6 @@ public class Asset implements Serializable {
     private String specification;
 
 
-
     public String getTentativeReturnDate() {
         return tentativeReturnDate;
     }

@@ -12,17 +12,17 @@ import java.util.ArrayList;
 
 public class Constants {
 
-    /* Production
+    /* Production*/
     public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com";
     public static String REPORTID = "a1L7F000000YNK4";
-    public static String ISSUEID = "a1L7F000000YNJz";*/
+    public static String ISSUEID = "a1L7F000000YNJz";
 
-    /* Sandbox*/
+    /* Sandbox
     public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
     public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
     public static String REPORTID = "a1G0k000000522K";
-    public static String ISSUEID = "a1G0k000000522F";
+    public static String ISSUEID = "a1G0k000000522F";*/
 
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
@@ -42,6 +42,8 @@ public class Constants {
     public static String TITLE = "title";
     public static String LIST = "list";
     public static String CONTENT = "content";
+    public static String USERACTION = "";
+
 
     public static final String TABLE_CALANDER = "table_calender";
     public static final String TABLE_TASK = "table_task";
@@ -69,6 +71,7 @@ public class Constants {
     public static Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
     public static Integer CHOOSE_VIDEO_FROM_CAMERA = 102;
     public static Integer CHOOSE_VIDEO_FROM_GALLERY = 103;
+    public static Integer CHOOSE_PDF = 104;
 
     public static String TEMPLATE_REPORT = "Report";
     public static String PROCESS_ID = "process_id";
@@ -178,6 +181,7 @@ public class Constants {
     public static final String GetUserExpenseData = "/services/apexrest/getUserExpenseData";
     public static final String GetPendingExpenseData = "/services/apexrest/getPendingExpenseData";
     public static final String GetPendingAdavanceData = "/services/apexrest/getPendingAdavanceData";
+    public static final String GetPendingVoucherData = "/services/apexrest/getPendingVoucherData";
 
     public static final String DeleteTaskAnswerUrl = "/services/apexrest/DeleteTaskAnswer/";
     public static final String ApproveCommentforProcessUrl = "/services/apexrest/ApproveCommentforProcess";
@@ -213,6 +217,7 @@ public class Constants {
     public static String AssetStatusRejected = "Rejected";
     public static String AssetStatusReleased = "Released";
     public static String ALLUSER = "alluser";
+
 
     ArrayList<Asset> requestedList = new ArrayList<>();
     ArrayList<Asset> acceptedList = new ArrayList<>();

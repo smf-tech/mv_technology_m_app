@@ -24,7 +24,7 @@ public class DashaBoardListModel implements Parcelable {
 
     private String Multiple_Role__c;
 
-    private ArrayList<Task> tasksList=new ArrayList<>();
+    private ArrayList<Task> tasksList = new ArrayList<>();
 
     public String getId() {
         return Id;

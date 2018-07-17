@@ -12,7 +12,6 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -103,7 +102,7 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
         }
 
         // to deseble and hide views for team mgmt section
-        if(Constants.AccountTeamCode.equals("TeamManagement")) {
+        if (Constants.AccountTeamCode.equals("TeamManagement")) {
             binding.linearly.setVisibility(View.VISIBLE);
             binding.btnSubmit.setVisibility(View.GONE);
             binding.btnApprove.setOnClickListener(this);
@@ -184,12 +183,69 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
                 //showDateDialog();
                 break;
             case R.id.btn_reject:
-                Toast.makeText(this,"Rected",Toast.LENGTH_LONG).show();
+                changeAdavance("Rejected");
                 break;
             case R.id.btn_approve:
-                Toast.makeText(this,"approve",Toast.LENGTH_LONG).show();
+                changeAdavance(Constants.USERACTION);
                 break;
         }
+    }
+
+    private void changeAdavance(String status) {
+        if (Utills.isConnected(this)) {
+            try {
+                Utills.showProgressDialog(this);
+                JSONObject jsonObject = new JSONObject();
+                JSONArray jsonArray = new JSONArray();
+                Adavance adavance = mAdavance;
+                adavance.setStatus(status);
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                String json = gson.toJson(adavance);
+                JSONObject jsonObject1 = new JSONObject(json);
+                jsonArray.put(jsonObject1);
+                jsonObject.put("listtaskanswerlist", jsonArray);
+
+                ServiceRequest apiService =
+                        ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+                JsonParser jsonParser = new JsonParser();
+                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertAdavance", gsonObject).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Utills.hideProgressDialog();
+                        try {
+                            if (response != null && response.isSuccess()) {
+                                if (response.body() != null) {
+                                    String data = response.body().string();
+                                    if (data != null && data.length() > 0) {
+                                        Utills.showToast("Status of expense changed successfully", AdavanceNewActivity.this);
+                                        finish();
+                                        overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            Utills.hideProgressDialog();
+                            Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Utills.hideProgressDialog();
+                        Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Utills.hideProgressDialog();
+                Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+
+            }
+        } else {
+            Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
+        }
+
     }
 
     private void addAdavance(final Adavance adavance) {
@@ -284,8 +340,7 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
         if (isValid()) {
             Adavance adavance = new Adavance();
             if (!isAdd) {
-                adavance.setUniqueId(mAdavance.getUniqueId());
-                adavance.setId(mAdavance.getId());
+                adavance = mAdavance;
             }
             adavance.setProject(projectList.get(mProjectSelect));
             adavance.setProject(projectList.get(mProjectSelect));

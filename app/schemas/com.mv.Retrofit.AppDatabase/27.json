@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 27,
-    "identityHash": "1705a1890f8b37bf0779ca9bd9577e08",
+    "identityHash": "f1863ddec0a0f2db7f3195a6363fb637",
     "entities": [
       {
         "tableName": "table_community",
@@ -456,7 +456,7 @@
       },
       {
         "tableName": "table_calender",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Description__c` TEXT, `Date__c` TEXT, `End_Date__c` TEXT, `Event_End_Time__c` TEXT, `Status__c` TEXT, `organization__c` TEXT, `MV_User__c` TEXT, `Title__c` TEXT, `Event_Time__c` TEXT, `Village__c` TEXT, `Taluka__c` TEXT, `State__c` TEXT, `CreatedRoleData` TEXT, `ProceesTotalCount` TEXT, `ProceesSubmittedCount` TEXT, `Role__c` TEXT, `Cluster__c` TEXT, `School__c` TEXT, `District__c` TEXT, `Description_New__c` TEXT, `Is_Event_for_All_Role__c` TEXT, `Assigned_User_Ids__c` TEXT, `Assign_id_name__c` TEXT, `MV_Process__c` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Description__c` TEXT, `Date__c` TEXT, `End_Date__c` TEXT, `Event_End_Time__c` TEXT, `Status__c` TEXT, `organization__c` TEXT, `MV_User__c` TEXT, `Title__c` TEXT, `Event_Time__c` TEXT, `Village__c` TEXT, `Taluka__c` TEXT, `State__c` TEXT, `CreatedRoleData` TEXT, `ProceesTotalCount` TEXT, `ProceesSubmittedCount` TEXT, `Role__c` TEXT, `Cluster__c` TEXT, `School__c` TEXT, `District__c` TEXT, `Description_New__c` TEXT, `Is_Event_for_All_Role__c` TEXT, `Assigned_User_Ids__c` TEXT, `Assign_id_name__c` TEXT, `MV_Process__c` TEXT, `Present_User__c` TEXT)",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -587,6 +587,11 @@
             "fieldPath": "MV_Process__c",
             "columnName": "MV_Process__c",
             "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Present_User__c",
+            "columnName": "Present_User__c",
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -649,7 +654,7 @@
       },
       {
         "tableName": "table_voucher",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `Decription` TEXT, `NoOfPeople` TEXT, `User` TEXT, `FromDate` TEXT, `ToDate` TEXT, `Place` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `Decription` TEXT, `NoOfPeople` TEXT, `User` TEXT, `FromDate` TEXT, `ToDate` TEXT, `Place` TEXT, `UserName` TEXT)",
         "fields": [
           {
             "fieldPath": "UniqueId",
@@ -699,6 +704,11 @@
           {
             "fieldPath": "Place",
             "columnName": "Place",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "UserName",
+            "columnName": "UserName",
             "affinity": "TEXT"
           }
         ],
@@ -866,7 +876,7 @@
       },
       {
         "tableName": "table_salary",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `SalaryDate` TEXT, `SalaryMonth` TEXT, `Amount` TEXT, `Consolidated_Basic__c` TEXT, `MV_User__c` TEXT, `Name` TEXT, `Perks__c` TEXT, `IsDeleted` TEXT, `Arrears__c` TEXT, `Medical_Allowance__c` TEXT, `Special_Allowance__c` TEXT, `Conveyance_Allowance__c` TEXT, `HRA__c` TEXT, `Security_Fund__c` TEXT, `Salary_Advance__c` TEXT, `TDS__c` TEXT, `Profession_Tax__c` TEXT, `Provident_Fund__c` TEXT, `Total_Amount_to_Bank__c` TEXT, `Total_Reimbursement__c` TEXT, `Gross_Earning_for_the_Month__c` TEXT, `Any_other__c` TEXT, `Travelling_Exp__c` TEXT, `Appontment_Allowance__c` TEXT, `House_Rent__c` TEXT, `Total_Deductions__c` TEXT, `Unpaid_Leaves__c` TEXT, `Paid_Leaves__c` TEXT, `Present_Days__c` TEXT, `Total_Leave_Deduction__c` TEXT, `Absent_Days__c` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `SalaryDate` TEXT, `SalaryMonth` TEXT, `Amount` TEXT, `Consolidated_Basic__c` TEXT, `MV_User__c` TEXT, `User_Full_Name__c` TEXT, `Telephone_Expense__c` TEXT, `Net_Salary__c` TEXT, `Perks__c` TEXT, `IsDeleted` TEXT, `Arrears__c` TEXT, `Medical_Allowance__c` TEXT, `Special_Allowance__c` TEXT, `Conveyance_Allowance__c` TEXT, `HRA__c` TEXT, `Security_Fund__c` TEXT, `Salary_Advance__c` TEXT, `TDS__c` TEXT, `Profession_Tax__c` TEXT, `Provident_Fund__c` TEXT, `Total_Amount_to_Bank__c` TEXT, `Total_Reimbursement__c` TEXT, `Gross_Earning_for_the_Month__c` TEXT, `Any_other__c` TEXT, `Travelling_Exp__c` TEXT, `Appontment_Allowance__c` TEXT, `House_Rent__c` TEXT, `Total_Deductions__c` TEXT, `Unpaid_Leaves__c` TEXT, `Paid_Leaves__c` TEXT, `Present_Days__c` TEXT, `Total_Leave_Deduction__c` TEXT, `Absent_Days__c` TEXT)",
         "fields": [
           {
             "fieldPath": "UniqueId",
@@ -905,7 +915,17 @@
           },
           {
             "fieldPath": "Name",
-            "columnName": "Name",
+            "columnName": "User_Full_Name__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Telephone_Expense__c",
+            "columnName": "Telephone_Expense__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Net_Salary__c",
+            "columnName": "Net_Salary__c",
             "affinity": "TEXT"
           },
           {
@@ -1179,7 +1199,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"1705a1890f8b37bf0779ca9bd9577e08\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"f1863ddec0a0f2db7f3195a6363fb637\")"
     ]
   }
 }

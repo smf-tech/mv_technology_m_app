@@ -72,8 +72,8 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-        if (Utills.isConnected(this)){
-            if(Constants.AccountTeamCode.equals("TeamManagement")){
+        if (Utills.isConnected(this)) {
+            if (Constants.AccountTeamCode.equals("TeamManagement")) {
                 getUserVoucherDataForTeam();
                 binding.fabAddProcess.setVisibility(View.GONE);
             } else {
@@ -89,7 +89,7 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetUserVoucherData + "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
+                + Constants.GetPendingVoucherData + "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -102,7 +102,7 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
                             if (Arrays.asList(gson.fromJson(str, Voucher[].class)) != null) {
 //                                AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().deleteAllVoucher();
 //                                AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().insertVoucher();
-                                mList=Arrays.asList(gson.fromJson(str, Voucher[].class));
+                                mList = Arrays.asList(gson.fromJson(str, Voucher[].class));
                                 setRecyclerViewForTeam();
                             }
                         }
@@ -164,6 +164,7 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
         binding.rvVoucher.setHasFixedSize(true);
         binding.rvVoucher.setLayoutManager(new LinearLayoutManager(this));
     }
+
     private void setRecyclerViewForTeam() {
         adapter = new VoucherAdapter(this, mList);
         binding.rvVoucher.setAdapter(adapter);
@@ -219,6 +220,14 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onResume() {
         super.onResume();
+
+        if (Constants.AccountTeamCode.equals("TeamManagement")) {
+            getUserVoucherDataForTeam();
+            binding.fabAddProcess.setVisibility(View.GONE);
+        } else {
+            setRecyclerView();
+        }
+
         setRecyclerView();
     }
 

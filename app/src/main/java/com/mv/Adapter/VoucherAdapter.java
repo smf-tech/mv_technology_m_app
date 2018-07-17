@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,13 +56,20 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
             if (temp.getAmount() != null && temp.getAmount().length() > 0)
                 amount += Double.parseDouble(temp.getAmount());
         }
-        List<Adavance> adavances = AppDatabase.getAppDatabase(mContext).userDao().getAllAdvance(voucher.getId(),"Approved" );
+        List<Adavance> adavances = AppDatabase.getAppDatabase(mContext).userDao().getAllAdvance(voucher.getId(), "Approved");
         double adavanceAmount = 0;
         for (Adavance temp : adavances) {
             if (temp.getAmount() != null && temp.getAmount().length() > 0)
                 adavanceAmount += Double.parseDouble(temp.getAmount());
         }
-
+        if (Constants.AccountTeamCode.equals("TeamManagement")) {
+            holder.tvUser.setVisibility(View.VISIBLE);
+            holder.tvUserName.setVisibility(View.VISIBLE);
+            holder.tvUserName.setText(voucher.getUserName());
+        } else {
+            holder.tvUser.setVisibility(View.GONE);
+            holder.tvUserName.setVisibility(View.GONE);
+        }
         holder.tvProjectName.setText(voucher.getProject());
         holder.tvDateName.setText(voucher.getDate());
         holder.tvNoOfPeopleName.setText(voucher.getPlace());
@@ -87,10 +95,11 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
-        TextView tvProjectName, tvDateName, tvNoOfPeopleName, tvTotalExpenseName,tvTotalAdvance;
+        TextView tvUser, tvUserName;
+        TextView tvProjectName, tvDateName, tvNoOfPeopleName, tvTotalExpenseName, tvTotalAdvance;
         ImageView imgEdit, imgDelete, imgExpense;
         LinearLayout layout_expense, layout_adavance;
+        CardView cardView;
 
         public ViewHolder(View itemLayoutView) {
 
@@ -99,6 +108,10 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
             imgEdit = (ImageView) itemLayoutView.findViewById(R.id.imgEdit);
             imgDelete = (ImageView) itemLayoutView.findViewById(R.id.imgDelete);
 
+            cardView = (CardView) itemLayoutView.findViewById(R.id.cardView);
+
+            tvUser = (TextView) itemLayoutView.findViewById(R.id.tvUser);
+            tvUserName = (TextView) itemLayoutView.findViewById(R.id.tvUserName);
             tvProjectName = (TextView) itemLayoutView.findViewById(R.id.tvProjectName);
             tvDateName = (TextView) itemLayoutView.findViewById(R.id.tvDateName);
             tvNoOfPeopleName = (TextView) itemLayoutView.findViewById(R.id.tvNoOfPeopleName);
@@ -108,7 +121,7 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
             layout_adavance = (LinearLayout) itemLayoutView.findViewById(R.id.layout_adavance);
 
             // hiding views for team mgmt section
-            if(Constants.AccountTeamCode.equals("TeamManagement")){
+            if (Constants.AccountTeamCode.equals("TeamManagement")) {
                 imgEdit.setVisibility(View.GONE);
                 imgDelete.setVisibility(View.GONE);
             }
@@ -141,6 +154,14 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
                     intent = new Intent(mContext, AdavanceListActivity.class);
                     intent.putExtra(Constants.VOUCHER, mDataList.get(getAdapterPosition()));
                     mActivity.startActivity(intent);
+                }
+            });
+            cardView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (Constants.AccountTeamCode.equals("TeamManagement")) {
+                        mActivity.editVoucher(getAdapterPosition());
+                    }
                 }
             });
 

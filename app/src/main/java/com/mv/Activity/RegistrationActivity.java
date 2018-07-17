@@ -604,6 +604,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 binding.editTextLastName.setText(User.getCurrentUser(this).getMvUser().getLastName());
                 binding.editTextMobileNumber.setText(User.getCurrentUser(this).getMvUser().getPhone());
                 binding.editTextName.setText(User.getCurrentUser(this).getMvUser().getName());
+                binding.editMultiselectTaluka.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getMultipleTaluka());
 
                 if (User.getCurrentUser(this).getMvUser().getGender() != null && !TextUtils.isEmpty(User.getCurrentUser(this).getMvUser().getGender())) {
                     if (User.getCurrentUser(this).getMvUser().getGender().equalsIgnoreCase("Male")) {
@@ -836,7 +837,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 if (data != null && data.length() > 0) {
                                     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                                     User user = gson.fromJson(data, User.class);
-                                    if (user.getDuplicateMobileNo().equalsIgnoreCase("true")) {
+                                    if (user.getDuplicateMobileNo() != null && user.getDuplicateMobileNo().equalsIgnoreCase("true")) {
                                         showDuplicatePopUp();
                                         return;
                                     }
@@ -1220,7 +1221,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 mListVillage.add("Select");
                 mListSchoolName.add("Select");
                 value = "";
-                binding.editMultiselectTaluka.setText("");
+               // binding.editMultiselectTaluka.setText("");
                 mSelectTaluka = 0;
                 mSelectCluster = 0;
                 mSelectVillage = 0;

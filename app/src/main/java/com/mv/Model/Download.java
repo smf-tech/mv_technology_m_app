@@ -7,9 +7,9 @@ package com.mv.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Download  implements Parcelable{
+public class Download implements Parcelable {
 
-    public Download(){
+    public Download() {
 
     }
 

@@ -74,7 +74,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
     private Activity context;
     private ArrayList<EventUser> calenderEventUserArrayList = new ArrayList<>();
     String eventID;
-    ;
+    List<EventUser> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +83,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         context = this;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_event_user_list);
         binding.setActivity(this);
-        eventID=getIntent().getStringExtra("EventID");
+        eventID = getIntent().getStringExtra("EventID");
         initViews();
         getEventUser();
     }
@@ -98,7 +98,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         selectedVillage = User.getCurrentUser(getApplicationContext()).getMvUser().getVillage();
         selectedSchool = User.getCurrentUser(getApplicationContext()).getMvUser().getSchool_Name();
         selectedOrganization = User.getCurrentUser(getApplicationContext()).getMvUser().getOrganisation();
-       // selectedRolename = User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
+        // selectedRolename = User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
         selectedRole = new ArrayList<String>(Arrays.asList(getColumnIdex("Select".split(","))));
         selectedProcessId = new ArrayList<String>(Arrays.asList(getColumnIdex(("Other").split(","))));
         binding.spinnerRole.setText("Select");
@@ -502,8 +502,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
     };
 
     private void setFilter(String s) {
-        List<EventUser> list = new ArrayList<>();
-
+        list = new ArrayList<>();
         eventUsersFliter.clear();
         for (int i = 0; i < eventUsers.size(); i++) {
             eventUsersFliter.add(eventUsers.get(i));
@@ -514,7 +513,6 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 list.add(eventUsersFliter.get(i));
             }
         }
-
         checkAllSelected((ArrayList<EventUser>) list);
 
         mAdapter = new EventUserListAdapter(eventUsersOld, list, EventUserListActivity.this);
@@ -523,17 +521,17 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
 
     public void saveDataToList(EventUser eventUser, boolean isSelected) {
         if (isSelected) {
-            Boolean prsent=false;
+            Boolean prsent = false;
             for (int i = 0; i < selectedUser.size(); i++) {
                 if (selectedUser.get(i).getUserID().equalsIgnoreCase(eventUser.getUserID())) {
-                    prsent=true;
+                    prsent = true;
                     break;
                 } else {
-                    prsent=false;
+                    prsent = false;
                 }
             }
-            if(!prsent)
-            selectedUser.add(eventUser);
+            if (!prsent)
+                selectedUser.add(eventUser);
         } else {
             for (int i = 0; i < selectedUser.size(); i++) {
                 if (selectedUser.get(i).getUserID().equalsIgnoreCase(eventUser.getUserID())) {
@@ -555,29 +553,44 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
             case R.id.btn_submit:
                 Intent openClass = new Intent(EventUserListActivity.this, CalenderFliterActivity.class);
                 // openClass.putExtra(Constants.PROCESS_ID, dashaBoardListModel);
-                if (binding.cbEventSelectAll.isChecked())
+                if (binding.cbEventSelectAll.isChecked() && binding.editTextEmail.getText().toString().trim().length() == 0)
                     openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, eventUsers);
                 else
                     openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, selectedUser);
                 openClass.putParcelableArrayListExtra(Constants.ALLUSER, calenderEventUserArrayList);
-                openClass.putExtra("Role",selectedRolename);
+                openClass.putExtra("Role", selectedRolename);
                 //  openClass.putExtra("stock_list", resultList.get(getAdapterPosition()).get(0));
                 setResult(RESULT_OK, openClass);
                 //  startActivity(openClass);
                 finish();
                 break;
             case R.id.cb_event_select_all:
-
                 if (((CheckBox) view).isChecked()) {
-                    for (EventUser eventUser : eventUsers) {
-                        eventUser.setUserSelected(true);
-                        saveDataToList(eventUser, true);
+                    if (binding.editTextEmail.getText().toString().trim().length() == 0) {
+                        for (EventUser eventUser : eventUsers) {
+                            eventUser.setUserSelected(true);
+                            saveDataToList(eventUser, true);
+                        }
+                    } else {
+                        for (EventUser eventUser : list) {
+                            eventUser.setUserSelected(true);
+                            saveDataToList(eventUser, true);
+                        }
                     }
+
                 } else {
-                    for (EventUser eventUser : eventUsers) {
-                        eventUser.setUserSelected(false);
-                        saveDataToList(eventUser, false);
+                    if (binding.editTextEmail.getText().toString().trim().length() == 0) {
+                        for (EventUser eventUser : eventUsers) {
+                            eventUser.setUserSelected(false);
+                            saveDataToList(eventUser, false);
+                        }
+                    } else {
+                        for (EventUser eventUser : list) {
+                            eventUser.setUserSelected(false);
+                            saveDataToList(eventUser, false);
+                        }
                     }
+
                 }
                 mAdapter.notifyDataSetChanged();
 
@@ -998,9 +1011,9 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                                 calenderEventUserArrayList = new ArrayList<>();
                             }
 
-                            if(eventUsersOld!=null){
-                                for(int i=0;i<eventUsersOld.size();i++){
-                                    for(int j=0;j<eventUsers.size();j++) {
+                            if (eventUsersOld != null) {
+                                for (int i = 0; i < eventUsersOld.size(); i++) {
+                                    for (int j = 0; j < eventUsers.size(); j++) {
                                         if (eventUsersOld.get(i).getUserID().equals(eventUsers.get(j).getUserID())) {
                                             eventUsers.get(j).setUserSelected(true);
                                         }
@@ -1041,9 +1054,9 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         buffer.append(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.GetEventCalenderMembers_Url);
         //   https://cs57.salesforce.com/services/apexrest/getUserDataForCalnderAttendance?eventId=a1C0k000000Sh1l
-        buffer.append("?eventId="+eventID);
+        buffer.append("?eventId=" + eventID);
 
-        Log.e("Url",buffer.toString());
+        Log.e("Url", buffer.toString());
 
         apiService.getSalesForceData(buffer.toString()).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -1070,9 +1083,9 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                             }
                             eventUsersOld.addAll(eventUsers);
 
-                            if(eventUsersOld!=null){
-                                for(int i=0;i<eventUsersOld.size();i++){
-                                    for(int j=0;j<eventUsers.size();j++) {
+                            if (eventUsersOld != null) {
+                                for (int i = 0; i < eventUsersOld.size(); i++) {
+                                    for (int j = 0; j < eventUsers.size(); j++) {
                                         if (eventUsersOld.get(i).getUserID().equals(eventUsers.get(j).getUserID())) {
                                             eventUsers.get(j).setUserSelected(true);
                                         }
@@ -1082,7 +1095,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
 
                             checkAllSelected(eventUsers);
 
-                            mAdapter = new EventUserListAdapter(eventUsersOld,eventUsers, EventUserListActivity.this);
+                            mAdapter = new EventUserListAdapter(eventUsersOld, eventUsers, EventUserListActivity.this);
                             RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
                             binding.recyclerView.setLayoutManager(mLayoutManager);
                             binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -1105,22 +1118,22 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
     }
 
     // chech all the user in list are selected or not
-    public void checkAllSelected(ArrayList<EventUser> list){
-        boolean allCheck=true;
-        for(int i=0;i<list.size();i++){
-            if(!list.get(i).getUserSelected()){
-                allCheck=false;
+    public void checkAllSelected(ArrayList<EventUser> list) {
+        boolean allCheck = true;
+        for (int i = 0; i < list.size(); i++) {
+            if (!list.get(i).getUserSelected()) {
+                allCheck = false;
                 break;
             }
         }
-        if(allCheck)
+        if (allCheck)
             binding.cbEventSelectAll.setChecked(true);
         else
             binding.cbEventSelectAll.setChecked(false);
     }
 
     // uncheck chech all check box
-    public void checkAllDeSelected(){
+    public void checkAllDeSelected() {
         binding.cbEventSelectAll.setChecked(false);
     }
 

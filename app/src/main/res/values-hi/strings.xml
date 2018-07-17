@@ -31,7 +31,8 @@
 
     <string name="cannotLogout">आप लॉगआउट नहीं कर सकते</string>
     <string name="submitAllForms">कृपया सभी फ़ॉर्म सबमिट करें और लॉग आउट करें</string>
-
+    <!--Advance List Activity-->
+    <string name="advance_list">Advance List</string>
     <string name="text_record">ध्वनि रिकॉर्ड करें</string>
     <string name="text_select_audio">ऑडियो चुनें</string>
     <string name="text_chooseaudio">ऑडियो चुनें</string>
@@ -312,4 +313,5 @@
     <string name="select_code">Select Code</string>
     <string name="alreadyPresent">Mobile Number Already Present</string>
     <string name="alreadyPresentDetail">Mobile Number is already present. Please check your Mobile Number</string>
+    <string name="text_pdf">PDF</string>
 </resources>

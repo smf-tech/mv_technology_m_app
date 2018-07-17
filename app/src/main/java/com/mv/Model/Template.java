@@ -45,6 +45,7 @@ public class Template implements Serializable, Parcelable {
     @SerializedName("template_name")
     @Expose
     private String Name;
+
     public String getAnswerCount() {
         return answerCount;
     }
@@ -101,6 +102,7 @@ public class Template implements Serializable, Parcelable {
     @Expose
     @ColumnInfo(name = "Category__c")
     private String Category__c;
+
     public String getTargated_Date__c() {
         return Targated_Date__c;
     }
@@ -128,9 +130,6 @@ public class Template implements Serializable, Parcelable {
     private String LocationLevel;
 
 
-
-
-
     public int getUnique_Id() {
         return Unique_Id;
     }
@@ -138,7 +137,6 @@ public class Template implements Serializable, Parcelable {
     public void setUnique_Id(int unique_Id) {
         Unique_Id = unique_Id;
     }
-
 
 
     public String getLocationLevel() {
@@ -283,7 +281,7 @@ public class Template implements Serializable, Parcelable {
     @Expose
     private String P1F5__c;
 
-    private  Boolean Is_Editable__c;
+    private Boolean Is_Editable__c;
 
     public Boolean getIs_Editable__c() {
         return Is_Editable__c;
@@ -301,7 +299,7 @@ public class Template implements Serializable, Parcelable {
         Is_Multiple_Entry_Allowed__c = is_Multiple_Entry_Allowed__c;
     }
 
-    private  Boolean Is_Multiple_Entry_Allowed__c;
+    private Boolean Is_Multiple_Entry_Allowed__c;
 
     public Template() {
     }

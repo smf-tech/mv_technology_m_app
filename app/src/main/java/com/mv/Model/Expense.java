@@ -169,7 +169,6 @@ public class Expense implements Serializable {
     }
 
 
-
     public String getAttachmentPresent() {
         return AttachmentPresent;
     }
@@ -177,7 +176,6 @@ public class Expense implements Serializable {
     public void setAttachmentPresent(String attachmentPresent) {
         AttachmentPresent = attachmentPresent;
     }
-
 
 
     public String getUser() {
