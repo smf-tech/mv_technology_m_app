@@ -32,6 +32,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -209,6 +211,9 @@ public class EventUserAttendanceActivity extends AppCompatActivity implements Vi
                                     eventUsers.get(i).setUserSelected(true);
                                 }
                             }
+
+                            //sorting as per the present users
+                            Collections.sort(eventUsers);
 
                             checkAllSelected(eventUsers);
 

@@ -369,7 +369,7 @@
 
         <activity
             android:name=".Activity.EventUserAttendanceActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan"></activity>
 
 
