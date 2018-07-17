@@ -44,7 +44,6 @@ public class IndicatortaskAdapter extends RecyclerView.Adapter<IndicatortaskAdap
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     if(getAdapterPosition()==0)
                     {
                         Intent openClass = new Intent(mContext, OverallReportActivity.class);

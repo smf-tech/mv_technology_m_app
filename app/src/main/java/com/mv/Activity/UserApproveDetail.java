@@ -238,17 +238,11 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
                 LinearLayout.LayoutParams.MATCH_PARENT);
         input.setLayoutParams(lp);
         alertDialog.setView(input);
-
+        alertDialog.setCancelable(false);
         alertDialog.setPositiveButton(getString(R.string.ok),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        isSave = "false";
-                        comment = input.getText().toString();
-                        if (!comment.isEmpty()) {
-                            sendApprovedData();
-                        } else {
-                            Utills.showToast("Please Enter Comment", UserApproveDetail.this);
-                        }
+
                     }
                 });
 
@@ -259,7 +253,26 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
                     }
                 });
 
-        alertDialog.show();
+//        alertDialog.show();
+        AlertDialog dialog = alertDialog.create();
+        dialog.show();
+
+        // comment validations added
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                isSave = "false";
+                comment = input.getText().toString();
+                if (!comment.isEmpty()) {
+                    sendApprovedData();
+                    dialog.dismiss();
+                } else {
+                    Utills.showToast("Please Enter Comment", UserApproveDetail.this);
+                }
+            }
+        });
 
     }
 

@@ -2,6 +2,7 @@ package com.mv.Model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import java.io.Serializable;
 
@@ -9,12 +10,11 @@ import java.io.Serializable;
  * Created by nanostuffs on 03-02-2018.
  */
 
-public class EventUser implements Parcelable {
+public class EventUser implements Parcelable,Comparable<EventUser> {
     private String role;
     private String userName;
     private String userID;
     private Boolean isUserSelected;
-
 
     public Boolean getUserSelected() {
         return isUserSelected;
@@ -84,4 +84,13 @@ public class EventUser implements Parcelable {
             return new EventUser[size];
         }
     };
+
+    // for sorting in attendance
+    @Override
+    public int compareTo(@NonNull EventUser o) {
+        if(o.getUserSelected())
+            return 1;
+        else
+            return -1;
+    }
 }

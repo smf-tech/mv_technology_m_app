@@ -566,7 +566,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, getResources().getDisplayMetrics());
         }
 
-
     }
 
     public HomeModel checkList(List<String> allTab, int i, Boolean isAccessible) {
