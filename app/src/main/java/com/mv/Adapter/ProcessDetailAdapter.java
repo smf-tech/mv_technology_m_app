@@ -307,7 +307,6 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 break;
             case Constants.LOCATION:
 
-
                 if (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL).equalsIgnoreCase(task.getTask_Text__c())) {
                     holder.llHeaderLay.setVisibility(View.GONE);
                     holder.llEdittext.setVisibility(View.GONE);

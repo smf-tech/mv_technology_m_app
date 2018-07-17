@@ -303,7 +303,9 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
         String str = "";
         if (binding.editTextCount.getText().toString().trim().length() == 0) {
             str = "Please enter Amount";
-        } else if (binding.editTextDescription.getText().toString().trim().length() == 0) {
+        } else if (binding.txtDate.getText().toString().trim().length() == 4) {
+            str = "Please select the date";
+        }else if (binding.editTextDescription.getText().toString().trim().length() == 0) {
             str = "Please enter Description Of Adavace";
         }
         if (str.length() != 0) {

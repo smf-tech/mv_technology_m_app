@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mv.Activity.AdavanceListActivity;
 import com.mv.Model.Adavance;
@@ -78,6 +80,13 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
         tvDateName = (TextView) convertView.findViewById(R.id.tvDateName);
         tvAmountName = (TextView) convertView.findViewById(R.id.tvAmountName);
         textLayout = (RelativeLayout) convertView.findViewById(R.id.textLayout);
+
+        Log.e("Group", String.valueOf(groupPosition));
+
+        if(groupPosition==1|| groupPosition==2){
+            imgEdit.setVisibility(View.GONE);
+            imgDelete.setVisibility(View.GONE);
+        }
 
         // hiding views for team mgmt section
         if(Constants.AccountTeamCode.equals("TeamManagement")){

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -453,6 +454,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         Utills.setupUI(findViewById(R.id.layout_main), this);
         preferenceHelper = new PreferenceHelper(this);
+        binding.btnRefreshLocation.setOnClickListener(this);
 
         radioGroup = (RadioGroup) findViewById(R.id.gender_group);
         binding.birthDate.setOnClickListener(this);
@@ -680,6 +682,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 sendData();
                 break;
             case R.id.btn_refresh_location:
+                binding.btnRefreshLocation.setImageResource(0);//It will remove the image resource so animation will be clearly visible
+                binding.btnRefreshLocation.setBackgroundResource(R.drawable.work_location_progress);
+                AnimationDrawable rocketAnimation = (AnimationDrawable) binding.btnRefreshLocation.getBackground();
+                rocketAnimation.start();
+
                 gps = new GPSTracker(RegistrationActivity.this);
                 binding.editTextRefresh.setText(gps.getLatitude() + " , " + gps.getLongitude());
                 SelectedLat = String.valueOf(gps.getLatitude());
