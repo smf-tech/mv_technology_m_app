@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 27,
-    "identityHash": "d0980ae9ea3bc7504152627099b8564e",
+    "identityHash": "58db0128cd4e1c53f855780388b7353f",
     "entities": [
       {
         "tableName": "table_community",
@@ -654,7 +654,7 @@
       },
       {
         "tableName": "table_voucher",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `Decription` TEXT, `NoOfPeople` TEXT, `User` TEXT, `FromDate` TEXT, `ToDate` TEXT, `Place` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `Decription` TEXT, `NoOfPeople` TEXT, `User` TEXT, `FromDate` TEXT, `ToDate` TEXT, `Place` TEXT, `UserName` TEXT)",
         "fields": [
           {
             "fieldPath": "UniqueId",
@@ -704,6 +704,11 @@
           {
             "fieldPath": "Place",
             "columnName": "Place",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "UserName",
+            "columnName": "UserName",
             "affinity": "TEXT"
           }
         ],
@@ -871,7 +876,7 @@
       },
       {
         "tableName": "table_salary",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `SalaryDate` TEXT, `SalaryMonth` TEXT, `Amount` TEXT, `Consolidated_Basic__c` TEXT, `MV_User__c` TEXT, `User_Full_Name__c` TEXT, `Telephone_Expense__c` TEXT, `Net_Salary__c` TEXT, `Perks__c` TEXT, `IsDeleted` TEXT, `Arrears__c` TEXT, `Medical_Allowance__c` TEXT, `Special_Allowance__c` TEXT, `Conveyance_Allowance__c` TEXT, `HRA__c` TEXT, `Security_Fund__c` TEXT, `Salary_Advance__c` TEXT, `TDS__c` TEXT, `Profession_Tax__c` TEXT, `Provident_Fund__c` TEXT, `Total_Amount_to_Bank__c` TEXT, `Total_Reimbursement__c` TEXT, `Gross_Earning_for_the_Month__c` TEXT, `Any_other__c` TEXT, `Travelling_Exp__c` TEXT, `Appontment_Allowance__c` TEXT, `House_Rent__c` TEXT, `Total_Deductions__c` TEXT, `Unpaid_Leaves__c` TEXT, `Paid_Leaves__c` TEXT, `Present_Days__c` TEXT, `Total_Leave_Deduction__c` TEXT, `Absent_Days__c` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `SalaryDate` TEXT, `SalaryMonth` TEXT, `Amount` TEXT, `Consolidated_Basic__c` TEXT, `MV_User__c` TEXT, `User_Full_Name__c` TEXT, `Telephone_Expense__c` TEXT, `Net_Salary__c` TEXT, `Perks__c` TEXT, `IsDeleted` TEXT, `Arrears__c` TEXT, `Medical_Allowance__c` TEXT, `Special_Allowance__c` TEXT, `Conveyance_Allowance__c` TEXT, `HRA__c` TEXT, `Security_Fund__c` TEXT, `Salary_Advance__c` TEXT, `TDS__c` TEXT, `Profession_Tax__c` TEXT, `Provident_Fund__c` TEXT, `Total_Amount_to_Bank__c` TEXT, `Total_Reimbursement__c` TEXT, `Gross_Earning_for_the_Month__c` TEXT, `Any_other__c` TEXT, `Travelling_Exp__c` TEXT, `Appontment_Allowance__c` TEXT, `House_Rent__c` TEXT, `Total_Deductions__c` TEXT, `Unpaid_Leaves__c` TEXT, `Paid_Leaves__c` TEXT, `Present_Days__c` TEXT, `Total_Leave_Deduction__c` TEXT, `Absent_Days__c` TEXT, `Telephone_Expense_Allowance__c` TEXT, `Security_Fund_Allowance__c` TEXT, `Any_other_Allowance__c` TEXT, `Total_Amount_to_Bank_Net_Salary_Reimbur__c` TEXT)",
         "fields": [
           {
             "fieldPath": "UniqueId",
@@ -1047,6 +1052,26 @@
             "fieldPath": "Absent_Days__c",
             "columnName": "Absent_Days__c",
             "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Telephone_Expense__Allowance",
+            "columnName": "Telephone_Expense_Allowance__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Security_Fund__Allowance",
+            "columnName": "Security_Fund_Allowance__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Any_other__Allowance",
+            "columnName": "Any_other_Allowance__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Total_Amount_to_Bank_Net_Salary_Reimbur__c",
+            "columnName": "Total_Amount_to_Bank_Net_Salary_Reimbur__c",
+            "affinity": "TEXT"
           }
         ],
         "primaryKey": {
@@ -1194,7 +1219,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d0980ae9ea3bc7504152627099b8564e\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"58db0128cd4e1c53f855780388b7353f\")"
     ]
   }
 }

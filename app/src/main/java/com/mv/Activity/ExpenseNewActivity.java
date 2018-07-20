@@ -216,11 +216,7 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                         .into(binding.addImage);
             }
         }
-        // hiding views for team mgmt section
-        if (Constants.AccountTeamCode.equals("TeamManagement")) {
-
-        }
-        // to deseble and hide views for team mgmt section
+        // to disable and hide views for team mgmt section
         if (Constants.AccountTeamCode.equals("TeamManagement")) {
             binding.linearly.setVisibility(View.VISIBLE);
             binding.btnSubmit.setVisibility(View.GONE);
@@ -232,7 +228,13 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
             binding.editTextAmount.setEnabled(false);
             binding.editTextDescription.setEnabled(false);
 
-            binding.tvAddAttchment.setVisibility(View.GONE);
+            //hide addimage icon if no attachment available
+            if(mExpense.getAttachmentPresent().equalsIgnoreCase("false")){
+                binding.addImage.setVisibility(View.GONE);
+                binding.tvAddAttchment.setText(R.string.no_attachment_text);
+            }else{
+                binding.tvAddAttchment.setVisibility(View.GONE);
+            }
         }
 
 
@@ -357,7 +359,6 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
             expense.setVoucherId("" + voucher.getId());
             expense.setUser(User.getCurrentUser(this).getMvUser().getId());
             addExpense(expense);
-
 
         }
     }
