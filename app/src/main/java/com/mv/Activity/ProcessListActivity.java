@@ -218,6 +218,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     Task processList = new Task();
+                                    if((!jsonArray.getJSONObject(i).has("Id")))
+                                        break;
                                     processList.setId(jsonArray.getJSONObject(i).getString("Id"));
                                     // processList.setName(jsonArray.getJSONObject(i).getString("Name"));
                                     //  processList.setIs_Completed__c(jsonArray.getJSONObject(i).getBoolean("Is_Completed__c"));

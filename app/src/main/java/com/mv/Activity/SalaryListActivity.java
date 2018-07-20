@@ -102,7 +102,6 @@ public class SalaryListActivity extends AppCompatActivity implements View.OnClic
                         }
                     }
 
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

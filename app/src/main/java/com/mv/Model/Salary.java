@@ -479,4 +479,52 @@ public class Salary implements Serializable {
     private String Absent_Days__c;
 
 
+    public String getTelephone_Expense__Allowance() {
+        return Telephone_Expense__Allowance;
+    }
+    public void setTelephone_Expense__Allowance(String telephone_Expense__Allowance) {
+        Telephone_Expense__Allowance = telephone_Expense__Allowance;
+    }
+    @ColumnInfo(name = "Telephone_Expense_Allowance__c")
+    @SerializedName("Telephone_Expense_Allowance__c")
+    @Expose
+    private String Telephone_Expense__Allowance;
+
+
+    public String getSecurity_Fund__Allowance() {
+        return Security_Fund__Allowance;
+    }
+    public void setSecurity_Fund__Allowance(String security_Fund__Allowance) {
+        Security_Fund__Allowance = security_Fund__Allowance;
+    }
+    @ColumnInfo(name = "Security_Fund_Allowance__c")
+    @SerializedName("Security_Fund_Allowance__c")
+    @Expose
+    private String Security_Fund__Allowance;
+
+
+    public String getAny_other__Allowance() {
+        return Any_other__Allowance;
+    }
+    public void setAny_other__Allowance(String any_other__Allowance) {
+        Any_other__Allowance = any_other__Allowance;
+    }
+    @ColumnInfo(name = "Any_other_Allowance__c")
+    @SerializedName("Any_other_Allowance__c")
+    @Expose
+    private String Any_other__Allowance;
+
+
+    public String getTotal_Amount_to_Bank_Net_Salary_Reimbur__c() {
+        return Total_Amount_to_Bank_Net_Salary_Reimbur__c;
+    }
+    public void setTotal_Amount_to_Bank_Net_Salary_Reimbur__c(String total_Amount_to_Bank_Net_Salary_Reimbur__c) {
+        Total_Amount_to_Bank_Net_Salary_Reimbur__c = total_Amount_to_Bank_Net_Salary_Reimbur__c;
+    }
+    @ColumnInfo(name = "Total_Amount_to_Bank_Net_Salary_Reimbur__c")
+    @SerializedName("Total_Amount_to_Bank_Net_Salary_Reimbur__c")
+    @Expose
+    private String Total_Amount_to_Bank_Net_Salary_Reimbur__c;
+
+
 }

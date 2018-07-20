@@ -419,7 +419,11 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     holder.dateHeader.setText("*" + task.getTask_Text___Lan_c());
                 else
                     holder.dateHeader.setText(task.getTask_Text___Lan_c());
-                holder.date.setText(task.getTask_Response__c());
+
+                if (task.getTask_Response__c() != null && task.getTask_Response__c().length() > 0)
+                    holder.date.setText(task.getTask_Response__c());
+                else
+                    holder.date.setText("Select");
                 holder.date.setTag(position);
                 holder.date.setFocusable(false);
                 holder.date.setClickable(true);

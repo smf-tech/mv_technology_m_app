@@ -323,9 +323,10 @@
     <string name="compoff_leave_approoval">Comp Off request submitted successfully</string>
     <string name="adavance_list">Advance List</string>
 
-
     <string name="select_code">Select Code</string>
     <string name="alreadyPresent">Mobile Number Already Present</string>
     <string name="alreadyPresentDetail">Mobile Number is already present. Please check your Mobile Number</string>
     <string name="text_pdf">PDF</string>
+    <string name="text_proper_date">Please select proper date.</string>
+    <string name="no_attachment_text">No attachment avaialble</string>
 </resources>
