@@ -250,7 +250,10 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.calendar_sort_button:
-                binding.voucherDateFilterLayout.setVisibility(View.VISIBLE);
+                if(binding.voucherDateFilterLayout.getVisibility()==View.GONE)
+                    binding.voucherDateFilterLayout.setVisibility(View.VISIBLE);
+                else if(binding.voucherDateFilterLayout.getVisibility()==View.VISIBLE)
+                    binding.voucherDateFilterLayout.setVisibility(View.GONE);
                 break;
 
             case R.id.txtDateFrom:
@@ -261,7 +264,11 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.sort_button:
-                FilterVouchers_withDate(binding.txtDateFrom.getText().toString().trim(),binding.txtDateTo.getText().toString().trim());
+                if(binding.txtDateFrom.getText().toString().trim().length()>0 && binding.txtDateTo.getText().toString().trim().length()>0)
+                    FilterVouchers_withDate(binding.txtDateFrom.getText().toString().trim(),binding.txtDateTo.getText().toString().trim());
+                else
+                    Utills.showToast("Enter proper date range.", VoucherListActivity.this);
+
                 break;
 
         }
