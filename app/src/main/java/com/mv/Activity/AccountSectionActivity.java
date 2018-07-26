@@ -36,7 +36,6 @@ public class AccountSectionActivity extends AppCompatActivity implements View.On
     }
 
 
-
     public void onAdavanceClick() {
         Intent intent;
         intent = new Intent(this, AdavanceListActivity.class);

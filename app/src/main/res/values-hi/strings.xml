@@ -316,4 +316,6 @@
     <string name="text_pdf">PDF</string>
     <string name="all_plans">सभी योजनाएं</string>
     <string name="my_plans">मेरी योजनाएँ</string>
+    <string name="text_proper_date">कृपया उचित तिथि का चयन करें.</string>
+    <string name="no_attachment_text">कोई चित्र उपलब्ध नहींe</string>
 </resources>

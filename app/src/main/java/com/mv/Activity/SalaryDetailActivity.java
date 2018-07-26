@@ -47,6 +47,7 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
         binding.txtTelephone.setText(salary.getTelephone_Expense__c());
         binding.txtNetSalary.setText(salary.getNet_Salary__c());
 
+        binding.txtEmployeeNo.setText(User.getCurrentUser(this).getExtendedUser().getEmployee_Id__c());
         binding.txtBankAcc.setText(User.getCurrentUser(this).getExtendedUser().getBank_Account_Number__c());
         binding.txtPfNo.setText(User.getCurrentUser(this).getExtendedUser().getPF_Number__c());
         binding.txtUAN.setText(User.getCurrentUser(this).getExtendedUser().getUAN_Number__c());
@@ -76,6 +77,22 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
 
         binding.txtConsolidated.setText(salary.getConsolidated_Basic__c());
         binding.txtConveyance.setText(salary.getConveyance_Allowance__c());
+
+        binding.txtHouserent.setText(salary.getHouse_Rent__c());
+        binding.txtTravelExp.setText(salary.getTravelling_Exp__c());
+        binding.txtTeleExp.setText(salary.getTelephone_Expense__Allowance());
+        if(salary.getSecurity_Fund__Allowance()==null)
+            binding.txtsecurityfund.setText(salary.getSecurity_Fund__Allowance());
+        else
+            binding.txtsecurityfund.setText("0.0");
+        binding.txtAppointAllow.setText(salary.getAppontment_Allowance__c());
+        if(salary.getAny_other__Allowance()==null)
+            binding.txtAnyOthers.setText("0.0");
+         else
+            binding.txtAnyOthers.setText(salary.getAny_other__Allowance());
+        binding.txtTotalreimbursement.setText(salary.getTotal_Reimbursement__c());
+        binding.txtNetBankAmount.setText(salary.getTotal_Amount_to_Bank_Net_Salary_Reimbur__c());
+        binding.txtLeaveDeductionAmt.setText(salary.getTotal_Leave_Deduction__c());
     }
 
     @Override

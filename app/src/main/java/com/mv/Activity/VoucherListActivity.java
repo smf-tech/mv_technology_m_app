@@ -1,5 +1,6 @@
 package com.mv.Activity;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -7,14 +8,21 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.mv.Adapter.EventAttendanceListAdapter;
 import com.mv.Adapter.VoucherAdapter;
+import com.mv.Model.EventUser;
 import com.mv.Model.User;
 import com.mv.Model.Voucher;
 import com.mv.R;
@@ -28,9 +36,15 @@ import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityVoucherListBinding;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -50,6 +64,10 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
     private VoucherAdapter adapter;
     private List<Voucher> mList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
+    //added this code for sorting vouchers by username
+    private ArrayList<Voucher> voucherUsersFliter = new ArrayList<>();
+    private VoucherAdapter mAdapter;
+    private ArrayList<Voucher> voucherDateFliter = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,10 +90,19 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
+        if (Constants.AccountTeamCode.equals("TeamManagement")) {
+            binding.fabAddProcess.setVisibility(View.GONE);
+            binding.sortLayout.setVisibility(View.VISIBLE);
+            binding.sortButton.setOnClickListener(this);
+            binding.editTextEmail.addTextChangedListener(watch);
+            binding.calendarSortButton.setOnClickListener(this);
+            binding.txtDateFrom.setOnClickListener(this);
+            binding.txtDateTo.setOnClickListener(this);
+        }
+
         if (Utills.isConnected(this)) {
             if (Constants.AccountTeamCode.equals("TeamManagement")) {
                 getUserVoucherDataForTeam();
-                binding.fabAddProcess.setVisibility(View.GONE);
             } else {
                 getUserVoucherData();
             }
@@ -156,6 +183,48 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
             }
         });
     }
+    //added this code for sorting vouchers by username
+    TextWatcher watch = new TextWatcher() {
+
+        @Override
+        public void afterTextChanged(Editable arg0) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int a, int b, int c) {
+            // TODO Auto-generated method stub
+            setFilter(s.toString());
+
+        }
+    };
+    private void setFilter(String s) {
+        List<Voucher> list = new ArrayList<>();
+
+        voucherUsersFliter.clear();
+        for (int i = 0; i < mList.size(); i++) {
+            voucherUsersFliter.add(mList.get(i));
+        }
+        list.clear();
+        for (int i = 0; i < voucherUsersFliter.size(); i++) {
+            if (voucherUsersFliter.get(i).getUserName()!=null && voucherUsersFliter.get(i).getUserName().toLowerCase().contains(s.toLowerCase())) {
+                list.add(voucherUsersFliter.get(i));
+            }
+        }
+
+        mAdapter = new VoucherAdapter(VoucherListActivity.this,list);
+        binding.rvVoucher.setAdapter(mAdapter);
+
+    }
+
 
     private void setRecyclerView() {
         mList = AppDatabase.getAppDatabase(this).userDao().getAllVoucher();
@@ -178,7 +247,86 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
             case R.id.img_back:
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                break;
+
+            case R.id.calendar_sort_button:
+                binding.voucherDateFilterLayout.setVisibility(View.VISIBLE);
+                break;
+
+            case R.id.txtDateFrom:
+                showDateDialog(binding.txtDateFrom);
+                break;
+            case R.id.txtDateTo:
+                showDateDialog(binding.txtDateTo);
+                break;
+
+            case R.id.sort_button:
+                FilterVouchers_withDate(binding.txtDateFrom.getText().toString().trim(),binding.txtDateTo.getText().toString().trim());
+                break;
+
         }
+    }
+    //compare voucher-date in between from and to dates
+    private void FilterVouchers_withDate(String fromDate, String toDate) {
+        //firstly convert string to date and check if dates are valid
+        Date datefrom = ConvertStringToDate(fromDate);
+        Date dateto = ConvertStringToDate(toDate);
+        if (datefrom.before(dateto)||datefrom.equals(dateto)) {
+            for (Voucher v : mList) {
+                Date voucherdate = ConvertStringToDate(v.getDate());
+                //   boolean b = datefrom.compareTo(voucherdate) * voucherdate.compareTo(dateto) >= 0;
+                if (datefrom.compareTo(voucherdate) * voucherdate.compareTo(dateto) >= 0) {
+                    voucherDateFliter.add(v);
+                }
+            }
+            if(voucherDateFliter.size()>0) {
+                mAdapter = new VoucherAdapter(VoucherListActivity.this, voucherDateFliter);
+                binding.rvVoucher.setAdapter(mAdapter);
+            }else{
+                Toast.makeText(this, "No voucher available.",Toast.LENGTH_LONG).show();
+            }
+        }else{
+            Toast.makeText(this, R.string.text_proper_date, Toast.LENGTH_LONG).show();
+        }
+
+    }
+    private Date ConvertStringToDate(String stringDate){
+        Date parsedDate  = null;
+        try {
+            if(stringDate!=null) {
+                parsedDate = new SimpleDateFormat("yyyy-MM-dd").parse(stringDate);
+                System.out.println(parsedDate);
+                return parsedDate;
+            }
+        }catch (Exception e){
+            Log.e("MYAPP", "exception", e);
+        }
+        return parsedDate;
+    }
+
+
+    //adding date picker dialog for voucher date filteration
+    private void showDateDialog(TextView textView) {
+        final Calendar c = Calendar.getInstance();
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog dpd = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        textView.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
+                    }
+                }, mYear, mMonth, mDay);
+        dpd.show();
+    }
+    //returns two digit number of month
+    private static String getTwoDigit(int i) {
+        if (i < 10)
+            return "0" + i;
+        return "" + i;
     }
 
     public void onAddClick() {

@@ -91,7 +91,7 @@ public class ExpandableAssetListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View view) {
                 if (asset.getAllocationStatus().equalsIgnoreCase("Allocated")
-                        && !(User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager"))) {
+                        && (User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager"))) {
                     Intent intent = new Intent(_context, AssetApprovalActivity.class);
                     intent.putExtra("Assets", asset);
                     _context.startActivity(intent);
@@ -101,7 +101,7 @@ public class ExpandableAssetListAdapter extends BaseExpandableListAdapter {
                     intent.putExtra("Assets", asset);
                     _context.startActivity(intent);
                 } else if (asset.getAllocationStatus().equalsIgnoreCase("Accepted")
-                        && !(User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager"))
+                        && (User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager"))
                         ) {
                     Intent intent = new Intent(_context, AssetAllocation_Activity.class);
                     intent.putExtra("Assets", asset);
