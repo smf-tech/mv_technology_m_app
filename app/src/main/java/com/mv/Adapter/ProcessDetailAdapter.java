@@ -85,7 +85,6 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             //    multiSelect = (MultiSelectionSpinner) view.findViewById(R.id.multi_spinner);
             //date  and timelayout
 
-
             date = (EditText) view.findViewById(R.id.et_process_detail_date);
             date.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -83,11 +83,16 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
         cardView = (CardView) convertView.findViewById(R.id.cardView);
         textLayout = convertView.findViewById(R.id.textLayout);
 
-        // hiding views for team mgmt section
-        if(Constants.AccountTeamCode.equals("TeamManagement")){
+        if(groupPosition==1|| groupPosition==2){
             imgEdit.setVisibility(View.GONE);
             imgDelete.setVisibility(View.GONE);
+        }
 
+        // hiding views for team mgmt section
+        if(Constants.AccountTeamCode.equals("TeamManagement")) {
+            imgEdit.setVisibility(View.GONE);
+            imgDelete.setVisibility(View.GONE);
+        }
             textLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -95,8 +100,6 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
                         _activity.editExpense(expense);
                 }
             });
-
-        }
 
         imgDelete.setImageResource(R.drawable.form_delete);
         imgEdit.setImageResource(R.drawable.ic_form);

@@ -713,6 +713,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                         Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
                         intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
                         intent.putExtra("flag", "forward_flag");
+                        intent.putExtra(Constants.TITLE, mActivity.HoSupportCommunity.equalsIgnoreCase("Ho Support"));
                         intent.putExtra(Constants.LIST, mActivity.json);
                         mContext.startActivity(intent);
                     } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("true")) {

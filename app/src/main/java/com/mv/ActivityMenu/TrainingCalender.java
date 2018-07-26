@@ -333,6 +333,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
         Utills.showProgressDialog(context, "Loading Process", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
+        String s = User.getCurrentUser(context).getMvUser().getId();
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + "/services/apexrest/getcalenderEventRecords?userId=" + User.getCurrentUser(context).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
@@ -442,6 +443,8 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
 
                         Calendar instance = Calendar.getInstance();
                         if (eventMap.get(CalendarDay.from(instance)) != null) {
+                            eventMap.get(CalendarDay.from(instance));
+                            adapter = new TraingCalenderAadapter(context, eventMap.get(CalendarDay.from(instance)));
                             adapter = new TraingCalenderAadapter(context, eventMap.get(CalendarDay.from(instance)),isAllPlans);
                             binding.recyclerView.setAdapter(adapter);
                         }

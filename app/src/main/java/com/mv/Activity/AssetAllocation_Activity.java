@@ -47,7 +47,7 @@ import retrofit2.Response;
 
 public class AssetAllocation_Activity extends AppCompatActivity implements View.OnClickListener {
     Spinner spinner_stock;
-    EditText edit_text_username, edit_text_assetname, edit_text_no, edit_text_name;
+    EditText edit_text_username, edit_text_assetname, edit_text_no, edit_text_name,edit_asset_status;
     Button btn_allocate_asset;
     PreferenceHelper preferenceHelper;
     Asset asset;
@@ -61,7 +61,6 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
     LinearLayout lnr_asset_manager, lnr_user;
     String Fname, Lname, Id;
     int selectstockid = 0;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +79,12 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
         btn_allocate_asset = (Button) findViewById(R.id.btn_allocate_asset);
         edit_text_no = (EditText) findViewById(R.id.edit_text_no);
         edit_text_name = (EditText) findViewById(R.id.edit_text_name);
+        edit_asset_status = (EditText) findViewById(R.id.edit_asset_status);
         lnr_user = (LinearLayout) findViewById(R.id.lnr_user);
         lnr_asset_manager = (LinearLayout) findViewById(R.id.lnr_asset_manager);
         btn_allocate_asset.setOnClickListener(this);
         edit_text_no.addTextChangedListener(watch);
+        edit_asset_status.setText(asset.getAllocationStatus());
         if (User.getCurrentUser(AssetAllocation_Activity.this).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
             lnr_asset_manager.setVisibility(View.VISIBLE);
             lnr_user.setVisibility(View.GONE);

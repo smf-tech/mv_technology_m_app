@@ -2,6 +2,7 @@ package com.mv.Widgets;
 
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
@@ -14,14 +15,14 @@ public class MyEditTextView extends EditText {
     public MyEditTextView(Context context) {
         super(context);
         this.context = context;
-       // init();
+      //  init();
     }
 
     public MyEditTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
         this.attrs = attrs;
-        //init();
+     //   init();
     }
 
     public MyEditTextView(Context context, AttributeSet attrs, int defStyle) {
@@ -29,10 +30,10 @@ public class MyEditTextView extends EditText {
         this.context = context;
         this.attrs = attrs;
         this.defStyle = defStyle;
-       // init();
+     //   init();
     }
 
-/*    private void init() {
+    /*private void init() {
         Typeface font = Typeface.createFromAsset(getContext().getAssets(), "fonts/Shivaji.ttf");
         this.setTypeface(font);
     }

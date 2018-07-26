@@ -89,9 +89,10 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
         }
 
         // hiding views for team mgmt section
-        if(Constants.AccountTeamCode.equals("TeamManagement")){
+        if(Constants.AccountTeamCode.equals("TeamManagement")) {
             imgEdit.setVisibility(View.GONE);
             imgDelete.setVisibility(View.GONE);
+        }
 
             textLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -101,7 +102,7 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
                 }
             });
 
-        }
+
 
 
         imgEdit.setOnClickListener(new View.OnClickListener() {

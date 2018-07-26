@@ -109,8 +109,8 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
         CalenderEvent piaChartModel = (CalenderEvent) calenderlsList.get(position);
         holder.tvProjectName.setText(piaChartModel.getTitle());
         holder.tvDateName.setText(piaChartModel.getDescription());
-    //    holder.tvNoOfPeopleName.setText(piaChartModel.getProceesSubmittedCount() + "/" + piaChartModel.getProceesTotalCount());
-        holder.tvNoOfPeopleName.setText(piaChartModel.getProceesSubmittedCount());
+        holder.tvNoOfPeopleName.setText(piaChartModel.getProceesSubmittedCount() + "/" + piaChartModel.getProceesTotalCount());
+    //    holder.tvNoOfPeopleName.setText(piaChartModel.getProceesSubmittedCount());
         holder.tvTotalExpenseName.setText(piaChartModel.getCreatedUserData());
         holder.tvStatusName.setText(piaChartModel.getStatus());
         if (calenderlsList.get(position).getMV_User1__c() != null) {

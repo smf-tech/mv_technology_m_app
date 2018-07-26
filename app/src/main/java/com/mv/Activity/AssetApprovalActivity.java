@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mv.Model.Asset;
+import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
@@ -40,12 +41,13 @@ import retrofit2.Response;
 public class AssetApprovalActivity extends AppCompatActivity implements View.OnClickListener {
     Asset asset;
     PreferenceHelper preferenceHelper;
-    EditText edit_text_assetname, edit_text_modelno, edit_text_issue_date, edit_text_specification;
+    private AssetApprovalActivity _context;
+    EditText edit_text_name,edit_text_assetname, edit_text_modelno, edit_text_issue_date, edit_text_specification,edit_text_code,edit_asset_status,asset_reject_remark;
     Button accept, reject;
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
-    private RelativeLayout mToolBar;
-    private TextInputLayout input_specification;
+    private RelativeLayout mToolBar,rel_Asset_Name;
+    private TextInputLayout input_specification,asset_reject_ly;
     Spinner spinner_assetstaus;
     String asset_status;
     List<String> asset_statuslist = new ArrayList<>();
@@ -67,20 +69,42 @@ public class AssetApprovalActivity extends AppCompatActivity implements View.OnC
         asset = (Asset) getIntent().getExtras().getSerializable("Assets");
         asset_statuslist = Arrays.asList(getResources().getStringArray(R.array.array_of_asset_status));
 
+        edit_text_name = (EditText) findViewById(R.id.edit_text_name);
         edit_text_assetname = (EditText) findViewById(R.id.edit_text_assetname);
         edit_text_modelno = (EditText) findViewById(R.id.edit_text_modelno);
         edit_text_issue_date = (EditText) findViewById(R.id.edit_text_issue_date);
         input_specification = (TextInputLayout) findViewById(R.id.input_specification);
         edit_text_specification = (EditText) findViewById(R.id.edit_text_specification);
+        edit_text_code = (EditText) findViewById(R.id.edit_text_code);
+        edit_asset_status = (EditText) findViewById(R.id.edit_asset_status);
+        rel_Asset_Name = (RelativeLayout) findViewById(R.id.rel_AssetName);
         spinner_assetstaus = (Spinner) findViewById(R.id.spinner_assetstaus);
         reject = (Button) findViewById(R.id.reject);
         accept = (Button) findViewById(R.id.accept);
         accept.setOnClickListener(this);
         reject.setOnClickListener(this);
+        edit_text_code.setText(asset.getAssetModel());
+        edit_asset_status.setText(asset.getAllocationStatus());
+        edit_text_name.setText(asset.getUsername());
         edit_text_assetname.setText(asset.getAssetName());
         edit_text_modelno.setText(asset.getAssetModel());
         // edit_text_issue_date.setText(asset.getExpectedIssueDate());
         edit_text_specification.setText(asset.getSpecification());
+        edit_text_code.setText(asset.getAssetModel());
+
+        if(asset.getAllocationStatus().equalsIgnoreCase("Rejected")) {
+            asset_reject_ly = (TextInputLayout) findViewById(R.id.asset_reject_ly);
+            asset_reject_remark = (EditText) findViewById(R.id.asset_reject_remark);
+            asset_reject_ly.setVisibility(View.VISIBLE);
+            asset_reject_remark.setText(asset.getRemark());
+        }
+
+        if(User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")||asset.getAllocationStatus().equalsIgnoreCase("Rejected")||
+                asset.getAllocationStatus().equalsIgnoreCase("Released")){
+            reject.setVisibility(View.GONE);
+            accept.setVisibility(View.GONE);
+            rel_Asset_Name.setVisibility(View.GONE);
+        }
 
         spinner_assetstaus.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -106,8 +130,6 @@ public class AssetApprovalActivity extends AppCompatActivity implements View.OnC
         img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
-
-
     }
 
     private void AcceptAsset(String status) {

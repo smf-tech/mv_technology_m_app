@@ -393,11 +393,11 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private void submitAllData() {
         manditoryFlag = false;
 
-
         for (int i = 0; i < taskList.size(); i++) {
             taskList.get(i).setTimestamp__c(timestamp);
             taskList.get(i).setMTUser__c(User.getCurrentUser(context).getMvUser().getId());
             taskList.get(i).setIsSave(Constants.PROCESS_STATE_SUBMIT);
+
             if (preferenceHelper.getBoolean(Constants.NEW_PROCESS))
                 taskList.get(i).setId(null);
             if (taskList.get(i).getIs_Response_Mnadetory__c() && taskList.get(i).getTask_Response__c().equals("")) {
@@ -433,7 +433,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     }
 
     private void callApiForSubmit(ArrayList<Task> temp) {
-
 
         try {
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
