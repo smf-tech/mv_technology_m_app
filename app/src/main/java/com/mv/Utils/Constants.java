@@ -161,7 +161,8 @@ public class Constants {
     public static final String GetEventCalenderMembers_Url = "/services/apexrest/getUserDataForCalnderAttendance";
 
     public static final String Userdetails_Url = "/services/apexrest/userdetails";
-    public static final String MV_GetCommunities_c_Url = "/services/apexrest/MV_GetCommunities_c";
+   public static final String MV_GetCommunities_c_Url = "/services/apexrest/MV_GetCommunities_c";
+//    public static final String MV_GetCommunities_c_Url = "/services/apexrest/MVGetCommunitiesNew";
     public static final String DoLogout_url = "/services/apexrest/doLogout/";
     public static final String GetUserData_url = "/services/apexrest/getUserDataNew";
     public static final String MapParametersUrl = "/services/apexrest/MapParameters";
