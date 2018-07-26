@@ -1,7 +1,9 @@
 package com.mv.Activity;
 
 
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -67,6 +69,7 @@ import com.mv.Model.Attendance;
 import com.mv.Model.HolidayListModel;
 import com.mv.Model.HomeModel;
 import com.mv.Model.LocationModel;
+import com.mv.Model.Notifications;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -80,6 +83,7 @@ import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityHome1Binding;
+import com.mv.receiver.AlarmReceiver;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -88,6 +92,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -100,8 +105,8 @@ import retrofit2.Response;
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener, ForceUpdateChecker.OnUpdateNeededListener, NavigationView.OnNavigationItemSelectedListener {
 
 
-    private ImageView img_back, img_list, img_logout, img_lang;
-    private TextView toolbar_title;
+    private ImageView img_back, img_list, img_logout, img_lang,ivBellNotification;
+    private TextView toolbar_title,tvUnreadNotification;
     private RelativeLayout mToolBar;
     private AlertDialog alertDialogApproved;
     private ActivityHome1Binding binding;
@@ -154,6 +159,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         date = new Date(System.currentTimeMillis());
 
+        ivBellNotification=(ImageView)findViewById(R.id.iv_bell_notification);
+        tvUnreadNotification=(TextView) findViewById(R.id.tv_unread_notification);
+        ivBellNotification.setOnClickListener(this);
 
         if (User.getCurrentUser(HomeActivity.this).getRolePermssion().getIsLocationTrackingAllow__c().equalsIgnoreCase("true")) {
             if (User.getCurrentUser(HomeActivity.this).getMvUser().getIsApproved() != null && User.getCurrentUser(HomeActivity.this).getMvUser().getIsApproved().equalsIgnoreCase("true")) {
@@ -163,22 +171,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     // LocationPopup();
                     LocationGPSDialog();
                     LocatonFlag = 0;
-
                 } else {
                     if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-
                         // Utills.scheduleJob(getApplicationContext());
                         getAddress();
-
                        /* SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
-
                         try {
                             Date CURRENTDATE = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
-
                             long APICALLDATE = preferenceHelper.getLong(PreferenceHelper.APICALLTIME);
                             long different = CURRENTDATE.getTime() - APICALLDATE;
                             long hrs = (int) ((different / (1000 * 60 * 60)));
-
                             // getAddress();
                             if (hrs >= 5) {
                                 getAddress();
@@ -186,13 +188,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                            // Utills.scheduleJob(getApplicationContext());
                           Utills.showToast("less than 5",HomeActivity.this);
                         }*//*
-
-
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
 */
-
                     } else {
                         if (LocatonFlag == 0) {
                             if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
@@ -223,7 +222,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         long deviceTime = System.currentTimeMillis();
         Log.i("deviceTime", deviceTime + "");
 
+        //check and Set the Alarm for checkin time repiting every day
+//        Intent intent = new Intent(HomeActivity.this, AlarmReceiver.class);
+//        intent.setAction(Constants.ACTION_ALARM_RECEIVER);
+//        boolean alarmUp = (PendingIntent.getBroadcast(HomeActivity.this, 1001, intent, PendingIntent.FLAG_NO_CREATE) != null);
+//        if (!alarmUp) {
+//            setCheckInAlarm();
+//        }
+
+
     }
+
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -308,6 +317,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         intent.putExtra(Constants.State, User.getCurrentUser(getApplicationContext()).getMvUser().getState());
         intent.putExtra(Constants.DISTRICT, User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
         startService(intent);
+
+        int count=AppDatabase.getAppDatabase(this).userDao().getUnRearNotificationsCount("unread");
+        tvUnreadNotification.setText(""+count);
+        if(count>0)
+        tvUnreadNotification.setVisibility(View.VISIBLE);
+
     }
 
     private void getHolidayList() {
@@ -727,7 +742,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.iv_bell_notification:
 
+                Intent intent=new Intent(this,NotificationActivity.class);
+                startActivity(intent);
+                tvUnreadNotification.setVisibility(View.GONE);
+                break;
         }
     }
 
@@ -1295,6 +1315,22 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         dialog.show();
+    }
+
+    //Set the Alarm for checkin time repiting every day
+    private void setCheckInAlarm() {
+        AlarmManager manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        Intent intent = new Intent(HomeActivity.this, AlarmReceiver.class);
+        intent.setAction(Constants.ACTION_ALARM_RECEIVER);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(HomeActivity.this, 1001, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 10); //
+        calendar.set(Calendar.MINUTE, 15);
+        calendar.set(Calendar.SECOND, 0);
+
+        manager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
     }
 
 

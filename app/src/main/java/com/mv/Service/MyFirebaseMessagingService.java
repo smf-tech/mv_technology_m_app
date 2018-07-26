@@ -21,6 +21,7 @@ import com.google.gson.GsonBuilder;
 import com.mv.Activity.CommunityHomeActivity;
 import com.mv.Activity.SplashScreenActivity;
 import com.mv.Model.Community;
+import com.mv.Model.Notifications;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.AppDatabase;
@@ -61,13 +62,24 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         if ((User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("true"))) {
                             if (allTab.contains(Constants.My_Community)) {
                                 sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
-
+                                Notifications data = new Notifications();
+                                data.setId(remoteMessage.getData().get("Id"));
+                                data.setTitle(remoteMessage.getData().get("Title"));
+                                data.setDescription(remoteMessage.getData().get("Description"));
+                                data.setStatus("unread");
+                                AppDatabase.getAppDatabase(this).userDao().insertNotification(data);
                             }
 
                         }
                     }
                 } else {
                     sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
+                    Notifications data = new Notifications();
+                    data.setId(remoteMessage.getData().get("Id"));
+                    data.setTitle(remoteMessage.getData().get("Title"));
+                    data.setDescription(remoteMessage.getData().get("Description"));
+                    data.setStatus("unread");
+                    AppDatabase.getAppDatabase(this).userDao().insertNotification(data);
                 }
 
             } catch (Exception e) {

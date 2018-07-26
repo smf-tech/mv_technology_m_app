@@ -16,6 +16,7 @@ import com.mv.Model.DownloadContent;
 import com.mv.Model.Expense;
 import com.mv.Model.HolidayListModel;
 import com.mv.Model.LocationModel;
+import com.mv.Model.Notifications;
 import com.mv.Model.Salary;
 import com.mv.Model.TaskContainerModel;
 import com.mv.Model.Template;
@@ -332,4 +333,21 @@ public interface UserDao {
 
     @Query("DELETE FROM " + Constants.TABLE_CALANDER + " where Id = :calenderId")
     public int deleteCalenderEvent(String calenderId);
+
+    //Opretions on Notification
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertNotification(Notifications notification);
+
+    @Query("SELECT * FROM " + Constants.TABLE_NOTIFICATION )
+    List<Notifications> getAllNotification();
+
+    @Query("SELECT * FROM " + Constants.TABLE_NOTIFICATION + " WHERE Status = :status")
+    List<Notifications> getUnRearNotifications(String status);
+
+    @Query("SELECT COUNT(Status) FROM " + Constants.TABLE_NOTIFICATION + " WHERE Status = :status")
+    int getUnRearNotificationsCount(String status);
+
+    @Update
+    void updateNotification(Notifications notification);
 }

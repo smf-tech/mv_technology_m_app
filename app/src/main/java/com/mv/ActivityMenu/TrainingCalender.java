@@ -80,6 +80,8 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
     HorizontalCalenderAdapter horizontalCalenderAdapter;
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
     Activity context;
+    Date selectDated;
+    boolean isAllPlans;
     private ArrayAdapter<String> district_adapter, taluka_adapter;
 
     @Override
@@ -123,6 +125,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
         Calendar instance1 = Calendar.getInstance();
         instance1.set(instance1.get(Calendar.YEAR), Calendar.JANUARY, 1);
 
+        isAllPlans=true;
 
         binding.calendarView.state().edit()
                 .setMinimumDate(instance1.getTime())
@@ -151,6 +154,8 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
 
         //    allDate=  getDates(formatterNew.format(Calendar.getInstance().getTime()), "2018-06-08");
         //   horizontalCalenderAdapter=new HorizontalCalenderAdapter(context, allDate );
+        binding.btnAllPlans.setOnClickListener(this);
+        binding.btnMyPlans.setOnClickListener(this);
 
         LinearLayoutManager horizontalLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         binding.recyclerViewHorizontal.setLayoutManager(horizontalLayoutManager);
@@ -247,6 +252,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
     }
 
     public void selectDate(Date date) {
+        selectDated=date;
         CalendarDay day = CalendarDay.from(date);
         if (eventMap.get(day) != null) {
             LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
@@ -255,10 +261,10 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             String formattedDate = df.format(cal.getTime());
             LocaleManager.setNewLocale(this, preferenceHelper.getString(Constants.LANGUAGE));
-            adapter = new TraingCalenderAadapter(context, eventMap.get(day));
+            adapter = new TraingCalenderAadapter(context, eventMap.get(day),isAllPlans);
             binding.recyclerView.setAdapter(adapter);
         } else {
-            adapter = new TraingCalenderAadapter(context, new ArrayList<CalenderEvent>());
+            adapter = new TraingCalenderAadapter(context, new ArrayList<CalenderEvent>(),isAllPlans);
             binding.recyclerView.setAdapter(adapter);
         }
     }
@@ -267,10 +273,10 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         binding.fabAddBroadcast.show();
         if (eventMap.get(date) != null) {
-            adapter = new TraingCalenderAadapter(context, eventMap.get(date));
+            adapter = new TraingCalenderAadapter(context, eventMap.get(date),isAllPlans);
             binding.recyclerView.setAdapter(adapter);
         } else {
-            adapter = new TraingCalenderAadapter(context, new ArrayList<CalenderEvent>());
+            adapter = new TraingCalenderAadapter(context, new ArrayList<CalenderEvent>(),isAllPlans);
             binding.recyclerView.setAdapter(adapter);
         }
 
@@ -305,6 +311,20 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
             case R.id.fab_add_broadcast:
                 Intent openClass = new Intent(TrainingCalender.this, CalenderFliterActivity.class);
                 startActivity(openClass);
+                break;
+            //to display all the events of that date
+            case R.id.btn_all_plans:
+                binding.btnAllPlans.setBackgroundColor(getColor(R.color.colorPink));
+                binding.btnMyPlans.setBackgroundColor(getColor(R.color.lightgray01));
+                isAllPlans=true;
+                selectDate(selectDated);
+                break;
+            //to display users events of that date
+            case R.id.btn_my_plans:
+                binding.btnAllPlans.setBackgroundColor(getColor(R.color.lightgray01));
+                binding.btnMyPlans.setBackgroundColor(getColor(R.color.colorPink));
+                isAllPlans=false;
+                selectDate(selectDated);
                 break;
         }
     }
@@ -422,7 +442,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
 
                         Calendar instance = Calendar.getInstance();
                         if (eventMap.get(CalendarDay.from(instance)) != null) {
-                            adapter = new TraingCalenderAadapter(context, eventMap.get(CalendarDay.from(instance)));
+                            adapter = new TraingCalenderAadapter(context, eventMap.get(CalendarDay.from(instance)),isAllPlans);
                             binding.recyclerView.setAdapter(adapter);
                         }
                     }

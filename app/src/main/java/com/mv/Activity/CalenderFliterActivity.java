@@ -402,10 +402,14 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                     msg = "Please Select Category";
                 } else if (binding.etEventTitle.getText().toString().equals("")) {
                     msg = "Please Enter Title";
-                } else if (binding.etEventDate.getText().toString().equals("")) {
-                    msg = "Please Select Date";
                 } else if (binding.etEventDiscription.getText().toString().equals("")) {
                     msg = "Please Enter Description";
+                } else if (binding.etEventDate.getText().toString().equals("")) {
+                    msg = "Please Select Start Date";
+                } else if (binding.etEventEndDate.getText().toString().equals("")) {
+                    msg = "Please Select End Date";
+                } else if (!isDatesAreValid(binding.etEventDate.getText().toString().trim(), binding.etEventEndDate.getText().toString().trim())) {
+                    msg = "Please select proper Date";
                 }
                 if (msg.isEmpty()) {
                     if(id==null){
@@ -493,6 +497,21 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 showProcessDialog();
                 break;
         }
+    }
+
+    private boolean isDatesAreValid(String startDate, String endDate) {
+        try {
+            DateFormat formatter;
+            Date fromDate, toDate;
+            formatter = new SimpleDateFormat("yyyy-MM-dd");
+            fromDate = formatter.parse(startDate);
+            toDate = formatter.parse(endDate);
+            if (fromDate.equals(toDate)||fromDate.before(toDate))
+                return true;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private String updateTime(int hours, int mins) {

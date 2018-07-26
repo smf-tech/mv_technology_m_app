@@ -23,6 +23,7 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Service.SendAttendance;
 import com.mv.Utils.Constants;
 import com.mv.Utils.GPSTracker;
 import com.mv.Utils.LocaleManager;
@@ -92,7 +93,25 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         }
         binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, leaveDates, getResources().getDrawable(R.drawable.circle_background_red)));
         if (Utills.isConnected(AttendanceActivity.this)) {
-            getAttendanceData();
+            // Send offline attendance to server
+            Attendance temp = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getUnSynchAttendance();
+            if (temp != null) {
+                Intent intent = new Intent(AttendanceActivity.this, SendAttendance.class);
+                startService(intent);
+                //use local BD as server is not Updated
+                attendanceList = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getAllAttendance();
+                for (Attendance attendance : attendanceList) {
+                    try {
+                        dates.add(CalendarDay.from(formatter.parse(attendance.getDate())));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
+                setButtonView();
+                binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, dates, getResources().getDrawable(R.drawable.circle_background)));
+            }else{
+                getAttendanceData();
+            }
         } else {
             attendanceList = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getAllAttendance();
             for (Attendance attendance : attendanceList) {

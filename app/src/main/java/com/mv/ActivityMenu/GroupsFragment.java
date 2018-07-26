@@ -202,7 +202,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
                                     int j;
                                     boolean isPresent = false;
                                     for (j = 0; j < list.size(); j++) {
-                                        if (list.get(j).getId().equalsIgnoreCase(temp.get(i).getId())) {
+                                        if (list.get(j).getId()!=null&&list.get(j).getId().equalsIgnoreCase(temp.get(i).getId())) {
                                             temp.get(i).setUnique_Id(list.get(j).getUnique_Id());
                                             isPresent = true;
                                             break;

@@ -12,12 +12,39 @@
         android:layout_height="wrap_content"
        >
 
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-          />
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                />
+            <ImageView
+                android:id="@+id/iv_bell_notification"
+                android:layout_width="@dimen/dimen_35dp"
+                android:layout_height="@dimen/dimen_35dp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:padding="@dimen/dimen_5dp"
+                android:layout_marginRight="@dimen/dimen_10dp"
+                android:src="@drawable/bell_icon"/>
+
+            <TextView
+                android:id="@+id/tv_unread_notification"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:visibility="gone"
+                android:layout_marginTop="7dp"
+                android:layout_marginRight="7dp"
+                android:background="@drawable/circle_background_red"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:text="8"/>
+        </RelativeLayout>
 
     </android.support.design.widget.AppBarLayout>
 

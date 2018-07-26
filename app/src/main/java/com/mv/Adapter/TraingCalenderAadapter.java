@@ -40,11 +40,13 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
     private List<CalenderEvent> calenderlsList;
     private Activity mContext;
     private PreferenceHelper preferenceHelper;
+    boolean isAllPlans;
     private int position;
 
-    public TraingCalenderAadapter(Activity context, List<CalenderEvent> moviesList) {
+    public TraingCalenderAadapter(Activity context, List<CalenderEvent> moviesList,boolean isAllPlans) {
         this.calenderlsList = moviesList;
         this.mContext = context;
+        this.isAllPlans = isAllPlans;
         preferenceHelper = new PreferenceHelper(context);
 
     }
@@ -93,8 +95,6 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
     }
 
 
-
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -105,7 +105,6 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-
 
         CalenderEvent piaChartModel = (CalenderEvent) calenderlsList.get(position);
         holder.tvProjectName.setText(piaChartModel.getTitle());
@@ -119,6 +118,9 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
                 holder.imgDelete.setVisibility(View.VISIBLE);
             } else {
                 holder.imgDelete.setVisibility(View.GONE);
+                if(!isAllPlans){
+                    holder.lnr_content.setVisibility(View.GONE);
+                }
             }
 
         } else {
