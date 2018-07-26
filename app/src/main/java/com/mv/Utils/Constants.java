@@ -69,6 +69,7 @@ public class Constants {
     public static final String TABLE_SALARY = "table_salary";
     public static final String TABLE_ATTENDANCE = "table_attendance";
     public static final String TABLE_SALARYTEMP = "table_salarytemp";
+    public static final String TABLE_NOTIFICATION = "table_notification";
     public static Integer CHOOSE_IMAGE_FROM_CAMERA = 100;
     public static Integer CHOOSE_IMAGE_FROM_GALLERY = 101;
     public static Integer CHOOSE_VIDEO_FROM_CAMERA = 102;
@@ -219,6 +220,7 @@ public class Constants {
     public static String AssetStatusRejected = "Rejected";
     public static String AssetStatusReleased = "Released";
     public static String ALLUSER = "alluser";
+    public static String ACTION_ALARM_RECEIVER = "action_alarm";
 
 
     ArrayList<Asset> requestedList = new ArrayList<>();

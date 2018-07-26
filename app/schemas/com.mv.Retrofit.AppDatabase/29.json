@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 29,
-    "identityHash": "376dbd65e7e7dbcb0f57e4b227ca2f32",
+    "identityHash": "0dab3472afe98f27262acbcb1bba2532",
     "entities": [
       {
         "tableName": "table_community",
@@ -1237,7 +1237,7 @@
         "foreignKeys": []
       },
       {
-        "tableName": "<error>",
+        "tableName": "table_notification",
         "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Title` TEXT, `Description` TEXT, `Status` TEXT)",
         "fields": [
           {
@@ -1278,7 +1278,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"376dbd65e7e7dbcb0f57e4b227ca2f32\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"0dab3472afe98f27262acbcb1bba2532\")"
     ]
   }
 }
