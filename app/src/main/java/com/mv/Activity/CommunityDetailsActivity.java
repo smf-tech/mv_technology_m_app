@@ -518,8 +518,6 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
     }
 
     private void initViews() {
-
-
         setActionbar(getString(R.string.comunity_detail));
         layout_forward = (LinearLayout) findViewById(R.id.layout_forward);
         layout_download_file = (LinearLayout) findViewById(R.id.layout_download_file);

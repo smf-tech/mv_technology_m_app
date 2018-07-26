@@ -109,6 +109,51 @@
                         android:textSize="@dimen/medium_text" />
                 </android.support.design.widget.TextInputLayout>
 
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/approve_amt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp"
+                    android:visibility="gone">
+
+                    <com.mv.Widgets.MyEditTextView
+                        android:id="@+id/edit_approve_amt"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:digits="0123456789"
+                        android:hint="@string/amount_to_approve"
+                        android:inputType="phone"
+                        android:maxLength="5"
+                        android:singleLine="true"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/approve_remarks"
+                    android:layout_width="match_parent"
+                    android:layout_height="57dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:visibility="gone"
+                    android:padding="10dp">
+
+                    <com.mv.Widgets.MyEditTextView
+                        android:id="@+id/edit_approve_remarks"
+                        android:layout_width="fill_parent"
+                        android:layout_height="35dp"
+                        android:background="@null"
+                        android:gravity="top|left"
+                        android:hint="@string/asset_remarks"
+                        android:inputType="textMultiLine"
+                        android:minLines="3"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
                 <ImageView
                     android:id="@+id/addImage"
                     android:layout_width="150dp"

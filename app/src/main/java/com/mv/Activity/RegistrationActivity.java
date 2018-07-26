@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ import com.mv.Utils.GPSTracker;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
+import com.mv.Widgets.MyEditTextView;
 import com.mv.databinding.ActivityRegistrationBinding;
 import com.soundcloud.android.crop.Crop;
 
@@ -115,7 +117,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         } else {
             showPopUp();
         }
-
     }
 
     @Override
@@ -471,7 +472,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         });
 
         edit_text_name = (EditText) findViewById(R.id.edit_text_name);
-        edit_text_midle_name = (EditText) findViewById(R.id.edit_text_midle_name);
+        edit_text_midle_name = (MyEditTextView) findViewById(R.id.edit_text_midle_name);
         edit_text_last_name = (EditText) findViewById(R.id.edit_text_last_name);
         edit_text_mobile_number = (EditText) findViewById(R.id.edit_text_mobile_number);
         edit_text_mobile_number.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getPhone());

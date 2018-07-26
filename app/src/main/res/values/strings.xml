@@ -256,6 +256,7 @@
     <string name="asset_management">Asset\nManagement</string>
     <string name="asset_name__">Asset name</string>
     <string name="asset_code">Code</string>
+    <string name="asset_status">Status</string>
     <string name="specification">Specification</string>
     <string name="select_model_no">Select Model No.</string>
 
@@ -273,15 +274,16 @@
     <string name="countOfPeople">Number of People</string>
     <string name="place">Place</string>
     <!--Expense New Activity-->
-    <string name="expense_new">Expense New</string>
+    <string name="expense_new">Expense Activity</string>
     <string name="amount">Amount</string>
+    <string name="amount_to_approve">Amount to be Approve</string>
     <!--Expense List Activity-->
     <string name="expense_list">Expense List</string>
     <!--Advance List Activity-->
     <string name="advance_list">Advance List</string>
 
     <!--Advance New Activity-->
-    <string name="adavance_new">Advance New</string>
+    <string name="adavance_new">Advance Activity</string>
     <string name="adavanceDesription">Description of Advance</string>
 
 

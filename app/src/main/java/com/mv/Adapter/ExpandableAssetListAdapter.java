@@ -90,20 +90,33 @@ public class ExpandableAssetListAdapter extends BaseExpandableListAdapter {
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (asset.getAllocationStatus().equalsIgnoreCase("Allocated")
-                        && (User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager"))) {
+                if (asset.getAllocationStatus().equalsIgnoreCase("Requested")
+                            && User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
+                        Intent intent = new Intent(_context, AssetAllocation_Activity.class);
+                        intent.putExtra("Assets", asset);
+                        _context.startActivity(intent);
+                }else if (asset.getAllocationStatus().equalsIgnoreCase("Allocated")) {
                     Intent intent = new Intent(_context, AssetApprovalActivity.class);
                     intent.putExtra("Assets", asset);
                     _context.startActivity(intent);
-                } else if (asset.getAllocationStatus().equalsIgnoreCase("Requested")
-                        && User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
-                    Intent intent = new Intent(_context, AssetAllocation_Activity.class);
+                } else if (asset.getAllocationStatus().equalsIgnoreCase("Accepted")) {
+                    if(User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")){
+                        Intent intent = new Intent(_context, AssetApprovalActivity.class);
+                        intent.putExtra("Assets", asset);
+                        _context.startActivity(intent);
+                    }else {
+                        Intent intent = new Intent(_context, AssetAllocation_Activity.class);
+                        intent.putExtra("Assets", asset);
+                        _context.startActivity(intent);
+                    }
+                    }
+                else if (asset.getAllocationStatus().equalsIgnoreCase("Rejected")) {
+                    Intent intent = new Intent(_context, AssetApprovalActivity.class);
                     intent.putExtra("Assets", asset);
                     _context.startActivity(intent);
-                } else if (asset.getAllocationStatus().equalsIgnoreCase("Accepted")
-                        && (User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager"))
-                        ) {
-                    Intent intent = new Intent(_context, AssetAllocation_Activity.class);
+                }
+                else if (asset.getAllocationStatus().equalsIgnoreCase("Released")) {
+                    Intent intent = new Intent(_context, AssetApprovalActivity.class);
                     intent.putExtra("Assets", asset);
                     _context.startActivity(intent);
                 }

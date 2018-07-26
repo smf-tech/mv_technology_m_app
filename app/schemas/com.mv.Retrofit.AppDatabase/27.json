@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 27,
-    "identityHash": "58db0128cd4e1c53f855780388b7353f",
+    "identityHash": "5e1197f8ec03cf67767b6a48b51dd8c3",
     "entities": [
       {
         "tableName": "table_community",
@@ -802,8 +802,18 @@
       },
       {
         "tableName": "table_adavance",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `voucherId` TEXT, `Decription` TEXT, `amount` TEXT, `User` TEXT, `Status` TEXT, `Respond_Date` TEXT, `Comment` TEXT, `ApprovalPerson` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`Approved_Amount__c` TEXT, `Remark__c` TEXT, `unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `voucherId` TEXT, `Decription` TEXT, `amount` TEXT, `User` TEXT, `Status` TEXT, `Respond_Date` TEXT, `Comment` TEXT, `ApprovalPerson` TEXT)",
         "fields": [
+          {
+            "fieldPath": "Approved_Amount__c",
+            "columnName": "Approved_Amount__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Remark__c",
+            "columnName": "Remark__c",
+            "affinity": "TEXT"
+          },
           {
             "fieldPath": "UniqueId",
             "columnName": "unique_Id",
@@ -1219,7 +1229,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"58db0128cd4e1c53f855780388b7353f\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"5e1197f8ec03cf67767b6a48b51dd8c3\")"
     ]
   }
 }

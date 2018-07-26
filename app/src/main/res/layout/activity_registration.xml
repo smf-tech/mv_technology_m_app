@@ -50,14 +50,12 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:hint="@string/name"
                         android:inputType="text|textCapWords"
-
                         android:singleLine="true"
                         android:textColor="@color/black"
-
                         android:textSize="@dimen/medium_text" />
+
                 </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -76,12 +74,10 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:hint="@string/middle_name"
                         android:inputType="text|textCapWords"
                         android:singleLine="true"
                         android:textColor="@color/black"
-
                         android:textSize="@dimen/medium_text" />
                 </android.support.design.widget.TextInputLayout>
 
@@ -101,7 +97,6 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                         android:hint="@string/last_name"
                         android:inputType="text|textCapWords"
                         android:singleLine="true"

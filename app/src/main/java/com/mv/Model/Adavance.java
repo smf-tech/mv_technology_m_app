@@ -73,6 +73,34 @@ public class Adavance implements Serializable {
         this.voucherId = voucherId;
     }
 
+    //adding two fields for advance approved amount facility
+    public String getApproved_Amount__c() {
+        return Approved_Amount__c;
+    }
+
+    public void setApproved_Amount__c(String approved_Amount__c) {
+        Approved_Amount__c = approved_Amount__c;
+    }
+
+    public String getRemark__c() {
+        return Remark__c;
+    }
+
+    public void setRemark__c(String remark__c) {
+        Remark__c = remark__c;
+    }
+
+
+    @ColumnInfo(name = "Approved_Amount__c")
+    @SerializedName("Approved_Amount__c")
+    @Expose
+    private String Approved_Amount__c;
+
+    @ColumnInfo(name = "Remark__c")
+    @SerializedName("Remark__c")
+    @Expose
+    private String Remark__c;
+
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "unique_Id")
     private int UniqueId;

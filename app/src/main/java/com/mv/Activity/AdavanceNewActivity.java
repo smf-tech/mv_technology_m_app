@@ -97,13 +97,43 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
             binding.txtDate.setText(mAdavance.getDate());
             binding.editTextCount.setText(mAdavance.getAmount());
             binding.editTextDescription.setText(mAdavance.getDecription());
+            binding.editApproveAmt.setText(mAdavance.getApproved_Amount__c());
+            binding.editApproveRemarks.setText(mAdavance.getRemark__c());
             mProjectSelect = projectList.indexOf(mAdavance.getProject());
             binding.spinnerProject.setSelection(mProjectSelect);
+            if(!mAdavance.getStatus().equalsIgnoreCase("Pending")) {
+                binding.txtDate.setEnabled(false);
+                binding.editTextCount.setEnabled(false);
+                binding.editTextDescription.setEnabled(false);
+
+                if(mAdavance.getApproved_Amount__c()!=null){
+                    binding.approveAmt.setVisibility(View.VISIBLE);
+                    binding.editApproveAmt.setText(mAdavance.getApproved_Amount__c());
+                    binding.editApproveAmt.setEnabled(false);
+                }
+                if(mAdavance.getRemark__c()!=null){
+                    binding.approveRemarks.setVisibility(View.VISIBLE);
+                    binding.editApproveRemarks.setText(mAdavance.getRemark__c());
+                    binding.editApproveRemarks.setEnabled(false);
+                }
+                binding.btnSubmit.setVisibility(View.GONE);
+            }
         }
 
         // to deseble and hide views for team mgmt section
         if (Constants.AccountTeamCode.equals("TeamManagement")) {
-            binding.linearly.setVisibility(View.VISIBLE);
+            if(mAdavance.getStatus().equalsIgnoreCase("Pending"))
+                binding.linearly.setVisibility(View.VISIBLE);
+            else
+                binding.linearly.setVisibility(View.GONE);
+
+            if(!mAdavance.getStatus().equalsIgnoreCase("Rejected")){
+                binding.approveAmt.setVisibility(View.VISIBLE);
+                binding.approveRemarks.setVisibility(View.VISIBLE);
+                binding.editApproveAmt.setText(mAdavance.getApproved_Amount__c());
+                binding.editApproveRemarks.setText(mAdavance.getRemark__c());
+            }
+
             binding.btnSubmit.setVisibility(View.GONE);
             binding.btnApprove.setOnClickListener(this);
             binding.btnReject.setOnClickListener(this);
@@ -186,7 +216,12 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
                 changeAdavance("Rejected");
                 break;
             case R.id.btn_approve:
-                changeAdavance(Constants.USERACTION);
+                if(binding.editApproveAmt.getText().toString().trim().length()>0){
+                    changeAdavance(Constants.USERACTION);
+                }else{
+                    Utills.showToast("Please enter proper Advance to be approve.", this);
+                }
+
                 break;
         }
     }
@@ -199,6 +234,11 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
                 JSONArray jsonArray = new JSONArray();
                 Adavance adavance = mAdavance;
                 adavance.setStatus(status);
+               // allow manager to edit approvable amount
+              //  Add approvedamt filed in advance class
+                adavance.setApproved_Amount__c(binding.editApproveAmt.getText().toString().trim());
+                adavance.setRemark__c(binding.editApproveRemarks.getText().toString().trim());
+
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 String json = gson.toJson(adavance);
                 JSONObject jsonObject1 = new JSONObject(json);
@@ -360,8 +400,6 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
             str = "Please enter Amount";
         } else if (binding.txtDate.getText().toString().trim().length() == 4) {
             str = "Please select the date";
-        }else if (binding.editTextDescription.getText().toString().trim().length() == 0) {
-            str = "Please enter Description Of Adavace";
         }
         if (str.length() != 0) {
             Utills.showToast(str, this);

@@ -147,7 +147,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     public void onAddClick() {
         //plus button click
 
-
         //get latest question
         preferenceHelper.insertString(Constants.UNIQUE, "");
         if (Utills.isConnected(this))

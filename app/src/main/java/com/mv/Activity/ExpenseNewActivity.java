@@ -206,19 +206,51 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
             binding.txtDate.setText(mExpense.getDate());
             binding.editTextAmount.setText(mExpense.getAmount());
             binding.editTextDescription.setText(mExpense.getDecription());
+            binding.editApproveAmt.setText(mExpense.getApproved_Amount__c());
+            binding.editApproveRemarks.setText(mExpense.getRemark__c());
             mParticularSelect = particularList.indexOf(mExpense.getPartuculars());
             binding.spinnerParticular.setSelection(mParticularSelect);
+            if(!mExpense.getStatus().equalsIgnoreCase("Pending")) {
+                binding.txtDate.setEnabled(false);
+                binding.editTextAmount.setEnabled(false);
+                binding.editTextDescription.setEnabled(false);
+
+                if(mExpense.getApproved_Amount__c()!=null){
+                    binding.approveAmt.setVisibility(View.VISIBLE);
+                    binding.editApproveAmt.setText(mExpense.getApproved_Amount__c());
+                    binding.editApproveAmt.setEnabled(false);
+                }
+                if(mExpense.getRemark__c()!=null){
+                    binding.approveRemarks.setVisibility(View.VISIBLE);
+                    binding.editApproveRemarks.setText(mExpense.getRemark__c());
+                    binding.editApproveRemarks.setEnabled(false);
+                }
+                binding.btnSubmit.setVisibility(View.GONE);
+            }
+
             if (mExpense.getAttachmentPresent().equalsIgnoreCase("true")) {
                 Glide.with(ExpenseNewActivity.this)
                         .load(Constants.IMAGEURL + mExpense.getId() + ".png")
                         .placeholder(getResources().getDrawable(R.drawable.mulya_bg))
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .skipMemoryCache(true)
                         .into(binding.addImage);
             }
         }
         // to disable and hide views for team mgmt section
         if (Constants.AccountTeamCode.equals("TeamManagement")) {
-            binding.linearly.setVisibility(View.VISIBLE);
+            if(mExpense.getStatus().equalsIgnoreCase("Pending"))
+                binding.linearly.setVisibility(View.VISIBLE);
+            else
+                binding.linearly.setVisibility(View.GONE);
+
+            if(!mExpense.getStatus().equalsIgnoreCase("Rejected")){
+                binding.approveAmt.setVisibility(View.VISIBLE);
+                binding.approveRemarks.setVisibility(View.VISIBLE);
+                binding.editApproveAmt.setText(mExpense.getApproved_Amount__c());
+                binding.editApproveRemarks.setText(mExpense.getRemark__c());
+            }
+
             binding.btnSubmit.setVisibility(View.GONE);
             binding.btnApprove.setOnClickListener(this);
             binding.btnReject.setOnClickListener(this);
@@ -254,7 +286,11 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                 changeExpense("Rejected");
                 break;
             case R.id.btn_approve:
-                changeExpense(Constants.USERACTION);
+                if(binding.editApproveAmt.getText().toString().trim().length()>0) {
+                    changeExpense(Constants.USERACTION);
+                }else{
+                    Utills.showToast("Please enter proper Expense to be approve.", this);
+                }
                 break;
         }
     }
@@ -268,6 +304,10 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                 JSONArray jsonArray = new JSONArray();
                 Expense expense = mExpense;
                 expense.setStatus(status);
+                // allow manager to edit approvable amount
+                //  Add approvedamt filed in advance class
+                expense.setApproved_Amount__c(binding.editApproveAmt.getText().toString().trim());
+                expense.setRemark__c(binding.editApproveRemarks.getText().toString().trim());
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 String json = gson.toJson(expense);
                 JSONObject jsonObject1 = new JSONObject(json);
