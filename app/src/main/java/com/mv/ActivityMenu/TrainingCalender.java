@@ -444,7 +444,6 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                         Calendar instance = Calendar.getInstance();
                         if (eventMap.get(CalendarDay.from(instance)) != null) {
                             eventMap.get(CalendarDay.from(instance));
-                            adapter = new TraingCalenderAadapter(context, eventMap.get(CalendarDay.from(instance)));
                             adapter = new TraingCalenderAadapter(context, eventMap.get(CalendarDay.from(instance)),isAllPlans);
                             binding.recyclerView.setAdapter(adapter);
                         }
