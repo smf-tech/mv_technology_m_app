@@ -73,7 +73,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
     ArrayList<String> category = new ArrayList<>();
     LeavesModel leavesModel;
     Context context;
-    String leaveId = "";
+    String leaveId = "",tabName;
     String selected = "";
 
     List<HolidayListModel> holidayListModels = new ArrayList<>();
@@ -140,6 +140,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 binding.btnSubmit.setVisibility(View.GONE);
                 binding.btnApprove.setVisibility(View.VISIBLE);
                 binding.btnReject.setVisibility(View.VISIBLE);
+                binding.detailChk.setEnabled(false);
                 binding.inputHrFormDate.setEnabled(false);
                 binding.inputHrToDate.setEnabled(false);
                 binding.spTypeOfLeaves.setEnabled(false);
@@ -148,6 +149,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 binding.btnSubmit.setVisibility(View.VISIBLE);
                 binding.btnApprove.setVisibility(View.GONE);
                 binding.btnReject.setVisibility(View.GONE);
+                binding.detailChk.setEnabled(true);
                 if (leavesModel.getStatus().equals(Constants.LeaveStatusPending)) {
                     binding.leaveRemark.setVisibility(View.GONE);
                     binding.inputHrFormDate.setEnabled(true);

@@ -4,9 +4,11 @@ package com.mv.Activity;
 import android.app.AlarmManager;
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.AnimationDrawable;
@@ -19,6 +21,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -111,6 +114,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private AlertDialog alertDialogApproved;
     private ActivityHome1Binding binding;
     private PreferenceHelper preferenceHelper;
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     private AlertDialog alertLocationDialog = null;
     //  private ViewPagerAdapter adapter;
@@ -323,6 +327,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if(count>0)
         tvUnreadNotification.setVisibility(View.VISIBLE);
 
+        // new push notification is received
+        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+               if (intent.getAction().equals(Constants.PUSH_NOTIFICATION)) {
+                   int count=AppDatabase.getAppDatabase(HomeActivity.this).userDao().getUnRearNotificationsCount("unread");
+                   tvUnreadNotification.setText(""+count);
+                   if(count>0)
+                       tvUnreadNotification.setVisibility(View.VISIBLE);
+                }
+            }
+        };
+        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver, new IntentFilter(Constants.PUSH_NOTIFICATION));
     }
 
     private void getHolidayList() {

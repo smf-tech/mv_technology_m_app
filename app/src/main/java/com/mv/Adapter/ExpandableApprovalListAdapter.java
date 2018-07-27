@@ -7,46 +7,26 @@ import android.content.Context;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Typeface;
-import android.os.Environment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
-import com.mv.Activity.CalenderFliterActivity;
-import com.mv.Activity.ExpandableListActivity;
 import com.mv.Activity.LeaveApprovalActivity;
 import com.mv.Activity.LeaveDetailActivity;
-import com.mv.Model.CalenderEvent;
-import com.mv.Model.DownloadContent;
 import com.mv.Model.LeavesModel;
 import com.mv.R;
-import com.mv.Retrofit.ApiClient;
-import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
-import com.mv.Utils.Utills;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by nanostuffs on 19-03-2018.
@@ -61,12 +41,11 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
     private LeaveApprovalActivity _activity;
 
     public ExpandableApprovalListAdapter(Activity context, ArrayList<String> listDataHeader,
-                                         HashMap<String, ArrayList<LeavesModel>> listChildData) {
+                                         HashMap<String, ArrayList<LeavesModel>> listChildData, String tabName) {
         this._context = (LeaveApprovalActivity) context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
         this._activity = (LeaveApprovalActivity) context;
-
         preferenceHelper = new PreferenceHelper(context);
     }
 

@@ -56,7 +56,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
     private ArrayList<String> headerList;
     HashMap<String, ArrayList<LeavesModel>> childList;
     ArrayList<LeavesModel> leaveList = new ArrayList<>();
-    String proceesId, Processname;
+    String proceesId, Processname,tabName;
     Activity mContext;
     List<HolidayListModel> holidayListModels = new ArrayList<>();
     LeaveCountModel leaveCountModel = new LeaveCountModel();
@@ -73,8 +73,6 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_leave_approval);
         binding.setProcesslist(this);
-
-
         headerList = new ArrayList<>();
         childList = new HashMap<>();
         headerList.add(getString(R.string.pending));
@@ -116,10 +114,8 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
 /*        binding.rvProcess.setLayoutManager(mLayoutManager);
         binding.rvProcess.setItemAnimator(new DefaultItemAnimator());*/
-        adapter = new ExpandableApprovalListAdapter(mContext, headerList, childList);
+        adapter = new ExpandableApprovalListAdapter(mContext, headerList, childList,tabName);
         binding.rvProcess.setAdapter(adapter);
-
-
     }
 
     private void setActionbar(String Title) {
@@ -187,7 +183,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                             childList.put(getString(R.string.pending), pendingList);
                             childList.put(getString(R.string.reject), rejectList);
                             childList.put(getString(R.string.approve), approveList);
-                            adapter = new ExpandableApprovalListAdapter(mContext, headerList, childList);
+                            adapter = new ExpandableApprovalListAdapter(mContext, headerList, childList, tabName);
                             binding.rvProcess.setAdapter(adapter);
 
 
@@ -298,7 +294,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                             childList.put(getString(R.string.pending), pendingList);
                             childList.put(getString(R.string.reject), rejectList);
                             childList.put(getString(R.string.approve), approveList);
-                            adapter = new ExpandableApprovalListAdapter(mContext, headerList, childList);
+                            adapter = new ExpandableApprovalListAdapter(mContext, headerList, childList, tabName);
                             binding.rvProcess.setAdapter(adapter);
 
 

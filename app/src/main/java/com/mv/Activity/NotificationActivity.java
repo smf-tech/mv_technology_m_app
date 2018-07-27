@@ -15,6 +15,7 @@ import com.mv.R;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.databinding.ActivityNotificationBinding;
 
+import java.util.Collections;
 import java.util.List;
 
 public class NotificationActivity extends AppCompatActivity {
@@ -30,6 +31,15 @@ public class NotificationActivity extends AppCompatActivity {
 
         List<Notifications> notificationList= AppDatabase.getAppDatabase(this).userDao().getAllNotification();
 
+        Collections.reverse(notificationList);
+
+        if(!(notificationList.size()>0)){
+            binding.tvNoData.setVisibility(View.VISIBLE);
+            binding.tvNoData.setText(getString(R.string.no_data_available));
+        } else {
+            binding.tvNoData.setVisibility(View.GONE);
+        }
+
         NotificatioAdapter adapter = new NotificatioAdapter(this, notificationList);
         binding.rvNotification.setAdapter(adapter);
         binding.rvNotification.setHasFixedSize(true);
@@ -43,7 +53,7 @@ public class NotificationActivity extends AppCompatActivity {
         }
 
         TextView title=(TextView)findViewById(R.id.toolbar_title);
-        title.setText("Notification");
+        title.setText(getResources().getString(R.string.title_notification));
         ImageView back=(ImageView)findViewById(R.id.img_back);
         ImageView img=(ImageView)findViewById(R.id.img_logout);
         img.setVisibility(View.GONE);

@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -68,6 +69,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                 data.setDescription(remoteMessage.getData().get("Description"));
                                 data.setStatus("unread");
                                 AppDatabase.getAppDatabase(this).userDao().insertNotification(data);
+
+                                // notify the for new notification.
+                                Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
+                                LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
                             }
 
                         }
@@ -80,6 +85,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     data.setDescription(remoteMessage.getData().get("Description"));
                     data.setStatus("unread");
                     AppDatabase.getAppDatabase(this).userDao().insertNotification(data);
+
+                    // notify the for new notification.
+                    Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
+                    LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
                 }
 
             } catch (Exception e) {
@@ -88,7 +97,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         }
 
-        // Check if message contains a notification payload.
 
 
         //Calling method to generate notification

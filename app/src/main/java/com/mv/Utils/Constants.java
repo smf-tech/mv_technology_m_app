@@ -234,6 +234,7 @@ public class Constants {
     public static String Approval = "Approval";
     public static String SendData = "SendData";
     public static String AccountTeamCode;
+    public static final String PUSH_NOTIFICATION = "pushNotification";
 
 }
 
