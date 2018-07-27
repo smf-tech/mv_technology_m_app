@@ -334,5 +334,7 @@
     <string name="no_attachment_text">No attachment avaialble</string>
     <string name="all_plans">All Plans</string>
     <string name="my_plans">My Plans</string>
+    <string name="valid_expense">Approved expense amount should not be more than requested expense amount.</string>
+    <string name="valid_advance">Approved advance amount should not be more than requested advance amount.</string>
     <string name="title_notification">Notification</string>
 </resources>

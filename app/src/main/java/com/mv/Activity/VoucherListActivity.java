@@ -107,10 +107,9 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
                 getUserVoucherData();
             }
         }
-
     }
 
-    //Sapret call for Team Management
+    //Seperate call for Team Management
     private void getUserVoucherDataForTeam() {
         Utills.showProgressDialog(this, "Loading Data", getString(R.string.progress_please_wait));
         ServiceRequest apiService =

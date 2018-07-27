@@ -109,6 +109,9 @@ public interface UserDao {
     @Query("SELECT * FROM " + Constants.TABLE_EXPENSE + " where voucherId = :voucherId")
     List<Expense> getAllExpense(String voucherId);
 
+    @Query("SELECT * FROM " + Constants.TABLE_EXPENSE + " where voucherId = :voucherId AND Status = :status")
+    List<Expense> getAllExpense(String voucherId, String status);
+
     @Query("SELECT * FROM " + Constants.TABLE_ADAVANCE + " where voucherId = :voucherId AND Status = :status")
     List<Adavance> getAllAdvance(String voucherId, String status);
 

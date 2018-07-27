@@ -49,6 +49,7 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -286,8 +287,13 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                 changeExpense("Rejected");
                 break;
             case R.id.btn_approve:
+                //check if approve amount is greater than requested amount
                 if(binding.editApproveAmt.getText().toString().trim().length()>0) {
-                    changeExpense(Constants.USERACTION);
+                  if(Integer.parseInt(binding.editApproveAmt.getText().toString().trim())>Integer.parseInt(binding.editTextAmount.getText().toString().trim())){
+                    Utills.showToast( getString(R.string.valid_expense), this);
+                  }else{
+                    changeExpense("Approved");
+                  }
                 }else{
                     Utills.showToast("Please enter proper Expense to be approve.", this);
                 }

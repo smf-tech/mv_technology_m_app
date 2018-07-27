@@ -213,11 +213,16 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
                 //showDateDialog();
                 break;
             case R.id.btn_reject:
-                changeAdavance("Rejected");
+                changeAdvance("Rejected");
                 break;
             case R.id.btn_approve:
-                if(binding.editApproveAmt.getText().toString().trim().length()>0){
-                    changeAdavance(Constants.USERACTION);
+                //check if approve amount is greater than requested amount
+                if(binding.editApproveAmt.getText().toString().trim().length()>0) {
+                    if(Integer.parseInt(binding.editApproveAmt.getText().toString().trim())>Integer.parseInt(binding.editTextCount.getText().toString().trim())){
+                        Utills.showToast( getString(R.string.valid_advance), this);
+                    }else{
+                        changeAdvance("Approved");
+                    }
                 }else{
                     Utills.showToast("Please enter proper Advance to be approve.", this);
                 }
@@ -226,7 +231,7 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    private void changeAdavance(String status) {
+    private void changeAdvance(String status) {
         if (Utills.isConnected(this)) {
             try {
                 Utills.showProgressDialog(this);
