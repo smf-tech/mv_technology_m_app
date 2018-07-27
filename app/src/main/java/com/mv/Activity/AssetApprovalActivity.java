@@ -83,14 +83,13 @@ public class AssetApprovalActivity extends AppCompatActivity implements View.OnC
         accept = (Button) findViewById(R.id.accept);
         accept.setOnClickListener(this);
         reject.setOnClickListener(this);
-        edit_text_code.setText(asset.getAssetModel());
         edit_asset_status.setText(asset.getAllocationStatus());
         edit_text_name.setText(asset.getUsername());
         edit_text_assetname.setText(asset.getAssetName());
         edit_text_modelno.setText(asset.getAssetModel());
         // edit_text_issue_date.setText(asset.getExpectedIssueDate());
         edit_text_specification.setText(asset.getSpecification());
-        edit_text_code.setText(asset.getAssetModel());
+        edit_text_code.setText(asset.getCode());
 
         if(asset.getAllocationStatus().equalsIgnoreCase("Rejected")) {
             asset_reject_ly = (TextInputLayout) findViewById(R.id.asset_reject_ly);

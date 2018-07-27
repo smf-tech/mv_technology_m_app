@@ -224,6 +224,9 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
                                     if (jsonArray.getJSONObject(i).has("assetModel")) {
                                         asset.setAssetModel(jsonArray.getJSONObject(i).getString("assetModel"));
                                     }
+                                    if (jsonArray.getJSONObject(i).has("code")) {
+                                        asset.setCode(jsonArray.getJSONObject(i).getString("code"));
+                                    }
 
                                     if (jsonArray.getJSONObject(i).has("assetCount")) {
                                         asset.setAssetCount(jsonArray.getJSONObject(i).getString("assetCount"));

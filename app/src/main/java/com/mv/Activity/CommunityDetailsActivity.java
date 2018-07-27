@@ -518,7 +518,11 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
     }
 
     private void initViews() {
-        setActionbar(getString(R.string.comunity_detail));
+        if(getIntent().getExtras().getString(Constants.TITLE)!=null && getIntent().getExtras().getString(Constants.TITLE).length()>0){
+            setActionbar(getIntent().getExtras().getString(Constants.TITLE));
+        }else{
+            setActionbar(getString(R.string.comunity_detail));
+        }
         layout_forward = (LinearLayout) findViewById(R.id.layout_forward);
         layout_download_file = (LinearLayout) findViewById(R.id.layout_download_file);
         layout_share = (LinearLayout) findViewById(R.id.layout_share);

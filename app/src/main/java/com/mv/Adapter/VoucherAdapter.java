@@ -50,17 +50,17 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Voucher voucher = mDataList.get(position);
-        List<Expense> expenses = AppDatabase.getAppDatabase(mContext).userDao().getAllExpense(voucher.getId());
-        double amount = 0;
+        List<Expense> expenses = AppDatabase.getAppDatabase(mContext).userDao().getAllExpense(voucher.getId(), "Approved");
+        double approve_expense = 0;
         for (Expense temp : expenses) {
-            if (temp.getAmount() != null && temp.getAmount().length() > 0)
-                amount += Double.parseDouble(temp.getAmount());
+            if (temp.getApproved_Amount__c() != null && temp.getApproved_Amount__c().length() > 0)
+                approve_expense += Double.parseDouble(temp.getApproved_Amount__c());
         }
         List<Adavance> adavances = AppDatabase.getAppDatabase(mContext).userDao().getAllAdvance(voucher.getId(), "Approved");
-        double adavanceAmount = 0;
+        double approve_adavance = 0;
         for (Adavance temp : adavances) {
-            if (temp.getAmount() != null && temp.getAmount().length() > 0)
-                adavanceAmount += Double.parseDouble(temp.getAmount());
+            if (temp.getApproved_Amount__c() != null && temp.getApproved_Amount__c().length() > 0)
+                approve_adavance += Double.parseDouble(temp.getApproved_Amount__c());
         }
         if (Constants.AccountTeamCode.equals("TeamManagement")) {
             holder.tvUser.setVisibility(View.VISIBLE);
@@ -73,8 +73,8 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
         holder.tvProjectName.setText(voucher.getProject());
         holder.tvDateName.setText(voucher.getDate());
         holder.tvNoOfPeopleName.setText(voucher.getPlace());
-        holder.tvTotalExpenseName.setText("₹ " + amount);
-        holder.tvTotalAdvance.setText("₹ " + adavanceAmount);
+        holder.tvTotalExpenseName.setText("₹ " + approve_expense);
+        holder.tvTotalAdvance.setText("₹ " + approve_adavance);
     }
 
 

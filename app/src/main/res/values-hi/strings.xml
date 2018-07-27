@@ -318,4 +318,7 @@
     <string name="my_plans">मेरी योजनाएँ</string>
     <string name="text_proper_date">कृपया उचित तिथि का चयन करें.</string>
     <string name="no_attachment_text">कोई चित्र उपलब्ध नहींe</string>
+    <string name="amount_to_approve">स्वीकृति देने की राशि</string>
+    <string name="valid_expense">स्वीकृत व्यय राशि अनुरोधित व्यय राशि से अधिक नहीं होनी चाहिए।</string>
+    <string name="valid_advance">स्वीकृत अग्रिम राशि अनुरोधित अग्रिम राशि से अधिक नहीं होनी चाहिए।</string>
 </resources>
