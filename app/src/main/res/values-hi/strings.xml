@@ -322,4 +322,5 @@
     <string name="valid_expense">स्वीकृत व्यय राशि अनुरोधित व्यय राशि से अधिक नहीं होनी चाहिए।</string>
     <string name="valid_advance">स्वीकृत अग्रिम राशि अनुरोधित अग्रिम राशि से अधिक नहीं होनी चाहिए।</string>
     <string name="title_notification">अधिसूचना</string>
+    <string name="asset_status">Status</string>
 </resources>

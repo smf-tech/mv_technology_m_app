@@ -317,4 +317,5 @@
     <string name="valid_expense">मंजूर केलेला खर्च रक्कम विनंती केलेल्या खर्चापेक्षा जास्त नसावी.</string>
     <string name="valid_advance">मंजूर आगाऊ रक्कम विनंती आगाऊ रक्कम जास्त असू नये.</string>
     <string name="title_notification">सूचना</string>
+    <string name="asset_status">Status</string>
 </resources>
