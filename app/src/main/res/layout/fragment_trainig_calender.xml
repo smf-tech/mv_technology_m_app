@@ -55,8 +55,8 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
                     android:layout_weight="5"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
                     android:prompt="@string/month"
                     android:spinnerMode="dialog"
                     android:text="@string/month" />
@@ -69,8 +69,8 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
                     android:layout_weight="5"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
                     android:prompt="@string/year"
                     android:spinnerMode="dialog"
                     android:text="@string/year" />
@@ -116,10 +116,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="2"
-                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/dimen_5dp"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
                 android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingTop="@dimen/dimen_5dp"
                 android:scrollbars="vertical" />
 
             <android.support.v7.widget.RecyclerView
@@ -127,11 +127,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="8"
-                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingBottom="@dimen/dimen_5dp"
                 android:paddingLeft="@dimen/activity_horizontal_margin"
 
                 android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
+                android:paddingTop="@dimen/dimen_5dp"
                 android:scrollbars="vertical" />
 
             <LinearLayout

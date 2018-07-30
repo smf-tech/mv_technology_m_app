@@ -353,4 +353,8 @@ public interface UserDao {
 
     @Update
     void updateNotification(Notifications notification);
+
+    @Query("DELETE FROM " + Constants.TABLE_NOTIFICATION + " where unique_Id = :unique_Id")
+    void deleteNotification(int unique_Id);
+
 }

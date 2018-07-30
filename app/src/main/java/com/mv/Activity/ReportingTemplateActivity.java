@@ -259,8 +259,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             }
         }
 
-        district_adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, mListDistrict);
+        district_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mListDistrict);
         district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerDistrict.setAdapter(district_adapter);
         binding.spinnerDistrict.setSelection(1);
@@ -269,8 +268,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             binding.spinnerDistrict.setEnabled(true);
             getDistrict();
         }
-        taluka_adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, mListTaluka);
+        taluka_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mListTaluka);
         taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerTaluka.setAdapter(taluka_adapter);
         if (Constants.shareUri != null) {
