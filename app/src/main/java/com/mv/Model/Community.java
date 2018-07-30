@@ -79,6 +79,23 @@ public class Community {
     @Expose
     private String errorMsg;
 
+
+
+    @ColumnInfo(name ="youCanPostInCommunity")
+    @SerializedName("youCanPostInCommunity")
+    @Expose
+    private boolean CanPost;
+
+    public boolean getCanPost() {
+        return CanPost;
+    }
+
+    public void setCanPost(boolean canPost) {
+        CanPost = canPost;
+    }
+
+
+
     public String getId() {
         return Id;
     }

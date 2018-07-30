@@ -86,6 +86,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     TextView textNoData;
     public static final String MESSAGE_PROGRESS = "message_progress";
     private EndlessRecyclerViewScrollListener scrollListener;
+    boolean canpost;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -289,6 +290,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     private void initViews() {
         setActionbar(getIntent().getExtras().getString(Constants.TITLE));
         json = getIntent().getExtras().getString(Constants.LIST);
+
         HoSupportCommunity = (getIntent().getExtras().getString(Constants.TITLE));
         final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         communityList = Arrays.asList(gson.fromJson(json, Community[].class));
@@ -304,6 +306,15 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         lnr_filter = (LinearLayout) findViewById(R.id.lnr_filter);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        //check if user can post or not
+      //  canpost = json.
+        canpost = getIntent().getExtras().getBoolean("CanPost");
+        canpost = getIntent().getBooleanExtra("CanPost",true);
+        if(canpost){
+            fab_add_list.setVisibility(View.VISIBLE);
+        }else{
+            fab_add_list.setVisibility(View.GONE);
+        }
         recyclerView.setLayoutManager(linearLayoutManager);
         /*Change the visiblity of filter button on scroll*/
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -324,7 +335,6 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                         lnr_filter.setVisibility(View.GONE);
                     }
                 }
-
 
             }
         });
@@ -670,7 +680,6 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 dialog.dismiss();
                 switch (position) {
                     case 1:
-
                         setFilter("Training related");
                         break;
 
@@ -709,10 +718,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 dialog.dismiss();
                 switch (position) {
                     case 1:
-
                         setFilter("Information Sharing");
-
-
                         break;
                     case 2:
                         setFilter("Events Update");

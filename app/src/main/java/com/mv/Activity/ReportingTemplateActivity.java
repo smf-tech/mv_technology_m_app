@@ -1101,7 +1101,6 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         // Check that the SDCard is mounted
         File mediaStorageDir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Video");
 
-
         // Create the storage directory(MyCameraVideo) if it does not exist
         if (!mediaStorageDir.exists()) {
             if (!mediaStorageDir.mkdirs()) {
