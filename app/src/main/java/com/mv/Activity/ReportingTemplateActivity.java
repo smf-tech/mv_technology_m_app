@@ -171,15 +171,19 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    mListDistrict.clear();
-                    mListDistrict.add("Select");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        mListDistrict.add(jsonArray.getString(i));
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(response.body().string());
+                            mListDistrict.clear();
+                            mListDistrict.add("Select");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                mListDistrict.add(jsonArray.getString(i));
+                            }
+                            district_adapter.notifyDataSetChanged();
+                            binding.spinnerDistrict.setSelection(mListDistrict.indexOf(User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getDistrict()));
+                        }
                     }
-                    district_adapter.notifyDataSetChanged();
-                    binding.spinnerDistrict.setSelection(mListDistrict.indexOf(User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getDistrict()));
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -206,13 +210,18 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    mListTaluka.clear();
-                    mListTaluka.add("Select");
-                    JSONArray jsonArr = new JSONArray(response.body().string());
-                    for (int i = 0; i < jsonArr.length(); i++) {
-                        mListTaluka.add(jsonArr.getString(i));
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            mListTaluka.clear();
+                            mListTaluka.add("Select");
+                            JSONArray jsonArr = new JSONArray(response.body().string());
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                mListTaluka.add(jsonArr.getString(i));
+                            }
+                            taluka_adapter.notifyDataSetChanged();
+                        }
                     }
-                    taluka_adapter.notifyDataSetChanged();
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
