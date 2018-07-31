@@ -165,14 +165,14 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = "";
-       /* if (isTimePresent)
+        if (isTimePresent)
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(context).getMvUser().getId()
                     + "&timestamp=" + communityList.get(0).getTime();
         else
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(context).getMvUser().getId();*/
-        if (isTimePresent)
+                    + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(context).getMvUser().getId();
+        /*if (isTimePresent)
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/\n" +
                     "MVGetCommunitiesNew?userId=" + User.getCurrentUser(context).getMvUser().getId()
@@ -180,7 +180,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
         else
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/\n" +
-                    "MVGetCommunitiesNew?userId=" + User.getCurrentUser(context).getMvUser().getId();
+                    "MVGetCommunitiesNew?userId=" + User.getCurrentUser(context).getMvUser().getId();*/
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

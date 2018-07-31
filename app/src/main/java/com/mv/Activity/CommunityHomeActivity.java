@@ -308,7 +308,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         //check if user can post or not
       //  canpost = json.
-        canpost = getIntent().getExtras().getBoolean("CanPost");
+      //  canpost = getIntent().getExtras().getBoolean("CanPost");
         canpost = getIntent().getBooleanExtra("CanPost",true);
         if(canpost){
             fab_add_list.setVisibility(View.VISIBLE);
