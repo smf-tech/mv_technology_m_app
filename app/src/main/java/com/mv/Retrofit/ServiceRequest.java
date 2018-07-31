@@ -45,6 +45,10 @@ public interface ServiceRequest {
     @POST("")
     Call<ResponseBody> sendImageToSalesforce(@Url String url, @Body JsonArray jsonArray);
 
+    @FormUrlEncoded
+    @POST("/services/apexrest/WS_DeleteComments")
+    Call<ResponseBody> deleteComment(@Field("commentId") String commentId);
+
     @POST("user/app_get_state")
     Call<ResponseBody> getState();
 
@@ -53,21 +57,9 @@ public interface ServiceRequest {
     Call<ResponseBody> getDistrict(@Field("state") String mState);
 
     @FormUrlEncoded
-    @POST("/services/apexrest/WS_DeleteComments")
-    Call<ResponseBody> deleteComment(@Field("commentId") String commentId);
-
-    @FormUrlEncoded
     @POST("user/app_get_taluka")
     Call<ResponseBody> getTaluka(@Field("state") String mState, @Field("district") String mDistrict);
 
-
-    @FormUrlEncoded
-    @POST("get_all_location")
-    Call<ResponseBody> getAllLocation(@Field("state") String mState, @Field("district") String mDistrict);
-
-    @FormUrlEncoded
-    @POST("save_new_location")
-    Call<ResponseBody> submitLocation(@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster, @Field("village") String mVillage, @Field("school_name") String mSchool);
     @FormUrlEncoded
     @POST("user/app_get_cluster")
     Call<ResponseBody> getCluster(@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka);
@@ -80,6 +72,14 @@ public interface ServiceRequest {
     @FormUrlEncoded
     @POST("user/app_get_school")
     Call<ResponseBody> getSchool(@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster, @Field("village") String mVillage);
+
+    @FormUrlEncoded
+    @POST("get_all_location")
+    Call<ResponseBody> getAllLocation(@Field("state") String mState, @Field("district") String mDistrict);
+
+    @FormUrlEncoded
+    @POST("save_new_location")
+    Call<ResponseBody> submitLocation(@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster, @Field("village") String mVillage, @Field("school_name") String mSchool);
 
 
 

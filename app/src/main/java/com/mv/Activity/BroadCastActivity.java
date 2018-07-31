@@ -136,14 +136,18 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    mListState.clear();
-                    mListState.add("Select");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        mListState.add(jsonArray.getString(i));
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(data);
+                            mListState.clear();
+                            mListState.add("Select");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                mListState.add(jsonArray.getString(i));
+                            }
+                            state_adapter.notifyDataSetChanged();
+                        }
                     }
-                    state_adapter.notifyDataSetChanged();
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -403,14 +407,18 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    mListDistrict.clear();
-                    mListDistrict.add("Select");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        mListDistrict.add(jsonArray.getString(i));
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(response.body().string());
+                            mListDistrict.clear();
+                            mListDistrict.add("Select");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                mListDistrict.add(jsonArray.getString(i));
+                            }
+                            district_adapter.notifyDataSetChanged();
+                        }
                     }
-                    district_adapter.notifyDataSetChanged();
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
