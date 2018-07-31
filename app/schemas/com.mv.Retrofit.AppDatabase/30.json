@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 30,
-    "identityHash": "fef019abed40202ad30efcb4edc5a8ef",
+    "identityHash": "55255ccaf5f51bb9056fc1bc56b11c51",
     "entities": [
       {
         "tableName": "table_community",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`community_id` TEXT, `community_name` TEXT, `timestamp` TEXT, `unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Count` TEXT, `totalCount` TEXT, `errorMsg` TEXT, `youCanPostInCommunity` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`community_id` TEXT, `community_name` TEXT, `timestamp` TEXT, `unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Count` TEXT, `totalCount` TEXT, `errorMsg` TEXT, `youCanPostInCommunity` INTEGER)",
         "fields": [
           {
             "fieldPath": "Id",
@@ -46,7 +46,7 @@
           {
             "fieldPath": "CanPost",
             "columnName": "youCanPostInCommunity",
-            "affinity": "TEXT"
+            "affinity": "INTEGER"
           }
         ],
         "primaryKey": {
@@ -1283,7 +1283,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"fef019abed40202ad30efcb4edc5a8ef\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"55255ccaf5f51bb9056fc1bc56b11c51\")"
     ]
   }
 }
