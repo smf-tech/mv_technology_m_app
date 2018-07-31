@@ -463,13 +463,18 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    mListVillage.clear();
-                    mListVillage.add("Select");
-                    JSONArray jsonArr = new JSONArray(response.body().string());
-                    for (int i = 0; i < jsonArr.length(); i++) {
-                        mListVillage.add(jsonArr.getString(i));
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            mListVillage.clear();
+                            mListVillage.add("Select");
+                            JSONArray jsonArr = new JSONArray(data);
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                mListVillage.add(jsonArr.getString(i));
+                            }
+                            //village_adapter.notifyDataSetChanged();
+                        }
                     }
-                    //village_adapter.notifyDataSetChanged();
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
@@ -492,14 +497,19 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    mListSchoolName.clear();
-                    mListSchoolName.add("Select");
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            mListSchoolName.clear();
+                            mListSchoolName.add("Select");
 
-                    JSONArray jsonArr = new JSONArray(response.body().string());
-                    for (int i = 0; i < jsonArr.length(); i++) {
-                        mListSchoolName.add(jsonArr.getString(i));
+                            JSONArray jsonArr = new JSONArray(data);
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                mListSchoolName.add(jsonArr.getString(i));
+                            }
+                            //school_adapter.notifyDataSetChanged();
+                        }
                     }
-                    //school_adapter.notifyDataSetChanged();
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
@@ -564,14 +574,18 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    mListDistrict.clear();
-                    mListDistrict.add("Select");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        mListDistrict.add(jsonArray.getString(i));
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(response.body().string());
+                            mListDistrict.clear();
+                            mListDistrict.add("Select");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                mListDistrict.add(jsonArray.getString(i));
+                            }
+                            setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
+                        }
                     }
-                    setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -598,14 +612,19 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    mListTaluka.clear();
-                    mListTaluka.add("Select");
-                    JSONArray jsonArr = new JSONArray(response.body().string());
-                    for (int i = 0; i < jsonArr.length(); i++) {
-                        mListTaluka.add(jsonArr.getString(i));
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            mListTaluka.clear();
+                            mListTaluka.add("Select");
+                            JSONArray jsonArr = new JSONArray(response.body().string());
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                mListTaluka.add(jsonArr.getString(i));
+                            }
+                            setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
+                            // taluka_adapter.notifyDataSetChanged();
+                        }
                     }
-                    setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
-                    // taluka_adapter.notifyDataSetChanged();
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }

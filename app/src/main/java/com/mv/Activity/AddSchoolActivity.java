@@ -595,14 +595,18 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    mListDistrict.clear();
-                    mListDistrict.add("Select");
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        mListDistrict.add(jsonArray.getString(i));
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(data);
+                            mListDistrict.clear();
+                            mListDistrict.add("Select");
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                mListDistrict.add(jsonArray.getString(i));
+                            }
+                            setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
+                        }
                     }
-                    setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
@@ -629,19 +633,24 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    mListTaluka.clear();
-                    mListTaluka.add("Select");
-                    JSONArray jsonArr = new JSONArray(response.body().string());
-                    for (int i = 0; i < jsonArr.length(); i++) {
-                        mListTaluka.add(jsonArr.getString(i));
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            mListTaluka.clear();
+                            mListTaluka.add("Select");
+                            JSONArray jsonArr = new JSONArray(response.body().string());
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                mListTaluka.add(jsonArr.getString(i));
+                            }
+                            setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
+                            Intent intent = new Intent(getApplicationContext(), LocationService.class);
+                            // add infos for the service which file to download and where to store
+                            intent.putExtra(Constants.State, selectedState);
+                            intent.putExtra(Constants.DISTRICT, mListDistrict.get(mSelectDistrict));
+                            startService(intent);
+                            // taluka_adapter.notifyDataSetChanged();
+                        }
                     }
-                    setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
-                    Intent intent = new Intent(getApplicationContext(), LocationService.class);
-                    // add infos for the service which file to download and where to store
-                    intent.putExtra(Constants.State, selectedState);
-                    intent.putExtra(Constants.DISTRICT, mListDistrict.get(mSelectDistrict));
-                    startService(intent);
-                    // taluka_adapter.notifyDataSetChanged();
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
@@ -663,17 +672,22 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    mListCluster.clear();
-                    mListCluster.add("Select");
-                    JSONArray jsonArr = new JSONArray(response.body().string());
-                    for (int i = 0; i < jsonArr.length(); i++) {
-                        mListCluster.add(jsonArr.getString(i));
-                    }
-                    ArrayAdapter<String> adapterCluster = new ArrayAdapter<String>
-                            (AddSchoolActivity.this, android.R.layout.select_dialog_item, mListCluster);
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            mListCluster.clear();
+                            mListCluster.add("Select");
+                            JSONArray jsonArr = new JSONArray(data);
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                mListCluster.add(jsonArr.getString(i));
+                            }
+                            ArrayAdapter<String> adapterCluster = new ArrayAdapter<String>
+                                    (AddSchoolActivity.this, android.R.layout.select_dialog_item, mListCluster);
 
-                    binding.spinnerCluster.setThreshold(1);
-                    binding.spinnerCluster.setAdapter(adapterCluster);
+                            binding.spinnerCluster.setThreshold(1);
+                            binding.spinnerCluster.setAdapter(adapterCluster);
+                        }
+                    }
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
@@ -695,17 +709,22 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    mListVillage.clear();
-                    mListVillage.add("Select");
-                    JSONArray jsonArr = new JSONArray(response.body().string());
-                    for (int i = 0; i < jsonArr.length(); i++) {
-                        mListVillage.add(jsonArr.getString(i));
-                    }
-                    ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<String>
-                            (AddSchoolActivity.this, android.R.layout.select_dialog_item, mListSchoolName);
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            mListVillage.clear();
+                            mListVillage.add("Select");
+                            JSONArray jsonArr = new JSONArray(data);
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                mListVillage.add(jsonArr.getString(i));
+                            }
+                            ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<String>
+                                    (AddSchoolActivity.this, android.R.layout.select_dialog_item, mListSchoolName);
 
-                    binding.spinnerSchoolName.setThreshold(1);
-                    binding.spinnerSchoolName.setAdapter(adapterSchoolname);
+                            binding.spinnerSchoolName.setThreshold(1);
+                            binding.spinnerSchoolName.setAdapter(adapterSchoolname);
+                        }
+                    }
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
@@ -728,18 +747,23 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    mListSchoolName.clear();
-                    mListSchoolName.add("Select");
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            mListSchoolName.clear();
+                            mListSchoolName.add("Select");
 
-                    JSONArray jsonArr = new JSONArray(response.body().string());
-                    for (int i = 0; i < jsonArr.length(); i++) {
-                        mListSchoolName.add(jsonArr.getString(i));
+                            JSONArray jsonArr = new JSONArray(data);
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                mListSchoolName.add(jsonArr.getString(i));
+                            }
+                            ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<String>
+                                    (AddSchoolActivity.this, android.R.layout.select_dialog_item, mListSchoolName);
+
+                            binding.spinnerSchoolName.setThreshold(1);
+                            binding.spinnerSchoolName.setAdapter(adapterSchoolname);
+                        }
                     }
-                    ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<String>
-                            (AddSchoolActivity.this, android.R.layout.select_dialog_item, mListSchoolName);
-
-                    binding.spinnerSchoolName.setThreshold(1);
-                    binding.spinnerSchoolName.setAdapter(adapterSchoolname);
                 } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
