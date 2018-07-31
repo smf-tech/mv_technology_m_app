@@ -291,6 +291,7 @@
     <string name="salary_list">Salary List</string>
     <string name="voucher_approoval">Voucher Approval</string>
     <string name="leave_approoval">Leave Approval</string>
+    <string name="attendance_approoval">Attendance Approval</string>
 
     <string name="loading_process">Loading Process</string>
 

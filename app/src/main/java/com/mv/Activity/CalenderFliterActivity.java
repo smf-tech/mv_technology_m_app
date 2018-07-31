@@ -179,8 +179,6 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             binding.spinnerCatogory.setText("Other");
         }
 
-
-
         binding.txtOrg.setVisibility(View.GONE);
         binding.txtRole.setVisibility(View.GONE);
         binding.layoutOrg.setVisibility(View.GONE);
@@ -480,6 +478,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 break;
 
             case R.id.tv_event_attendance:
+
 
                 setAttendance();
 

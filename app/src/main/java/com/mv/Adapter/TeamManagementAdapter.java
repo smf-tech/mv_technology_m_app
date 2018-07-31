@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mv.Activity.AttendanceApprovalActivity;
 import com.mv.Activity.LeaveApprovalActivity;
 import com.mv.Activity.ProcessApprovalActivity;
 import com.mv.Activity.ProcessListApproval;
@@ -91,6 +92,14 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                             preferenceHelper.insertString(Constants.Leave,Constants.Leave_Approve);
                             mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
                         }
+                        //adding Attendance approval
+                        else if (getAdapterPosition() == 4) {
+                            //redirect to user Approval Process List
+                            Intent openClass = new Intent(mContext, AttendanceApprovalActivity.class);
+                            mContext.startActivity(openClass);
+                            preferenceHelper.insertString(Constants.Leave,Constants.Leave_Approve);
+                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                        }
                     } else if (mContext instanceof TeamManagementUserProfileListActivity) {
                         if (TeamManagementUserProfileListActivity.approvalType.equals(Constants.USER_APPROVAL)) {
                             Intent openClass = new Intent(mContext, UserApproveDetail.class);
@@ -107,10 +116,8 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                             mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
                         }
 
-
                     }
                 }
-
 
             });
         }

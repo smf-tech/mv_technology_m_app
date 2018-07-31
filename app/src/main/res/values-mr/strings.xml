@@ -270,6 +270,7 @@
     <!--Salary List Activity-->
     <string name="salary_list">वेतन यादी</string>
     <string name="leave_approoval">रजा मंजुरी</string>
+    <string name="attendance_approoval">उपस्थिती मान्यता</string>
 
     <string name="loading_process">प्रक्रिया लोड करीत आहे</string>
     <string name="asset_username">नाव</string>

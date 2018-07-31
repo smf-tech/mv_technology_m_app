@@ -1,13 +1,10 @@
 package com.mv.Adapter;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-
 import android.content.DialogInterface;
 import android.content.Intent;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +13,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-
+import com.mv.Activity.AttendanceApprovalActivity;
 import com.mv.Activity.AttendanceApproveDetailActivity;
-import com.mv.Activity.LeaveApprovalActivity;
-import com.mv.Activity.LeaveDetailActivity;
-import com.mv.Model.LeavesModel;
+import com.mv.Model.AttendanceApproval;
 import com.mv.R;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
@@ -30,23 +25,23 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by nanostuffs on 19-03-2018.
+ * Created by user on 7/31/2018.
  */
 
-public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
+public class ExpandableAttendanceApprovalListAdapter extends BaseExpandableListAdapter {
     private PreferenceHelper preferenceHelper;
-    private LeaveApprovalActivity _context;
+    private AttendanceApprovalActivity _context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, ArrayList<LeavesModel>> _listDataChild;
-    private LeaveApprovalActivity _activity;
+    private HashMap<String, ArrayList<AttendanceApproval>> _listDataChild;
+    private AttendanceApprovalActivity _activity;
 
-    public ExpandableApprovalListAdapter(Activity context, ArrayList<String> listDataHeader,
-                                         HashMap<String, ArrayList<LeavesModel>> listChildData, String tabName) {
-        this._context = (LeaveApprovalActivity) context;
+    public ExpandableAttendanceApprovalListAdapter(Activity context, ArrayList<String> listDataHeader,
+                                         HashMap<String, ArrayList<AttendanceApproval>> listChildData, String tabName) {
+        this._context = (AttendanceApprovalActivity) context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
-        this._activity = (LeaveApprovalActivity) context;
+        this._activity = (AttendanceApprovalActivity) context;
         preferenceHelper = new PreferenceHelper(context);
     }
 
@@ -65,7 +60,7 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
     public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final LeavesModel leavesModel = (LeavesModel) getChild(groupPosition, childPosition);
+        final AttendanceApproval attendance_approval = (AttendanceApproval) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
@@ -84,54 +79,50 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
         layoutMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    Intent intent=new Intent(_context, LeaveDetailActivity.class);
-                    intent.putExtra(Constants.Leave ,leavesModel);
+
+                    Intent intent=new Intent(_context, AttendanceApproveDetailActivity.class);
+                    intent.putExtra(Constants.Attendance ,attendance_approval);
                     _context.startActivity(intent);
             }
         });
         imgDownload = (ImageView) convertView.findViewById(R.id.imgDownload);
-     if(groupPosition==0&&!preferenceHelper.getString(Constants.Leave).equals(Constants.Leave_Approve))
-     {
+        /*if(groupPosition==0&&!preferenceHelper.getString(Constants.Attendance).equals(Constants.Leave_Approve))
+        {
 
-         imgDownload.setVisibility(View.VISIBLE);
-         imgDownload.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                showDeleteDialog(leavesModel.getId());
-             }
-         });
-     }
-     else
-     {
-         imgDownload.setVisibility(View.GONE);
-     }
-
-
+            imgDownload.setVisibility(View.VISIBLE);
+            imgDownload.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    showDeleteDialog(attendance_approval.getId());
+                }
+            });
+        }
+        else
+        {
+            imgDownload.setVisibility(View.GONE);
+        }*/
 
         imgshare = (ImageView) convertView.findViewById(R.id.imgshare);
-
 
         txtName = (TextView) convertView.findViewById(R.id.txtName);
 
         txtCount.setVisibility(View.GONE);
-        if(leavesModel.getRequested_User_Name__c()!=null)
-        txtName.setText(leavesModel.getRequested_User_Name__c()+"("+leavesModel.getFromDate()+" : " +leavesModel.getToDate()+")");
+        if(attendance_approval.getUser_Name__c()!=null)
+            txtName.setText(attendance_approval.getUser_Name__c()+"("+attendance_approval.getAttendanceDateC()+")");
         else
-            txtName.setText(leavesModel.getFromDate()+" : " +leavesModel.getToDate()+ " : "+leavesModel.getTypeOfLeaves());
+            txtName.setText(attendance_approval.getAttendanceDateC());
 
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-    if(this._listDataChild.get(this._listDataHeader.get(groupPosition))!=null)
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .size();
-    else
-        return 0;
+        if(this._listDataChild.get(this._listDataHeader.get(groupPosition))!=null)
+            return this._listDataChild.get(this._listDataHeader.get(groupPosition))
+                    .size();
+        else
+            return 0;
     }
-
-
 
     @Override
     public Object getGroup(int groupPosition) {
@@ -166,7 +157,7 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
         }
         TextView txtName = (TextView) convertView
                 .findViewById(R.id.txtName);
-       // date.setTypeface(null, Typeface.BOLD);
+        // date.setTypeface(null, Typeface.BOLD);
         txtName.setText(headerTitle);
         return convertView;
     }
@@ -204,8 +195,7 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
         alertDialog.setButton(_context.getString(R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
-
-                    _context.deleteLeave(id);
+             //   _context.deleteLeave(id);
 
             }
         });
@@ -213,6 +203,4 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
         // Showing Alert Message
         alertDialog.show();
     }
-
-
 }
