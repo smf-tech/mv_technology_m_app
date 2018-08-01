@@ -69,6 +69,9 @@ android {
         enabled = true
     }
     dexOptions {
+        incremental false
+        javaMaxHeapSize "2048M"
+        preDexLibraries = false
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

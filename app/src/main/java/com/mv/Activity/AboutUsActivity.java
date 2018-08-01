@@ -21,7 +21,6 @@ public class AboutUsActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_us);
         setActionbar(getString(R.string.about_us));
-
     }
 
     @Override

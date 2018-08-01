@@ -1,5 +1,6 @@
 package com.mv.Activity;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import com.mv.Adapter.NotificatioAdapter;
 import com.mv.Model.Notifications;
 import com.mv.R;
 import com.mv.Retrofit.AppDatabase;
+import com.mv.Utils.LocaleManager;
 import com.mv.databinding.ActivityNotificationBinding;
 
 import java.util.Collections;
@@ -63,5 +65,10 @@ public class NotificationActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(LocaleManager.setLocale(base));
     }
 }

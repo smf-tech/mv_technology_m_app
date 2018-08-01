@@ -138,24 +138,25 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 binding.btnSubmit.setVisibility(View.GONE);
                 binding.btnApprove.setVisibility(View.VISIBLE);
                 binding.btnReject.setVisibility(View.VISIBLE);
-                binding.detailChk.setEnabled(false);
                 binding.inputHrFormDate.setEnabled(false);
                 binding.inputHrToDate.setEnabled(false);
                 binding.spTypeOfLeaves.setEnabled(false);
                 binding.etReason.setEnabled(false);
+                binding.detailChk.setEnabled(false);
+                binding.spTypeOfCatagory.setEnabled(false);
             } else {
                 binding.btnSubmit.setVisibility(View.VISIBLE);
                 binding.btnApprove.setVisibility(View.GONE);
                 binding.btnReject.setVisibility(View.GONE);
-                binding.detailChk.setEnabled(true);
                 if (leavesModel.getStatus().equals(Constants.LeaveStatusPending)) {
                     binding.leaveRemark.setVisibility(View.GONE);
                     binding.inputHrFormDate.setEnabled(true);
                     binding.inputHrToDate.setEnabled(true);
                     binding.spTypeOfLeaves.setEnabled(true);
                     binding.etReason.setEnabled(true);
+                    binding.detailChk.setEnabled(true);
+                    binding.spTypeOfCatagory.setEnabled(true);
                     binding.btnSubmit.setVisibility(View.VISIBLE);
-
                 } else {
                     binding.leaveRemark.setVisibility(View.VISIBLE);
                     if (leavesModel.getComment() != null && !leavesModel.getComment().equals(""))
@@ -166,6 +167,8 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                     binding.inputHrToDate.setEnabled(false);
                     binding.spTypeOfLeaves.setEnabled(false);
                     binding.etReason.setEnabled(false);
+                    binding.detailChk.setEnabled(false);
+                    binding.spTypeOfCatagory.setEnabled(false);
                     binding.btnSubmit.setVisibility(View.GONE);
 
                 }

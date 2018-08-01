@@ -64,7 +64,6 @@ public interface ServiceRequest {
     @POST("user/app_get_cluster")
     Call<ResponseBody> getCluster(@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka);
 
-
     @FormUrlEncoded
     @POST("user/app_get_village")
     Call<ResponseBody> getVillage(@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster);
