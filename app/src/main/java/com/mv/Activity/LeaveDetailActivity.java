@@ -101,8 +101,6 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
         binding.spTypeOfLeaves.setOnItemSelectedListener(this);
 
         // holidayListModels = getIntent().getParcelableArrayListExtra(Constants.PROCESS_ID);
-
-
         // setActionbar(getString(R.string.team_user_approval));
         initViews();
 

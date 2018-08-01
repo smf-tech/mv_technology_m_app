@@ -278,6 +278,7 @@
     <!--Salary List Activity-->
     <string name="salary_list">वेतन सूची</string>
     <string name="leave_approoval">Leave Approval</string>
+    <string name="attendance_approoval">उपस्थिति स्वीकृति</string>
 
     <string name="loading_process">Loading Process</string>
 

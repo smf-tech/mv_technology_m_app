@@ -65,7 +65,6 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
     private ExpandableApprovalListAdapter adapter;
     String url = "";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,8 +91,6 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
     }
 
     private void initViews() {
-
-
         preferenceHelper = new PreferenceHelper(this);
         //storing process Id to preference to use later
         if (preferenceHelper.getString(Constants.Leave).equals(Constants.Leave_Approve)) {
@@ -240,8 +237,6 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
     public void onBackPressed() {
         // Utills.openActivity(mContext, HomeActivity.class);
         finish();
-
-
     }
 
     public void getAllProcess() {
@@ -249,7 +244,6 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
         Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override

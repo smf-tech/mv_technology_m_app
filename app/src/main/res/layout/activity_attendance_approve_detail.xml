@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="activity"
+            type="com.mv.Activity.LeaveDetailActivity" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="9"
+            android:background="@drawable/app_bg"
+            android:fillViewport="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="6.5"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_height="wrap_content"
+                        android:text="Name"/>
+
+                    <TextView
+                        android:id="@+id/name"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:text="Sagar" />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="6.5"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_height="wrap_content"
+                        android:text="Attendance date"/>
+                    <TextView
+                        android:id="@+id/attendance_date"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_height="wrap_content"
+                        android:text="7/31/2018"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="6.5"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_height="wrap_content"
+                        android:text="User Role"/>
+                    <TextView
+                        android:id="@+id/user_role"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_height="wrap_content"
+                        android:text="TC"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="6.5"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_height="wrap_content"
+                        android:text="CheckIn Time"/>
+                    <TextView
+                        android:id="@+id/checkin_time"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_height="wrap_content"
+                        android:text="22.23"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="6.5"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_height="wrap_content"
+                        android:text="CheckOut Time"/>
+                    <TextView
+                        android:id="@+id/checkout_time"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_height="wrap_content"
+                        android:text="22.23"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="6.5"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_height="wrap_content"
+                        android:text="Status"/>
+                    <TextView
+                        android:id="@+id/status"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_height="wrap_content"
+                        android:text="Pending"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="6.5"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_height="wrap_content"
+                        android:text="CheckIn Location Difference"/>
+                    <TextView
+                        android:id="@+id/checkin_difference"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_height="wrap_content"
+                        android:text="25.23236"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="6.5"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_height="wrap_content"
+                        android:text="CheckOut Location Difference"/>
+                    <TextView
+                        android:id="@+id/checkout_difference"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_marginTop="@dimen/dimen_5dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_marginLeft="@dimen/dimen_10dp"
+                        android:layout_height="wrap_content"
+                        android:text="25.23236"/>
+                </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/butt_lay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/dimen_5dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/dimen_10dp"
+            android:weightSum="10">
+
+            <com.mv.Widgets.MyFontButton
+                android:id="@+id/btn_submit"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_5dp"
+                android:layout_weight="10"
+                android:background="@color/colorPink"
+                android:text="@string/Submit"
+                android:textAllCaps="false"
+                android:textColor="#ffffff"
+                android:textSize="22sp" />
+
+
+
+            <com.mv.Widgets.MyFontButton
+                android:id="@+id/btn_approve"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_5dp"
+                android:layout_weight="5"
+                android:background="@color/colorPink"
+                android:text="@string/approve"
+                android:textColor="#ffffff"
+                android:textSize="22sp"
+                android:visibility="gone" />
+
+            <com.mv.Widgets.MyFontButton
+                android:id="@+id/btn_reject"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/dimen_5dp"
+                android:layout_weight="5"
+                android:background="@color/colorPink"
+                android:text="@string/reject"
+                android:textColor="#ffffff"
+
+                android:textSize="22sp"
+                android:visibility="gone" />
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>
+
+
