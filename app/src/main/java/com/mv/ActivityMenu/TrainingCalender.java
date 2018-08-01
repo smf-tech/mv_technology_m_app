@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -314,15 +315,15 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                 break;
             //to display all the events of that date
             case R.id.btn_all_plans:
-                binding.btnAllPlans.setBackgroundColor(getColor(R.color.colorPink));
-                binding.btnMyPlans.setBackgroundColor(getColor(R.color.lightgray01));
+                binding.btnAllPlans.setBackgroundColor(getResources().getColor(R.color.colorPink));
+                binding.btnMyPlans.setBackgroundColor(getResources().getColor(R.color.lightgray01));
                 isAllPlans=true;
                 selectDate(selectDated);
                 break;
             //to display users events of that date
             case R.id.btn_my_plans:
-                binding.btnAllPlans.setBackgroundColor(getColor(R.color.lightgray01));
-                binding.btnMyPlans.setBackgroundColor(getColor(R.color.colorPink));
+                binding.btnAllPlans.setBackgroundColor(getResources().getColor(R.color.lightgray01));
+                binding.btnMyPlans.setBackgroundColor(getResources().getColor(R.color.colorPink));
                 isAllPlans=false;
                 selectDate(selectDated);
                 break;

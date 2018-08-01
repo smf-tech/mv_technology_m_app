@@ -135,13 +135,11 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                         for (int i = 0; i < temp.size(); i++) {
                             commentList.add(temp.get(i));
                         }
-                        if (temp.size() != 0)
-                            binding.textNoData.setVisibility(View.GONE);
-                        adapter.notifyDataSetChanged();
                         textNoData.setVisibility(View.GONE);
                     } else {
                         textNoData.setVisibility(View.VISIBLE);
                     }
+                    adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {

@@ -153,9 +153,12 @@ public class AttendanceApprovalActivity extends AppCompatActivity implements Vie
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
 
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getAttendanceForUser?userId=" + User.getCurrentUser(mContext).getMvUser().getId();
+                + "/services/apexrest/getAttendanceForApproval?userRole=a1I0k000000IOjc"; //+ User.getCurrentUser(mContext).getMvUser().get;
 
        // http://cs57.salesforce.com/services/apexrest/getAttendanceApprovalForUser?userId=a1J0k000000cMTG
+
+
+     //   http://cs57.salesforce.com/services/apexrest/getAttendanceForApproval?userRole=a1I0k000000IOjc
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override

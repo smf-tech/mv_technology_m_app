@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.mv.Activity.AdavanceListActivity;
 import com.mv.Activity.ExpenseListActivity;
 import com.mv.Activity.VoucherListActivity;
+import com.mv.Activity.VoucherNewActivity;
 import com.mv.Model.Adavance;
 import com.mv.Model.Expense;
 import com.mv.Model.Voucher;
@@ -75,6 +76,21 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
         holder.tvNoOfPeopleName.setText(voucher.getPlace());
         holder.tvTotalExpenseName.setText("₹ " + approve_expense);
         holder.tvTotalAdvance.setText("₹ " + approve_adavance);
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (Constants.AccountTeamCode.equals("TeamManagement")) {
+                    mActivity.editVoucher(voucher);
+                }
+            }
+        });
+        holder.imgEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mActivity.editVoucher(voucher);
+            }
+        });
     }
 
 
@@ -126,12 +142,7 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
                 imgDelete.setVisibility(View.GONE);
             }
 
-            imgEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mActivity.editVoucher(getAdapterPosition());
-                }
-            });
+
             imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -156,14 +167,7 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
                     mActivity.startActivity(intent);
                 }
             });
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (Constants.AccountTeamCode.equals("TeamManagement")) {
-                        mActivity.editVoucher(getAdapterPosition());
-                    }
-                }
-            });
+
 
         }
     }

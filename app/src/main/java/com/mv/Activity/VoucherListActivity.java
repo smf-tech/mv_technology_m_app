@@ -20,9 +20,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mv.Adapter.EventAttendanceListAdapter;
 import com.mv.Adapter.VoucherAdapter;
-import com.mv.Model.EventUser;
 import com.mv.Model.User;
 import com.mv.Model.Voucher;
 import com.mv.R;
@@ -36,15 +34,12 @@ import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityVoucherListBinding;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -77,18 +72,6 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         setActionbar(getString(R.string.voucher_list));
         preferenceHelper = new PreferenceHelper(this);
-        binding.rvVoucher.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                if (dy < -5 && binding.fabAddProcess.getVisibility() != View.VISIBLE) {
-                    binding.fabAddProcess.show();
-                } else if (dy > 5 && binding.fabAddProcess.getVisibility() == View.VISIBLE) {
-                    binding.fabAddProcess.hide();
-                }
-            }
-        });
 
         if (Constants.AccountTeamCode.equals("TeamManagement")) {
             binding.fabAddProcess.setVisibility(View.GONE);
@@ -98,6 +81,19 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
             binding.calendarSortButton.setOnClickListener(this);
             binding.txtDateFrom.setOnClickListener(this);
             binding.txtDateTo.setOnClickListener(this);
+        }else{
+            binding.rvVoucher.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                @Override
+                public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                    super.onScrolled(recyclerView, dx, dy);
+
+                    if (dy < -5 && binding.fabAddProcess.getVisibility() != View.VISIBLE) {
+                        binding.fabAddProcess.show();
+                    } else if (dy > 5 && binding.fabAddProcess.getVisibility() == View.VISIBLE) {
+                        binding.fabAddProcess.hide();
+                    }
+                }
+            });
         }
 
         if (Utills.isConnected(this)) {
@@ -277,6 +273,7 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
         //firstly convert string to date and check if dates are valid
         Date datefrom = ConvertStringToDate(fromDate);
         Date dateto = ConvertStringToDate(toDate);
+        voucherDateFliter.clear();
         if (datefrom.before(dateto)||datefrom.equals(dateto)) {
             for (Voucher v : mList) {
                 Date voucherdate = ConvertStringToDate(v.getDate());
@@ -385,11 +382,11 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
         setRecyclerView();
     }
 
-    public void editVoucher(int position) {
+    public void editVoucher(Voucher voucher) {
         Intent intent;
         intent = new Intent(this, VoucherNewActivity.class);
         intent.putExtra(Constants.ACTION, Constants.ACTION_EDIT);
-        intent.putExtra(Constants.VOUCHER, mList.get(position));
+        intent.putExtra(Constants.VOUCHER, voucher);
         startActivity(intent);
     }
 

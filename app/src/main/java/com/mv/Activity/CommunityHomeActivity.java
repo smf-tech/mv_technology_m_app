@@ -306,15 +306,16 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         lnr_filter = (LinearLayout) findViewById(R.id.lnr_filter);
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        fab_add_list.setVisibility(View.GONE);
         //check if user can post or not
       //  canpost = json.
       //  canpost = getIntent().getExtras().getBoolean("CanPost");
-        canpost = getIntent().getBooleanExtra("CanPost",true);
+        canpost = getIntent().getBooleanExtra("CanPost",false);
         if(canpost){
             fab_add_list.setVisibility(View.VISIBLE);
-        }else{
+        }/*else{
             fab_add_list.setVisibility(View.GONE);
-        }
+        }*/
         recyclerView.setLayoutManager(linearLayoutManager);
         /*Change the visiblity of filter button on scroll*/
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {

@@ -76,6 +76,7 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
         setActionbar(getString(R.string.adavance_list));
         voucher = (Voucher) getIntent().getSerializableExtra(Constants.VOUCHER);
         preferenceHelper = new PreferenceHelper(this);
+
         binding.rvAdavance.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -87,6 +88,7 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
                 }
             }
         });
+
         binding.evAdavance.setOnScrollListener(new AbsListView.OnScrollListener() {
             private int mLastFirstVisibleItem;
 
@@ -109,6 +111,7 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
 
             }
         });
+
         if (Utills.isConnected(this)) {
             if (Constants.AccountTeamCode.equals("TeamManagement")) {
                 getUserAdavanceDataForTeam();

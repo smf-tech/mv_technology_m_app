@@ -66,7 +66,6 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
     TextView textNoData;
     Activity context;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -172,6 +171,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
         else
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(context).getMvUser().getId();
+
         /*if (isTimePresent)
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/\n" +
@@ -181,6 +181,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/\n" +
                     "MVGetCommunitiesNew?userId=" + User.getCurrentUser(context).getMvUser().getId();*/
+
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -366,8 +367,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
             list.remove(position);
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
             String json = gson.toJson(list);
-            Intent intent;
-            intent = new Intent(context, CommunityHomeActivity.class);
+            Intent intent = new Intent(context, CommunityHomeActivity.class);
             intent.putExtra(Constants.TITLE, communityList.get(position).getName());
             //sending new intent to check user can post or not
             intent.putExtra("CanPost", communityList.get(position).getCanPost());

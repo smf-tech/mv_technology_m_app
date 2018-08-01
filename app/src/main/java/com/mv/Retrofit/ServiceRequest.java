@@ -81,8 +81,6 @@ public interface ServiceRequest {
     @POST("save_new_location")
     Call<ResponseBody> submitLocation(@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster, @Field("village") String mVillage, @Field("school_name") String mSchool);
 
-
-
     @FormUrlEncoded
     @POST("")
     Call<ResponseBody> getLoacationData(@Url String url, @Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster, @Field("village") String mVillage);

@@ -47,7 +47,6 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-
                         android:hint="@string/place"
                         android:inputType="textPersonName"
                         android:singleLine="true"

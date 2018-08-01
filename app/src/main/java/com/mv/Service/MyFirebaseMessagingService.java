@@ -94,10 +94,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         }
-
-
 
         //Calling method to generate notification
 
