@@ -133,7 +133,7 @@
                 android:layout_below="@+id/tvNoOfPeopleTitle"
                 android:layout_marginTop="5dp"
                 android:gravity="left|center_vertical"
-                android:text="Total Expenses :-"
+                android:text="Approved Expense :-"
                 android:textColor="@color/medium_grey"
                 android:textSize="@dimen/medium_text" />
 
@@ -160,7 +160,7 @@
                 android:layout_below="@+id/tvTotalExpenseTitle"
                 android:layout_marginTop="5dp"
                 android:gravity="left|center_vertical"
-                android:text="Total Advance :-"
+                android:text="Approved Advance :-"
                 android:textColor="@color/medium_grey"
                 android:textSize="@dimen/medium_text" />
 

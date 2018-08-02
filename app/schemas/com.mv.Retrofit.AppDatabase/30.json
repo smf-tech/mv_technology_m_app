@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 30,
-    "identityHash": "55255ccaf5f51bb9056fc1bc56b11c51",
+    "identityHash": "d0f7ac91d8bacd04fd92aa7f93c1a83c",
     "entities": [
       {
         "tableName": "table_community",
@@ -659,7 +659,7 @@
       },
       {
         "tableName": "table_voucher",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `Decription` TEXT, `NoOfPeople` TEXT, `User` TEXT, `FromDate` TEXT, `ToDate` TEXT, `Place` TEXT, `UserName` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `Decription` TEXT, `NoOfPeople` TEXT, `User` TEXT, `FromDate` TEXT, `ToDate` TEXT, `Place` TEXT, `UserName` TEXT, `Total_Approved_Expense_Amount` TEXT, `Total_Approved_Advance_Amount` TEXT)",
         "fields": [
           {
             "fieldPath": "UniqueId",
@@ -714,6 +714,16 @@
           {
             "fieldPath": "UserName",
             "columnName": "UserName",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Approved_Expense",
+            "columnName": "Total_Approved_Expense_Amount",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Approved_Advance",
+            "columnName": "Total_Approved_Advance_Amount",
             "affinity": "TEXT"
           }
         ],
@@ -1283,7 +1293,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"55255ccaf5f51bb9056fc1bc56b11c51\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"d0f7ac91d8bacd04fd92aa7f93c1a83c\")"
     ]
   }
 }

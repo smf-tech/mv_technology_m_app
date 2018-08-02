@@ -201,6 +201,7 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
         binding.spinnerParticular.setOnItemSelectedListener(this);
         if (getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
             isAdd = true;
+
         } else {
             isAdd = false;
             mExpense = (Expense) getIntent().getSerializableExtra(Constants.EXPENSE);
@@ -211,22 +212,33 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
             binding.editApproveRemarks.setText(mExpense.getRemark__c());
             mParticularSelect = particularList.indexOf(mExpense.getPartuculars());
             binding.spinnerParticular.setSelection(mParticularSelect);
-            if(!mExpense.getStatus().equalsIgnoreCase("Pending")) {
-                binding.txtDate.setEnabled(false);
-                binding.editTextAmount.setEnabled(false);
-                binding.editTextDescription.setEnabled(false);
 
-                if(mExpense.getApproved_Amount__c()!=null){
-                    binding.approveAmt.setVisibility(View.VISIBLE);
-                    binding.editApproveAmt.setText(mExpense.getApproved_Amount__c());
-                    binding.editApproveAmt.setEnabled(false);
-                }
-                if(mExpense.getRemark__c()!=null){
-                    binding.approveRemarks.setVisibility(View.VISIBLE);
-                    binding.editApproveRemarks.setText(mExpense.getRemark__c());
-                    binding.editApproveRemarks.setEnabled(false);
-                }
-                binding.btnSubmit.setVisibility(View.GONE);
+            binding.txtDate.setEnabled(false);
+            binding.editTextAmount.setEnabled(false);
+            binding.editTextDescription.setEnabled(false);
+            binding.spinnerParticular.setEnabled(false);
+            binding.btnSubmit.setVisibility(View.GONE);
+            binding.btnApprove.setOnClickListener(this);
+            binding.btnReject.setOnClickListener(this);
+
+            if(mExpense.getApproved_Amount__c()!=null){
+                binding.approveAmt.setVisibility(View.VISIBLE);
+                binding.editApproveAmt.setText(mExpense.getApproved_Amount__c());
+            }
+            if(mExpense.getRemark__c()!=null){
+                binding.approveRemarks.setVisibility(View.VISIBLE);
+                binding.editApproveRemarks.setText(mExpense.getRemark__c());
+            }
+            if (mExpense.getStatus().equalsIgnoreCase("Pending")) {
+                binding.editApproveAmt.setText(mExpense.getAmount());
+                binding.approveRemarks.setVisibility(View.VISIBLE);
+                binding.linearly.setVisibility(View.VISIBLE);
+                binding.editApproveRemarks.setEnabled(true);
+                binding.editApproveAmt.setEnabled(true);
+            } else {
+                binding.linearly.setVisibility(View.GONE);
+                binding.editApproveAmt.setEnabled(false);
+                binding.editApproveRemarks.setEnabled(false);
             }
 
             if (mExpense.getAttachmentPresent().equalsIgnoreCase("true")) {
@@ -236,40 +248,36 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                         .skipMemoryCache(true)
                         .into(binding.addImage);
-            }
-        }
-        // to disable and hide views for team mgmt section
-        if (Constants.AccountTeamCode.equals("TeamManagement")) {
-            if(mExpense.getStatus().equalsIgnoreCase("Pending"))
-                binding.linearly.setVisibility(View.VISIBLE);
-            else
-                binding.linearly.setVisibility(View.GONE);
 
-            if(!mExpense.getStatus().equalsIgnoreCase("Rejected")){
-                binding.approveAmt.setVisibility(View.VISIBLE);
-                binding.approveRemarks.setVisibility(View.VISIBLE);
-                binding.editApproveAmt.setText(mExpense.getApproved_Amount__c());
-                binding.editApproveRemarks.setText(mExpense.getRemark__c());
-            }
-
-            binding.btnSubmit.setVisibility(View.GONE);
-            binding.btnApprove.setOnClickListener(this);
-            binding.btnReject.setOnClickListener(this);
-
-            binding.txtDate.setEnabled(false);
-            binding.spinnerParticular.setEnabled(false);
-            binding.editTextAmount.setEnabled(false);
-            binding.editTextDescription.setEnabled(false);
-
-            //hide addimage icon if no attachment available
-            if(mExpense.getAttachmentPresent().equalsIgnoreCase("false")){
+                binding.tvAddAttchment.setVisibility(View.GONE);
+            } else { //hide addimage icon if no attachment available
                 binding.addImage.setVisibility(View.GONE);
                 binding.tvAddAttchment.setText(R.string.no_attachment_text);
-            }else{
-                binding.tvAddAttchment.setVisibility(View.GONE);
+            }
+            if (!Constants.AccountTeamCode.equals("TeamManagement")) {
+                binding.approveRemarks.setVisibility(View.GONE);
+                binding.linearly.setVisibility(View.GONE);
+                binding.btnSubmit.setVisibility(View.GONE);
+                if (mExpense.getStatus().equalsIgnoreCase("Pending")) {
+                    binding.approveAmt.setVisibility(View.GONE);
+                    binding.editTextAmount.setEnabled(true);
+                    binding.editTextDescription.setEnabled(true);
+                    binding.btnSubmit.setVisibility(View.VISIBLE);
+                } else {
+                    binding.editTextAmount.setEnabled(false);
+                    binding.editTextDescription.setEnabled(false);
+                    if(mExpense.getApproved_Amount__c()!=null){
+                        binding.approveAmt.setVisibility(View.VISIBLE);
+                        binding.editApproveAmt.setText(mExpense.getApproved_Amount__c());
+                    }
+                    if(mExpense.getRemark__c()!=null){
+                        binding.approveRemarks.setVisibility(View.VISIBLE);
+                        binding.editApproveRemarks.setText(mExpense.getRemark__c());
+                    }
+                }
+
             }
         }
-
 
     }
 
@@ -284,7 +292,10 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                 showDateDialog();
                 break;
             case R.id.btn_reject:
-                changeExpense("Rejected");
+                if(Double.parseDouble(binding.editApproveAmt.getText().toString())>0){
+                    Toast.makeText(this,"Please clear approve amount to reject.",Toast.LENGTH_LONG);
+                }else
+                    changeExpense("Rejected");
                 break;
             case R.id.btn_approve:
                 //check if approve amount is greater than requested amount

@@ -51,18 +51,6 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Voucher voucher = mDataList.get(position);
-        List<Expense> expenses = AppDatabase.getAppDatabase(mContext).userDao().getAllExpense(voucher.getId(), "Approved");
-        double approve_expense = 0;
-        for (Expense temp : expenses) {
-            if (temp.getApproved_Amount__c() != null && temp.getApproved_Amount__c().length() > 0)
-                approve_expense += Double.parseDouble(temp.getApproved_Amount__c());
-        }
-        List<Adavance> adavances = AppDatabase.getAppDatabase(mContext).userDao().getAllAdvance(voucher.getId(), "Approved");
-        double approve_adavance = 0;
-        for (Adavance temp : adavances) {
-            if (temp.getApproved_Amount__c() != null && temp.getApproved_Amount__c().length() > 0)
-                approve_adavance += Double.parseDouble(temp.getApproved_Amount__c());
-        }
         if (Constants.AccountTeamCode.equals("TeamManagement")) {
             holder.tvUser.setVisibility(View.VISIBLE);
             holder.tvUserName.setVisibility(View.VISIBLE);
@@ -74,8 +62,8 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
         holder.tvProjectName.setText(voucher.getProject());
         holder.tvDateName.setText(voucher.getDate());
         holder.tvNoOfPeopleName.setText(voucher.getPlace());
-        holder.tvTotalExpenseName.setText("₹ " + approve_expense);
-        holder.tvTotalAdvance.setText("₹ " + approve_adavance);
+        holder.tvTotalExpenseName.setText("₹ " + voucher.getApproved_Expense());
+        holder.tvTotalAdvance.setText("₹ " + voucher.getApproved_Advance());
 
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override

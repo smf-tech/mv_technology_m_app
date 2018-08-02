@@ -85,6 +85,31 @@ public class Voucher implements Serializable {
     @Expose
     private String UserName;
 
+    @ColumnInfo(name = "Total_Approved_Expense_Amount")
+    @SerializedName("Total_Approved_Expense_Amount__c")
+    @Expose
+    private String Approved_Expense;
+
+    @ColumnInfo(name = "Total_Approved_Advance_Amount")
+    @SerializedName("Total_Approved_Advance_Amount__c")
+    @Expose
+    private String Approved_Advance;
+
+    public String getApproved_Expense() {
+        return Approved_Expense;
+    }
+
+    public void setApproved_Expense(String approved_Expense) {
+        Approved_Expense = approved_Expense;
+    }
+
+    public String getApproved_Advance() {
+        return Approved_Advance;
+    }
+
+    public void setApproved_Advance(String approved_Advance) {
+        Approved_Advance = approved_Advance;
+    }
 
     public String getProject() {
         return Project;

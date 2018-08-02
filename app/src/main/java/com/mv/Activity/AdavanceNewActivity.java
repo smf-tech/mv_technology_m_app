@@ -12,6 +12,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -97,52 +98,62 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
             binding.txtDate.setText(mAdavance.getDate());
             binding.editTextCount.setText(mAdavance.getAmount());
             binding.editTextDescription.setText(mAdavance.getDecription());
-            binding.editApproveAmt.setText(mAdavance.getApproved_Amount__c());
             binding.editApproveRemarks.setText(mAdavance.getRemark__c());
             mProjectSelect = projectList.indexOf(mAdavance.getProject());
             binding.spinnerProject.setSelection(mProjectSelect);
-            if(!mAdavance.getStatus().equalsIgnoreCase("Pending")) {
-                binding.txtDate.setEnabled(false);
-                binding.editTextCount.setEnabled(false);
-                binding.editTextDescription.setEnabled(false);
-
-                if(mAdavance.getApproved_Amount__c()!=null){
-                    binding.approveAmt.setVisibility(View.VISIBLE);
-                    binding.editApproveAmt.setText(mAdavance.getApproved_Amount__c());
-                    binding.editApproveAmt.setEnabled(false);
-                }
-                if(mAdavance.getRemark__c()!=null){
-                    binding.approveRemarks.setVisibility(View.VISIBLE);
-                    binding.editApproveRemarks.setText(mAdavance.getRemark__c());
-                    binding.editApproveRemarks.setEnabled(false);
-                }
-                binding.btnSubmit.setVisibility(View.GONE);
-            }
-        }
-
-        // to deseble and hide views for team mgmt section
-        if (Constants.AccountTeamCode.equals("TeamManagement")) {
-            if(mAdavance.getStatus().equalsIgnoreCase("Pending"))
-                binding.linearly.setVisibility(View.VISIBLE);
-            else
-                binding.linearly.setVisibility(View.GONE);
-
-            if(!mAdavance.getStatus().equalsIgnoreCase("Rejected")){
-                binding.approveAmt.setVisibility(View.VISIBLE);
-                binding.approveRemarks.setVisibility(View.VISIBLE);
-                binding.editApproveAmt.setText(mAdavance.getApproved_Amount__c());
-                binding.editApproveRemarks.setText(mAdavance.getRemark__c());
-            }
-
-            binding.btnSubmit.setVisibility(View.GONE);
-            binding.btnApprove.setOnClickListener(this);
-            binding.btnReject.setOnClickListener(this);
+            binding.editApproveAmt.setText(mAdavance.getApproved_Amount__c());
 
             binding.txtDate.setEnabled(false);
             binding.editTextCount.setEnabled(false);
             binding.editTextDescription.setEnabled(false);
-        }
+            binding.btnSubmit.setVisibility(View.GONE);
+            binding.btnApprove.setOnClickListener(this);
+            binding.btnReject.setOnClickListener(this);
 
+            if (mAdavance.getApproved_Amount__c() != null) {
+                binding.approveAmt.setVisibility(View.VISIBLE);
+                binding.editApproveAmt.setText(mAdavance.getApproved_Amount__c());
+
+            }
+            if (mAdavance.getRemark__c() != null) {
+                binding.approveRemarks.setVisibility(View.VISIBLE);
+                binding.editApproveRemarks.setText(mAdavance.getRemark__c());
+            }
+
+            if (mAdavance.getStatus().equalsIgnoreCase("Pending")) {
+                binding.editApproveAmt.setText(mAdavance.getAmount());
+                binding.approveRemarks.setVisibility(View.VISIBLE);
+                binding.linearly.setVisibility(View.VISIBLE);
+                binding.editApproveRemarks.setEnabled(true);
+                binding.editApproveAmt.setEnabled(true);
+            } else {
+                binding.linearly.setVisibility(View.GONE);
+                binding.editApproveAmt.setEnabled(false);
+                binding.editApproveRemarks.setEnabled(false);
+            }
+            if (!Constants.AccountTeamCode.equals("TeamManagement")) {
+                binding.approveRemarks.setVisibility(View.GONE);
+                binding.linearly.setVisibility(View.GONE);
+                binding.btnSubmit.setVisibility(View.GONE);
+                if (mAdavance.getStatus().equalsIgnoreCase("Pending")) {
+                    binding.approveAmt.setVisibility(View.GONE);
+                    binding.editTextCount.setEnabled(true);
+                    binding.editTextDescription.setEnabled(true);
+                    binding.btnSubmit.setVisibility(View.VISIBLE);
+                } else {
+                    binding.editTextCount.setEnabled(false);
+                    binding.editTextDescription.setEnabled(false);
+                    if(mAdavance.getApproved_Amount__c()!=null){
+                        binding.approveAmt.setVisibility(View.VISIBLE);
+                        binding.editApproveAmt.setText(mAdavance.getApproved_Amount__c());
+                    }
+                    if(mAdavance.getRemark__c()!=null){
+                        binding.approveRemarks.setVisibility(View.VISIBLE);
+                        binding.editApproveRemarks.setText(mAdavance.getRemark__c());
+                    }
+                }
+            }
+        }
     }
 
     public String getCurrentDate() {
@@ -213,7 +224,10 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
                 //showDateDialog();
                 break;
             case R.id.btn_reject:
-                changeAdvance("Rejected");
+                if(Double.parseDouble(binding.editApproveAmt.getText().toString())>0){
+                    Toast.makeText(this,"Please clear approve amount to reject.",Toast.LENGTH_LONG);
+                }else
+                    changeAdvance("Rejected");
                 break;
             case R.id.btn_approve:
                 //check if approve amount is greater than requested amount
