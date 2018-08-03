@@ -224,8 +224,8 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
                 //showDateDialog();
                 break;
             case R.id.btn_reject:
-                if(Double.parseDouble(binding.editApproveAmt.getText().toString())>0){
-                    Toast.makeText(this,"Please clear approve amount to reject.",Toast.LENGTH_LONG);
+                if(!binding.editApproveAmt.getText().toString().equals("") && Double.parseDouble(binding.editApproveAmt.getText().toString())>0){
+                    Toast.makeText(this,"Please clear approve amount to reject.",Toast.LENGTH_LONG).show();
                 }else
                     changeAdvance("Rejected");
                 break;

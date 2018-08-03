@@ -175,11 +175,11 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                     if (response.body() != null) {
                         String data = response.body().string();
                         if (data != null && data.length() > 0) {
-                            JSONArray jsonArray = new JSONArray(response.body().string());
                             mListDistrict.clear();
                             mListDistrict.add("Select");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                mListDistrict.add(jsonArray.getString(i));
+                            JSONArray jsonArr = new JSONArray(data);
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                mListDistrict.add(jsonArr.getString(i));
                             }
                             district_adapter.notifyDataSetChanged();
                             binding.spinnerDistrict.setSelection(mListDistrict.indexOf(User.getCurrentUser(IssueTemplateActivity.this).getMvUser().getDistrict()));
@@ -216,11 +216,17 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                         if (data != null && data.length() > 0) {
                             mListTaluka.clear();
                             mListTaluka.add("Select");
-                            JSONArray jsonArr = new JSONArray(response.body().string());
+                            JSONArray jsonArr = new JSONArray(data);
                             for (int i = 0; i < jsonArr.length(); i++) {
                                 mListTaluka.add(jsonArr.getString(i));
                             }
                             taluka_adapter.notifyDataSetChanged();
+                            for (int i = 0; i < mListTaluka.size(); i++) {
+                                if (mListTaluka.get(i).equalsIgnoreCase(User.getCurrentUser(IssueTemplateActivity.this).getMvUser().getTaluka())) {
+                                    binding.spinnerTaluka.setSelection(i);
+                                    break;
+                                }
+                            }
                         }
                     }
                 } catch (JSONException | IOException e) {

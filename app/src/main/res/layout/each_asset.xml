@@ -34,9 +34,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="left|center_vertical"
-                android:text="Asset Name :-"
+                android:text="User Name :-"
                 android:textColor="@color/dark_grey"
-                android:textSize="@dimen/large_text" />
+                android:textSize="@dimen/medium_text" />
 
             <TextView
                 android:id="@+id/txt_asset_name"
@@ -50,7 +50,7 @@
                 android:singleLine="true"
                 android:text="Food/Snacks"
                 android:textColor="@color/dark_grey"
-                android:textSize="@dimen/large_text" />
+                android:textSize="@dimen/medium_text" />
 
             <TextView
                 android:id="@+id/tvProjectDateTitle"
@@ -59,7 +59,7 @@
                 android:layout_below="@+id/tvProjectNameTitle"
                 android:layout_marginTop="5dp"
                 android:gravity="left|center_vertical"
-                android:text="Stock Name :-"
+                android:text="Stock Code :-"
                 android:textColor="@color/medium_grey"
                 android:textSize="@dimen/medium_text" />
 

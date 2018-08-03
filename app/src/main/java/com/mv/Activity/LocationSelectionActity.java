@@ -621,11 +621,11 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                     if (response.body() != null) {
                         String data = response.body().string();
                         if (data != null && data.length() > 0) {
-                            JSONArray jsonArray = new JSONArray(response.body().string());
                             mListDistrict.clear();
                             mListDistrict.add("Select");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                mListDistrict.add(jsonArray.getString(i));
+                            JSONArray jsonArr = new JSONArray(data);
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                mListDistrict.add(jsonArr.getString(i));
                             }
                             setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
                         }
@@ -661,7 +661,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                         if (data != null && data.length() > 0) {
                             mListTaluka.clear();
                             mListTaluka.add("Select");
-                            JSONArray jsonArr = new JSONArray(response.body().string());
+                            JSONArray jsonArr = new JSONArray(data);
                             for (int i = 0; i < jsonArr.length(); i++) {
                                 mListTaluka.add(jsonArr.getString(i));
                             }

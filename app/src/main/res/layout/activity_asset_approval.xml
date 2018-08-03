@@ -196,15 +196,14 @@
 
                     <com.mv.Widgets.MyEditTextView
                         android:id="@+id/asset_reject_remark"
-                        android:layout_width="fill_parent"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:hint="Remarks"
                         android:enabled="false"
-                        android:inputType="textCapWords"
-                        android:singleLine="true"
                         android:textColor="@color/black"
-                        android:textSize="@dimen/medium_text" />
+                        android:textSize="@dimen/medium_text"/>
+
                 </android.support.design.widget.TextInputLayout>
 
 

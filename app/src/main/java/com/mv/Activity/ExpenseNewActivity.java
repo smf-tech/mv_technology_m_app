@@ -292,8 +292,8 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                 showDateDialog();
                 break;
             case R.id.btn_reject:
-                if(Double.parseDouble(binding.editApproveAmt.getText().toString())>0){
-                    Toast.makeText(this,"Please clear approve amount to reject.",Toast.LENGTH_LONG);
+                if(!binding.editApproveAmt.getText().toString().equals("") && Double.parseDouble(binding.editApproveAmt.getText().toString())>0){
+                    Toast.makeText(this,"Please clear approve amount to reject.",Toast.LENGTH_LONG).show();
                 }else
                     changeExpense("Rejected");
                 break;

@@ -118,8 +118,11 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_reporting_template);
         binding.setActivity(this);
-        initViews();
 
+        if (!Utills.isConnected(this)) {
+            showPopUp();
+        }
+        initViews();
 
     }
 
@@ -174,14 +177,22 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                     if (response.body() != null) {
                         String data = response.body().string();
                         if (data != null && data.length() > 0) {
-                            JSONArray jsonArray = new JSONArray(response.body().string());
+
                             mListDistrict.clear();
                             mListDistrict.add("Select");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                mListDistrict.add(jsonArray.getString(i));
+                            JSONArray jsonArr = new JSONArray(data);
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                mListDistrict.add(jsonArr.getString(i));
                             }
                             district_adapter.notifyDataSetChanged();
-                            binding.spinnerDistrict.setSelection(mListDistrict.indexOf(User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getDistrict()));
+                            for (int i = 0; i < mListDistrict.size(); i++) {
+                                if (mListDistrict.get(i).equalsIgnoreCase(User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getDistrict())) {
+                                    binding.spinnerDistrict.setSelection(i);
+                                    break;
+                                }
+                            }
+
+//                            binding.spinnerDistrict.setSelection(mListDistrict.indexOf(User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getDistrict()));
                         }
                     }
                 } catch (JSONException e) {
@@ -203,8 +214,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
     private void getTaluka() {
 
         Utills.showProgressDialog(this, "Loading Talukas", getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClient().create(ServiceRequest.class);
+        ServiceRequest apiService = ApiClient.getClient().create(ServiceRequest.class);
         apiService.getTaluka(User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getState(), mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -215,11 +225,17 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                         if (data != null && data.length() > 0) {
                             mListTaluka.clear();
                             mListTaluka.add("Select");
-                            JSONArray jsonArr = new JSONArray(response.body().string());
+                            JSONArray jsonArr = new JSONArray(data);
                             for (int i = 0; i < jsonArr.length(); i++) {
                                 mListTaluka.add(jsonArr.getString(i));
                             }
                             taluka_adapter.notifyDataSetChanged();
+                            for (int i = 0; i < mListTaluka.size(); i++) {
+                                if (mListTaluka.get(i).equalsIgnoreCase(User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getTaluka())) {
+                                    binding.spinnerTaluka.setSelection(i);
+                                    break;
+                                }
+                            }
                         }
                     }
                 } catch (JSONException | IOException e) {
@@ -521,129 +537,124 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         }
     }
 
-
-/*
-    private void setdDataToSalesForcce() {
-        if (Utills.isConnected(this)) {
-            try {
-                Utills.showProgressDialog(this);
-                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                String json = gson.toJson(content);
-                JSONObject jsonObject = new JSONObject();
-                JSONArray jsonArray = new JSONArray();
-                JSONObject jsonObject1 = new JSONObject(json);
-
-                JSONArray jsonArrayAttchment = new JSONArray();
-                if (FinalUri != null) {
-
-                    try {
-                        jsonObject1.put("isAttachmentPresent", "true");
-                        jsonObject1.put("isAttachmentPresent", "true");
-                        InputStream iStream = null;
-                        iStream = getContentResolver().openInputStream(FinalUri);
-                        img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
-                      */
-/*  JSONObject jsonObjectAttachment = new JSONObject();
-                        jsonObjectAttachment.put("Body", img_str);
-                        jsonObjectAttachment.put("Name", content.getTitle());
-                        jsonObjectAttachment.put("ContentType", "image/png");
-                        jsonArrayAttchment.put(jsonObjectAttachment);*//*
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                */
-/*JSONObject jsonObjectAttachment = new JSONObject();
-                jsonArrayAttchment.put(jsonObjectAttachment);*//*
-
-                jsonObject1.put("attachments", jsonArrayAttchment);
-                jsonArray.put(jsonObject1);
-                jsonObject.put("listVisitsData", jsonArray);
-
-                ServiceRequest apiService =
-                        ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-                JsonParser jsonParser = new JsonParser();
-                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
-                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/insertContent", gsonObject).enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        Utills.hideProgressDialog();
-                        try {
-
-                            String str = response.body().string();
-                            JSONObject object = new JSONObject(str);
-                            JSONArray array = object.getJSONArray("Records");
-                            if (array.length() > 0) {
-                                JSONObject object1 = array.getJSONObject(0);
-                                if (object1.has("Id") && FinalUri != null) {
-                                    JSONObject object2 = new JSONObject();
-                                    object2.put("id", object1.getString("Id"));
-                                    object2.put("img", img_str);
-                                    JSONArray array1 = new JSONArray();
-                                    array1.put(object2);
-                                    sendImageToServer(array1);
-                                   */
-/* Utills.showToast("Report submitted successfully...", getApplicationContext());
-                                    finish();
-                                    overridePendingTransition(R.anim.left_in, R.anim.right_out);*//*
-
-                                } else {
-                                    Utills.showToast("Report submitted successfully...", getApplicationContext());
-                                    finish();
-                                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                                }
-                            } else {
-                                Utills.showToast("Report submitted successfully...", getApplicationContext());
-                                finish();
-                                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                            }
-
-                        } catch (Exception e) {
-                            Utills.hideProgressDialog();
-                            Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Utills.hideProgressDialog();
-                        Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
-                    }
-                });
-            } catch (JSONException e) {
-                e.printStackTrace();
-                Utills.hideProgressDialog();
-                Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
-            }
-        } else {
-            Calendar c = Calendar.getInstance();
-            SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String formattedDate1 = df1.format(c.getTime());
-            content.setTemplateName(preferenceHelper.getString(PreferenceHelper.TEMPLATENAME));
-            content.setSynchStatus(Constants.STATUS_LOCAL);
-            content.setTime(formattedDate1);
-            content.setLikeCount(0);
-            content.setUserName(User.getCurrentUser(this).getMvUser().getName());
-            content.setUserAttachmentId(User.getCurrentUser(this).getMvUser().getImageId());
-            content.setCommentCount(0);
-            content.setIsLike(false);
-            if (FinalUri != null) {
-                String tempDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image" + "/";
-                String currentTime = "" + System.currentTimeMillis();
-                String current = currentTime + ".png";
-                Utills.makedirs(tempDir);
-                content.setAttachmentId(currentTime);
-                File mypath = new File(tempDir, current);
-                Utills.saveUriToPath(this, FinalUri, mypath);
-            }
-            AppDatabase.getAppDatabase(ReportingTemplateActivity.this).userDao().insertChats(content);
-            Utills.showToast("Report submitted successfully...", getApplicationContext());
-            finish();
-            overridePendingTransition(R.anim.left_in, R.anim.right_out);
-        }
-    }
-*/
+//
+//    private void setdDataToSalesForcce() {
+//        if (Utills.isConnected(this)) {
+//            try {
+//                Utills.showProgressDialog(this);
+//                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+//                String json = gson.toJson(content);
+//                JSONObject jsonObject = new JSONObject();
+//                JSONArray jsonArray = new JSONArray();
+//                JSONObject jsonObject1 = new JSONObject(json);
+//
+//                JSONArray jsonArrayAttchment = new JSONArray();
+//                if (FinalUri != null) {
+//
+//                    try {
+//                        jsonObject1.put("isAttachmentPresent", "true");
+//                        jsonObject1.put("isAttachmentPresent", "true");
+//                        InputStream iStream = null;
+//                        iStream = getContentResolver().openInputStream(FinalUri);
+//                        img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
+//  JSONObject jsonObjectAttachment = new JSONObject();
+//                        jsonObjectAttachment.put("Body", img_str);
+//                        jsonObjectAttachment.put("Name", content.getTitle());
+//                        jsonObjectAttachment.put("ContentType", "image/png");
+//                        jsonArrayAttchment.put(jsonObjectAttachment);
+//
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//JSONObject jsonObjectAttachment = new JSONObject();
+//                jsonArrayAttchment.put(jsonObjectAttachment);
+//
+//                jsonObject1.put("attachments", jsonArrayAttchment);
+//                jsonArray.put(jsonObject1);
+//                jsonObject.put("listVisitsData", jsonArray);
+//
+//                ServiceRequest apiService =
+//                        ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+//                JsonParser jsonParser = new JsonParser();
+//                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
+//                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/insertContent", gsonObject).enqueue(new Callback<ResponseBody>() {
+//                    @Override
+//                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                        Utills.hideProgressDialog();
+//                        try {
+//
+//                            String str = response.body().string();
+//                            JSONObject object = new JSONObject(str);
+//                            JSONArray array = object.getJSONArray("Records");
+//                            if (array.length() > 0) {
+//                                JSONObject object1 = array.getJSONObject(0);
+//                                if (object1.has("Id") && FinalUri != null) {
+//                                    JSONObject object2 = new JSONObject();
+//                                    object2.put("id", object1.getString("Id"));
+//                                    object2.put("img", img_str);
+//                                    JSONArray array1 = new JSONArray();
+//                                    array1.put(object2);
+//                                    sendImageToServer(array1);
+// Utills.showToast("Report submitted successfully...", getApplicationContext());
+//                                    finish();
+//                                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
+//
+//                                } else {
+//                                    Utills.showToast("Report submitted successfully...", getApplicationContext());
+//                                    finish();
+//                                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
+//                                }
+//                            } else {
+//                                Utills.showToast("Report submitted successfully...", getApplicationContext());
+//                                finish();
+//                                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+//                            }
+//
+//                        } catch (Exception e) {
+//                            Utills.hideProgressDialog();
+//                            Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                        Utills.hideProgressDialog();
+//                        Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+//                    }
+//                });
+//            } catch (JSONException e) {
+//                e.printStackTrace();
+//                Utills.hideProgressDialog();
+//                Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+//            }
+//        } else {
+//            Calendar c = Calendar.getInstance();
+//            SimpleDateFormat df1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            String formattedDate1 = df1.format(c.getTime());
+//            content.setTemplateName(preferenceHelper.getString(PreferenceHelper.TEMPLATENAME));
+//            content.setSynchStatus(Constants.STATUS_LOCAL);
+//            content.setTime(formattedDate1);
+//            content.setLikeCount(0);
+//            content.setUserName(User.getCurrentUser(this).getMvUser().getName());
+//            content.setUserAttachmentId(User.getCurrentUser(this).getMvUser().getImageId());
+//            content.setCommentCount(0);
+//            content.setIsLike(false);
+//            if (FinalUri != null) {
+//                String tempDir = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image" + "/";
+//                String currentTime = "" + System.currentTimeMillis();
+//                String current = currentTime + ".png";
+//                Utills.makedirs(tempDir);
+//                content.setAttachmentId(currentTime);
+//                File mypath = new File(tempDir, current);
+//                Utills.saveUriToPath(this, FinalUri, mypath);
+//            }
+//            AppDatabase.getAppDatabase(ReportingTemplateActivity.this).userDao().insertChats(content);
+//            Utills.showToast("Report submitted successfully...", getApplicationContext());
+//            finish();
+//            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+//        }
+//    }
 
     private void sendImageToServer(JSONArray jsonArray) {
         Utills.showProgressDialog(this);
@@ -938,17 +949,17 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                     if (Utills.isConnected(this)) {
                         getTaluka();
                     } else {
-
+                        mListTaluka.clear();
+                        List<String> list = AppDatabase.getAppDatabase(this).userDao().getTaluka(User.getCurrentUser(this).getMvUser().getState(), User.getCurrentUser(this).getMvUser().getDistrict());
+                        mListTaluka.add("Select");
+                        for (int k = 0; k < list.size(); k++) {
+                            mListTaluka.add(list.get(k));
+                        }
+                        taluka_adapter.notifyDataSetChanged();
                     }
 
                 }
-                mListTaluka.clear();
-                List<String> list = AppDatabase.getAppDatabase(this).userDao().getTaluka(User.getCurrentUser(this).getMvUser().getState(), User.getCurrentUser(this).getMvUser().getDistrict());
-                mListTaluka.add("Select");
-                for (int k = 0; k < list.size(); k++) {
-                    mListTaluka.add(list.get(k));
-                }
-                taluka_adapter.notifyDataSetChanged();
+
                 break;
             case R.id.spinner_taluka:
                 mSelectTaluka = i;

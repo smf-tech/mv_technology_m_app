@@ -376,7 +376,7 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
             getUserVoucherDataForTeam();
             binding.fabAddProcess.setVisibility(View.GONE);
         } else {
-            setRecyclerView();
+            getUserVoucherData();
         }
 
         setRecyclerView();

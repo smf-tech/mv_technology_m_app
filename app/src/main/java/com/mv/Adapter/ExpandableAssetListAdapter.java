@@ -142,12 +142,12 @@ public class ExpandableAssetListAdapter extends BaseExpandableListAdapter {
             tvProjectDateTitle.setVisibility(View.GONE);
             txt_asset_id.setVisibility(View.GONE);
         } else {
-            txt_asset_id.setText(asset.getAssetModel());
+            txt_asset_id.setText(asset.getCode());
             txt_asset_id.setVisibility(View.VISIBLE);
             tvProjectDateTitle.setVisibility(View.VISIBLE);
         }
         txt_asset_issue_date.setText(asset.getExpectedIssueDate());
-        txt_asset_name.setText(asset.getAssetName());
+        txt_asset_name.setText(asset.getUsername());
         if (asset.getAllocationStatus().equalsIgnoreCase("Requested")) {
             view1.setBackgroundColor(_context.getResources().getColor(R.color.purple));
             //     Intent intent = new Intent(_context)
