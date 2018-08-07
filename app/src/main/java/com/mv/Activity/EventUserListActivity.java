@@ -140,18 +140,23 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         mListOrganization.add("Select");
 
         mListRoleName = new ArrayList<String>();
+
         mStateList.clear();
         mStateList = AppDatabase.getAppDatabase(context).userDao().getState();
         mStateList.removeAll(Collections.singleton(null));
         if (mStateList.size() == 0) {
-            if (Utills.isConnected(this))
+            if (Utills.isConnected(this)){
                 getState();
+            }
         } else {
             mStateList = AppDatabase.getAppDatabase(context).userDao().getState();
             mStateList.add(0, "Select");
             setSpinnerAdapter(mStateList, state_adapter, binding.spinnerState, selectedState);
             //  mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
         }
+
+        initializationLocation();
+
         if (Utills.isConnected(this))
             getOrganization();
 
@@ -169,6 +174,42 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         binding.editTextEmail.addTextChangedListener(watch);
         binding.cbEventSelectAll.setOnClickListener(this);
     }
+
+    private void initializationLocation(){
+
+        mListDistrict = new ArrayList<>();
+        mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(selectedState);
+        mListDistrict.removeAll(Collections.singleton(null));
+        if (mListDistrict.size() == 0) {
+            if (Utills.isConnected(this))
+                getDistrict();
+            else {
+                mListDistrict = new ArrayList<>();
+                mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(selectedState);
+                mListDistrict.removeAll(Collections.singleton(null));
+            }
+
+        }
+        mListDistrict.add(0, "Select");
+        setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
+
+        mListTaluka.clear();
+        mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, selectedDisrict);
+        mListTaluka.removeAll(Collections.singleton(null));
+        if (mListTaluka.size() == 0) {
+            if (Utills.isConnected(this))
+                getTaluka();
+            else {
+                mListTaluka.clear();
+                mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
+                mListTaluka.removeAll(Collections.singleton(null));
+            }
+
+        }
+        mListTaluka.add(0, "Select");
+        setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
+    }
+
 
     private void getState() {
 
@@ -244,6 +285,47 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utills.hideProgressDialog();
 
+            }
+        });
+    }
+
+    private void getTaluka() {
+
+        Utills.showProgressDialog(this, getString(R.string.loding_taluka), getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClient().create(ServiceRequest.class);
+
+        apiService.getTaluka(mStateList.get(mSelectState), mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            mListTaluka.clear();
+                            mListTaluka.add("Select");
+                            JSONArray jsonArr = new JSONArray(data);
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                mListTaluka.add(jsonArr.getString(i));
+                            }
+                            setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
+                            Intent intent = new Intent(getApplicationContext(), LocationService.class);
+                            // add infos for the service which file to download and where to store
+                            intent.putExtra(Constants.State, mStateList.get(mSelectState));
+                            intent.putExtra(Constants.DISTRICT, mListDistrict.get(mSelectDistrict));
+                            startService(intent);
+                            // taluka_adapter.notifyDataSetChanged();
+                        }
+                    }
+                } catch (JSONException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
             }
         });
     }
@@ -331,48 +413,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         });
     }
 
-    private void getTaluka() {
-
-        Utills.showProgressDialog(this, getString(R.string.loding_taluka), getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClient().create(ServiceRequest.class);
-
-        apiService.getTaluka(mStateList.get(mSelectState), mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
-                try {
-                    if (response.body() != null) {
-                        String data = response.body().string();
-                        if (data != null && data.length() > 0) {
-                            mListTaluka.clear();
-                            mListTaluka.add("Select");
-                            JSONArray jsonArr = new JSONArray(response.body().string());
-                            for (int i = 0; i < jsonArr.length(); i++) {
-                                mListTaluka.add(jsonArr.getString(i));
-                            }
-                            setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
-                            Intent intent = new Intent(getApplicationContext(), LocationService.class);
-                            // add infos for the service which file to download and where to store
-                            intent.putExtra(Constants.State, mStateList.get(mSelectState));
-                            intent.putExtra(Constants.DISTRICT, mListDistrict.get(mSelectDistrict));
-                            startService(intent);
-                            // taluka_adapter.notifyDataSetChanged();
-                        }
-                    }
-                } catch (JSONException | IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Utills.hideProgressDialog();
-            }
-        });
-    }
-
-    private void getCluster() {
+   private void getCluster() {
         Utills.showProgressDialog(this, getString(R.string.loding_cluster), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
@@ -631,7 +672,6 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                     binding.llLoacationlayout.setVisibility(View.GONE);
                 } else
                     binding.llLoacationlayout.setVisibility(View.VISIBLE);
-
                 break;
         }
     }
@@ -792,7 +832,8 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                     selectedVillage="";
                     selectedSchool="";*/
                     mListTaluka.clear();
-                    mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
+                    mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, selectedDisrict);
+//                    mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
                     mListTaluka.removeAll(Collections.singleton(null));
                     if (mListTaluka.size() == 0) {
 
@@ -800,7 +841,8 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                             getTaluka();
                         else {
                             mListTaluka.clear();
-                            mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
+                            mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, selectedDisrict);
+//                            mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
                             mListTaluka.add(0, "Select");
                             mListTaluka.removeAll(Collections.singleton(null));
                             setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
@@ -809,7 +851,8 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
 
                     } else {
                         mListTaluka.clear();
-                        mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
+                        mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, selectedDisrict);
+//                        mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
                         mListTaluka.add(0, "Select");
                         mListTaluka.removeAll(Collections.singleton(null));
                         setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
@@ -966,6 +1009,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 break;
         }
     }
+
 
     private void getAllFilterUser() {
         Utills.showProgressDialog(context, "Loading ", getString(R.string.progress_please_wait));

@@ -170,6 +170,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
         }
 
 
+
     }
 
     public static String[] getColumnIdex(String[] value) {
@@ -341,7 +342,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
-
+                String temp = null;
                 try {
                     if (response.isSuccess()) {
                         eventMap.clear();
@@ -353,6 +354,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                         for (int i = 0; i < jsonArray.length(); i++) {
                             dateList = new ArrayList<>();
                             CalenderEvent calenderEvent = new CalenderEvent();
+                            temp=jsonArray.getJSONObject(i).getString("Id");
                             if (jsonArray.getJSONObject(i).has("Id"))
                                 calenderEvent.setId(jsonArray.getJSONObject(i).getString("Id"));
                             if (jsonArray.getJSONObject(i).has("Date__c"))
@@ -450,10 +452,13 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                         }
                     }
                 } catch (JSONException e) {
+                    Log.e("SSSSSSSSSS",temp);
                     e.printStackTrace();
                 } catch (IOException e) {
+                    Log.e("SSSSSSSSSS",temp);
                     e.printStackTrace();
                 } catch (ParseException e) {
+                    Log.e("SSSSSSSSSS",temp);
                     e.printStackTrace();
                 }
             }
