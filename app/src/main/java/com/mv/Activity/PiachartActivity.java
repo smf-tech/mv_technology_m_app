@@ -939,6 +939,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                                     if (object1.has("Id") && Uri.fromFile(file) != null) {
                                         JSONObject object2 = new JSONObject();
                                         object2.put("id", object1.getString("Id"));
+                                        object2.put("type", "png");
                                         object2.put("img", img_str);
 
                                         array1.put(object2);
@@ -980,7 +981,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         JsonArray gsonObject = (JsonArray) jsonParser.parse(jsonArray.toString());
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
-        apiService.sendImageToSalesforce("http://mobileapp.mulyavardhan.org/upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
+       // apiService.sendImageToSalesforce("http://mobileapp.mulyavardhan.org/upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
+           apiService.sendImageToPHP(Constants.New_upload_phpUrl, jsonArray.toString()).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();

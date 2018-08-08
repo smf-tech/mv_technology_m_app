@@ -41,7 +41,6 @@ import java.util.List;
 
 public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.ViewHolder>{
 
-
     private final Context mContext;
     private PreferenceHelper preferenceHelper;
     private AttendanceApproval2Activity mActivity;
@@ -76,7 +75,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mDataList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -97,8 +96,6 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
                     mContext.startActivity(intent);
                 }
             });
-
-
         }
 
     }

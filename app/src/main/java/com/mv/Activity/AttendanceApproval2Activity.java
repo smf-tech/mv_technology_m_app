@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -43,21 +44,21 @@ import retrofit2.Response;
 
 public class AttendanceApproval2Activity extends AppCompatActivity implements View.OnClickListener {
 
-    private AttendanceApproval2Activity binding;
     private AttendanceAdapter adapter;
     public List<AttendanceApproval> attendanceList = new ArrayList<>();
+    public List<AttendanceApproval> attendanceSortedList = new ArrayList<>();
     TextView textNoData;
     private PreferenceHelper preferenceHelper;
     String proceesId;
     Activity mContext;
     RecyclerView recyclerView;
+    Button btn_pending,btn_approve,btn_reject;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_attendance_approval2);
 
-        /*binding = DataBindingUtil.setContentView(this,R.layout.activity_attendance_approval2);
-        binding.setActivity(this);*/
         mContext = this;
         initViews();
     }
@@ -68,8 +69,16 @@ public class AttendanceApproval2Activity extends AppCompatActivity implements Vi
         textNoData = (TextView) findViewById(R.id.textNoData);
         setActionbar(getString(R.string.attendance));
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
-        adapter = new AttendanceAdapter(this, attendanceList);
-        recyclerView.setAdapter(adapter);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(linearLayoutManager);
+        btn_pending = (Button) findViewById(R.id.btn_pending);
+        btn_approve = (Button) findViewById(R.id.btn_approve);
+        btn_reject = (Button) findViewById(R.id.btn_reject);
+        btn_pending.setOnClickListener(this);
+        btn_approve.setOnClickListener(this);
+        btn_reject.setOnClickListener(this);
+//        adapter = new AttendanceAdapter(this, attendanceList);
+//        recyclerView.setAdapter(adapter);
 
     }
     @Override
@@ -100,16 +109,17 @@ public class AttendanceApproval2Activity extends AppCompatActivity implements Vi
                         if (str != null && str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
 
-                            ArrayList<AttendanceApproval> pendingList = new ArrayList<>();
-                            ArrayList<AttendanceApproval> approveList = new ArrayList<>();
-                            ArrayList<AttendanceApproval> rejectList = new ArrayList<>();
+//                            ArrayList<AttendanceApproval> pendingList = new ArrayList<>();
+//                            ArrayList<AttendanceApproval> approveList = new ArrayList<>();
+//                            ArrayList<AttendanceApproval> rejectList = new ArrayList<>();
 
                             if (Arrays.asList(gson.fromJson(str, AttendanceApproval[].class)) != null) {
-//                                AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().deleteAllVoucher();
-//                                AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().insertVoucher();
+//
                                 attendanceList = Arrays.asList(gson.fromJson(str, AttendanceApproval[].class));
-                                adapter.notifyDataSetChanged();
-                             //   setRecyclerView();
+//                                adapter = new AttendanceAdapter(mContext, attendanceList);
+//                                recyclerView.setAdapter(adapter);
+//                                adapter.notifyDataSetChanged();
+                                setRecyclerView("Pending");
 
                                /* for (int i = 0; i < attendanceList.size(); i++) {
 
@@ -146,12 +156,47 @@ public class AttendanceApproval2Activity extends AppCompatActivity implements Vi
             }
         });
     }
+
+    private void setRecyclerView(String Status) {
+        attendanceSortedList.clear();
+        for(int i=1;i<attendanceList.size();i++){
+            if(attendanceList.get(i).getStatusC().equals(Status)){
+                attendanceSortedList.add(attendanceList.get(i));
+            }
+        }
+        if(attendanceSortedList.size()>0) {
+            adapter = new AttendanceAdapter(mContext, attendanceSortedList);
+            recyclerView.setAdapter(adapter);
+            adapter.notifyDataSetChanged();
+        }else{
+            Utills.showToast("No data available.",this);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.img_back:
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                break;
+            case R.id.btn_pending:
+                btn_pending.setBackgroundResource(R.drawable.selected_btn_background);
+                btn_approve.setBackgroundResource(R.drawable.light_grey_btn_background);
+                btn_reject.setBackgroundResource(R.drawable.light_grey_btn_background);
+                setRecyclerView("Pending");
+                break;
+            case R.id.btn_approve:
+                btn_pending.setBackgroundResource(R.drawable.light_grey_btn_background);
+                btn_approve.setBackgroundResource(R.drawable.selected_btn_background);
+                btn_reject.setBackgroundResource(R.drawable.light_grey_btn_background);
+                setRecyclerView("Approved");
+                break;
+            case R.id.btn_reject:
+                btn_pending.setBackgroundResource(R.drawable.light_grey_btn_background);
+                btn_approve.setBackgroundResource(R.drawable.selected_btn_background);
+                btn_reject.setBackgroundResource(R.drawable.light_grey_btn_background);
+                setRecyclerView("Rejected");
                 break;
         }
     }

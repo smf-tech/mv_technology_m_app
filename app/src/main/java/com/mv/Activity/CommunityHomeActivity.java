@@ -597,7 +597,6 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
             if (getIntent().getExtras().getString(Constants.TITLE).equalsIgnoreCase("HO Support")) {
 
             }
-
         }
 
 // arraylist to keep the selected items

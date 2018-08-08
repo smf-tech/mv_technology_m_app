@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.mv.Activity.AttendanceApproval2Activity;
 import com.mv.Activity.AttendanceApprovalActivity;
 import com.mv.Activity.LeaveApprovalActivity;
 import com.mv.Activity.ProcessApprovalActivity;
@@ -95,7 +96,8 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                         //adding Attendance approval
                         else if (getAdapterPosition() == 4) {
                             //redirect to user Approval Process List
-                            Intent openClass = new Intent(mContext, AttendanceApprovalActivity.class);
+                        //    Intent openClass = new Intent(mContext, AttendanceApprovalActivity.class);
+                            Intent openClass = new Intent(mContext, AttendanceApproval2Activity.class);
                             mContext.startActivity(openClass);
                             preferenceHelper.insertString(Constants.Leave,Constants.Leave_Approve);
                             mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);

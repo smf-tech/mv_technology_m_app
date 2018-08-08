@@ -88,4 +88,7 @@ public interface ServiceRequest {
     @POST("")
     Call<ResponseBody> getMapContent(@Url String url, @Field("id") String mId, @Field("lat") String mlat, @Field("lon") String mlon);
 
+    @FormUrlEncoded
+    @POST("")
+    Call<ResponseBody> sendImageToPHP(@Url String url,@Field("json_data") String json_data);
 }
