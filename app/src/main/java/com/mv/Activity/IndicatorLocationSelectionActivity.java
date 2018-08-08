@@ -530,6 +530,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 mStateList.add(jsonArray.getString(i));
                             }
+
                             setSpinnerAdapter(mStateList, state_adapter, binding.spinnerState, User.getCurrentUser(getApplicationContext()).getMvUser().getState());
 
                         }
@@ -563,12 +564,13 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                     if (response.body() != null) {
                         String data = response.body().string();
                         if (data != null && data.length() > 0) {
-                            JSONArray jsonArray = new JSONArray(response.body().string());
+                            JSONArray jsonArray = new JSONArray(data);
                             mListDistrict.clear();
                             mListDistrict.add("Select");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 mListDistrict.add(jsonArray.getString(i));
                             }
+
                             setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
                         }
                     }
@@ -603,10 +605,11 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                         if (data != null && data.length() > 0) {
                             mListTaluka.clear();
                             mListTaluka.add("Select");
-                            JSONArray jsonArr = new JSONArray(response.body().string());
+                            JSONArray jsonArr = new JSONArray(data);
                             for (int i = 0; i < jsonArr.length(); i++) {
                                 mListTaluka.add(jsonArr.getString(i));
                             }
+
                             setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
                             // taluka_adapter.notifyDataSetChanged();
                         }
