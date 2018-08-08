@@ -503,16 +503,18 @@ public class Salary implements Serializable {
     private String Security_Fund__Allowance;
 
 
-    public String getAny_other__Allowance() {
-        return Any_other__Allowance;
+    public String getOther_Deductions__c() {
+        return Other_Deductions__c;
     }
-    public void setAny_other__Allowance(String any_other__Allowance) {
-        Any_other__Allowance = any_other__Allowance;
+
+    public void setOther_Deductions__c(String other_Deductions__c) {
+        Other_Deductions__c = other_Deductions__c;
     }
-    @ColumnInfo(name = "Any_other_Allowance__c")
-    @SerializedName("Any_other_Allowance__c")
+
+    @ColumnInfo(name = "Other_Deductions__c")
+    @SerializedName("Other_Deductions__c")
     @Expose
-    private String Any_other__Allowance;
+    private String Other_Deductions__c;
 
 
     public String getTotal_Amount_to_Bank_Net_Salary_Reimbur__c() {

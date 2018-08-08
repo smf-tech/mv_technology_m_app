@@ -153,10 +153,9 @@ public class AttendanceApprovalActivity extends AppCompatActivity implements Vie
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
 
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getAttendanceForApproval?userRole=a1I0k000000IOjc"; //+ User.getCurrentUser(mContext).getMvUser().get;
+                + "/services/apexrest/getAttendanceForApproval?userId="+User.getCurrentUser(mContext).getMvUser().getId();
 
        // http://cs57.salesforce.com/services/apexrest/getAttendanceApprovalForUser?userId=a1J0k000000cMTG
-
 
      //   http://cs57.salesforce.com/services/apexrest/getAttendanceForApproval?userRole=a1I0k000000IOjc
 
@@ -175,13 +174,13 @@ public class AttendanceApprovalActivity extends AppCompatActivity implements Vie
                             ArrayList<AttendanceApproval> approveList = new ArrayList<>();
                             ArrayList<AttendanceApproval> rejectList = new ArrayList<>();
 
-                            if (Arrays.asList(gson.fromJson(str, Voucher[].class)) != null) {
+                            if (Arrays.asList(gson.fromJson(str, AttendanceApproval[].class)) != null) {
 //                                AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().deleteAllVoucher();
 //                                AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().insertVoucher();
                                 attendanceList = Arrays.asList(gson.fromJson(str, AttendanceApproval[].class));
-                                //  setRecyclerViewForTeam();
+                                setRecyclerView();
 
-                                for (int i = 0; i < attendanceList.size(); i++) {
+                               /* for (int i = 0; i < attendanceList.size(); i++) {
 
                                     AttendanceApproval attendance_approval = attendanceList.get(i);
 
@@ -197,7 +196,7 @@ public class AttendanceApprovalActivity extends AppCompatActivity implements Vie
                                 childList.put(getString(R.string.reject), rejectList);
                                 childList.put(getString(R.string.approve), approveList);
                                 adapter = new ExpandableAttendanceApprovalListAdapter(mContext, headerList, childList, tabName);
-                                binding.rvProcess.setAdapter(adapter);
+                                binding.rvProcess.setAdapter(adapter);*/
 
                             }
                         }
@@ -215,5 +214,31 @@ public class AttendanceApprovalActivity extends AppCompatActivity implements Vie
 
             }
         });
+    }
+    private void setRecyclerView() {
+      //  attendanceList = AppDatabase.getAppDatabase(this).userDao().getAllAttendanceApproval();
+       /* adapter = new AdavanceAdapter(this, mList);
+        binding.rvAdavance.setAdapter(adapter);
+        binding.rvAdavance.setHasFixedSize(true);
+        binding.rvAdavance.setLayoutManager(new LinearLayoutManager(this));
+*/
+        ArrayList<AttendanceApproval> pendingList = new ArrayList<>();
+        ArrayList<AttendanceApproval> approveList = new ArrayList<>();
+        ArrayList<AttendanceApproval> rejectList = new ArrayList<>();
+
+        for (AttendanceApproval attendance_approval : attendanceList) {
+
+            if (attendance_approval.getStatusC().equals(Constants.LeaveStatusApprove))
+                approveList.add(attendance_approval);
+            if (attendance_approval.getStatusC().equals(Constants.LeaveStatusPending))
+                pendingList.add(attendance_approval);
+            if (attendance_approval.getStatusC().equals(Constants.LeaveStatusRejected))
+                rejectList.add(attendance_approval);
+        }
+        childList.put(getString(R.string.pending), pendingList);
+        childList.put(getString(R.string.reject), rejectList);
+        childList.put(getString(R.string.approve), approveList);
+        adapter = new ExpandableAttendanceApprovalListAdapter(mContext, headerList, childList, tabName);
+        binding.rvProcess.setAdapter(adapter);
     }
 }

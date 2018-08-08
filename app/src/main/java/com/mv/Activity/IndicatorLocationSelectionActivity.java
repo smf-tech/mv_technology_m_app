@@ -90,18 +90,13 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
 
         initViews();
 
-
     }
-
-
-
 
     private void initViews() {
         setActionbar("Select Location");
         Utills.setupUI(findViewById(R.id.layout_main), this);
         preferenceHelper = new PreferenceHelper(this);
 //
-
         binding.spinnerState.setOnItemSelectedListener(this);
         binding.spinnerDistrict.setOnItemSelectedListener(this);
         binding.spinnerTaluka.setOnItemSelectedListener(this);
@@ -109,7 +104,6 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         binding.spinnerVillage.setOnItemSelectedListener(this);
         binding.spinnerSchoolName.setOnItemSelectedListener(this);
         binding.btnSubmit.setOnClickListener(this);
-
 
         mListDistrict = new ArrayList<String>();
         mListTaluka = new ArrayList<String>();
@@ -139,7 +133,6 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         state_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerState.setAdapter(state_adapter);
 
-
         district_adapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, mListDistrict);
         district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -164,7 +157,6 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 android.R.layout.simple_spinner_item, mListSchoolName);
         school_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerSchoolName.setAdapter(school_adapter);*/
-
 
         if (Utills.isConnected(this))
             getState();
@@ -198,17 +190,12 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
-
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
             case R.id.btn_submit:
-
                 sendLocation();
-
-
                 break;
-
         }
     }
 
@@ -233,7 +220,6 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 Intent intent = new Intent(IndicatorLocationSelectionActivity.this, OverallReportActivity.class);
                 intent.putExtra(Constants.TITLE, title);
                 intent.putExtra(Constants.INDICATOR_TASK, task);
-
                 intent.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
                 intent.putExtra(Constants.LOCATION, locationModel);
                 intent.putExtra(Constants.PROCESS_ID, processId);

@@ -444,7 +444,6 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                         lnr_filter.setVisibility(View.GONE);
                     }
                 }
-
             }
         });
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
