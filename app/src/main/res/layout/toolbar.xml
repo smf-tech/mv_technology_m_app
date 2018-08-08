@@ -75,6 +75,16 @@
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
             android:src="@drawable/ic_power_settings_new_white_36dp" />
+
+        <ImageView
+            android:id="@+id/img_more"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_more_vert_black_24dp"
+            android:visibility="gone" />
+
         <CheckBox
             android:id="@+id/checkbox"
             android:layout_width="@dimen/dimen_25dp"

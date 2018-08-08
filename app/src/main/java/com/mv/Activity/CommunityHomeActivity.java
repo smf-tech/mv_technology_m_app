@@ -16,12 +16,15 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupMenu;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -58,7 +61,7 @@ import retrofit2.Response;
 public class CommunityHomeActivity extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
 
 
-    private ImageView img_back, img_list, img_logout, img_filter;
+    private ImageView img_back, img_list, img_logout, img_filter,img_more;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     private FloatingActionButton fab_add_list;
@@ -87,6 +90,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     public static final String MESSAGE_PROGRESS = "message_progress";
     private EndlessRecyclerViewScrollListener scrollListener;
     boolean canpost;
+    PopupMenu popup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -247,6 +251,113 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         });
     }
 
+    /*Api Call of get my post only */
+    private void getMyChats(boolean isTimePresent, boolean isDialogShow, boolean isPrevious) {
+        if (isDialogShow)
+            Utills.showProgressDialog(this, getString(R.string.loading_chats), getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        String url = "";
+        if (isTimePresent && AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID)).size() > 0) {
+            if (!isPrevious) {
+                url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                        + "/services/apexrest/getChatContentMyPosts?CommunityId=" + preferenceHelper.getString(PreferenceHelper.COMMUNITYID)
+                        + "&userId=" + User.getCurrentUser(this).getMvUser().getId() + "&timestamp=" + AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID)).get(0).getTime()
+                        + "&isPrevious=false";
+            } else {
+                url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                        + "/services/apexrest/getChatContentMyPosts?CommunityId=" + preferenceHelper.getString(PreferenceHelper.COMMUNITYID)
+                        + "&userId=" + User.getCurrentUser(this).getMvUser().getId() + "&timestamp=" + AppDatabase.getAppDatabase(getApplicationContext()).userDao().getLastMyChatTime(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),User.getCurrentUser(this).getMvUser().getId())
+                        + "&isPrevious=true";
+            }
+        } else {
+            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                    + "/services/apexrest/getChatContentMyPosts?CommunityId=" + preferenceHelper.getString(PreferenceHelper.COMMUNITYID) + "&userId=" + User.getCurrentUser(this).getMvUser().getId();
+        }
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                try {
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            List<Community> list = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities();
+                            Community community = new Community();
+                            for (int i = 0; i < list.size(); i++) {
+                                if (list.get(i).getId().equalsIgnoreCase(preferenceHelper.getString(PreferenceHelper.COMMUNITYID))) {
+                                    community = list.get(i);
+                                    break;
+                                }
+                            }
+                            if (community != null) {
+                                community.setCount("" + 0);
+                                AppDatabase.getAppDatabase(getApplicationContext()).userDao().updateCommunities(community);
+                            }
+                            JSONArray jsonArray = new JSONArray(data);
+                            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                            List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));
+                            List<Content> contentList = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), true, false);
+                            if ((temp.size() != 0) || (contentList.size() != 0)) {
+                                for (int i = 0; i < temp.size(); i++) {
+                                    int j;
+                                    boolean isPresent = false;
+                                    for (j = 0; j < contentList.size(); j++) {
+                                        if ((contentList.get(j).getId() != null) &&
+                                                (contentList.get(j).getId().equalsIgnoreCase(temp.get(i).getId()))) {
+                                            temp.get(i).setUnique_Id(contentList.get(j).getUnique_Id());
+                                            temp.get(i).setCommunity_id(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
+                                            isPresent = true;
+                                            break;
+                                        }
+                                    }
+                                    if (isPresent) {
+                                        AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().updateContent(temp.get(i));
+                                    } else {
+                                        temp.get(i).setCommunity_id(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
+                                        AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().insertChats(temp.get(i));
+                                    }
+                                }
+                                AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().deletepost(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), false, true);
+
+                                if (filterflag == 0) {
+                                    allPost();
+                                } else if (filterflag == 1) {
+                                    myPost();
+                                } else if (filterflag == 2) {
+                                    myLocation();
+                                } else if (filterflag == 3) {
+                                    otherLocation();
+                                }
+                                textNoData.setVisibility(View.GONE);
+                            } else {
+                                textNoData.setVisibility(View.VISIBLE);
+                            }
+                        }
+
+                    }
+                    myPost();
+                    Utills.hideProgressDialog();
+                    binding.swipeRefreshLayout.setRefreshing(false);
+                } catch (JSONException e) {
+                    Utills.hideProgressDialog();
+                    binding.swipeRefreshLayout.setRefreshing(false);
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    Utills.hideProgressDialog();
+                    binding.swipeRefreshLayout.setRefreshing(false);
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+                binding.swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
@@ -353,7 +464,26 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         btn_mypost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myPost();
+                btn_mypost.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
+                btn_allposts.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_mylocation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                if (Utills.isConnected(CommunityHomeActivity.this))
+                /*Api Call if  internet is available */
+                    getMyChats(false, true, false);
+                else
+                    showPopUp();
+//                if (mypostlist.size() == 0) {
+//
+//                } else {
+//                    if (Utills.isConnected(CommunityHomeActivity.this))
+//                /*Api Call if  internet is available */
+//                        getMyChats(true, true, true);
+//                    else
+//                        showPopUp();
+//
+//                }
+
             }
         });
 
@@ -361,6 +491,10 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         btn_allposts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                btn_allposts.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
+                btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_mylocation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+                btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
                 allPost();
             }
         });
@@ -391,11 +525,8 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     private void myPost() {
         mySelection = true;
         filterflag = 1;
-        btn_mypost.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
-        btn_allposts.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
-        btn_mylocation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
-        btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
         mypostlist = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), true, false);
+
         chatList.clear();
         for (int i = 0; i < mypostlist.size(); i++) {
             if (mypostlist.get(i).getUser_id() != null && (mypostlist.get(i).getUser_id().equals(User.getCurrentUser(getApplicationContext()).getMvUser().getId()))) {
@@ -406,10 +537,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     }
 
     private void allPost() {
-        btn_allposts.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
-        btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
-        btn_mylocation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
-        btn_otherlcation.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+
         mySelection = false;
         filterflag = 0;
         mypostlist = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), true, false);
@@ -501,6 +629,49 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 }
             }
         });
+
+
+        //****Changes for the mute notification****//
+        img_more = (ImageView) findViewById(R.id.img_more);
+        img_more.setVisibility(View.GONE);
+        img_more.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popup = new PopupMenu(CommunityHomeActivity.this, img_more);
+                //Inflating the Popup using xml file
+                popup.getMenuInflater().inflate(R.menu.popup_menu_cammunity, popup.getMenu());
+                //   popup.getMenu().getItem(R.id.spam).setVisible(true);
+                MenuItem spam = (MenuItem) popup.getMenu().findItem(R.id.mn_filter);
+                MenuItem edit = (MenuItem) popup.getMenu().findItem(R.id.mn_mumbers);
+                MenuItem delete = (MenuItem) popup.getMenu().findItem(R.id.mn_mute);
+
+                //registering popup with OnMenuItemClickListener
+                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    public boolean onMenuItemClick(MenuItem item) {
+
+                        if (item.getItemId()== R.id.mn_filter) {
+                            filter = true;
+                            if (Title.equalsIgnoreCase("HO Support")) {
+                                HoSupportFilter();
+                            } else {
+                                OtherFilter();
+                            }
+                        } else if (item.getItemId()== R.id.mn_mumbers) {
+                            Intent intent = new Intent(getApplicationContext(), CommunityMemberNameActivity.class);
+                            startActivity(intent);
+                        } else if (item.getItemId()== R.id.mn_mute) {
+                            Toast.makeText(CommunityHomeActivity.this,"working",Toast.LENGTH_LONG).show();
+                        }
+                        return true;
+                    }
+                });
+                popup.show();
+
+            }
+        });
+
+
+
     }
 
     @Override

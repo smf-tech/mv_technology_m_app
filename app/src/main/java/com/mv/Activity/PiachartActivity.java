@@ -726,7 +726,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                                     for (int i = 0; i < jsonArray.length(); i++) {
 
                                         // removed names in graph those are overlapping (jsonArray.getJSONObject(i).getString("key"))
-                                        entries.add(new PieEntry(Float.valueOf(jsonArray.getJSONObject(i).getString("value"))));
+                                        entries.add(new PieEntry(Float.valueOf(jsonArray.getJSONObject(i).getString("value")), jsonArray.getJSONObject(i).getString("key")));
                                         if (!jsonArray.getJSONObject(i).getString("value").equals("0.0"))
                                             key.add(jsonArray.getJSONObject(i).getString("value"));
 
