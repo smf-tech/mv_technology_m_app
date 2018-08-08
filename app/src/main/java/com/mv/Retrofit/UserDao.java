@@ -238,6 +238,8 @@ public interface UserDao {
     @Query("SELECT CreatedDate FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId  order by CreatedDate asc")
     String getLastChatTime(String communityId);
 
+    @Query("SELECT CreatedDate FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId AND UserId = :userid order by CreatedDate asc")
+    String getLastMyChatTime(String communityId,String userid);
 
     //String strSQL = "UPDATE myTable SET Column1 = someValue WHERE columnId = "+ someValue;
 
