@@ -6,11 +6,13 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by user on 7/31/2018.
  */
 
-public class AttendanceApproval implements Parcelable {
+public class AttendanceApproval implements Serializable {
 
     @SerializedName("Id")
     @Expose
@@ -48,19 +50,19 @@ public class AttendanceApproval implements Parcelable {
         this.attendanceDateC = attendanceDateC;
     }
 
-    public Float getCheckInTimeC() {
+    public String getCheckInTimeC() {
         return checkInTimeC;
     }
 
-    public void setCheckInTimeC(Float checkInTimeC) {
+    public void setCheckInTimeC(String checkInTimeC) {
         this.checkInTimeC = checkInTimeC;
     }
 
-    public Float getCheckOutTimeC() {
+    public String getCheckOutTimeC() {
         return checkOutTimeC;
     }
 
-    public void setCheckOutTimeC(Float checkOutTimeC) {
+    public void setCheckOutTimeC(String checkOutTimeC) {
         this.checkOutTimeC = checkOutTimeC;
     }
 
@@ -80,6 +82,51 @@ public class AttendanceApproval implements Parcelable {
         this.User_Name__c = User_Name__c;
     }
 
+    public String getUser_Role__c() {
+        return User_Role__c;
+    }
+
+    public void setUser_Role__c(String User_Role__c) {
+        this.User_Role__c = User_Role__c;
+    }
+
+    public String getCheck_In_Location_Difference__c() {
+        return Check_In_Location_Difference__c;
+    }
+
+    public void setCheck_In_Location_Difference__c(String Check_In_Location_Difference__c) {
+        this.Check_In_Location_Difference__c = Check_In_Location_Difference__c;
+    }
+
+    public String getCheck_Out_Location_Difference__c() {
+        return Check_Out_Location_Difference__c;
+    }
+
+    public void setCheck_Out_Location_Difference__c(String Check_Out_Location_Difference__cc) {
+        this.Check_Out_Location_Difference__c = Check_Out_Location_Difference__c;
+
+    }
+
+    public String getApprover_User__c() {
+        return Approver_User__c;
+    }
+
+    public void setApprover_User__c(String Approver_User__c) {
+        this.Approver_User__c = Approver_User__c;
+    }
+
+    public String getFinal_Status__c() {
+        return Final_Status__c;
+    }
+
+    public void setFinal_Status__c(String Final_Status__c) {
+        this.Final_Status__c = Final_Status__c;
+    }
+
+
+    @SerializedName("User_Role__c")
+    @Expose
+    private String User_Role__c;
 
     @SerializedName("Name")
     @Expose
@@ -95,11 +142,11 @@ public class AttendanceApproval implements Parcelable {
 
     @SerializedName("checkInTime__c")
     @Expose
-    private Float checkInTimeC;
+    private String checkInTimeC;
 
     @SerializedName("checkOutTime__c")
     @Expose
-    private Float checkOutTimeC;
+    private String checkOutTimeC;
 
     @SerializedName("status__c")
     @Expose
@@ -109,7 +156,26 @@ public class AttendanceApproval implements Parcelable {
     @Expose
     private String User_Name__c;
 
-    public final static Parcelable.Creator<AttendanceApproval> CREATOR = new Creator<AttendanceApproval>() {
+    @SerializedName("Check_In_Location_Difference__c")
+    @Expose
+    private String Check_In_Location_Difference__c;
+
+    @SerializedName("Check_Out_Location_Difference__c")
+    @Expose
+    private String Check_Out_Location_Difference__c;
+
+
+
+    @SerializedName("Approver_User__c")
+    @Expose
+    private String Approver_User__c;
+
+    @SerializedName("Final_Status__c")
+    @Expose
+    private String Final_Status__c;
+
+
+    /*public final static Parcelable.Creator<AttendanceApproval> CREATOR = new Creator<AttendanceApproval>() {
 
 
         @SuppressWarnings({
@@ -124,7 +190,7 @@ public class AttendanceApproval implements Parcelable {
         }
 
     }
-            ;
+            ;*/
 
     protected AttendanceApproval(Parcel in) {
 
@@ -132,13 +198,16 @@ public class AttendanceApproval implements Parcelable {
         this.name = ((String) in.readValue((String.class.getClassLoader())));
         this.createdDate = ((String) in.readValue((String.class.getClassLoader())));
         this.attendanceDateC = ((String) in.readValue((String.class.getClassLoader())));
-        this.checkInTimeC = ((Float) in.readValue((Float.class.getClassLoader())));
-        this.checkOutTimeC = ((Float) in.readValue((Float.class.getClassLoader())));
+        this.checkInTimeC = ((String) in.readValue((String.class.getClassLoader())));
+        this.checkOutTimeC = ((String) in.readValue((String.class.getClassLoader())));
         this.statusC = ((String) in.readValue((String.class.getClassLoader())));
         this.User_Name__c = ((String) in.readValue((String.class.getClassLoader())));
+        this.User_Role__c = ((String) in.readValue((String.class.getClassLoader())));
+        this.Check_In_Location_Difference__c = ((String) in.readValue((String.class.getClassLoader())));
+        this.Check_Out_Location_Difference__c = ((String) in.readValue((String.class.getClassLoader())));
     }
 
-    @Override
+   /* @Override
     public int describeContents() {
         return 0;
     }
@@ -153,6 +222,10 @@ public class AttendanceApproval implements Parcelable {
         dest.writeValue(checkOutTimeC);
         dest.writeValue(statusC);
         dest.writeValue(User_Name__c);
+        dest.writeValue(User_Role__c);
+        dest.writeValue(Check_In_Location_Difference__c);
+        dest.writeValue(Check_Out_Location_Difference__c);
 
-    }
+    }*/
+
 }

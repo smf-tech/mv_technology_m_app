@@ -68,7 +68,7 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
         binding.txtName.setText(salary.getName());
         binding.txtHRA.setText(salary.getHRA__c());
 
-        binding.txtOther.setText(salary.getAny_other__c());
+        binding.txtOther.setText(salary.getOther_Deductions__c());
         binding.txtPaidLeave.setText(salary.getPaid_Leaves__c());
         binding.txtPerks.setText(salary.getPerks__c());
         binding.txtPF.setText(salary.getProvident_Fund__c());
@@ -81,15 +81,16 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
         binding.txtHouserent.setText(salary.getHouse_Rent__c());
         binding.txtTravelExp.setText(salary.getTravelling_Exp__c());
         binding.txtTeleExp.setText(salary.getTelephone_Expense__Allowance());
+        binding.txtsecurityfund.setText(salary.getSecurity_Fund__Allowance());
         if(salary.getSecurity_Fund__Allowance()==null)
-            binding.txtsecurityfund.setText(salary.getSecurity_Fund__Allowance());
-        else
             binding.txtsecurityfund.setText("0.0");
+        else
+           binding.txtsecurityfund.setText(salary.getSecurity_Fund__Allowance());
         binding.txtAppointAllow.setText(salary.getAppontment_Allowance__c());
-        if(salary.getAny_other__Allowance()==null)
+        if(salary.getAny_other__c()==null)
             binding.txtAnyOthers.setText("0.0");
          else
-            binding.txtAnyOthers.setText(salary.getAny_other__Allowance());
+            binding.txtAnyOthers.setText(salary.getAny_other__c());
         binding.txtTotalreimbursement.setText(salary.getTotal_Reimbursement__c());
         binding.txtNetBankAmount.setText(salary.getTotal_Amount_to_Bank_Net_Salary_Reimbur__c());
         binding.txtLeaveDeductionAmt.setText(salary.getTotal_Leave_Deduction__c());

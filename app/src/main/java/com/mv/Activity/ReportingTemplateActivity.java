@@ -836,6 +836,10 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             }
         } else if (requestCode == Crop.REQUEST_CROP) {
             if (resultCode == RESULT_OK) {
+                if (checkSizeExceed(imageFilePath)) {
+                    FinalUri = null;
+                    Utills.showToast(getString(R.string.text_size_exceed), this);
+                }
                 Glide.with(this)
                         .load(FinalUri)
                         .skipMemoryCache(true)

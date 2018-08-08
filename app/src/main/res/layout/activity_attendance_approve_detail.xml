@@ -5,7 +5,7 @@
     <data>
         <variable
             name="activity"
-            type="com.mv.Activity.LeaveDetailActivity" />
+            type="com.mv.Activity.AttendanceApproveDetailActivity" />
     </data>
 
     <LinearLayout
@@ -33,6 +33,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/dimen_5dp"
                     android:weightSum="10">
 
                     <TextView
@@ -52,13 +53,21 @@
                         android:layout_marginLeft="@dimen/dimen_10dp"
                         android:layout_marginRight="@dimen/dimen_10dp"
                         android:layout_marginTop="@dimen/dimen_5dp"
-                        android:text="Sagar" />
+                        android:text="" />
 
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/tv_Detels"
+                    android:background="@color/light_grey"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/dimen_5dp"
                     android:weightSum="10">
 
                     <TextView
@@ -77,12 +86,20 @@
                         android:layout_marginRight="@dimen/dimen_10dp"
                         android:layout_marginLeft="@dimen/dimen_10dp"
                         android:layout_height="wrap_content"
-                        android:text="7/31/2018"/>
+                        android:text=""/>
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/tv_Detels"
+                    android:background="@color/light_grey"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/dimen_5dp"
                     android:weightSum="10">
 
                     <TextView
@@ -101,12 +118,20 @@
                         android:layout_marginRight="@dimen/dimen_10dp"
                         android:layout_marginLeft="@dimen/dimen_10dp"
                         android:layout_height="wrap_content"
-                        android:text="TC"/>
+                        android:text=""/>
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/tv_Detels"
+                    android:background="@color/light_grey"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/dimen_5dp"
                     android:weightSum="10">
 
                     <TextView
@@ -125,12 +150,20 @@
                         android:layout_marginRight="@dimen/dimen_10dp"
                         android:layout_marginLeft="@dimen/dimen_10dp"
                         android:layout_height="wrap_content"
-                        android:text="22.23"/>
+                        android:text=""/>
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/tv_Detels"
+                    android:background="@color/light_grey"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/dimen_5dp"
                     android:weightSum="10">
 
                     <TextView
@@ -149,12 +182,20 @@
                         android:layout_marginRight="@dimen/dimen_10dp"
                         android:layout_marginLeft="@dimen/dimen_10dp"
                         android:layout_height="wrap_content"
-                        android:text="22.23"/>
+                        android:text=""/>
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/tv_Detels"
+                    android:background="@color/light_grey"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/dimen_5dp"
                     android:weightSum="10">
 
                     <TextView
@@ -173,12 +214,20 @@
                         android:layout_marginRight="@dimen/dimen_10dp"
                         android:layout_marginLeft="@dimen/dimen_10dp"
                         android:layout_height="wrap_content"
-                        android:text="Pending"/>
+                        android:text=""/>
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/tv_Detels"
+                    android:background="@color/light_grey"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/dimen_5dp"
                     android:weightSum="10">
 
                     <TextView
@@ -197,12 +246,20 @@
                         android:layout_marginRight="@dimen/dimen_10dp"
                         android:layout_marginLeft="@dimen/dimen_10dp"
                         android:layout_height="wrap_content"
-                        android:text="25.23236"/>
+                        android:text=""/>
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/tv_Detels"
+                    android:background="@color/light_grey"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
+                    android:layout_marginTop="@dimen/dimen_5dp"
                     android:weightSum="10">
 
                     <TextView
@@ -221,8 +278,15 @@
                         android:layout_marginRight="@dimen/dimen_10dp"
                         android:layout_marginLeft="@dimen/dimen_10dp"
                         android:layout_height="wrap_content"
-                        android:text="25.23236"/>
+                        android:text=""/>
                 </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_below="@+id/tv_Detels"
+                    android:background="@color/light_grey"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    />
 
             </LinearLayout>
         </ScrollView>
@@ -235,6 +299,7 @@
             android:layout_margin="@dimen/dimen_5dp"
             android:orientation="horizontal"
             android:layout_marginTop="@dimen/dimen_10dp"
+            android:visibility="gone"
             android:weightSum="10">
 
             <com.mv.Widgets.MyFontButton

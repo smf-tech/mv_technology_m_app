@@ -1,0 +1,1299 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 32,
+    "identityHash": "ffa4444f0b57974dc9518e1b9318da1c",
+    "entities": [
+      {
+        "tableName": "table_community",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`community_id` TEXT, `community_name` TEXT, `timestamp` TEXT, `unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Count` TEXT, `totalCount` TEXT, `errorMsg` TEXT, `youCanPostInCommunity` INTEGER)",
+        "fields": [
+          {
+            "fieldPath": "Id",
+            "columnName": "community_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Name",
+            "columnName": "community_name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Time",
+            "columnName": "timestamp",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Unique_Id",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "Count",
+            "columnName": "Count",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "TotalCount",
+            "columnName": "totalCount",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "errorMsg",
+            "columnName": "errorMsg",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "CanPost",
+            "columnName": "youCanPostInCommunity",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_content",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `isAttachmentPresent` TEXT, `synchStatus` TEXT, `Id` TEXT, `UserId` TEXT, `CommunityId` TEXT, `District` TEXT, `taluka` TEXT, `likeCount` INTEGER, `commentCount` INTEGER, `isLike` INTEGER, `Issue_Type` TEXT, `Report_Type` TEXT, `Priority` TEXT, `Title` TEXT, `Description` TEXT, `TemplateId` TEXT, `TemplateName` TEXT, `userAttachmentId` TEXT, `CreatedDate` TEXT, `isbroadcast` TEXT, `userName` TEXT, `isMediaPlay` INTEGER, `isActive` INTEGER, `errorMsg` TEXT, `contentType` TEXT, `isTheatMessage` TEXT, `isDelete` INTEGER, `status` TEXT, `isPostUserDidSpam` INTEGER, `attachmentId` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "Unique_Id",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "isAttachmentPresent",
+            "columnName": "isAttachmentPresent",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "synchStatus",
+            "columnName": "synchStatus",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "user_id",
+            "columnName": "UserId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "community_id",
+            "columnName": "CommunityId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "district",
+            "columnName": "District",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "taluka",
+            "columnName": "taluka",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "likeCount",
+            "columnName": "likeCount",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "commentCount",
+            "columnName": "commentCount",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "isLike",
+            "columnName": "isLike",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "issue_type",
+            "columnName": "Issue_Type",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "reporting_type",
+            "columnName": "Report_Type",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "issue_priority",
+            "columnName": "Priority",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "Title",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "Description",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "template",
+            "columnName": "TemplateId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "templateName",
+            "columnName": "TemplateName",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "userAttachmentId",
+            "columnName": "userAttachmentId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "time",
+            "columnName": "CreatedDate",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isBroadcast",
+            "columnName": "isbroadcast",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "userName",
+            "columnName": "userName",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "mediaPlay",
+            "columnName": "isMediaPlay",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "isActive",
+            "columnName": "isActive",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "errorMsg",
+            "columnName": "errorMsg",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "contentType",
+            "columnName": "contentType",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isTheatMessage",
+            "columnName": "isTheatMessage",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isDelete",
+            "columnName": "isDelete",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isPostUserDidSpam",
+            "columnName": "isPostUserDidSpam",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "attachmentId",
+            "columnName": "attachmentId",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_process",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `template_id` TEXT, `User_Mobile_App_Version__c` TEXT, `template_name` TEXT, `answerCount` TEXT, `expectedCount` TEXT, `submittedCount` TEXT, `Category__c` TEXT, `Targated_Date__c` TEXT, `Location` INTEGER, `LocationLevel` TEXT, `type` TEXT, `url` TEXT, `status` TEXT, `MV_Process__c` TEXT, `MV_User__c` TEXT, `P1F1__c` TEXT, `P1F2__c` TEXT, `P1F3__c` TEXT, `P1F4__c` TEXT, `P1F5__c` TEXT, `Is_Editable__c` INTEGER, `Is_Multiple_Entry_Allowed__c` INTEGER)",
+        "fields": [
+          {
+            "fieldPath": "Unique_Id",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "Id",
+            "columnName": "template_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "User_Mobile_App_Version__c",
+            "columnName": "User_Mobile_App_Version__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Name",
+            "columnName": "template_name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "answerCount",
+            "columnName": "answerCount",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "expectedCount",
+            "columnName": "expectedCount",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "submittedCount",
+            "columnName": "submittedCount",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Category__c",
+            "columnName": "Category__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Targated_Date__c",
+            "columnName": "Targated_Date__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Location",
+            "columnName": "Location",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "LocationLevel",
+            "columnName": "LocationLevel",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "url",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "MV_Process__c",
+            "columnName": "MV_Process__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "MV_User__c",
+            "columnName": "MV_User__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "P1F1__c",
+            "columnName": "P1F1__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "P1F2__c",
+            "columnName": "P1F2__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "P1F3__c",
+            "columnName": "P1F3__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "P1F4__c",
+            "columnName": "P1F4__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "P1F5__c",
+            "columnName": "P1F5__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Is_Editable__c",
+            "columnName": "Is_Editable__c",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "Is_Multiple_Entry_Allowed__c",
+            "columnName": "Is_Multiple_Entry_Allowed__c",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_container",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` TEXT, `taskListString` TEXT, `isSave` TEXT, `MV_Process__c` TEXT, `TaskType` TEXT, `headerPosition` TEXT, PRIMARY KEY(`unique_Id`))",
+        "fields": [
+          {
+            "fieldPath": "Unique_Id",
+            "columnName": "unique_Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "taskListString",
+            "columnName": "taskListString",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isSave",
+            "columnName": "isSave",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "MV_Process__c",
+            "columnName": "MV_Process__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "TaskType",
+            "columnName": "TaskType",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "headerPosition",
+            "columnName": "headerPosition",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_location",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`Id` TEXT, `Village` TEXT, `Taluka` TEXT, `State` TEXT, `SchoolName` TEXT, `SchoolCode` TEXT, `District` TEXT, `createdDate` TEXT, `Cluster` TEXT, PRIMARY KEY(`Id`))",
+        "fields": [
+          {
+            "fieldPath": "Id",
+            "columnName": "Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "village",
+            "columnName": "Village",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "taluka",
+            "columnName": "Taluka",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "state",
+            "columnName": "State",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "schoolName",
+            "columnName": "SchoolName",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "schoolCode",
+            "columnName": "SchoolCode",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "district",
+            "columnName": "District",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "createdDate",
+            "columnName": "createdDate",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "cluster",
+            "columnName": "Cluster",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "Id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_calender",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Description__c` TEXT, `Date__c` TEXT, `End_Date__c` TEXT, `Event_End_Time__c` TEXT, `Status__c` TEXT, `organization__c` TEXT, `MV_User__c` TEXT, `Title__c` TEXT, `Event_Time__c` TEXT, `Village__c` TEXT, `Taluka__c` TEXT, `State__c` TEXT, `CreatedRoleData` TEXT, `ProceesTotalCount` TEXT, `ProceesSubmittedCount` TEXT, `Role__c` TEXT, `Cluster__c` TEXT, `School__c` TEXT, `District__c` TEXT, `Description_New__c` TEXT, `Is_Event_for_All_Role__c` TEXT, `Assigned_User_Ids__c` TEXT, `Assign_id_name__c` TEXT, `MV_Process__c` TEXT, `Present_User__c` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "Unique_Id",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "id",
+            "columnName": "Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "description",
+            "columnName": "Description__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "Date__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "End_Date__c",
+            "columnName": "End_Date__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Event_End_Time__c",
+            "columnName": "Event_End_Time__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Status",
+            "columnName": "Status__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "organization__c",
+            "columnName": "organization__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "MV_User1__c",
+            "columnName": "MV_User__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "title",
+            "columnName": "Title__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Event_Time__c",
+            "columnName": "Event_Time__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Village__c",
+            "columnName": "Village__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Taluka__c",
+            "columnName": "Taluka__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "State__c",
+            "columnName": "State__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "CreatedUserData",
+            "columnName": "CreatedRoleData",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "ProceesTotalCount",
+            "columnName": "ProceesTotalCount",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "ProceesSubmittedCount",
+            "columnName": "ProceesSubmittedCount",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Role__c",
+            "columnName": "Role__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Cluster__c",
+            "columnName": "Cluster__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "School__c",
+            "columnName": "School__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "District__c",
+            "columnName": "District__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Description_New__c",
+            "columnName": "Description_New__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Is_Event_for_All_Role__c",
+            "columnName": "Is_Event_for_All_Role__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Assigned_User_Ids__c",
+            "columnName": "Assigned_User_Ids__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Assign_id_name__c",
+            "columnName": "Assign_id_name__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "MV_Process__c",
+            "columnName": "MV_Process__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Present_User__c",
+            "columnName": "Present_User__c",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_download_content",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Section` TEXT, `Lang` TEXT, `Name` TEXT, `URL__c` TEXT, `FileType__c` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "Unique_Id",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "Id",
+            "columnName": "Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Section",
+            "columnName": "Section",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Lang",
+            "columnName": "Lang",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Name",
+            "columnName": "Name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "url",
+            "columnName": "URL__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "FileType",
+            "columnName": "FileType__c",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_voucher",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `Decription` TEXT, `NoOfPeople` TEXT, `User` TEXT, `FromDate` TEXT, `ToDate` TEXT, `Place` TEXT, `UserName` TEXT, `Total_Approved_Expense_Amount` TEXT, `Total_Approved_Advance_Amount` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "UniqueId",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "Id",
+            "columnName": "Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Project",
+            "columnName": "Project",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Date",
+            "columnName": "Date",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Decription",
+            "columnName": "Decription",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "NoOfPeople",
+            "columnName": "NoOfPeople",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "User",
+            "columnName": "User",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "FromDate",
+            "columnName": "FromDate",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "ToDate",
+            "columnName": "ToDate",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Place",
+            "columnName": "Place",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "UserName",
+            "columnName": "UserName",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Approved_Expense",
+            "columnName": "Total_Approved_Expense_Amount",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Approved_Advance",
+            "columnName": "Total_Approved_Advance_Amount",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_expense",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Amount` TEXT, `Date` TEXT, `Decription` TEXT, `voucherId` TEXT, `partuculars` TEXT, `User` TEXT, `Status` TEXT, `Respond_Date` TEXT, `Comment` TEXT, `ApprovalPerson` TEXT, `AttachmentPresent` TEXT, `Approved_Amount__c` TEXT, `Remark__c` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "UniqueId",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "Id",
+            "columnName": "Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Amount",
+            "columnName": "Amount",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Date",
+            "columnName": "Date",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Decription",
+            "columnName": "Decription",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "voucherId",
+            "columnName": "voucherId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "partuculars",
+            "columnName": "partuculars",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "User",
+            "columnName": "User",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Status",
+            "columnName": "Status",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "RespondDate",
+            "columnName": "Respond_Date",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Comment",
+            "columnName": "Comment",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "ApprovalPerson",
+            "columnName": "ApprovalPerson",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "AttachmentPresent",
+            "columnName": "AttachmentPresent",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Approved_Amount__c",
+            "columnName": "Approved_Amount__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Remark__c",
+            "columnName": "Remark__c",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_adavance",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`Approved_Amount__c` TEXT, `Remark__c` TEXT, `unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Project` TEXT, `Date` TEXT, `voucherId` TEXT, `Decription` TEXT, `amount` TEXT, `User` TEXT, `Status` TEXT, `Respond_Date` TEXT, `Comment` TEXT, `ApprovalPerson` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "Approved_Amount__c",
+            "columnName": "Approved_Amount__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Remark__c",
+            "columnName": "Remark__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "UniqueId",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "Id",
+            "columnName": "Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Project",
+            "columnName": "Project",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Date",
+            "columnName": "Date",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "voucherId",
+            "columnName": "voucherId",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Decription",
+            "columnName": "Decription",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Amount",
+            "columnName": "amount",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "User",
+            "columnName": "User",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Status",
+            "columnName": "Status",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "RespondDate",
+            "columnName": "Respond_Date",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Comment",
+            "columnName": "Comment",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "ApprovalPerson",
+            "columnName": "ApprovalPerson",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_salary",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `SalaryDate` TEXT, `SalaryMonth` TEXT, `Amount` TEXT, `Consolidated_Basic__c` TEXT, `MV_User__c` TEXT, `User_Full_Name__c` TEXT, `Telephone_Expense__c` TEXT, `Net_Salary__c` TEXT, `Perks__c` TEXT, `IsDeleted` TEXT, `Arrears__c` TEXT, `Medical_Allowance__c` TEXT, `Special_Allowance__c` TEXT, `Conveyance_Allowance__c` TEXT, `HRA__c` TEXT, `Security_Fund__c` TEXT, `Salary_Advance__c` TEXT, `TDS__c` TEXT, `Profession_Tax__c` TEXT, `Provident_Fund__c` TEXT, `Total_Amount_to_Bank__c` TEXT, `Total_Reimbursement__c` TEXT, `Gross_Earning_for_the_Month__c` TEXT, `Any_other__c` TEXT, `Travelling_Exp__c` TEXT, `Appontment_Allowance__c` TEXT, `House_Rent__c` TEXT, `Total_Deductions__c` TEXT, `Unpaid_Leaves__c` TEXT, `Paid_Leaves__c` TEXT, `Present_Days__c` TEXT, `Total_Leave_Deduction__c` TEXT, `Absent_Days__c` TEXT, `Telephone_Expense_Allowance__c` TEXT, `Security_Fund_Allowance__c` TEXT, `Other_Deductions__c` TEXT, `Total_Amount_to_Bank_Net_Salary_Reimbur__c` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "UniqueId",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "Id",
+            "columnName": "Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Date",
+            "columnName": "SalaryDate",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Month",
+            "columnName": "SalaryMonth",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Amount",
+            "columnName": "Amount",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Consolidated_Basic__c",
+            "columnName": "Consolidated_Basic__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "MV_User__c",
+            "columnName": "MV_User__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Name",
+            "columnName": "User_Full_Name__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Telephone_Expense__c",
+            "columnName": "Telephone_Expense__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Net_Salary__c",
+            "columnName": "Net_Salary__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Perks__c",
+            "columnName": "Perks__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "IsDeleted",
+            "columnName": "IsDeleted",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Arrears__c",
+            "columnName": "Arrears__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Medical_Allowance__c",
+            "columnName": "Medical_Allowance__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Special_Allowance__c",
+            "columnName": "Special_Allowance__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Conveyance_Allowance__c",
+            "columnName": "Conveyance_Allowance__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "HRA__c",
+            "columnName": "HRA__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Security_Fund__c",
+            "columnName": "Security_Fund__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Salary_Advance__c",
+            "columnName": "Salary_Advance__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "TDS__c",
+            "columnName": "TDS__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Profession_Tax__c",
+            "columnName": "Profession_Tax__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Provident_Fund__c",
+            "columnName": "Provident_Fund__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Total_Amount_to_Bank__c",
+            "columnName": "Total_Amount_to_Bank__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Total_Reimbursement__c",
+            "columnName": "Total_Reimbursement__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Gross_Earning_for_the_Month__c",
+            "columnName": "Gross_Earning_for_the_Month__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Any_other__c",
+            "columnName": "Any_other__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Travelling_Exp__c",
+            "columnName": "Travelling_Exp__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Appontment_Allowance__c",
+            "columnName": "Appontment_Allowance__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "House_Rent__c",
+            "columnName": "House_Rent__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Total_Deductions__c",
+            "columnName": "Total_Deductions__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Unpaid_Leaves__c",
+            "columnName": "Unpaid_Leaves__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Paid_Leaves__c",
+            "columnName": "Paid_Leaves__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Present_Days__c",
+            "columnName": "Present_Days__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Total_Leave_Deduction__c",
+            "columnName": "Total_Leave_Deduction__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Absent_Days__c",
+            "columnName": "Absent_Days__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Telephone_Expense__Allowance",
+            "columnName": "Telephone_Expense_Allowance__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Security_Fund__Allowance",
+            "columnName": "Security_Fund_Allowance__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Other_Deductions__c",
+            "columnName": "Other_Deductions__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Total_Amount_to_Bank_Net_Salary_Reimbur__c",
+            "columnName": "Total_Amount_to_Bank_Net_Salary_Reimbur__c",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_attendance",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Attendance_Date__c` TEXT, `status__c` TEXT, `MV_User__c` TEXT, `remarks__c` TEXT, `checkOutTime__c` TEXT, `checkInTime__c` TEXT, `Synch` TEXT, `Id` TEXT, `checkInLoc__Latitude__s` TEXT, `checkInLoc__Longitude__s` TEXT, `checkOutLoc__Latitude__s` TEXT, `checkOutLoc__Longitude__s` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "Unique_Id",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "Attendance_Date__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "status",
+            "columnName": "status__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "User",
+            "columnName": "MV_User__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "remarks",
+            "columnName": "remarks__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "checkOutTime",
+            "columnName": "checkOutTime__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "checkInTime",
+            "columnName": "checkInTime__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Synch",
+            "columnName": "Synch",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Id",
+            "columnName": "Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "checkInLat",
+            "columnName": "checkInLoc__Latitude__s",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "checkInLng",
+            "columnName": "checkInLoc__Longitude__s",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "checkOutLat",
+            "columnName": "checkOutLoc__Latitude__s",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "checkOutLng",
+            "columnName": "checkOutLoc__Longitude__s",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_holiday",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Name` TEXT, `Category__c` TEXT, `description__c` TEXT, `Holiday_Date__c` TEXT, `isActive__c` TEXT, `Organisation__c` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "Unique_Id",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "Id",
+            "columnName": "Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Name",
+            "columnName": "Name",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Category__c",
+            "columnName": "Category__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "description__c",
+            "columnName": "description__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Holiday_Date__c",
+            "columnName": "Holiday_Date__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "isActive__c",
+            "columnName": "isActive__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Organisation__c",
+            "columnName": "Organisation__c",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      },
+      {
+        "tableName": "table_notification",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Title` TEXT, `Description` TEXT, `Status` TEXT)",
+        "fields": [
+          {
+            "fieldPath": "UniqueId",
+            "columnName": "unique_Id",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "Id",
+            "columnName": "Id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Title",
+            "columnName": "Title",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Description",
+            "columnName": "Description",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "Status",
+            "columnName": "Status",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "unique_Id"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ffa4444f0b57974dc9518e1b9318da1c\")"
+    ]
+  }
+}

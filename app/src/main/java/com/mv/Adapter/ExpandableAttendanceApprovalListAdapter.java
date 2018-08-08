@@ -85,24 +85,6 @@ public class ExpandableAttendanceApprovalListAdapter extends BaseExpandableListA
                     _context.startActivity(intent);
             }
         });
-        imgDownload = (ImageView) convertView.findViewById(R.id.imgDownload);
-        /*if(groupPosition==0&&!preferenceHelper.getString(Constants.Attendance).equals(Constants.Leave_Approve))
-        {
-
-            imgDownload.setVisibility(View.VISIBLE);
-            imgDownload.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    showDeleteDialog(attendance_approval.getId());
-                }
-            });
-        }
-        else
-        {
-            imgDownload.setVisibility(View.GONE);
-        }*/
-
-        imgshare = (ImageView) convertView.findViewById(R.id.imgshare);
 
         txtName = (TextView) convertView.findViewById(R.id.txtName);
 

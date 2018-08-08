@@ -1101,7 +1101,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
     private void getUserData() {
 
         Utills.showProgressDialog(this, "Loading Data", getString(R.string.progress_please_wait));
@@ -1126,7 +1125,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                         }
                         initViews();
-
                     }
 
 

@@ -385,7 +385,8 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name=".Activity.NotificationActivity" />
         <activity android:name=".Activity.AttendanceApprovalActivity" />
-        <activity android:name=".Activity.AttendanceApproveDetailActivity"></activity>
+        <activity android:name=".Activity.AttendanceApproveDetailActivity" />
+        <activity android:name=".Activity.AttendanceApproval2Activity"></activity>
     </application>
 
 </manifest>

@@ -370,7 +370,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
             Intent intent = new Intent(context, CommunityHomeActivity.class);
             intent.putExtra(Constants.TITLE, communityList.get(position).getName());
             //sending new intent to check user can post or not
-            intent.putExtra("CanPost", communityList.get(position).getCanPost());
+            //intent.putExtra("CanPost", communityList.get(position).getCanPost());
             intent.putExtra(Constants.LIST, json);
             startActivity(intent);
         }

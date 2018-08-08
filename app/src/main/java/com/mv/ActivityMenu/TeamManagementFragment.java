@@ -59,7 +59,6 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
         Log.d("cycled", "onCreate: B");
         binding = DataBindingUtil.setContentView(this, R.layout.activity_new_template);
         binding.setVariable(BR.vm, new ParentViewModel());
-
     }
 
     @Override
@@ -68,9 +67,6 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
         initViews();
         Log.d("cycled", "onResume: B");
     }
-
-
-
 
     private void setActionbar(String Title) {
         String str = Title;
@@ -116,7 +112,7 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
 //        menuList.add(getString(R.string.expense_approval));
 //        menuList.add(getString(R.string.adavance_approval));
         menuList.add(getString(R.string.leave_approoval));
- //       menuList.add(getString(R.string.attendance_approoval));
+  //      menuList.add(getString(R.string.attendance_approoval));
         processAllList.clear();
         for (int i = 0; i < menuList.size(); i++) {
             Template processList = new Template();

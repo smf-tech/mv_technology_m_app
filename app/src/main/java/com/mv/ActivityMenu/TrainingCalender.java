@@ -169,7 +169,6 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
             e.printStackTrace();
         }
 
-
     }
 
     public static String[] getColumnIdex(String[] value) {
