@@ -87,18 +87,18 @@ public class TaskContainerModel {
     @Expose
     private String headerPosition;
 
-    @ColumnInfo(name = "IsDeleteAllow")
-    @SerializedName("IsDeleteAllow")
-    @Expose
-    private boolean IsDeleteAllow;
-
-    public boolean getIsDeletable__c() {
-        return IsDeleteAllow;
-    }
-
-    public void setIsDeletable__c(boolean IsDeleteAllow) {
-        this.IsDeleteAllow = IsDeleteAllow;
-    }
+//    @ColumnInfo(name = "IsDeleteAllow")
+//    @SerializedName("IsDeleteAllow")
+//    @Expose
+//    private boolean IsDeleteAllow;
+//
+//    public boolean getIsDeletable__c() {
+//        return IsDeleteAllow;
+//    }
+//
+//    public void setIsDeletable__c(boolean IsDeleteAllow) {
+//        this.IsDeleteAllow = IsDeleteAllow;
+//    }
 
 
 }

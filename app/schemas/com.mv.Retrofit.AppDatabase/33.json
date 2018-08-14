@@ -14,13 +14,6 @@
             "affinity": "INTEGER"
           },
           {
-    "identityHash": "c67351ce96f07d6fc0ece36de99d6b4e",
-    "entities": [
-      {
-        "tableName": "table_community",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`community_id` TEXT, `community_name` TEXT, `timestamp` TEXT, `unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Count` TEXT, `totalCount` TEXT, `errorMsg` TEXT, `youCanPostInCommunity` INTEGER)",
-        "fields": [
-          {
             "fieldPath": "Id",
             "columnName": "community_id",
             "affinity": "TEXT"
@@ -34,11 +27,6 @@
             "fieldPath": "Time",
             "columnName": "timestamp",
             "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "Unique_Id",
-            "columnName": "unique_Id",
-            "affinity": "INTEGER"
           },
           {
             "fieldPath": "Count",
@@ -375,7 +363,7 @@
       },
       {
         "tableName": "table_container",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` TEXT, `taskListString` TEXT, `isSave` TEXT, `MV_Process__c` TEXT, `TaskType` TEXT, `headerPosition` TEXT, `IsDeleteAllow` INTEGER, PRIMARY KEY(`unique_Id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` TEXT, `taskListString` TEXT, `isSave` TEXT, `MV_Process__c` TEXT, `TaskType` TEXT, `headerPosition` TEXT, PRIMARY KEY(`unique_Id`))",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -406,11 +394,6 @@
             "fieldPath": "headerPosition",
             "columnName": "headerPosition",
             "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "IsDeleteAllow",
-            "columnName": "IsDeleteAllow",
-            "affinity": "INTEGER"
           }
         ],
         "primaryKey": {
@@ -1315,7 +1298,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c67351ce96f07d6fc0ece36de99d6b4e\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"91d0853e4c38d64acc8405ff9fa69fab\")"
     ]
   }
 }

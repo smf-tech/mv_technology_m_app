@@ -125,7 +125,7 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         else
             holder.txtCommunityName.setText(resultList.get(position).getHeaderPosition());
 
-        if(resultList.get(position).getIsDeletable__c()==true) {
+     //   if(resultList.get(position).getIsDeletable__c()==true) {
 
             holder.deletelay.setVisibility(View.VISIBLE);
             holder.deletelay.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +135,7 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                     showFormDeletePopUp(position);
                 }
             });
-        }
+    //    }
 
         if (tasks.get(0).getIsSave().equals("false")) {
             if (tasks.get(0).getIsApproved__c().equals("false")) {

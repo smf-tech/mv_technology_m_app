@@ -225,7 +225,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     processList.setTask_type__c(jsonArray.getJSONObject(i).getString("Task_Type"));
                                     processList.setTask_Text__c(jsonArray.getJSONObject(i).getString("Question"));
                                     //added next line to get isDeleteallow field from salesforce
-                                    processList.setIsDeletable__c(jsonArray.getJSONObject(i).getBoolean("IsDeleteAllow"));
+                                 //   processList.setIsDeletable__c(jsonArray.getJSONObject(i).getBoolean("IsDeleteAllow"));
 
                                     processList.setIsHeader(jsonArray.getJSONObject(i).getString("isHeader"));
 
@@ -277,7 +277,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 taskContainerModel.setMV_Process__c(proceesId);
                                 taskContainerModel.setUnique_Id(taskList.get(0).getId());
                                 //add delete allow feature to table
-                                taskContainerModel.setIsDeletable__c(taskList.get(0).getIsDeletable__c());
+                            //    taskContainerModel.setIsDeletable__c(taskList.get(0).getIsDeletable__c());
                                 if (!idList.contains(taskContainerModel.getUnique_Id()))
                                     resultList.add(taskContainerModel);
                               }

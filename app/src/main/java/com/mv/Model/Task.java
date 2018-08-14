@@ -189,18 +189,18 @@ public class Task implements Parcelable {
     @Expose
     private String isHeader;
 
-    @ColumnInfo(name = "IsDeleteAllow")
-    @SerializedName("IsDeleteAllow")
-    @Expose
-    private Boolean IsDeleteAllow;
-
-    public Boolean getIsDeletable__c() {
-        return IsDeleteAllow;
-    }
-
-    public void setIsDeletable__c(Boolean IsDeleteAllow) {
-        this.IsDeleteAllow = IsDeleteAllow;
-    }
+//    @ColumnInfo(name = "IsDeleteAllow")
+//    @SerializedName("IsDeleteAllow")
+//    @Expose
+//    private Boolean IsDeleteAllow;
+//
+//    public Boolean getIsDeletable__c() {
+//        return IsDeleteAllow;
+//    }
+//
+//    public void setIsDeletable__c(Boolean IsDeleteAllow) {
+//        this.IsDeleteAllow = IsDeleteAllow;
+//    }
 
     public String getIsEditable__c() {
         return IsEditable;
@@ -399,7 +399,7 @@ public class Task implements Parcelable {
         dest.writeString(this.status);
         dest.writeString(this.IsEditable);
         dest.writeString(this.isHeader);
-        dest.writeValue(this.IsDeleteAllow);
+     //   dest.writeValue(this.IsDeleteAllow);
     }
 
     protected Task(Parcel in) {
@@ -428,7 +428,7 @@ public class Task implements Parcelable {
         this.status = in.readString();
         this.IsEditable = in.readString();
         this.isHeader = in.readString();
-        this.IsDeleteAllow = (Boolean) in.readValue(Boolean.class.getClassLoader());
+      //  this.IsDeleteAllow = (Boolean) in.readValue(Boolean.class.getClassLoader());
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
