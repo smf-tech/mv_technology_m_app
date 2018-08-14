@@ -62,7 +62,18 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                         if ((User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("true"))) {
                             if (allTab.contains(Constants.My_Community)) {
-                                sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
+                                //check for the mute Notifications of cammunity
+                                boolean isNotify=true;
+                                List<Community> list = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities();
+                                for(int i=0;i<list.size();i++){
+                                    if(remoteMessage.getData().get("Title").contains(list.get(i).getName())&& list.get(i).getMuteNotification()!=null &&
+                                            list.get(i).getMuteNotification().equals("Unmute")){
+                                        isNotify=false;
+                                        break;
+                                    }
+                                }
+                                if(isNotify)
+                                    sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
                                 Notifications data = new Notifications();
                                 data.setId(remoteMessage.getData().get("Id"));
                                 data.setTitle(remoteMessage.getData().get("Title"));
@@ -70,15 +81,25 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                 data.setStatus("unread");
                                 AppDatabase.getAppDatabase(this).userDao().insertNotification(data);
 
-                                // notify the for new notification.
+                                // notify for new notification.
                                 Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
                                 LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
                             }
-
                         }
                     }
                 } else {
-                    sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
+                    //check for the mute Notifications of cammunity
+                    boolean isNotify=true;
+                    List<Community> list = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities();
+                    for(int i=0;i<list.size();i++){
+                        if(remoteMessage.getData().get("Title").contains(list.get(i).getName()) && list.get(i).getMuteNotification()!=null &&
+                                list.get(i).getMuteNotification().equals("Unmute")){
+                            isNotify=false;
+                            break;
+                        }
+                    }
+                    if(isNotify)
+                        sendNotification(remoteMessage.getData().get("Title"), remoteMessage.getData().get("Description"));
                     Notifications data = new Notifications();
                     data.setId(remoteMessage.getData().get("Id"));
                     data.setTitle(remoteMessage.getData().get("Title"));
@@ -86,7 +107,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     data.setStatus("unread");
                     AppDatabase.getAppDatabase(this).userDao().insertNotification(data);
 
-                    // notify the for new notification.
+                    // notify for new notification.
                     Intent pushNotification = new Intent(Constants.PUSH_NOTIFICATION);
                     LocalBroadcastManager.getInstance(this).sendBroadcast(pushNotification);
                 }

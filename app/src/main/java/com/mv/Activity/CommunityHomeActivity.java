@@ -471,7 +471,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 /*Api Call if  internet is available */
                     getMyChats(false, true, false);
                 else
-                    showPopUp();
+                    myPost();
 //                if (mypostlist.size() == 0) {
 //
 //                } else {
@@ -593,46 +593,45 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
-        img_list = (ImageView) findViewById(R.id.img_list);
-        img_list.setVisibility(View.GONE);
-        img_list.setOnClickListener(this);
         img_logout = (ImageView) findViewById(R.id.img_logout);
-        img_logout.setImageResource(R.drawable.group);
-        img_logout.setVisibility(View.VISIBLE);
-        img_logout.setOnClickListener(this);
-        img_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), CommunityMemberNameActivity.class);
-                startActivity(intent);
-            }
-        });
-        img_filter = (ImageView) findViewById(R.id.img_filter);
-        if (Title != null) {
-            if (Title.equalsIgnoreCase("HO Support")) {
-                img_logout.setVisibility(View.GONE);
-            } else {
-                img_logout.setVisibility(View.VISIBLE);
-            }
-        }
-
-        img_filter.setVisibility(View.VISIBLE);
-        img_filter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                filter = true;
-                if (Title.equalsIgnoreCase("HO Support")) {
-                    HoSupportFilter();
-                } else {
-                    OtherFilter();
-                }
-            }
-        });
+        img_logout.setVisibility(View.GONE);
+//        img_logout.setImageResource(R.drawable.group);
+//        img_filter = (ImageView) findViewById(R.id.img_filter);
+//        img_filter.setVisibility(View.GONE);
+//        img_logout.setOnClickListener(this);
+//        img_logout.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getApplicationContext(), CommunityMemberNameActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//
+//        if (Title != null) {
+//            if (Title.equalsIgnoreCase("HO Support")) {
+//                img_logout.setVisibility(View.GONE);
+//            } else {
+//                img_logout.setVisibility(View.VISIBLE);
+//            }
+//        }
+//
+//
+//        img_filter.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                filter = true;
+//                if (Title.equalsIgnoreCase("HO Support")) {
+//                    HoSupportFilter();
+//                } else {
+//                    OtherFilter();
+//                }
+//            }
+//        });
 
 
         //****Changes for the mute notification****//
         img_more = (ImageView) findViewById(R.id.img_more);
-        img_more.setVisibility(View.GONE);
+        img_more.setVisibility(View.VISIBLE);
         img_more.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -640,10 +639,24 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 //Inflating the Popup using xml file
                 popup.getMenuInflater().inflate(R.menu.popup_menu_cammunity, popup.getMenu());
                 //   popup.getMenu().getItem(R.id.spam).setVisible(true);
-                MenuItem spam = (MenuItem) popup.getMenu().findItem(R.id.mn_filter);
-                MenuItem edit = (MenuItem) popup.getMenu().findItem(R.id.mn_mumbers);
-                MenuItem delete = (MenuItem) popup.getMenu().findItem(R.id.mn_mute);
+                MenuItem filtr = (MenuItem) popup.getMenu().findItem(R.id.mn_filter);
+                MenuItem group = (MenuItem) popup.getMenu().findItem(R.id.mn_mumbers);
+                MenuItem mute = (MenuItem) popup.getMenu().findItem(R.id.mn_mute);
 
+                img_filter = (ImageView) findViewById(R.id.img_filter);
+                if (Title != null) {
+                    if (Title.equalsIgnoreCase("HO Support")) {
+                        group.setVisible(false);
+                    } else {
+                        group.setVisible(true);
+                    }
+                }
+
+                Community comunity=AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getCommunityForMute(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
+                if(comunity.getMuteNotification()==null || comunity.getMuteNotification().equals("Mute"))
+                    mute.setTitle("Mute");
+                else
+                    mute.setTitle("Unmute");
                 //registering popup with OnMenuItemClickListener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
                     public boolean onMenuItemClick(MenuItem item) {
@@ -659,6 +672,13 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                             Intent intent = new Intent(getApplicationContext(), CommunityMemberNameActivity.class);
                             startActivity(intent);
                         } else if (item.getItemId()== R.id.mn_mute) {
+                            if(comunity.getMuteNotification()==null || comunity.getMuteNotification().equals("Mute")){
+                                comunity.setMuteNotification("Unmute");
+                                AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().updateCommunityForMute(comunity);
+                            } else {
+                                comunity.setMuteNotification("Mute");
+                                AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().updateCommunityForMute(comunity);
+                            }
                             Toast.makeText(CommunityHomeActivity.this,"working",Toast.LENGTH_LONG).show();
                         }
                         return true;

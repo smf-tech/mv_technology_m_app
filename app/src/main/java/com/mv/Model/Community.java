@@ -14,6 +14,9 @@ import com.mv.Utils.Constants;
 @Entity(tableName = Constants.TABLE_COMMUNITY)
 public class Community {
 
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "unique_Id")
+    private int Unique_Id;
     @ColumnInfo(name = "community_id")
     @SerializedName("community_id")
     @Expose
@@ -26,6 +29,25 @@ public class Community {
     @SerializedName("timestamp")
     @Expose
     private String Time;
+    @ColumnInfo(name = "Count")
+    @SerializedName("Count")
+    @Expose
+    private String Count;
+    @ColumnInfo(name = "totalCount")
+    @SerializedName("totalCount")
+    @Expose
+    private String TotalCount;
+    @SerializedName("errorMsg")
+    @Expose
+    private String errorMsg;
+    @ColumnInfo(name ="youCanPostInCommunity")
+    @SerializedName("youCanPostInCommunity")
+    @Expose
+    private boolean CanPost;
+    @ColumnInfo(name = "mute_notification")
+    @SerializedName("mute_notification")
+    @Expose
+    private String muteNotification;
 
     public String getTime() {
         return Time;
@@ -43,11 +65,6 @@ public class Community {
         Unique_Id = unique_Id;
     }
 
-    @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "unique_Id")
-    private int Unique_Id;
-
-
     public String getCount() {
         return Count;
     }
@@ -55,11 +72,6 @@ public class Community {
     public void setCount(String count) {
         Count = count;
     }
-
-    @ColumnInfo(name = "Count")
-    @SerializedName("Count")
-    @Expose
-    private String Count;
 
     public String getTotalCount() {
         return TotalCount;
@@ -69,23 +81,6 @@ public class Community {
         TotalCount = totalCount;
     }
 
-    @ColumnInfo(name = "totalCount")
-    @SerializedName("totalCount")
-    @Expose
-    private String TotalCount;
-
-
-    @SerializedName("errorMsg")
-    @Expose
-    private String errorMsg;
-
-
-
-    @ColumnInfo(name ="youCanPostInCommunity")
-    @SerializedName("youCanPostInCommunity")
-    @Expose
-    private boolean CanPost;
-
     public boolean getCanPost() {
         return CanPost;
     }
@@ -93,8 +88,6 @@ public class Community {
     public void setCanPost(boolean canPost) {
         CanPost = canPost;
     }
-
-
 
     public String getId() {
         return Id;
@@ -118,5 +111,13 @@ public class Community {
 
     public void setErrorMsg(String errorMsg) {
         this.errorMsg = errorMsg;
+    }
+
+    public String getMuteNotification() {
+        return muteNotification;
+    }
+
+    public void setMuteNotification(String muteNotification) {
+        this.muteNotification = muteNotification;
     }
 }

@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.ThumbnailUtils;
@@ -58,9 +59,11 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
@@ -828,6 +831,12 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                     outputUri = data.getData();
                     String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture_crop.jpg";
                     File imageFile = new File(imageFilePath);
+
+                    ///////////to compres the image
+//                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), outputUri);
+//                    FileOutputStream fOut = new FileOutputStream(imageFile);
+//                    bitmap.compress(Bitmap.CompressFormat.JPEG, 50, fOut);
+
                     FinalUri = Uri.fromFile(imageFile);
                     Crop.of(outputUri, FinalUri).start(this);
 

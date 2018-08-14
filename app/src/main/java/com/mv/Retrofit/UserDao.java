@@ -258,6 +258,11 @@ public interface UserDao {
     @Query("SELECT * FROM " + Constants.TABLE_COMMUNITY + " order by timestamp desc")
     List<Community> getAllCommunities();
 
+    @Query("SELECT * FROM " + Constants.TABLE_COMMUNITY + " where community_id = :communityId")
+    Community getCommunityForMute(String communityId);
+
+    @Update
+    void updateCommunityForMute(Community... community);
 
     @Query("SELECT count(*) FROM " + Constants.TABLE_CONTENT + " where CommunityId = :communityId")
     int getCommunitySize(String communityId);
@@ -360,5 +365,8 @@ public interface UserDao {
 
     @Query("DELETE FROM " + Constants.TABLE_NOTIFICATION + " where unique_Id = :unique_Id")
     void deleteNotification(int unique_Id);
+
+    @Query("DELETE FROM " + Constants.TABLE_NOTIFICATION)
+    public void clearNotification();
 
 }

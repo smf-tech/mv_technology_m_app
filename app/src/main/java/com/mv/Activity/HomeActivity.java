@@ -973,6 +973,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     AppDatabase.getAppDatabase(HomeActivity.this).userDao().clearProcessTable();
                     AppDatabase.getAppDatabase(HomeActivity.this).userDao().clearTaskContainer();
                     AppDatabase.getAppDatabase(HomeActivity.this).userDao().clearLocation();
+                    AppDatabase.getAppDatabase(HomeActivity.this).userDao().clearNotification();
                     User.clearUser();
                     Intent startMain = new Intent(HomeActivity.this, LoginActivity.class);
                     startMain.addCategory(Intent.CATEGORY_HOME);
