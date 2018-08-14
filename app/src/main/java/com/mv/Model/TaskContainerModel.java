@@ -25,7 +25,6 @@ public class TaskContainerModel {
         Unique_Id = unique_Id;
     }
 
-
     public String getTaskListString() {
         return taskListString;
     }
@@ -87,6 +86,19 @@ public class TaskContainerModel {
     @SerializedName("headerPosition")
     @Expose
     private String headerPosition;
+
+    @ColumnInfo(name = "IsDeleteAllow")
+    @SerializedName("IsDeleteAllow")
+    @Expose
+    private boolean IsDeleteAllow;
+
+    public boolean getIsDeletable__c() {
+        return IsDeleteAllow;
+    }
+
+    public void setIsDeletable__c(boolean IsDeleteAllow) {
+        this.IsDeleteAllow = IsDeleteAllow;
+    }
 
 
 }

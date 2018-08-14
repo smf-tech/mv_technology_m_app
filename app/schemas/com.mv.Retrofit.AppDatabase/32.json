@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 32,
-    "identityHash": "ffa4444f0b57974dc9518e1b9318da1c",
+    "identityHash": "c67351ce96f07d6fc0ece36de99d6b4e",
     "entities": [
       {
         "tableName": "table_community",
@@ -358,7 +358,7 @@
       },
       {
         "tableName": "table_container",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` TEXT, `taskListString` TEXT, `isSave` TEXT, `MV_Process__c` TEXT, `TaskType` TEXT, `headerPosition` TEXT, PRIMARY KEY(`unique_Id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` TEXT, `taskListString` TEXT, `isSave` TEXT, `MV_Process__c` TEXT, `TaskType` TEXT, `headerPosition` TEXT, `IsDeleteAllow` INTEGER, PRIMARY KEY(`unique_Id`))",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -389,6 +389,11 @@
             "fieldPath": "headerPosition",
             "columnName": "headerPosition",
             "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "IsDeleteAllow",
+            "columnName": "IsDeleteAllow",
+            "affinity": "INTEGER"
           }
         ],
         "primaryKey": {
@@ -1293,7 +1298,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ffa4444f0b57974dc9518e1b9318da1c\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"c67351ce96f07d6fc0ece36de99d6b4e\")"
     ]
   }
 }

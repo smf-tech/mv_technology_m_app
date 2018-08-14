@@ -38,15 +38,15 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
     private final List<TaskContainerModel> resultList;
     ArrayList<ArrayList<Task>> taskArrayList = new ArrayList<>();
     PreferenceHelper preferenceHelper;
-    private Activity mContext;
+    private ProcessListActivity mContext;
 
     Gson gson;
     Type listType;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView txtCommunityName, textViewColor;
-        public LinearLayout layout, deleteLay;
-        ImageView deleteRecord;
+        public LinearLayout layout,arrowLay,deletelay;
+        ImageView arrowimg,deleteimg;
 
 
         public MyViewHolder(View view) {
@@ -54,8 +54,10 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
             txtCommunityName = (TextView) view.findViewById(R.id.txtTemplateName);
             textViewColor = (TextView) view.findViewById(R.id.temp_color);
             layout = (LinearLayout) view.findViewById(R.id.layoutTemplate);
-            deleteLay = (LinearLayout) view.findViewById(R.id.lay_delete);
-            deleteRecord = (ImageView) view.findViewById(R.id.row_img);
+            arrowLay = (LinearLayout) view.findViewById(R.id.lay_delete);
+            arrowimg = (ImageView) view.findViewById(R.id.row_img);
+            deletelay = (LinearLayout) view.findViewById(R.id.lay_delete_new);
+            deleteimg = (ImageView) view.findViewById(R.id.row_img_delete);
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -79,10 +81,8 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
 
                     } else {
 
-
                         Utills.showToast("No Task Available ", mContext);
                     }
-
                 }
             });
 
@@ -93,8 +93,7 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
 
     public ProcessListAdapter(List<TaskContainerModel> resultList, Activity context) {
         this.resultList = resultList;
-
-        this.mContext = context;
+       this.mContext = (ProcessListActivity) context;
         this.preferenceHelper = new PreferenceHelper(context);
         gson = new Gson();
         listType = new TypeToken<ArrayList<Task>>() {
@@ -126,6 +125,17 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         else
             holder.txtCommunityName.setText(resultList.get(position).getHeaderPosition());
 
+        if(resultList.get(position).getIsDeletable__c()==true) {
+
+            holder.deletelay.setVisibility(View.VISIBLE);
+            holder.deletelay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    showFormDeletePopUp(position);
+                }
+            });
+        }
 
         if (tasks.get(0).getIsSave().equals("false")) {
             if (tasks.get(0).getIsApproved__c().equals("false")) {
@@ -137,17 +147,10 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                     holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                 }
             }
-            holder.deleteRecord.setImageResource(R.drawable.arrow);
+            holder.arrowimg.setImageResource(R.drawable.arrow);
         } else {
             holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.red));
-            holder.deleteRecord.setImageResource(R.drawable.form_delete);
-            holder.deleteLay.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                    showLogoutPopUp(position);
-                }
-            });
         }
         //  holder.eventUserName.setText(String.valueOf(position));
     }
@@ -157,7 +160,7 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         return resultList.size();
     }
 
-    private void showLogoutPopUp(final int postion) {
+    private void showFormDeletePopUp(final int position) {
         final AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
 
         // Setting Dialog Title
@@ -181,9 +184,11 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         // Setting OK Button
         alertDialog.setButton(mContext.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(resultList.get(postion).getUnique_Id(), resultList.get(postion).getMV_Process__c());
+                mContext.deleteForm(resultList.get(position));
 
-                ((ProcessListActivity) mContext).getAllProcessData();
+            //    AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(resultList.get(position).getUnique_Id(), resultList.get(position).getMV_Process__c());
+
+              //  ((ProcessListActivity) mContext).getAllProcessData();
             }
         });
 

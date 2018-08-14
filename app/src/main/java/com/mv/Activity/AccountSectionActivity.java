@@ -35,7 +35,6 @@ public class AccountSectionActivity extends AppCompatActivity implements View.On
         setActionbar(getString(R.string.account_section));
     }
 
-
     public void onAdavanceClick() {
         Intent intent;
         intent = new Intent(this, AdavanceListActivity.class);
@@ -90,6 +89,5 @@ public class AccountSectionActivity extends AppCompatActivity implements View.On
         img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
     }
-
 
 }

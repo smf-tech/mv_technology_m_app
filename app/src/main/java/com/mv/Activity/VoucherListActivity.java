@@ -293,6 +293,7 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
         }
 
     }
+
     private Date ConvertStringToDate(String stringDate){
         Date parsedDate  = null;
         try {

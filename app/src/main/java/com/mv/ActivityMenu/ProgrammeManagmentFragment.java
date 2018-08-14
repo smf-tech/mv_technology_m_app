@@ -71,8 +71,6 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
         context = this;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_program_management);
         binding.setVariable(BR.vm, new ParentViewModel());
-
-
         initViews();
     }
 

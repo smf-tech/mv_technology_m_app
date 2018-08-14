@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.JsonParser;
 import com.mv.Adapter.ProcessListAdapter;
 import com.mv.Model.Task;
 import com.mv.Model.TaskContainerModel;
@@ -180,8 +181,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     public void onBackPressed() {
         // Utills.openActivity(ProcessListActivity.this, HomeActivity.class);
         finish();
-
-
     }
 
     public void getAllProcess() {
@@ -225,7 +224,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     processList.setIs_Response_Mnadetory__c(jsonArray.getJSONObject(i).getBoolean("Is_Mandotory"));
                                     processList.setTask_type__c(jsonArray.getJSONObject(i).getString("Task_Type"));
                                     processList.setTask_Text__c(jsonArray.getJSONObject(i).getString("Question"));
-
+                                    //added next line to get isDeleteallow field from salesforce
+                                    processList.setIsDeletable__c(jsonArray.getJSONObject(i).getBoolean("IsDeleteAllow"));
 
                                     processList.setIsHeader(jsonArray.getJSONObject(i).getString("isHeader"));
 
@@ -269,21 +269,18 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
                                 }
 
-
                                 taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
                                 taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
-
                                 taskContainerModel.setHeaderPosition(sb.toString());
                                 //task is with answer
                                 taskContainerModel.setTaskType(Constants.TASK_ANSWER);
                                 taskContainerModel.setMV_Process__c(proceesId);
                                 taskContainerModel.setUnique_Id(taskList.get(0).getId());
+                                //add delete allow feature to table
+                                taskContainerModel.setIsDeletable__c(taskList.get(0).getIsDeletable__c());
                                 if (!idList.contains(taskContainerModel.getUnique_Id()))
                                     resultList.add(taskContainerModel);
-
-
-                            }
-
+                              }
 
                             AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().insertTask(resultList);
                             if (resultList.size() > 0) {
@@ -457,5 +454,52 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
             }
         });
     }
+
+    //Delete post from salesforece and from local database
+    public void deleteForm(TaskContainerModel tcm) {
+        if (Utills.isConnected(this)) {
+
+            Utills.showProgressDialog(this);
+//                JSONObject jsonObject = new JSONObject();
+//                JSONArray jsonArray = new JSONArray();
+//                JSONObject jsonObject1 = new JSONObject();
+//
+//                    jsonObject1.put("commentId", id);
+
+            ServiceRequest apiService =
+                    ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+            JsonParser jsonParser = new JsonParser();
+//                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject1.toString());
+            apiService.getSalesForceData(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/WS_DeleteComments?commentId="+tcm.getUnique_Id()).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Utills.hideProgressDialog();
+
+                    AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(tcm.getUnique_Id(), tcm.getMV_Process__c());
+
+                    try {
+                        if (Utills.isConnected(ProcessListActivity.this)) {
+                            getAllProcess();
+                        }
+
+                    //    Utills.showToast(getString(R.string.comment_delete), getApplicationContext());
+                    } catch (Exception e) {
+                        Utills.hideProgressDialog();
+                        Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Utills.hideProgressDialog();
+                    Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                }
+            });
+        } else {
+            Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
+        }
+
+    }
+
 
 }

@@ -55,6 +55,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -241,7 +243,7 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                 binding.editApproveRemarks.setEnabled(false);
             }
 
-            if (mExpense.getAttachmentPresent().equalsIgnoreCase("true")) {
+            if (mExpense.getAttachmentPresent()!= null && mExpense.getAttachmentPresent().equalsIgnoreCase("true")) {
                 Glide.with(ExpenseNewActivity.this)
                         .load(Constants.IMAGEURL + mExpense.getId() + ".png")
                         .placeholder(getResources().getDrawable(R.drawable.mulya_bg))
@@ -250,9 +252,18 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                         .into(binding.addImage);
 
                 binding.tvAddAttchment.setVisibility(View.GONE);
+                if(!mExpense.getStatus().equalsIgnoreCase("Pending")){
+                    binding.addImage.setEnabled(false);
+                }
+
             } else { //hide addimage icon if no attachment available
-                binding.addImage.setVisibility(View.GONE);
-                binding.tvAddAttchment.setText(R.string.no_attachment_text);
+                if (mExpense.getStatus().equalsIgnoreCase("Pending")) {
+                    binding.addImage.setVisibility(View.VISIBLE);
+                    binding.tvAddAttchment.setText(R.string.addAttachment);
+                }else{
+                    binding.addImage.setVisibility(View.GONE);
+                    binding.tvAddAttchment.setText(R.string.no_attachment_text);
+                }
             }
             if (!Constants.AccountTeamCode.equals("TeamManagement")) {
                 binding.approveRemarks.setVisibility(View.GONE);
@@ -544,7 +555,11 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
     //    apiService.sendImageToSalesforce(Constants.New_upload_phpUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
-             apiService.sendImageToPHP(Constants.New_upload_phpUrl, jsonArray.toString()).enqueue(new Callback<ResponseBody>() {
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("json_data", jsonArray.toString())
+                .build();
+             apiService.sendImageToPHP(requestBody).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();

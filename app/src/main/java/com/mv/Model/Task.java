@@ -189,6 +189,19 @@ public class Task implements Parcelable {
     @Expose
     private String isHeader;
 
+    @ColumnInfo(name = "IsDeleteAllow")
+    @SerializedName("IsDeleteAllow")
+    @Expose
+    private Boolean IsDeleteAllow;
+
+    public Boolean getIsDeletable__c() {
+        return IsDeleteAllow;
+    }
+
+    public void setIsDeletable__c(Boolean IsDeleteAllow) {
+        this.IsDeleteAllow = IsDeleteAllow;
+    }
+
     public String getIsEditable__c() {
         return IsEditable;
     }
@@ -221,7 +234,6 @@ public class Task implements Parcelable {
         IsApproved__c = isApproved__c;
     }
 
-
     public String getLocationLevel() {
         return LocationLevel;
     }
@@ -229,7 +241,6 @@ public class Task implements Parcelable {
     public void setLocationLevel(String locationLevel) {
         LocationLevel = locationLevel;
     }
-
 
     public String getValidation() {
         return validation;
@@ -246,7 +257,6 @@ public class Task implements Parcelable {
     public void setSection_Name__c(String section_Name__c) {
         Section_Name__c = section_Name__c;
     }
-
 
     public String getPicklist_Value__c() {
         return Picklist_Value__c;
@@ -389,6 +399,7 @@ public class Task implements Parcelable {
         dest.writeString(this.status);
         dest.writeString(this.IsEditable);
         dest.writeString(this.isHeader);
+        dest.writeValue(this.IsDeleteAllow);
     }
 
     protected Task(Parcel in) {
@@ -417,6 +428,7 @@ public class Task implements Parcelable {
         this.status = in.readString();
         this.IsEditable = in.readString();
         this.isHeader = in.readString();
+        this.IsDeleteAllow = (Boolean) in.readValue(Boolean.class.getClassLoader());
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {

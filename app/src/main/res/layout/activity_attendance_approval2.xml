@@ -13,45 +13,21 @@
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
 
-        <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/swipe_refresh_layout"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_below="@+id/toolbar">
-
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/my_recycler_view"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
+                android:layout_below="@+id/sort_layout"
                 android:clipToPadding="false"
                 android:paddingBottom="@dimen/fab_margin"
                 android:paddingTop="@dimen/fab_margin"
                 android:scrollbars="vertical" />
-        </android.support.v4.widget.SwipeRefreshLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:animateLayoutChanges="true"
-            android:orientation="vertical">
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab_add_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@+id/lnr_filter"
-                android:layout_alignParentRight="true"
-                android:layout_gravity="bottom|end"
-                android:layout_marginBottom="@dimen/dimen_10dp"
-                android:layout_marginRight="@dimen/dimen_10dp"
-                android:src="@android:drawable/ic_input_add" />
-
 
             <LinearLayout
                 android:id="@+id/lnr_filter"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
+                android:layout_alignParentBottom="true"
                 android:orientation="horizontal">
                 <com.mv.Widgets.MyFontButton
                     android:id="@+id/btn_pending"
@@ -84,7 +60,40 @@
 
 
             </LinearLayout>
+        <LinearLayout
+            android:id="@+id/sort_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/toolbar">
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/input_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:visibility="visible"
+                android:background="@drawable/search_rounded"
+                android:padding="5dp"
+                android:layout_weight="1">
+
+                <com.mv.Widgets.MyEditTextView
+                    android:id="@+id/edit_text_email"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:drawableLeft="@drawable/search"
+                    android:drawablePadding="10dp"
+                    android:focusableInTouchMode="true"
+                    android:hint="Search User"
+                    android:inputType="textEmailAddress"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/medium_text"
+                    android:padding="5dp"/>
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
+
         <TextView
             android:visibility="gone"
             android:id="@+id/textNoData"
