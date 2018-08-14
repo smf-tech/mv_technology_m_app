@@ -67,8 +67,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -485,9 +489,8 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                                 JSONObject object1 = array.getJSONObject(0);
                                 if (object1.has("Id") && (pdfUri != null || FinalUri != null || outputUri != null || audioUri != null)) {
                                     JSONObject object2 = new JSONObject();
-                                    object2.put("id", object1.getString("Id"));
-
                                     stringId = object1.getString("Id");
+                                    object2.put("id", stringId);
                                     if (FinalUri != null)
                                         object2.put("type", "png");
                                     else if (outputUri != null)
@@ -499,16 +502,19 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                                     object2.put("img", img_str);
                                     JSONArray array1 = new JSONArray();
                                     array1.put(object2);
+
                                     sendImageToServer(array1);
                                    /* Utills.showToast("Report submitted successfully...", getApplicationContext());
                                     finish();
                                     overridePendingTransition(R.anim.left_in, R.anim.right_out);*/
                                 } else {
+                                    Utills.hideProgressDialog();
                                     Utills.showToast("Report submitted successfully...", getApplicationContext());
                                     finish();
                                     overridePendingTransition(R.anim.left_in, R.anim.right_out);
                                 }
                             } else {
+                                Utills.hideProgressDialog();
                                 Utills.showToast("Report submitted successfully...", getApplicationContext());
                                 finish();
                                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
@@ -657,17 +663,23 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
 //    }
 
     private void sendImageToServer(JSONArray jsonArray) {
+
         Utills.showProgressDialog(this);
-        JsonParser jsonParser = new JsonParser();
-        JsonArray gsonObject = (JsonArray) jsonParser.parse(jsonArray.toString());
+
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
-       // apiService.sendImageToSalesforce(Constants.New_upload_phpUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
-        apiService.sendImageToPHP(Constants.New_upload_phpUrl, jsonArray.toString()).enqueue(new Callback<ResponseBody>() {
+        // apiService.sendImageToSalesforce(Constants.New_upload_phpUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("json_data", jsonArray.toString())
+                .build();
+        apiService.sendImageToPHP(requestBody).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
+                    response.isSuccess();
                     String str = response.body().string();
                     JSONObject object = new JSONObject(str);
                     if (object.has("status")) {
@@ -837,6 +849,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             }
         } else if (requestCode == Crop.REQUEST_CROP) {
             if (resultCode == RESULT_OK) {
+                String imageFilePath = outputUri.getPath();
                 if (checkSizeExceed(imageFilePath)) {
                     FinalUri = null;
                     Utills.showToast(getString(R.string.text_size_exceed), this);

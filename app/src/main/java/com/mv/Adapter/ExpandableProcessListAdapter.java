@@ -46,7 +46,6 @@ public class ExpandableProcessListAdapter extends BaseExpandableListAdapter {
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
 
-
         preferenceHelper = new PreferenceHelper(context);
     }
 

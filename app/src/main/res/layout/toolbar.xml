@@ -20,14 +20,11 @@
         android:id="@+id/toolbar_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_centerInParent="true"
         android:layout_toLeftOf="@+id/layoutList"
         android:layout_toRightOf="@+id/img_back"
-
         android:gravity="center"
         android:lines="2"
-
         android:text="Toolbar Title"
         android:textColor="@color/white"
         android:textSize="18dp" />

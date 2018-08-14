@@ -471,7 +471,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 /*Api Call if  internet is available */
                     getMyChats(false, true, false);
                 else
-                    showPopUp();
+                    myPost();
 //                if (mypostlist.size() == 0) {
 //
 //                } else {

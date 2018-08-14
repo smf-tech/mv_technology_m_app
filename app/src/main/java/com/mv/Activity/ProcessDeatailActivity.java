@@ -59,6 +59,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -92,7 +94,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private String imageId, uniqueId = "";
     private Uri outputUri = null;
     private Uri FinalUri = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -495,10 +496,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                             finish();
                         }
 
-
                     } catch (Exception e) {
                         e.printStackTrace();
-
 
                     }
 
@@ -519,14 +518,16 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     }
 
-    private void sendImageToServer(JSONArray array) {
+    private void sendImageToServer(JSONArray jsonArray) {
         Utills.showProgressDialog(this);
-        JsonParser jsonParser = new JsonParser();
-        JsonArray gsonObject = (JsonArray) jsonParser.parse(array.toString());
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
        // apiService.sendImageToSalesforce(Constants.New_upload_phpUrl, gsonObject).enqueue(new Callback<ResponseBody>() {
-            apiService.sendImageToPHP(Constants.New_upload_phpUrl, array.toString()).enqueue(new Callback<ResponseBody>() {
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("json_data", jsonArray.toString())
+                .build();
+            apiService.sendImageToPHP(requestBody).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();

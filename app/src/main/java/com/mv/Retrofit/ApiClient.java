@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -52,7 +53,7 @@ public class ApiClient {
             }
 
             retrofitImageHeader = new Retrofit.Builder()
-                    .baseUrl("https://api.github.com/")
+                    .baseUrl("http://mobileapp.mulyavardhan.org/")
                     .client(client)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build();

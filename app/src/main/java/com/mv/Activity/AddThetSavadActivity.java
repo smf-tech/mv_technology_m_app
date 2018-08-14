@@ -68,6 +68,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -806,7 +808,11 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
        // apiService.sendImageToSalesforce("http://mobileapp.mulyavardhan.org/new_upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
-             apiService.sendImageToPHP(Constants.New_upload_phpUrl, jsonArray.toString()).enqueue(new Callback<ResponseBody>() {
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("json_data", jsonArray.toString())
+                .build();
+             apiService.sendImageToPHP(requestBody).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
