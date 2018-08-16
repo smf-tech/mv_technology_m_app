@@ -53,6 +53,10 @@
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/medium_text" />
 
+                <LinearLayout
+                    android:id="@+id/ly_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
                 <Spinner
                     android:id="@+id/spinner_state"
                     android:layout_width="match_parent"
@@ -65,6 +69,7 @@
                     android:paddingTop="10dp"
                     android:prompt="@string/state"
                     android:spinnerMode="dialog" />
+                </LinearLayout>
 
 
                 <com.mv.Widgets.MyTextView
@@ -110,12 +115,31 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
+                    android:visibility="gone"
                     android:background="@drawable/grey_box"
-
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
                     android:prompt="@string/taluka"
                     android:spinnerMode="dialog" />
+
+
+                    <com.mv.Widgets.MyEditTextView
+                        android:id="@+id/edit_multiselect_taluka"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/lighter_grey_box"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="3dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingLeft="10dp"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:gravity="left|top"
+                        android:maxLines="3"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/medium_text" />
 
                 <com.mv.Widgets.MyTextView
                     android:id="@+id/tv_cluster"

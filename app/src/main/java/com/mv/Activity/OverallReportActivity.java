@@ -71,6 +71,7 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
     private TextView toolbar_title;
     List<String> temp;
     String title,processId;
+    int totalExpectedCount,totalSubmitedCount;
     Task task;
     private RelativeLayout mToolBar;
     ArrayList<String> selectedRoleList=new ArrayList<>();
@@ -113,7 +114,8 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
 
         if (Utills.isConnected(getApplicationContext()))
             getDashBoardData(roleList);
-
+        totalExpectedCount=0;
+        totalSubmitedCount=0;
 
     }
 
@@ -163,6 +165,12 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
                                     overAllTaskList.add(overAllModel);
 
                                 }*/
+                            for(int i=0;i<overAllTaskList.size();i++){
+                                totalExpectedCount=totalExpectedCount+overAllTaskList.get(i).getExpectedCount();
+                                totalSubmitedCount=totalSubmitedCount+overAllTaskList.get(i).getSubmittedCount();
+                            }
+                            binding.tvTotalExpectedCount.setText("Total Expected Count:"+totalExpectedCount);
+                            binding.tvTotalSubmitedCount.setText("Total Submited Count:"+totalSubmitedCount);
                             mAdapter = new OverallReportAdapter(overAllTaskList, context);
                             binding.recyclerView.setAdapter(mAdapter);
                         }

@@ -676,9 +676,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
             case R.id.edit_multiselect_taluka:
-
                 showMultiselectDialog(mListTaluka);
-
                 break;
             case R.id.btn_submit:
                 sendData();
