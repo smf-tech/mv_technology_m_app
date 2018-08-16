@@ -1,7 +1,9 @@
 package com.mv.Activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -72,6 +74,9 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
     Task task;
     String roleList;
     String title,processId;
+    private boolean[] mSelection = null;
+    private String value = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +92,6 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         locationModel.setState("");
         locationModel.setDistrict("");
         locationModel.setTaluka("");
-
         initViews();
 
     }
@@ -104,7 +108,9 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         binding.spinnerVillage.setOnItemSelectedListener(this);
         binding.spinnerSchoolName.setOnItemSelectedListener(this);
         binding.btnSubmit.setOnClickListener(this);
-
+        binding.editMultiselectTaluka.setOnClickListener(this);
+        binding.editMultiselectTaluka.setText(User.getCurrentUser(context).getMvUser().getTaluka());
+        binding.lyState.setOnClickListener(this);
         mListDistrict = new ArrayList<String>();
         mListTaluka = new ArrayList<String>();
         mListCluster = new ArrayList<String>();
@@ -196,6 +202,9 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
             case R.id.btn_submit:
                 sendLocation();
                 break;
+            case R.id.edit_multiselect_taluka:
+                showMultiselectDialog((ArrayList<String>)mListTaluka);
+                break;
         }
     }
 
@@ -253,16 +262,15 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
 
                 if (mSelectState != 0) {
                     locationModel.setState(adapterView.getItemAtPosition(i).toString());
-                    if (Utills.isConnected(this))
+                    if (Utills.isConnected(this)) {
                         getDistrict();
-                    else {
+                    } else {
                         mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(User.getCurrentUser(context).getMvUser().getState());
                         mListDistrict.add(0, "Select");
                         district_adapter = new ArrayAdapter<String>(this,
                                 android.R.layout.simple_spinner_item, mListDistrict);
                         district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         binding.spinnerDistrict.setAdapter(district_adapter);
-
                     }
 
                     //    mListDistrict.clear();
@@ -301,11 +309,9 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 mSelectDistrict = i;
                 if (mSelectDistrict != 0) {
                     locationModel.setDistrict(adapterView.getItemAtPosition(i).toString());
-                    if (Utills.isConnected(this))
+                    if (Utills.isConnected(this)){
                         getTaluka();
-                    else {
-
-
+                    } else {
                         mListTaluka.clear();
                         mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict));
                         mListTaluka.add(0, "Select");
@@ -313,17 +319,12 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                                 android.R.layout.simple_spinner_item, mListTaluka);
                         taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         binding.spinnerTaluka.setAdapter(taluka_adapter);
-
-
                     }
-
                 } else {
                     locationModel.setDistrict("Select");
                     mListTaluka.clear();
                     mListTaluka.add("Select");
-
                 }
-
                 mListCluster.clear();
                 mListVillage.clear();
                 mListSchoolName.clear();
@@ -333,8 +334,8 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 taluka_adapter = new ArrayAdapter<String>(this,
                         android.R.layout.simple_spinner_item, mListTaluka);
                 taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                binding.spinnerTaluka.setAdapter(taluka_adapter);
-      /*cluster_adapter.notifyDataSetChanged();
+           /*   binding.spinnerTaluka.setAdapter(taluka_adapter);
+                cluster_adapter.notifyDataSetChanged();
                 village_adapter.notifyDataSetChanged();
                 school_adapter.notifyDataSetChanged();*/
                 break;
@@ -440,6 +441,72 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
             spinner.setSelection(itemList.indexOf(selectedValue));
     }
 
+    private void showMultiselectDialog(ArrayList<String> arrayList) {
+        ArrayList<String> list = arrayList;
+        if (list.contains("Select")) {
+            list.remove(list.indexOf("Select"));
+        }
+
+        final String[] items = arrayList.toArray(new String[list.size()]);
+        mSelection = new boolean[(items.length)];
+        Arrays.fill(mSelection, false);
+        if (value.length() != 0) {
+            String[] talukas = value.split(",");
+            for (int i = 0; i < talukas.length; i++) {
+                if (arrayList.contains(talukas[i].trim())) {
+                    mSelection[arrayList.indexOf(talukas[i].trim())] = true;
+                }
+            }
+        }
+
+// arraylist to keep the selected items
+        final ArrayList seletedItems = new ArrayList();
+        AlertDialog dialog = new AlertDialog.Builder(IndicatorLocationSelectionActivity.this)
+                .setTitle(getString(R.string.taluka))
+                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (mSelection != null && which < mSelection.length) {
+                            mSelection[which] = isChecked;
+                            value = buildSelectedItemString(items);
+                        } else {
+                            throw new IllegalArgumentException(
+                                    "Argument 'which' is out of bounds.");
+                        }
+                    }
+                })
+                .setPositiveButton(IndicatorLocationSelectionActivity.this.getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        binding.editMultiselectTaluka.setText(value);
+                        locationModel.setTaluka(value);
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Your code when user clicked on Cancel
+                    }
+                }).create();
+        dialog.show();
+    }
+
+    private String buildSelectedItemString(String[] items) {
+        StringBuilder sb = new StringBuilder();
+        boolean foundOne = false;
+
+        for (int i = 0; i < items.length; ++i) {
+            if (mSelection[i]) {
+                if (foundOne) {
+                    sb.append(";");
+                }
+                foundOne = true;
+
+                sb.append(items[i]);
+            }
+        }
+        return sb.toString();
+    }
+
     private void getVillage() {
         Utills.showProgressDialog(this, getString(R.string.loding_village), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
@@ -530,9 +597,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 mStateList.add(jsonArray.getString(i));
                             }
-
                             setSpinnerAdapter(mStateList, state_adapter, binding.spinnerState, User.getCurrentUser(getApplicationContext()).getMvUser().getState());
-
                         }
                     }
 
@@ -572,6 +637,12 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                             }
 
                             setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
+                            if(mListDistrict.contains(User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict())){
+                                binding.editMultiselectTaluka.setText(User.getCurrentUser(context).getMvUser().getTaluka());
+                            } else {
+                                locationModel.setTaluka("Select");
+                                binding.editMultiselectTaluka.setText("Select");
+                            }
                         }
                     }
                 } catch (JSONException e) {
@@ -588,7 +659,6 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
             }
         });
     }
-
     private void getTaluka() {
 
         Utills.showProgressDialog(this, getString(R.string.loding_taluka), getString(R.string.progress_please_wait));
@@ -611,6 +681,12 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                             }
 
                             setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
+                            if(mListTaluka.contains(User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka())){
+                                binding.editMultiselectTaluka.setText(User.getCurrentUser(context).getMvUser().getTaluka());
+                            } else {
+                                locationModel.setTaluka("Select");
+                                binding.editMultiselectTaluka.setText("Select");
+                            }
                             // taluka_adapter.notifyDataSetChanged();
                         }
                     }
