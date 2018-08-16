@@ -56,8 +56,8 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
             layout = (LinearLayout) view.findViewById(R.id.layoutTemplate);
             arrowLay = (LinearLayout) view.findViewById(R.id.lay_delete);
             arrowimg = (ImageView) view.findViewById(R.id.row_img);
-            deletelay = (LinearLayout) view.findViewById(R.id.lay_delete_new);
-            deleteimg = (ImageView) view.findViewById(R.id.row_img_delete);
+        //    deletelay = (LinearLayout) view.findViewById(R.id.lay_delete_new);
+        //    deleteimg = (ImageView) view.findViewById(R.id.row_img_delete);
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -111,7 +111,6 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
-
         ArrayList<Task> tasks = gson.fromJson(resultList.get(position).getTaskListString(), listType);
         taskArrayList.add(tasks);
 
@@ -125,18 +124,17 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         else
             holder.txtCommunityName.setText(resultList.get(position).getHeaderPosition());
 
-     //   if(resultList.get(position).getIsDeletable__c()==true) {
-
-            holder.deletelay.setVisibility(View.VISIBLE);
-            holder.deletelay.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    showFormDeletePopUp(position);
-                }
-            });
-    //    }
-
+//        if(resultList.get(position).getIsDeleteAllow()==false) {
+//            holder.arrowLay.setVisibility(View.GONE);
+//        }else {
+//            holder.arrowimg.setBackgroundResource(R.drawable.form_delete);
+//            holder.arrowLay.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    showFormDeletePopUp(position);
+//                }
+//            });
+//        }
         if (tasks.get(0).getIsSave().equals("false")) {
             if (tasks.get(0).getIsApproved__c().equals("false")) {
                 holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.orange));
@@ -147,9 +145,27 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                     holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                 }
             }
-            holder.arrowimg.setImageResource(R.drawable.arrow);
+            if(resultList.get(position).getIsDeleteAllow()==false) {
+                holder.arrowLay.setVisibility(View.GONE);
+            }else {
+                holder.arrowimg.setBackgroundResource(R.drawable.form_delete);
+                holder.arrowLay.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        showFormDeletePopUp(position);
+                    }
+                });
+            }
+          //  holder.arrowimg.setImageResource(R.drawable.arrow);
         } else {
             holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.red));
+            holder.arrowimg.setBackgroundResource(R.drawable.form_delete);
+            holder.arrowLay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showFormDeletePopUp(position);
+                }
+            });
 
         }
         //  holder.eventUserName.setText(String.valueOf(position));
@@ -184,11 +200,15 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         // Setting OK Button
         alertDialog.setButton(mContext.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
-                mContext.deleteForm(resultList.get(position));
+                if (resultList.get(0).getIsSave().equals("false")) {
 
-            //    AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(resultList.get(position).getUnique_Id(), resultList.get(position).getMV_Process__c());
-
-              //  ((ProcessListActivity) mContext).getAllProcessData();
+                    mContext.deleteForm(resultList.get(position));
+                    //    AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(resultList.get(position).getUnique_Id(), resultList.get(position).getMV_Process__c());
+                    //  ((ProcessListActivity) mContext).getAllProcessData();
+                }else{
+                    AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(resultList.get(position).getUnique_Id(), resultList.get(position).getMV_Process__c());
+                    ((ProcessListActivity) mContext).getAllProcessData();
+                }
             }
         });
 

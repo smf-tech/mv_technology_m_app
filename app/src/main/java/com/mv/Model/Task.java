@@ -189,18 +189,18 @@ public class Task implements Parcelable {
     @Expose
     private String isHeader;
 
-//    @ColumnInfo(name = "IsDeleteAllow")
-//    @SerializedName("IsDeleteAllow")
-//    @Expose
-//    private Boolean IsDeleteAllow;
-//
-//    public Boolean getIsDeletable__c() {
-//        return IsDeleteAllow;
-//    }
-//
-//    public void setIsDeletable__c(Boolean IsDeleteAllow) {
-//        this.IsDeleteAllow = IsDeleteAllow;
-//    }
+    @ColumnInfo(name = "IsDeleteAllow")
+    @SerializedName("IsDeleteAllow")
+    @Expose
+    private Boolean IsDeleteAllow;
+
+    public Boolean getDeleteAllow() {
+        return IsDeleteAllow;
+    }
+
+    public void setDeleteAllow(Boolean deleteAllow) {
+        IsDeleteAllow = deleteAllow;
+    }
 
     public String getIsEditable__c() {
         return IsEditable;

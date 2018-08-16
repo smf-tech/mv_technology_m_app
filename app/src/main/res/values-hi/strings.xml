@@ -139,6 +139,8 @@
     <string name="seconds_remaining">दूसरा शेष</string>
     <string name="back_string">बाहर निकलने के लिए कृपया वापस फिर से क्लिक करें</string>
     <string name="please_enter">कृपया इंटर करें</string>
+    <string name="please_enter_text">कृपया जानकारी दर्ज करें</string>
+    <string name="please_enter_date">कृपया तिथि दर्ज करें</string>
     <string name="digit">डिजिट</string>
     <string name="logout_string">क्या आप लॉगआउट करना चाहते हैं? </string>
     <string name="delete_task_string">क्या आप हटाना चाहते हैं? </string>

@@ -44,25 +44,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="5dp"
-            android:src="@drawable/arrow" />
+            android:background="@drawable/arrow" />
 </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/lay_delete_new"
-            android:layout_width="50dp"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:visibility="gone">
-            <ImageView
-                android:id="@+id/row_img_delete"
-                android:layout_width="15dp"
-                android:layout_height="20dp"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="5dp"
-                android:src="@drawable/form_delete" />
-        </LinearLayout>
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

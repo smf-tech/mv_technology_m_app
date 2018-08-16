@@ -22,7 +22,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dimen_5dp"
             android:layout_marginLeft="5dp"
-
             android:layout_marginTop="@dimen/dimen_5dp"
             android:text="@string/question_5" />
 
@@ -35,7 +34,6 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:layout_marginTop="10dp"
-
             android:background="@drawable/lighter_grey_box"
             android:padding="10dp">
 
@@ -46,6 +44,7 @@
                 android:background="@null"
                 android:inputType="textPersonName|textCapSentences"
                 android:textColor="@color/black"
+                android:hint="@string/please_enter_text"
                 android:textSize="@dimen/medium_text" />
         </android.support.design.widget.TextInputLayout>
 
@@ -93,6 +92,7 @@
                 android:background="@null"
                 android:inputType="textPersonName|textCapSentences"
                 android:textColor="@color/black"
+                android:hint="@string/please_enter_date"
                 android:textSize="@dimen/medium_text" />
         </android.support.design.widget.TextInputLayout>
 
@@ -177,17 +177,14 @@
         android:background="@drawable/grey_box"
         android:gravity="center_vertical"
         android:orientation="vertical"
-
         android:visibility="gone">
 
         <TextView
             android:id="@+id/tv_loc_hed"
             android:layout_width="wrap_content"
-
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dimen_5dp"
             android:layout_marginLeft="5dp"
-
             android:layout_marginTop="@dimen/dimen_5dp"
             android:text="@string/question_5" />
 
@@ -220,7 +217,6 @@
         android:background="@drawable/grey_box"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-
         android:visibility="gone"
         android:weightSum="8">
 

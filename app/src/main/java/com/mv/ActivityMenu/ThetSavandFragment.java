@@ -75,7 +75,6 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
     Activity context;
     public static final String MESSAGE_PROGRESS = "message_progress";
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

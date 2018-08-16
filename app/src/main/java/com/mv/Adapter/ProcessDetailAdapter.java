@@ -56,7 +56,6 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-
         LinearLayout llLayout, llHeaderLay, llLocation, llCheck, llMutiselect, llEdittext, llDate;
         EditText questionResponse, date;
         TextView question, header, locHeader, locText, checkText, dateHeader, editHeader;

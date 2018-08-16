@@ -418,12 +418,12 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         //check if user can post or not
-        /*canpost = getIntent().getBooleanExtra("CanPost",false);
+        canpost = getIntent().getBooleanExtra("CanPost",false);
         if(canpost){
             fab_add_list.setVisibility(View.VISIBLE);
         }else{
             fab_add_list.setVisibility(View.GONE);
-        }*/
+        }
         recyclerView.setLayoutManager(linearLayoutManager);
         /*Change the visiblity of filter button on scroll*/
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -675,11 +675,12 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                             if(comunity.getMuteNotification()==null || comunity.getMuteNotification().equals("Mute")){
                                 comunity.setMuteNotification("Unmute");
                                 AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().updateCommunityForMute(comunity);
+                                Toast.makeText(CommunityHomeActivity.this,"You have select Mute for this community.",Toast.LENGTH_LONG).show();
                             } else {
                                 comunity.setMuteNotification("Mute");
+                                Toast.makeText(CommunityHomeActivity.this,"You have select Unmute this community.",Toast.LENGTH_LONG).show();
                                 AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().updateCommunityForMute(comunity);
                             }
-                            Toast.makeText(CommunityHomeActivity.this,"working",Toast.LENGTH_LONG).show();
                         }
                         return true;
                     }

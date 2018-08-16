@@ -123,6 +123,8 @@
     <string name="seconds_remaining">Seconds remaining </string>
     <string name="back_string">Please click BACK again to exit </string>
     <string name="please_enter">Please Enter </string>
+    <string name="please_enter_text">Please Enter Text</string>
+    <string name="please_enter_date">Please Enter Date</string>
     <string name="digit"> digit </string>
     <string name="logout_string">Do you want to Logout? </string>
     <string name="delete_task_string">Do you want Delete? </string>
@@ -294,7 +296,6 @@
     <string name="attendance_approoval">Attendance Approval</string>
 
     <string name="loading_process">Loading Process</string>
-
 
     <string name="asset_username">Name</string>
     <string name="are_you_really">Do you want save data ?</string>

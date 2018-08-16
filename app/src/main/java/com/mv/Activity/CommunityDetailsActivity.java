@@ -186,7 +186,6 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                     }
                 }
 
-
                 break;
             case R.id.layout_share:
                 if (mContent.getIsAttachmentPresent() != null) {
@@ -318,18 +317,15 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         if (Utills.isConnected(this)) {
             try {
 
-
                 Utills.showProgressDialog(this, "Sharing Post...", "Please wait");
                 JSONObject jsonObject1 = new JSONObject();
 
                 jsonObject1.put("userId", User.getCurrentUser(getApplicationContext()).getMvUser().getId());
                 jsonObject1.put("contentId", contentId);
 
-
                 //  jsonArrayAttchment.put(communityId);
                 // jsonObject1.put("MV_User", User.getCurrentUser(mContext).getId());
                 jsonObject1.put("grId", jsonArrayAttchment);
-
 
                 ServiceRequest apiService =
                         ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
@@ -518,11 +514,11 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
     }
 
     private void initViews() {
-        if(getIntent().getExtras().getString(Constants.TITLE)!=null && getIntent().getExtras().getString(Constants.TITLE).length()>0){
-            setActionbar(getIntent().getExtras().getString(Constants.TITLE));
-        }else{
+//        if(getIntent().getExtras().getString(Constants.TITLE)!=null && getIntent().getExtras().getString(Constants.TITLE).length()>0){
+//            setActionbar(getIntent().getExtras().getString(Constants.TITLE));
+//        }else{
             setActionbar(getString(R.string.comunity_detail));
-        }
+      //  }
         layout_forward = (LinearLayout) findViewById(R.id.layout_forward);
         layout_download_file = (LinearLayout) findViewById(R.id.layout_download_file);
         layout_share = (LinearLayout) findViewById(R.id.layout_share);

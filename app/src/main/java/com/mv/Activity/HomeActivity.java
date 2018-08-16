@@ -572,7 +572,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         Animation textAnimation = (AnimationUtils.loadAnimation(getApplicationContext(), R.anim.blink));
         iv_logo.startAnimation(textAnimation);
 
-
         iv_home_animate.setBackgroundResource(R.drawable.home_progress);
 
         AnimationDrawable rocketAnimation = (AnimationDrawable) iv_home_animate.getBackground();

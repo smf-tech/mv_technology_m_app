@@ -164,11 +164,11 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = "";
-        if (isTimePresent)
-            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(context).getMvUser().getId()
-                    + "&timestamp=" + communityList.get(0).getTime();
-        else
+//        if (isTimePresent)
+//            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+//                    + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(context).getMvUser().getId()
+//                    + "&timestamp=" + communityList.get(0).getTime();
+//        else
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(context).getMvUser().getId();
 
@@ -371,7 +371,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
             Intent intent = new Intent(context, CommunityHomeActivity.class);
             intent.putExtra(Constants.TITLE, communityList.get(position).getName());
             //sending new intent to check user can post or not
-          //  intent.putExtra("CanPost", communityList.get(position).getCanPost());
+            intent.putExtra("CanPost", communityList.get(position).getCanPost());
             intent.putExtra(Constants.LIST, json);
             startActivity(intent);
         }

@@ -188,9 +188,7 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
                                         chatList.add(temp.get(i));
                                         AppDatabase.getAppDatabase(context).userDao().insertChats(temp.get(i));
 
-
                                     }
-
 
                                 }
                                 for (int i=0;i<chatList.size();i++) {

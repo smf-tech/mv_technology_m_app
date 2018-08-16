@@ -171,9 +171,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                 Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
             }
 
-
         }
-
 
     }
 
@@ -225,7 +223,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     processList.setTask_type__c(jsonArray.getJSONObject(i).getString("Task_Type"));
                                     processList.setTask_Text__c(jsonArray.getJSONObject(i).getString("Question"));
                                     //added next line to get isDeleteallow field from salesforce
-                                 //   processList.setIsDeletable__c(jsonArray.getJSONObject(i).getBoolean("IsDeleteAllow"));
+                                    processList.setDeleteAllow(jsonArray.getJSONObject(i).getBoolean("IsDeleteAllow"));
 
                                     processList.setIsHeader(jsonArray.getJSONObject(i).getString("isHeader"));
 
@@ -277,7 +275,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 taskContainerModel.setMV_Process__c(proceesId);
                                 taskContainerModel.setUnique_Id(taskList.get(0).getId());
                                 //add delete allow feature to table
-                            //    taskContainerModel.setIsDeletable__c(taskList.get(0).getIsDeletable__c());
+                                taskContainerModel.setIsDeleteAllow(taskList.get(0).getDeleteAllow());
                                 if (!idList.contains(taskContainerModel.getUnique_Id()))
                                     resultList.add(taskContainerModel);
                               }
@@ -463,19 +461,20 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 //                JSONObject jsonObject = new JSONObject();
 //                JSONArray jsonArray = new JSONArray();
 //                JSONObject jsonObject1 = new JSONObject();
-//
 //                    jsonObject1.put("commentId", id);
 
             ServiceRequest apiService =
                     ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
             JsonParser jsonParser = new JsonParser();
-//                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject1.toString());
-            apiService.getSalesForceData(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/WS_DeleteComments?commentId="+tcm.getUnique_Id()).enqueue(new Callback<ResponseBody>() {
+////                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject1.toString());
+//            https://cs57.salesforce.com/services/apexrest/deleteProcessAnswer?processAnswerId=a1V0k0000007uEl
+            apiService.getSalesForceData(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/deleteProcessAnswer?processAnswerId="+tcm.getUnique_Id()).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Utills.hideProgressDialog();
 
                     AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(tcm.getUnique_Id(), tcm.getMV_Process__c());
+                    getAllProcessData();
 
                     try {
                         if (Utills.isConnected(ProcessListActivity.this)) {
@@ -500,6 +499,5 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         }
 
     }
-
 
 }

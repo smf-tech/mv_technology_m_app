@@ -129,7 +129,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         return viewHolder;
     }
 
-
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
 
@@ -703,39 +702,30 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             txt_detail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())) {
-                        Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                        intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                        intent.putExtra("flag", "forward_flag");
-                        intent.putExtra(Constants.LIST, mActivity.json);
-                        intent.putExtra(Constants.TITLE, "HO Support");
-                        mContext.startActivity(intent);
-                    } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) {
-                        Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                        intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                        intent.putExtra("flag", "forward_flag");
-                        intent.putExtra(Constants.TITLE, "HO Support");
-                        intent.putExtra(Constants.LIST, mActivity.json);
-                        mContext.startActivity(intent);
-                    } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("true")) {
-                        if (mDataList.get(getAdapterPosition()).getContentType() != null) {
-                            if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image")) {
-                                Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                                intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                                intent.putExtra("flag", "forward_flag");
-                                intent.putExtra(Constants.LIST, mActivity.json);
-                                intent.putExtra(Constants.TITLE, "HO Support");
-                                mContext.startActivity(intent);
-                            }
-                        } else {
-                            Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                            intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                            intent.putExtra("flag", "forward_flag");
-                            intent.putExtra(Constants.LIST, mActivity.json);
-                            intent.putExtra(Constants.TITLE, "HO Support");
-                            mContext.startActivity(intent);
-                        }
-                    }
+                    Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
+                    intent.putExtra("flag", "forward_flag");
+                  //  intent.putExtra(Constants.TITLE, "Post Details");
+                    intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
+                    intent.putExtra(Constants.LIST, mActivity.json);
+                    mContext.startActivity(intent);
+
+//                    if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())) {
+//
+//                        mContext.startActivity(intent);
+//                    } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) {
+//
+//                        mContext.startActivity(intent);
+//                    } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("true")) {
+//                        if (mDataList.get(getAdapterPosition()).getContentType() != null) {
+//                            if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image")) {
+//
+//                                mContext.startActivity(intent);
+//                            }
+//                        } else {
+//
+//
+//                        }
+//                    }
                 }
             });
 

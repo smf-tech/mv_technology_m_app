@@ -110,6 +110,8 @@
     <string name="reporting_template">रिपोर्टिंग टेम्पलेट</string>
     <string name="back_string">बाहेर पडण्यासाठी कृपया पुन्हा क्लिक करा </string>
     <string name="please_enter">कृपया प्रविष्ट करा </string>
+    <string name="please_enter_text">कृपया मजकूर प्रविष्ट करा</string>
+    <string name="please_enter_date">कृपया तारीख प्रविष्ट करा</string>
     <string name="digit"> अंक </string>
     <string name="logout_string">आपण बाहेर पडू इच्छिता? </string>
     <string name="delete_task_string">आपण हटवू इच्छिता?</string>

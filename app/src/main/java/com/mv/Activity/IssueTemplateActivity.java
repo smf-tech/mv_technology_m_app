@@ -98,7 +98,6 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
     private PreferenceHelper preferenceHelper;
     private Content content;
 
-
     private Dialog dialogrecord;
     private static File auxFile, auxFileAudio, imgGallaery;
     private boolean isplaying = false, isFirstTime = false;

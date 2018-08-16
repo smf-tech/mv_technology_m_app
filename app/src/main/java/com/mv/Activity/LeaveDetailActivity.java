@@ -104,7 +104,6 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
         // setActionbar(getString(R.string.team_user_approval));
         initViews();
 
-
         if (getIntent().getParcelableExtra(Constants.Leave) != null) {
             leavesModel = getIntent().getParcelableExtra(Constants.Leave);
             leaveId = leavesModel.getId();
@@ -300,13 +299,13 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
 
             if (binding.spTypeOfCatagory.getSelectedItem().equals("Leaves")) {
                 if (binding.spTypeOfLeaves.getSelectedItem().equals("CL/SL") && leaveCountModel.getAvailable_CL_SL_Leave__c() < dateSize) {
-                    msg = " CL/SL Leaves Not Available";
+                    msg = " CL/SL Leave Not Available";
 
                 } else if (binding.spTypeOfLeaves.getSelectedItem().equals("Paid") && leaveCountModel.getAvailable_Paid_Leave__c() < dateSize) {
-                    msg = "Paid Leaves Leaves Not Available";
+                    msg = "Paid Leavess Not Available";
 
                 } else if (binding.spTypeOfLeaves.getSelectedItem().equals("Unpaid") && leaveCountModel.getAvailable_Unpaid_Leave__c() < dateSize) {
-                    msg = "Unpaid Leaves  eLeaves Not Available";
+                    msg = "Unpaid Leaves Not Available";
 
                 } else if (binding.spTypeOfLeaves.getSelectedItem().equals("Comp Off") && leaveCountModel.getAvailable_Comp_Off_Leave__c() < dateSize) {
                     msg = "Comp Off Leaves Not Available";

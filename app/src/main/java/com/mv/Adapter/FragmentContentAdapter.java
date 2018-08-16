@@ -327,7 +327,6 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                     Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
                     intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
                     intent.putExtra("flag", "not_forward_flag");
-
                     mContext.startActivity(intent);
                 }
             });

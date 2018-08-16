@@ -54,6 +54,7 @@ public class AttendanceApproval2Activity extends AppCompatActivity implements Vi
     public List<AttendanceApproval> attendanceSortedList = new ArrayList<>();
     TextView textNoData;
     private PreferenceHelper preferenceHelper;
+    LinearLayout sortLayout;
     String proceesId;
     EditText edittextsort;
     Activity mContext;
@@ -72,11 +73,12 @@ public class AttendanceApproval2Activity extends AppCompatActivity implements Vi
         preferenceHelper.insertString(Constants.PROCESS_ID, proceesId);
         preferenceHelper.insertString(Constants.PROCESS_TYPE, Constants.MANGEMENT_PROCESS);
         textNoData = (TextView) findViewById(R.id.textNoData);
-        setActionbar(getString(R.string.attendance));
+        setActionbar( getString(R.string.attendance_approoval));
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
         edittextsort = (EditText)findViewById(R.id.edit_text_email);
+        sortLayout = (LinearLayout)findViewById(R.id.sort_layout);
         edittextsort.addTextChangedListener(watch);
         btn_pending = (Button) findViewById(R.id.btn_pending);
         btn_approve = (Button) findViewById(R.id.btn_approve);
@@ -148,6 +150,9 @@ public class AttendanceApproval2Activity extends AppCompatActivity implements Vi
         adapter.notifyDataSetChanged();
         if(attendanceSortedList.size()==0) {
             Utills.showToast("No data available.",this);
+            sortLayout.setVisibility(View.GONE);
+        }else{
+            sortLayout.setVisibility(View.VISIBLE);
         }
     }
 
