@@ -27,7 +27,7 @@ import com.mv.Model.Voucher;
 
 @Database(entities = {Community.class, Content.class, Template.class, TaskContainerModel.class,
         LocationModel.class, CalenderEvent.class, DownloadContent.class, Voucher.class,
-        Expense.class, Adavance.class, Salary.class, Attendance.class, HolidayListModel.class, Notifications.class}, version = 34)
+        Expense.class, Adavance.class, Salary.class, Attendance.class, HolidayListModel.class, Notifications.class}, version = 33)
 
 public abstract class AppDatabase extends RoomDatabase {
 
@@ -35,11 +35,9 @@ public abstract class AppDatabase extends RoomDatabase {
 
     public abstract UserDao userDao();
 
-    public static AppDatabase getAppDatabase
-            (Context context) {
+    public static AppDatabase getAppDatabase(Context context) {
         if (INSTANCE == null) {
-            INSTANCE =
-                    Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "user-database")
+            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), AppDatabase.class, "user-database")
                             // allow queries on the main thread.
                             // Don't do this on a real app! See PersistenceBasicSample for an example.
                             .allowMainThreadQueries()
