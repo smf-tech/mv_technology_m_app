@@ -16,6 +16,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -34,6 +35,7 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
+import com.mv.Utils.EndlessRecyclerViewScrollListener;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.MediaSongSingleToneClass;
 import com.mv.Utils.PreferenceHelper;
@@ -73,6 +75,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
     RecyclerView recyclerView;
     TextView textNoData;
     Activity context;
+    private EndlessRecyclerViewScrollListener scrollListener;
     public static final String MESSAGE_PROGRESS = "message_progress";
 
     @Override
@@ -82,7 +85,6 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         fragment = this;
         binding = DataBindingUtil.setContentView(this, R.layout.fragment_thet_savand);
         binding.setFragment(this);
-
         //here data must be an instance of the class MarsDataProvider
         // Utills.setupUI(view.findViewById(R.id.layout_main), context);
         binding.swipeRefreshLayout.setOnRefreshListener(this);
@@ -111,7 +113,8 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         btn_mypost = (Button) findViewById(R.id.btn_mypost);
         lnr_filter = (LinearLayout) findViewById(R.id.lnr_filter);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
+        recyclerView.setLayoutManager(linearLayoutManager);
         /*Change the visiblity of filter button on scroll*/
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
@@ -131,6 +134,21 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
 
             }
         });
+        //add scroll operation to recyclerview
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                // Triggered only when new data needs to be appended to the list
+                // Add whatever code is needed to append new items to the bottom of the list
+                Log.i("page", "" + page);
+                Log.i("totalItemsCount", "" + totalItemsCount);
+                getAllChats(true, true, true);
+                //loadNextDataFromApi(page);
+            }
+        };
+        // Adds the scroll listener to RecyclerView
+        recyclerView.addOnScrollListener(scrollListener);
+
          /*Display the post of only registered users */
         btn_mypost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -181,7 +199,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
 
         if (chatList.size() == 0) {
             if (Utills.isConnected(context))
-                getAllChats(false, isDialogShow);
+                getAllChats(false, isDialogShow,false);
             else
                 showPopUp();
         } else {
@@ -194,9 +212,8 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
                 recyclerView.setAdapter(adapter);
             }
             if (Utills.isConnected(context))
-                getAllChats(true, isDialogShow);
+                getAllChats(true, isDialogShow,false);
         }
-
     }
 
     @Override
@@ -207,7 +224,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
     }
 
     /*getTheatSawandContent api is called here.*/
-    private void getAllChats(boolean isTimePresent, boolean isDialogShow) {
+    private void getAllChats(boolean isTimePresent, boolean isDialogShow, boolean isPrevious) {
         if (isDialogShow)
             Utills.showProgressDialog(ThetSavandFragment.this, "Loading Chats", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
@@ -220,6 +237,27 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         else
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId();
+
+        //pagination functionality code
+//        if (isTimePresent &&  AppDatabase.getAppDatabase(context).userDao().getThetSavandChats().size() > 0) {
+//            if (!isPrevious) {
+//                url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+//                        + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId()
+//                        + "&timestamp=" + AppDatabase.getAppDatabase(context).userDao().getThetSavandChats().get(0).getTime()
+//                        + "&isPrevious=false";
+//            } else {
+//                url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+//                        + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId()
+//                        + "&timestamp=" + AppDatabase.getAppDatabase(context).userDao().getThetSavandChats().get(0).getTime()
+//                        + "&isPrevious=true";
+//            }
+//        } else {
+//            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+//                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId();
+//        }
+
+        //////////////////
+
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
