@@ -100,7 +100,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         binding = DataBindingUtil.setContentView(this, R.layout.activity_community_home);
         binding.setActivity(this);
         initViews();
-        registerReceiver(); //
+        registerReceiver();
         binding.swipeRefreshLayout.setOnRefreshListener(this);
         adapter = new ContentAdapter(this, chatList);
         recyclerView.setAdapter(adapter);

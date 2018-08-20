@@ -83,6 +83,16 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
 
+    private void setRecyclerView() {
+        List<Community> temp = AppDatabase.getAppDatabase(context).userDao().getAllCommunities();
+        communityList.clear();
+        replicaCommunityList.clear();
+        for (int i = 0; i < temp.size(); i++) {
+            communityList.add(temp.get(i));
+            replicaCommunityList.add(temp.get(i));
+            mAdapter.notifyDataSetChanged();
+        }
+    }
     private void getCommunities(boolean isDialogShow) {
         List<Community> temp = AppDatabase.getAppDatabase(context).userDao().getAllCommunities();
         if (temp.size() == 0) {
@@ -196,6 +206,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
                             List<Community> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Community[].class));
                             List<Community> list = AppDatabase.getAppDatabase(context).userDao().getAllCommunities();
                             if ((temp.size() != 0) || (list.size() != 0)) {
+                                AppDatabase.getAppDatabase(context).userDao().clearTableCommunity();;
                                 for (int i = 0; i < temp.size(); i++) {
                                    /* if (temp.get(i).getErrorMsg().equalsIgnoreCase("User is Inactive")) {
                                         AppDatabase.getAppDatabase(context).userDao().clearTableCommunity();
@@ -209,32 +220,36 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
                                         startActivity(intent);
                                         break;
                                     }*/
-                                    int j;
-                                    boolean isPresent = false;
-                                    for (j = 0; j < list.size(); j++) {
-                                        if (list.get(j).getId()!=null&&list.get(j).getId().equalsIgnoreCase(temp.get(i).getId())) {
-                                            temp.get(i).setUnique_Id(list.get(j).getUnique_Id());
-                                            temp.get(i).setMuteNotification(list.get(j).getMuteNotification());
-                                            isPresent = true;
-                                            break;
-                                        }
-                                    }
-
-                                    if (isPresent) {
-                                        communityList.set(j, temp.get(i));
-                                        replicaCommunityList.set(j, temp.get(i));
-                                        AppDatabase.getAppDatabase(context).userDao().updateCommunities(temp.get(i));
-                                    } else {
-                                        communityList.add(temp.get(i));
-                                        replicaCommunityList.add(temp.get(i));
-                                        AppDatabase.getAppDatabase(context).userDao().insertCommunities(temp.get(i));
-                                    }
+//                                    int j;
+//                                    boolean isPresent = false;
+//                                    for (j = 0; j < list.size(); j++) {
+//                                        if (list.get(j).getId()!=null&&list.get(j).getId().equalsIgnoreCase(temp.get(i).getId())) {
+//                                            temp.get(i).setUnique_Id(list.get(j).getUnique_Id());
+//                                            temp.get(i).setMuteNotification(list.get(j).getMuteNotification());
+//                                            isPresent = true;
+//                                            break;
+//                                        }
+//                                    }
+//
+//                                    if (isPresent) {
+//                                        communityList.set(j, temp.get(i));
+//                                        replicaCommunityList.set(j, temp.get(i));
+//                                        AppDatabase.getAppDatabase(context).userDao().updateCommunities(temp.get(i));
+//                                    } else {
+//                                        communityList.add(temp.get(i));
+//                                        replicaCommunityList.add(temp.get(i));
+//                                        AppDatabase.getAppDatabase(context).userDao().insertCommunities(temp.get(i));
+//                                    }
+                                    AppDatabase.getAppDatabase(context).userDao().insertCommunities(temp.get(i));
                                 }
+                                setRecyclerView();
                                 mAdapter.notifyDataSetChanged();
                                 textNoData.setVisibility(View.GONE);
+                            //    getCommunities(false);
                             } else {
                                 textNoData.setVisibility(View.VISIBLE);
                             }
+
                         }
                     }
                 } catch (JSONException e) {

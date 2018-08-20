@@ -626,7 +626,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-
+//piechart
     private void getAllIndicatorTask() {
         Utills.showProgressDialog(this, "Loading Data", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
@@ -634,13 +634,11 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + "/services/apexrest/getDashboardDatademo?userId=" + User.getCurrentUser(PiachartActivity.this).getMvUser().getId() + "&qustionArea=" + title;
 
-
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-
 
                     binding.piachartChartView.setVisibility(View.VISIBLE);
                     binding.piachartRecyclerView.setVisibility(View.GONE);
@@ -652,7 +650,6 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                             key.add(jsonArray.getJSONObject(i).getString("value"));
                     }
 
-
                     if (key.size() > 0) {
                         setData(entries);
                         binding.swipeRefreshLayout.setVisibility(View.VISIBLE);
@@ -663,7 +660,6 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                         binding.swipeRefreshLayout.setVisibility(View.GONE);
                         binding.tvPiaNoDataAvailable.setVisibility(View.VISIBLE);
                         img_logout.setVisibility(View.GONE);
-
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -767,7 +763,6 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                                     binding.piachartRecyclerView.setVisibility(View.VISIBLE);
                                     adapter = new PichartDescriptiveListAdapter(context, piaChartModelArrayList);
                                     rvPiaChartDeatail.setAdapter(adapter);
-
                                 }
                             } else {
                                 img_logout.setVisibility(View.GONE);

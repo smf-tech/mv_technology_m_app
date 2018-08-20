@@ -116,7 +116,6 @@ public class MyReportActivity extends AppCompatActivity implements View.OnClickL
                 }
         );
 
-
         mAdapter = new IndicatorListAdapter(context, processAllList);
         mLayoutManager = new LinearLayoutManager(context);
         binding.recyclerView.setLayoutManager(mLayoutManager);

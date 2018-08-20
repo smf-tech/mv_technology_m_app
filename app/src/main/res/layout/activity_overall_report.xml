@@ -16,11 +16,15 @@
             android:id="@+id/layout_main"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/textNoData"
+            android:layout_toEndOf="@+id/textNoData"
             android:background="@drawable/app_bg"
             android:orientation="vertical">
+
             <include
                 android:id="@+id/toolbar"
                 layout="@layout/toolbar" />
+
             <LinearLayout
                 android:id="@+id/llrole_lay"
                 android:layout_width="match_parent"
@@ -46,45 +50,46 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
-                    android:padding="@dimen/dimen_5dp"
-                    android:inputType="textPersonName"
                     android:background="@drawable/lighter_grey_box"
+                    android:inputType="textPersonName"
+                    android:padding="@dimen/dimen_5dp"
                     android:textColor="@color/black"
-
                     android:textSize="@dimen/medium_text" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="@dimen/dimen_10dp"
                     android:layout_marginLeft="@dimen/dimen_10dp"
-                    android:layout_marginRight="@dimen/dimen_10dp">
+                    android:layout_marginRight="@dimen/dimen_10dp"
+                    android:layout_marginTop="@dimen/dimen_10dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tv_total_expected_count"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1"
+                        android:textSize="@dimen/small_text" />
+
                     <TextView
                         android:id="@+id/tv_total_submited_count"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1"
+                        android:textSize="@dimen/small_text" />
 
                 </LinearLayout>
 
             </LinearLayout>
 
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginTop="15dp"
-                    android:scrollbars="vertical" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:scrollbars="vertical" />
 
         </LinearLayout>
         <TextView

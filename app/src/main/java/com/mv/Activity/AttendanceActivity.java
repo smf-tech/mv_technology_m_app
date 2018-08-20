@@ -89,7 +89,6 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
         }
         binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, leaveDates, getResources().getDrawable(R.drawable.circle_background_red)));
         if (Utills.isConnected(AttendanceActivity.this)) {
@@ -110,6 +109,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                 setButtonView();
                 binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, dates, getResources().getDrawable(R.drawable.circle_background)));
             }else{
+                setButtonView();
                 getAttendanceData();
             }
         } else {

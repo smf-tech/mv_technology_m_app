@@ -242,7 +242,6 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
                                             isPresent = true;
                                             break;
                                         }
-
                                     }
                                     if (isPresent) {
                                         chatList.set(j, temp.get(i));

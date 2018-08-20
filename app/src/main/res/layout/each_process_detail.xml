@@ -92,10 +92,9 @@
                 android:background="@null"
                 android:inputType="textPersonName|textCapSentences"
                 android:textColor="@color/black"
-                android:hint="@string/please_enter_date"
+                android:hint="@string/please_enter_date_time"
                 android:textSize="@dimen/medium_text" />
         </android.support.design.widget.TextInputLayout>
-
 
     </LinearLayout>
 
@@ -117,7 +116,6 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/dimen_5dp"
             android:layout_marginLeft="5dp"
-
             android:layout_marginTop="@dimen/dimen_5dp"
             android:text="@string/question_5" />
 

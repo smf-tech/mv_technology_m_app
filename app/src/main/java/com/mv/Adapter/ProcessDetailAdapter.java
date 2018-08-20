@@ -334,7 +334,6 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     holder.llCheck.setVisibility(View.GONE);
                 }
 
-
                 break;
 
             case Constants.LOCATION_TASK:

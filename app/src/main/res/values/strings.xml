@@ -125,6 +125,7 @@
     <string name="please_enter">Please Enter </string>
     <string name="please_enter_text">Please Enter Text</string>
     <string name="please_enter_date">Please Enter Date</string>
+    <string name="please_enter_date_time">Please Enter Date-Time</string>
     <string name="digit"> digit </string>
     <string name="logout_string">Do you want to Logout? </string>
     <string name="delete_task_string">Do you want Delete? </string>

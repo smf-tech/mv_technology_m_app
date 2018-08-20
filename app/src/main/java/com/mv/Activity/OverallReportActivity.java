@@ -142,7 +142,6 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
     private void getDashBoardData(String role) {
         if (Utills.isConnected(this)) {
 
-
                 Utills.showProgressDialog(this);
 
                 String  url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -161,9 +160,7 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
                             overAllTaskList = Arrays.asList(gson.fromJson(data, OverAllModel[].class));
                                 /*for (int i=0;i<jsonArray.length();i++) {
                                     OverAllModel overAllModel=new OverAllModel();
-
                                     overAllTaskList.add(overAllModel);
-
                                 }*/
                             for(int i=0;i<overAllTaskList.size();i++){
                                 totalExpectedCount=totalExpectedCount+overAllTaskList.get(i).getExpectedCount();
@@ -187,7 +184,6 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
                         Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
                     }
                 });
-
 
         } else {
             Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
@@ -253,7 +249,6 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (mSelection != null && which < mSelection.length) {
                             mSelection[which] = isChecked;
-
 
                         } else {
                             throw new IllegalArgumentException(
