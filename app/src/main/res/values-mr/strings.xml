@@ -85,6 +85,7 @@
     <string name="question_4">प्रश्न 4</string>
     <string name="msg_enter_mobile">प्रारंभ करण्यासाठी आपला मोबाईल नंबर प्रविष्ट करा!</string>
     <string name="msg_manual_otp">(आम्ही स्वयंचलितपणे SMS शोधण्यात अयशस्वी झाल्यास खालील पासवर्ड प्रविष्ट करा)</string>
+    <string name="please_enter_date_time">कृपया तारीख-तारीख प्रविष्ट करा</string>
     <string name="resend"> <u>पासवर्ड पुन्हा पाठवा</u></string>
     <string name="check_otp">कृपया Password तपासा</string>
     <string name="download">डाऊनलोड</string>

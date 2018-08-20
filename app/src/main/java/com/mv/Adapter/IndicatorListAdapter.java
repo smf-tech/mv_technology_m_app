@@ -35,9 +35,7 @@ public class IndicatorListAdapter extends RecyclerView.Adapter<IndicatorListAdap
         mContext = context;
         resources = context.getResources();
         this.processAllList = processAllLis;
-
     }
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {

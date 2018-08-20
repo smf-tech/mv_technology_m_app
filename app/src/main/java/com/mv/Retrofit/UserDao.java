@@ -296,7 +296,6 @@ public interface UserDao {
     @Query("DELETE FROM " + Constants.TABLE_CALANDER)
     public void deleteCalender();
 
-
     @Query("DELETE FROM " + Constants.TABLE_COMMUNITY)
     public void clearTableCommunity();
 

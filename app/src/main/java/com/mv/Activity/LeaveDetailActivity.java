@@ -255,7 +255,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
 
             case R.id.btn_approve:
                 if (leavesModel.getStatus() != null && leavesModel.getStatus().equalsIgnoreCase("Approved")) {
-                    Utills.showToast("Leave Already Approved", context);
+                    Utills.showToast("Leave Already Approved.", context);
                 } else {
 
 
@@ -270,7 +270,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 if (leavesModel.getStatus() != null && leavesModel.getStatus().equalsIgnoreCase("Rejected")
                         && leavesModel.getComment() != null
                         && leavesModel.getComment().length() > 0) {
-                    Utills.showToast("Leave Already Rejected", context);
+                    Utills.showToast("Leave Already Rejected.", context);
                 } else {
                     showDialog();
                 }
@@ -289,7 +289,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
         if (binding.spTypeOfLeaves.getSelectedItem().equals("") || binding.spTypeOfLeaves.getSelectedItem().equals("Select")) {
             msg = "Please Select Leave Type";
         } else if (binding.inputHrFormDate.getText().toString().equals("")) {
-            msg = "Please Enter From Date";
+            msg = "Please Select From Date";
         } else if (binding.inputHrToDate.getText().toString().equals("")) {
             msg = "Please Select To Date";
         } else if (!isDatesAreValid(binding.inputHrFormDate.getText().toString().trim(), binding.inputHrToDate.getText().toString().trim())) {
@@ -302,7 +302,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                     msg = " CL/SL Leave Not Available";
 
                 } else if (binding.spTypeOfLeaves.getSelectedItem().equals("Paid") && leaveCountModel.getAvailable_Paid_Leave__c() < dateSize) {
-                    msg = "Paid Leavess Not Available";
+                    msg = "Paid Leaves Not Available";
 
                 } else if (binding.spTypeOfLeaves.getSelectedItem().equals("Unpaid") && leaveCountModel.getAvailable_Unpaid_Leave__c() < dateSize) {
                     msg = "Unpaid Leaves Not Available";
