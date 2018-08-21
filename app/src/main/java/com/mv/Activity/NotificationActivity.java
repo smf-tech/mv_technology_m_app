@@ -33,6 +33,12 @@ public class NotificationActivity extends AppCompatActivity {
 
         List<Notifications> notificationList= AppDatabase.getAppDatabase(this).userDao().getAllNotification();
 
+        Notifications temp=new Notifications();
+        temp.setStatus("");
+        temp.setTitle("staticc");
+        temp.setDescription("xaxyysyyehjfb");
+        temp.setId("123");
+        notificationList.add(temp);
         Collections.reverse(notificationList);
 
         if(!(notificationList.size()>0)){

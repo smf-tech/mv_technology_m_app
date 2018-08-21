@@ -142,6 +142,10 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         } else if (!gps.canGetLocation()) {
             gps.showSettingsAlert();
             return;
+        } else if (0.0==gps.getLongitude() && 0.0==gps.getLatitude()) {
+            Utills.showToast("Current location is not available, Please try again", AttendanceActivity.this);
+            initViews();
+            return;
         }
         Boolean isPresent;
         Attendance attendance;
@@ -222,6 +226,8 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                         } catch (Exception e) {
                             Utills.hideProgressDialog();
                             Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                            // save off line if failed to upload the attendance dueto network issue
+                            addOffLineAttendance(isPresent,attendance,isCheckedIn);
                         }
                     }
 
@@ -229,45 +235,54 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
                         Utills.hideProgressDialog();
                         Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                        // save off line if failed to upload the attendance dueto network issue
+                        addOffLineAttendance(isPresent,attendance,isCheckedIn);
                     }
                 });
             } catch (JSONException e) {
                 e.printStackTrace();
                 Utills.hideProgressDialog();
                 Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                // save off line if failed to upload the attendance dueto network issue
+                addOffLineAttendance(isPresent,attendance,isCheckedIn);
             }
         } else {
-            if (!isPresent) {
-                attendanceList.add(attendance);
-                try {
-                    dates.add(CalendarDay.from(formatter.parse(attendance.getDate())));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-            attendance.setSynch("false");
-
-            AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().insertAttendance(attendance);
-
-            dates.clear();
-            attendanceList.clear();
-            attendanceList = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getAllAttendance();
-            for (Attendance attendance1 : attendanceList) {
-                try {
-                    dates.add(CalendarDay.from(formatter.parse(attendance1.getDate())));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }
-            setButtonView();
-            binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, dates, getResources().getDrawable(R.drawable.circle_background)));
-
-            if (isCheckedIn)
-                Utills.showToast("Offline Checked In Successfully...", AttendanceActivity.this);
-            else
-                Utills.showToast("Offline Checked Out Successfully...", AttendanceActivity.this);
-            setButtonView();
+            addOffLineAttendance(isPresent,attendance,isCheckedIn);
         }
+    }
+
+    // save offline attandance
+    void addOffLineAttendance(Boolean isPresent, Attendance attendance, Boolean isCheckedIn){
+        if (!isPresent) {
+            attendanceList.add(attendance);
+            try {
+                dates.add(CalendarDay.from(formatter.parse(attendance.getDate())));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        attendance.setSynch("false");
+
+        AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().insertAttendance(attendance);
+
+        dates.clear();
+        attendanceList.clear();
+        attendanceList = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getAllAttendance();
+        for (Attendance attendance1 : attendanceList) {
+            try {
+                dates.add(CalendarDay.from(formatter.parse(attendance1.getDate())));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        setButtonView();
+        binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, dates, getResources().getDrawable(R.drawable.circle_background)));
+
+        if (isCheckedIn)
+            Utills.showToast("Offline Checked In Successfully...", AttendanceActivity.this);
+        else
+            Utills.showToast("Offline Checked Out Successfully...", AttendanceActivity.this);
+        setButtonView();
     }
 
     public void checkOutClick() {
@@ -279,6 +294,10 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             return;
         } else if (!gps.canGetLocation()) {
             gps.showSettingsAlert();
+            return;
+        } else if (0.0==gps.getLongitude() && 0.0==gps.getLatitude()) {
+            Utills.showToast("Current location is not available, Please try again", AttendanceActivity.this);
+            initViews();
             return;
         }
         Attendance attendance;
