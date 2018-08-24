@@ -70,8 +70,6 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
-
-
         }
     }
 

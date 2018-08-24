@@ -31,6 +31,11 @@ public class Attendance implements Serializable {
     @ColumnInfo(name = "status__c")
     private String status;
 
+    @SerializedName("address__c")
+    @Expose
+    @ColumnInfo(name = "address__c")
+    private String address;
+
     @SerializedName("MV_User__c")
     @Expose
     @ColumnInfo(name = "MV_User__c")
@@ -109,6 +114,13 @@ public class Attendance implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getRemarks() {

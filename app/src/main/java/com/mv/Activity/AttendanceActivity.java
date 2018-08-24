@@ -4,13 +4,18 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -51,6 +56,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -254,7 +260,16 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         attendance.setCheckInLng("" + gps.getLongitude());
         attendance.setCheckInLat("" + gps.getLatitude());
         attendance.setStatus("");
+        double Lat = gps.getLatitude();
+        double Long = gps.getLongitude();
+        attendance.setCheckInLng("" + Long);
+        attendance.setCheckInLat("" + Lat);
+        attendance.setStatus("Approved");
         attendance.setUser(User.getCurrentUser(getApplicationContext()).getMvUser().getId());
+        //send relative address of lat long to server
+//        String address = ConvertToAddress(Lat, Long);
+//        Toast.makeText(this,address,Toast.LENGTH_LONG);
+     //   attendance.setAddress(address);
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
         Calendar c = Calendar.getInstance();
         SimpleDateFormat time1 = new SimpleDateFormat("kk.mm");
@@ -268,6 +283,31 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         else
             sendAttendance(attendance, true, isPresent);
     }
+
+//    private String ConvertToAddress(double latitude, double longitude) {
+//        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//        String result = null;
+//        try {
+//            List<Address> addressList = geocoder.getFromLocation(
+//                    latitude, longitude, 1);
+//            if (addressList != null && addressList.size() > 0) {
+//                Address address = addressList.get(0);
+//                StringBuilder sb = new StringBuilder();
+//                for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+//                    sb.append(address.getAddressLine(i)).append("\n");
+//                }
+//                sb.append(address.getLocality()).append("\n");
+//                sb.append(address.getPostalCode()).append("\n");
+//                sb.append(address.getCountryName());
+//                result = sb.toString();
+//            }
+//        } catch (IOException e) {
+//            Log.e("Error", "Unable connect to Geocoder", e);
+//            return "Something went wrong. Please try after sometime.";
+//        }
+//        return result;
+//
+//    }
 
     private void sendAttendance(Attendance attendance, Boolean isCheckedIn, Boolean isPresent) {
         if (Utills.isConnected(this)) {
@@ -411,7 +451,16 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         attendance.setCheckOutLng("" + gps.getLongitude());
         attendance.setCheckOutLat("" + gps.getLatitude());
         attendance.setStatus("");
+        double Lat = gps.getLatitude();
+        double Long = gps.getLongitude();
+        attendance.setCheckOutLng("" + Long);
+        attendance.setCheckOutLat("" + Lat);
+        attendance.setStatus("Approved");
         attendance.setUser(User.getCurrentUser(getApplicationContext()).getMvUser().getId());
+        //send relative address of lat long to server
+//        String address = ConvertToAddress(Lat, Long);
+//        Toast.makeText(this,address,Toast.LENGTH_LONG);
+       // attendance.setAddress(address);
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
         Calendar c = Calendar.getInstance();
         SimpleDateFormat time1 = new SimpleDateFormat("kk.mm");
