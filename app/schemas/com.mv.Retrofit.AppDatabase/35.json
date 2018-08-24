@@ -1,8 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-    "version": 33,
-    "identityHash": "a2284d09edc34adfb6830b1a44a511a6",
+    "version": 35,
+    "identityHash": "609ba5661f62aad8a22d9174cbd10fa2",
     "entities": [
       {
         "tableName": "table_community",
@@ -1302,7 +1302,7 @@
       },
       {
         "tableName": "table_leaves",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `From__c` TEXT, `To__c` TEXT, `Reason__c` TEXT, `Leave_Type__c` TEXT, `Status__c` TEXT, `isHalfDay__c` TEXT, `comment` TEXT, `Requested_User_Name__c` TEXT, `Requested_User__c` TEXT, `mv_user` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `From__c` TEXT, `To__c` TEXT, `Reason__c` TEXT, `Leave_Type__c` TEXT, `Status__c` TEXT, `isHalfDay__c` INTEGER, `comment` TEXT, `Requested_User_Name__c` TEXT, `Requested_User__c` TEXT, `mv_user` TEXT)",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -1342,7 +1342,7 @@
           {
             "fieldPath": "isHalfDayLeave",
             "columnName": "isHalfDay__c",
-            "affinity": "TEXT"
+            "affinity": "INTEGER"
           },
           {
             "fieldPath": "comment",
@@ -1377,7 +1377,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"a2284d09edc34adfb6830b1a44a511a6\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"609ba5661f62aad8a22d9174cbd10fa2\")"
     ]
   }
 }

@@ -13,6 +13,7 @@ import com.mv.Model.Content;
 import com.mv.Model.DownloadContent;
 import com.mv.Model.Expense;
 import com.mv.Model.HolidayListModel;
+import com.mv.Model.LeavesModel;
 import com.mv.Model.LocationModel;
 import com.mv.Model.Notifications;
 import com.mv.Model.Salary;
@@ -27,7 +28,7 @@ import com.mv.Model.Voucher;
 
 @Database(entities = {Community.class, Content.class, Template.class, TaskContainerModel.class,
         LocationModel.class, CalenderEvent.class, DownloadContent.class, Voucher.class,
-        Expense.class, Adavance.class, Salary.class, Attendance.class, HolidayListModel.class, Notifications.class}, version = 33)
+        Expense.class, Adavance.class, Salary.class, Attendance.class, HolidayListModel.class, Notifications.class, LeavesModel.class}, version = 35)
 
 public abstract class AppDatabase extends RoomDatabase {
 

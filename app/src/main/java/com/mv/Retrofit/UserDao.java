@@ -16,6 +16,7 @@ import com.mv.Model.Content;
 import com.mv.Model.DownloadContent;
 import com.mv.Model.Expense;
 import com.mv.Model.HolidayListModel;
+import com.mv.Model.LeavesModel;
 import com.mv.Model.LocationModel;
 import com.mv.Model.Notifications;
 import com.mv.Model.Salary;
@@ -61,6 +62,9 @@ public interface UserDao {
 
     @Query("DELETE FROM " + Constants.TABLE_ATTENDANCE)
     public void deleteAllAttendance();
+
+    @Update
+    public void updateAttendance(Attendance... attendance);
 
     @Query("SELECT * FROM " + Constants.TABLE_VOUCHER)
     List<Voucher> getAllVoucher();
@@ -345,7 +349,7 @@ public interface UserDao {
     @Query("DELETE FROM " + Constants.TABLE_CALANDER + " where Id = :calenderId")
     public int deleteCalenderEvent(String calenderId);
 
-    //Opretions on Notification
+    //Opretions on Notification table
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insertNotification(Notifications notification);
@@ -367,5 +371,19 @@ public interface UserDao {
 
     @Query("DELETE FROM " + Constants.TABLE_NOTIFICATION)
     public void clearNotification();
+
+    //Opretions on Leaves table
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    void insertLeaves(List<LeavesModel> leaves);
+
+    @Query("SELECT * FROM " + Constants.TABLE_LEAVES )
+    List<LeavesModel> getAllLeaves();
+
+    @Query("SELECT * FROM " + Constants.TABLE_LEAVES + " where Status__c = :status ")
+    List<LeavesModel> getApprovedLeaves(String status);
+
+    @Query("DELETE FROM " + Constants.TABLE_LEAVES)
+    public void deleteAllLeaves();
 
 }

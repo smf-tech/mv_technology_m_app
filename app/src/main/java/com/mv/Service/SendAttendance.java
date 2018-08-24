@@ -73,7 +73,19 @@ public class SendAttendance extends IntentService {
                                                 mAttendance = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getUnSynchAttendance();
                                                 if (mAttendance != null)
                                                     sendAttendanceToserver();
-                                            } else {
+                                            } else if(object.getString("Status").equalsIgnoreCase("Already checked In")){
+                                                mAttendance.setSynch("true");
+                                                AppDatabase.getAppDatabase(getApplicationContext()).userDao().updateAttendance(mAttendance);
+                                                mAttendance = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getUnSynchAttendance();
+                                                if (mAttendance != null)
+                                                    sendAttendanceToserver();
+                                            } else if(object.getString("Status").equalsIgnoreCase("Already Checked Out")){
+                                                mAttendance.setSynch("true");
+                                                AppDatabase.getAppDatabase(getApplicationContext()).userDao().updateAttendance(mAttendance);
+                                                mAttendance = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getUnSynchAttendance();
+                                                if (mAttendance != null)
+                                                    sendAttendanceToserver();
+                                            }else {
                                                 Utills.showToast(object.getString("Status"), getApplicationContext());
                                             }
                                         }

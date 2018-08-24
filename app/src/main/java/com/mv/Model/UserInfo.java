@@ -15,6 +15,9 @@ public class UserInfo {
     @SerializedName("Project__c")
     @Expose
     private String Project__c = "";
+    @SerializedName("Multi_project__c")
+    @Expose
+    private String Multi_project__c = "";
     @SerializedName("Project_Name__c")
     @Expose
     private String Project_Name__c = "";
@@ -48,28 +51,9 @@ public class UserInfo {
     @SerializedName("User_Taluka__c")
     @Expose
     private String Taluka = "";
-
-    public String getMultipleTaluka() {
-        return MultipleTaluka;
-    }
-
-    public void setMultipleTaluka(String MultipleTaluka) {
-        MultipleTaluka = MultipleTaluka;
-    }
-
     @SerializedName("User_Multiple_Taluka__c")
     @Expose
     private String MultipleTaluka = "";
-
-
-    public String getBirth_Day__c() {
-        return Birth_Day__c;
-    }
-
-    public void setBirth_Day__c(String birth_Day__c) {
-        Birth_Day__c = birth_Day__c;
-    }
-
     @SerializedName("Birth_Day__c")
     @Expose
     private String Birth_Day__c;
@@ -94,21 +78,88 @@ public class UserInfo {
     @SerializedName("Is_Approved__c")
     @Expose
     private String isApproved = "";
-
     @SerializedName("Mobile_Tab_Name_c__c")
     @Expose
     private String tabNameApproved = "";
-
     @SerializedName("Before_Approved_Tab_Names__c")
     @Expose
     private String tabNameNoteApproved = "";
     @SerializedName("Attendance_Loc__Latitude__s")
     @Expose
     private String Attendance_Loc_Lat = "";
-
     @SerializedName("Attendance_Loc__Longitude__s")
     @Expose
     private String Attendance_Loc_Lng = "";
+    @SerializedName("Approval_Role_c__c")
+    @Expose
+    private String approval_role = "";
+    @SerializedName("Gender__c")
+    @Expose
+    private String gender = "";
+    @SerializedName("Approver_Comment__c")
+    @Expose
+    private String Approver_Comment__c = "";
+    @SerializedName("Role_Juridiction__c")
+    @Expose
+    private String Role_Juridiction__c = "";
+    @SerializedName("PhoneID__c")
+    @Expose
+    private String PhoneId = "";
+    @SerializedName("User_Mobile_App_Version__c")
+    @Expose
+    private String User_Mobile_App_Version__c = "";
+    @SerializedName("isLocationTrackingAllow__c")
+    @Expose
+    private String isLocationTrackingAllow__c;
+    @SerializedName("isLocationAllow__c")
+    @Expose
+    private String isLocationAllow__c;
+    @SerializedName("Contact_No__c")
+    @Expose
+    private String Contact_No__c = "";
+    @SerializedName("Hangout_URL__c")
+    @Expose
+    private String Hangout_URL__c = "";
+    @SerializedName("Hide_Role_On_Calendar__c")
+    @Expose
+    private String Hide_Role_On_Calendar__c = "";
+    @SerializedName("Languges__c")
+    @Expose
+    private String Languges__c;
+    @SerializedName("Bank_Account_Number__c")
+    @Expose
+    private String Bank_Account_Number__c;
+    @SerializedName("Bank_Name__c")
+    @Expose
+    private String Bank_Name__c;
+    @SerializedName("Employee_Id__c")
+    @Expose
+    private String Employee_Id__c;
+    @SerializedName("IFSC_Code__c")
+    @Expose
+    private String IFSC_Code__c;
+    @SerializedName("UAN_Number__c")
+    @Expose
+    private String UAN_Number__c;
+    @SerializedName("PF_Number__c")
+    @Expose
+    private String PF_Number__c;
+
+    public String getMultipleTaluka() {
+        return MultipleTaluka;
+    }
+
+    public void setMultipleTaluka(String MultipleTaluka) {
+        MultipleTaluka = MultipleTaluka;
+    }
+
+    public String getBirth_Day__c() {
+        return Birth_Day__c;
+    }
+
+    public void setBirth_Day__c(String birth_Day__c) {
+        Birth_Day__c = birth_Day__c;
+    }
 
     public String getAttendance_Loc_Lat() {
         return Attendance_Loc_Lat;
@@ -134,10 +185,6 @@ public class UserInfo {
         User_Mobile_App_Version__c = user_Mobile_App_Version__c;
     }
 
-    @SerializedName("Approval_Role_c__c")
-    @Expose
-    private String approval_role = "";
-
     public String getApprover_Comment__c() {
         return Approver_Comment__c;
     }
@@ -154,19 +201,6 @@ public class UserInfo {
         Role_Juridiction__c = role_Juridiction__c;
     }
 
-    @SerializedName("Gender__c")
-    @Expose
-    private String gender = "";
-
-
-    @SerializedName("Approver_Comment__c")
-    @Expose
-    private String Approver_Comment__c = "";
-
-    @SerializedName("Role_Juridiction__c")
-    @Expose
-    private String Role_Juridiction__c = "";
-
     public String getPhoneId() {
         return PhoneId;
     }
@@ -175,9 +209,7 @@ public class UserInfo {
         PhoneId = phoneId;
     }
 
-    @SerializedName("PhoneID__c")
-    @Expose
-    private String PhoneId = "";
+
 
     public String getUserMobileAppVersion() {
         return User_Mobile_App_Version__c;
@@ -186,10 +218,6 @@ public class UserInfo {
     public void setUserMobileAppVersion(String user_Mobile_App_Version__c) {
         User_Mobile_App_Version__c = user_Mobile_App_Version__c;
     }
-
-    @SerializedName("User_Mobile_App_Version__c")
-    @Expose
-    private String User_Mobile_App_Version__c = "";
 
     public String getIsLocationTrackingAllow__c() {
         return isLocationTrackingAllow__c;
@@ -231,23 +259,6 @@ public class UserInfo {
         Languges__c = languges__c;
     }
 
-    @SerializedName("isLocationTrackingAllow__c")
-    @Expose
-    private String isLocationTrackingAllow__c;
-
-    @SerializedName("isLocationAllow__c")
-    @Expose
-    private String isLocationAllow__c;
-
-
-    @SerializedName("Contact_No__c")
-    @Expose
-    private String Contact_No__c = "";
-
-    @SerializedName("Hangout_URL__c")
-    @Expose
-    private String Hangout_URL__c = "";
-
     public String getHide_Role_On_Calendar__c() {
         return Hide_Role_On_Calendar__c;
     }
@@ -256,33 +267,6 @@ public class UserInfo {
         Hide_Role_On_Calendar__c = hide_Role_On_Calendar__c;
     }
 
-    @SerializedName("Hide_Role_On_Calendar__c")
-    @Expose
-    private String Hide_Role_On_Calendar__c = "";
-
-    @SerializedName("Languges__c")
-    @Expose
-    private String Languges__c;
-
-    @SerializedName("Bank_Account_Number__c")
-    @Expose
-    private String Bank_Account_Number__c;
-
-    @SerializedName("Bank_Name__c")
-    @Expose
-    private String Bank_Name__c;
-
-    @SerializedName("Employee_Id__c")
-    @Expose
-    private String Employee_Id__c;
-
-    @SerializedName("IFSC_Code__c")
-    @Expose
-    private String IFSC_Code__c;
-
-    @SerializedName("UAN_Number__c")
-    @Expose
-    private String UAN_Number__c;
 
     public String getPF_Number__c() {
         return PF_Number__c;
@@ -292,9 +276,6 @@ public class UserInfo {
         this.PF_Number__c = PF_Number__c;
     }
 
-    @SerializedName("PF_Number__c")
-    @Expose
-    private String PF_Number__c;
 
     public String getBank_Account_Number__c() {
         return Bank_Account_Number__c;
@@ -352,6 +333,14 @@ public class UserInfo {
         Project__c = project__c;
     }
 
+    public String getMulti_project__c() {
+        return Multi_project__c;
+    }
+
+    public void setMulti_project__c(String multi_project__c) {
+        Multi_project__c = multi_project__c;
+    }
+
     public String getProject_Name__c() {
         return Project_Name__c;
     }
@@ -384,7 +373,6 @@ public class UserInfo {
         this.approval_role = approval_role;
     }
 
-
     public String getIsApproved() {
         return isApproved;
     }
@@ -392,7 +380,6 @@ public class UserInfo {
     public void setIsApproved(String isApproved) {
         this.isApproved = isApproved;
     }
-
 
     public String getOrganisation() {
         return Organisation;
@@ -433,7 +420,6 @@ public class UserInfo {
     public void setLastName(String lastName) {
         LastName = lastName;
     }
-
 
     public String getId() {
         return Id;

@@ -93,7 +93,7 @@
                     android:background="@drawable/grey_box"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
-                    android:prompt="@string/state"
+                    android:prompt="@string/month"
                     android:spinnerMode="dialog" />
 
                 <Spinner
@@ -107,7 +107,7 @@
                     android:background="@drawable/grey_box"
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
-                    android:prompt="@string/state"
+                    android:prompt="@string/year"
                     android:spinnerMode="dialog" />
             </LinearLayout>
 

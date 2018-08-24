@@ -119,9 +119,9 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
             binding.inputHrFormDate.setText(leavesModel.getFromDate());
             binding.inputHrToDate.setText(leavesModel.getToDate());
             binding.etReason.setText(leavesModel.getReason());
-            if (leavesModel.getIsHalfDayLeave().equals("true")) {
+            if (leavesModel.isHalfDayLeave()) {
                 binding.detailChk.setChecked(true);
-            } else if (leavesModel.getIsHalfDayLeave().equals("false")) {
+            } else if (leavesModel.isHalfDayLeave()) {
                 binding.detailChk.setChecked(false);
             }
             if (preferenceHelper.getString(Constants.Leave).equals(Constants.Leave_Approve)) {

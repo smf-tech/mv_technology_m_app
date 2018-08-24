@@ -67,10 +67,12 @@ import com.mv.ActivityMenu.ProgrammeManagmentFragment;
 import com.mv.ActivityMenu.TeamManagementFragment;
 import com.mv.ActivityMenu.ThetSavandFragment;
 import com.mv.ActivityMenu.TrainingCalender;
+import com.mv.Adapter.ExpandableApprovalListAdapter;
 import com.mv.Adapter.HomeAdapter;
 import com.mv.Model.Attendance;
 import com.mv.Model.HolidayListModel;
 import com.mv.Model.HomeModel;
+import com.mv.Model.LeavesModel;
 import com.mv.Model.LocationModel;
 import com.mv.Model.Notifications;
 import com.mv.Model.User;
@@ -321,6 +323,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         intent.putExtra(Constants.State, User.getCurrentUser(getApplicationContext()).getMvUser().getState());
         intent.putExtra(Constants.DISTRICT, User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
         startService(intent);
+
+        // Send offline attendance to server
+        Attendance temp = AppDatabase.getAppDatabase(HomeActivity.this).userDao().getUnSynchAttendance();
+        if (Utills.isConnected(HomeActivity.this)) {
+            if(temp != null){
+                Intent intentt = new Intent(HomeActivity.this, SendAttendance.class);
+                startService(intentt);
+            }
+            getAllLeaves();
+        }
 
         int count=AppDatabase.getAppDatabase(this).userDao().getUnRearNotificationsCount("unread");
         tvUnreadNotification.setText(""+count);
@@ -1348,6 +1360,66 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
     }
 
+    public void getAllLeaves() {
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.GetAllMyLeave + "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
+
+        Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    if (response.body() != null) {
+                        String str = response.body().string();
+                        if (str != null && str.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(str);
+
+                            ArrayList<LeavesModel> leavesList = new ArrayList<>();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject data = jsonArray.getJSONObject(i);
+
+                                LeavesModel leavesModel = new LeavesModel();
+                                leavesModel.setId(data.getString("Id"));
+                                leavesModel.setFromDate(data.getString("From__c"));
+                                leavesModel.setToDate(data.getString("To__c"));
+                                leavesModel.setReason(data.getString("Reason__c"));
+                                leavesModel.setTypeOfLeaves(data.getString("Leave_Type__c"));
+                                leavesModel.setStatus(data.getString("Status__c"));
+                                if (data.has("Comment__c"))
+                                    leavesModel.setComment(data.getString("Comment__c"));
+                                leavesModel.setRequested_User__c(data.getString("Requested_User__c"));
+                                if (data.has("Requested_User_Name__c"))
+                                    leavesModel.setRequested_User_Name__c(data.getString("Requested_User_Name__c"));
+                                if (data.has("isHalfDay__c")) {
+                                    leavesModel.setHalfDayLeave(data.getBoolean("isHalfDay__c"));
+                                } else {
+                                    leavesModel.setHalfDayLeave(false);
+                                }
+
+                                leavesList.add(leavesModel);
+
+                            }
+                            AppDatabase.getAppDatabase(HomeActivity.this).userDao().deleteAllLeaves();
+                            AppDatabase.getAppDatabase(HomeActivity.this).userDao().insertLeaves(leavesList);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override

@@ -1,16 +1,62 @@
 package com.mv.Model;
 
+import android.arch.persistence.room.ColumnInfo;
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.mv.Utils.Constants;
 
 /**
  * Created by nanostuffs on 19-03-2018.
  */
 
+@Entity(tableName = Constants.TABLE_LEAVES)
 public class LeavesModel implements Parcelable {
+
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "unique_Id")
+    private int Unique_Id;
+    @ColumnInfo(name = "Id")
+    @SerializedName("Id")
+    @Expose
+    private String Id;
+    @ColumnInfo(name = "From__c")
+    @SerializedName("From__c")
+    @Expose
+    private String fromDate;
+    @ColumnInfo(name = "To__c")
+    @SerializedName("To__c")
+    @Expose
+    private String toDate;
+    @ColumnInfo(name = "Reason__c")
+    @SerializedName("Reason__c")
+    @Expose
+    private String reason;
+    @ColumnInfo(name = "Leave_Type__c")
+    @SerializedName("Leave_Type__c")
+    @Expose
+    private String typeOfLeaves;
+    @ColumnInfo(name = "Status__c")
+    @SerializedName("Status__c")
+    @Expose
+    private String status;
+    @ColumnInfo(name = "isHalfDay__c")
+    @SerializedName("isHalfDay__c")
+    @Expose
+    private boolean isHalfDayLeave;
+
+    public int getUnique_Id() {
+        return Unique_Id;
+    }
+
+    public void setUnique_Id(int unique_Id) {
+        Unique_Id = unique_Id;
+    }
+
     public String getId() {
         return Id;
     }
@@ -59,22 +105,13 @@ public class LeavesModel implements Parcelable {
         this.status = status;
     }
 
-    private String Id;
-    private String fromDate;
-    private String toDate;
-    private String reason;
-    private String typeOfLeaves;
-    private String status;
-
-    public String getIsHalfDayLeave() {
+    public boolean isHalfDayLeave() {
         return isHalfDayLeave;
     }
 
-    public void setIsHalfDayLeave(String isHalfDayLeave) {
-        this.isHalfDayLeave = isHalfDayLeave;
+    public void setHalfDayLeave(boolean halfDayLeave) {
+        isHalfDayLeave = halfDayLeave;
     }
-
-    private String isHalfDayLeave;
 
     public String getComment() {
         return comment;
@@ -132,7 +169,6 @@ public class LeavesModel implements Parcelable {
         dest.writeString(this.reason);
         dest.writeString(this.typeOfLeaves);
         dest.writeString(this.status);
-        dest.writeString(this.isHalfDayLeave);
         dest.writeString(this.comment);
         dest.writeString(this.Requested_User_Name__c);
         dest.writeString(this.Requested_User__c);
@@ -146,7 +182,6 @@ public class LeavesModel implements Parcelable {
         this.reason = in.readString();
         this.typeOfLeaves = in.readString();
         this.status = in.readString();
-        this.isHalfDayLeave = in.readString();
         this.comment = in.readString();
         this.Requested_User_Name__c = in.readString();
         this.Requested_User__c = in.readString();

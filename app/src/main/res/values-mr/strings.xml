@@ -193,7 +193,7 @@
     <string name="team_user_approval">युजर्स मंजुरी</string>
     <string name="team_form_approval">फॉर्म मंजुरी</string>
     <string name="lang">भाषा बदला</string>
-    <string name="profile">अपडेट  प्रोफाइल </string>
+    <string name="profile">माझी प्रोफाईल</string>
     <string name="logout">बाहेर पडा</string>
     <string name="select_form">फॉर्म निवडा</string>
     <string name="catagory">श्रेण्या</string>
@@ -322,4 +322,6 @@
     <string name="valid_advance">मंजूर आगाऊ रक्कम विनंती आगाऊ रक्कम जास्त असू नये.</string>
     <string name="title_notification">सूचना</string>
     <string name="asset_status">Status</string>
+    <string name="Please_select_project">Please select Project</string>
+    <string name="location_not_found">वर्तमान स्थान उपलब्ध नाही, कृपया पुन्हा प्रयत्न करा</string>
 </resources>

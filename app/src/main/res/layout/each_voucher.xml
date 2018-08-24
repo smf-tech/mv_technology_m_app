@@ -72,6 +72,8 @@
                 android:textColor="@color/dark_grey"
                 android:textSize="@dimen/large_text" />
 
+
+
             <TextView
                 android:id="@+id/tvProjectDateTitle"
                 android:layout_width="wrap_content"
@@ -180,27 +182,13 @@
                 android:textColor="@color/medium_grey"
                 android:textSize="@dimen/medium_text" />
 
-            <LinearLayout
-                android:id="@+id/imgLayout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView
+                android:id="@+id/img_more"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
                 android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:orientation="vertical">
+                android:src="@drawable/ic_more_vert_black_24dp" />
 
-                <ImageView
-                    android:id="@+id/imgEdit"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:src="@drawable/ic_form" />
-
-                <ImageView
-                    android:id="@+id/imgDelete"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
-                    android:layout_marginTop="20dp"
-                    android:src="@drawable/form_delete" />
-            </LinearLayout>
         </RelativeLayout>
 
         <View

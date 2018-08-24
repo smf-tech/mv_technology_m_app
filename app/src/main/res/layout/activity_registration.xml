@@ -328,7 +328,8 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
-                    android:paddingBottom="10dp">
+                    android:paddingBottom="10dp"
+                    android:visibility="gone">
 
                     <Spinner
                         android:id="@+id/spinner_project"
@@ -342,6 +343,31 @@
                         android:prompt="@string/project"
                         android:spinnerMode="dialog" />
                 </RelativeLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_multiselect_project"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="visible"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                    <com.mv.Widgets.MyEditTextView
+                        android:id="@+id/edit_multiselect_project"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:gravity="left|top"
+                        android:hint="@string/project"
+                        android:maxLines="3"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
 
                 <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"

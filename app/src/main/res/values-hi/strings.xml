@@ -204,7 +204,7 @@
     <string name="Registration">पंजीकरण</string>
 
     <string name="lang">भाषा बदलें</string>
-    <string name="profile">अपडेट प्रोफाइल</string>
+    <string name="profile">मेरी प्रोफाईल</string>
     <string name="logout">लॉग आउट</string>
     <string name="add_location">स्थान जोड़िए</string>
 
@@ -327,4 +327,6 @@
     <string name="valid_advance">स्वीकृत अग्रिम राशि अनुरोधित अग्रिम राशि से अधिक नहीं होनी चाहिए।</string>
     <string name="title_notification">अधिसूचना</string>
     <string name="asset_status">Status</string>
+    <string name="Please_select_project">Please select Project</string>
+    <string name="location_not_found">वर्तमान स्थान उपलब्ध नहीं है, कृपया पुनः प्रयास करें</string>
 </resources>

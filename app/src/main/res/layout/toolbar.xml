@@ -75,11 +75,11 @@
 
         <ImageView
             android:id="@+id/img_more"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:src="@drawable/ic_more_vert_black_24dp"
+            android:src="@drawable/ic_more_weight"
             android:visibility="gone" />
 
         <CheckBox

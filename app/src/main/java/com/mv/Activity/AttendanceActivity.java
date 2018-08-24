@@ -18,6 +18,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mv.Model.Attendance;
 import com.mv.Model.HolidayListModel;
+import com.mv.Model.LeavesModel;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -42,11 +43,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -69,10 +72,12 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     private List<Attendance> attendanceList = new ArrayList<Attendance>();
     private SimpleDateFormat formatter;
     private ArrayList<CalendarDay> dates = new ArrayList<>();
-    private ArrayList<CalendarDay> leaveDates = new ArrayList<>();
+    private ArrayList<CalendarDay> holidayDates = new ArrayList<>();
+    private ArrayList<CalendarDay> leavesDates = new ArrayList<>();
     private GPSTracker gps;
     private int checkInClickable = 0, checkOutClickable = 0;
     private List<HolidayListModel> holidayListModels;
+    private List<LeavesModel> leavesModelList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,17 +85,39 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         binding = DataBindingUtil.setContentView(this, R.layout.activity_attendance);
         binding.setActivity(this);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         initViews();
         holidayListModels = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getAllHolidayList();
-        leaveDates.clear();
+        holidayDates.clear();
         for (int i = 0; i < holidayListModels.size(); i++) {
             try {
-                leaveDates.add(CalendarDay.from(formatter.parse(holidayListModels.get(i).getHoliday_Date__c())));
+                holidayDates.add(CalendarDay.from(formatter.parse(holidayListModels.get(i).getHoliday_Date__c())));
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
-        binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, leaveDates, getResources().getDrawable(R.drawable.circle_background_red)));
+        leavesModelList = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getApprovedLeaves("Approved");
+        leavesDates.clear();
+        for (int i = 0; i < leavesModelList.size(); i++) {
+
+            try {
+                if (leavesModelList.get(i).getFromDate().equals(leavesModelList.get(i).getToDate())){
+                    if(leavesModelList.get(i)!=null && !leavesModelList.get(i).isHalfDayLeave())
+                    leavesDates.add(CalendarDay.from(formatter.parse(leavesModelList.get(i).getFromDate())));
+                } else {
+                    getDatesBetween(leavesModelList.get(i).getFromDate(),leavesModelList.get(i).getToDate());
+                }
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
+        binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, leavesDates, getResources().getDrawable(R.drawable.circle_background_pink)));
         if (Utills.isConnected(AttendanceActivity.this)) {
             // Send offline attendance to server
             Attendance temp = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getUnSynchAttendance();
@@ -109,11 +136,41 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                 setButtonView();
                 binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, dates, getResources().getDrawable(R.drawable.circle_background)));
             }else{
+                attendanceList = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getAllAttendance();
+                for (Attendance attendance : attendanceList) {
+                    try {
+                        dates.add(CalendarDay.from(formatter.parse(attendance.getDate())));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                }
                 setButtonView();
+                binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, dates, getResources().getDrawable(R.drawable.circle_background)));
+
                 getAttendanceData();
             }
         } else {
             attendanceList = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getAllAttendance();
+
+            // display offline attendance in difference color
+            Attendance temp = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getUnSynchAttendance();
+            if (temp != null) {
+                int i=-1;
+                for(Attendance tempp:attendanceList){
+                    i++;
+                    if(tempp.getUnique_Id()==temp.getUnique_Id())
+                        break;
+                }
+                attendanceList.remove(i);
+                ArrayList<CalendarDay> tempDate = new ArrayList<>();
+                try {
+                    tempDate.add(CalendarDay.from(formatter.parse(temp.getDate())));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, tempDate, getResources().getDrawable(R.drawable.circle_background_light_blue)));//difference color
+            }
+
             for (Attendance attendance : attendanceList) {
                 try {
                     dates.add(CalendarDay.from(formatter.parse(attendance.getDate())));
@@ -124,6 +181,37 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             setButtonView();
             binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, dates, getResources().getDrawable(R.drawable.circle_background)));
         }
+
+        if (!gps.canGetLocation()) {
+            gps.showSettingsAlert();
+        }
+    }
+
+    private void getDatesBetween(String dateString1, String dateString2)
+    {
+        Date date1 = null;
+        Date date2 = null;
+
+        try {
+            date1 = formatter .parse(dateString1);
+            date2 = formatter .parse(dateString2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar cal1 = Calendar.getInstance();
+        cal1.setTime(date1);
+
+
+        Calendar cal2 = Calendar.getInstance();
+        cal2.setTime(date2);
+
+        while(!cal1.after(cal2))
+        {
+            leavesDates.add(CalendarDay.from(cal1));
+            cal1.add(Calendar.DATE, 1);
+        }
+
     }
 
     private String getCurrentDate() {
@@ -165,7 +253,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         attendance.setDate(getCurrentDate());
         attendance.setCheckInLng("" + gps.getLongitude());
         attendance.setCheckInLat("" + gps.getLatitude());
-        attendance.setStatus("Approved");
+        attendance.setStatus("");
         attendance.setUser(User.getCurrentUser(getApplicationContext()).getMvUser().getId());
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
         Calendar c = Calendar.getInstance();
@@ -174,7 +262,11 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         String timeString1 = time1.format(date);
         attendance.setCheckInTime("" + timeString1);
         LocaleManager.setNewLocale(this, preferenceHelper.getString(Constants.LANGUAGE));
-        sendAttendance(attendance, true, isPresent);
+
+        if(leavesDates.contains(day))
+            Utills.showToast("You are on leave", AttendanceActivity.this);
+        else
+            sendAttendance(attendance, true, isPresent);
     }
 
     private void sendAttendance(Attendance attendance, Boolean isCheckedIn, Boolean isPresent) {
@@ -296,7 +388,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             gps.showSettingsAlert();
             return;
         } else if (0.0==gps.getLongitude() && 0.0==gps.getLatitude()) {
-            Utills.showToast("Current location is not available, Please try again", AttendanceActivity.this);
+            Utills.showToast(getResources().getString(R.string.location_not_found), AttendanceActivity.this);
             initViews();
             return;
         }
@@ -318,7 +410,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         attendance.setDate(getCurrentDate());
         attendance.setCheckOutLng("" + gps.getLongitude());
         attendance.setCheckOutLat("" + gps.getLatitude());
-        attendance.setStatus("Approved");
+        attendance.setStatus("");
         attendance.setUser(User.getCurrentUser(getApplicationContext()).getMvUser().getId());
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
         Calendar c = Calendar.getInstance();
@@ -327,7 +419,10 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         String timeString1 = time1.format(date);
         attendance.setCheckOutTime("" + timeString1);
         LocaleManager.setNewLocale(this, preferenceHelper.getString(Constants.LANGUAGE));
-        sendAttendance(attendance, false, isPresent);
+        if(leavesDates.contains(day))
+            Utills.showToast("You are on leave", AttendanceActivity.this);
+        else
+            sendAttendance(attendance, false, isPresent);
     }
 
     private void initViews() {
@@ -478,14 +573,6 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         img_logout.setVisibility(View.GONE);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        if (!gps.canGetLocation()) {
-            gps.showSettingsAlert();
-        }
-    }
-
 
     /**
      * Called when a user clicks on a day.
@@ -499,8 +586,8 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         if (dates.contains(date)) {
             buildDialog(R.style.DialogTheme, dates.indexOf(date), 0);
-        } else if (leaveDates.contains(date)) {
-            buildDialog(R.style.DialogTheme, leaveDates.indexOf(date), 1);
+        } else if (holidayDates.contains(date)) {
+            buildDialog(R.style.DialogTheme, holidayDates.indexOf(date), 1);
         }
     }
 

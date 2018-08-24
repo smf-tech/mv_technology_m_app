@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -100,7 +99,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private RelativeLayout rel_district, rel_taluka, rel_cluster, rel_villgae, rel_school_name;
     private boolean isBackPress = false;
     private boolean[] mSelection = null;
-    private String value = "";
+    private String value = "",valueProject = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,7 +153,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             mListProjectId.add("Select");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject object = jsonArray.getJSONObject(i);
-                                mListProject.add(object.getString("Project_Name__c"));
+//                                mListProject.add(object.getString("Project_Name__c"));
+                                mListProject.add(object.getString("Name"));
                                 mListProjectId.add(object.getString("Id"));
                             }
                             project_adapter.notifyDataSetChanged();
@@ -481,6 +481,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         btn_submit = (Button) findViewById(R.id.btn_submit);
         btn_submit.setOnClickListener(this);
         binding.editMultiselectTaluka.setOnClickListener(this);
+        binding.editMultiselectProject.setOnClickListener(this);
         if (User.getCurrentUser(RegistrationActivity.this).getMvUser().getOrganisation().equals("SMF")) {
             binding.llWork.setVisibility(View.VISIBLE);
             binding.editTextRefresh.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lat() + " , " + User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lng());
@@ -608,6 +609,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 binding.editTextMobileNumber.setText(User.getCurrentUser(this).getMvUser().getPhone());
                 binding.editTextName.setText(User.getCurrentUser(this).getMvUser().getName());
                 binding.editMultiselectTaluka.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getMultipleTaluka());
+                binding.editMultiselectProject.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getMulti_project__c());
+
 
                 if (User.getCurrentUser(this).getMvUser().getGender() != null && !TextUtils.isEmpty(User.getCurrentUser(this).getMvUser().getGender())) {
                     if (User.getCurrentUser(this).getMvUser().getGender().equalsIgnoreCase("Male")) {
@@ -677,6 +680,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 break;
             case R.id.edit_multiselect_taluka:
                 showMultiselectDialog(mListTaluka);
+                break;
+            case R.id.edit_multiselect_project:
+                showMultiselectDialogProject(mListProject);
                 break;
             case R.id.btn_submit:
                 sendData();
@@ -800,9 +806,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 }
                 jsonObject2.put("User_Multiple_Taluka__c", value);
 
-
-                if (mSelectProject > 0)
-                    jsonObject2.put("Project__c", mListProjectId.get(mSelectProject));
+                jsonObject2.put("Multi_project__c",binding.editMultiselectProject.getText().toString());
+//                if (mSelectProject > 0)
+//                    jsonObject2.put("Project__c", mListProjectId.get(mSelectProject));
                 JSONObject jsonObject = new JSONObject();
                 JSONArray jsonArray = new JSONArray();
 
@@ -946,7 +952,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             msg = getString(R.string.please_refresh_location);
         } else if (mSelectState == 0) {
             msg = getString(R.string.Please_select_State);
-        } else if ((mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("District"))) {
+        } else if (binding.editMultiselectProject.getText().toString().equals("")) {
+            msg = getString(R.string.Please_select_project);
+        }else if ((mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("District"))) {
             if (mSelectDistrict == 0) {
                 msg = getString(R.string.Please_select_district);
             }
@@ -1679,6 +1687,69 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     }
                 }).create();
         dialog.show();
+    }
+
+    private void showMultiselectDialogProject(ArrayList<String> arrayList) {
+        ArrayList<String> list = arrayList;
+        if (list.contains("Select")) {
+            list.remove(list.indexOf("Select"));
+        }
+
+        final String[] items = arrayList.toArray(new String[list.size()]);
+        mSelection = new boolean[(items.length)];
+        Arrays.fill(mSelection, false);
+        if (valueProject.length() != 0) {
+            String[] talukas = valueProject.split(";");
+            for (int i = 0; i < talukas.length; i++) {
+                if (arrayList.contains(talukas[i].trim())) {
+                    mSelection[arrayList.indexOf(talukas[i].trim())] = true;
+                }
+            }
+        }
+
+        // arraylist to keep the selected items
+        AlertDialog dialog = new AlertDialog.Builder(RegistrationActivity.this)
+                .setTitle(getString(R.string.taluka))
+                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                        if (mSelection != null && which < mSelection.length) {
+                            mSelection[which] = isChecked;
+                            valueProject = buildSelectedItemStringProject(items);
+                        } else {
+                            throw new IllegalArgumentException(
+                                    "Argument 'which' is out of bounds.");
+                        }
+                    }
+                })
+                .setPositiveButton(RegistrationActivity.this.getString(R.string.ok), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        binding.editMultiselectProject.setText(valueProject);
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Your code when user clicked on Cancel
+                    }
+                }).create();
+        dialog.show();
+    }
+    private String buildSelectedItemStringProject(String[] items) {
+        StringBuilder sb = new StringBuilder();
+        boolean foundOne = false;
+
+        for (int i = 0; i < items.length; ++i) {
+            if (mSelection[i]) {
+                if (foundOne) {
+                    sb.append(";");
+                }
+                foundOne = true;
+
+                sb.append(items[i]);
+            }
+        }
+        return sb.toString();
     }
 
     private String buildSelectedItemString(String[] items) {

@@ -23,6 +23,7 @@ import com.mv.Model.LeavesModel;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
+import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
@@ -164,7 +165,11 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                                 leavesModel.setReason(data.getString("Reason__c"));
                                 leavesModel.setTypeOfLeaves(data.getString("Leave_Type__c"));
                                 leavesModel.setStatus(data.getString("Status__c"));
-                                leavesModel.setIsHalfDayLeave(data.getString("isHalfDay__c"));
+                                if (data.has("isHalfDay__c")) {
+                                    leavesModel.setHalfDayLeave(data.getBoolean("isHalfDay__c"));
+                                } else {
+                                    leavesModel.setHalfDayLeave(false);
+                                }
                                 leavesModel.setRequested_User__c(data.getString("Requested_User__c"));
                                 if (data.has("Requested_User_Name__c"))
                                     leavesModel.setRequested_User_Name__c(data.getString("Requested_User_Name__c"));
@@ -274,9 +279,9 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                                 if (data.has("Requested_User_Name__c"))
                                     leavesModel.setRequested_User_Name__c(data.getString("Requested_User_Name__c"));
                                 if (data.has("isHalfDay__c")) {
-                                    leavesModel.setIsHalfDayLeave(data.getString("isHalfDay__c"));
+                                    leavesModel.setHalfDayLeave(data.getBoolean("isHalfDay__c"));
                                 } else {
-                                    leavesModel.setIsHalfDayLeave("false");
+                                    leavesModel.setHalfDayLeave(false);
                                 }
                                 if (leavesModel.getStatus().equals(Constants.LeaveStatusApprove))
                                     approveList.add(leavesModel);
@@ -285,6 +290,10 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                                 if (leavesModel.getStatus().equals(Constants.LeaveStatusRejected))
                                     rejectList.add(leavesModel);
                             }
+                            AppDatabase.getAppDatabase(LeaveApprovalActivity.this).userDao().deleteAllLeaves();
+                            AppDatabase.getAppDatabase(LeaveApprovalActivity.this).userDao().insertLeaves(pendingList);
+                            AppDatabase.getAppDatabase(LeaveApprovalActivity.this).userDao().insertLeaves(rejectList);
+                            AppDatabase.getAppDatabase(LeaveApprovalActivity.this).userDao().insertLeaves(approveList);
                             childList.put(getString(R.string.pending), pendingList);
                             childList.put(getString(R.string.reject), rejectList);
                             childList.put(getString(R.string.approve), approveList);
