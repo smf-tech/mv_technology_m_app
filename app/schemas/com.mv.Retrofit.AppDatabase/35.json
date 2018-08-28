@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 35,
-    "identityHash": "609ba5661f62aad8a22d9174cbd10fa2",
+    "identityHash": "3e32715a8554ee703f05c21c13dff373",
     "entities": [
       {
         "tableName": "table_community",
@@ -1130,7 +1130,7 @@
       },
       {
         "tableName": "table_attendance",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Attendance_Date__c` TEXT, `status__c` TEXT, `MV_User__c` TEXT, `remarks__c` TEXT, `checkOutTime__c` TEXT, `checkInTime__c` TEXT, `Synch` TEXT, `Id` TEXT, `checkInLoc__Latitude__s` TEXT, `checkInLoc__Longitude__s` TEXT, `checkOutLoc__Latitude__s` TEXT, `checkOutLoc__Longitude__s` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Attendance_Date__c` TEXT, `status__c` TEXT, `address__c` TEXT, `MV_User__c` TEXT, `remarks__c` TEXT, `checkOutTime__c` TEXT, `checkInTime__c` TEXT, `Synch` TEXT, `Id` TEXT, `checkInLoc__Latitude__s` TEXT, `checkInLoc__Longitude__s` TEXT, `checkOutLoc__Latitude__s` TEXT, `checkOutLoc__Longitude__s` TEXT)",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -1145,6 +1145,11 @@
           {
             "fieldPath": "status",
             "columnName": "status__c",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "address",
+            "columnName": "address__c",
             "affinity": "TEXT"
           },
           {
@@ -1377,7 +1382,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"609ba5661f62aad8a22d9174cbd10fa2\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"3e32715a8554ee703f05c21c13dff373\")"
     ]
   }
 }
