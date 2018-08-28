@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.AnimationDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -64,7 +66,9 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -487,8 +491,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             binding.editTextRefresh.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lat() + " , " + User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lng());
             SelectedLon = User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lng();
             SelectedLat = User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lat();
+            String str=ConvertToAddress(Double.parseDouble(SelectedLon), Double.parseDouble(SelectedLat));
+            binding.editTextAddress.setText(ConvertToAddress(Double.parseDouble(SelectedLon), Double.parseDouble(SelectedLat)));
         } else {
             binding.llWork.setVisibility(View.GONE);
+            binding.inputAddress.setVisibility(View.GONE);
         }
 
         binding.btnRefreshLocation.setOnClickListener(this);
@@ -697,12 +704,30 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 binding.editTextRefresh.setText(gps.getLatitude() + " , " + gps.getLongitude());
                 SelectedLat = String.valueOf(gps.getLatitude());
                 SelectedLon = String.valueOf(gps.getLongitude());
+                binding.editTextAddress.setText(ConvertToAddress(gps.getLatitude(), gps.getLongitude()));
                 break;
             case R.id.birth_date:
                 showDateDialog(RegistrationActivity.this, binding.birthDate);
                 break;
 
         }
+    }
+
+    // to convert the gps coordinate into address
+    private String ConvertToAddress(double latitude, double longitude) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        String result = null;
+        try {
+            List<Address> addressList = geocoder.getFromLocation(
+                    latitude, longitude, 1);
+            if (addressList != null && addressList.size() > 0) {
+                result = addressList.get(0).getAddressLine(0);
+            }
+        } catch (IOException e) {
+            Log.e("Error", "Unable connect to Geocoder", e);
+            return "";
+        }
+        return result;
     }
 
     /*

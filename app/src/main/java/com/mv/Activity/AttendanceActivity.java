@@ -107,6 +107,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                 e.printStackTrace();
             }
         }
+        binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, holidayDates, getResources().getDrawable(R.drawable.circle_background_red)));
         leavesModelList = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getApprovedLeaves("Approved");
         leavesDates.clear();
         for (int i = 0; i < leavesModelList.size(); i++) {
