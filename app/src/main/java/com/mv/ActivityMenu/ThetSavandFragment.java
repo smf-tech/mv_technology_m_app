@@ -230,33 +230,31 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = "";
-        if (isTimePresent)
-            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId()
-                    + "&timestamp=" + AppDatabase.getAppDatabase(context).userDao().getThetSavandChats().get(0).getTime();
-        else
-            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId();
-
-        //pagination functionality code
-//        if (isTimePresent &&  AppDatabase.getAppDatabase(context).userDao().getThetSavandChats().size() > 0) {
-//            if (!isPrevious) {
-//                url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-//                        + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId()
-//                        + "&timestamp=" + AppDatabase.getAppDatabase(context).userDao().getThetSavandChats().get(0).getTime()
-//                        + "&isPrevious=false";
-//            } else {
-//                url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-//                        + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId()
-//                        + "&timestamp=" + AppDatabase.getAppDatabase(context).userDao().getThetSavandChats().get(0).getTime()
-//                        + "&isPrevious=true";
-//            }
-//        } else {
+//        if (isTimePresent)
+//            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+//                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId()
+//                    + "&timestamp=" + AppDatabase.getAppDatabase(context).userDao().getThetSavandChats().get(0).getTime();
+//        else
 //            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
 //                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId();
-//        }
 
-        //////////////////
+        //pagination functionality code
+        if (isTimePresent &&  AppDatabase.getAppDatabase(context).userDao().getThetSavandChats().size() > 0) {
+            if (!isPrevious) {
+                url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                        + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId()
+                        + "&timestamp=" + AppDatabase.getAppDatabase(context).userDao().getThetSavandChats().get(0).getTime()
+                        + "&isPrevious=false";
+            } else {
+                url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                        + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId()
+                        + "&timestamp=" + AppDatabase.getAppDatabase(context).userDao().getThetSavandChats().get(0).getTime()
+                        + "&isPrevious=true";
+            }
+        } else {
+            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId();
+        }
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override

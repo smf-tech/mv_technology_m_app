@@ -92,7 +92,6 @@
                 android:background="@null"
                 android:inputType="textPersonName|textCapSentences"
                 android:textColor="@color/black"
-                android:hint="@string/please_enter_date_time"
                 android:textSize="@dimen/medium_text" />
         </android.support.design.widget.TextInputLayout>
 

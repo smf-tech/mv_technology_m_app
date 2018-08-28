@@ -1229,9 +1229,8 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
                         Log.e("StringValue", selectedRolename);
 
-
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //  Your code when user clicked on Cancel
@@ -1296,7 +1295,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                         selectedProcessId = new ArrayList<String>(Arrays.asList(getColumnIdex((processId).split(","))));
                         binding.spinnerCatogory.setText(sb.toString());
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //  Your code when user clicked on Cancel
