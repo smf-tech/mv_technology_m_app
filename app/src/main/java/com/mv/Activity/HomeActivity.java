@@ -359,6 +359,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             Utills.showProgressDialog(HomeActivity.this, "Loading Holidays", getString(R.string.progress_please_wait));
             ServiceRequest apiService =
                     ApiClient.getClientWitHeader(HomeActivity.this).create(ServiceRequest.class);
+//            String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+//                    + "/services/apexrest/getAllHolidays";
             String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/getAllHolidays?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
             apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
