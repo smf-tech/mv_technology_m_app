@@ -68,7 +68,7 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.each_expense, null);
         }
-        TextView tvProjectName, tvDateName, tvNoOfPeopleName;
+        TextView tvProjectName, tvDateName, tvNoOfPeopleName,tvNoOfPeopleTitle;
         ImageView imgEdit, imgDelete;
         View view;
         CardView cardView;
@@ -79,6 +79,7 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
         tvProjectName = (TextView) convertView.findViewById(R.id.tvProjectName);
         tvDateName = (TextView) convertView.findViewById(R.id.tvDateName);
         tvNoOfPeopleName = (TextView) convertView.findViewById(R.id.tvNoOfPeopleName);
+        tvNoOfPeopleTitle = (TextView) convertView.findViewById(R.id.tvNoOfPeopleTitle);
         view = convertView.findViewById(R.id.view1);
         cardView = (CardView) convertView.findViewById(R.id.cardView);
         textLayout = convertView.findViewById(R.id.textLayout);
@@ -122,9 +123,13 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
 
         tvProjectName.setText(expense.getPartuculars());
         tvDateName.setText(expense.getDate());
-        tvNoOfPeopleName.setText("₹ " + expense.getAmount());
-
-
+        if(expense.getStatus().equals("Approved")){
+            tvNoOfPeopleTitle.setText("Approved Amount: ");
+            tvNoOfPeopleName.setText("₹ " + expense.getApproved_Amount__c());
+        }else{
+            tvNoOfPeopleTitle.setText("Amount: ");
+            tvNoOfPeopleName.setText("₹ " + expense.getAmount());
+        }
         return convertView;
     }
 
@@ -163,7 +168,6 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
         else
             return 0;
     }
-
 
     @Override
     public Object getGroup(int groupPosition) {

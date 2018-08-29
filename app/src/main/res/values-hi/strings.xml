@@ -253,9 +253,9 @@
     <string name="voucher">पावती प्रमाणक</string>
     <string name="salary">वेतन</string>
     <!--Voucher List Activity-->
-    <string name="voucher_list">वाउचर सूची</string>
+    <string name="voucher_list">व्हाउचर सूची</string>
     <!--Voucher New Activity-->
-    <string name="voucher_new">नई वाउचर</string>
+    <string name="voucher_new">नई व्हाउचर</string>
     <!--Expense New Activity-->
     <string name="expense_new">नवीन खर्च</string>
 
@@ -270,7 +270,7 @@
     <string name="Reject">Reject</string>
     <string name="adavance_approval">अग्रिम स्वीकृति</string>
     <string name="expense_approval">खर्च अनुमोदन</string>
-    <string name="voucher_approoval">वाउचर अनुमोदन</string>
+    <string name="voucher_approoval">व्हाउचर अनुमोदन</string>
     <string name="date">Date</string>
     <string name="projectDesription">विवरण</string>
     <string name="countOfPeople">Number of People</string>

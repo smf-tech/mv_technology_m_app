@@ -27,18 +27,19 @@
             android:animateLayoutChanges="true"
             android:orientation="vertical">
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/rv_expense"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:scrollbars="vertical" />
+            <!--<android.support.v7.widget.RecyclerView-->
+                <!--android:id="@+id/rv_expense"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="10dp"-->
+                <!--android:scrollbars="vertical" />-->
 
             <ExpandableListView
                 android:id="@+id/ev_process"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:groupIndicator="@null"
                 android:scrollbars="vertical" />
 
             <android.support.design.widget.FloatingActionButton

@@ -77,17 +77,17 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
         voucher = (Voucher) getIntent().getSerializableExtra(Constants.VOUCHER);
         preferenceHelper = new PreferenceHelper(this);
 
-        binding.rvAdavance.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                if (dy < -5 && binding.fabAddProcess.getVisibility() != View.VISIBLE) {
-                    binding.fabAddProcess.show();
-                } else if (dy > 5 && binding.fabAddProcess.getVisibility() == View.VISIBLE) {
-                    binding.fabAddProcess.hide();
-                }
-            }
-        });
+//        binding.rvAdavance.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                if (dy < -5 && binding.fabAddProcess.getVisibility() != View.VISIBLE) {
+//                    binding.fabAddProcess.show();
+//                } else if (dy > 5 && binding.fabAddProcess.getVisibility() == View.VISIBLE) {
+//                    binding.fabAddProcess.hide();
+//                }
+//            }
+//        });
 
         binding.evAdavance.setOnScrollListener(new AbsListView.OnScrollListener() {
             private int mLastFirstVisibleItem;
