@@ -1734,7 +1734,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         // arraylist to keep the selected items
         AlertDialog dialog = new AlertDialog.Builder(RegistrationActivity.this)
-                .setTitle(getString(R.string.taluka))
+                .setTitle(getString(R.string.project))
                 .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
