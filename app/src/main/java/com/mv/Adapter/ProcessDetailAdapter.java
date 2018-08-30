@@ -359,6 +359,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
                 holder.llDate.setVisibility(View.VISIBLE);
+                holder.date.setHint(R.string.please_enter_date_time);
                 // holder.questionResponse.setHint(task.getTask_Text___Lan_c());
                 if (task.getIs_Response_Mnadetory__c())
                     holder.dateHeader.setText("*" + task.getTask_Text___Lan_c());
@@ -369,7 +370,6 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.date.setFocusable(false);
                 holder.date.setClickable(true);
 
-
                 break;
             case Constants.TIME:
                 holder.llEdittext.setVisibility(View.GONE);
@@ -378,6 +378,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
                 holder.llDate.setVisibility(View.VISIBLE);
+                holder.date.setHint(R.string.please_enter_date_time);
                 // holder.questionResponse.setHint(task.getTask_Text___Lan_c());
                 if (task.getIs_Response_Mnadetory__c())
                     holder.dateHeader.setText("*" + task.getTask_Text___Lan_c());
@@ -411,7 +412,8 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llDate.setVisibility(View.VISIBLE);
                 holder.llCheck.setVisibility(View.GONE);
-                // holder.questionResponse.setHint(task.getTask_Text___Lan_c());
+              //  holder.date.setHint("");
+                 holder.questionResponse.setHint(task.getTask_Text___Lan_c());
                 if (task.getIs_Response_Mnadetory__c())
                     holder.dateHeader.setText("*" + task.getTask_Text___Lan_c());
                 else
@@ -476,6 +478,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
                 holder.llDate.setVisibility(View.VISIBLE);
+                holder.date.setHint(R.string.please_enter_date_time);
                 // holder.questionResponse.setHint(task.getTask_Text___Lan_c());
                 if (task.getIs_Response_Mnadetory__c())
                     holder.dateHeader.setText("*" + task.getTask_Text___Lan_c());
@@ -588,7 +591,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
 
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(mContext.getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //  Your code when user clicked on Cancel

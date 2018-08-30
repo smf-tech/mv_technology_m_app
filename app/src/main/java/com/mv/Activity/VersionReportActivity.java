@@ -311,7 +311,7 @@ public class VersionReportActivity extends AppCompatActivity implements View.OnC
                             getAllProcess(sb.toString());
                         binding.spinnerRole.setText(sb.toString());
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //  Your code when user clicked on Cancel

@@ -54,7 +54,6 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     private ActivityExpenseListBinding binding;
-    private ExpenseAdapter adapter;
     private List<Expense> mList = new ArrayList<>();
     private Voucher voucher;
     private PreferenceHelper preferenceHelper;
@@ -76,18 +75,18 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
         setActionbar(getString(R.string.expense_list));
         preferenceHelper = new PreferenceHelper(this);
         voucher = (Voucher) getIntent().getSerializableExtra(Constants.VOUCHER);
-        binding.rvExpense.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-                Log.i("Dy", "" + dy);
-                if (dy < -5 && binding.fabAddProcess.getVisibility() == View.GONE) {
-
-                } else if (dy > 5 && binding.fabAddProcess.getVisibility() == View.VISIBLE) {
-
-                }
-            }
-        });
+//        binding.rvExpense.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//                Log.i("Dy", "" + dy);
+//                if (dy < -5 && binding.fabAddProcess.getVisibility() == View.GONE) {
+//
+//                } else if (dy > 5 && binding.fabAddProcess.getVisibility() == View.VISIBLE) {
+//
+//                }
+//            }
+//        });
         binding.evProcess.setOnScrollListener(new AbsListView.OnScrollListener() {
             private int mLastFirstVisibleItem;
 

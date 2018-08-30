@@ -238,7 +238,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId();
 
-        //pagination functionality code
+//        //pagination functionality code
 //        if (isTimePresent &&  AppDatabase.getAppDatabase(context).userDao().getThetSavandChats().size() > 0) {
 //            if (!isPrevious) {
 //                url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -255,8 +255,6 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
 //            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
 //                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId();
 //        }
-
-        //////////////////
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override

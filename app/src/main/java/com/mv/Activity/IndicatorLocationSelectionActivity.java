@@ -481,7 +481,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                         binding.editMultiselectTaluka.setText(value);
                         locationModel.setTaluka(value);
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(IndicatorLocationSelectionActivity.this.getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //  Your code when user clicked on Cancel

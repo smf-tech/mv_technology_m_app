@@ -993,7 +993,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }
         } else if ((mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("MultipleTaluka"))) {
             if (binding.editMultiselectTaluka.getText().toString().trim().length() == 0) {
-                msg = getString(R.string.Please_select_multiple_taluka);
+                msg = getString(R.string.Please_select_taluka);
             }
         } else if ((mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("Cluster"))) {
             if (mSelectDistrict == 0) {
@@ -1707,7 +1707,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     public void onClick(DialogInterface dialog, int id) {
                         binding.editMultiselectTaluka.setText(value);
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //  Your code when user clicked on Cancel
@@ -1754,7 +1754,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     public void onClick(DialogInterface dialog, int id) {
                         binding.editMultiselectProject.setText(valueProject);
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //  Your code when user clicked on Cancel

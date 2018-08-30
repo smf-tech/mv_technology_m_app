@@ -68,7 +68,7 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.each_adavance, null);
         }
-        TextView tvProjectName, tvDateName, tvAmountName;
+        TextView tvProjectName, tvDateName, tvAmountName,tvAmount;
         ImageView imgEdit, imgDelete;
         RelativeLayout textLayout;
         View view;
@@ -79,6 +79,7 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
         tvProjectName = (TextView) convertView.findViewById(R.id.tvProjectName);
         tvDateName = (TextView) convertView.findViewById(R.id.tvDateName);
         tvAmountName = (TextView) convertView.findViewById(R.id.tvAmountName);
+        tvAmount = (TextView) convertView.findViewById(R.id.tvAmount);
         textLayout = (RelativeLayout) convertView.findViewById(R.id.textLayout);
 
         Log.e("Group", String.valueOf(groupPosition));
@@ -125,7 +126,15 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
         view.setVisibility(View.GONE);
         tvProjectName.setText(adavance.getDecription());
         tvDateName.setText(adavance.getDate());
-        tvAmountName.setText("₹ " + adavance.getAmount());
+
+        if(adavance.getStatus().equals("Approved")){
+            tvAmount.setText("Approved Amount: ");
+            tvAmountName.setText("₹ " + adavance.getApproved_Amount__c());
+        }else{
+            tvAmount.setText("Amount: ");
+            tvAmountName.setText("₹ " + adavance.getAmount());
+        }
+
         return convertView;
     }
 

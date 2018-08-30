@@ -370,7 +370,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
             arrayAdapter.add(this.communityList.get(i).getName());
         }
 
-        builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+        builderSingle.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
@@ -739,7 +739,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                         sendShareRecord(mContent.getId());
                         Log.i("value", "value");
                     }
-                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         //  Your code when user clicked on Cancel

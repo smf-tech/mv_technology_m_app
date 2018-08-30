@@ -121,7 +121,6 @@
             android:background="@color/colorPink"
             android:text="@string/reject"
             android:textColor="#ffffff"
-
             android:textSize="22sp"
             android:visibility="gone" />
 

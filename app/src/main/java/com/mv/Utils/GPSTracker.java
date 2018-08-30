@@ -18,6 +18,7 @@ import android.provider.Settings;
 import android.util.Log;
 
 import com.mv.Activity.AttendanceActivity;
+import com.mv.R;
 
 public class GPSTracker extends Service implements LocationListener {
 
@@ -210,7 +211,7 @@ public class GPSTracker extends Service implements LocationListener {
         });
 
         // on pressing cancel button
-        alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }
