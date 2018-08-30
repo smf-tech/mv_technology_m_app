@@ -265,12 +265,11 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         double Long = gps.getLongitude();
         attendance.setCheckInLng("" + Long);
         attendance.setCheckInLat("" + Lat);
-        attendance.setStatus("Approved");
+        attendance.setStatus("");
         attendance.setUser(User.getCurrentUser(getApplicationContext()).getMvUser().getId());
         //send relative address of lat long to server
-//        String address = ConvertToAddress(Lat, Long);
-//        Toast.makeText(this,address,Toast.LENGTH_LONG);
-     //   attendance.setAddress(address);
+        String address = ConvertToAddress(Lat, Long);
+        attendance.setCheckIn_Attendance_Address__c(address);
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
         Calendar c = Calendar.getInstance();
         SimpleDateFormat time1 = new SimpleDateFormat("kk.mm");
@@ -285,30 +284,22 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             sendAttendance(attendance, true, isPresent);
     }
 
-//    private String ConvertToAddress(double latitude, double longitude) {
-//        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-//        String result = null;
-//        try {
-//            List<Address> addressList = geocoder.getFromLocation(
-//                    latitude, longitude, 1);
-//            if (addressList != null && addressList.size() > 0) {
-//                Address address = addressList.get(0);
-//                StringBuilder sb = new StringBuilder();
-//                for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
-//                    sb.append(address.getAddressLine(i)).append("\n");
-//                }
-//                sb.append(address.getLocality()).append("\n");
-//                sb.append(address.getPostalCode()).append("\n");
-//                sb.append(address.getCountryName());
-//                result = sb.toString();
-//            }
-//        } catch (IOException e) {
-//            Log.e("Error", "Unable connect to Geocoder", e);
-//            return "Something went wrong. Please try after sometime.";
-//        }
-//        return result;
-//
-//    }
+    private String ConvertToAddress(double latitude, double longitude) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        String result = null;
+        try {
+            List<Address> addressList = geocoder.getFromLocation(
+                    latitude, longitude, 1);
+            if (addressList != null && addressList.size() > 0) {
+                result = addressList.get(0).getAddressLine(0);
+            }
+        } catch (IOException e) {
+            Log.e("Error", "Unable connect to Geocoder", e);
+            return "";
+        }
+        return result;
+
+    }
 
     private void sendAttendance(Attendance attendance, Boolean isCheckedIn, Boolean isPresent) {
         if (Utills.isConnected(this)) {
@@ -459,9 +450,8 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         attendance.setStatus("Approved");
         attendance.setUser(User.getCurrentUser(getApplicationContext()).getMvUser().getId());
         //send relative address of lat long to server
-//        String address = ConvertToAddress(Lat, Long);
-//        Toast.makeText(this,address,Toast.LENGTH_LONG);
-       // attendance.setAddress(address);
+        String address = ConvertToAddress(Lat, Long);
+        attendance.setCheckOut_Attendance_Address__c(address);
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
         Calendar c = Calendar.getInstance();
         SimpleDateFormat time1 = new SimpleDateFormat("kk.mm");
