@@ -48,6 +48,9 @@ public interface UserDao {
     @Query("SELECT * FROM " + Constants.TABLE_ATTENDANCE)
     List<Attendance> getAllAttendance();
 
+    @Query("SELECT * FROM " + Constants.TABLE_ATTENDANCE + " where status__c = :status ")
+    List<Attendance> getRequiredAttendance(String status);
+
     @Query("SELECT * FROM " + Constants.TABLE_ATTENDANCE + " where Synch = 'false' ORDER BY unique_Id DESC")
     Attendance getUnSynchAttendance();
 

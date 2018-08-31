@@ -726,6 +726,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         } catch (IOException e) {
             Log.e("Error", "Unable connect to Geocoder", e);
             return "";
+        }catch (IllegalArgumentException e) {
+            Log.e("Error", "Unable connect to Geocoder", e);
+            return "";
         }
         return result;
     }

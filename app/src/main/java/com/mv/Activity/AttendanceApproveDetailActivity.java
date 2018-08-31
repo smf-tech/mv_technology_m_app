@@ -1,6 +1,7 @@
 package com.mv.Activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -72,6 +73,11 @@ public class AttendanceApproveDetailActivity extends AppCompatActivity implement
             binding.btnApprove.setOnClickListener(this);
             binding.btnReject.setOnClickListener(this);
         }
+        if(attendanceApproval.getStatusC().equals("Rejected")){
+            binding.approveRemarks.setVisibility(View.VISIBLE);
+            binding.editApproveRemarks.setText(attendanceApproval.getReason());
+            binding.editApproveRemarks.setEnabled(false);
+        }
 
     }
     private void setActionbar(String Title) {
@@ -97,7 +103,13 @@ public class AttendanceApproveDetailActivity extends AppCompatActivity implement
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_reject:
-                updateAttendance("Rejected");
+                binding.approveRemarks.setVisibility(View.VISIBLE);
+                if(binding.editApproveRemarks.getText().toString()!=null && binding.editApproveRemarks.getText().toString().trim().length()>0){
+                    updateAttendance("Rejected");
+                }else{
+                    Utills.showToast(getString(R.string.attendance_rejection_reason), getApplicationContext());
+                }
+                //updateAttendance("Rejected");
                 break;
 
             case R.id.btn_approve:
@@ -122,6 +134,9 @@ public class AttendanceApproveDetailActivity extends AppCompatActivity implement
                 attendance_Approval.setId(attendanceApproval.getId());
                 attendance_Approval.setApprover_User__c(User.getCurrentUser(mContext).getMvUser().getId());
                 attendance_Approval.setFinal_Status__c(status);
+                if(status.equals("Rejected")){
+                    attendance_Approval.setReason( binding.editApproveRemarks.getText().toString().trim());
+                }
 
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 String json = gson.toJson(attendance_Approval);

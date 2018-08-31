@@ -6,6 +6,8 @@
     <string name="error_no_internet">Please check your internet connection</string>
     <string name="error_login">Incorrect credentials.</string>
 
+    <string name="attendance_rejection_reason">Please provide reason for attendance rejection.</string>
+
     <string name="text_mediatype">Select Media Type</string>
     <string name="text_image">Image</string>
     <string name="text_audio">Audio</string>

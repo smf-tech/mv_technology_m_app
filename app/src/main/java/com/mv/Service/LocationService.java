@@ -121,7 +121,6 @@ public class LocationService extends IntentService {
 
     private void getState() {
 
-
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
         apiService.getState().enqueue(new Callback<ResponseBody>() {
@@ -147,7 +146,6 @@ public class LocationService extends IntentService {
 
                                     getSDistrict(locationModelArrayList.get(j).getState());
                             }
-
 
                         }
                     }

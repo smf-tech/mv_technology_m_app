@@ -17,6 +17,9 @@
     <string name="progress_loading">लोडिंग</string>
     <string name="progress_please_wait">कृपया थांबा</string>
     <string name="error_something_went_wrong">काहीतरी चूक झाली, कृपया पुन्हा प्रयत्न करा</string>
+
+    <string name="attendance_rejection_reason">उपस्थिती नाकारण्याची कारणे प्रदान करा.</string>
+
     <string name="error_no_internet">कृपया आपले इंटरनेट कनेक्शन तपासा</string>
     <string name="error_login">चुकीची माहिती.</string>
     <string name="submitted_successfully">यशस्वीरित्या जमा केले...</string>

@@ -60,6 +60,7 @@ public class AttendanceApproval2Activity extends AppCompatActivity implements Vi
     Activity mContext;
     RecyclerView recyclerView;
     Button btn_pending,btn_approve,btn_reject;
+    String sortString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +91,7 @@ public class AttendanceApproval2Activity extends AppCompatActivity implements Vi
         btn_pending.setBackgroundResource(R.drawable.selected_btn_background);
         btn_approve.setBackgroundResource(R.drawable.light_grey_btn_background);
         btn_reject.setBackgroundResource(R.drawable.light_grey_btn_background);
+        sortString = "Pending";
     }
     @Override
     protected void onResume() {
@@ -121,7 +123,7 @@ public class AttendanceApproval2Activity extends AppCompatActivity implements Vi
                         if (str != null && str.length() > 0) {
                             if (Arrays.asList(gson.fromJson(str, AttendanceApproval[].class)) != null) {
                                 attendanceList = Arrays.asList(gson.fromJson(str, AttendanceApproval[].class));
-                                setRecyclerView("Pending");
+                                setRecyclerView(sortString);
                             }
                         }
                     }
@@ -164,22 +166,25 @@ public class AttendanceApproval2Activity extends AppCompatActivity implements Vi
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
             case R.id.btn_pending:
+                sortString = "Pending";
                 btn_pending.setBackgroundResource(R.drawable.selected_btn_background);
                 btn_approve.setBackgroundResource(R.drawable.light_grey_btn_background);
                 btn_reject.setBackgroundResource(R.drawable.light_grey_btn_background);
-                setRecyclerView("Pending");
+                setRecyclerView(sortString);
                 break;
             case R.id.btn_approve:
+                sortString = "Approved";
                 btn_pending.setBackgroundResource(R.drawable.light_grey_btn_background);
                 btn_approve.setBackgroundResource(R.drawable.selected_btn_background);
                 btn_reject.setBackgroundResource(R.drawable.light_grey_btn_background);
-                setRecyclerView("Approved");
+                setRecyclerView(sortString);
                 break;
             case R.id.btn_reject:
+                sortString = "Rejected";
                 btn_pending.setBackgroundResource(R.drawable.light_grey_btn_background);
                 btn_approve.setBackgroundResource(R.drawable.light_grey_btn_background);
                 btn_reject.setBackgroundResource(R.drawable.selected_btn_background);
-                setRecyclerView("Rejected");
+                setRecyclerView(sortString);
                 break;
         }
     }

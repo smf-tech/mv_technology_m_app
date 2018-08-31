@@ -84,6 +84,9 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     private int checkInClickable = 0, checkOutClickable = 0;
     private List<HolidayListModel> holidayListModels;
     private List<LeavesModel> leavesModelList;
+    //
+    private List<Attendance> attendanceRejectedList;
+    private ArrayList<CalendarDay> attenRejectedDates= new ArrayList<>();;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,6 +101,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         super.onResume();
 
         initViews();
+//show holidays in calendar
         holidayListModels = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getAllHolidayList();
         holidayDates.clear();
         for (int i = 0; i < holidayListModels.size(); i++) {
@@ -108,6 +112,8 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             }
         }
         binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, holidayDates, getResources().getDrawable(R.drawable.circle_background_red)));
+
+        //show leaves in calendar
         leavesModelList = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getApprovedLeaves("Approved");
         leavesDates.clear();
         for (int i = 0; i < leavesModelList.size(); i++) {
@@ -125,13 +131,14 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             }
         }
         binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, leavesDates, getResources().getDrawable(R.drawable.circle_background_pink)));
+
         if (Utills.isConnected(AttendanceActivity.this)) {
             // Send offline attendance to server
             Attendance temp = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getUnSynchAttendance();
             if (temp != null) {
                 Intent intent = new Intent(AttendanceActivity.this, SendAttendance.class);
                 startService(intent);
-                //use local BD as server is not Updated
+                //use local DB as server is not Updated
                 attendanceList = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getAllAttendance();
                 for (Attendance attendance : attendanceList) {
                     try {
@@ -188,6 +195,17 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             setButtonView();
             binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, dates, getResources().getDrawable(R.drawable.circle_background)));
         }
+//        // show rejected attndance in different color
+//        attendanceRejectedList = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getRequiredAttendance("Rejected");
+//        attenRejectedDates.clear();
+//        for (int i = 0; i < attendanceRejectedList.size(); i++) {
+//            try {
+//                attenRejectedDates.add(CalendarDay.from(formatter.parse(attendanceRejectedList.get(i).getDate())));
+//            } catch (ParseException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, attenRejectedDates, getResources().getDrawable(R.drawable.circle_bg)));
 
         if (!gps.canGetLocation()) {
             gps.showSettingsAlert();
@@ -208,7 +226,6 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
 
         Calendar cal1 = Calendar.getInstance();
         cal1.setTime(date1);
-
 
         Calendar cal2 = Calendar.getInstance();
         cal2.setTime(date2);
@@ -285,30 +302,34 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             sendAttendance(attendance, true, isPresent);
     }
 
-//    private String ConvertToAddress(double latitude, double longitude) {
-//        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-//        String result = null;
-//        try {
-//            List<Address> addressList = geocoder.getFromLocation(
-//                    latitude, longitude, 1);
-//            if (addressList != null && addressList.size() > 0) {
-//                Address address = addressList.get(0);
-//                StringBuilder sb = new StringBuilder();
-//                for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
-//                    sb.append(address.getAddressLine(i)).append("\n");
-//                }
-//                sb.append(address.getLocality()).append("\n");
-//                sb.append(address.getPostalCode()).append("\n");
-//                sb.append(address.getCountryName());
-//                result = sb.toString();
-//            }
-//        } catch (IOException e) {
-//            Log.e("Error", "Unable connect to Geocoder", e);
-//            return "Something went wrong. Please try after sometime.";
-//        }
-//        return result;
-//
-//    }
+    private String ConvertToAddress(double latitude, double longitude) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        String result = null;
+        try {
+            List<Address> addressList = geocoder.getFromLocation(
+                    latitude, longitude, 1);
+            if (addressList != null && addressList.size() > 0) {
+                Address address = addressList.get(0);
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+                    sb.append(address.getAddressLine(i)).append("\n");
+                }
+                sb.append(address.getLocality()).append("\n");
+                sb.append(address.getPostalCode()).append("\n");
+                sb.append(address.getCountryName());
+                result = sb.toString();
+            }
+        } catch (IOException e) {
+            Log.e("Error", "Unable connect to Geocoder", e);
+            return "Something went wrong. Please try after sometime.";
+        }
+        catch (IllegalArgumentException e) {
+            Log.e("Error", "Unable connect to Geocoder", e);
+            return "";
+        }
+        return result;
+
+    }
 
     private void sendAttendance(Attendance attendance, Boolean isCheckedIn, Boolean isPresent) {
         if (Utills.isConnected(this)) {

@@ -74,6 +74,14 @@ public class AttendanceApproval implements Serializable {
         this.statusC = statusC;
     }
 
+    public String getReason() {
+        return Remarks;
+    }
+
+    public void setReason(String remarks) {
+        this.Remarks = remarks;
+    }
+
     public String getUser_Name__c() {
         return User_Name__c;
     }
@@ -152,6 +160,10 @@ public class AttendanceApproval implements Serializable {
     @Expose
     private String statusC;
 
+    @SerializedName("remarks__c")
+    @Expose
+    private String  Remarks;
+
     @SerializedName("User_Name__c")
     @Expose
     private String User_Name__c;
@@ -205,6 +217,7 @@ public class AttendanceApproval implements Serializable {
         this.User_Role__c = ((String) in.readValue((String.class.getClassLoader())));
         this.Check_In_Location_Difference__c = ((String) in.readValue((String.class.getClassLoader())));
         this.Check_Out_Location_Difference__c = ((String) in.readValue((String.class.getClassLoader())));
+        this.Remarks = ((String) in.readValue((String.class.getClassLoader())));
     }
 
    /* @Override

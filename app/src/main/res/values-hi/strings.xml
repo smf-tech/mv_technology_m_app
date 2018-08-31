@@ -29,6 +29,8 @@
     <string name="text_audio">ध्वनी</string>
     <string name="text_video">वीडियो</string>
 
+    <string name="attendance_rejection_reason">उपस्थिति अस्वीकृति के लिए कारण प्रदान करें.</string>
+
     <string name="cannotLogout">आप लॉगआउट नहीं कर सकते</string>
     <string name="submitAllForms">कृपया सभी फ़ॉर्म सबमिट करें और लॉग आउट करें</string>
     <!--Advance List Activity-->
