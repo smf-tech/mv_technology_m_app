@@ -144,6 +144,9 @@ public class UserInfo {
     @SerializedName("PF_Number__c")
     @Expose
     private String PF_Number__c;
+    @SerializedName("User_Address__c")
+    @Expose
+    private String User_Address__c;
 
     public String getMultipleTaluka() {
         return MultipleTaluka;
@@ -515,5 +518,13 @@ public class UserInfo {
 
     public void setVillage(String village) {
         Village = village;
+    }
+
+    public String getUser_Address__c() {
+        return User_Address__c;
+    }
+
+    public void setUser_Address__c(String user_Address__c) {
+        User_Address__c = user_Address__c;
     }
 }

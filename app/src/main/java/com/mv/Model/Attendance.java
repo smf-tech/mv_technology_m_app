@@ -31,10 +31,15 @@ public class Attendance implements Serializable {
     @ColumnInfo(name = "status__c")
     private String status;
 
-    @SerializedName("address__c")
+    @SerializedName("checkIn_Attendance_Address__c")
     @Expose
-    @ColumnInfo(name = "address__c")
-    private String address;
+    @ColumnInfo(name = "checkIn_Attendance_Address__c")
+    private String checkIn_Attendance_Address__c;
+
+    @SerializedName("checkOut_Attendance_Address__c")
+    @Expose
+    @ColumnInfo(name = "checkOut_Attendance_Address__c")
+    private String checkOut_Attendance_Address__c;
 
     @SerializedName("MV_User__c")
     @Expose
@@ -115,12 +120,21 @@ public class Attendance implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
-    public String getAddress() {
-        return address;
+
+    public String getCheckIn_Attendance_Address__c() {
+        return checkIn_Attendance_Address__c;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setCheckIn_Attendance_Address__c(String checkIn_Attendance_Address__c) {
+        this.checkIn_Attendance_Address__c = checkIn_Attendance_Address__c;
+    }
+
+    public String getCheckOut_Attendance_Address__c() {
+        return checkOut_Attendance_Address__c;
+    }
+
+    public void setCheckOut_Attendance_Address__c(String checkOut_Attendance_Address__c) {
+        this.checkOut_Attendance_Address__c = checkOut_Attendance_Address__c;
     }
 
     public String getRemarks() {

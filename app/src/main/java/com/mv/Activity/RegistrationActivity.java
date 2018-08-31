@@ -617,6 +617,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 binding.editTextName.setText(User.getCurrentUser(this).getMvUser().getName());
                 binding.editMultiselectTaluka.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getMultipleTaluka());
                 binding.editMultiselectProject.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getMulti_project__c());
+                binding.editTextAddress.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getUser_Address__c());
 
 
                 if (User.getCurrentUser(this).getMvUser().getGender() != null && !TextUtils.isEmpty(User.getCurrentUser(this).getMvUser().getGender())) {
@@ -835,6 +836,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 jsonObject2.put("User_Multiple_Taluka__c", value);
 
                 jsonObject2.put("Multi_project__c",binding.editMultiselectProject.getText().toString());
+                jsonObject2.put("User_Address__c",binding.editTextAddress.getText().toString());
 //                if (mSelectProject > 0)
 //                    jsonObject2.put("Project__c", mListProjectId.get(mSelectProject));
                 JSONObject jsonObject = new JSONObject();

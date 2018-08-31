@@ -84,9 +84,6 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     private int checkInClickable = 0, checkOutClickable = 0;
     private List<HolidayListModel> holidayListModels;
     private List<LeavesModel> leavesModelList;
-    //
-    private List<Attendance> attendanceRejectedList;
-    private ArrayList<CalendarDay> attenRejectedDates= new ArrayList<>();;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,17 +192,6 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             setButtonView();
             binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, dates, getResources().getDrawable(R.drawable.circle_background)));
         }
-//        // show rejected attndance in different color
-//        attendanceRejectedList = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getRequiredAttendance("Rejected");
-//        attenRejectedDates.clear();
-//        for (int i = 0; i < attendanceRejectedList.size(); i++) {
-//            try {
-//                attenRejectedDates.add(CalendarDay.from(formatter.parse(attendanceRejectedList.get(i).getDate())));
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, attenRejectedDates, getResources().getDrawable(R.drawable.circle_bg)));
 
         if (!gps.canGetLocation()) {
             gps.showSettingsAlert();
@@ -282,12 +268,11 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         double Long = gps.getLongitude();
         attendance.setCheckInLng("" + Long);
         attendance.setCheckInLat("" + Lat);
-        attendance.setStatus("Approved");
+        attendance.setStatus("");
         attendance.setUser(User.getCurrentUser(getApplicationContext()).getMvUser().getId());
         //send relative address of lat long to server
-//        String address = ConvertToAddress(Lat, Long);
-//        Toast.makeText(this,address,Toast.LENGTH_LONG);
-     //   attendance.setAddress(address);
+        String address = ConvertToAddress(Lat, Long);
+        attendance.setCheckIn_Attendance_Address__c(address);
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
         Calendar c = Calendar.getInstance();
         SimpleDateFormat time1 = new SimpleDateFormat("kk.mm");
@@ -309,19 +294,11 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             List<Address> addressList = geocoder.getFromLocation(
                     latitude, longitude, 1);
             if (addressList != null && addressList.size() > 0) {
-                Address address = addressList.get(0);
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
-                    sb.append(address.getAddressLine(i)).append("\n");
-                }
-                sb.append(address.getLocality()).append("\n");
-                sb.append(address.getPostalCode()).append("\n");
-                sb.append(address.getCountryName());
-                result = sb.toString();
+                result = addressList.get(0).getAddressLine(0);
             }
         } catch (IOException e) {
             Log.e("Error", "Unable connect to Geocoder", e);
-            return "Something went wrong. Please try after sometime.";
+            return "";
         }
         catch (IllegalArgumentException e) {
             Log.e("Error", "Unable connect to Geocoder", e);
@@ -480,9 +457,8 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         attendance.setStatus("Approved");
         attendance.setUser(User.getCurrentUser(getApplicationContext()).getMvUser().getId());
         //send relative address of lat long to server
-//        String address = ConvertToAddress(Lat, Long);
-//        Toast.makeText(this,address,Toast.LENGTH_LONG);
-       // attendance.setAddress(address);
+        String address = ConvertToAddress(Lat, Long);
+        attendance.setCheckOut_Attendance_Address__c(address);
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
         Calendar c = Calendar.getInstance();
         SimpleDateFormat time1 = new SimpleDateFormat("kk.mm");
