@@ -63,6 +63,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -202,7 +203,25 @@ public class Utills {
 
     }
 
-
+    //get number of days between two dates
+    public static String getNumberofDaysBetweenTwoDates(String FirstDate, String SecondDate) {
+        SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
+        float daysBetween = 0;
+        try {
+            Date dateBefore = myFormat.parse(FirstDate);
+            Date dateAfter = myFormat.parse(SecondDate);
+            long difference = dateAfter.getTime() - dateBefore.getTime();
+            daysBetween = (difference / (1000*60*60*24))+1; //tyo include start date we are adding 1
+/* You can also convert the milliseconds to days using this method
+* float daysBetween =
+* TimeUnit.DAYS.convert(difference, TimeUnit.MILLISECONDS)
+*/
+            System.out.println("Number of Days between dates: "+daysBetween);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return String.valueOf(daysBetween);
+    }
     public static void makedirs(String Dir) {
         File tempdir = new File(Dir);
         if (!tempdir.exists())

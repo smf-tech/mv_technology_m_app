@@ -488,6 +488,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         binding.editMultiselectProject.setOnClickListener(this);
         if (User.getCurrentUser(RegistrationActivity.this).getMvUser().getOrganisation().equals("SMF")) {
             binding.llWork.setVisibility(View.VISIBLE);
+            binding.inputAddress.setVisibility(View.VISIBLE);
             binding.editTextRefresh.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lat() + " , " + User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lng());
             SelectedLon = User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lng();
             SelectedLat = User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lat();
@@ -769,14 +770,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 jsonObject2.put("Middle_Name__c", edit_text_midle_name.getText().toString().trim());
                 if (binding.birthDate.getText().toString().trim().length() > 0)
                     jsonObject2.put("Birth_Day__c", binding.birthDate.getText().toString().trim());
-                jsonObject2.put("User_State__c", mListState.get(mSelectState));
-
-                jsonObject2.put("Gender__c", mGenderSelect);
-
-                jsonObject2.put("Attendance_Loc__Longitude__s", SelectedLon);
-                jsonObject2.put("Attendance_Loc__Latitude__s", SelectedLat);
-
-
+                    jsonObject2.put("User_State__c", mListState.get(mSelectState));
+                    jsonObject2.put("Gender__c", mGenderSelect);
+                    jsonObject2.put("Attendance_Loc__Longitude__s", SelectedLon);
+                    jsonObject2.put("Attendance_Loc__Latitude__s", SelectedLat);
                 if (mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("School")) {
                     jsonObject2.put("User_Cluster__c", mListCluster.get(mSelectCluster));
                     jsonObject2.put("User_District__c", mListDistrict.get(mSelectDistrict));
@@ -833,7 +830,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     jsonObject2.put("User_Village__c", mListVillage.get(mSelectVillage));
                     jsonObject2.put("UserSchoolName__c", mListSchoolName.get(mSelectSchoolName));
                 }
-                jsonObject2.put("User_Multiple_Taluka__c", value);
+                jsonObject2.put("User_Multiple_Taluka__c", binding.editMultiselectTaluka.getText().toString());
 
                 jsonObject2.put("Multi_project__c",binding.editMultiselectProject.getText().toString());
                 jsonObject2.put("User_Address__c",binding.editTextAddress.getText().toString());
@@ -1075,8 +1072,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 role_adapter.notifyDataSetChanged();
                 if (mListOrganization.get(mSelectOrganization).equals("SMF")) {
                     binding.llWork.setVisibility(View.VISIBLE);
+                    binding.inputAddress.setVisibility(View.VISIBLE);
                 } else {
                     binding.llWork.setVisibility(View.GONE);
+                    binding.inputAddress.setVisibility(View.GONE);
                 }
                 break;
             case R.id.spinner_role:

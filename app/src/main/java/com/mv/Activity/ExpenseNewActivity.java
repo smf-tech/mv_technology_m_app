@@ -169,7 +169,8 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                 String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture_crop.jpg";
                 File imageFile = new File(imageFilePath);
                 FinalUri = Uri.fromFile(imageFile);
-                Crop.of(outputUri, FinalUri).asSquare().start(this);
+//                Crop.of(outputUri, FinalUri).asSquare().start(this);
+                Crop.of(outputUri, FinalUri).start(this);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -180,7 +181,8 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                     String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture_crop.jpg";
                     File imageFile = new File(imageFilePath);
                     FinalUri = Uri.fromFile(imageFile);
-                    Crop.of(outputUri, FinalUri).asSquare().start(this);
+//                    Crop.of(outputUri, FinalUri).asSquare().start(this);
+                    Crop.of(outputUri, FinalUri).start(this);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

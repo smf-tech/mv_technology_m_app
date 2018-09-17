@@ -141,9 +141,6 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
         Log.d("cycled", "onStart:B ");
         super.onStart();
     }
-
-
-
     @Override
     protected void onPause() {
         super.onPause();

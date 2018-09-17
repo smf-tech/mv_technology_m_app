@@ -163,6 +163,18 @@
             android:orientation="vertical"
             android:layout_below="@+id/sort_layout">
 
+            <TextView
+                android:id="@+id/txt_nodata"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="@string/no_data_available"
+                android:textSize="@dimen/dimen_20dp"
+                />
+
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_voucher"
                 android:layout_width="match_parent"

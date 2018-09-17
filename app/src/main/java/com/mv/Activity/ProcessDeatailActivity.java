@@ -134,11 +134,13 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     sb.append(taskList.get(i).getTask_Response__c());
                 }
             }
-            if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.LOCATION)) {
-                if (FinalUri != null) {
-                    taskList.get(i).setTask_Response__c(gps.getLatitude() + "," + gps.getLongitude());
-                }
-            }
+//commenting this set location code as showing lat,long is not profitable as of now
+//this code sets lat,long to setTask_Response__c if image has been captured and getTask_type__c() is Location type.
+//            if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.LOCATION)) {
+//                if (FinalUri != null) {
+//                    taskList.get(i).setTask_Response__c(gps.getLatitude() + "," + gps.getLongitude());
+//                }
+//            }
             taskList.get(i).setMTUser__c(User.getCurrentUser(context).getMvUser().getId());
             if (preferenceHelper.getBoolean(Constants.NEW_PROCESS))
                 taskList.get(i).setId(null);
@@ -417,11 +419,13 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 }
 
             }
-            if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.LOCATION)) {
-                if (FinalUri != null) {
-                    taskList.get(i).setTask_Response__c(gps.getLatitude() + "," + gps.getLongitude());
-                }
-            }
+            //commenting this set location code as showing lat,long is not profitable as of now
+            //this code sets lat,long to setTask_Response__c if image has been captured and getTask_type__c() is Location type.
+//            if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.LOCATION)) {
+//                if (FinalUri != null) {
+//                    taskList.get(i).setTask_Response__c(gps.getLatitude() + "," + gps.getLongitude());
+//                }
+//            }
         }
         if (!manditoryFlag) {
             // AppDatabase.getAppDatabase(context).userDao().insertTask(dashaBoardListModel);

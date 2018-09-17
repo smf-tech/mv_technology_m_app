@@ -4,6 +4,7 @@ package com.mv.Utils;
  * Created by acer on 12/19/2016.
  */
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
 import android.content.Context;
@@ -193,25 +194,25 @@ public class GPSTracker extends Service implements LocationListener {
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
 
         // Setting Dialog Title
-        alertDialog.setTitle("कृपया GPS/LOCATION ऑन करा");
+        alertDialog.setTitle(mContext.getResources().getString(R.string.gps_popup_title));
 
         // Setting Dialog Message
         alertDialog.setMessage("GPS is not enabled. Do you want to go to settings menu?");
 
         // On pressing Settings button
-        alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+        alertDialog.setPositiveButton(mContext.getResources().getString(R.string.gps_settings), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                if (mContext instanceof AttendanceActivity) {
-                    AttendanceActivity activity = (AttendanceActivity) mContext;
+//                if (mContext instanceof AttendanceActivity) {
+                    Activity activity = (Activity) mContext;
                     activity.startActivityForResult(intent, 100);
-                }
+//                }
 
             }
         });
 
         // on pressing cancel button
-        alertDialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+        alertDialog.setNegativeButton(mContext.getResources().getString(R.string.cancel), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.cancel();
             }

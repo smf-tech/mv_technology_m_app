@@ -83,7 +83,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     LinearLayout lnr_filter;
     private boolean filter = false;
     public String json;
-    public String HoSupportCommunity = "";
+    public String HoSupportCommunity = "",sortString= "";
     private Boolean mySelection = false, myLocation = false;
     int filterflag = 0;
     TextView textNoData;
@@ -214,15 +214,16 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                                 }
                                 AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().deletepost(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), false, true);
 
-                                if (filterflag == 0) {
-                                    allPost();
-                                } else if (filterflag == 1) {
-                                    myPost();
-                                } else if (filterflag == 2) {
-                                    myLocation();
-                                } else if (filterflag == 3) {
-                                    otherLocation();
-                                }
+//                                if (filterflag == 0) {
+//                                    allPost();
+//                                } else if (filterflag == 1) {
+//                                    myPost();
+//                                } else if (filterflag == 2) {
+//                                    myLocation();
+//                                } else if (filterflag == 3) {
+//                                    otherLocation();
+//                                }
+                                setFilter(sortString);
                                 textNoData.setVisibility(View.GONE);
                             } else {
                                 textNoData.setVisibility(View.VISIBLE);
@@ -320,15 +321,16 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                                 }
                                 AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().deletepost(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), false, true);
 
-                                if (filterflag == 0) {
-                                    allPost();
-                                } else if (filterflag == 1) {
-                                    myPost();
-                                } else if (filterflag == 2) {
-                                    myLocation();
-                                } else if (filterflag == 3) {
-                                    otherLocation();
-                                }
+//                                if (filterflag == 0) {
+//                                    allPost();
+//                                } else if (filterflag == 1) {
+//                                    myPost();
+//                                } else if (filterflag == 2) {
+//                                    myLocation();
+//                                } else if (filterflag == 3) {
+//                                    otherLocation();
+//                                }
+                                setFilter(sortString);
                                 textNoData.setVisibility(View.GONE);
                             } else {
                                 textNoData.setVisibility(View.VISIBLE);
@@ -868,24 +870,26 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 dialog.dismiss();
                 switch (position) {
                     case 1:
-                        setFilter("Training related");
+                        sortString="Training related";
+                        setFilter(sortString);
                         break;
-
                     case 2:
-                        setFilter("Content related");
+                        sortString="Content related";
+                        setFilter(sortString);
                         break;
-
                     case 3:
-                        setFilter("Technology related");
+                        sortString="Technology related";
+                        setFilter(sortString);
                         break;
-
                     case 4:
-                        setFilter("HR related");
+                        sortString="HR related";
+                        setFilter(sortString);
+                        break;
+                    case 5:
+                        sortString="Account related";
+                        setFilter(sortString);
                         break;
 
-                    case 5:
-                        setFilter("Account related");
-                        break;
                 }
             }
 
@@ -906,17 +910,20 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 dialog.dismiss();
                 switch (position) {
                     case 1:
-                        setFilter("Information Sharing");
+                        sortString="Information Sharing";
+                        setFilter(sortString);
                         break;
                     case 2:
-                        setFilter("Events Update");
+                        sortString="Events Update";
+                        setFilter(sortString);
                         break;
                     case 3:
-                        setFilter("Success Stories");
+                        sortString="Success Stories";
+                        setFilter(sortString);
                         break;
-
                     case 4:
-                        setFilter("Press Cuttings");
+                        sortString="Press Cuttings";
+                        setFilter(sortString);
                         break;
                 }
             }
@@ -928,27 +935,32 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     /*Set the filterlist to adapter according to respective filter parameter along with report type and issue type */
     private void setFilter(String filtertype) {
         chatList.clear();
-        if (filterflag == 0) {
-            List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filtertype);
-            for (int i = 0; i < contentList.size(); i++) {
-                chatList.add(contentList.get(i));
-            }
-        } else if (filterflag == 1) {
-            List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getMyChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), User.getCurrentUser(getApplicationContext()).getMvUser().getId(), filtertype);
-            for (int i = 0; i < contentList.size(); i++) {
-                chatList.add(contentList.get(i));
-            }
-        } else if (filterflag == 2) {
-            List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getMyLocationChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filtertype, User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
-            for (int i = 0; i < contentList.size(); i++) {
-                chatList.add(contentList.get(i));
-            }
-        } else if (filterflag == 3) {
-            List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getOtherChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filtertype, User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
-            for (int i = 0; i < contentList.size(); i++) {
-                chatList.add(contentList.get(i));
+        if(filtertype==null || filtertype.length()==0){
+            allPost();
+        } else {
+            if (filterflag == 0) {
+                List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filtertype);
+                for (int i = 0; i < contentList.size(); i++) {
+                    chatList.add(contentList.get(i));
+                }
+            } else if (filterflag == 1) {
+                List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getMyChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), User.getCurrentUser(getApplicationContext()).getMvUser().getId(), filtertype);
+                for (int i = 0; i < contentList.size(); i++) {
+                    chatList.add(contentList.get(i));
+                }
+            } else if (filterflag == 2) {
+                List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getMyLocationChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filtertype, User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
+                for (int i = 0; i < contentList.size(); i++) {
+                    chatList.add(contentList.get(i));
+                }
+            } else if (filterflag == 3) {
+                List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getOtherChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filtertype, User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
+                for (int i = 0; i < contentList.size(); i++) {
+                    chatList.add(contentList.get(i));
+                }
             }
         }
+
         adapter.notifyDataSetChanged();
     }
 

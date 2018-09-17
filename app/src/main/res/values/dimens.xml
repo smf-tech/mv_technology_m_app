@@ -11,6 +11,7 @@
     <dimen name="recycler_view_margin">10dp</dimen>
     <dimen name="font_22sp">22sp</dimen>
     <dimen name="dimen_10dp">10dp</dimen>
+    <dimen name="dimen_15dp">15dp</dimen>
     <dimen name="dimen_20dp">20dp</dimen>
     <dimen name="dimen_25dp">25dp</dimen>
     <dimen name="dimen_35dp">35dp</dimen>

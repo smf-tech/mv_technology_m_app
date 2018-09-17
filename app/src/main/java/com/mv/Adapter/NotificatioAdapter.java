@@ -62,8 +62,9 @@ public class NotificatioAdapter extends RecyclerView.Adapter<NotificatioAdapter.
                     if (upX - downX > 200) {
                         // swipe right
                     }
-                    else if (downX - upX > 100) {
+                    else if (downX - upX > 50) {
                         // swipe left
+//                        Toast.makeText(activity,""+(downX - upX),Toast.LENGTH_SHORT).show();
                         AppDatabase.getAppDatabase(activity).userDao().deleteNotification(notificationList.get(position).getUniqueId());
                         notificationList.remove(position);
                         notifyDataSetChanged();

@@ -110,15 +110,31 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
             }
         });
 
-        if (Utills.isConnected(this))
-            getUserExpenseData();
+//        if (Utills.isConnected(this))
+//            getUserExpenseData();
+//
+//        if (Utills.isConnected(this)) {
+//            if (Constants.AccountTeamCode.equals("TeamManagement")) {
+//                getUserExpenseDataForTeam();
+//                binding.fabAddProcess.setVisibility(View.GONE);
+//            } else {
+//                getUserExpenseData();
+//            }
+//        }
 
+        //commented above lines and added following code to work offine properly
         if (Utills.isConnected(this)) {
             if (Constants.AccountTeamCode.equals("TeamManagement")) {
                 getUserExpenseDataForTeam();
                 binding.fabAddProcess.setVisibility(View.GONE);
-            } else {
+            }else {
                 getUserExpenseData();
+            }
+        }else {
+            if (Constants.AccountTeamCode.equals("TeamManagement")) {
+                Utills.showToast(getResources().getString(R.string.error_no_internet),this);
+            }else{
+                setRecyclerView();
             }
         }
     }
@@ -310,13 +326,27 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
     @Override
     protected void onResume() {
         super.onResume();
-        if (Constants.AccountTeamCode.equals("TeamManagement")) {
-            getUserExpenseDataForTeam();
-            binding.fabAddProcess.setVisibility(View.GONE);
-        } else {
-            setRecyclerView();
+//        if (Constants.AccountTeamCode.equals("TeamManagement")) {
+//            getUserExpenseDataForTeam();
+//            binding.fabAddProcess.setVisibility(View.GONE);
+//        } else {
+//            setRecyclerView();
+//        }
+        //commented above lines and added following code to work properly when back button has pressed.
+        if (Utills.isConnected(this)) {
+            if (Constants.AccountTeamCode.equals("TeamManagement")) {
+                getUserExpenseDataForTeam();
+                binding.fabAddProcess.setVisibility(View.GONE);
+            }else {
+                getUserExpenseData();
+            }
+        }else {
+            if (Constants.AccountTeamCode.equals("TeamManagement")) {
+                Utills.showToast(getResources().getString(R.string.error_no_internet),this);
+            }else{
+                setRecyclerView();
+            }
         }
-
     }
 
     public void editExpense(Expense expense) {

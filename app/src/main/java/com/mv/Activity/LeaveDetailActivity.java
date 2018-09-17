@@ -119,6 +119,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
             binding.inputHrFormDate.setText(leavesModel.getFromDate());
             binding.inputHrToDate.setText(leavesModel.getToDate());
             binding.etReason.setText(leavesModel.getReason());
+            binding.leavesCountText.setText(Utills.getNumberofDaysBetweenTwoDates(leavesModel.getFromDate(),leavesModel.getToDate()));
             if (leavesModel.isHalfDayLeave()) {
                 binding.detailChk.setChecked(true);
             } else if (leavesModel.isHalfDayLeave()) {
@@ -224,15 +225,20 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                     halfDayCheck = "true";
                     binding.inputHrToDate.setEnabled(false);
                     binding.inputHrToDate.setText(binding.inputHrFormDate.getText().toString());
+                    binding.leavesCountText.setVisibility(View.VISIBLE);
+                    if(binding.inputHrToDate.getText().toString()!=null && binding.inputHrToDate.getText().toString().length()>0)
+                        binding.leavesCountText.setText(Utills.getNumberofDaysBetweenTwoDates(binding.inputHrFormDate.getText().toString(),binding.inputHrToDate.getText().toString()));
                 } else {
                     halfDayCheck = "false";
                     binding.inputHrToDate.setEnabled(true);
                     binding.inputHrToDate.setText("");
+//                    if(binding.inputHrToDate.getText().toString()!=null && binding.inputHrToDate.getText().toString().length()>0)
+//                    binding.leavesCountText.setText(Utills.getNumberofDaysBetweenTwoDates(binding.inputHrFormDate.getText().toString(),binding.inputHrToDate.getText().toString()));
+                        binding.leavesCountText.setVisibility(View.INVISIBLE);
                 }
             }
         });
     }
-
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -246,7 +252,12 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.input_hr_to_date:
-                showDateDialog(context, binding.inputHrToDate);
+                if (binding.inputHrFormDate.getText().toString().equals("")||binding.inputHrFormDate.getText().toString().equals(null))
+                    Utills.showToast("Please Select From Date",context);
+                else {
+                    binding.leavesCountText.setVisibility(View.VISIBLE);
+                    showDateDialog(context, binding.inputHrToDate);
+                }
                 break;
 
             case R.id.btn_submit:
@@ -293,7 +304,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
         } else if (binding.inputHrToDate.getText().toString().equals("")) {
             msg = "Please Select To Date";
         } else if (!isDatesAreValid(binding.inputHrFormDate.getText().toString().trim(), binding.inputHrToDate.getText().toString().trim())) {
-            msg = "Please select proper To date";
+            msg = "Please select proper range";
         } else {
             int dateSize = getDates(binding.inputHrFormDate.getText().toString(), binding.inputHrToDate.getText().toString()).size();
 
@@ -474,6 +485,15 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                         editText.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
                         if (halfDayCheck.equals("true")) {
                             binding.inputHrToDate.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
+                        }
+                        if (isDatesAreValid(binding.inputHrFormDate.getText().toString().trim(), binding.inputHrToDate.getText().toString().trim())) {
+//                            if(binding.inputHrToDate.getText().toString()!=null && binding.inputHrToDate.getText().toString().length()>0){
+                            binding.leavesCountText.setText(Utills.getNumberofDaysBetweenTwoDates(binding.inputHrFormDate.getText().toString(),binding.inputHrToDate.getText().toString()));
+//                            }
+                        }else{
+                            if(binding.inputHrToDate.getText().toString()!=null && binding.inputHrToDate.getText().toString().length()>0)
+                                Utills.showToast("Please enter proper range.",LeaveDetailActivity.this);
+                            binding.inputHrToDate.setText("");
                         }
                     }
                 }, mYear, mMonth, mDay);

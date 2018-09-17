@@ -230,10 +230,17 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void setRecyclerViewForTeam() {
-        adapter = new VoucherAdapter(this, mList);
-        binding.rvVoucher.setAdapter(adapter);
-        binding.rvVoucher.setHasFixedSize(true);
-        binding.rvVoucher.setLayoutManager(new LinearLayoutManager(this));
+        if(mList.size()>0){
+            binding.txtNodata.setVisibility(View.GONE);
+            adapter = new VoucherAdapter(this, mList);
+            binding.rvVoucher.setAdapter(adapter);
+            binding.rvVoucher.setHasFixedSize(true);
+            binding.rvVoucher.setLayoutManager(new LinearLayoutManager(this));
+        } else {
+            binding.sortLayout.setVisibility(View.GONE);
+            binding.txtNodata.setVisibility(View.VISIBLE);
+        }
+
     }
 
     @Override

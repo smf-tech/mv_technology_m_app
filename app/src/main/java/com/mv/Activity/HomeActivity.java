@@ -171,8 +171,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         if (User.getCurrentUser(HomeActivity.this).getRolePermssion().getIsLocationTrackingAllow__c().equalsIgnoreCase("true")) {
             if (User.getCurrentUser(HomeActivity.this).getMvUser().getIsApproved() != null && User.getCurrentUser(HomeActivity.this).getMvUser().getIsApproved().equalsIgnoreCase("true")) {
-
-
                 if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     // LocationPopup();
                     LocationGPSDialog();
@@ -214,12 +212,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 getUserData();
         }
 
-        // Send offline attendance to server
-        Attendance temp = AppDatabase.getAppDatabase(HomeActivity.this).userDao().getUnSynchAttendance();
-        if (Utills.isConnected(HomeActivity.this) && temp != null) {
-            Intent intent = new Intent(HomeActivity.this, SendAttendance.class);
-            startService(intent);
-        }
         LocationManager locMan = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (locMan != null && locMan.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) != null) {
             long networkTime = locMan.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getTime();
@@ -235,7 +227,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 //        if (!alarmUp) {
 //            setCheckInAlarm();
 //        }
-
 
     }
 
@@ -546,7 +537,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().split(";")));
         if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
             showApprovedDilaog();
-
             for (int i = 0; i < allTabNotApprove.size(); i++) {
                 if (checkList(allTabNotApprove, i, true).getDestination() != null)
                     menulist.add(checkList(allTabNotApprove, i, true));
@@ -1136,7 +1126,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         } else {
                             if (alertDialogApproved != null && alertDialogApproved.isShowing())
                                 alertDialogApproved.dismiss();
-
                         }
                         initViews();
                     }

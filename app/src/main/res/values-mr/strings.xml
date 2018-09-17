@@ -80,6 +80,7 @@
     <string name="item_desc">आम्ही अनुप्रयोग लाँच पासून तो एक आश्चर्यकारक प्रथम महिने चाललंय! आपण त्यांना गमावल्यास येथे काही सर्वोत्तम क्षण आहेत!</string>
     <string name="no_gps">GPS उपलब्ध नाही</string>
     <string name="gps_settings">GPS सेटिंग्ज</string>
+    <string name="gps_popup_title">कृपया GPS/LOCATION चालू करा.</string>
     <!--ReportingTemplate Activity-->
     <string name="reporting">अहवाल देणे</string>
     <string name="question_5">प्रश्न 5</string>

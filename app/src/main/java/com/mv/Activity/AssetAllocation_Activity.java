@@ -48,7 +48,7 @@ import retrofit2.Response;
 public class AssetAllocation_Activity extends AppCompatActivity implements View.OnClickListener {
     Spinner spinner_stock;
     EditText edit_text_username, edit_text_assetname, edit_text_no, edit_text_name,edit_asset_status;
-    Button btn_allocate_asset;
+    Button btn_allocate_asset,btn_reject_asset;
     PreferenceHelper preferenceHelper;
     Asset asset;
     ArrayList<String> stocklist = new ArrayList<>();
@@ -77,12 +77,14 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
         edit_text_username = (EditText) findViewById(R.id.edit_text_username);
         edit_text_assetname = (EditText) findViewById(R.id.edit_text_assetname);
         btn_allocate_asset = (Button) findViewById(R.id.btn_allocate_asset);
+        btn_reject_asset = (Button) findViewById(R.id.btn_reject_asset);
         edit_text_no = (EditText) findViewById(R.id.edit_text_no);
         edit_text_name = (EditText) findViewById(R.id.edit_text_name);
         edit_asset_status = (EditText) findViewById(R.id.edit_asset_status);
         lnr_user = (LinearLayout) findViewById(R.id.lnr_user);
         lnr_asset_manager = (LinearLayout) findViewById(R.id.lnr_asset_manager);
         btn_allocate_asset.setOnClickListener(this);
+        btn_reject_asset.setOnClickListener(this);
         edit_text_no.addTextChangedListener(watch);
         edit_asset_status.setText(asset.getAllocationStatus());
         if (User.getCurrentUser(AssetAllocation_Activity.this).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
@@ -178,12 +180,9 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
 
             }
         });
-
-
     }
 
-
-    private void AllocateStatus() {
+    private void setStatus(String status) {
         Utills.showProgressDialog(this, "Sending", getString(R.string.progress_please_wait));
         JSONObject jsonObject1 = new JSONObject();
 
@@ -196,7 +195,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
                 jsonObject1.put("ASSET_STOCK__c", asset.getStockId());
             }
 
-            jsonObject1.put("Allocation_Status__c", "Allocated");
+            jsonObject1.put("Allocation_Status__c", status);
             jsonObject1.put("ASSET__c", asset_id);
             jsonObject1.put("Id", asset.getAssetAllocationId());
             JSONObject jsonObject2 = new JSONObject();
@@ -311,7 +310,12 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
                 break;
             case R.id.btn_allocate_asset:
                 if (isValid())
-                    AllocateStatus();
+                    setStatus("Allocated");
+                break;
+            case R.id.btn_reject_asset:
+//                if (isValid())
+                    setStatus("Rejected");
+                break;
         }
     }
 

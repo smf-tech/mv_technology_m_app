@@ -77,7 +77,7 @@ public class UserInfo {
     private String Organisation = "";
     @SerializedName("Is_Approved__c")
     @Expose
-    private String isApproved = "";
+    private String isApproved;
     @SerializedName("Mobile_Tab_Name_c__c")
     @Expose
     private String tabNameApproved = "";

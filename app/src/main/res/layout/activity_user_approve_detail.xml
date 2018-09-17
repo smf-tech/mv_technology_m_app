@@ -317,11 +317,21 @@
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/small_text" />
 
+                <com.mv.Widgets.MyTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/taluka"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/small_text" />
+
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/lay_taluka"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:layout_below="@+id/txt_view1"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
@@ -331,16 +341,13 @@
 
                      <com.mv.Widgets.MyEditTextView
                         android:enabled="false"
-
                         android:id="@+id/edit_taluka"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-
                         android:inputType="textPersonName"
                         android:singleLine="true"
                         android:textColor="@color/black"
-
                         android:textSize="@dimen/medium_text" />
                 </android.support.design.widget.TextInputLayout>
 

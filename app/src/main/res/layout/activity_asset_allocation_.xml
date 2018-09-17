@@ -219,7 +219,17 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:background="@color/colorPink"
-            android:text="Allocate"
+            android:text="@string/allocate"
+            android:textColor="#ffffff"
+            android:textSize="22sp" />
+
+        <com.mv.Widgets.MyFontButton
+            android:id="@+id/btn_reject_asset"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@color/colorPink"
+            android:text="@string/reject"
             android:textColor="#ffffff"
             android:textSize="22sp" />
 

@@ -92,6 +92,7 @@
     <string name="no_gps">GPS उपलब्ध नहीं है.</string>
     <string name="gps_settings">GPS सेटिंग</string>
     <string name="mandatory_village">ग्राम *</string>
+    <string name="gps_popup_title">कृपया जीपीएस/स्थान चालू करें।</string>
     <string name="school_name">स्कूल का नाम</string>
     <string name="mandatory_school_name">स्कूल का नाम *</string>
     <string name="school_code">स्कूल का कोड</string>

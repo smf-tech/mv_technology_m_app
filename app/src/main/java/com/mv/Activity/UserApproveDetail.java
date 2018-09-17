@@ -92,6 +92,10 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
                     binding.editTextName.setText(mUser.getMvUser().getName());
                     binding.editTextMidleName.setText(mUser.getMvUser().getMiddleName());
                     binding.editTextLastName.setText(mUser.getMvUser().getLastName());
+                    if(mUser.getMvUser().getMultipleTaluka()!=null && mUser.getMvUser().getMultipleTaluka().length()>0)
+                        binding.editTaluka.setText(mUser.getMvUser().getMultipleTaluka());
+                    else
+                        binding.editTaluka.setText(mUser.getMvUser().getTaluka());
                     binding.editTextMobileNumber.setText(mUser.getMvUser().getPhone());
                     binding.editTextEmail.setText(mUser.getMvUser().getEmail());
                     binding.editOrganization.setText(mUser.getMvUser().getOrganisation());
@@ -278,7 +282,7 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
     private void sendApprovedData() {
         if (Utills.isConnected(this)) {
             try {
-                Utills.showProgressDialog(this, getString(R.string.share_post), getString(R.string.progress_please_wait));
+                Utills.showProgressDialog(this, "Loading Data", getString(R.string.progress_please_wait));
                 JSONObject jsonObject1 = new JSONObject();
 
                 jsonObject1.put("userId", mUser.getMvUser().getId());

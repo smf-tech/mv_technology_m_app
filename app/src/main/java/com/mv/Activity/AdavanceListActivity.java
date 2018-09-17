@@ -112,15 +112,29 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
+//        if (Utills.isConnected(this)) {
+//            if (Constants.AccountTeamCode.equals("TeamManagement")) {
+//                getUserAdavanceDataForTeam();
+//                binding.fabAddProcess.setVisibility(View.GONE);
+//            } else {
+//                getUserAdavanceData();
+//            }
+//        }
+//      commented above lines and added following code to work offine properly
         if (Utills.isConnected(this)) {
             if (Constants.AccountTeamCode.equals("TeamManagement")) {
                 getUserAdavanceDataForTeam();
                 binding.fabAddProcess.setVisibility(View.GONE);
-            } else {
-                getUserAdavanceData();
+            }else {
+                getUserAdvanceData();
+            }
+        }else {
+            if (Constants.AccountTeamCode.equals("TeamManagement")) {
+                Utills.showToast(getResources().getString(R.string.error_no_internet),this);
+            }else{
+                setRecyclerView();
             }
         }
-
     }
 
     //Sapret call for Team Management
@@ -176,7 +190,7 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
-    private void getUserAdavanceData() {
+    private void getUserAdvanceData() {
         Utills.showProgressDialog(this, "Loading Data", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
@@ -311,11 +325,26 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
     protected void onResume() {
         super.onResume();
 
-        if (Constants.AccountTeamCode.equals("TeamManagement")) {
-            getUserAdavanceDataForTeam();
-            binding.fabAddProcess.setVisibility(View.GONE);
-        } else {
-            setRecyclerView();
+//        if (Constants.AccountTeamCode.equals("TeamManagement")) {
+//            getUserAdavanceDataForTeam();
+//            binding.fabAddProcess.setVisibility(View.GONE);
+//        } else {
+//            setRecyclerView();
+//        }
+        //commented above lines and added following code to work properly when back button has pressed.
+        if (Utills.isConnected(this)) {
+            if (Constants.AccountTeamCode.equals("TeamManagement")) {
+                getUserAdavanceDataForTeam();
+                binding.fabAddProcess.setVisibility(View.GONE);
+            }else {
+                getUserAdvanceData();
+            }
+        }else {
+            if (Constants.AccountTeamCode.equals("TeamManagement")) {
+                Utills.showToast(getResources().getString(R.string.error_no_internet),this);
+            }else{
+                setRecyclerView();
+            }
         }
     }
 
