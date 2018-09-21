@@ -122,7 +122,10 @@ public class ApiClient {
             };
             OkHttpClient client = null;
             try {
-                client = new OkHttpClient.Builder().sslSocketFactory(new TLSSocketFactory()).addInterceptor(interceptor).addInterceptor(interceptor2).addInterceptor(interceptor1).build();
+                client = new OkHttpClient.Builder()
+                        .connectTimeout(60,TimeUnit.SECONDS)
+                        .readTimeout(60,TimeUnit.SECONDS)
+                        .sslSocketFactory(new TLSSocketFactory()).addInterceptor(interceptor).addInterceptor(interceptor2).addInterceptor(interceptor1).build();
             } catch (KeyManagementException e) {
                 e.printStackTrace();
             } catch (NoSuchAlgorithmException e) {

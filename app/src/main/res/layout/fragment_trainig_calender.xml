@@ -44,71 +44,89 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10">
+                android:orientation="horizontal">
 
-                <TextView
-
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
                     android:layout_weight="5"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp"
-                    android:prompt="@string/month"
-                    android:spinnerMode="dialog"
-                    android:text="@string/month" />
+                    android:orientation="vertical">
 
-                <TextView
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
 
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_weight="5"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp"
-                    android:prompt="@string/year"
-                    android:spinnerMode="dialog"
-                    android:text="@string/year" />
-            </LinearLayout>
+                        <TextView
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="10">
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="5"
+                            android:paddingBottom="5dp"
+                            android:paddingTop="5dp"
+                            android:prompt="@string/month"
+                            android:spinnerMode="dialog"
+                            android:text="@string/month" />
 
-                <Spinner
-                    android:id="@+id/spinner_month"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_weight="5"
-                    android:background="@drawable/grey_box"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:prompt="@string/month"
-                    android:spinnerMode="dialog" />
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="5"
+                            android:paddingBottom="5dp"
+                            android:paddingTop="5dp"
+                            android:prompt="@string/year"
+                            android:spinnerMode="dialog"
+                            android:text="@string/year" />
+                    </LinearLayout>
 
-                <Spinner
-                    android:id="@+id/spinner_year"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:layout_weight="5"
-                    android:background="@drawable/grey_box"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:prompt="@string/year"
-                    android:spinnerMode="dialog" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="10">
+
+                        <Spinner
+                            android:id="@+id/spinner_month"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="3dp"
+                            android:layout_weight="5"
+                            android:background="@drawable/grey_box"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:prompt="@string/month"
+                            android:spinnerMode="dialog" />
+
+                        <Spinner
+                            android:id="@+id/spinner_year"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="3dp"
+                            android:layout_marginRight="@dimen/dimen_10dp"
+                            android:layout_weight="5"
+                            android:background="@drawable/grey_box"
+                            android:paddingBottom="10dp"
+                            android:paddingTop="10dp"
+                            android:prompt="@string/year"
+                            android:spinnerMode="dialog" />
+
+                        <ImageView
+                            android:id="@+id/iv_get_event"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginRight="@dimen/dimen_5dp"
+                            android:src="@drawable/go"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:layout_weight="3"/>
+                    </LinearLayout>
+                </LinearLayout>
+
             </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
@@ -138,21 +156,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
+
                 <Button
                     android:id="@+id/btn_all_plans"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/colorPink"
                     android:layout_weight="1"
-                    android:text="@string/all_plans"/>
+                    android:background="@color/colorPink"
+                    android:text="@string/all_plans" />
 
                 <Button
                     android:id="@+id/btn_my_plans"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/lightgray01"
                     android:layout_weight="1"
-                    android:text="@string/my_plans"/>
+                    android:background="@color/lightgray01"
+                    android:text="@string/my_plans" />
             </LinearLayout>
 
         </LinearLayout>

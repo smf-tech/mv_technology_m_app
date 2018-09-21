@@ -139,6 +139,7 @@
     <string name="notification">अधिसूचना</string>
     <string name="rate">रेट करें</string>
     <string name="share">शेयर</string>
+    <string name="map">नक्शा</string>
     <string name="team_management">टीम\nप्रबंधक</string>
     <string name="seconds_remaining">दूसरा शेष</string>
     <string name="back_string">बाहर निकलने के लिए कृपया वापस फिर से क्लिक करें</string>
@@ -302,6 +303,13 @@
     <string name="work_location">Work Location</string>
     <string name="please_refresh_location">Please Refresh Location</string>
     <string name="asset_request_screen">मालमत्तेची विनंती</string>
+    <string name="enter_title">शीर्षक दर्ज करें</string>
+    <string name="enter_start_date">प्रारंभ तिथि दर्ज करें</string>
+    <string name="enter_end_date">समाप्ति तिथि दर्ज करें</string>
+    <string name="enter_start_time">स्टार्ट टाइम दर्ज करें</string>
+    <string name="enter_end_time">समाप्ति समय दर्ज करें</string>
+    <string name="enter_description">विवरण दर्ज करें</string>
+    <string name="add_members">सदस्यों को जोड़ें</string>
     <string name="Title">शीर्षक</string>
     <string name="allocate">Allocate</string>
     <string name="reallocate">Re-Allocate</string>

@@ -111,6 +111,7 @@
     <string name="notification">सूचना</string>
     <string name="rate">दर्जा ठरवा</string>
     <string name="share">शेयर अॅप</string>
+    <string name="map">नकाशा</string>
     <string name="seconds_remaining">उर्वरित सेकंद </string>
     <string name="reporting_template">रिपोर्टिंग टेम्पलेट</string>
     <string name="back_string">बाहेर पडण्यासाठी कृपया पुन्हा क्लिक करा </string>
@@ -147,7 +148,7 @@
     <string name="loding_district">जिल्हे लोड करीत आहे</string>
     <string name="loding_taluka">तालुका लोड करीत आहे</string>
 
-    <string name="cannotLogout">आपण बाहेर पडू करू शकत नाही</string>
+    <string name="cannotLogout">आपण बाहेर पडू शकत नाही</string>
     <string name="submitAllForms">कृपया सर्व फॉर्म सबमिट करा आणि बाहेर पडा</string>
 
     <string name="loding_cluster">क्लस्टर लोड करीत आहे</string>
@@ -299,6 +300,13 @@
     <string name="please_refresh_location">कृपया कामाचे स्थान रीफ्रेश करा</string>
     <string name="asset_request_screen">साधन सामग्रीची विनंती</string>
     <string name="Title">शीर्षक</string>
+    <string name="enter_title">शीर्षक प्रविष्ट करा</string>
+    <string name="enter_start_date">प्रारंभ दिनांक प्रविष्ट करा</string>
+    <string name="enter_end_date">समाप्ती दिनांक प्रविष्ट करा</string>
+    <string name="enter_start_time">प्रारंभ वेळ प्रविष्ट करा</string>
+    <string name="enter_end_time">समाप्ती वेळ प्रविष्ट करा</string>
+    <string name="enter_description">वर्णन प्रविष्ट करा</string>
+    <string name="add_members">सदस्य जोडा</string>
     <string name="allocate">वाटप</string>
     <string name="reallocate">पुनर्वितरित</string>
     <string name="asset_allocation">साधन सामग्री वाटप</string>

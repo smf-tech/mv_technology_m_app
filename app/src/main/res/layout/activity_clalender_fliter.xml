@@ -331,7 +331,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:hint="Enter Title"
+                        android:hint="@string/enter_title"
                         android:inputType="textPersonName"
                         android:textColor="@color/black"
 
@@ -356,7 +356,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:hint="Enter Start Date"
+                        android:hint="@string/enter_start_date"
                         android:inputType="textPersonName"
                         android:textColor="@color/black"
 
@@ -381,7 +381,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:hint="Enter Start Time"
+                        android:hint="@string/enter_start_time"
                         android:inputType="textPersonName"
                         android:textColor="@color/black"
 
@@ -407,7 +407,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:hint="Enter End Date"
+                        android:hint="@string/enter_end_date"
                         android:inputType="textPersonName"
                         android:textColor="@color/black"
 
@@ -432,7 +432,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:hint="Enter End Time"
+                        android:hint="@string/enter_end_time"
                         android:inputType="textPersonName"
                         android:textColor="@color/black"
 
@@ -458,7 +458,7 @@
                         android:layout_height="wrap_content"
                         android:background="@null"
                         android:gravity="left"
-                        android:hint="Enter Description"
+                        android:hint="@string/enter_description"
                         android:lines="4"
                         android:textColor="@color/black"
                         android:textSize="@dimen/medium_text" />
@@ -507,7 +507,7 @@
                     android:drawableLeft="@android:drawable/ic_menu_add"
                     android:gravity="left"
                     android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="Add People"
+                    android:text="@string/add_members"
                     android:textColor="@color/black"
                     android:textSize="@dimen/medium_text" />
 
@@ -523,7 +523,7 @@
                         android:drawableLeft="@android:drawable/ic_menu_add"
                         android:gravity="left"
                         android:paddingBottom="@dimen/dimen_10dp"
-                        android:text="Attendance"
+                        android:text="@string/attendance"
                         android:textColor="@color/black"
                         android:textSize="@dimen/medium_text" />
 

@@ -92,7 +92,13 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                         showDateDialog(mContext, getAdapterPosition());
                     else if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.MULTI_SELECT)) {
                         myList = new ArrayList<String>(Arrays.asList(getColumnIdex((taskList.get(getAdapterPosition()).getPicklist_Value__c()).split(","))));
-                        showDialog(myList, getAdapterPosition());
+                        //added this code to enable marathi language in multiselect filed
+                        selectedLanList = new ArrayList<String>(Arrays.asList(getColumnIdex((taskList.get(getAdapterPosition()).getPicklist_Value_Lan__c()).split(","))));
+                       // taskList.get(getAdapterPosition()).setTask_Response__c(myList.get(getAdapterPosition()));
+                        if (myList.size() == selectedLanList.size())
+                            showDialog(selectedLanList, getAdapterPosition());
+                        else
+                            showDialog(myList, getAdapterPosition());
 
                     } else if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.TIME)) {
                         Calendar mcurrentTime = Calendar.getInstance();
@@ -412,21 +418,27 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llLocation.setVisibility(View.GONE);
                 holder.llDate.setVisibility(View.VISIBLE);
                 holder.llCheck.setVisibility(View.GONE);
-              //  holder.date.setHint("");
+                //  holder.date.setHint("");
                  holder.questionResponse.setHint(task.getTask_Text___Lan_c());
                 if (task.getIs_Response_Mnadetory__c())
                     holder.dateHeader.setText("*" + task.getTask_Text___Lan_c());
                 else
                     holder.dateHeader.setText(task.getTask_Text___Lan_c());
 
-                if (task.getTask_Response__c() != null && task.getTask_Response__c().length() > 0)
-                    holder.date.setText(task.getTask_Response__c());
-                else
+                if (task.getTask_Response__c() != null && task.getTask_Response__c().length() > 0) {
+                    String answerStr="";
+                    ArrayList<String> myList1 = new ArrayList<String>(Arrays.asList(getColumnIdex((taskList.get(position).getPicklist_Value__c()).split(","))));
+                    ArrayList<String> selectedLanList1 = new ArrayList<String>(Arrays.asList(getColumnIdex((taskList.get(position).getPicklist_Value_Lan__c()).split(","))));
+                    ArrayList<String> answer = new ArrayList<String>(Arrays.asList(getColumnIdex((task.getTask_Response__c()).split(","))));
+                        for(String strAns:answer){
+                            answerStr=answerStr+(selectedLanList1.get(myList1.indexOf(strAns))+",");
+                        }
+                        holder.date.setText(answerStr);
+                } else
                     holder.date.setText("Select");
                 holder.date.setTag(position);
                 holder.date.setFocusable(false);
                 holder.date.setClickable(true);
-
                 break;
 
             case Constants.EVENT_MOBILE:
@@ -563,10 +575,14 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
     private void showDialog(ArrayList<String> arrayList, final int pos) {
         final String[] items = arrayList.toArray(new String[arrayList.size()]);
 
+         final String[] deafultLangitems = myList.toArray(new String[myList.size()]);
+//      mSelection = new boolean[deafultLangitems.length];
+//      Arrays.fill(mSelection, false);
+
         mSelection = new boolean[items.length];
         Arrays.fill(mSelection, false);
 
-// arraylist to keep the selected items
+//      arraylist to keep the selected items
         final ArrayList seletedItems = new ArrayList();
         AlertDialog dialog = new AlertDialog.Builder(mContext)
                 .setTitle(taskList.get(pos).getTask_Text___Lan_c())
@@ -575,8 +591,8 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (mSelection != null && which < mSelection.length) {
                             mSelection[which] = isChecked;
-                            value = buildSelectedItemString(items);
-
+//                            value = buildSelectedItemString(items);
+                            value = buildSelectedItemString(deafultLangitems);
                         } else {
                             throw new IllegalArgumentException(
                                     "Argument 'which' is out of bounds.");

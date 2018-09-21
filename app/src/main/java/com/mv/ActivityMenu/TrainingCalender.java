@@ -105,6 +105,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
         binding.fabAddBroadcast.setOnClickListener(this);
         binding.spinnerMonth.setOnItemSelectedListener(this);
         binding.spinnerYear.setOnItemSelectedListener(this);
+        binding.ivGetEvent.setOnClickListener(this);
 
         preferenceHelper = new PreferenceHelper(context);
         binding.recyclerView.setHasFixedSize(true);
@@ -126,7 +127,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
         Calendar instance1 = Calendar.getInstance();
         instance1.set(instance1.get(Calendar.YEAR), Calendar.JANUARY, 1);
 
-        isAllPlans=true;
+        isAllPlans = true;
 
         binding.calendarView.state().edit()
                 .setMinimumDate(instance1.getTime())
@@ -171,14 +172,14 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
 
     }
 
-    public static String[] getColumnIdex(String[] value) {
-
-        for (int i = 0; i < value.length; i++) {
-            value[i] = value[i].trim();
-        }
-        return value;
-
-    }
+//    public static String[] getColumnIdex(String[] value) {
+//
+//        for (int i = 0; i < value.length; i++) {
+//            value[i] = value[i].trim();
+//        }
+//        return value;
+//
+//    }
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -188,7 +189,9 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
     @Override
     public void onResume() {
         super.onResume();
-        getAllProcess();
+        String monthYear = binding.spinnerMonth.getSelectedItem().toString() + " " + binding.spinnerYear.getSelectedItem().toString();
+        getAllProcess(monthYear);
+
     }
 
     public void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
@@ -205,44 +208,43 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
         switch (adapterView.getId()) {
             case R.id.spinner_month:
                 allDate.clear();
-                try {
+//                try {
                     allDate.addAll(getDates(binding.spinnerYear.getSelectedItem().toString() + "-0" + (i + 1) + "-01", binding.spinnerYear.getSelectedItem().toString() + "-0" + (i + 2) + "-01"));
-                    horizontalCalenderAdapter = new HorizontalCalenderAdapter(context, allDate, allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))), eventDate);
-                    binding.recyclerViewHorizontal.setAdapter(horizontalCalenderAdapter);
-                    //   binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(Calendar.getInstance().getTime()));
-
-                    binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))));
-                    if (allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))) > 0)
-                        selectDate(Calendar.getInstance().getTime());
-                    else
-                        selectDate(new SimpleDateFormat("yyyy-MM-dd").parse(binding.spinnerYear.getSelectedItem().toString() + "-0" + (i + 1) + "-01"));
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+//                    if (allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))) > 0) {
+//                        selectDated = Calendar.getInstance().getTime();
+//                        selectDate(Calendar.getInstance().getTime());
+//                    } else {
+//                        selectDate(new SimpleDateFormat("yyyy-MM-dd").parse(binding.spinnerYear.getSelectedItem().toString() + "-0" + (i + 1) + "-01"));
+//                        selectDated = new SimpleDateFormat("yyyy-MM-dd").parse(binding.spinnerYear.getSelectedItem().toString() + "-0" + (i + 1) + "-01");
+//                    }
+//
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
                 break;
 
             case R.id.spinner_year:
                 allDate.clear();
-                try {
+//                try {
                     allDate.addAll(getDates(binding.spinnerYear.getSelectedItem().toString() + "-0" + (MonthList.indexOf(binding.spinnerMonth.getSelectedItem().toString()) + 1) + "-01", binding.spinnerYear.getSelectedItem().toString() + "-0" + (MonthList.indexOf(binding.spinnerMonth.getSelectedItem().toString()) + 2) + "-01"));
-                    horizontalCalenderAdapter = new HorizontalCalenderAdapter(context, allDate, allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))), eventDate);
-                    binding.recyclerViewHorizontal.setAdapter(horizontalCalenderAdapter);
-                    //   binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(Calendar.getInstance().getTime()));
-
-                    binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))));
-                    if (allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))) > 0)
-                        selectDate(Calendar.getInstance().getTime());
-                    else
-                        selectDate(new SimpleDateFormat("yyyy-MM-dd").parse(binding.spinnerYear.getSelectedItem().toString() + "-0" + (MonthList.indexOf(binding.spinnerMonth.getSelectedItem().toString()) + 1) + "-01"));
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
+//                    horizontalCalenderAdapter = new HorizontalCalenderAdapter(context, allDate, allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))), eventDate);
+//                    binding.recyclerViewHorizontal.setAdapter(horizontalCalenderAdapter);
+//                    //   binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(Calendar.getInstance().getTime()));
+//
+//                    binding.recyclerViewHorizontal.getLayoutManager().scrollToPosition(allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))));
+//                    if (allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))) > 0) {
+//                        selectDated=Calendar.getInstance().getTime();
+//                        selectDate(Calendar.getInstance().getTime());
+//                        callEventsPerMonth(Calendar.getInstance().getTime());
+//                    } else {
+////                        selectDate(new SimpleDateFormat("yyyy-MM-dd").parse(binding.spinnerYear.getSelectedItem().toString() + "-0" + (MonthList.indexOf(binding.spinnerMonth.getSelectedItem().toString()) + 1) + "-01"));
+////                        callEventsPerMonth(new SimpleDateFormat("yyyy-MM-dd").parse(binding.spinnerYear.getSelectedItem().toString() + "-0" + (MonthList.indexOf(binding.spinnerMonth.getSelectedItem().toString()) + 1) + "-01"));
+ //                   }
+//
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
                 break;
-
-
         }
     }
 
@@ -252,7 +254,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
     }
 
     public void selectDate(Date date) {
-        selectDated=date;
+        selectDated = date;
         CalendarDay day = CalendarDay.from(date);
         if (eventMap.get(day) != null) {
             LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
@@ -261,10 +263,10 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
             String formattedDate = df.format(cal.getTime());
             LocaleManager.setNewLocale(this, preferenceHelper.getString(Constants.LANGUAGE));
-            adapter = new TraingCalenderAadapter(context, eventMap.get(day),isAllPlans);
+            adapter = new TraingCalenderAadapter(context, eventMap.get(day), isAllPlans);
             binding.recyclerView.setAdapter(adapter);
         } else {
-            adapter = new TraingCalenderAadapter(context, new ArrayList<CalenderEvent>(),isAllPlans);
+            adapter = new TraingCalenderAadapter(context, new ArrayList<CalenderEvent>(), isAllPlans);
             binding.recyclerView.setAdapter(adapter);
         }
     }
@@ -273,14 +275,12 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
         binding.fabAddBroadcast.show();
         if (eventMap.get(date) != null) {
-            adapter = new TraingCalenderAadapter(context, eventMap.get(date),isAllPlans);
+            adapter = new TraingCalenderAadapter(context, eventMap.get(date), isAllPlans);
             binding.recyclerView.setAdapter(adapter);
         } else {
-            adapter = new TraingCalenderAadapter(context, new ArrayList<CalenderEvent>(),isAllPlans);
+            adapter = new TraingCalenderAadapter(context, new ArrayList<CalenderEvent>(), isAllPlans);
             binding.recyclerView.setAdapter(adapter);
         }
-
-
     }
 
     private void setActionbar(String Title) {
@@ -316,26 +316,28 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
             case R.id.btn_all_plans:
                 binding.btnAllPlans.setBackgroundColor(getResources().getColor(R.color.colorPink));
                 binding.btnMyPlans.setBackgroundColor(getResources().getColor(R.color.lightgray01));
-                isAllPlans=true;
+                isAllPlans = true;
                 selectDate(selectDated);
                 break;
             //to display users events of that date
             case R.id.btn_my_plans:
                 binding.btnAllPlans.setBackgroundColor(getResources().getColor(R.color.lightgray01));
                 binding.btnMyPlans.setBackgroundColor(getResources().getColor(R.color.colorPink));
-                isAllPlans=false;
+                isAllPlans = false;
                 selectDate(selectDated);
+                break;
+            case R.id.iv_get_event:
+                String monthYear = binding.spinnerMonth.getSelectedItem().toString() + " " + binding.spinnerYear.getSelectedItem().toString();
+                getAllProcess(monthYear);
                 break;
         }
     }
 
-    private void getAllProcess() {
+    private void getAllProcess(String monthYear) {
         Utills.showProgressDialog(context, "Loading Process", getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
-        String s = User.getCurrentUser(context).getMvUser().getId();
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getcalenderEventRecords?userId=" + User.getCurrentUser(context).getMvUser().getId();
+        ServiceRequest apiService = ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/getcalenderEventRecordsV2?userId=" +
+                User.getCurrentUser(context).getMvUser().getId() + "&eventMonthYear=" + monthYear;
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -348,7 +350,8 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                         eventDate = new ArrayList<>();
 
                         dates = new ArrayList<>();
-
+                        int l = jsonArray.length();
+                        Log.i("Length", String.valueOf(l));
                         for (int i = 0; i < jsonArray.length(); i++) {
                             dateList = new ArrayList<>();
                             CalenderEvent calenderEvent = new CalenderEvent();
@@ -433,8 +436,8 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                                 dates.add(day);
                             }
                         }
-                        AppDatabase.getAppDatabase(context).userDao().deleteCalender();
-                        AppDatabase.getAppDatabase(context).userDao().insertCalendr(dateList);
+//                        AppDatabase.getAppDatabase(context).userDao().deleteCalender();
+//                        AppDatabase.getAppDatabase(context).userDao().insertCalendr(dateList);
                         binding.calendarView.addDecorator(new EventDecorator(TrainingCalender.this, dates, null));
                         horizontalCalenderAdapter = new HorizontalCalenderAdapter(context, allDate, allDate.indexOf(formatter.parse(formatterNew.format(Calendar.getInstance().getTime()))), eventDate);
                         binding.recyclerViewHorizontal.setAdapter(horizontalCalenderAdapter);
@@ -444,8 +447,10 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                         Calendar instance = Calendar.getInstance();
                         if (eventMap.get(CalendarDay.from(instance)) != null) {
                             eventMap.get(CalendarDay.from(instance));
-                            adapter = new TraingCalenderAadapter(context, eventMap.get(CalendarDay.from(instance)),isAllPlans);
+                            adapter = new TraingCalenderAadapter(context, eventMap.get(CalendarDay.from(instance)), isAllPlans);
                             binding.recyclerView.setAdapter(adapter);
+                        } else {
+                            selectDate(new SimpleDateFormat("yyyy-MM-dd").parse(binding.spinnerYear.getSelectedItem().toString() + "-0" + (MonthList.indexOf(binding.spinnerMonth.getSelectedItem().toString()) + 1) + "-01"));
                         }
                     }
                 } catch (JSONException e) {
