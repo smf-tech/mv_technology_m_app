@@ -94,9 +94,10 @@ public interface ServiceRequest {
     @POST("")
     Call<ResponseBody> getMapContent(@Url String url, @Field("id") String mId, @Field("lat") String mlat, @Field("lon") String mlon);
 
-
-    @POST("new_upload.php")
+    @POST("s3/s3_upload_api.php")
     Call<ResponseBody> sendImageToPHP(@Body RequestBody body);
+//    @POST("new_upload.php")
+//    Call<ResponseBody> sendImageToPHP(@Body RequestBody body);
 
 
 }
