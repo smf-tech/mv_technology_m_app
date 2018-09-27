@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.mv.Activity.AttendanceApproval2Activity;
 import com.mv.Activity.AttendanceApprovalActivity;
 import com.mv.Activity.LeaveApprovalActivity;
+import com.mv.Activity.MapsActivity;
 import com.mv.Activity.ProcessApprovalActivity;
 import com.mv.Activity.ProcessListApproval;
 import com.mv.Activity.TeamManagementUserProfileListActivity;
@@ -101,6 +102,11 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                             mContext.startActivity(openClass);
                             preferenceHelper.insertString(Constants.Leave,Constants.Leave_Approve);
                             mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                        }
+                        //adding maps
+                        else if (getAdapterPosition() == 5) {// shows the tc on map
+                            Intent intent=new Intent(mContext,MapsActivity.class);
+                            mContext.startActivity(intent);
                         }
                     } else if (mContext instanceof TeamManagementUserProfileListActivity) {
                         if (TeamManagementUserProfileListActivity.approvalType.equals(Constants.USER_APPROVAL)) {

@@ -165,53 +165,53 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
         return formattedDate;
     }
 
-    private void getProject() {
-
-        Utills.showProgressDialog(this, "Loading Projects", getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetProjectDataUrl;
-        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
-                try {
-                    if (response.body() != null) {
-                        String data = response.body().string();
-                        if (data != null && data.length() > 0) {
-
-                            JSONArray jsonArray = null;
-                            jsonArray = new JSONArray(data);
-                            projectList.clear();
-
-                            projectList.add("Select");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                JSONObject object = jsonArray.getJSONObject(i);
-                                projectList.add(object.getString("Project_Name__c"));
-                            }
-                            project_adapter.notifyDataSetChanged();
-                            if (!isAdd) {
-                                mProjectSelect = projectList.lastIndexOf(mAdavance.getProject());
-                                binding.spinnerProject.setSelection(mProjectSelect);
-                            }
-                        }
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Utills.hideProgressDialog();
-
-            }
-        });
-    }
+//    private void getProject() {
+//
+//        Utills.showProgressDialog(this, "Loading Projects", getString(R.string.progress_please_wait));
+//        ServiceRequest apiService =
+//                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+//        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+//                + Constants.GetProjectDataUrl;
+//        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                Utills.hideProgressDialog();
+//                try {
+//                    if (response.body() != null) {
+//                        String data = response.body().string();
+//                        if (data != null && data.length() > 0) {
+//
+//                            JSONArray jsonArray = null;
+//                            jsonArray = new JSONArray(data);
+//                            projectList.clear();
+//
+//                            projectList.add("Select");
+//                            for (int i = 0; i < jsonArray.length(); i++) {
+//                                JSONObject object = jsonArray.getJSONObject(i);
+//                                projectList.add(object.getString("Project_Name__c"));
+//                            }
+//                            project_adapter.notifyDataSetChanged();
+//                            if (!isAdd) {
+//                                mProjectSelect = projectList.lastIndexOf(mAdavance.getProject());
+//                                binding.spinnerProject.setSelection(mProjectSelect);
+//                            }
+//                        }
+//                    }
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                Utills.hideProgressDialog();
+//
+//            }
+//        });
+//    }
 
     @Override
     public void onClick(View view) {
@@ -372,22 +372,22 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
     }
 
 
-    private void showDateDialog() {
-        final Calendar c = Calendar.getInstance();
-        final int mYear = c.get(Calendar.YEAR);
-        final int mMonth = c.get(Calendar.MONTH);
-        final int mDay = c.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog dpd = new DatePickerDialog(this,
-                new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-                        binding.txtDate.setText(getTwoDigit(dayOfMonth) + "/" + getTwoDigit(monthOfYear + 1) + "/" + year);
-                    }
-                }, mYear, mMonth, mDay);
-        dpd.show();
-    }
+//    private void showDateDialog() {
+//        final Calendar c = Calendar.getInstance();
+//        final int mYear = c.get(Calendar.YEAR);
+//        final int mMonth = c.get(Calendar.MONTH);
+//        final int mDay = c.get(Calendar.DAY_OF_MONTH);
+//        DatePickerDialog dpd = new DatePickerDialog(this,
+//                new DatePickerDialog.OnDateSetListener() {
+//
+//                    @Override
+//                    public void onDateSet(DatePicker view, int year,
+//                                          int monthOfYear, int dayOfMonth) {
+//                        binding.txtDate.setText(getTwoDigit(dayOfMonth) + "/" + getTwoDigit(monthOfYear + 1) + "/" + year);
+//                    }
+//                }, mYear, mMonth, mDay);
+//        dpd.show();
+//    }
 
     private static String getTwoDigit(int i) {
         if (i < 10)
@@ -411,7 +411,6 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
             addAdavance(adavance);
         }
     }
-
 
     private boolean isValid() {
         String str = "";

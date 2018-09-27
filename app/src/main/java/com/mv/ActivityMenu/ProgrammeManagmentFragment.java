@@ -156,10 +156,22 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
     }
 
     private void getAllProcess() {
+        String url;
+//        //check if already any data available and accordingly call api.
+//        List<Template> temp = AppDatabase.getAppDatabase(context).userDao().getProcess();
+//        if(temp.size()==0){
+//            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+//                    + "/services/apexrest/getallprocessandtaskNew" + "?userId=" + User.getCurrentUser(this).getMvUser().getId() + "&language=" + preferenceHelper.getString(Constants.LANGUAGE);
+//        }else{
+//            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+//                    + "/services/apexrest/getBroadcastContent?userId=" + User.getCurrentUser(context).getMvUser().getId()
+//                    + "&timestamp=" + chatList.get(0).getTime();
+//        }
+
         Utills.showProgressDialog(context, "Loading Process", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+        url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + "/services/apexrest/getallprocessandtaskNew" + "?userId=" + User.getCurrentUser(this).getMvUser().getId() + "&language=" + preferenceHelper.getString(Constants.LANGUAGE);
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -296,7 +308,9 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
 
 
                             }
+                            //update Delete query with WHERE condition here. It will delete process with specified Id.
                             AppDatabase.getAppDatabase(context).userDao().deleteTable();
+                            //update Insert query . It will insert process which is deleted in above query.
                             AppDatabase.getAppDatabase(context).userDao().insertProcess(processAllList);
                             for (int i = 0; i < processCategory.size(); i++) {
                                 childList.put(processCategory.get(i), AppDatabase.getAppDatabase(context).userDao().getProcessCatagry(processCategory.get(i)));

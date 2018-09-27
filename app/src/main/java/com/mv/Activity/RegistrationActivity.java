@@ -138,8 +138,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             Utills.showProgressDialog(this, "Loading Projects", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        //updated project fetch api. getting projects of selected org.
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetProjectDataUrl;
+                + Constants.GetProjectDataUrl+"?org="+mListOrganization.get(mSelectOrganization);
+
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -492,7 +494,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             binding.editTextRefresh.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lat() + " , " + User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lng());
             SelectedLon = User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lng();
             SelectedLat = User.getCurrentUser(RegistrationActivity.this).getMvUser().getAttendance_Loc_Lat();
-            String str=ConvertToAddress(Double.parseDouble(SelectedLon), Double.parseDouble(SelectedLat));
             binding.editTextAddress.setText(ConvertToAddress(Double.parseDouble(SelectedLon), Double.parseDouble(SelectedLat)));
         } else {
             binding.llWork.setVisibility(View.GONE);
@@ -1061,6 +1062,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             case R.id.spinner_organization:
                 mSelectOrganization = i;
                 if (mSelectOrganization != 0) {
+                    getProject();
                     getRole();
                 }
                 mListRoleId.clear();

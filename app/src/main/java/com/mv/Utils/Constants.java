@@ -13,16 +13,16 @@ import java.util.ArrayList;
 public class Constants {
 
     /* Production */
-    public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
-    public static String USERNAME = "mulyavardhan.smf@gmail.com";
-    public static String REPORTID = "a1L7F000000YNK4";
-    public static String ISSUEID = "a1L7F000000YNJz";
+//    public static String LOGIN_URL = "https://login.salesforce.com/services/oauth2/token";
+//    public static String USERNAME = "mulyavardhan.smf@gmail.com";
+//    public static String REPORTID = "a1L7F000000YNK4";
+//    public static String ISSUEID = "a1L7F000000YNJz";
 
     /* Sandbox */
-//    public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
-//    public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
-//    public static String REPORTID = "a1G0k000000522K";
-//    public static String ISSUEID = "a1G0k000000522F";
+    public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
+    public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
+    public static String REPORTID = "a1G0k000000522K";
+    public static String ISSUEID = "a1G0k000000522F";
 
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
@@ -188,7 +188,7 @@ public class Constants {
     public static final String DeleteTaskAnswerUrl = "/services/apexrest/DeleteTaskAnswer/";
     public static final String ApproveCommentforProcessUrl = "/services/apexrest/ApproveCommentforProcess";
     public static final String GetprocessAnswerTaskfoApprovalUrl = "/services/apexrest/getprocessAnswerTaskfoApproval";
-    public static final String GetProjectDataUrl = "/services/apexrest/getProjectData";
+    public static final String GetProjectDataUrl = "/services/apexrest/getProjectDataNEW";
     public static final String MV_RoleUrl = "/services/data/v36.0/query/?q=select+Id,Juridictions__c,Name+from+MV_Role__c+where+Organisation__c='";
     public static final String MTRegisterUrl = "/services/apexrest/MTRegisterNew";
 

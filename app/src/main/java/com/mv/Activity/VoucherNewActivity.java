@@ -132,8 +132,10 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
         Utills.showProgressDialog(this, "Loading Projects", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        //updated project fetch api. getting projects of selected org.
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetProjectDataUrl;
+                + Constants.GetProjectDataUrl+"?org="+User.getCurrentUser(VoucherNewActivity.this).getMvUser().getOrganisation();
+
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

@@ -56,11 +56,11 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
         preferenceHelper = new PreferenceHelper(this);
 
-        TextView toolbarTitle=(TextView) findViewById(R.id.toolbar_title);
+        TextView toolbarTitle = (TextView) findViewById(R.id.toolbar_title);
         toolbarTitle.setText(this.getResources().getString(R.string.map));
-        ImageView imgLogout=(ImageView) findViewById(R.id.img_logout);
+        ImageView imgLogout = (ImageView) findViewById(R.id.img_logout);
         imgLogout.setVisibility(View.GONE);
-        ImageView imgBack=(ImageView) findViewById(R.id.img_back);
+        ImageView imgBack = (ImageView) findViewById(R.id.img_back);
         imgBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,17 +85,17 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng SMF = new LatLng(18.537206, 73.829827);
+        //  LatLng SMF = new LatLng(18.537206, 73.829827);
 //        mMap.addMarker(new MarkerOptions().position(SMF).title("SMF Offace"));
 //        mMap.moveCamera(CameraUpdateFactory.newLatLng(SMF));
         //Move the camera to the user's location and zoom in!
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(SMF, 11.0f));
+        //    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(SMF, 11.0f));
         getHolidayList();
     }
 
     private void getHolidayList() {
         if (Utills.isConnected(MapsActivity.this)) {
-            Utills.showProgressDialog(MapsActivity.this, "Loading Holidays", getString(R.string.progress_please_wait));
+            Utills.showProgressDialog(MapsActivity.this, "Loading...", getString(R.string.progress_please_wait));
             ServiceRequest apiService = ApiClient.getClientWitHeader(MapsActivity.this).create(ServiceRequest.class);
             String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/getLocationMapData?userId=" +
                     User.getCurrentUser(getApplicationContext()).getMvUser().getId();
@@ -113,9 +113,13 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 AppDatabase.getAppDatabase(MapsActivity.this).userDao().deleteHolidayList();
                                 mapUserData = Arrays.asList(gson.fromJson(jsonArray.toString(), MapUserData[].class));
 
-                                for(MapUserData userData:mapUserData){
-                                    if(userData.getLat()==0.0 && userData.getLon()==0.0){
-                                        mMap.addMarker(new MarkerOptions().position(new LatLng(userData.getLat(),userData.getLon())).title(userData.getUsername()));
+                                for (MapUserData userData : mapUserData) {
+                                    if (userData.getLat() != 0.0 && userData.getLon() != 0.0) {
+                                        String lastseenstring = userData.getLastSeen();
+                                        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(userData.getLat(), userData.getLon()), 9.0f));
+                                        mMap.addMarker(new MarkerOptions().position(new LatLng(userData.getLat(), userData.getLon()))
+                                                .title(userData.getUsername() + "(" + userData.getRole() + ")")
+                                                .snippet(lastseenstring));
                                     }
                                 }
                             }
