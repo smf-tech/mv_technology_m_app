@@ -24,11 +24,6 @@
         android:id="@+id/action_share"
         android:title="@string/share" />
     <item
-        android:id="@+id/action_map"
-        android:title="@string/map"
-        android:visible="false"
-        />
-    <item
         android:id="@+id/action_rate"
         android:title="@string/rate" />
 

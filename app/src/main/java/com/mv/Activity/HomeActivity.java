@@ -1431,9 +1431,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             showNotificationDialog();
         } else if (id == R.id.action_share) {
             ShareApp();
-        } else if (id == R.id.action_map) {
-            Intent intent=new Intent(this,MapsActivity.class);
-            startActivity(intent);
         } else if (id == R.id.action_rate) {
             RateThisApp.showRateDialog(HomeActivity.this, R.style.Theme_AppCompat_Light_Dialog_Alert);
 

@@ -198,8 +198,17 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 holder.audioLayout.setVisibility(View.GONE);
                 holder.txt_detail.setVisibility(View.VISIBLE);
 
+//                Glide.with(mContext)
+//                        .load(Constants.IMAGEURL + mDataList.get(position).getId() + ".png")
+//                        .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
+//                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+//                        .into(holder.picture);
+
+                String imgurl=Constants.IMAGEURL + mDataList.get(position).getId().trim() + ".png";
                 Glide.with(mContext)
-                        .load(Constants.IMAGEURL + mDataList.get(position).getId() + ".png")
+                        .load(imgurl)
+                        .dontTransform()
+                        .dontAnimate()
                         .placeholder(mContext.getResources().getDrawable(R.drawable.mulya_bg))
                         .diskCacheStrategy(DiskCacheStrategy.ALL)
                         .into(holder.picture);
