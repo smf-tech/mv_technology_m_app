@@ -26,7 +26,7 @@ android {
         config {
             keyAlias 'mulyavardhan'
             keyPassword 'mulyavardhan'
-            storeFile file('C:/Users/Rohit Gujar/Downloads/Mulyavardhan2.0.jks')
+            storeFile file('Mulyavardhan2.0.jks')
             storePassword 'mulyavardhan'
         }
     }
@@ -41,8 +41,8 @@ android {
         applicationId "com.mv"
         minSdkVersion 17
         targetSdkVersion 22
-        versionCode 45
-        versionName "3.23"
+        versionCode 46
+        versionName "3.24"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "BASEURL", "\"http://mobileapp.mulyavardhan.org/mv_gov/index.php/\""
         multiDexEnabled true
