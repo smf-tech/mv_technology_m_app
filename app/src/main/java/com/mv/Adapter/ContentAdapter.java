@@ -82,8 +82,8 @@ import retrofit2.Response;
 
 public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHolder> {
     private static final int LENGTH = 7;
-    private final String[] mPlaces;
-    private final String[] mPlaceDesc;
+//    private final String[] mPlaces;
+//    private final String[] mPlaceDesc;
     private final Drawable[] mPlacePictures;
     private final Context mContext;
     private CommunityHomeActivity mActivity;
@@ -105,9 +105,9 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
     public ContentAdapter(Context context, List<Content> chatList) {
         Resources resources = context.getResources();
-        mPlaces = resources.getStringArray(R.array.places);
+    //    mPlaces = resources.getStringArray(R.array.places);
         mActivity = (CommunityHomeActivity) context;
-        mPlaceDesc = resources.getStringArray(R.array.place_desc);
+    //    mPlaceDesc = resources.getStringArray(R.array.place_desc);
         TypedArray a = resources.obtainTypedArray(R.array.places_picture);
         mContext = context;
         mPlacePictures = new Drawable[a.length()];

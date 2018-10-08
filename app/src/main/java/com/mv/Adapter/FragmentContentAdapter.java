@@ -62,8 +62,8 @@ import retrofit2.Response;
 
 public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContentAdapter.ViewHolder> {
     private static final int LENGTH = 7;
-    private final String[] mPlaces;
-    private final String[] mPlaceDesc;
+//    private final String[] mPlaces;
+//    private final String[] mPlaceDesc;
     private final Drawable[] mPlacePictures;
     private final Context mContext;
 
@@ -75,8 +75,8 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
     public FragmentContentAdapter(Context context, List<Content> chatList) {
         Resources resources = context.getResources();
-        mPlaces = resources.getStringArray(R.array.places);
-        mPlaceDesc = resources.getStringArray(R.array.place_desc);
+//        mPlaces = resources.getStringArray(R.array.places);
+//        mPlaceDesc = resources.getStringArray(R.array.place_desc);
         TypedArray a = resources.obtainTypedArray(R.array.places_picture);
         mContext = context;
         mPlacePictures = new Drawable[a.length()];

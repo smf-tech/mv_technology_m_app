@@ -74,8 +74,8 @@ import retrofit2.Response;
 
 public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.ViewHolder> {
     private static final int LENGTH = 7;
-    private final String[] mPlaces;
-    private final String[] mPlaceDesc;
+//    private final String[] mPlaces;
+//    private final String[] mPlaceDesc;
     private final Drawable[] mPlacePictures;
     private final Context mContext;
     private List<Content> mDataList;
@@ -96,9 +96,9 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
 
     public ThetSavandAdapter(Context context, ThetSavandFragment fragment, List<Content> chatList) {
         Resources resources = context.getResources();
-        mPlaces = resources.getStringArray(R.array.places);
+//        mPlaces = resources.getStringArray(R.array.places);
+//        mPlaceDesc = resources.getStringArray(R.array.place_desc);
         this.fragment = fragment;
-        mPlaceDesc = resources.getStringArray(R.array.place_desc);
         TypedArray a = resources.obtainTypedArray(R.array.places_picture);
         mContext = context;
         mPlacePictures = new Drawable[a.length()];
@@ -276,8 +276,6 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                                 notifyItemChanged(temp);
                             }
                         });
-
-
                     }
                 });
             }

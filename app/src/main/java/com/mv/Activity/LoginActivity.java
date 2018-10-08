@@ -66,7 +66,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     User user;
     String msg = "";
     CountDownTimer yourCountDownTimer;
-    private static ViewPager mPager;
+    private ViewPager mPager;
     private static int currentPage = 0;
     /*   private static final Integer[] XMEN = {R.drawable.a, R.drawable.b, R.drawable.c, R.drawable.d, R.drawable.e};
        private ArrayList<Integer> XMENArray = new ArrayList<Integer>();*/

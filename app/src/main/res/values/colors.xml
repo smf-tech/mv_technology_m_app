@@ -12,20 +12,13 @@
     <color name="lighter_grey">#EEEEEE</color>
     <color name="lightgray01">#d3d3d3</color>
     <color name="tranparant_lighter_grey">#80EEEEEE</color>
-    <color name="lighter_color_primary">#b0f4f3</color>
 
     <color name="light_blue">#5284E0</color>
-    <color name="pink">#ad1457</color>
-    <color name="orrange">#e33d1b</color>
     <color name="orrange2">#F4511E</color>
-    <color name="text_pink">#e84f8f</color>
     <color name="green">#8BC34A</color>
     <color name="orange">#e3641b</color>
     <color name="purple">#800080</color>
     <color name="red">#FF0000</color>
-
     <color name="blue">#1B4792</color>
-
-    <color name="tab_background">#23b1b0</color>
 
 </resources>

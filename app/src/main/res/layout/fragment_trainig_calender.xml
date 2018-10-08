@@ -41,91 +41,87 @@
                 app:mcv_tileHeight="match_parent"
                 app:mcv_tileWidth="match_parent" />
 
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:weightSum="10">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="10">
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="5"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp"
+                        android:prompt="@string/month"
+                        android:spinnerMode="dialog"
+                        android:text="@string/month" />
 
-                        <TextView
-
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_weight="5"
-                            android:paddingBottom="5dp"
-                            android:paddingTop="5dp"
-                            android:prompt="@string/month"
-                            android:spinnerMode="dialog"
-                            android:text="@string/month" />
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="10dp"
-                            android:layout_weight="5"
-                            android:paddingBottom="5dp"
-                            android:paddingTop="5dp"
-                            android:prompt="@string/year"
-                            android:spinnerMode="dialog"
-                            android:text="@string/year" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:weightSum="10">
-
-                        <Spinner
-                            android:id="@+id/spinner_month"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginTop="3dp"
-                            android:layout_weight="5"
-                            android:background="@drawable/grey_box"
-                            android:paddingBottom="10dp"
-                            android:paddingTop="10dp"
-                            android:prompt="@string/month"
-                            android:spinnerMode="dialog" />
-
-                        <Spinner
-                            android:id="@+id/spinner_year"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="3dp"
-                            android:layout_marginRight="@dimen/dimen_10dp"
-                            android:layout_weight="5"
-                            android:background="@drawable/grey_box"
-                            android:paddingBottom="10dp"
-                            android:paddingTop="10dp"
-                            android:prompt="@string/year"
-                            android:spinnerMode="dialog" />
-
-                        <ImageView
-                            android:id="@+id/iv_get_event"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginRight="@dimen/dimen_5dp"
-                            android:src="@drawable/go"
-                            android:layout_gravity="center_vertical|center_horizontal"
-                            android:layout_weight="3"/>
-                    </LinearLayout>
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="5"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp"
+                        android:prompt="@string/year"
+                        android:spinnerMode="dialog"
+                        android:text="@string/year" />
                 </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <Spinner
+                        android:id="@+id/spinner_month"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_weight="5"
+                        android:background="@drawable/grey_box"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:prompt="@string/month"
+                        android:spinnerMode="dialog" />
+
+                    <Spinner
+                        android:id="@+id/spinner_year"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginRight="@dimen/dimen_10dp"
+                        android:layout_weight="5"
+                        android:background="@drawable/grey_box"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:prompt="@string/year"
+                        android:spinnerMode="dialog" />
+
+                    <ImageView
+                        android:id="@+id/iv_get_event"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginRight="@dimen/dimen_5dp"
+                        android:src="@drawable/go"
+                        android:layout_gravity="center_vertical|center_horizontal"
+                        android:layout_weight="3"/>
+                </LinearLayout>
+
 
             </LinearLayout>
 

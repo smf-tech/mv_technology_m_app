@@ -115,9 +115,9 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         binding.editMultiselectTaluka.setText(User.getCurrentUser(context).getMvUser().getTaluka());
         binding.lyState.setOnClickListener(this);
         //added for date filter but not implemented
-//        binding.txtDateFrom.setOnClickListener(this);
-//        binding.txtDateTo.setOnClickListener(this);
-//        binding.sortButton.setOnClickListener(this);
+        binding.txtDateFrom.setOnClickListener(this);
+        binding.txtDateTo.setOnClickListener(this);
+        binding.sortButton.setOnClickListener(this);
 
         mListDistrict = new ArrayList<String>();
         mListTaluka = new ArrayList<String>();
@@ -175,54 +175,54 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         if (Utills.isConnected(this))
             getState();
         // code related to date filter
-//        // set the components - text, image and button
-//        binding.txtDateFrom.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showDateDialog(binding.txtDateFrom);
-//            }
-//        });
-//
-//        binding.txtDateTo.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showDateDialog(binding.txtDateTo);
-//            }
-//        });
-//        // if button is clicked, close the custom dialog
-//        binding.sortButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(binding.txtDateFrom.getText().toString().trim().length()>0 && binding.txtDateTo.getText().toString().trim().length()>0) {
-//                  //  FilterVouchers_withDate(binding.txtDateFrom.getText().toString().trim(), binding.txtDateTo.getText().toString().trim());
-//                }
-//                else
-//                    Utills.showToast("Enter proper date range.", IndicatorLocationSelectionActivity.this);
-//            }
-//        });
+        // set the components - text, image and button
+        binding.txtDateFrom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateDialog(binding.txtDateFrom);
+            }
+        });
+
+        binding.txtDateTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateDialog(binding.txtDateTo);
+            }
+        });
+        // if button is clicked, close the custom dialog
+        binding.sortButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(binding.txtDateFrom.getText().toString().trim().length()>0 && binding.txtDateTo.getText().toString().trim().length()>0) {
+                    //  FilterVouchers_withDate(binding.txtDateFrom.getText().toString().trim(), binding.txtDateTo.getText().toString().trim());
+                }
+                else
+                    Utills.showToast("Enter proper date range.", IndicatorLocationSelectionActivity.this);
+            }
+        });
     }
     //adding date picker dialog for voucher date filteration
-//    private void showDateDialog(TextView textView) {
-//        final Calendar c = Calendar.getInstance();
-//        final int mYear = c.get(Calendar.YEAR);
-//        final int mMonth = c.get(Calendar.MONTH);
-//        final int mDay = c.get(Calendar.DAY_OF_MONTH);
-//        DatePickerDialog dpd = new DatePickerDialog(this,
-//                new DatePickerDialog.OnDateSetListener() {
-//                    @Override
-//                    public void onDateSet(DatePicker view, int year,
-//                                          int monthOfYear, int dayOfMonth) {
-//                        textView.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
-//                    }
-//                }, mYear, mMonth, mDay);
-//        dpd.show();
-//    }
-//    //returns two digit number of month
-//    private static String getTwoDigit(int i) {
-//        if (i < 10)
-//            return "0" + i;
-//        return "" + i;
-//    }
+    private void showDateDialog(TextView textView) {
+        final Calendar c = Calendar.getInstance();
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog dpd = new DatePickerDialog(this,
+                new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth) {
+                        textView.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
+                    }
+                }, mYear, mMonth, mDay);
+        dpd.show();
+    }
+    //returns two digit number of month
+    private static String getTwoDigit(int i) {
+        if (i < 10)
+            return "0" + i;
+        return "" + i;
+    }
 
     public static String[] getColumnIdex(String[] value) {
 
@@ -267,17 +267,17 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 Intent intent = new Intent(IndicatorLocationSelectionActivity.this, PiachartActivity.class);
                 intent.putExtra(Constants.TITLE, title);
                 intent.putExtra(Constants.INDICATOR_TASK, task);
-              //  preferenceHelper.insertString(Constants.RoleList,roleList);
+                //  preferenceHelper.insertString(Constants.RoleList,roleList);
                 intent.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
                 intent.putExtra(Constants.LOCATION, locationModel);
 //                if(binding.txtDateFrom.getText().toString().trim().length()>0 && binding.txtDateTo.getText().toString().trim().length()>0) {
-//                    intent.putExtra("DateFrom", binding.txtDateFrom.getText().toString().trim());
-//                    intent.putExtra("DateTo", binding.txtDateTo.getText().toString().trim());
+                intent.putExtra("DateFrom", binding.txtDateFrom.getText().toString().trim());
+                intent.putExtra("DateTo", binding.txtDateTo.getText().toString().trim());
 //                }
                 startActivity(intent);
                 finish();
             }
-           else if (processId.equals("version")) {
+            else if (processId.equals("version")) {
                 Intent intent = new Intent(IndicatorLocationSelectionActivity.this, VersionReportActivity.class);
                 intent.putExtra(Constants.LOCATION, locationModel);
                 startActivity(intent);

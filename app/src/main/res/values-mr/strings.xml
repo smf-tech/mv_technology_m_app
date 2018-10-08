@@ -9,19 +9,16 @@
     <string name="text_are_you_sure">तुला खात्री आहे?</string>
     <string name="text_delete">आपण हे पोस्ट खरोखर हटवू इच्छिता?</string>
     <!--Advance List Activity-->
-    <string name="advance_list">Advance List</string>
     <string name="text_record">ऑडिओ रेकॉर्ड करा</string>
     <string name="text_select_audio">ऑडिओ निवडा</string>
     <string name="text_chooseaudio">ऑडिओ निवडा</string>
     <string name="select_status"> स्थिती निवडा</string>
-    <string name="progress_loading">लोडिंग</string>
     <string name="progress_please_wait">कृपया थांबा</string>
     <string name="error_something_went_wrong">काहीतरी चूक झाली, कृपया पुन्हा प्रयत्न करा</string>
 
     <string name="attendance_rejection_reason">उपस्थिती नाकारण्याची कारणे प्रदान करा.</string>
 
     <string name="error_no_internet">कृपया आपले इंटरनेट कनेक्शन तपासा</string>
-    <string name="error_login">चुकीची माहिती.</string>
     <string name="submitted_successfully">यशस्वीरित्या जमा केले...</string>
     <string name="text_choosepicture">चित्र निवडा</string>
     <string name="text_choosevideo">व्हिडिओ निवडा</string>
@@ -33,13 +30,6 @@
     <string name="Setting">सेटिंग</string>
     <string name="cancel">रद्द करा</string>
     <!--Home Acitivty-->
-    <string name="intro_about_header">अबाऊट</string>
-    <string name="intro_about_description">मूल्यवर्धन (एमव्ही) एक सक्षम शैक्षणिक कार्यक्रम आहे ज्यामुळे मुले सक्षम लोकशाही मूल्यांचा, दृष्टिकोन आणि कौशल्यांना सक्षम बनवू शकतात. हा कार्यक्रम महाराष्ट्रातील बीड जिल्ह्यातील 2 तालुक्यांमध्ये महाराष्ट्र शासनाच्या प्राथमिक शाळांमधील शासकीय प्राथमिक शाळांमध्ये (एमव्ही-बीड) शासकीय प्राथमिक शाळा चालवत आहे, गोवा राज्यातील सरकारी प्राथमिक शाळांची निवड ), आणि विद्या भारती, जी खाजगी शाळा संस्था (एमव्ही-वीबी) यांनी गोव्यामध्ये चालविलेले शाळा. अधिक माहितीसाठी www.mulyavardhan.com ला भेट द्या</string>
-    <string name="intro_mv_training_events_header">एमव्ही प्रशिक्षण</string>
-    <string name="fragment_intro_about">मूल्यवर्धन बद्दल</string>
-    <string name="fragment_intro_training">एमव्ही प्रशिक्षण</string>
-    <string name="fragment_intro_events">एमव्ही कार्यक्रम</string>
-    <string name="add_the_sanvad">संवाद जोडा</string>
     <string name="approve">मंजूर</string>
     <string name="reject">नाकारलेली</string>
     <string name="accept">स्वीकार करा</string>
@@ -51,13 +41,11 @@
     <string name="mobile_no">मोबाइल नंबर </string>
     <string name="email">ई - मेल आयडी</string>
     <string name="password">पासवर्ड</string>
-    <string name="confirm_password">पासवर्डची पुष्टी करा</string>
     <string name="role">भूमिका </string>
     <string name="mandatory_role">भूमिका *</string>
     <string name="organization">संस्था</string>
     <string name="project">प्रकल्प </string>
     <string name="disrict">जिल्हा </string>
-    <string name="mandatory_district">जिल्हा *</string>
     <string name="taluka">तालुका </string>
     <string name="mandatory_taluka">तालुका *</string>
     <string name="thet_savnd"> श्री  शांतिलाल  मुथ्था\nयांच्याशी \"थेट संवाद\" </string>
@@ -76,7 +64,6 @@
     <!--IssueTemplate Activity-->
     <string name="issue">समस्या प्रकार</string>
     <string name="priority">प्राधान्य</string>
-    <string name="item_title">शीर्षक</string>
     <string name="item_desc">आम्ही अनुप्रयोग लाँच पासून तो एक आश्चर्यकारक प्रथम महिने चाललंय! आपण त्यांना गमावल्यास येथे काही सर्वोत्तम क्षण आहेत!</string>
     <string name="no_gps">GPS उपलब्ध नाही</string>
     <string name="gps_settings">GPS सेटिंग्ज</string>
@@ -84,9 +71,6 @@
     <!--ReportingTemplate Activity-->
     <string name="reporting">अहवाल देणे</string>
     <string name="question_5">प्रश्न 5</string>
-    <string name="hoy">होय</string>
-    <string name="nahi">नाही</string>
-    <string name="question_4">प्रश्न 4</string>
     <string name="msg_enter_mobile">प्रारंभ करण्यासाठी आपला मोबाईल नंबर प्रविष्ट करा!</string>
     <string name="msg_manual_otp">(आम्ही स्वयंचलितपणे SMS शोधण्यात अयशस्वी झाल्यास खालील पासवर्ड प्रविष्ट करा)</string>
     <string name="please_enter_date_time">कृपया तारीख-तारीख प्रविष्ट करा</string>
@@ -113,11 +97,9 @@
     <string name="share">शेयर अॅप</string>
     <string name="map">नकाशा</string>
     <string name="seconds_remaining">उर्वरित सेकंद </string>
-    <string name="reporting_template">रिपोर्टिंग टेम्पलेट</string>
     <string name="back_string">बाहेर पडण्यासाठी कृपया पुन्हा क्लिक करा </string>
     <string name="please_enter">कृपया प्रविष्ट करा </string>
     <string name="please_enter_text">कृपया मजकूर प्रविष्ट करा</string>
-    <string name="please_enter_date">कृपया तारीख प्रविष्ट करा</string>
     <string name="digit"> अंक </string>
     <string name="logout_string">आपण बाहेर पडू इच्छिता? </string>
     <string name="delete_task_string">आपण हटवू इच्छिता?</string>
@@ -131,17 +113,14 @@
     <string name="likes">आवडले </string>
     <string name="comments">टिप्पणी</string>
     <string name="share_post">शेरिंग पोस्ट ...</string>
-    <string name="post_share_successfully">पोस्ट शेरिंग यशस्वीरित्या...</string>
 
     <string name="select_one">एक समुदाय निवडा</string>
     <string name="comunity_detail">समुदाय तपशील</string>
-    <string name="template_type">टेम्पलेट प्रकार</string>
     <string name="description">वर्णन </string>
     <string name="title">शीर्षक</string>
     <string name="loading_chats">चॅट्स लोड करत आहे</string>
     <string name="loading_members">सदस्य  लोड करत आहे</string>
     <string name="loading_template">चॅट्स लोड करत आहे</string>
-    <string name="home">होम </string>
     <string name="forgot_password">पासवर्ड विसरला</string>
     <string name="select_temp">कृपया टेम्पलेट प्रकार निवडा...</string>
     <string name="img_template">इमेज टेम्पलेट</string>
@@ -156,7 +135,6 @@
     <string name="loding_village">गाव लोड होत आहे</string>
 
     <string name="issue_template">समस्या टेम्पलेट</string>
-    <string name="issue_submit">समस्या यशस्वीरित्या सादर केली...</string>
     <string name="broadcast_submit">ब्रॉडकास्ट यशस्वी रित्या सादर झाला ...</string>
     <string name="enter_comment">कृपया टिप्पणी प्रविष्ट करा</string>
     <string name="Forward">फॉरवर्ड </string>
@@ -165,7 +143,6 @@
 
     <string name="fileNotPresent">फाईल उपलब्ध नाही. कृपया डाउनलोड बटण दाबा</string>
     <string name="no_data_available">माहिती उपलब्ध नाही.</string>
-    <string name="Process_Detail">प्रक्रिया तपशील</string>
 
     <string name="Task_List">कार्य सूची</string>
     <string name="Loading_Process">प्रक्रिया लोड करीत आहे</string>
@@ -180,7 +157,6 @@
     <string name="Please_select_State">कृपया राज्य निवडा</string>
     <string name="Please_select_district">कृपया जिल्हा निवडा</string>
     <string name="Please_select_taluka">कृपया तालुका निवडा</string>
-    <string name="Please_select_custer">कृपया कॅल्स्टर  निवडा</string>
     <string name="Please_select_village">कृपया गाव निवडा</string>
     <string name="Please_select_school">कृपया शाळा निवडा</string>
 
@@ -200,7 +176,6 @@
     <string name="lang">भाषा बदला</string>
     <string name="profile">माझी प्रोफाईल</string>
     <string name="logout">बाहेर पडा</string>
-    <string name="select_form">फॉर्म निवडा</string>
     <string name="catagory">श्रेण्या</string>
     <string name="add_location">स्थान जोडा</string>
     <string name="all_posts">सर्व पोस्ट</string>
@@ -236,7 +211,6 @@
     <string name="asset_issue_date">विनंती केलेली दिनांक</string>
     <string name="asset_tentative_return_date">अंदाजे परत देण्याची दिनांक</string>
     <string name="asset_remarks">शेरा</string>
-    <string name="asset_request">साधन सामग्री</string>
     <string name="asset_management">साधन सामग्री\nव्यवस्थापन</string>
     <string name="asset_name__">साधन सामग्री नाव</string>
     <string name="asset_code">Code</string>
@@ -265,8 +239,6 @@
     <string name="particulars">खर्चाचा तपशील</string>
     <string name="Approve">मंजूर</string>
     <string name="Reject">नाकारा</string>
-    <string name="adavance_approval">उचल मंजुरी</string>
-    <string name="expense_approval">खर्च मान्यता</string>
     <string name="voucher_approoval">व्हाउचर अनुमोदन</string>
     <string name="date">दिनांक</string>
     <string name="projectDesription">तपशील</string>
@@ -280,7 +252,6 @@
     <string name="leave_approoval">रजा मंजुरी</string>
     <string name="attendance_approoval">उपस्थिती मान्यता</string>
 
-    <string name="loading_process">प्रक्रिया लोड करीत आहे</string>
     <string name="asset_username">नाव</string>
     <!-- <string name="are_you_really">आपण बाहेर पडू इच्छिता का</string>-->
 
@@ -295,11 +266,9 @@
     <string name="holiday_list">सुट्टीची यादी</string>
     <string name="asset_available_stock">उपलब्ध स्टॉक</string>
     <string name="birth_date">जन्मदिनांक</string>
-    <string name="Please_select_birthdate">कृपया जन्म तारीख निवडा</string>
     <string name="work_location">कार्य स्थान</string>
     <string name="please_refresh_location">कृपया कामाचे स्थान रीफ्रेश करा</string>
     <string name="asset_request_screen">साधन सामग्रीची विनंती</string>
-    <string name="Title">शीर्षक</string>
     <string name="enter_title">शीर्षक प्रविष्ट करा</string>
     <string name="enter_start_date">प्रारंभ दिनांक प्रविष्ट करा</string>
     <string name="enter_end_date">समाप्ती दिनांक प्रविष्ट करा</string>
@@ -314,7 +283,6 @@
     <string name="asset_reallocation">साधन सामग्री पुनर्वितरित</string>
     <string name="asset_approval">साधन सामग्री मान्यता</string>
     <string name="addAttachment">फोटो जोडा</string>
-    <string name="Please_select_multiple_taluka">Please select Multiple Taluka</string>
     <string name="expenseDescription">खर्च वर्णन</string>
     <string name="status">Status</string>
     <string name="comment_delete">टिप्पणी यशस्वीपणे हटविली.</string>
@@ -324,7 +292,6 @@
     <string name="select_code">Select Code</string>
     <string name="alreadyPresent">Mobile Number Already Present</string>
     <string name="alreadyPresentDetail">Mobile Number is already present. Please check your Mobile Number</string>
-    <string name="text_pdf">PDF</string>
     <string name="all_plans">सर्व योजना</string>
     <string name="my_plans">माझे योजना</string>
     <string name="text_proper_date">कृपया योग्य तारीख निवडा.</string>

@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -17,6 +19,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -63,6 +72,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
+
 /**
  * Created by Rohit Gujar on 08-03-2018.
  */
@@ -84,6 +95,11 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     private int checkInClickable = 0, checkOutClickable = 0;
     private List<HolidayListModel> holidayListModels;
     private List<LeavesModel> leavesModelList;
+    //Attendance Location changes
+    private LocationRequest mLocationRequest;
+    Location location;
+    private long UPDATE_INTERVAL = 600 * 1000;  /* 10 secs */
+ //   private long FASTEST_INTERVAL = 2000; /* 2 sec */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +107,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         binding = DataBindingUtil.setContentView(this, R.layout.activity_attendance);
         binding.setActivity(this);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
+        startLocationUpdates();
     }
 
     @Override
@@ -118,7 +135,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             try {
                 if (leavesModelList.get(i).getFromDate().equals(leavesModelList.get(i).getToDate())){
                     if(leavesModelList.get(i)!=null && !leavesModelList.get(i).isHalfDayLeave())
-                    leavesDates.add(CalendarDay.from(formatter.parse(leavesModelList.get(i).getFromDate())));
+                        leavesDates.add(CalendarDay.from(formatter.parse(leavesModelList.get(i).getFromDate())));
                 } else {
                     getDatesBetween(leavesModelList.get(i).getFromDate(),leavesModelList.get(i).getToDate());
                 }
@@ -198,6 +215,46 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    // Trigger new location updates at interval
+    protected void startLocationUpdates() {
+
+        // Create the location request to start receiving updates
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+      //  mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
+
+        // Create LocationSettingsRequest object using location request
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        LocationSettingsRequest locationSettingsRequest = builder.build();
+
+        // Check whether location settings are satisfied
+        // https://developers.google.com/android/reference/com/google/android/gms/location/SettingsClient
+        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
+        settingsClient.checkLocationSettings(locationSettingsRequest);
+
+        // new Google API SDK v11 uses getFusedLocationProviderClient(this)
+        getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest, new LocationCallback() {
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        // do work here
+                        onLocationChanged(locationResult.getLastLocation());
+                    }
+                },
+                Looper.myLooper());
+    }
+    public void onLocationChanged(Location location) {
+        this.location = location;
+        // New location has now been determined
+        String msg = "Updated Location: " +
+                Double.toString(location.getLatitude()) + "," +
+                Double.toString(location.getLongitude());
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        // You can now create a LatLng Object for use with maps
+        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+    }
+
     private void getDatesBetween(String dateString1, String dateString2)
     {
         Date date1 = null;
@@ -240,7 +297,15 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         } else if (!gps.canGetLocation()) {
             gps.showSettingsAlert();
             return;
-        } else if (0.0==gps.getLongitude() && 0.0==gps.getLatitude()) {
+//        } else if (0.0==gps.getLongitude() && 0.0==gps.getLatitude()) {
+//            Utills.showToast("Current location is not available, Please try again", AttendanceActivity.this);
+//            initViews();
+//            return;
+//        }
+//        else if (location == null) {
+//            gps.showSettingsAlert();
+//            return;
+        } else if (0.0==location.getLongitude() && 0.0==location.getLatitude()) {
             Utills.showToast("Current location is not available, Please try again", AttendanceActivity.this);
             initViews();
             return;
@@ -261,11 +326,11 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             attendance = new Attendance();
         }
         attendance.setDate(getCurrentDate());
-        attendance.setCheckInLng("" + gps.getLongitude());
-        attendance.setCheckInLat("" + gps.getLatitude());
+//        attendance.setCheckInLng("" + location.getLongitude());
+//        attendance.setCheckInLat("" + location.getLatitude());
         attendance.setStatus("");
-        double Lat = gps.getLatitude();
-        double Long = gps.getLongitude();
+        double Lat = location.getLatitude();
+        double Long = location.getLongitude();
         attendance.setCheckInLng("" + Long);
         attendance.setCheckInLat("" + Lat);
         attendance.setStatus("");
@@ -423,10 +488,17 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         } else if (checkOutClickable == 2) {
             Utills.showToast("Please First Check In and then try to Check Out...", AttendanceActivity.this);
             return;
-        } else if (!gps.canGetLocation()) {
+        }  else if (!gps.canGetLocation()) {
             gps.showSettingsAlert();
             return;
-        } else if (0.0==gps.getLongitude() && 0.0==gps.getLatitude()) {
+//        } else if (0.0==gps.getLongitude() && 0.0==gps.getLatitude()) {
+//            Utills.showToast(getResources().getString(R.string.location_not_found), AttendanceActivity.this);
+//            initViews();
+//            return;
+//        } else if (location==null) {
+//            gps.showSettingsAlert();
+//            return;
+        } else if (0.0==location.getLongitude() && 0.0==location.getLatitude()) {
             Utills.showToast(getResources().getString(R.string.location_not_found), AttendanceActivity.this);
             initViews();
             return;
@@ -447,11 +519,11 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             attendance = new Attendance();
         }
         attendance.setDate(getCurrentDate());
-        attendance.setCheckOutLng("" + gps.getLongitude());
-        attendance.setCheckOutLat("" + gps.getLatitude());
+//        attendance.setCheckOutLng("" + gps.getLongitude());
+//        attendance.setCheckOutLat("" + gps.getLatitude());
         attendance.setStatus("");
-        double Lat = gps.getLatitude();
-        double Long = gps.getLongitude();
+        double Lat = location.getLatitude();
+        double Long = location.getLongitude();
         attendance.setCheckOutLng("" + Long);
         attendance.setCheckOutLat("" + Lat);
         attendance.setStatus("Approved");

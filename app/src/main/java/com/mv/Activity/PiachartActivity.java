@@ -120,8 +120,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
 
         title = getIntent().getExtras().getString(Constants.TITLE);
-//        dateFrom = getIntent().getExtras().getString("DateFrom");
-//        dateTo = getIntent().getExtras().getString("DateTo");
+        dateFrom = getIntent().getExtras().getString("DateFrom");
+        dateTo = getIntent().getExtras().getString("DateTo");
         locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
         if (locationModel == null) {
             locationModel = new LocationModel();
@@ -738,7 +738,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-//piechart
+    //piechart
     private void getAllIndicatorTask() {
         Utills.showProgressDialog(this, "Loading Data", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
@@ -802,8 +802,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 jsonObject.put("taluka", locationModel.getTaluka());
                 jsonObject.put("tskId", task.getId());
                 jsonObject.put("role", role);
-              //jsonObject.put("datefrom", dateFrom);
-//              jsonObject.put("dateto", dateTo);
+                jsonObject.put("datefrom", dateFrom);
+                jsonObject.put("dateto", dateTo);
 
                 ServiceRequest apiService =
                         ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
@@ -1091,12 +1091,12 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         JsonArray gsonObject = (JsonArray) jsonParser.parse(jsonArray.toString());
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
-       // apiService.sendImageToSalesforce("http://mobileapp.mulyavardhan.org/upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
+        // apiService.sendImageToSalesforce("http://mobileapp.mulyavardhan.org/upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("json_data", jsonArray.toString())
                 .build();
-           apiService.sendImageToPHP(requestBody).enqueue(new Callback<ResponseBody>() {
+        apiService.sendImageToPHP(requestBody).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();

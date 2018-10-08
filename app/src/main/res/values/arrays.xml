@@ -1,38 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string-array name="array_of_role">
-        <item></item>
-        <item>HM</item>
-        <item>CRC</item>
-        <item>BEO</item>
-        <item>DEO</item>
-        <item>MT</item>
-        <item>TC</item>
-    </string-array>
+
     <string-array name="array_of_status">
         <item>New</item>
         <item>Completed</item>
         <item>Cancel</item>
-    </string-array>
-    <string-array name="array_of_training">
-        <item>मूल्यवर्धन कार्यक्रमाची ओळख</item>
-        <item>मूल्यवर्धन कार्यक्रमाचा आराखडा</item>
-        <item>वर्गस्तरावरील उपक्रम</item>
-        <item>उपक्रम पुस्तिकांचा परिचय</item>
-        <item>उपक्रमाचे घटक</item>
-        <item>उपक्रमांचे प्रकार</item>
-        <item>उपक्रम कसे घ्यावेत</item>
-        <item>सहयोगी अध्ययन पद्धती</item>
-        <item>प्रश्न विचारण्याचे कौशल्य</item>
-        <item>वर्गव्यवस्थापन</item>
-        <item>सहयोगी खेळ</item>
-        <item>विद्यार्थ्यांचे मूल्यमापन</item>
-        <item>नेहमी विचारले जाणारे प्रश्न आणि नित्याची आव्हाने</item>
-        <item>मूल्यवर्धन उपक्रम तुमच्या वर्गात सुरु करणे</item>
-    </string-array>
-
-    <string-array name="array_of_indicator">
-        <item> Trainee Feedback </item>
     </string-array>
 
     <string-array name="array_of_issue">
@@ -77,12 +49,7 @@
         <item>Local Conveyance</item>
         <item>Postage &amp; Courier</item>
     </string-array>
-    <string-array name="array_of_leaves">
-        <item>CL/SL</item>
-        <item>Paid</item>
-        <item>Unpaid</item>
-        <item>Comp Off</item>
-    </string-array>
+
     <string-array name="array_of_asset_status">
         <item>Select</item>
         <item>Working</item>
@@ -142,15 +109,6 @@
         <item>Cluster 6</item>
     </string-array>
 
-
-    <string-array name="places">
-        <item>Palais Garnie</item>
-        <item>Piazza del Duomo</item>
-        <item>Manhattan</item>
-        <item>Senso-ji</item>
-        <item>Sultan Ahmed Mosque</item>
-        <item>Table Mountain</item>
-    </string-array>
     <string-array name="place_desc">
         <item>The Palais Garnier which locates in Paris was built from 1861 for
         the Paris Opera.
@@ -161,50 +119,7 @@
         <item>Sultan Ahmed Mosque is mosque locates in Istabul, Turkey</item>
         <item>Table Mountain is mountain and park locates in Cape Town, South Africa.</item>
     </string-array>
-    <string-array name="place_details">
-        <item>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
-        </item>
-        <item>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
-        </item>
-        <item>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
-        </item>
-        <item>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
-        </item>
-        <item>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
-        </item>
-        <item>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do
-        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-        nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-        irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
-        deserunt mollit anim id est laborum.
-        </item>
-    </string-array>
+
     <array name="places_picture">
         <item>@drawable/mv_2</item>
         <item>@drawable/mv_3</item>
@@ -213,12 +128,7 @@
         <item>@drawable/mv_14</item>
         <item>@drawable/mv_17</item>
     </array>
-    <string-array name="array_of_oraganization">
-        <item></item>
-        <item>SMF</item>
-        <item>Goverment</item>
 
-    </string-array>
     <string-array name="array_of_state">
         <item>Select</item>
         <item>Goa</item>
