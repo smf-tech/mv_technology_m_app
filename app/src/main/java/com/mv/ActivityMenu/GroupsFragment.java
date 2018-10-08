@@ -31,6 +31,7 @@ import com.mv.Activity.CommunityHomeActivity;
 import com.mv.Activity.IssueTemplateActivity;
 import com.mv.Activity.ReportingTemplateActivity;
 import com.mv.Adapter.GroupAdapter;
+import com.mv.BuildConfig;
 import com.mv.Model.Community;
 import com.mv.Model.User;
 import com.mv.R;
@@ -363,13 +364,13 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
             Intent intent;
             if (communityList.get(position).getName().equalsIgnoreCase("HO Support")) {
                 preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Issue");
-                preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, Constants.ISSUEID);
+                preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, BuildConfig.ISSUEID);
                 intent = new Intent(context, IssueTemplateActivity.class);
                 intent.putExtra("EDIT", false);
                 context.startActivity(intent);
             } else {
                 preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Report");
-                preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, Constants.REPORTID);
+                preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, BuildConfig.REPORTID);
                 intent = new Intent(context, ReportingTemplateActivity.class);
                 intent.putExtra("EDIT", false);
                 context.startActivity(intent);

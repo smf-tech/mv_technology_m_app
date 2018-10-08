@@ -148,8 +148,8 @@ public class ApiClient {
 
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
-        apiService.loginSalesforce(Constants.LOGIN_URL, Constants.USERNAME, Constants.PASSWORD, Constants.CLIENT_SECRET
-                , Constants.CLIENT_ID, Constants.GRANT_TYPE, Constants.RESPONSE_TYPE).enqueue(new Callback<ResponseBody>() {
+        apiService.loginSalesforce(BuildConfig.LOGIN_URL, BuildConfig.USERNAME, BuildConfig.PASSWORD, BuildConfig.CLIENT_SECRET
+                , BuildConfig.CLIENT_ID, Constants.GRANT_TYPE, Constants.RESPONSE_TYPE).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -163,8 +163,8 @@ public class ApiClient {
                     preferenceHelper.insertString(PreferenceHelper.AccessToken, access_token);
                     preferenceHelper.insertString(PreferenceHelper.InstanceUrl, instance_url);
                     preferenceHelper.insertString(PreferenceHelper.SalesforceUserId, str_id);
-                    preferenceHelper.insertString(PreferenceHelper.SalesforceUsername, Constants.USERNAME);
-                    preferenceHelper.insertString(PreferenceHelper.SalesforcePassword, Constants.PASSWORD);
+                    preferenceHelper.insertString(PreferenceHelper.SalesforceUsername, BuildConfig.USERNAME);
+                    preferenceHelper.insertString(PreferenceHelper.SalesforcePassword, BuildConfig.PASSWORD);
                     Utills.showToast("Please try again...", context);
                 } catch (Exception e) {
 

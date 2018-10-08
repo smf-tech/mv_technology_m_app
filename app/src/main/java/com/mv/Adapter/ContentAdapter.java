@@ -47,6 +47,7 @@ import com.mv.Activity.CommunityHomeActivity;
 import com.mv.Activity.IssueTemplateActivity;
 import com.mv.Activity.ReportingTemplateActivity;
 import com.mv.Activity.VideoViewActivity;
+import com.mv.BuildConfig;
 import com.mv.Model.Content;
 import com.mv.Model.User;
 import com.mv.R;
@@ -453,7 +454,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                             String str = items[lw.getCheckedItemPosition()];
                             try {
                                 mDataList.get(Position).setStatus(str);
-                                mDataList.get(Position).setTemplate(Constants.ISSUEID);
+                                mDataList.get(Position).setTemplate(BuildConfig.ISSUEID);
                                 Utills.showProgressDialog(mContext);
                                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                                 String json = gson.toJson(mDataList.get(Position));

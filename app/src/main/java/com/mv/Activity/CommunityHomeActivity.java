@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mv.Adapter.ContentAdapter;
+import com.mv.BuildConfig;
 import com.mv.Model.Community;
 import com.mv.Model.Content;
 import com.mv.Model.Download;
@@ -727,13 +728,13 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 }*/
                 if (getIntent().getExtras().getString(Constants.TITLE).equalsIgnoreCase("HO Support")) {
                     preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Issue");
-                    preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, Constants.ISSUEID);
+                    preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, BuildConfig.ISSUEID);
                     intent = new Intent(CommunityHomeActivity.this, IssueTemplateActivity.class);
                     intent.putExtra("EDIT", false);
                     startActivity(intent);
                 } else {
                     preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Report");
-                    preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, Constants.REPORTID);
+                    preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, BuildConfig.REPORTID);
                     intent = new Intent(CommunityHomeActivity.this, ReportingTemplateActivity.class);
                     intent.putExtra("EDIT", false);
                     startActivity(intent);

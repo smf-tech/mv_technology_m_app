@@ -29,6 +29,7 @@ import android.widget.ViewSwitcher;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mv.Adapter.SliderAdapter;
+import com.mv.BuildConfig;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -167,8 +168,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
 
-        apiService.loginSalesforce(Constants.LOGIN_URL, Constants.USERNAME, Constants.PASSWORD, Constants.CLIENT_SECRET
-                , Constants.CLIENT_ID, Constants.GRANT_TYPE, Constants.RESPONSE_TYPE).enqueue(new Callback<ResponseBody>() {
+        apiService.loginSalesforce(BuildConfig.LOGIN_URL, BuildConfig.USERNAME, BuildConfig.PASSWORD, BuildConfig.CLIENT_SECRET
+                , BuildConfig.CLIENT_ID, Constants.GRANT_TYPE, Constants.RESPONSE_TYPE).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -185,8 +186,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             preferenceHelper.insertString(PreferenceHelper.AccessToken, access_token);
                             preferenceHelper.insertString(PreferenceHelper.InstanceUrl, instance_url);
                             preferenceHelper.insertString(PreferenceHelper.SalesforceUserId, str_id);
-                            preferenceHelper.insertString(PreferenceHelper.SalesforceUsername, Constants.USERNAME);
-                            preferenceHelper.insertString(PreferenceHelper.SalesforcePassword, Constants.PASSWORD);
+                            preferenceHelper.insertString(PreferenceHelper.SalesforceUsername, BuildConfig.USERNAME);
+                            preferenceHelper.insertString(PreferenceHelper.SalesforcePassword, BuildConfig.PASSWORD);
                             if (Utills.isConnected(LoginActivity.this))
                                 getLoginOTP();
                             else {

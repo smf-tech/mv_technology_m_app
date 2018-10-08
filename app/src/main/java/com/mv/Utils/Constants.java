@@ -18,11 +18,11 @@ public class Constants {
 //    public static String REPORTID = "a1L7F000000YNK4";
 //    public static String ISSUEID = "a1L7F000000YNJz";
 
-    /* Sandbox */
-    public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
-    public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
-    public static String REPORTID = "a1G0k000000522K";
-    public static String ISSUEID = "a1G0k000000522F";
+//    /* Sandbox */
+//    public static String LOGIN_URL = "https://test.salesforce.com/services/oauth2/token";
+//    public static String USERNAME = "mulyavardhan.smf@gmail.com.dev";
+//    public static String REPORTID = "a1G0k000000522K";
+//    public static String ISSUEID = "a1G0k000000522F";
 
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_MARATHI = "mr";
@@ -33,9 +33,9 @@ public class Constants {
     public static Uri shareUri = null;
     public static final int ISROLECHANGE = 1;
     public static String ID = "ID";
-    public static String PASSWORD = "Nano4545";
-    public static String CLIENT_ID = "3MVG9d8..z.hDcPJhCvdazzxmwecKJ839UtvRRCnGEbq5p_PT49tZaftCOG4eti.6aI2v98zkYM0KQvaOWmTP";
-    public static String CLIENT_SECRET = "2027871201908212165";
+//    public static String PASSWORD = "Nano4545";
+//    public static String CLIENT_ID = "3MVG9d8..z.hDcPJhCvdazzxmwecKJ839UtvRRCnGEbq5p_PT49tZaftCOG4eti.6aI2v98zkYM0KQvaOWmTP";
+//    public static String CLIENT_SECRET = "2027871201908212165";
     public static String GRANT_TYPE = "password";
     public static String RESPONSE_TYPE = "token";
     public static String URL = "url";

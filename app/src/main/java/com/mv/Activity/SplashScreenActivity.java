@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.mv.BuildConfig;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -95,8 +96,8 @@ public class SplashScreenActivity extends AppCompatActivity {
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
 
-        apiService.loginSalesforce(Constants.LOGIN_URL, Constants.USERNAME, Constants.PASSWORD, Constants.CLIENT_SECRET
-                , Constants.CLIENT_ID, Constants.GRANT_TYPE, Constants.RESPONSE_TYPE).enqueue(new Callback<ResponseBody>() {
+        apiService.loginSalesforce(BuildConfig.LOGIN_URL, BuildConfig.USERNAME, BuildConfig.PASSWORD, BuildConfig.CLIENT_SECRET
+                , BuildConfig.CLIENT_ID, Constants.GRANT_TYPE, Constants.RESPONSE_TYPE).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -111,8 +112,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                     preference.insertString(PreferenceHelper.AccessToken, access_token);
                     preference.insertString(PreferenceHelper.InstanceUrl, instance_url);
                     preference.insertString(PreferenceHelper.SalesforceUserId, str_id);
-                    preference.insertString(PreferenceHelper.SalesforceUsername, Constants.USERNAME);
-                    preference.insertString(PreferenceHelper.SalesforcePassword, Constants.PASSWORD);
+                    preference.insertString(PreferenceHelper.SalesforceUsername, BuildConfig.USERNAME);
+                    preference.insertString(PreferenceHelper.SalesforcePassword, BuildConfig.PASSWORD);
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
