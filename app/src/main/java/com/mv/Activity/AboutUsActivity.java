@@ -12,6 +12,7 @@ import com.mv.R;
 import com.mv.Utils.LocaleManager;
 
 public class AboutUsActivity extends AppCompatActivity implements View.OnClickListener {
+    //added for testing
     private ImageView img_back, img_list, img_logout, img_filter;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
