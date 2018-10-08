@@ -6,6 +6,7 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.OnConflictStrategy;
 import android.arch.persistence.room.Query;
+import android.arch.persistence.room.RoomWarnings;
 import android.arch.persistence.room.Update;
 
 import com.mv.Model.Adavance;
@@ -166,6 +167,7 @@ public interface UserDao {
     List<String> getDistinctDownloadContent(String lang);
 
 
+    @SuppressWarnings(RoomWarnings.CURSOR_MISMATCH)
     @Query("SELECT DISTINCT District,State FROM " + Constants.TABLE_LOCATION + " where Taluka != '' AND State != ''")
     List<LocationModel> getDistinctDistrict();
 
