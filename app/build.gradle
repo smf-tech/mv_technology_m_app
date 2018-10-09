@@ -75,7 +75,7 @@ android {
             buildConfigField 'String','USERNAME',"\"mulyavardhan.smf@gmail.com.dev\""
             buildConfigField 'String','REPORTID',"\"a1G0k000000522K\""
             buildConfigField 'String','ISSUEID',"\"a1G0k000000522F\""
-            buildConfigField 'String','PASSWORD',"\"Nano4545\""
+            buildConfigField 'String','PASSWORD',"\"Nano5656\""
             buildConfigField 'String','CLIENT_ID',"\"3MVG9d8..z.hDcPJhCvdazzxmwecKJ839UtvRRCnGEbq5p_PT49tZaftCOG4eti.6aI2v98zkYM0KQvaOWmTP\""
             buildConfigField 'String','CLIENT_SECRET',"\"2027871201908212165\""
             signingConfig signingConfigs.config

@@ -228,7 +228,7 @@
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal"
                     android:weightSum="2"
-                    android:visibility="visible"
+                    android:visibility="gone"
                     android:paddingLeft="10dp">
 
                     <LinearLayout

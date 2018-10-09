@@ -212,11 +212,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 getUserData();
         }
 
-        LocationManager locMan = (LocationManager) getSystemService(LOCATION_SERVICE);
-        if (locMan != null && locMan.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) != null) {
-            long networkTime = locMan.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getTime();
-            Log.i("networkTime", networkTime + "");
-        }
+//        LocationManager locMan = (LocationManager) getSystemService(LOCATION_SERVICE);
+//
+//        if (locMan != null && locMan.getLastKnownLocation(LocationManager.NETWORK_PROVIDER) != null) {
+//            long networkTime = locMan.getLastKnownLocation(LocationManager.NETWORK_PROVIDER).getTime();
+//            Log.i("networkTime", networkTime + "");
+//        }
         long deviceTime = System.currentTimeMillis();
         Log.i("deviceTime", deviceTime + "");
 

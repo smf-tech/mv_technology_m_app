@@ -102,7 +102,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     LinearLayout llSpinner;
     LocationModel locationModel;
     Activity context;
-    String title,dateFrom,dateTo;
+    String title;//dateFrom,dateTo;
     private String img_str;
     public static String selectedRole;
     ArrayList<String> selectedRoleList = new ArrayList<>();
@@ -120,8 +120,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
 
         title = getIntent().getExtras().getString(Constants.TITLE);
-        dateFrom = getIntent().getExtras().getString("DateFrom");
-        dateTo = getIntent().getExtras().getString("DateTo");
+//        dateFrom = getIntent().getExtras().getString("DateFrom");
+//        dateTo = getIntent().getExtras().getString("DateTo");
         locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
         if (locationModel == null) {
             locationModel = new LocationModel();
@@ -364,11 +364,6 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         img_list.setOnClickListener(this);
         img_list.setImageResource(R.drawable.filter);
 
-
-        //added for date filter but not implemented
-//        img_lang = (ImageView) findViewById(R.id.img_lang);
-//        img_lang.setVisibility(View.VISIBLE);
-//        img_lang.setOnClickListener(this);
         img_logout.setImageResource(R.drawable.share_report);
         llSpinner = (LinearLayout) findViewById(R.id.llrole_lay);
 
@@ -617,112 +612,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
 
-            //added for date filter but not implemented
-//            case R.id.img_lang:
-//                // custom dialog
-//                final Dialog dialog = new Dialog(context);
-//                dialog.setContentView(R.layout.date_filter_dialog_layout);
-//                dialog.setTitle("Title...");
-//
-//                // set the custom dialog components - text, image and button
-//                TextView txtDateFrom = (TextView) dialog.findViewById(R.id.txtDateFrom);
-//
-//                TextView txtDateTo = (TextView) dialog.findViewById(R.id.txtDateTo);
-//
-//                txtDateFrom.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        showDateDialog(txtDateFrom);
-//                    }
-//                });
-//
-//                txtDateTo.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        showDateDialog(txtDateTo);
-//                    }
-//                });
-//
-//                Button sort_button = (Button) dialog.findViewById(R.id.sort_button);
-//                // if button is clicked, close the custom dialog
-//                sort_button.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        if(txtDateFrom.getText().toString().trim().length()>0 && txtDateTo.getText().toString().trim().length()>0)
-//                            FilterVouchers_withDate(txtDateFrom.getText().toString().trim(),txtDateTo.getText().toString().trim());
-//                        else
-//                            Utills.showToast("Enter proper date range.", PiachartActivity.this);
-//                    }
-//                });
-//
-//                dialog.show();
-//
-//                break;
         }
     }
-
-    //added for date filter but not implemented
-//    private void FilterVouchers_withDate(String fromDate, String toDate) {
-//        //firstly convert string to date and check if dates are valid
-//        Date datefrom = ConvertStringToDate(fromDate);
-//        Date dateto = ConvertStringToDate(toDate);
-//        repplicaCahart.clear();
-//        if (datefrom.before(dateto)||datefrom.equals(dateto)) {
-//            for (PiaChartModel p : piaChartModelArrayList) {
-//                Date voucherdate = ConvertStringToDate(p.getKey());
-//                //   boolean b = datefrom.compareTo(voucherdate) * voucherdate.compareTo(dateto) >= 0;
-//                if (datefrom.compareTo(voucherdate) * voucherdate.compareTo(dateto) >= 0) {
-//                    repplicaCahart.add(p);
-//                }
-//            }
-//            if(repplicaCahart.size()>0) {
-//                adapter = new PichartDescriptiveListAdapter(context, repplicaCahart);
-//                rvPiaChartDeatail.setAdapter(adapter);
-//            }else{
-//                Toast.makeText(this, "No voucher available.",Toast.LENGTH_LONG).show();
-//            }
-//        }else{
-//            Toast.makeText(this, R.string.text_proper_date, Toast.LENGTH_LONG).show();
-//        }
-//    }
-//
-//    private Date ConvertStringToDate(String stringDate){
-//        Date parsedDate  = null;
-//        try {
-//            if(stringDate!=null) {
-//                parsedDate = new SimpleDateFormat("yyyy-MM-dd").parse(stringDate);
-//                System.out.println(parsedDate);
-//                return parsedDate;
-//            }
-//        }catch (Exception e){
-//            Log.e("MYAPP", "exception", e);
-//        }
-//        return parsedDate;
-//    }
-//
-//    //adding date picker dialog for voucher date filteration
-//    private void showDateDialog(TextView textView) {
-//        final Calendar c = Calendar.getInstance();
-//        final int mYear = c.get(Calendar.YEAR);
-//        final int mMonth = c.get(Calendar.MONTH);
-//        final int mDay = c.get(Calendar.DAY_OF_MONTH);
-//        DatePickerDialog dpd = new DatePickerDialog(this,
-//                new DatePickerDialog.OnDateSetListener() {
-//
-//                    @Override
-//                    public void onDateSet(DatePicker view, int year,
-//                                          int monthOfYear, int dayOfMonth) {
-//                        textView.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
-//                    }
-//                }, mYear, mMonth, mDay);
-//        dpd.show();
-//    }
-//    //returns two digit number of month
-//    private static String getTwoDigit(int i) {
-//        if (i < 10)
-//            return "0" + i;
-//        return "" + i;
-//    }
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
@@ -802,8 +693,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 jsonObject.put("taluka", locationModel.getTaluka());
                 jsonObject.put("tskId", task.getId());
                 jsonObject.put("role", role);
-                jsonObject.put("datefrom", dateFrom);
-                jsonObject.put("dateto", dateTo);
+//                jsonObject.put("datefrom", dateFrom);
+//                jsonObject.put("dateto", dateTo);
 
                 ServiceRequest apiService =
                         ApiClient.getClientWitHeader(this).create(ServiceRequest.class);

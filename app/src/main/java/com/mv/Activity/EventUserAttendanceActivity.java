@@ -279,6 +279,7 @@ public class EventUserAttendanceActivity extends AppCompatActivity implements Vi
                         saveDataToList(eventUser, false);
                     }
                 }
+                mAdapter = new EventAttendanceListAdapter(selectedUser, EventUserAttendanceActivity.this);
                 mAdapter.notifyDataSetChanged();
                 break;
             case R.id.btn_submitt:

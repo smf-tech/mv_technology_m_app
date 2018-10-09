@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mv.Activity.CalenderFliterActivity;
@@ -53,7 +54,7 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView tvProjectName, tvDateName, tvNoOfPeopleName, tvTotalExpenseName, tvStatusName;
-        public LinearLayout lnr_content;
+        public RelativeLayout lnr_content;
         ImageView imgDelete;
 
         public MyViewHolder(View view) {
@@ -61,7 +62,7 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
 /*            state = (TextView) view.findViewById(R.id.txtTemplateName);
             district = (TextView) view.findViewById(R.id.txtTemplateName);*/
             tvTotalExpenseName = (TextView) view.findViewById(R.id.tvTotalExpenseName);
-            lnr_content = (LinearLayout) view.findViewById(R.id.lnr_content);
+            lnr_content = (RelativeLayout) view.findViewById(R.id.lnr_content);
             tvProjectName = (TextView) view.findViewById(R.id.tvProjectName);
             tvDateName = (TextView) view.findViewById(R.id.tvDateName);
             tvNoOfPeopleName = (TextView) view.findViewById(R.id.tvNoOfPeopleName);

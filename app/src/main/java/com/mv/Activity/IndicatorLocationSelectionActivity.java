@@ -271,8 +271,8 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 intent.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
                 intent.putExtra(Constants.LOCATION, locationModel);
 //                if(binding.txtDateFrom.getText().toString().trim().length()>0 && binding.txtDateTo.getText().toString().trim().length()>0) {
-                intent.putExtra("DateFrom", binding.txtDateFrom.getText().toString().trim());
-                intent.putExtra("DateTo", binding.txtDateTo.getText().toString().trim());
+//                intent.putExtra("DateFrom", binding.txtDateFrom.getText().toString().trim());
+//                intent.putExtra("DateTo", binding.txtDateTo.getText().toString().trim());
 //                }
                 startActivity(intent);
                 finish();

@@ -407,6 +407,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                                 String ss = jsonArray.getJSONObject(i).getString("Present_User__c");
                                 calenderEvent.setPresent_User__c(jsonArray.getJSONObject(i).getString("Present_User__c"));
                             }
+                            Log.i("Id", jsonArray.getJSONObject(i).getString("Id"));
                             if (jsonArray.getJSONObject(i).has("End_Date__c") && jsonArray.getJSONObject(i).has("Date__c")
                                     && jsonArray.getJSONObject(i).getString("End_Date__c") != null
                                     && jsonArray.getJSONObject(i).getString("End_Date__c").length() > 0
@@ -417,7 +418,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                                 for (Date date : Dates) {
                                     dateList = new ArrayList<>();
                                     CalendarDay day = CalendarDay.from(date);
-                                    Log.i("Current Date", formatter.format(date));
+                                 //   Log.i("Current Date", formatter.format(date));
                                     if (eventMap.get(day) != null)
                                         dateList = eventMap.get(day);
                                     eventDate.add(date);
