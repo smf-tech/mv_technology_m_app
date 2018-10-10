@@ -454,9 +454,10 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to the bottom of the list
-                Log.i("page", "" + page);
-                Log.i("totalItemsCount", "" + totalItemsCount);
-                getAllChats(true, true, true);
+//                Log.i("page", "" + page);
+//                Log.i("totalItemsCount", "" + totalItemsCount);
+                if(filterflag == 0)
+                   getAllChats(true, true, true);
                 //loadNextDataFromApi(page);
             }
         };
@@ -846,7 +847,8 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
     public void onRefresh() {
         if (Utills.isConnected(this)) {
             binding.swipeRefreshLayout.setRefreshing(false);
-            getAllChats(true, false, false);
+            if(filterflag == 0)
+               getAllChats(true, false, false);
         }
     }
 

@@ -835,6 +835,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                 jsonObject2.put("Multi_project__c",binding.editMultiselectProject.getText().toString());
                 jsonObject2.put("User_Address__c",binding.editTextAddress.getText().toString());
+               //added for Org based call us facility
+                jsonObject2.put("Role_Organization__c",binding.spinnerOrganization.getSelectedItem().toString());
+//
 //                if (mSelectProject > 0)
 //                    jsonObject2.put("Project__c", mListProjectId.get(mSelectProject));
                 JSONObject jsonObject = new JSONObject();

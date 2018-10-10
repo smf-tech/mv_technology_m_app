@@ -290,6 +290,10 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void checkInClick() {
+        if(location==null){
+            Utills.showToast("Current location is not available, Please try again", AttendanceActivity.this);
+            return;
+        }
         if (checkInClickable == 1) {
             Utills.showToast("Already Check In", AttendanceActivity.this);
             return;
@@ -481,6 +485,10 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void checkOutClick() {
+        if(location==null){
+            Utills.showToast("Current location is not available, Please try again", AttendanceActivity.this);
+            return;
+        }
         if (checkOutClickable == 1) {
             Utills.showToast("Already Check Out", AttendanceActivity.this);
             return;
