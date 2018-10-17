@@ -8,7 +8,7 @@
 
         <variable
             name="activity"
-            type="com.mv.Activity.HomeActivity" />
+            type="com.sujalamsufalam.Activity.HomeActivity" />
     </data>
 
     <android.support.v4.widget.DrawerLayout

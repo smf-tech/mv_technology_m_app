@@ -6,7 +6,7 @@
 
         <variable
             name="activity"
-            type="com.mv.Activity.WebViewActivity" />
+            type="com.sujalamsufalam.Activity.WebViewActivity" />
     </data>
 
     <LinearLayout

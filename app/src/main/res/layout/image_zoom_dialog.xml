@@ -14,7 +14,7 @@
         android:layout_alignParentRight="true"
         android:padding="@dimen/dimen_10dp"
         android:id="@+id/close_dialog"/>
-    <com.mv.Widgets.TouchImageView
+    <com.sujalamsufalam.Widgets.TouchImageView
         android:layout_below="@+id/close_dialog"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -8,7 +8,7 @@ xmlns:tools="http://schemas.android.com/tools">
 
     <variable
         name="activity"
-        type="com.mv.Activity.EventUserAttendanceActivity" />
+        type="com.sujalamsufalam.Activity.EventUserAttendanceActivity" />
 </data>
 
 <RelativeLayout
@@ -51,7 +51,7 @@ xmlns:tools="http://schemas.android.com/tools">
                 android:background="@drawable/search_rounded"
                 android:padding="5dp">
 
-                <com.mv.Widgets.MyEditTextView
+                <com.sujalamsufalam.Widgets.MyEditTextView
                     android:id="@+id/edit_text_email"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -118,7 +118,7 @@ xmlns:tools="http://schemas.android.com/tools">
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
-    <com.mv.Widgets.MyFontButton
+    <com.sujalamsufalam.Widgets.MyFontButton
         android:id="@+id/btn_submitt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

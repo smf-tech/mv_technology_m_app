@@ -5,7 +5,7 @@
 
         <variable
             name="indicator_fragment"
-            type="com.mv.Activity.PiachartActivity" />
+            type="com.sujalamsufalam.Activity.PiachartActivity" />
     </data>
 
     <LinearLayout
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.mv.Widgets.MyTextView
+            <com.sujalamsufalam.Widgets.MyTextView
                 android:id="@+id/tv_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -37,19 +37,19 @@
                 android:textSize="@dimen/small_text" />
 
 
-            <com.mv.Widgets.MyEditTextView
-                android:id="@+id/spinner_role"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="3dp"
-                android:padding="@dimen/dimen_5dp"
-                android:inputType="textPersonName"
-                android:background="@drawable/lighter_grey_box"
-                android:textColor="@color/black"
+                <com.sujalamsufalam.Widgets.MyEditTextView
+                    android:id="@+id/spinner_role"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:padding="@dimen/dimen_5dp"
+                    android:inputType="textPersonName"
+                    android:background="@drawable/lighter_grey_box"
+                    android:textColor="@color/black"
 
-                android:textSize="@dimen/medium_text" />
+                    android:textSize="@dimen/medium_text" />
 
         </LinearLayout>
 
@@ -79,36 +79,20 @@
                     android:layout_marginRight="10dp"
                     android:weightSum="2">
 
-                    <TextView
-                        android:id="@+id/process_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_weight="1"
-                        android:text="ProcessName "
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/small_text"
-                        android:textStyle="bold" />
+                    <TableRow>
 
+                        <TextView
+                            android:id="@+id/process_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:text="ProcessName "
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/small_text"
+                            android:textStyle="bold" />
 
-                </TableLayout>
-
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:weightSum="2">
-
-                    <TextView
-                        android:id="@+id/caption_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_weight="1"
-                        android:text="Caption"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/small_text" />
+                    </TableRow>
 
                 </TableLayout>
 
@@ -119,26 +103,51 @@
                     android:layout_marginRight="10dp"
                     android:weightSum="2">
 
-                    <TextView
-                        android:id="@+id/total_feedback"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_column="1"
-                        android:layout_weight="1"
-                        android:text="Total Feedback Coun"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/small_text" />
+                    <TableRow>
 
-                    <TextView
-                        android:id="@+id/valid_feedback"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_column="2"
-                        android:layout_weight="1"
-                        android:text="Valid Feedback Count"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/small_text" />
+                        <TextView
+                            android:id="@+id/caption_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:text="Caption"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/small_text" />
 
+                    </TableRow>
+
+                </TableLayout>
+
+                <TableLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:weightSum="2">
+
+                    <TableRow>
+
+                        <TextView
+                            android:id="@+id/total_feedback"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_column="1"
+                            android:layout_weight="1"
+                            android:text="Total Feedback Coun"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/small_text" />
+
+                        <TextView
+                            android:id="@+id/valid_feedback"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_column="2"
+                            android:layout_weight="1"
+                            android:text="Valid Feedback Count"
+                            android:textColor="@color/black"
+                            android:textSize="@dimen/small_text" />
+                    </TableRow>
 
                 </TableLayout>
 
@@ -206,7 +215,7 @@
                         android:background="@drawable/search_rounded"
                         android:padding="5dp">
 
-                        <com.mv.Widgets.MyEditTextView
+                        <com.sujalamsufalam.Widgets.MyEditTextView
                             android:id="@+id/edit_text_email"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -242,24 +251,24 @@
 
 
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/rv_menu"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="5dp"
-                        android:layout_weight="3"
-                        android:scrollbars="vertical" />
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/rv_menu"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="5dp"
+                            android:layout_weight="3"
+                            android:scrollbars="vertical" />
 
-                    <com.github.mikephil.charting.charts.PieChart
-                        android:id="@+id/chart1"
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_above="@+id/seekBar1"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_weight="7" />
+                        <com.github.mikephil.charting.charts.PieChart
+                            android:id="@+id/chart1"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_above="@+id/seekBar1"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_weight="7" />
 
 
                 </LinearLayout>

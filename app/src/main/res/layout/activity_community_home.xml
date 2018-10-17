@@ -5,7 +5,7 @@
 
         <variable
             name="activity"
-            type="com.mv.Activity.CommunityHomeActivity" />
+            type="com.sujalamsufalam.Activity.CommunityHomeActivity" />
     </data>
 
     <RelativeLayout
@@ -68,7 +68,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:orientation="horizontal">
-                <com.mv.Widgets.MyFontButton
+                <com.sujalamsufalam.Widgets.MyFontButton
                     android:id="@+id/btn_allposts"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
                     android:text="@string/all_posts"
                     android:textColor="@color/white"
                     android:textSize="@dimen/small_text" />
-                <com.mv.Widgets.MyFontButton
+                <com.sujalamsufalam.Widgets.MyFontButton
                     android:id="@+id/btn_mypost"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/small_text" />
 
-                <com.mv.Widgets.MyFontButton
+                <com.sujalamsufalam.Widgets.MyFontButton
                     android:id="@+id/btn_mylocation"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
                     android:text="@string/my_location"
                     android:textColor="@color/white"
                     android:textSize="@dimen/small_text" />
-                <com.mv.Widgets.MyFontButton
+                <com.sujalamsufalam.Widgets.MyFontButton
                     android:id="@+id/btn_otherlocation"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

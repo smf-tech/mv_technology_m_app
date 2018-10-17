@@ -7,7 +7,7 @@
 
         <variable
             name="activity"
-            type="com.mv.Activity.IndicatorLocationSelectionActivity" />
+            type="com.sujalamsufalam.Activity.IndicatorLocationSelectionActivity" />
     </data>
 
     <LinearLayout
@@ -42,7 +42,7 @@
 
 
 
-                <com.mv.Widgets.MyTextView
+                <com.sujalamsufalam.Widgets.MyTextView
                     android:id="@+id/tv_state"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -57,22 +57,22 @@
                     android:id="@+id/ly_state"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-                    <Spinner
-                        android:id="@+id/spinner_state"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="3dp"
-                        android:background="@drawable/grey_box"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:prompt="@string/state"
-                        android:spinnerMode="dialog" />
+                <Spinner
+                    android:id="@+id/spinner_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:background="@drawable/grey_box"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:prompt="@string/state"
+                    android:spinnerMode="dialog" />
                 </LinearLayout>
 
 
-                <com.mv.Widgets.MyTextView
+                <com.sujalamsufalam.Widgets.MyTextView
                     android:id="@+id/tv_district"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
                     android:prompt="@string/district"
                     android:spinnerMode="dialog" />
 
-                <com.mv.Widgets.MyTextView
+                <com.sujalamsufalam.Widgets.MyTextView
                     android:id="@+id/tv_taluka"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -123,25 +123,25 @@
                     android:spinnerMode="dialog" />
 
 
-                <com.mv.Widgets.MyEditTextView
-                    android:id="@+id/edit_multiselect_taluka"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/lighter_grey_box"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:paddingLeft="10dp"
-                    android:clickable="true"
-                    android:focusable="false"
-                    android:gravity="left|top"
-                    android:maxLines="3"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/medium_text" />
+                    <com.sujalamsufalam.Widgets.MyEditTextView
+                        android:id="@+id/edit_multiselect_taluka"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/lighter_grey_box"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="3dp"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingLeft="10dp"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:gravity="left|top"
+                        android:maxLines="3"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/medium_text" />
 
-                <com.mv.Widgets.MyTextView
+                <com.sujalamsufalam.Widgets.MyTextView
                     android:id="@+id/tv_cluster"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -168,7 +168,7 @@
                     android:prompt="@string/cluster"
                     android:spinnerMode="dialog" />
 
-                <com.mv.Widgets.MyTextView
+                <com.sujalamsufalam.Widgets.MyTextView
                     android:id="@+id/tv_village"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -194,7 +194,7 @@
                     android:prompt="@string/village"
                     android:spinnerMode="dialog" />
 
-                <com.mv.Widgets.MyTextView
+                <com.sujalamsufalam.Widgets.MyTextView
                     android:id="@+id/tv_school"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -307,7 +307,7 @@
             </LinearLayout>
         </ScrollView>
 
-        <com.mv.Widgets.MyFontButton
+        <com.sujalamsufalam.Widgets.MyFontButton
             android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="0dp"

@@ -6,7 +6,7 @@
 
         <variable
             name="activity"
-            type="com.mv.Activity.LoginActivity" />
+            type="com.sujalamsufalam.Activity.LoginActivity" />
     </data>
 
     <ScrollView
@@ -29,13 +29,13 @@
 
             <ImageView
                 android:id="@+id/logo"
-                android:layout_width="75dp"
-                android:layout_height="75dp"
+                android:layout_width="175dp"
+                android:layout_height="175dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="15dp"
-                android:src="@drawable/logomulya" />
+                android:layout_marginTop="50dp"
+                android:src="@drawable/ic_launcher" />
 
-            <com.mv.Widgets.MyTextView
+            <com.sujalamsufalam.Widgets.MyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -50,7 +50,8 @@
                 android:layout_height="0dp"
                 android:layout_margin="5dp"
                 android:layout_marginTop="@dimen/dimen_10dp"
-                android:layout_weight="0.4">
+                android:layout_weight="0.4"
+                android:visibility="gone">
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/pager"
@@ -90,7 +91,7 @@
                     android:orientation="vertical">
 
 
-                    <com.mv.Widgets.MyEditTextView
+                    <com.sujalamsufalam.Widgets.MyEditTextView
                         android:id="@+id/edt_username"
                         android:layout_width="fill_parent"
                         android:layout_height="40dp"
@@ -113,7 +114,7 @@
                         android:textSize="@dimen/medium_text" />
 
 
-                    <com.mv.Widgets.MyEditTextView
+                    <com.sujalamsufalam.Widgets.MyEditTextView
                         android:id="@+id/edt_otp"
                         android:layout_width="fill_parent"
                         android:layout_height="40dp"
@@ -145,7 +146,7 @@
                     android:visibility="gone">
 
 
-                    <com.mv.Widgets.MyTextView
+                    <com.sujalamsufalam.Widgets.MyTextView
                         android:id="@+id/txtForgotPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -160,7 +161,7 @@
 
                 </LinearLayout>
 
-                <com.mv.Widgets.MyFontButton
+                <com.sujalamsufalam.Widgets.MyFontButton
                     android:id="@+id/btn_login"
                     android:layout_width="fill_parent"
                     android:layout_height="40dp"
@@ -176,7 +177,7 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/large_text" />
 
-                <com.mv.Widgets.MyTextView
+                <com.sujalamsufalam.Widgets.MyTextView
                     android:id="@+id/tv_timer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -189,7 +190,7 @@
                     android:textSize="@dimen/medium_text"
                     android:visibility="gone" />
 
-                <com.mv.Widgets.MyTextView
+                <com.sujalamsufalam.Widgets.MyTextView
                     android:id="@+id/tv_resend_otp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

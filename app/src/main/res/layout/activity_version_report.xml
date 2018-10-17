@@ -6,7 +6,7 @@
 
         <variable
             name="activity"
-            type="com.mv.Activity.VersionReportActivity" />
+            type="com.sujalamsufalam.Activity.VersionReportActivity" />
     </data>
 
     <LinearLayout
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.mv.Widgets.MyTextView
+            <com.sujalamsufalam.Widgets.MyTextView
                 android:id="@+id/tv_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
                 android:textSize="@dimen/small_text" />
 
 
-            <com.mv.Widgets.MyEditTextView
+            <com.sujalamsufalam.Widgets.MyEditTextView
                 android:id="@+id/spinner_role"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
             android:background="@drawable/search_rounded"
             android:padding="10dp">
 
-            <com.mv.Widgets.MyEditTextView
+            <com.sujalamsufalam.Widgets.MyEditTextView
                 android:id="@+id/edit_text_email"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

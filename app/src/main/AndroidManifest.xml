@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.mv">
+    package="com.sujalamsufalam">
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -18,16 +18,16 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:name=".Mulyavardhan"
+        android:name="com.sujalamsufalam.Mulyavardhan"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/appNameConfig"
+        android:label="Sujalam Sufalam"
         android:largeHeap="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activity.SplashScreenActivity"
+            android:name="com.sujalamsufalam.Activity.SplashScreenActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,111 +36,111 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activity.VideoViewActivity"
+            android:name="com.sujalamsufalam.Activity.VideoViewActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.LoginActivity"
+            android:name="com.sujalamsufalam.Activity.LoginActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
         <activity
-            android:name=".Activity.ExpandableListActivity"
+            android:name="com.sujalamsufalam.Activity.ExpandableListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.CommunityHomeActivity"
+            android:name="com.sujalamsufalam.Activity.CommunityHomeActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.RegistrationActivity"
+            android:name="com.sujalamsufalam.Activity.RegistrationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.TemplatesActivity"
+            android:name="com.sujalamsufalam.Activity.TemplatesActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.CommunityDetailsActivity"
+            android:name="com.sujalamsufalam.Activity.CommunityDetailsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.ForgotPasswordActivity"
+            android:name="com.sujalamsufalam.Activity.ForgotPasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateVisible|adjustPan" />
         <activity
-            android:name=".Activity.HomeActivity"
+            android:name="com.sujalamsufalam.Activity.HomeActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.ImageTemplateActivity"
+            android:name="com.sujalamsufalam.Activity.ImageTemplateActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.VideoTemplateActivity"
+            android:name="com.sujalamsufalam.Activity.VideoTemplateActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.WebViewActivity"
+            android:name="com.sujalamsufalam.Activity.WebViewActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.IssueTemplateActivity"
+            android:name="com.sujalamsufalam.Activity.IssueTemplateActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.ScheduleTrainingActivity"
+            android:name="com.sujalamsufalam.Activity.ScheduleTrainingActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.ClassObservationActivity"
+            android:name="com.sujalamsufalam.Activity.ClassObservationActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.GroupsActivity"
+            android:name="com.sujalamsufalam.Activity.GroupsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.ReportingTemplateActivity"
+            android:name="com.sujalamsufalam.Activity.ReportingTemplateActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.ActivityWebView"
+            android:name="com.sujalamsufalam.Activity.ActivityWebView"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.TrainingActivity"
+            android:name="com.sujalamsufalam.Activity.TrainingActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.ActivityImageView"
+            android:name="com.sujalamsufalam.Activity.ActivityImageView"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.ProcessListActivity"
+            android:name="com.sujalamsufalam.Activity.ProcessListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
-        <service android:name=".Service.DownloadService" />
-        <service android:name=".Service.SendAttendance" />
+        <service android:name="com.sujalamsufalam.Service.DownloadService" />
+        <service android:name="com.sujalamsufalam.Service.SendAttendance" />
 
         <activity
-            android:name=".Activity.ProcessDeatailActivity"
+            android:name="com.sujalamsufalam.Activity.ProcessDeatailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.CommentActivity"
+            android:name="com.sujalamsufalam.Activity.CommentActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />
 
-        <receiver android:name=".receiver.SmsReceiver">
+        <receiver android:name="com.sujalamsufalam.receiver.SmsReceiver">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
         <receiver
-            android:name=".receiver.InternetConnector_Receiver"
+            android:name="com.sujalamsufalam.receiver.InternetConnector_Receiver"
             android:enabled="true">
             <intent-filter>
 
@@ -150,28 +150,28 @@
                 <action android:name="android.net.wifi.STATE_CHANGE" />
             </intent-filter>
         </receiver>
-        <receiver android:name=".receiver.AlarmReceiver">
+        <receiver android:name="com.sujalamsufalam.receiver.AlarmReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
         <service
-            android:name=".Service.LocationService"
+            android:name="com.sujalamsufalam.Service.LocationService"
             android:exported="false" />
 
         <activity
-            android:name=".Activity.LocationSelectionActity"
+            android:name="com.sujalamsufalam.Activity.LocationSelectionActity"
             android:screenOrientation="portrait"
             android:theme="@style/AppCompatAlertDialog"
             android:windowSoftInputMode="stateHidden" />
 
-        <service android:name=".Service.MyFirebaseMessagingService">
+        <service android:name="com.sujalamsufalam.Service.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service android:name=".Service.MyFirebaseInstanceIDService">
+        <service android:name="com.sujalamsufalam.Service.MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
@@ -182,32 +182,32 @@
             android:value="c734e0db3c7d600be0137fb7588a9c13b453227b" />
 
         <activity
-            android:name=".Activity.IndicatorTrainingFeedBackTaskList"
+            android:name="com.sujalamsufalam.Activity.IndicatorTrainingFeedBackTaskList"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.PiachartActivity"
+            android:name="com.sujalamsufalam.Activity.PiachartActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.UserApproveDetail"
+            android:name="com.sujalamsufalam.Activity.UserApproveDetail"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.IndicatorTask"
+            android:name="com.sujalamsufalam.Activity.IndicatorTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.CommunityMemberNameActivity"
+            android:name="com.sujalamsufalam.Activity.CommunityMemberNameActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.TeamManagementUserProfileListActivity"
+            android:name="com.sujalamsufalam.Activity.TeamManagementUserProfileListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <service
-            android:name=".Service.MyJobService"
+            android:name="com.sujalamsufalam.Service.MyJobService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.firebase.jobdispatcher.ACTION_EXECUTE" />
@@ -215,31 +215,31 @@
         </service>
 
         <activity
-            android:name=".Activity.ProcessListApproval"
+            android:name="com.sujalamsufalam.Activity.ProcessListApproval"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.ProcessApprovalActivity"
+            android:name="com.sujalamsufalam.Activity.ProcessApprovalActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.AddThetSavadActivity"
+            android:name="com.sujalamsufalam.Activity.AddThetSavadActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.ScreenShotActivity"
+            android:name="com.sujalamsufalam.Activity.ScreenShotActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.IndicatorLocationSelectionActivity"
+            android:name="com.sujalamsufalam.Activity.IndicatorLocationSelectionActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ActivityMenu.CommunityHomeFragment"
+            android:name="com.sujalamsufalam.ActivityMenu.CommunityHomeFragment"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ActivityMenu.GroupsFragment"
+            android:name="com.sujalamsufalam.ActivityMenu.GroupsFragment"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
@@ -252,141 +252,141 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ActivityMenu.MyReportActivity"
+            android:name="com.sujalamsufalam.ActivityMenu.MyReportActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ActivityMenu.ProgrammeManagmentFragment"
+            android:name="com.sujalamsufalam.ActivityMenu.ProgrammeManagmentFragment"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ActivityMenu.TeamManagementFragment"
+            android:name="com.sujalamsufalam.ActivityMenu.TeamManagementFragment"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ActivityMenu.ThetSavandFragment"
+            android:name="com.sujalamsufalam.ActivityMenu.ThetSavandFragment"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ActivityMenu.TrainingCalender"
+            android:name="com.sujalamsufalam.ActivityMenu.TrainingCalender"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".ActivityMenu.TrainingFragment"
+            android:name="com.sujalamsufalam.ActivityMenu.TrainingFragment"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.CalenderEventReportingActivity"
+            android:name="com.sujalamsufalam.Activity.CalenderEventReportingActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.CalenderFliterActivity"
+            android:name="com.sujalamsufalam.Activity.CalenderFliterActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.AboutUsActivity"
+            android:name="com.sujalamsufalam.Activity.AboutUsActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.EventUserListActivity"
+            android:name="com.sujalamsufalam.Activity.EventUserListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.OverallReportActivity"
+            android:name="com.sujalamsufalam.Activity.OverallReportActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.AddSchoolActivity"
+            android:name="com.sujalamsufalam.Activity.AddSchoolActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.VersionReportActivity"
+            android:name="com.sujalamsufalam.Activity.VersionReportActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.LeaveApprovalActivity"
+            android:name="com.sujalamsufalam.Activity.LeaveApprovalActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.LeaveDetailActivity"
+            android:name="com.sujalamsufalam.Activity.LeaveDetailActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.AccountSectionActivity"
+            android:name="com.sujalamsufalam.Activity.AccountSectionActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.VoucherListActivity"
+            android:name="com.sujalamsufalam.Activity.VoucherListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.VoucherNewActivity"
+            android:name="com.sujalamsufalam.Activity.VoucherNewActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.ExpenseListActivity"
+            android:name="com.sujalamsufalam.Activity.ExpenseListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.ExpenseNewActivity"
+            android:name="com.sujalamsufalam.Activity.ExpenseNewActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.AdavanceListActivity"
+            android:name="com.sujalamsufalam.Activity.AdavanceListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.AdavanceNewActivity"
+            android:name="com.sujalamsufalam.Activity.AdavanceNewActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.SalaryListActivity"
+            android:name="com.sujalamsufalam.Activity.SalaryListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.AssetAllocatedListActivity"
+            android:name="com.sujalamsufalam.Activity.AssetAllocatedListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.SendAssetRequestActivity"
+            android:name="com.sujalamsufalam.Activity.SendAssetRequestActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.AssetApprovalActivity"
+            android:name="com.sujalamsufalam.Activity.AssetApprovalActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.UserExpenseListActivity"
+            android:name="com.sujalamsufalam.Activity.UserExpenseListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.UserAdavanceListActivity"
+            android:name="com.sujalamsufalam.Activity.UserAdavanceListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.AssetAllocation_Activity"
+            android:name="com.sujalamsufalam.Activity.AssetAllocation_Activity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.AttendanceActivity"
+            android:name="com.sujalamsufalam.Activity.AttendanceActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.EventUserAttendanceActivity"
+            android:name="com.sujalamsufalam.Activity.EventUserAttendanceActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.SalaryDetailActivity"
+            android:name="com.sujalamsufalam.Activity.SalaryDetailActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
-            android:name=".Activity.HolidayListActivity"
+            android:name="com.sujalamsufalam.Activity.HolidayListActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".Activity.NotificationActivity" />
-        <activity android:name=".Activity.AttendanceApprovalActivity" />
-        <activity android:name=".Activity.AttendanceApproveDetailActivity" />
-        <activity android:name=".Activity.AttendanceApproval2Activity" />
+        <activity android:name="com.sujalamsufalam.Activity.NotificationActivity" />
+        <activity android:name="com.sujalamsufalam.Activity.AttendanceApprovalActivity" />
+        <activity android:name="com.sujalamsufalam.Activity.AttendanceApproveDetailActivity" />
+        <activity android:name="com.sujalamsufalam.Activity.AttendanceApproval2Activity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -400,7 +400,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".Activity.MapsActivity"
+            android:name="com.sujalamsufalam.Activity.MapsActivity"
             android:label="@string/title_activity_maps"></activity>
     </application>
 

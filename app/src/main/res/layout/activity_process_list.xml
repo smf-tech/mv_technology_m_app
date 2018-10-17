@@ -6,7 +6,7 @@
 
         <variable
             name="processlist"
-            type="com.mv.Activity.ProcessListActivity" />
+            type="com.sujalamsufalam.Activity.ProcessListActivity" />
     </data>
 
     <RelativeLayout

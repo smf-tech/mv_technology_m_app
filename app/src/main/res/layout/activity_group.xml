@@ -6,7 +6,7 @@
 
         <variable
             name="fragment"
-            type="com.mv.ActivityMenu.GroupsFragment" />
+            type="com.sujalamsufalam.ActivityMenu.GroupsFragment" />
     </data>
 
     <RelativeLayout
@@ -37,7 +37,7 @@
             android:background="@drawable/search_rounded"
             android:padding="10dp">
 
-            <com.mv.Widgets.MyEditTextView
+            <com.sujalamsufalam.Widgets.MyEditTextView
                 android:id="@+id/edit_text_email"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

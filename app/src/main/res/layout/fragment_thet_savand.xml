@@ -5,7 +5,7 @@
 
         <variable
             name="fragment"
-            type="com.mv.ActivityMenu.ThetSavandFragment" />
+            type="com.sujalamsufalam.ActivityMenu.ThetSavandFragment" />
     </data>
 
     <RelativeLayout
@@ -61,7 +61,7 @@
                 android:layout_margin="@dimen/dimen_5dp"
                 android:orientation="horizontal">
 
-                <com.mv.Widgets.MyFontButton
+                <com.sujalamsufalam.Widgets.MyFontButton
                     android:id="@+id/btn_allposts"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
                     android:textSize="15sp" />
 
 
-                <com.mv.Widgets.MyFontButton
+                <com.sujalamsufalam.Widgets.MyFontButton
                     android:id="@+id/btn_mypost"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

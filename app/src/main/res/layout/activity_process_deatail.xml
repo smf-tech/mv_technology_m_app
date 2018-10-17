@@ -54,7 +54,7 @@
                     android:background="@null"
                     android:src="@drawable/ic_add_photo" />
 
-                <com.mv.Widgets.MyTextView
+                <com.sujalamsufalam.Widgets.MyTextView
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
         android:orientation="horizontal"
         android:weightSum="10">
 
-        <com.mv.Widgets.MyFontButton
+        <com.sujalamsufalam.Widgets.MyFontButton
             android:id="@+id/btn_submit"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
             android:textColor="#ffffff"
             android:textSize="22sp" />
 
-        <com.mv.Widgets.MyFontButton
+        <com.sujalamsufalam.Widgets.MyFontButton
             android:id="@+id/btn_save"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -100,7 +100,7 @@
             android:textColor="#ffffff"
             android:textSize="22sp" />
 
-        <com.mv.Widgets.MyFontButton
+        <com.sujalamsufalam.Widgets.MyFontButton
             android:id="@+id/btn_approve"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
             android:textSize="22sp"
             android:visibility="gone" />
 
-        <com.mv.Widgets.MyFontButton
+        <com.sujalamsufalam.Widgets.MyFontButton
             android:id="@+id/btn_reject"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
