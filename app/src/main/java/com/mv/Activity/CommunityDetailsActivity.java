@@ -265,8 +265,6 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                         Utills.showToast(getString(R.string.error_no_internet), CommunityDetailsActivity.this);
                     }
                 }
-
-
         }
     }
 

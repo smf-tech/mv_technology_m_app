@@ -17,7 +17,9 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -42,6 +44,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mv.Model.User;
+import com.mv.Model.location_model.MultiLocation;
+import com.mv.Model.location_model.MultiLocationResponse;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
@@ -66,7 +70,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -89,6 +92,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private TextView txt_district, txt_taluka, txt_cluster, txt_village, txt_school;
     private TextInputLayout input_school_code;
     private ArrayAdapter<String> state_adapter, district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, role_adapter, organization_adapter, project_adapter;
+   // private ArrayAdapter<MultiLocation> district_adapter1;
     private PreferenceHelper preferenceHelper;
     private User user;
     String SelectedLat = "", SelectedLon = "";
@@ -98,12 +102,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private String imageFilePath;
     private Boolean isAdd;
     private GPSTracker gps;
-    private boolean isMultipleTalukatSet = false, isProjectSet = false, isOrganizationSet = false, isStateSet = false, isDistrictSet = false, isTalukaSet = false, isClusterSet = false, isVillageSet = false, isSchoolSet = false, isRollSet = false;
+    private boolean isMultipleTalukatSet = false,isMultipleStateSet = false,isMultipleDistrictSet = false, isProjectSet = false, isOrganizationSet = false, isStateSet = false, isDistrictSet = false, isTalukaSet = false, isClusterSet = false, isVillageSet = false, isSchoolSet = false, isRollSet = false;
     private RadioGroup radioGroup;
     private RelativeLayout rel_district, rel_taluka, rel_cluster, rel_villgae, rel_school_name;
     private boolean isBackPress = false;
     private boolean[] mSelection = null;
     private String value = "",valueProject = "";
+    private ArrayList<MultiLocation> DetailedLocation = null;
+    private MultiLocationResponse s_response;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -353,6 +359,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
 
+
+
     /*
     * API to get all States From server
     * */
@@ -361,70 +369,159 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             Utills.showProgressDialog(this, "Loading States", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getState().enqueue(new Callback<ResponseBody>() {
+        apiService.getMultipleState().enqueue(new Callback<MultiLocationResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<MultiLocationResponse> call, Response<MultiLocationResponse> response) {
                 Utills.hideProgressDialog();
                 try {
                     if (response.body() != null) {
-                        String data = response.body().string();
-                        if (data != null && data.length() > 0) {
-                            JSONArray jsonArray = new JSONArray(data);
-                            mListState.clear();
-                            mListState.add("Select");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                mListState.add(jsonArray.getString(i));
-                            }
-                            state_adapter.notifyDataSetChanged();
-                            if (!isAdd && !isStateSet) {
-                                isStateSet = true;
-                                for (int i = 0; i < mListState.size(); i++) {
-                                    if (mListState.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getState())) {
-                                        binding.spinnerState.setSelection(i);
-                                        break;
-                                    }
+//                        String data = response.body().string();
+//                        if (data != null && data.length() > 0) {
+//                            JSONArray jsonArray = new JSONArray(data);
+//                            mListState.clear();
+//                            mListState.add("Select");
+//                            for (int i = 0; i < jsonArray.length(); i++) {
+//                                mListState.add(jsonArray.getString(i));
+//                            }
+//                            state_adapter.notifyDataSetChanged();
+//                                if (!isAdd && !isStateSet) {
+//                                    isStateSet = true;
+//                                    for (int i = 0; i < mListState.size(); i++) {
+//                                        if (mListState.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getState())) {
+//                                            binding.spinnerState.setSelection(i);
+//                                            break;
+//                                        }
+//                                    }
+//                            }
+//                        }
+                        mListState.clear();
+                        mListState.add("Select");
+
+                        MultiLocationResponse s_response = response.body();
+                        if(s_response.getResultCode().equals("success")){
+                         for (MultiLocation s : s_response.getResultData()) {
+                            mListState.add(s.getStateName());
+                        }
+                        state_adapter.notifyDataSetChanged();
+                        if (!isAdd && !isStateSet) {
+                            isStateSet = true;
+                            for (int i = 0; i < mListState.size(); i++) {
+                                if (mListState.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getState())) {
+                                    binding.spinnerState.setSelection(i);
+                                    break;
                                 }
                             }
                         }
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                  }
+                } catch (Exception e){
                     e.printStackTrace();
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<MultiLocationResponse> call, Throwable t) {
                 Utills.hideProgressDialog();
 
             }
         });
     }
 
+//    private void getState() {
+//        if (!isBackPress)
+//            Utills.showProgressDialog(this, "Loading States", getString(R.string.progress_please_wait));
+//        ServiceRequest apiService =
+//                ApiClient.getClient().create(ServiceRequest.class);
+//        apiService.getState().enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                Utills.hideProgressDialog();
+//                try {
+//                    if (response.body() != null) {
+//                        String data = response.body().string();
+//                        if (data != null && data.length() > 0) {
+//                            JSONArray jsonArray = new JSONArray(data);
+//                            mListState.clear();
+//                            mListState.add("Select");
+//                            for (int i = 0; i < jsonArray.length(); i++) {
+//                                mListState.add(jsonArray.getString(i));
+//                            }
+//                            state_adapter.notifyDataSetChanged();
+//                            if (!isAdd && !isStateSet) {
+//                                isStateSet = true;
+//                                for (int i = 0; i < mListState.size(); i++) {
+//                                    if (mListState.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getState())) {
+//                                        binding.spinnerState.setSelection(i);
+//                                        break;
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                Utills.hideProgressDialog();
+//
+//            }
+//        });
+//    }
+
     /*
     * API to get all Districts From server
     * */
+
     private void getDistrict() {
+
+        JSONObject selectedStates = new JSONObject();
+        JsonObject gsonObject = new JsonObject();
         if (!isBackPress)
             Utills.showProgressDialog(this, getString(R.string.loding_district), getString(R.string.progress_please_wait));
 
+        String multiStates[] = binding.editMultiselectState.getText().toString().split(",");
+        if(binding.editMultiselectState.getText().toString().length()==0){
+            return;
+        }
+        JSONArray ResultData = new JSONArray();
+
+        try {
+            for (int i = 0; i < multiStates.length; i++) {
+                ResultData.put(new JSONObject().put("state_name", multiStates[i]));
+            }
+
+            selectedStates.put("ResultData", ResultData);
+
+            JsonParser jsonParser = new JsonParser();
+             gsonObject = (JsonObject) jsonParser.parse(selectedStates.toString());
+        }
+       catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getDistrict(mListState.get(mSelectState)).enqueue(new Callback<ResponseBody>() {
+        apiService.getMultipleDistrict(gsonObject).enqueue(new Callback<MultiLocationResponse>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<MultiLocationResponse> call, Response<MultiLocationResponse> response) {
                 Utills.hideProgressDialog();
                 try {
                     if (response.body() != null) {
-                        String data = response.body().string();
-                        if (data != null && data.length() > 0) {
-                            JSONArray jsonArray = new JSONArray(data);
+                    //    String data = response.body().toString();
+                     //       JSONArray jsonArray = new JSONArray(data);
                             mListDistrict.clear();
                             mListDistrict.add("Select");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                mListDistrict.add(jsonArray.getString(i));
+
+                        s_response = response.body();
+                        if(s_response.getResultCode().equals("success")){
+                            for(MultiLocation ml: s_response.getResultData()){
+                                mListDistrict.add(ml.getDistrictName());
                             }
                             district_adapter.notifyDataSetChanged();
                             if (!isAdd && !isDistrictSet) {
@@ -437,6 +534,195 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                 }
                             }
                         }
+
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<MultiLocationResponse> call, Throwable t) {
+                Utills.hideProgressDialog();
+
+            }
+        });
+    }
+//    private void getDistrict() {
+//        if (!isBackPress)
+//            Utills.showProgressDialog(this, getString(R.string.loding_district), getString(R.string.progress_please_wait));
+//
+//        ServiceRequest apiService =
+//                ApiClient.getClient().create(ServiceRequest.class);
+//        apiService.getDistrict(mListState.get(mSelectState)).enqueue(new Callback<ResponseBody>() {
+//            @Override
+//            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+//                Utills.hideProgressDialog();
+//                try {
+//                    if (response.body() != null) {
+//                        String data = response.body().string();
+//                        if (data != null && data.length() > 0) {
+//                            JSONArray jsonArray = new JSONArray(data);
+//                            mListDistrict.clear();
+//                            mListDistrict.add("Select");
+//                            for (int i = 0; i < jsonArray.length(); i++) {
+//                                mListDistrict.add(jsonArray.getString(i));
+//                            }
+//                            district_adapter.notifyDataSetChanged();
+//                            if (!isAdd && !isDistrictSet) {
+//                                isDistrictSet = true;
+//                                for (int i = 0; i < mListDistrict.size(); i++) {
+//                                    if (mListDistrict.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getDistrict())) {
+//                                        binding.spinnerDistrict.setSelection(i);
+//                                        break;
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<ResponseBody> call, Throwable t) {
+//                Utills.hideProgressDialog();
+//
+//            }
+//        });
+//    }
+
+     /*
+    * API to get all Talukas From server
+    * */
+ private void getTaluka() {
+     JSONObject selectedStates = new JSONObject();
+     JsonObject gsonObject = new JsonObject();
+     if (!isBackPress)
+         Utills.showProgressDialog(this, getString(R.string.loding_taluka), getString(R.string.progress_please_wait));
+
+     //  String multiStates[] = binding.editMultiselectState.getText().toString().split(",");
+     String multiDistrict[] = binding.editMultiselectDistrict.getText().toString().split(",");
+     JSONArray ResultData = new JSONArray();
+     if (DetailedLocation!=null){
+         for (int i = 0; i < DetailedLocation.size(); i++) {
+             try {
+                 JSONObject j = new JSONObject().put("state_name", DetailedLocation.get(i).getStateName());
+                 j.put("district_name", DetailedLocation.get(i).getDistrictName());
+                 ResultData.put(j);
+             } catch (JSONException e) {
+                 e.printStackTrace();
+             }
+         }
+     }
+
+
+    if(binding.editMultiselectDistrict.getText().toString().length()==0){
+        return;
+    }
+     JSONArray ResultDataT = new JSONArray();
+     try {
+         for (int i = 0; i < multiDistrict.length; i++) {
+             ResultDataT.put(new JSONObject().put("state_name", multiDistrict[i]));
+         }
+
+         selectedStates.put("ResultData", ResultDataT);
+
+         JsonParser jsonParser = new JsonParser();
+         gsonObject = (JsonObject) jsonParser.parse(selectedStates.toString());
+     }
+     catch (JSONException e) {
+         e.printStackTrace();
+     }
+
+
+    ServiceRequest apiService =
+            ApiClient.getClient().create(ServiceRequest.class);
+
+    apiService.getTaluka(mListState.get(mSelectState), mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
+        @Override
+        public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            Utills.hideProgressDialog();
+            try {
+                if (response.body() != null) {
+                    String data = response.body().string();
+                    if (data != null && data.length() > 0) {
+                        mListTaluka.clear();
+                        mListTaluka.add("Select");
+                        JSONArray jsonArr = new JSONArray(data);
+                        for (int i = 0; i < jsonArr.length(); i++) {
+                            mListTaluka.add(jsonArr.getString(i));
+                        }
+                        taluka_adapter.notifyDataSetChanged();
+                        if (!isAdd && !isTalukaSet) {
+                            isTalukaSet = true;
+                            for (int i = 0; i < mListTaluka.size(); i++) {
+                                if (mListTaluka.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getTaluka())) {
+                                    binding.spinnerTaluka.setSelection(i);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onFailure(Call<ResponseBody> call, Throwable t) {
+            Utills.hideProgressDialog();
+        }
+    });
+}
+
+    /*
+    * API to get all Clusters From server
+    * */
+    private void getCluster() {
+        if (!isBackPress)
+            Utills.showProgressDialog(this, getString(R.string.loding_cluster), getString(R.string.progress_please_wait));
+        String multiDistric[] = binding.editMultiselectTaluka.getText().toString().split(",");
+        if(binding.editMultiselectTaluka.getText().toString().length()==0){
+            return;
+        }
+
+        ServiceRequest apiService =
+                ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getCluster(mListState.get(mSelectState), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka)).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            mListCluster.clear();
+                            mListCluster.add("Select");
+                            JSONArray jsonArr = new JSONArray(data);
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                mListCluster.add(jsonArr.getString(i));
+                            }
+                            cluster_adapter.notifyDataSetChanged();
+                            if (!isAdd && !isClusterSet) {
+                                isClusterSet = true;
+                                for (int i = 0; i < mListCluster.size(); i++) {
+                                    if (mListCluster.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getCluster())) {
+                                        binding.spinnerCluster.setSelection(i);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
                     }
 
                 } catch (JSONException e) {
@@ -449,11 +735,120 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utills.hideProgressDialog();
+            }
+        });
+    }
+    /*
+    * API to get all Villages From server
+    * */
+    private void getVillage() {
+        if (!isBackPress)
+            Utills.showProgressDialog(this, getString(R.string.loding_village), getString(R.string.progress_please_wait));
+        String multiDistric[] = binding.editMultiselectCluster.getText().toString().split(",");
+        if(binding.editMultiselectCluster.getText().toString().length()==0){
+            return;
+        }
+        ServiceRequest apiService =
+                ApiClient.getClient().create(ServiceRequest.class);
 
+        apiService.getVillage(mListState.get(mSelectState), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster)).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            mListVillage.clear();
+                            mListVillage.add("Select");
+                            JSONArray jsonArr = new JSONArray(data);
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                mListVillage.add(jsonArr.getString(i));
+                            }
+                            village_adapter.notifyDataSetChanged();
+                            if (!isAdd && !isVillageSet) {
+                                isVillageSet = true;
+                                for (int i = 0; i < mListVillage.size(); i++) {
+                                    if (mListVillage.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getVillage())) {
+                                        binding.spinnerVillage.setSelection(i);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
             }
         });
     }
 
+    /*
+    * API to get all Schools From server
+    * */
+    private void getSchool() {
+        if (!isBackPress)
+            Utills.showProgressDialog(this, getString(R.string.loding_school), getString(R.string.progress_please_wait));
+        String multiDistric[] = binding.editMultiselectVillage.getText().toString().split(",");
+        if(binding.editMultiselectVillage.getText().toString().length()==0){
+            return;
+        }
+        ServiceRequest apiService =
+                ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getSchool(mListState.get(mSelectState), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage)).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data != null && data.length() > 0) {
+                            mListSchoolName.clear();
+                            mListCode.clear();
+                            mListSchoolName.add("Select");
+                            mListCode.add("");
+                            JSONArray jsonArr = new JSONArray(data);
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                       /* JSONObject jsonObject = jsonArr.getJSONObject(i);
+                        mListSchoolName.add(jsonObject.getString("school_name"));
+                        .add(jsonObject.getString("school_code"));*/
+                                mListSchoolName.add(jsonArr.getString(i));
+                            }
+                            school_adapter.notifyDataSetChanged();
+                            if (!isAdd && !isSchoolSet) {
+                                isSchoolSet = true;
+                                for (int i = 0; i < mListSchoolName.size(); i++) {
+                                    if (mListSchoolName.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getSchool_Name())) {
+                                        binding.spinnerSchoolName.setSelection(i);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+            }
+        });
+    }
     /*
     * initialize all views
     * */
@@ -462,6 +857,92 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         Utills.setupUI(findViewById(R.id.layout_main), this);
         preferenceHelper = new PreferenceHelper(this);
         binding.btnRefreshLocation.setOnClickListener(this);
+
+        binding.editMultiselectState.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                getDistrict();
+            }
+        });
+
+        binding.editMultiselectDistrict.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                getTaluka();
+            }
+        });
+
+        binding.editMultiselectTaluka.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                getCluster();
+            }
+        });
+
+        binding.editMultiselectCluster.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                getVillage();
+            }
+        });
+
+        binding.editMultiselectVillage.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                getSchool();
+            }
+        });
+
 
         radioGroup = (RadioGroup) findViewById(R.id.gender_group);
         binding.birthDate.setOnClickListener(this);
@@ -486,7 +967,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         edit_text_email = (EditText) findViewById(R.id.edit_text_email);
         btn_submit = (Button) findViewById(R.id.btn_submit);
         btn_submit.setOnClickListener(this);
+        binding.editMultiselectState.setOnClickListener(this);
+        binding.editMultiselectDistrict.setOnClickListener(this);
         binding.editMultiselectTaluka.setOnClickListener(this);
+        binding.editMultiselectCluster.setOnClickListener(this);
+        binding.editMultiselectVillage.setOnClickListener(this);
         binding.editMultiselectProject.setOnClickListener(this);
         if (User.getCurrentUser(RegistrationActivity.this).getMvUser().getOrganisation().equals("SMF")) {
             binding.llWork.setVisibility(View.VISIBLE);
@@ -617,6 +1102,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 binding.editTextLastName.setText(User.getCurrentUser(this).getMvUser().getLastName());
                 binding.editTextMobileNumber.setText(User.getCurrentUser(this).getMvUser().getPhone());
                 binding.editTextName.setText(User.getCurrentUser(this).getMvUser().getName());
+                binding.editMultiselectState.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getMultipleState());
+                binding.editMultiselectDistrict.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getMultipleDistrict());
                 binding.editMultiselectTaluka.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getMultipleTaluka());
                 binding.editMultiselectProject.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getMulti_project__c());
                 binding.editTextAddress.setText(User.getCurrentUser(RegistrationActivity.this).getMvUser().getUser_Address__c());
@@ -688,8 +1175,20 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
+            case R.id.edit_multiselect_state:
+                showMultiselectDialog(mListState,"State");
+                break;
+            case R.id.edit_multiselect_district:
+                showMultiselectDialog(mListDistrict,"District");
+                break;
             case R.id.edit_multiselect_taluka:
-                showMultiselectDialog(mListTaluka);
+                showMultiselectDialog(mListTaluka,"Taluka");
+                break;
+            case R.id.edit_multiselect_cluster:
+                showMultiselectDialog(mListTaluka,"Cluster");
+                break;
+            case R.id.edit_multiselect_village:
+                showMultiselectDialog(mListTaluka,"Village");
                 break;
             case R.id.edit_multiselect_project:
                 showMultiselectDialogProject(mListProject);
@@ -831,6 +1330,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     jsonObject2.put("User_Village__c", mListVillage.get(mSelectVillage));
                     jsonObject2.put("UserSchoolName__c", mListSchoolName.get(mSelectSchoolName));
                 }
+                jsonObject2.put("User_Multiple_State__c", binding.editMultiselectState.getText().toString());
+                jsonObject2.put("User_Multiple_District__c", binding.editMultiselectDistrict.getText().toString());
                 jsonObject2.put("User_Multiple_Taluka__c", binding.editMultiselectTaluka.getText().toString());
 
                 jsonObject2.put("Multi_project__c",binding.editMultiselectProject.getText().toString());
@@ -987,6 +1488,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             msg = getString(R.string.Please_select_project);
         }else if ((mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("District"))) {
             if (mSelectDistrict == 0) {
+                msg = getString(R.string.Please_select_district);
+            }
+        }else if ((mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("MultipleDistrict"))) {
+            if (binding.editMultiselectDistrict.getText().toString().trim().length() == 0) {
                 msg = getString(R.string.Please_select_district);
             }
         } else if ((mListRoleJuridiction.get(mSelectRole).equalsIgnoreCase("Taluka"))) {
@@ -1162,29 +1667,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         txt_school.setVisibility(View.GONE);
                         value = "";
                         //  input_school_code.setVisibility(View.GONE);
-                    } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("MultipleTaluka")) {
-                        spinner_district.setVisibility(View.VISIBLE);
-                        txt_district.setVisibility(View.VISIBLE);
-                        rel_district.setVisibility(View.VISIBLE);
-                        spinner_taluka.setVisibility(View.VISIBLE);
-                        binding.inputMultiselectTaluka.setVisibility(View.VISIBLE);
-                        if (!isAdd && !isMultipleTalukatSet) {
-                            isMultipleTalukatSet = true;
-                            value = User.getCurrentUser(RegistrationActivity.this).getMvUser().getMultipleTaluka();
-                            binding.editMultiselectTaluka.setText(value);
-                        }
-                        txt_taluka.setVisibility(View.GONE);
-                        rel_taluka.setVisibility(View.GONE);
-                        spinner_cluster.setVisibility(View.GONE);
-                        rel_cluster.setVisibility(View.GONE);
-                        txt_cluster.setVisibility(View.GONE);
-                        spinner_village.setVisibility(View.GONE);
-                        rel_villgae.setVisibility(View.GONE);
-                        txt_village.setVisibility(View.GONE);
-                        spinner_school_name.setVisibility(View.GONE);
-                        rel_school_name.setVisibility(View.GONE);
-                        txt_school.setVisibility(View.GONE);
-                        //  input_school_code.setVisibility(View.GONE);
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("District")) {
                         spinner_district.setVisibility(View.VISIBLE);
                         txt_district.setVisibility(View.VISIBLE);
@@ -1223,7 +1705,179 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         rel_school_name.setVisibility(View.GONE);
                         txt_school.setVisibility(View.GONE);
                         //  input_school_code.setVisibility(View.GONE);
+                    }else if (mListRoleJuridiction.get(i).equalsIgnoreCase("MultipleState")) {
+                        binding.inputMultiselectState.setVisibility(View.VISIBLE);
+                        spinner_district.setVisibility(View.GONE);
+                        rel_district.setVisibility(View.GONE);
+                        value = "";
+                        txt_district.setVisibility(View.GONE);
+                        spinner_taluka.setVisibility(View.GONE);
+                        binding.relState.setVisibility(View.GONE);
+                        rel_taluka.setVisibility(View.GONE);
+                        txt_taluka.setVisibility(View.GONE);
+                        spinner_cluster.setVisibility(View.GONE);
+                        rel_cluster.setVisibility(View.GONE);
+                        txt_cluster.setVisibility(View.GONE);
+                        spinner_village.setVisibility(View.GONE);
+                        txt_village.setVisibility(View.GONE);
+                        rel_villgae.setVisibility(View.GONE);
+                        spinner_school_name.setVisibility(View.GONE);
+                        rel_school_name.setVisibility(View.GONE);
+                        txt_school.setVisibility(View.GONE);
+                        if (!isAdd && !isMultipleStateSet) {
+                            isMultipleStateSet = true;
+                            value = User.getCurrentUser(RegistrationActivity.this).getMvUser().getMultipleState();
+                            binding.editMultiselectState.setText(value);
+                        }
+                        //  input_school_code.setVisibility(View.GONE);
+                    }else if (mListRoleJuridiction.get(i).equalsIgnoreCase("MultipleDistrict")) {
+                        binding.inputMultiselectState.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectDistrict.setVisibility(View.VISIBLE);
+                        binding.relState.setVisibility(View.GONE);
+
+                        spinner_district.setVisibility(View.GONE);
+                        rel_district.setVisibility(View.GONE);
+                        value = "";
+                        txt_district.setVisibility(View.GONE);
+                        spinner_taluka.setVisibility(View.GONE);
+                        rel_taluka.setVisibility(View.GONE);
+                        txt_taluka.setVisibility(View.GONE);
+                        spinner_cluster.setVisibility(View.GONE);
+                        rel_cluster.setVisibility(View.GONE);
+                        txt_cluster.setVisibility(View.GONE);
+                        spinner_village.setVisibility(View.GONE);
+                        txt_village.setVisibility(View.GONE);
+                        rel_villgae.setVisibility(View.GONE);
+                        spinner_school_name.setVisibility(View.GONE);
+                        rel_school_name.setVisibility(View.GONE);
+                        txt_school.setVisibility(View.GONE);
+                        if (!isAdd && !isMultipleDistrictSet) {
+                            isMultipleDistrictSet = true;
+                            value = User.getCurrentUser(RegistrationActivity.this).getMvUser().getMultipleDistrict();
+                            binding.editMultiselectDistrict.setText(value);
+                        }
+                        //  input_school_code.setVisibility(View.GONE);
+                    } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("MultipleTaluka")) {
+                        binding.inputMultiselectState.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectDistrict.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectTaluka.setVisibility(View.VISIBLE);
+                        binding.relState.setVisibility(View.GONE);
+                        binding.relDistrict.setVisibility(View.GONE);
+                        txt_taluka.setVisibility(View.GONE);
+                        rel_taluka.setVisibility(View.GONE);
+
+                        spinner_district.setVisibility(View.VISIBLE);
+                        txt_district.setVisibility(View.VISIBLE);
+                     //   rel_district.setVisibility(View.VISIBLE);
+                        spinner_taluka.setVisibility(View.VISIBLE);
+                        if (!isAdd && !isMultipleTalukatSet) {
+                            isMultipleTalukatSet = true;
+                            value = User.getCurrentUser(RegistrationActivity.this).getMvUser().getMultipleTaluka();
+                            binding.editMultiselectTaluka.setText(value);
+                        }
+                        spinner_cluster.setVisibility(View.GONE);
+                        rel_cluster.setVisibility(View.GONE);
+                        txt_cluster.setVisibility(View.GONE);
+                        spinner_village.setVisibility(View.GONE);
+                        rel_villgae.setVisibility(View.GONE);
+                        txt_village.setVisibility(View.GONE);
+                        spinner_school_name.setVisibility(View.GONE);
+                        rel_school_name.setVisibility(View.GONE);
+                        txt_school.setVisibility(View.GONE);
+                        //  input_school_code.setVisibility(View.GONE);
+                    }else if (mListRoleJuridiction.get(i).equalsIgnoreCase("MultipleCluster")) {
+                        binding.inputMultiselectState.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectDistrict.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectTaluka.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectCluster.setVisibility(View.VISIBLE);
+
+                        binding.relState.setVisibility(View.GONE);
+                        binding.relDistrict.setVisibility(View.GONE);
+                        binding.relTaluka.setVisibility(View.GONE);
+                        rel_cluster.setVisibility(View.GONE);
+
+                        spinner_district.setVisibility(View.VISIBLE);
+                        txt_district.setVisibility(View.VISIBLE);
+                    //    rel_district.setVisibility(View.VISIBLE);
+                        spinner_taluka.setVisibility(View.VISIBLE);
+                        txt_taluka.setVisibility(View.VISIBLE);
+                        spinner_cluster.setVisibility(View.VISIBLE);
+                        txt_cluster.setVisibility(View.VISIBLE);
+                        //    rel_cluster.setVisibility(View.VISIBLE);
+                        spinner_village.setVisibility(View.GONE);
+                        binding.inputMultiselectTaluka.setVisibility(View.GONE);
+                        rel_villgae.setVisibility(View.GONE);
+                        txt_village.setVisibility(View.GONE);
+                        spinner_school_name.setVisibility(View.GONE);
+                        value = "";
+                        rel_school_name.setVisibility(View.GONE);
+                        txt_school.setVisibility(View.GONE);
+                        //  input_school_code.setVisibility(View.GONE);
+                    }else if (mListRoleJuridiction.get(i).equalsIgnoreCase("MultipleVillage")) {
+                        binding.inputMultiselectState.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectDistrict.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectTaluka.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectCluster.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectVillage.setVisibility(View.VISIBLE);
+
+                        binding.relState.setVisibility(View.GONE);
+                        binding.relDistrict.setVisibility(View.GONE);
+                        binding.relTaluka.setVisibility(View.GONE);
+                        binding.relCluster.setVisibility(View.GONE);
+                        binding.relVillgae.setVisibility(View.GONE);
+
+                        spinner_district.setVisibility(View.VISIBLE);
+                        txt_district.setVisibility(View.VISIBLE);
+                    //    rel_district.setVisibility(View.VISIBLE);
+                        spinner_taluka.setVisibility(View.VISIBLE);
+                        txt_taluka.setVisibility(View.VISIBLE);
+                      //  rel_taluka.setVisibility(View.VISIBLE);
+                        spinner_cluster.setVisibility(View.VISIBLE);
+                        txt_cluster.setVisibility(View.VISIBLE);
+                      //  rel_cluster.setVisibility(View.VISIBLE);
+                        spinner_village.setVisibility(View.VISIBLE);
+                        txt_village.setVisibility(View.VISIBLE);
+                    //    rel_villgae.setVisibility(View.VISIBLE);
+                        spinner_school_name.setVisibility(View.GONE);
+                        rel_school_name.setVisibility(View.GONE);
+                        value = "";
+                        txt_school.setVisibility(View.GONE);
+                        //  input_school_code.setVisibility(View.GONE);
+                    }else if(mListRoleJuridiction.get(i).equalsIgnoreCase("MultipleSchool")) {
+                        binding.inputMultiselectState.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectDistrict.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectTaluka.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectCluster.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectVillage.setVisibility(View.VISIBLE);
+                        binding.inputMultiselectSchool.setVisibility(View.VISIBLE);
+
+                        binding.relState.setVisibility(View.GONE);
+                        binding.relDistrict.setVisibility(View.GONE);
+                        binding.relTaluka.setVisibility(View.GONE);
+                        binding.relCluster.setVisibility(View.GONE);
+                        binding.relVillgae.setVisibility(View.GONE);
+                        binding.relSchoolName.setVisibility(View.GONE);
+
+                        spinner_district.setVisibility(View.VISIBLE);
+                        txt_district.setVisibility(View.VISIBLE);
+                        //rel_district.setVisibility(View.VISIBLE);
+                        spinner_taluka.setVisibility(View.VISIBLE);
+                        txt_taluka.setVisibility(View.VISIBLE);
+                        //rel_taluka.setVisibility(View.VISIBLE);
+                        //binding.inputMultiselectTaluka.setVisibility(View.GONE);
+                        spinner_cluster.setVisibility(View.VISIBLE);
+                        txt_cluster.setVisibility(View.VISIBLE);
+                      //  rel_cluster.setVisibility(View.VISIBLE);
+                        spinner_village.setVisibility(View.VISIBLE);
+                        txt_village.setVisibility(View.VISIBLE);
+                        value = "";
+                       // rel_villgae.setVisibility(View.VISIBLE);
+                        spinner_school_name.setVisibility(View.VISIBLE);
+                        txt_school.setVisibility(View.VISIBLE);
+                       // rel_school_name.setVisibility(View.VISIBLE);
+                        // input_school_code.setVisibility(View.VISIBLE);
                     }
+
                 }
                 break;
             case R.id.spinner_state:
@@ -1269,7 +1923,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 mListVillage.add("Select");
                 mListSchoolName.add("Select");
                 value = "";
-               // binding.editMultiselectTaluka.setText("");
+                binding.editMultiselectTaluka.setText("");
                 mSelectTaluka = 0;
                 mSelectCluster = 0;
                 mSelectVillage = 0;
@@ -1336,209 +1990,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-
-    /*
-    * API to get all Clusters From server
-    * */
-    private void getCluster() {
-        if (!isBackPress)
-            Utills.showProgressDialog(this, getString(R.string.loding_cluster), getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getCluster(mListState.get(mSelectState), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka)).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
-                try {
-                    if (response.body() != null) {
-                        String data = response.body().string();
-                        if (data != null && data.length() > 0) {
-                            mListCluster.clear();
-                            mListCluster.add("Select");
-                            JSONArray jsonArr = new JSONArray(data);
-                            for (int i = 0; i < jsonArr.length(); i++) {
-                                mListCluster.add(jsonArr.getString(i));
-                            }
-                            cluster_adapter.notifyDataSetChanged();
-                            if (!isAdd && !isClusterSet) {
-                                isClusterSet = true;
-                                for (int i = 0; i < mListCluster.size(); i++) {
-                                    if (mListCluster.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getCluster())) {
-                                        binding.spinnerCluster.setSelection(i);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Utills.hideProgressDialog();
-            }
-        });
-    }
-
-    /*
-    * API to get all Talukas From server
-    * */
-    private void getTaluka() {
-        if (!isBackPress)
-            Utills.showProgressDialog(this, getString(R.string.loding_taluka), getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClient().create(ServiceRequest.class);
-
-        apiService.getTaluka(mListState.get(mSelectState), mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
-                try {
-                    if (response.body() != null) {
-                        String data = response.body().string();
-                        if (data != null && data.length() > 0) {
-                            mListTaluka.clear();
-                            mListTaluka.add("Select");
-                            JSONArray jsonArr = new JSONArray(data);
-                            for (int i = 0; i < jsonArr.length(); i++) {
-                                mListTaluka.add(jsonArr.getString(i));
-                            }
-                            taluka_adapter.notifyDataSetChanged();
-                            if (!isAdd && !isTalukaSet) {
-                                isTalukaSet = true;
-                                for (int i = 0; i < mListTaluka.size(); i++) {
-                                    if (mListTaluka.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getTaluka())) {
-                                        binding.spinnerTaluka.setSelection(i);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Utills.hideProgressDialog();
-            }
-        });
-    }
-
-    /*
-    * API to get all Villages From server
-    * */
-    private void getVillage() {
-        if (!isBackPress)
-            Utills.showProgressDialog(this, getString(R.string.loding_village), getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClient().create(ServiceRequest.class);
-
-        apiService.getVillage(mListState.get(mSelectState), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster)).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
-                try {
-                    if (response.body() != null) {
-                        String data = response.body().string();
-                        if (data != null && data.length() > 0) {
-                            mListVillage.clear();
-                            mListVillage.add("Select");
-                            JSONArray jsonArr = new JSONArray(data);
-                            for (int i = 0; i < jsonArr.length(); i++) {
-                                mListVillage.add(jsonArr.getString(i));
-                            }
-                            village_adapter.notifyDataSetChanged();
-                            if (!isAdd && !isVillageSet) {
-                                isVillageSet = true;
-                                for (int i = 0; i < mListVillage.size(); i++) {
-                                    if (mListVillage.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getVillage())) {
-                                        binding.spinnerVillage.setSelection(i);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Utills.hideProgressDialog();
-            }
-        });
-    }
-
-    /*
-    * API to get all Schools From server
-    * */
-    private void getSchool() {
-        if (!isBackPress)
-            Utills.showProgressDialog(this, getString(R.string.loding_school), getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getSchool(mListState.get(mSelectState), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage)).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
-                try {
-                    if (response.body() != null) {
-                        String data = response.body().string();
-                        if (data != null && data.length() > 0) {
-                            mListSchoolName.clear();
-                            mListCode.clear();
-                            mListSchoolName.add("Select");
-                            mListCode.add("");
-                            JSONArray jsonArr = new JSONArray(data);
-                            for (int i = 0; i < jsonArr.length(); i++) {
-                       /* JSONObject jsonObject = jsonArr.getJSONObject(i);
-                        mListSchoolName.add(jsonObject.getString("school_name"));
-                        .add(jsonObject.getString("school_code"));*/
-                                mListSchoolName.add(jsonArr.getString(i));
-                            }
-                            school_adapter.notifyDataSetChanged();
-                            if (!isAdd && !isSchoolSet) {
-                                isSchoolSet = true;
-                                for (int i = 0; i < mListSchoolName.size(); i++) {
-                                    if (mListSchoolName.get(i).equalsIgnoreCase(User.getCurrentUser(RegistrationActivity.this).getMvUser().getSchool_Name())) {
-                                        binding.spinnerSchoolName.setSelection(i);
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Utills.hideProgressDialog();
-            }
-        });
-    }
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
@@ -1675,7 +2126,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
 
-    private void showMultiselectDialog(ArrayList<String> arrayList) {
+    private void showMultiselectDialog(ArrayList<String> arrayList,String type) {
         ArrayList<String> list = arrayList;
         if (list.contains("Select")) {
             list.remove(list.indexOf("Select"));
@@ -1685,41 +2136,75 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         mSelection = new boolean[(items.length)];
         Arrays.fill(mSelection, false);
         if (value.length() != 0) {
-            String[] talukas = value.split(",");
-            for (int i = 0; i < talukas.length; i++) {
-                if (arrayList.contains(talukas[i].trim())) {
-                    mSelection[arrayList.indexOf(talukas[i].trim())] = true;
+            String[] location = value.split(",");
+            for (int i = 0; i < location.length; i++) {
+                if (arrayList.contains(location[i].trim())) {
+                    mSelection[arrayList.indexOf(location[i].trim())] = true;
+
+                    MultiLocation ml = s_response.getResultData().get(i);
+                        DetailedLocation.add(ml);
+                    mListDistrict.add(ml.getDistrictName());
                 }
             }
         }
-
-// arraylist to keep the selected items
+         // arraylist to keep the selected items
         final ArrayList seletedItems = new ArrayList();
-        AlertDialog dialog = new AlertDialog.Builder(RegistrationActivity.this)
-                .setTitle(getString(R.string.taluka))
-                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (mSelection != null && which < mSelection.length) {
-                            mSelection[which] = isChecked;
-                            value = buildSelectedItemString(items);
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Argument 'which' is out of bounds.");
-                        }
-                    }
-                })
-                .setPositiveButton(RegistrationActivity.this.getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        binding.editMultiselectTaluka.setText(value);
-                    }
-                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
-                    }
-                }).create();
+        AlertDialog.Builder dialog = new AlertDialog.Builder(RegistrationActivity.this);
+            if (type.equals("State")) {
+               dialog.setTitle(getString(R.string.state));
+           } else if (type.equals("District")) {
+              dialog.setTitle(getString(R.string.disrict));
+           } else if (type.equals("Taluka")) {
+              dialog.setTitle(getString(R.string.taluka));
+           } else if (type.equals("Cluster")) {
+              dialog.setTitle(getString(R.string.cluster));
+           } else if (type.equals("Village")) {
+              dialog.setTitle(getString(R.string.village));
+           } else if (type.equals("School")) {
+              dialog.setTitle(getString(R.string.school_name));
+           }
+        dialog.setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if (mSelection != null && which < mSelection.length) {
+                    mSelection[which] = isChecked;
+
+                    value = buildSelectedItemString(items);
+                } else {
+                    throw new IllegalArgumentException(
+                            "Argument 'which' is out of bounds.");
+                }
+            }
+        });
+
+        dialog.setPositiveButton(RegistrationActivity.this.getString(R.string.ok), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+
+                if (type.equals("State")) {
+                    binding.editMultiselectState.setText(value);
+                } else if (type.equals("District")) {
+                    binding.editMultiselectDistrict.setText(value);
+                } else if (type.equals("Taluka")) {
+                    binding.editMultiselectTaluka.setText(value);
+                } else if (type.equals("Cluster")) {
+                    binding.editMultiselectCluster.setText(value);
+                } else if (type.equals("Village")) {
+                    binding.editMultiselectVillage.setText(value);
+                } else if (type.equals("School")) {
+                    binding.editMultiselectSchool.setText(value);
+                }
+            }
+        });
+
+        dialog.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int id) {
+                //  Your code when user clicked on Cancel
+            }
+
+        });
+        dialog.create();
         dialog.show();
     }
 
@@ -1745,6 +2230,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         AlertDialog dialog = new AlertDialog.Builder(RegistrationActivity.this)
                 .setTitle(getString(R.string.project))
                 .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
+
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
                         if (mSelection != null && which < mSelection.length) {

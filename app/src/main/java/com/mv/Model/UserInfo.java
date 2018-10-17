@@ -51,9 +51,19 @@ public class UserInfo {
     @SerializedName("User_Taluka__c")
     @Expose
     private String Taluka = "";
+
+    @SerializedName("User_Multiple_State__c")
+    @Expose
+    private String MultipleState = "";
+
+    @SerializedName("User_Multiple_District__c")
+    @Expose
+    private String MultipleDistrict = "";
+
     @SerializedName("User_Multiple_Taluka__c")
     @Expose
     private String MultipleTaluka = "";
+
     @SerializedName("Birth_Day__c")
     @Expose
     private String Birth_Day__c;
@@ -148,12 +158,28 @@ public class UserInfo {
     @Expose
     private String User_Address__c;
 
+    public String getMultipleState() {
+        return MultipleState;
+    }
+
+    public void setMultipleState(String MultipleState) {
+        MultipleState = MultipleState;
+    }
+
     public String getMultipleTaluka() {
         return MultipleTaluka;
     }
 
     public void setMultipleTaluka(String MultipleTaluka) {
         MultipleTaluka = MultipleTaluka;
+    }
+
+    public String getMultipleDistrict() {
+        return MultipleDistrict;
+    }
+
+    public void setMultipleDistrict(String MultipleDistrict) {
+        MultipleDistrict = MultipleDistrict;
     }
 
     public String getBirth_Day__c() {

@@ -64,8 +64,6 @@ public class ApiClient {
     public static Retrofit getClient() {
         if (retrofit == null) {
 
-
-
             OkHttpClient client = null;
 
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();

@@ -435,6 +435,7 @@
                     android:textSize="@dimen/small_text" />
 
                 <RelativeLayout
+                    android:id="@+id/rel_state"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -457,6 +458,31 @@
 
 
                 </RelativeLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_multiselect_state"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                    <com.mv.Widgets.MyEditTextView
+                        android:id="@+id/edit_multiselect_state"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:gravity="left|top"
+                        android:hint="@string/state"
+                        android:maxLines="3"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
 
 
                 <com.mv.Widgets.MyTextView
@@ -493,6 +519,31 @@
                         android:spinnerMode="dialog" />
                 </RelativeLayout>
 
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_multiselect_district"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                    <com.mv.Widgets.MyEditTextView
+                        android:id="@+id/edit_multiselect_district"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:gravity="left|top"
+                        android:hint="@string/district"
+                        android:maxLines="3"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
                 <com.mv.Widgets.MyTextView
                     android:id="@+id/txt_taluka"
                     android:layout_width="wrap_content"
@@ -521,7 +572,6 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="3dp"
-
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
                         android:prompt="@string/taluka"
@@ -587,6 +637,31 @@
                         android:spinnerMode="dialog" />
                 </RelativeLayout>
 
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_multiselect_cluster"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                    <com.mv.Widgets.MyEditTextView
+                        android:id="@+id/edit_multiselect_cluster"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:gravity="left|top"
+                        android:hint="@string/cluster"
+                        android:maxLines="3"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
+
                 <com.mv.Widgets.MyTextView
                     android:id="@+id/txt_village"
                     android:layout_width="wrap_content"
@@ -615,12 +690,36 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="3dp"
-
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
                         android:prompt="@string/village"
                         android:spinnerMode="dialog" />
                 </RelativeLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_multiselect_village"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                    <com.mv.Widgets.MyEditTextView
+                        android:id="@+id/edit_multiselect_village"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:gravity="left|top"
+                        android:hint="@string/village"
+                        android:maxLines="3"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
 
                 <com.mv.Widgets.MyTextView
                     android:id="@+id/txt_school"
@@ -656,6 +755,31 @@
                         android:prompt="@string/school_name"
                         android:spinnerMode="dialog" />
                 </RelativeLayout>
+
+                <android.support.design.widget.TextInputLayout
+                    android:id="@+id/input_multiselect_school"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="gone"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/lighter_grey_box"
+                    android:padding="10dp">
+
+                    <com.mv.Widgets.MyEditTextView
+                        android:id="@+id/edit_multiselect_school"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:clickable="true"
+                        android:focusable="false"
+                        android:gravity="left|top"
+                        android:hint="@string/state"
+                        android:maxLines="3"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/medium_text" />
+                </android.support.design.widget.TextInputLayout>
 
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/input_school_code"

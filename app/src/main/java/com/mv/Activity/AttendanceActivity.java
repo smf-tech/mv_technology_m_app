@@ -290,10 +290,6 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void checkInClick() {
-        if(location==null){
-            Utills.showToast("Current location is not available, Please try again", AttendanceActivity.this);
-            return;
-        }
         if (checkInClickable == 1) {
             Utills.showToast("Already Check In", AttendanceActivity.this);
             return;
@@ -308,7 +304,11 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
 //        else if (location == null) {
 //            gps.showSettingsAlert();
 //            return;
-        } else if (0.0==location.getLongitude() && 0.0==location.getLatitude()) {
+        }else if(location==null){
+            Utills.showToast("Current location is not available, Please try again", AttendanceActivity.this);
+            return;
+        }
+        else if (0.0==location.getLongitude() && 0.0==location.getLatitude()) {
             Utills.showToast("Current location is not available, Please try again", AttendanceActivity.this);
             initViews();
             return;
@@ -485,17 +485,13 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void checkOutClick() {
-        if(location==null){
-            Utills.showToast("Current location is not available, Please try again", AttendanceActivity.this);
-            return;
-        }
         if (checkOutClickable == 1) {
             Utills.showToast("Already Check Out", AttendanceActivity.this);
             return;
         } else if (checkOutClickable == 2) {
             Utills.showToast("Please First Check In and then try to Check Out...", AttendanceActivity.this);
             return;
-        }  else if (!gps.canGetLocation()) {
+        } else if (!gps.canGetLocation()) {
             gps.showSettingsAlert();
             return;
 //        } else if (0.0==gps.getLongitude() && 0.0==gps.getLatitude()) {
@@ -505,6 +501,9 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
 //        } else if (location==null) {
 //            gps.showSettingsAlert();
 //            return;
+        }else if(location==null){
+            Utills.showToast("Current location is not available, Please try again", AttendanceActivity.this);
+            return;
         } else if (0.0==location.getLongitude() && 0.0==location.getLatitude()) {
             Utills.showToast(getResources().getString(R.string.location_not_found), AttendanceActivity.this);
             initViews();
