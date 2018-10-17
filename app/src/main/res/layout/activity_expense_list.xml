@@ -7,7 +7,7 @@
 
         <variable
             name="activity"
-            type="com.mv.Activity.ExpenseListActivity" />
+            type="com.sujalamsufalam.Activity.ExpenseListActivity" />
     </data>
 
     <LinearLayout

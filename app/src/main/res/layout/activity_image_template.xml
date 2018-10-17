@@ -6,7 +6,7 @@
 
         <variable
             name="activity"
-            type="com.mv.Activity.ImageTemplateActivity" />
+            type="com.sujalamsufalam.Activity.ImageTemplateActivity" />
     </data>
 
     <LinearLayout
@@ -37,7 +37,7 @@
                 android:background="@drawable/lighter_grey_box"
                 android:padding="10dp">
 
-                <com.mv.Widgets.MyEditTextView
+                <com.sujalamsufalam.Widgets.MyEditTextView
                     android:id="@+id/edit_text_content"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -61,7 +61,7 @@
                 android:background="@drawable/lighter_grey_box"
                 android:padding="10dp">
 
-                <com.mv.Widgets.MyEditTextView
+                <com.sujalamsufalam.Widgets.MyEditTextView
                     android:id="@+id/edit_text_description"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -85,7 +85,7 @@
 
         </LinearLayout>
 
-        <com.mv.Widgets.MyFontButton
+        <com.sujalamsufalam.Widgets.MyFontButton
             android:id="@+id/btnSubmit"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

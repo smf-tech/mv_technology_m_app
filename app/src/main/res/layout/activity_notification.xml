@@ -6,7 +6,7 @@
     <data>
         <variable
             name="activity"
-            type="com.mv.Activity.NotificationActivity" />
+            type="com.sujalamsufalam.Activity.NotificationActivity" />
     </data>
 
     <RelativeLayout

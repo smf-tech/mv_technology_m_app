@@ -35,7 +35,9 @@
             android:textColor="@color/white"
             android:textSize="12sp" />
 
+
     </LinearLayout>
+
 
     <RelativeLayout
         android:id="@+id/invisiblityLayout"
@@ -43,6 +45,7 @@
         android:layout_height="130dp"
         android:layout_margin="2dp"
         android:background="@drawable/transparant_with_rounded_corner"
+
         android:visibility="gone">
 
         <LinearLayout

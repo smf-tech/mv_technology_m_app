@@ -6,7 +6,7 @@
 
         <variable
             name="activity"
-            type="com.mv.Activity.ClassObservationActivity" />
+            type="com.sujalamsufalam.Activity.ClassObservationActivity" />
     </data>
 
     <LinearLayout
@@ -33,7 +33,7 @@
             android:onClick="@{()->activity.onLayoutMTTraining()}"
             android:padding="8dp">
 
-            <com.mv.Widgets.MyTextView
+            <com.sujalamsufalam.Widgets.MyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"

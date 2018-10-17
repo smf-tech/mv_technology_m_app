@@ -7,7 +7,7 @@
 
         <variable
             name="activity"
-            type="com.mv.Activity.CommunityDetailsActivity" />
+            type="com.sujalamsufalam.Activity.CommunityDetailsActivity" />
     </data>
 
     <LinearLayout
@@ -51,7 +51,7 @@
                             android:scaleType="centerCrop"
                             android:src="@drawable/logomulya" />
 
-                        <com.mv.Widgets.MyTextView
+                        <com.sujalamsufalam.Widgets.MyTextView
                             android:id="@+id/type"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
                             android:textSize="@dimen/medium_text"
                             my_font:typeface="Abel-Regular.ttf" />
 
-                        <com.mv.Widgets.MyTextView
+                        <com.sujalamsufalam.Widgets.MyTextView
                             android:id="@+id/postDate"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
                         android:scaleType="centerCrop"
                         android:src="@drawable/mulya_bg" />
 
-                    <com.mv.Widgets.MyTextView
+                    <com.sujalamsufalam.Widgets.MyTextView
                         android:id="@+id/Title"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
                         android:textSize="14sp"
                         my_font:typeface="Abel-Regular.ttf" />
 
-                    <com.mv.Widgets.MyTextView
+                    <com.sujalamsufalam.Widgets.MyTextView
                         android:id="@+id/Description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -131,7 +131,7 @@
                         android:background="@drawable/app_bg"
                         android:visibility="gone" />
 
-                    <com.mv.Widgets.MyTextView
+                    <com.sujalamsufalam.Widgets.MyTextView
                         android:id="@+id/txt_message"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -175,7 +175,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:src="@drawable/share" />
 
-                            <com.mv.Widgets.MyTextView
+                            <com.sujalamsufalam.Widgets.MyTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -202,7 +202,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:src="@drawable/comment" />
 
-                            <com.mv.Widgets.MyTextView
+                            <com.sujalamsufalam.Widgets.MyTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -230,7 +230,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:src="@drawable/like_n" />
 
-                            <com.mv.Widgets.MyTextView
+                            <com.sujalamsufalam.Widgets.MyTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -256,7 +256,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:src="@drawable/download" />
 
-                            <com.mv.Widgets.MyTextView
+                            <com.sujalamsufalam.Widgets.MyTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -281,7 +281,7 @@
                                 android:layout_gravity="center_vertical"
                                 android:src="@drawable/download_file" />
 
-                            <com.mv.Widgets.MyTextView
+                            <com.sujalamsufalam.Widgets.MyTextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
@@ -304,7 +304,7 @@
                         android:gravity="left"
                         android:orientation="horizontal">
 
-                        <com.mv.Widgets.MyTextView
+                        <com.sujalamsufalam.Widgets.MyTextView
                             android:id="@+id/txt_comment_cnt"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -315,7 +315,7 @@
 
                             my_font:typeface="Abel-Regular.ttf" />
 
-                        <com.mv.Widgets.MyTextView
+                        <com.sujalamsufalam.Widgets.MyTextView
                             android:id="@+id/like_count"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

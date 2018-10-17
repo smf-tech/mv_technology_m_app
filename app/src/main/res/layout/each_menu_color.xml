@@ -23,7 +23,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:maxHeight="@dimen/dimen_20dp"/>
-        <com.mv.Widgets.MyTextView
+        <com.sujalamsufalam.Widgets.MyTextView
             android:id="@+id/txtTemplateName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

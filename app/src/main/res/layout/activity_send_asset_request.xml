@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mv.Activity.SendAssetRequestActivity">
+    tools:context="com.sujalamsufalam.Activity.SendAssetRequestActivity">
 
     <LinearLayout
         android:id="@+id/layout_main"
@@ -65,7 +65,7 @@
                     android:padding="10dp"
                     android:visibility="gone">
 
-                    <com.mv.Widgets.MyEditTextView
+                    <com.sujalamsufalam.Widgets.MyEditTextView
                         android:id="@+id/edit_text_stock"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
                     android:padding="10dp"
                     android:visibility="gone">
 
-                    <com.mv.Widgets.MyEditTextView
+                    <com.sujalamsufalam.Widgets.MyEditTextView
                         android:id="@+id/edit_text_quantity"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                     android:focusable="false"
                     android:padding="10dp">
 
-                    <com.mv.Widgets.MyEditTextView
+                    <com.sujalamsufalam.Widgets.MyEditTextView
                         android:id="@+id/edit_text_issue_date"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
                     android:padding="10dp"
                     android:visibility="gone">
 
-                    <com.mv.Widgets.MyEditTextView
+                    <com.sujalamsufalam.Widgets.MyEditTextView
                         android:id="@+id/edit_text_tentative_return_date"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -170,7 +170,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.mv.Widgets.MyEditTextView
+                    <com.sujalamsufalam.Widgets.MyEditTextView
                         android:id="@+id/edit_text_remarks"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -186,7 +186,7 @@
             </LinearLayout>
         </ScrollView>
 
-        <com.mv.Widgets.MyFontButton
+        <com.sujalamsufalam.Widgets.MyFontButton
             android:id="@+id/btn_send_request"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

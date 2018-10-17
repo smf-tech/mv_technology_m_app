@@ -14,9 +14,9 @@
     <ImageView
         android:layout_width="@dimen/dimen_70dp"
         android:layout_height="@dimen/dimen_70dp"
-        android:layout_gravity="right"
+        android:layout_gravity="center"
         android:layout_marginTop="@dimen/dimen_10dp"
-        android:src="@drawable/smflogo0001" />
+        android:src="@drawable/ic_launcher" />
 
 
     <ImageView
@@ -24,13 +24,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@drawable/mulya_image" />
+        android:src="@drawable/mulya_image"
+        android:visibility="gone"/>
 
     <TextView
         android:id="@+id/versionName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
+        android:layout_gravity="center"
         android:gravity="center"
         android:textSize="@dimen/small_text"
         android:text="Footer Item 2"

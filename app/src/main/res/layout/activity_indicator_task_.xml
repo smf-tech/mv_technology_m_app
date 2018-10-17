@@ -6,7 +6,7 @@
 
         <variable
             name="activity"
-            type="com.mv.Activity.IndicatorTask" />
+            type="com.sujalamsufalam.Activity.IndicatorTask" />
     </data>
 
     <LinearLayout

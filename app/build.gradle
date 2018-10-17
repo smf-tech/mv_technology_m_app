@@ -41,8 +41,8 @@ android {
         applicationId "com.mv"
         minSdkVersion 17
         targetSdkVersion 22
-        versionCode 46
-        versionName "3.24"
+        versionCode 1
+        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "BASEURL", "\"http://mobileapp.mulyavardhan.org/mv_gov/index.php/\""
         multiDexEnabled true
@@ -79,7 +79,7 @@ android {
             buildConfigField 'String','CLIENT_ID',"\"3MVG9d8..z.hDcPJhCvdazzxmwecKJ839UtvRRCnGEbq5p_PT49tZaftCOG4eti.6aI2v98zkYM0KQvaOWmTP\""
             buildConfigField 'String','CLIENT_SECRET',"\"2027871201908212165\""
             signingConfig signingConfigs.config
-            resValue 'string', 'appNameConfig', 'Mulya Test'
+            resValue 'string', 'appNameConfig', 'SS Test'
         }
         Production{
             dimension "server"

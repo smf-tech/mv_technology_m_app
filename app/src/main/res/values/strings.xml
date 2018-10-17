@@ -1,8 +1,10 @@
 <resources xmlns:https="http://schemas.android.com/tools">
-    <string name="app_name">Mulyavardhan 2.0</string>
+    <string name="app_name">Sujalam Sufalam</string>
+    <string name="progress_loading">Loding</string>
     <string name="progress_please_wait">Please wait</string>
     <string name="error_something_went_wrong">Something went wrong, Please try again</string>
     <string name="error_no_internet">Please check your internet connection</string>
+    <string name="error_login">Incorrect credentials.</string>
 
     <string name="attendance_rejection_reason">Please provide reason for attendance rejection.</string>
 
@@ -34,6 +36,15 @@
     <string name="no_gps">GPS is not available.</string>
     <string name="gps_settings">GPS Settings</string>
     <string name="gps_popup_title">Please turn on GPS/LOCATION.</string>
+    <string name="reporting_template">Reporting Template</string>
+
+    <!--Home Acitivty-->
+    <string name="intro_about_header">About</string>
+    <string name="intro_about_description">Mulyavardhan (MV) is a value education programme to help children imbibe democratic values, attitudes and skills in an enabling school climate. The programme is running in select government primary schools across 34 districts of Maharashtra (MV-GoM), government primary schools in two tehsils of Beed district of Maharashtra (MV-Beed), select government primary schools in the state of Goa (MV-GoG), and schools run in Goa by Vidya Bharti, a private school body (MV-VB).  Visit www.mulyavardhan.com for more info</string>
+    <string name="intro_mv_training_events_header">MV Trainings</string>
+    <string name="fragment_intro_about">About mulyawardhan</string>
+    <string name="fragment_intro_training">MV Trainings</string>
+    <string name="fragment_intro_events">MV Events</string>
 
     <!--Registration Activity-->
     <string name="name">First Name *</string>
@@ -43,23 +54,25 @@
 
     <string name="email">Email Id</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
     <string name="role">Role</string>
     <string name="mandatory_role">Role *</string>
     <string name="project">Project</string>
     <string name="particulars">Particulars</string>
     <string name="organization">Organization</string>
     <string name="disrict">District </string>
+    <string name="mandatory_district">District *</string>
     <string name="taluka">Taluka </string>
     <string name="mandatory_taluka">Taluka *</string>
     <string name="cluster">Cluster </string>
     <string name="mandatory_cluster">Cluster *</string>
     <string name="village">Village </string>
     <string name="mandatory_village">Village *</string>
-    <string name="school_name">School Name </string>
-    <string name="mandatory_school_name">School Name  *</string>
+    <string name="school_name">Structure Name </string>
+    <string name="mandatory_school_name">Structure Name  *</string>
 
 
-    <string name="school_code">School Code</string>
+    <string name="school_code">Structure Code</string>
     <string name="district">District </string>
     <string name="state">State </string>
     <string name="mandatory_state">State *</string>
@@ -73,11 +86,15 @@
     <!--IssueTemplate Activity-->
     <string name="issue">Issue Type</string>
     <string name="priority">Priority</string>
+    <string name="item_title">Palais Garnier</string>
     <string name="item_desc">Description : It’s\nbeen an amazing first months since we launched the App! Here are some of the best moments in case you missed them!</string>
     <string name="catagory">Categories</string>
     <!--ReportingTemplate Activity-->
     <string name="reporting">Reporting Type</string>
     <string name="question_5">Question 5</string>
+    <string name="hoy">Yes</string>
+    <string name="nahi">No</string>
+    <string name="question_4">Question 4</string>
     <string name="msg_enter_mobile">Enter your mobile number to get started!</string>
     <string name="msg_manual_otp">(Enter the Password below in case if we fail to detect the SMS automatically)</string>
     <string name="resend"> <u>Resend Password</u></string>
@@ -98,7 +115,7 @@
     <string name="broadcast">Broadcast\nMessage</string>
     <string name="community">My\nCommunity</string>
     <string name="programme_management">Programme\nManagement</string>
-    <string name="training_content">Mulyavardhan\nContent</string>
+    <string name="training_content">Sujalam Sufalam\nContent</string>
     <string name="indicator">My\nReports</string>
     <string name="training_calendar">My\nCalendar</string>
     <string name="notification">Notification</string>
@@ -111,6 +128,7 @@
     <string name="back_string">Please click BACK again to exit </string>
     <string name="please_enter">Please Enter </string>
     <string name="please_enter_text">Please Enter Text</string>
+    <string name="please_enter_date">Please Enter Date</string>
     <string name="please_enter_date_time">Please Enter Date-Time</string>
     <string name="digit"> digit </string>
     <string name="logout_string">Do you want to Logout? </string>
@@ -125,14 +143,17 @@
     <string name="enter_comment">Please Enter Comment</string>
 
     <string name="share_post">Sharing Post...</string>
+    <string name="post_share_successfully">Post Share Successfully...</string>
     <string name="submitted_successfully">Submitted Successfully...</string>
     <string name="select_one">Select One Community</string>
     <string name="comunity_detail">Community Details</string>
+    <string name="template_type">Template Type</string>
     <string name="description">Description</string>
     <string name="title">Title</string>
     <string name="loading_chats">Loading Chats</string>
     <string name="loading_members">Loading Members</string>
     <string name="loading_template">Loading Template</string>
+    <string name="home">Home</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="select_temp">Please select template type...</string>
     <string name="img_template">Image Template</string>
@@ -140,11 +161,13 @@
     <string name="loding_taluka">Loading Taluka</string>
 
     <string name="loding_cluster">Loading Cluster</string>
-    <string name="loding_school">Loading School</string>
+    <string name="loding_school">Loading Structure</string>
     <string name="loding_village">Loading Village</string>
 
     <string name="issue_template">Issue Template</string>
+    <string name="issue_submit">Issue submitted successfully...</string>
     <string name="broadcast_submit">Broadcast submitted successfully...</string>
+    <string name="Process_Detail">Process Detail</string>
     <string name="fileNotPresent">File is not present. Please Press Download Button</string>
     <string name="no_data_available">No Data Available</string>
 
@@ -162,8 +185,9 @@
     <string name="Please_select_State">Please select State</string>
     <string name="Please_select_district">Please select District</string>
     <string name="Please_select_taluka">Please select Taluka</string>
+    <string name="Please_select_custer">Please select Cluster</string>
     <string name="Please_select_village">Please select Village</string>
-    <string name="Please_select_school">Please select School</string>
+    <string name="Please_select_school">Please select Structure</string>
 
     <string name="MV_training">MV  Training</string>
     <string name="Video_template">Video Template</string>
@@ -184,6 +208,8 @@
     <string name="Schedule_training">Schedule Training</string>
     <string name="team_user_approval">User Approval</string>
     <string name="team_form_approval">Form Approval</string>
+    <string name="expense_approval">Expense Approval</string>
+    <string name="adavance_approval">Advance Approval</string>
     <string name="Registration">Registration</string>
     <string name="about_us">About\nMulyavardhan</string>
 
@@ -192,6 +218,7 @@
     <string name="profile">My Profile</string>
     <string name="logout">Logout</string>
     <string name="add_location">Add Location</string>
+    <string name="select_form">Select Form</string>
 
     <string name="all_posts">All \nPosts</string>
     <string name="my_posts">My \nPosts</string>
@@ -204,6 +231,7 @@
     <string name="aboutus_info">Mulyavardhan (MV) is a value education programme to help children imbibe democratic values, attitudes and skills in an enabling school climate.\n\nMulyavardhan was initiated in 2009 and has evolved through an intensive, evidence-based approach to learning and improvement through pilot-project implementation, impact assessment studies and consultations with national and international experts.\n\nThe programme has been reviewed and accepted by the Government of Maharashtra and Government of Goa.  Mulyavardhan pilot projects have been launched by these states in a large number of selected schools, as a first step to implementation of the programme in all schools of the states.\n\nThe programme is currently being implemented in around 1000 schools in Maharashtra and Goa through four projects: ( MV-GoM, MV-Beed, MV-GoG, MV-VB).\n\nhttps://www.youtube.com/watch?v=azVGgQTGQ68
     \n\n<b>Aim</b>\n\nEnabling schools to provide child-friendly and value-based education to nurture caring, responsible, productive democratic citizens.\n\n<b>Rationale</b>\n\nWhile several educational policy documents, framed in India since Independence, have emphasized the need for value education in schools, there is no model of large-scale implementation of value education across states, school bodies and contexts.
    \n\nMulyavardhan fills this critical gap with a contemporary approach aligned to national and international policies.\n\n<b>Approach</b>\n\nMulyavardhan adopts a whole-school approach, whereby the entire school ethos and all school processes are guided by core democratic values. Under this approach, values are not “taught”, but absorbed by students from the school ethos, processes and practices.\n\n</string>
+    <string name="add_the_sanvad">पोस्ट जोडा</string>
     <string name="accept">Accept</string>
     <string name="detail"><u>Continue Reading</u></string>
 
@@ -231,6 +259,7 @@
     <string name="asset_issue_date">Requested Date</string>
     <string name="asset_tentative_return_date">Tentative Return Date</string>
     <string name="asset_remarks">Remarks</string>
+    <string name="asset_request">Assets</string>
     <string name="asset_management">Asset\nManagement</string>
     <string name="asset_name__">Asset name</string>
     <string name="asset_code">Code</string>
@@ -257,6 +286,8 @@
     <string name="amount_to_approve">Amount to be Approve</string>
     <!--Expense List Activity-->
     <string name="expense_list">Expense List</string>
+    <!--Advance List Activity-->
+    <string name="advance_list">Advance List</string>
 
     <!--Advance New Activity-->
     <string name="adavance_new">Advance Activity</string>
@@ -269,6 +300,8 @@
     <string name="leave_approoval">Leave Approval</string>
     <string name="attendance_approoval">Attendance Approval</string>
 
+    <string name="loading_process">Loading Process</string>
+
     <string name="asset_username">Name</string>
     <string name="are_you_really">Do you want save data ?</string>
     <string name="attendance">Attendance</string>
@@ -279,6 +312,7 @@
     <string name="holiday_list">Holiday List</string>
     <string name="asset_available_stock">Available Stock</string>
     <string name="birth_date">Birth Date</string>
+    <string name="Please_select_birthdate">Please select birth date</string>
     <string name="work_location">Work Location</string>
     <string name="enter_title">Enter Title</string>
     <string name="enter_start_date">Enter Start Date</string>
@@ -289,6 +323,7 @@
     <string name="add_members">Add Members</string>
     <string name="please_refresh_location">Please Refresh Location</string>
     <string name="asset_request_screen">Asset Request</string>
+    <string name="Title">Title</string>
     <string name="allocate">Allocate</string>
     <string name="reallocate">Re-Allocate</string>
     <string name="asset_allocation">Asset Allocation</string>
@@ -296,6 +331,7 @@
     <string name="asset_reallocation">Asset Re-Allocation</string>
     <string name="asset_approval">Asset Approval</string>
     <string name="addAttachment">Add Attachment</string>
+    <string name="Please_select_multiple_taluka">Please select Multiple Taluka</string>
     <string name="expenseDescription">Description of Expense</string>
     <string name="status">Status</string>
     <string name="comment_delete">Comment deleted successfully.</string>
@@ -307,6 +343,7 @@
     <string name="select_code">Select Code</string>
     <string name="alreadyPresent">Mobile Number Already Present</string>
     <string name="alreadyPresentDetail">Mobile Number is already present. Please check your Mobile Number</string>
+    <string name="text_pdf">PDF</string>
     <string name="text_proper_date">Please select proper date.</string>
     <string name="no_attachment_text">No attachment avaialble</string>
     <string name="all_plans">All Plans</string>
@@ -317,4 +354,5 @@
     <string name="Please_select_project">Please select Project</string>
     <string name="location_not_found">Current location is not available, Please try again</string>
     <string name="title_activity_maps">Map</string>
+    <string name="structure">Structure</string>
 </resources>
