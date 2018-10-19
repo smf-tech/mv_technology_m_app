@@ -5,18 +5,12 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mv.R;
 import com.mv.Utils.LocaleManager;
 
 public class AboutUsActivity extends AppCompatActivity implements View.OnClickListener {
-    //added for testing
-    //added for testing
-    private ImageView img_back, img_list, img_logout, img_filter;
-    private TextView toolbar_title;
-    private RelativeLayout mToolBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,21 +29,16 @@ public class AboutUsActivity extends AppCompatActivity implements View.OnClickLi
         if (str.contains("\n")) {
             str = str.replace("\n", " ");
         }
-        mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        toolbar_title.setText(str);
-        img_back = (ImageView) findViewById(R.id.img_back);
+
+        ((TextView) findViewById(R.id.toolbar_title)).setText(str);
+
+        ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
-        img_list = (ImageView) findViewById(R.id.img_list);
-        img_list.setVisibility(View.GONE);
 
-        img_filter = (ImageView) findViewById(R.id.img_filter);
-        img_filter.setVisibility(View.GONE);
-        img_logout = (ImageView) findViewById(R.id.img_logout);
-        img_logout.setVisibility(View.GONE);
-
-
+        findViewById(R.id.img_list).setVisibility(View.GONE);
+        findViewById(R.id.img_filter).setVisibility(View.GONE);
+        findViewById(R.id.img_logout).setVisibility(View.GONE);
     }
 
     @Override
@@ -58,6 +47,5 @@ public class AboutUsActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.img_back:
                 finish();
         }
-
     }
 }
