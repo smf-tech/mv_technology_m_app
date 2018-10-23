@@ -90,17 +90,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onLoginClick() {
         if (binding.edtUsername.isShown() && isValidate(binding.edtUsername, 10, getString(R.string.mobile_no))) {
             if (Utills.isConnected(this)) {
-                loginToSalesforce();
+                loginToSalesForce();
             } else {
                 Utills.showInternetPopUp(this);
             }
         } else if (binding.edtOtp.isShown() && isValidate(binding.edtOtp, 6, getString(R.string.password))) {
-
             if (user.getMvUser().getPassword() != null) {
-
                 if (user.getMvUser().getPassword().trim().equals(binding.edtOtp.getText().toString().trim())) {
                     preferenceHelper.insertString(PreferenceHelper.UserData, data);
                     yourCountDownTimer.cancel();
+
                     if (user.getMvUser().getRoll() != null && !(TextUtils.isEmpty(user.getMvUser().getRoll()))) {
                         Utills.showToast(getString(R.string.login_successful), LoginActivity.this);
                         Intent intent;
@@ -128,7 +127,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onResendOtpClick() {
         if (Utills.isConnected(this)) {
             binding.tvResendOtp.setVisibility(View.GONE);
-            loginToSalesforce();
+            loginToSalesForce();
         } else {
             Utills.showInternetPopUp(this);
         }
@@ -139,7 +138,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
 
-    private void loginToSalesforce() {
+    private void loginToSalesForce() {
         Utills.showProgressDialog(this);
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
@@ -151,6 +150,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
+                Log.e("loginToSalesForce", "LoginActivity()");
                 try {
                     if (response.body() != null) {
                         data = response.body().string();
@@ -296,7 +296,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 binding.tvResendOtp.setVisibility(View.VISIBLE);
             }
         }.start();
-
     }
 
     @Override
@@ -304,8 +303,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (binding.edtOtp.isShown()) {
             binding.edtOtp.setText("");
             slideOut(binding.edtUsername, binding.edtOtp, getString(R.string.msg_enter_mobile));
-            if (yourCountDownTimer != null)
+
+            if (yourCountDownTimer != null) {
                 yourCountDownTimer.cancel();
+            }
+
             binding.tvTimer.setVisibility(View.GONE);
             binding.tvResendOtp.setVisibility(View.GONE);
         } else {
@@ -347,17 +349,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //Process the sms format and extract body &amp; phoneNumber
                 msg = msg.replace("\n", "");
                 String body = msg.substring(msg.lastIndexOf(":") + 1, msg.length());
-
                 Log.d("OTP", body);
                 binding.edtOtp.setText(body);
-                if (yourCountDownTimer != null)
+
+                if (yourCountDownTimer != null) {
                     yourCountDownTimer.cancel();
+                }
+
                 binding.tvTimer.setVisibility(View.GONE);
                 binding.tvResendOtp.setVisibility(View.GONE);
 
                 //Add it to the list or do whatever you wish to
             }
         };
+
         this.registerReceiver(mIntentReceiver, intentFilter);
     }
 

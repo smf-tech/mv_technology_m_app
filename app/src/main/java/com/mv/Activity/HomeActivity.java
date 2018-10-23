@@ -268,7 +268,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         int count = AppDatabase.getAppDatabase(this).userDao().getUnRearNotificationsCount("unread");
-        tvUnreadNotification.setText(count);
+        tvUnreadNotification.setText("" + count);
         if (count > 0) {
             tvUnreadNotification.setVisibility(View.VISIBLE);
         }
@@ -279,7 +279,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             public void onReceive(Context context, Intent intent) {
                 if (Constants.PUSH_NOTIFICATION.equals(intent.getAction())) {
                     int count = AppDatabase.getAppDatabase(HomeActivity.this).userDao().getUnRearNotificationsCount("unread");
-                    tvUnreadNotification.setText(count);
+                    tvUnreadNotification.setText("" + count);
 
                     if (count > 0) {
                         tvUnreadNotification.setVisibility(View.VISIBLE);
