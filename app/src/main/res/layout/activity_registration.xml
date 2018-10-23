@@ -442,6 +442,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
+                    android:visibility="gone"
                     android:paddingBottom="10dp">
 
                     <Spinner
@@ -464,7 +465,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:visibility="gone"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/lighter_grey_box"
@@ -504,6 +504,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
+                    android:visibility="gone"
                     android:paddingBottom="10dp">
 
                     <Spinner
@@ -524,7 +525,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:visibility="gone"
+
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/lighter_grey_box"
@@ -563,6 +564,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
+                    android:visibility="gone"
                     android:paddingBottom="10dp">
 
                     <Spinner
@@ -583,7 +585,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:visibility="gone"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/lighter_grey_box"
@@ -622,6 +623,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
+                    android:visibility="gone"
                     android:paddingBottom="10dp">
 
                     <Spinner
@@ -642,7 +644,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:visibility="gone"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/lighter_grey_box"
@@ -681,6 +682,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
+                    android:visibility="gone"
                     android:paddingBottom="10dp">
 
                     <Spinner
@@ -701,7 +703,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:visibility="gone"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/lighter_grey_box"
@@ -740,6 +741,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
+                    android:visibility="gone"
                     android:paddingBottom="10dp">
 
                     <Spinner
@@ -749,7 +751,6 @@
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
                         android:layout_marginTop="3dp"
-
                         android:paddingBottom="10dp"
                         android:paddingTop="10dp"
                         android:prompt="@string/school_name"
@@ -761,7 +762,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:visibility="gone"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/lighter_grey_box"
@@ -775,7 +775,7 @@
                         android:clickable="true"
                         android:focusable="false"
                         android:gravity="left|top"
-                        android:hint="@string/state"
+                        android:hint="@string/school_name"
                         android:maxLines="3"
                         android:textColor="@color/black"
                         android:textSize="@dimen/medium_text" />
@@ -806,6 +806,11 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/medium_text" />
                 </android.support.design.widget.TextInputLayout>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center">
+
 
                 <ImageView
                     android:id="@+id/addImage"
@@ -816,17 +821,29 @@
                     android:onClick="@{()->activity.onAddImageClick()}"
                     android:src="@drawable/add" />
 
+                    <ImageView
+                        android:id="@+id/remove_image"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignEnd="@+id/myTextView"
+                        android:layout_alignParentTop="true"
+                        android:onClick="@{()->activity.onRemoveImageClick()}"
+                        android:src="@drawable/remove_pic" />
+
                 <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
+                    android:layout_below="@+id/addImage"
                     android:gravity="center"
                     android:text="@string/profile_pic"
                     android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/large_text" />
+                    android:textSize="@dimen/large_text"
+                    android:id="@+id/myTextView" />
+
+                </RelativeLayout>
             </LinearLayout>
         </ScrollView>
 

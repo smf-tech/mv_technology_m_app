@@ -3,7 +3,8 @@ package com.mv.Retrofit;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.mv.Model.location_model.MultiLocationResponse;
+import com.mv.Model.MultiLocationModel.MultiLocation;
+import com.mv.Model.MultiLocationModel.MultiLocationResponse;
 
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -53,15 +54,27 @@ public interface ServiceRequest {
     @POST("user/app_get_state")
     Call<ResponseBody> getState();
 
-    @POST("get_state")
-    Call<MultiLocationResponse> getMultipleState();
-
     @FormUrlEncoded
     @POST("user/app_get_district_by_state")
     Call<ResponseBody> getDistrict(@Field("state") String mState);
 
+    @POST("get_state")
+    Call<MultiLocationResponse> getMultipleState();
+
     @POST("get_district")
     Call<MultiLocationResponse> getMultipleDistrict(@Body JsonObject mState);
+
+    @POST("get_taluka")
+    Call<MultiLocationResponse> getMultipleTaluka(@Body JsonObject mState);
+
+    @POST("get_cluster")
+    Call<MultiLocationResponse> getMultipleCluster(@Body JsonObject mState);
+
+    @POST("get_villages")
+    Call<MultiLocationResponse> getMultipleVillage(@Body JsonObject mState);
+
+    @POST("get_school")
+    Call<MultiLocationResponse> getMultipleSchool(@Body JsonObject mState);
 
     @FormUrlEncoded
     @POST("user/app_get_taluka")

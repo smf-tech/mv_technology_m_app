@@ -189,6 +189,7 @@ public class Constants {
     public static final String ApproveCommentforProcessUrl = "/services/apexrest/ApproveCommentforProcess";
     public static final String GetprocessAnswerTaskfoApprovalUrl = "/services/apexrest/getprocessAnswerTaskfoApproval";
     public static final String GetProjectDataUrl = "/services/apexrest/getProjectDataNEW";
+    public static final String RemoveProfileImageUrl = "/services/apexrest/removeProfilePicture";
     public static final String MV_RoleUrl = "/services/data/v36.0/query/?q=select+Id,Juridictions__c,Name+from+MV_Role__c+where+Organisation__c='";
     public static final String MTRegisterUrl = "/services/apexrest/MTRegisterNew";
 

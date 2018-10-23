@@ -64,6 +64,18 @@ public class UserInfo {
     @Expose
     private String MultipleTaluka = "";
 
+    @SerializedName("User_Multiple_Cluster__c")
+    @Expose
+    private String MultipleCluster = "";
+
+    @SerializedName("User_Multiple_Village__c")
+    @Expose
+    private String MultipleVillage = "";
+
+    @SerializedName("User_Multiple_School__c")
+    @Expose
+    private String MultipleSchool = "";
+
     @SerializedName("Birth_Day__c")
     @Expose
     private String Birth_Day__c;
@@ -180,6 +192,30 @@ public class UserInfo {
 
     public void setMultipleDistrict(String MultipleDistrict) {
         MultipleDistrict = MultipleDistrict;
+    }
+
+    public String getMultipleCluster() {
+        return MultipleCluster;
+    }
+
+    public void setMultipleCluster(String MultipleCluster) {
+        MultipleCluster = MultipleCluster;
+    }
+
+    public String getMultipleVillage() {
+        return MultipleVillage;
+    }
+
+    public void setMultipleSchool(String MultipleSchool) {
+        MultipleSchool = MultipleSchool;
+    }
+
+    public String getMultipleSchool() {
+        return MultipleSchool;
+    }
+
+    public void setMultipleVillage(String MultipleVillage) {
+        MultipleVillage = MultipleVillage;
     }
 
     public String getBirth_Day__c() {
