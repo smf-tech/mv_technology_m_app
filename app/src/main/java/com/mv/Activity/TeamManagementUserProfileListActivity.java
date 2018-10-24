@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,11 +12,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.mv.Adapter.AttendanceAdapter;
-import com.mv.Adapter.TeamManagementAdapter;
 import com.mv.Adapter.UserApprovalAdapter;
 import com.mv.Model.Template;
 import com.mv.Model.User;
@@ -43,21 +39,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class TeamManagementUserProfileListActivity extends AppCompatActivity implements View.OnClickListener {
-    private PreferenceHelper preferenceHelper;
-    List<Template> processAllList = new ArrayList<>();
-    List<Template> tempList = new ArrayList<>();
-    ArrayList<Template> repplicaCahart = new ArrayList<>();
-//    private TeamManagementAdapter mAdapter;
+
+    private List<Template> processAllList = new ArrayList<>();
+    private List<Template> tempList = new ArrayList<>();
+    private ArrayList<Template> copyOfProcessAllList = new ArrayList<>();
+
     private UserApprovalAdapter mAdapter;
     private ActivityTeamManagementUserProfileActivityBinding binding;
-    RecyclerView.LayoutManager mLayoutManager;
-    Activity context;
-    private RelativeLayout mToolBar;
-    private ImageView img_back, img_list, img_logout;
-    private TextView toolbar_title;
+    private Activity context;
+
     public static String approvalType, id, processTitle;
-    String url,sortString;
-    TextView textNoData;
+    private String url;
+    private TextView textNoData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +58,11 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         context = this;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_team_management_user_profile_activity);
         binding.setActivity(this);
-        approvalType = getIntent().getExtras().getString(Constants.APPROVAL_TYPE);
+
+        if (getIntent().getExtras() != null) {
+            approvalType = getIntent().getExtras().getString(Constants.APPROVAL_TYPE);
+        }
+
         initViews();
     }
 
@@ -73,54 +70,60 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         binding.btnPending.setOnClickListener(this);
         binding.btnApprove.setOnClickListener(this);
         binding.btnReject.setOnClickListener(this);
+
         textNoData = (TextView) findViewById(R.id.textNoData);
-        preferenceHelper = new PreferenceHelper(context);
+        PreferenceHelper preferenceHelper = new PreferenceHelper(context);
+
         if (approvalType.equals(Constants.USER_APPROVAL)) {
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + Constants.GetApprovalDataUrl + "?userId=" + User.getCurrentUser(context).getMvUser().getId();
 
             setActionbar(getString(R.string.team_user_approval));
+
         } else if (approvalType.equals(Constants.PROCESS_APPROVAL)) {
-            id = getIntent().getExtras().getString(Constants.ID);
-            processTitle = getIntent().getExtras().getString(Constants.TITLE);
+            if (getIntent().getExtras() != null) {
+                id = getIntent().getExtras().getString(Constants.ID);
+                processTitle = getIntent().getExtras().getString(Constants.TITLE);
+            }
+
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + Constants.WS_getProcessAprovalUserUrl + "?UserId=" + User.getCurrentUser(context).getMvUser().getId() + "&processId=" + id;
-            ;
+                    + Constants.WS_getProcessAprovalUserUrl + "?UserId="
+                    + User.getCurrentUser(context).getMvUser().getId() + "&processId=" + id;
+
             setActionbar(processTitle);
         }
-        binding.swiperefresh.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        if (Utills.isConnected(context))
-                            getAllProcess();
-                    }
+
+        binding.swiperefresh.setOnRefreshListener(() -> {
+                    if (Utills.isConnected(context))
+                        getAllProcess();
                 }
         );
 
         binding.editTextEmail.addTextChangedListener(watch);
-        mAdapter = new UserApprovalAdapter(context,processAllList);
-        mLayoutManager = new LinearLayoutManager(context);
+        mAdapter = new UserApprovalAdapter(context, processAllList);
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(mAdapter);
-        if (Utills.isConnected(context))
+
+        if (Utills.isConnected(context)) {
             getAllProcess();
-        else {
+        } else {
             Utills.showInternetPopUp(context);
         }
     }
 
     private void setActionbar(String Title) {
-        mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         toolbar_title.setText(Title);
-        img_back = (ImageView) findViewById(R.id.img_back);
+
+        ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
-        img_logout = (ImageView) findViewById(R.id.img_logout);
+
+        ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
-        img_logout.setOnClickListener(this);
     }
 
     @Override
@@ -130,13 +133,15 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
+
             case R.id.btn_pending:
-                sortString = "false";
+                String sortString = "false";
                 binding.btnPending.setBackgroundResource(R.drawable.selected_btn_background);
                 binding.btnApprove.setBackgroundResource(R.drawable.light_grey_btn_background);
                 binding.btnReject.setBackgroundResource(R.drawable.light_grey_btn_background);
                 setRecyclerView(sortString);
                 break;
+
             case R.id.btn_approve:
                 sortString = "true";
                 binding.btnPending.setBackgroundResource(R.drawable.light_grey_btn_background);
@@ -144,6 +149,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
                 binding.btnReject.setBackgroundResource(R.drawable.light_grey_btn_background);
                 setRecyclerView(sortString);
                 break;
+
             case R.id.btn_reject:
                 sortString = "Rejected";
                 binding.btnPending.setBackgroundResource(R.drawable.light_grey_btn_background);
@@ -156,18 +162,22 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
 
     private void setRecyclerView(String Status) {
         tempList.clear();
-        for(int i=0;i<processAllList.size();i++){
-            if(processAllList.get(i).getStatus().equals(Status)){
-                tempList.add(processAllList.get(i));
+        for (int i = 0; i < processAllList.size(); i++) {
+            if (processAllList.get(i).getStatus() != null) {
+                if (processAllList.get(i).getStatus().equals(Status)) {
+                    tempList.add(processAllList.get(i));
+                }
             }
         }
+
         mAdapter = new UserApprovalAdapter(context, tempList);
         binding.recyclerView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
-        if(tempList.size()==0) {
-            Utills.showToast("No data available.",this);
+
+        if (tempList.size() == 0) {
+            Utills.showToast("No data available.", this);
             binding.inputEmail.setVisibility(View.GONE);
-        }else{
+        } else {
             binding.inputEmail.setVisibility(View.VISIBLE);
         }
     }
@@ -179,37 +189,38 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
 
     private void getAllProcess() {
         Utills.showProgressDialog(context, "Loading Users", getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
-        // String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-        //       + "/services/apexrest/WS_getProcessAprovalUser?UserId="+ User.getCurrentUser(context).getMvUser().getId()+ "&processId=a1I7F000000VeJQUA0" ;;
+        ServiceRequest apiService = ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
+
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 binding.swiperefresh.setRefreshing(false);
+
                 if (response.isSuccess()) {
                     try {
                         JSONArray jsonArray = new JSONArray(response.body().string());
                         if (jsonArray.length() != 0) {
-
-
                             processAllList.clear();
+
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 Template processList = new Template();
-
-
                                 processList.setId(jsonArray.getJSONObject(i).getString("Id"));
-                                if (jsonArray.getJSONObject(i).has("username"))
+
+                                if (jsonArray.getJSONObject(i).has("username")) {
                                     processList.setName(jsonArray.getJSONObject(i).getString("username"));
-                                else if (jsonArray.getJSONObject(i).has("name"))
+                                } else if (jsonArray.getJSONObject(i).has("name")) {
                                     processList.setName(jsonArray.getJSONObject(i).getString("username"));
-                                if (jsonArray.getJSONObject(i).has("status"))
+                                }
+
+                                if (jsonArray.getJSONObject(i).has("status")) {
                                     processList.setStatus(jsonArray.getJSONObject(i).getString("status"));
+                                }
+
                                 processAllList.add(processList);
                             }
-                            ///     AppDatabase.getAppDatabase(context).userDao().deleteTable();
-                            //  AppDatabase.getAppDatabase(context).userDao().insertProcess(processAllList);
+
                             setRecyclerView("false");
                             textNoData.setVisibility(View.GONE);
                         } else {
@@ -226,7 +237,6 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utills.hideProgressDialog();
-
             }
         });
     }
@@ -236,40 +246,37 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         @Override
         public void afterTextChanged(Editable arg0) {
             // TODO Auto-generated method stub
-
         }
 
         @Override
-        public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
-                                      int arg3) {
+        public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
             // TODO Auto-generated method stub
-
         }
 
         @Override
         public void onTextChanged(CharSequence s, int a, int b, int c) {
-            // TODO Auto-generated method stub
             setFilter(s.toString());
-
         }
     };
 
     private void setFilter(String s) {
         List<Template> list = new ArrayList<>();
-        repplicaCahart.clear();
+        copyOfProcessAllList.clear();
+
         for (int i = 0; i < tempList.size(); i++) {
-            repplicaCahart.add(processAllList.get(i));
+            copyOfProcessAllList.add(processAllList.get(i));
         }
-        for (int i = 0; i < repplicaCahart.size(); i++) {
-            if (repplicaCahart.get(i).getName().toLowerCase().contains(s.toLowerCase())) {
-                list.add(repplicaCahart.get(i));
+
+        for (int i = 0; i < copyOfProcessAllList.size(); i++) {
+            if (copyOfProcessAllList.get(i).getName().toLowerCase().contains(s.toLowerCase())) {
+                list.add(copyOfProcessAllList.get(i));
             }
         }
-        repplicaCahart.clear();
-        for (int i = 0; i < list.size(); i++) {
-            repplicaCahart.add(list.get(i));
-        }
-        mAdapter = new UserApprovalAdapter(context,repplicaCahart);
+
+        copyOfProcessAllList.clear();
+        copyOfProcessAllList.addAll(list);
+
+        mAdapter = new UserApprovalAdapter(context, copyOfProcessAllList);
         binding.recyclerView.setAdapter(mAdapter);
     }
 
