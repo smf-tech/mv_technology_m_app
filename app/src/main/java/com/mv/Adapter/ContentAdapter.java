@@ -329,7 +329,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             MenuItem status = popup.getMenu().findItem(R.id.status);
             spam.setVisible(true);
 
-            if (mActivity.HoSupportCommunity.equalsIgnoreCase("Ho Support")) {
+            if (mActivity.hoSupportCommunity.equalsIgnoreCase("Ho Support")) {
                 status.setVisible(true);
             }
 
@@ -359,7 +359,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 } else if (item.getTitle().toString().equalsIgnoreCase("Change Status")) {
                     showStatusDialog(position);
                 } else if (item.getTitle().toString().equalsIgnoreCase("Edit")) {
-                    if (mActivity.HoSupportCommunity.equalsIgnoreCase("Ho Support")) {
+                    if (mActivity.hoSupportCommunity.equalsIgnoreCase("Ho Support")) {
                         Intent intent;
                         intent = new Intent(mContext, IssueTemplateActivity.class);
                         intent.putExtra("EDIT", true);

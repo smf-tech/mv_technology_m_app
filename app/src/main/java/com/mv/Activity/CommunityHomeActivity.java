@@ -65,6 +65,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
     private List<Content> chatList = new ArrayList<>();
     private List<Content> myPostList = new ArrayList<>();
+    public List<Community> communityList = new ArrayList<>();
 
     private ContentAdapter adapter;
     private RecyclerView recyclerView;
@@ -72,7 +73,10 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
     private int filterFlag = 0;
     private String sortString = "";
-    static final String MESSAGE_PROGRESS = "message_progress";
+
+    public String json;
+    public String hoSupportCommunity = "";
+    public static final String MESSAGE_PROGRESS = "message_progress";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -383,8 +387,13 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         String title = "";
         if (getIntent().getExtras() != null) {
             title = getIntent().getExtras().getString(Constants.TITLE);
+            json = getIntent().getExtras().getString(Constants.LIST);
+            hoSupportCommunity = (getIntent().getExtras().getString(Constants.TITLE));
         }
         setActionbar(title);
+
+        final Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+        communityList = Arrays.asList(gson.fromJson(json, Community[].class));
 
         preferenceHelper = new PreferenceHelper(this);
 
