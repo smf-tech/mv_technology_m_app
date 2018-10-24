@@ -1,5 +1,6 @@
 package com.mv.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.location.LocationCallback;
@@ -23,7 +23,6 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.SettingsClient;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -74,29 +73,26 @@ import static com.google.android.gms.location.LocationServices.getFusedLocationP
 /**
  * Created by Rohit Gujar on 08-03-2018.
  */
+public class AttendanceActivity extends AppCompatActivity implements View.OnClickListener,
+        OnDateSelectedListener {
 
-public class AttendanceActivity extends AppCompatActivity implements View.OnClickListener, OnDateSelectedListener {
-
-    private ImageView img_back, img_list, img_logout;
-    private TextView toolbar_title;
-    private RelativeLayout mToolBar;
-    private ActivityAttendanceBinding binding;
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
+    private ActivityAttendanceBinding binding;
     private PreferenceHelper preferenceHelper;
-    private List<Attendance> attendanceList = new ArrayList<Attendance>();
     private SimpleDateFormat formatter;
+
+    private List<Attendance> attendanceList = new ArrayList<>();
+    private List<HolidayListModel> holidayListModels;
+
     private ArrayList<CalendarDay> dates = new ArrayList<>();
     private ArrayList<CalendarDay> holidayDates = new ArrayList<>();
     private ArrayList<CalendarDay> leavesDates = new ArrayList<>();
+
     private GPSTracker gps;
+    private Location location;
+
     private int checkInClickable = 0, checkOutClickable = 0;
-    private List<HolidayListModel> holidayListModels;
-    private List<LeavesModel> leavesModelList;
-    //Attendance Location changes
-    private LocationRequest mLocationRequest;
-    Location location;
-    private long UPDATE_INTERVAL = 600 * 1000;  /* 10 secs */
- //   private long FASTEST_INTERVAL = 2000; /* 2 sec */
+    long UPDATE_INTERVAL = 600 * 1000;  /* 10 secs */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,9 +108,11 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         super.onResume();
 
         initViews();
-//show holidays in calendar
+
+        //show holidays in calendar
         holidayListModels = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getAllHolidayList();
         holidayDates.clear();
+
         for (int i = 0; i < holidayListModels.size(); i++) {
             try {
                 holidayDates.add(CalendarDay.from(formatter.parse(holidayListModels.get(i).getHoliday_Date__c())));
@@ -122,26 +120,30 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                 e.printStackTrace();
             }
         }
-        binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, holidayDates, getResources().getDrawable(R.drawable.circle_background_red)));
+
+        binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this,
+                holidayDates, getResources().getDrawable(R.drawable.circle_background_red)));
 
         //show leaves in calendar
-        leavesModelList = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getApprovedLeaves("Approved");
+        List<LeavesModel> leavesModelList = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getApprovedLeaves("Approved");
         leavesDates.clear();
+
         for (int i = 0; i < leavesModelList.size(); i++) {
-
             try {
-                if (leavesModelList.get(i).getFromDate().equals(leavesModelList.get(i).getToDate())){
-                    if(leavesModelList.get(i)!=null && !leavesModelList.get(i).isHalfDayLeave())
+                if (leavesModelList.get(i).getFromDate().equals(leavesModelList.get(i).getToDate())) {
+                    if (leavesModelList.get(i) != null && !leavesModelList.get(i).isHalfDayLeave()) {
                         leavesDates.add(CalendarDay.from(formatter.parse(leavesModelList.get(i).getFromDate())));
+                    }
                 } else {
-                    getDatesBetween(leavesModelList.get(i).getFromDate(),leavesModelList.get(i).getToDate());
+                    getDatesBetween(leavesModelList.get(i).getFromDate(), leavesModelList.get(i).getToDate());
                 }
-
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
-        binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, leavesDates, getResources().getDrawable(R.drawable.circle_background_pink)));
+
+        binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this,
+                leavesDates, getResources().getDrawable(R.drawable.circle_background_pink)));
 
         if (Utills.isConnected(AttendanceActivity.this)) {
             // Send offline attendance to server
@@ -149,6 +151,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             if (temp != null) {
                 Intent intent = new Intent(AttendanceActivity.this, SendAttendance.class);
                 startService(intent);
+
                 //use local DB as server is not Updated
                 attendanceList = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getAllAttendance();
                 for (Attendance attendance : attendanceList) {
@@ -158,9 +161,11 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                         e.printStackTrace();
                     }
                 }
+
                 setButtonView();
-                binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, dates, getResources().getDrawable(R.drawable.circle_background)));
-            }else{
+                binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this,
+                        dates, getResources().getDrawable(R.drawable.circle_background)));
+            } else {
                 attendanceList = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getAllAttendance();
                 for (Attendance attendance : attendanceList) {
                     try {
@@ -169,8 +174,10 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                         e.printStackTrace();
                     }
                 }
+
                 setButtonView();
-                binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, dates, getResources().getDrawable(R.drawable.circle_background)));
+                binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this,
+                        dates, getResources().getDrawable(R.drawable.circle_background)));
 
                 getAttendanceData();
             }
@@ -180,20 +187,25 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             // display offline attendance in difference color
             Attendance temp = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getUnSynchAttendance();
             if (temp != null) {
-                int i=-1;
-                for(Attendance tempp:attendanceList){
+                int i = -1;
+                for (Attendance tempp : attendanceList) {
                     i++;
-                    if(tempp.getUnique_Id()==temp.getUnique_Id())
+                    if (tempp.getUnique_Id() == temp.getUnique_Id()) {
                         break;
+                    }
                 }
                 attendanceList.remove(i);
+
                 ArrayList<CalendarDay> tempDate = new ArrayList<>();
                 try {
                     tempDate.add(CalendarDay.from(formatter.parse(temp.getDate())));
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, tempDate, getResources().getDrawable(R.drawable.circle_background_light_blue)));//difference color
+
+                //difference color
+                binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this,
+                        tempDate, getResources().getDrawable(R.drawable.circle_background_light_blue)));
             }
 
             for (Attendance attendance : attendanceList) {
@@ -203,8 +215,10 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                     e.printStackTrace();
                 }
             }
+
             setButtonView();
-            binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, dates, getResources().getDrawable(R.drawable.circle_background)));
+            binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this,
+                    dates, getResources().getDrawable(R.drawable.circle_background)));
         }
 
         if (!gps.canGetLocation()) {
@@ -214,12 +228,10 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
 
     // Trigger new location updates at interval
     protected void startLocationUpdates() {
-
         // Create the location request to start receiving updates
-        mLocationRequest = new LocationRequest();
+        LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(UPDATE_INTERVAL);
-      //  mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
 
         // Create LocationSettingsRequest object using location request
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
@@ -227,12 +239,12 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         LocationSettingsRequest locationSettingsRequest = builder.build();
 
         // Check whether location settings are satisfied
-        // https://developers.google.com/android/reference/com/google/android/gms/location/SettingsClient
         SettingsClient settingsClient = LocationServices.getSettingsClient(this);
         settingsClient.checkLocationSettings(locationSettingsRequest);
 
         // new Google API SDK v11 uses getFusedLocationProviderClient(this)
-        getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest, new LocationCallback() {
+        getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest,
+                new LocationCallback() {
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
                         // do work here
@@ -241,24 +253,18 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                 },
                 Looper.myLooper());
     }
+
     public void onLocationChanged(Location location) {
         this.location = location;
-        // New location has now been determined
-        String msg = "Updated Location: " +
-                Double.toString(location.getLatitude()) + "," +
-                Double.toString(location.getLongitude());
-        // You can now create a LatLng Object for use with maps
-        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
     }
 
-    private void getDatesBetween(String dateString1, String dateString2)
-    {
+    private void getDatesBetween(String dateString1, String dateString2) {
         Date date1 = null;
         Date date2 = null;
 
         try {
-            date1 = formatter .parse(dateString1);
-            date2 = formatter .parse(dateString2);
+            date1 = formatter.parse(dateString1);
+            date2 = formatter.parse(dateString2);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -269,14 +275,13 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         Calendar cal2 = Calendar.getInstance();
         cal2.setTime(date2);
 
-        while(!cal1.after(cal2))
-        {
+        while (!cal1.after(cal2)) {
             leavesDates.add(CalendarDay.from(cal1));
             cal1.add(Calendar.DATE, 1);
         }
-
     }
 
+    @SuppressLint("SimpleDateFormat")
     private String getCurrentDate() {
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
         Calendar c = Calendar.getInstance();
@@ -286,38 +291,35 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         return formattedDate;
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void checkInClick() {
-        if(location==null){
+        if (location == null) {
             Utills.showToast("Current location is not available, Please try again", AttendanceActivity.this);
             return;
         }
+
         if (checkInClickable == 1) {
             Utills.showToast("Already Check In", AttendanceActivity.this);
             return;
         } else if (!gps.canGetLocation()) {
             gps.showSettingsAlert();
             return;
-//        } else if (0.0==gps.getLongitude() && 0.0==gps.getLatitude()) {
-//            Utills.showToast("Current location is not available, Please try again", AttendanceActivity.this);
-//            initViews();
-//            return;
-//        }
-//        else if (location == null) {
-//            gps.showSettingsAlert();
-//            return;
-        } else if (0.0==location.getLongitude() && 0.0==location.getLatitude()) {
+        } else if (0.0 == location.getLongitude() && 0.0 == location.getLatitude()) {
             Utills.showToast("Current location is not available, Please try again", AttendanceActivity.this);
             initViews();
             return;
         }
+
         Boolean isPresent;
         Attendance attendance;
         CalendarDay day = null;
+
         try {
             day = CalendarDay.from(formatter.parse(getCurrentDate()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         if (dates.contains(day)) {
             attendance = attendanceList.get(dates.indexOf(day));
             isPresent = true;
@@ -325,31 +327,33 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             isPresent = false;
             attendance = new Attendance();
         }
+
         attendance.setDate(getCurrentDate());
-//        attendance.setCheckInLng("" + location.getLongitude());
-//        attendance.setCheckInLat("" + location.getLatitude());
         attendance.setStatus("");
+
         double Lat = location.getLatitude();
         double Long = location.getLongitude();
         attendance.setCheckInLng("" + Long);
         attendance.setCheckInLat("" + Lat);
         attendance.setStatus("");
         attendance.setUser(User.getCurrentUser(getApplicationContext()).getMvUser().getId());
+
         //send relative address of lat long to server
         String address = ConvertToAddress(Lat, Long);
         attendance.setCheckIn_Attendance_Address__c(address);
+
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
-        Calendar c = Calendar.getInstance();
         SimpleDateFormat time1 = new SimpleDateFormat("kk.mm");
         long date = System.currentTimeMillis();
         String timeString1 = time1.format(date);
         attendance.setCheckInTime("" + timeString1);
         LocaleManager.setNewLocale(this, preferenceHelper.getString(Constants.LANGUAGE));
 
-        if(leavesDates.contains(day))
+        if (leavesDates.contains(day)) {
             Utills.showToast("You are on leave", AttendanceActivity.this);
-        else
+        } else {
             sendAttendance(attendance, true, isPresent);
+        }
     }
 
     private String ConvertToAddress(double latitude, double longitude) {
@@ -364,13 +368,11 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         } catch (IOException e) {
             Log.e("Error", "Unable connect to Geocoder", e);
             return "";
-        }
-        catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException e) {
             Log.e("Error", "Unable connect to Geocoder", e);
             return "";
         }
         return result;
-
     }
 
     private void sendAttendance(Attendance attendance, Boolean isCheckedIn, Boolean isPresent) {
@@ -382,11 +384,14 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                 JSONObject object = new JSONObject();
                 JSONObject jsonObject = new JSONObject(json);
                 object.put("att", jsonObject);
-                ServiceRequest apiService =
-                        ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+
+                ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
                 JsonParser jsonParser = new JsonParser();
                 JsonObject gsonObject = (JsonObject) jsonParser.parse(object.toString());
-                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/saveAttendance", gsonObject).enqueue(new Callback<ResponseBody>() {
+
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                        + "/services/apexrest/saveAttendance", gsonObject).enqueue(new Callback<ResponseBody>() {
+
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
@@ -404,12 +409,17 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                                                     Attendance attendance1 = gson.fromJson(object1.toString(), Attendance.class);
                                                     attendanceList.add(attendance1);
                                                     dates.add(CalendarDay.from(formatter.parse(attendance1.getDate())));
-                                                    binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, dates, getResources().getDrawable(R.drawable.circle_background)));
+                                                    binding.calendarView.addDecorator(
+                                                            new EventDecorator(AttendanceActivity.this, dates,
+                                                                    getResources().getDrawable(R.drawable.circle_background)));
                                                 }
-                                                if (isCheckedIn)
+
+                                                if (isCheckedIn) {
                                                     Utills.showToast("Checked In Successfully...", AttendanceActivity.this);
-                                                else
+                                                } else {
                                                     Utills.showToast("Checked Out Successfully...", AttendanceActivity.this);
+                                                }
+
                                                 setButtonView();
                                             } else {
                                                 Utills.showToast(object.getString("Status"), AttendanceActivity.this);
@@ -423,7 +433,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                             Utills.hideProgressDialog();
                             Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
                             // save off line if failed to upload the attendance dueto network issue
-                            addOffLineAttendance(isPresent,attendance,isCheckedIn);
+                            addOffLineAttendance(isPresent, attendance, isCheckedIn);
                         }
                     }
 
@@ -432,7 +442,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                         Utills.hideProgressDialog();
                         Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
                         // save off line if failed to upload the attendance dueto network issue
-                        addOffLineAttendance(isPresent,attendance,isCheckedIn);
+                        addOffLineAttendance(isPresent, attendance, isCheckedIn);
                     }
                 });
             } catch (JSONException e) {
@@ -440,15 +450,15 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                 Utills.hideProgressDialog();
                 Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
                 // save off line if failed to upload the attendance dueto network issue
-                addOffLineAttendance(isPresent,attendance,isCheckedIn);
+                addOffLineAttendance(isPresent, attendance, isCheckedIn);
             }
         } else {
-            addOffLineAttendance(isPresent,attendance,isCheckedIn);
+            addOffLineAttendance(isPresent, attendance, isCheckedIn);
         }
     }
 
-    // save offline attandance
-    void addOffLineAttendance(Boolean isPresent, Attendance attendance, Boolean isCheckedIn){
+    // save offline attendance
+    void addOffLineAttendance(Boolean isPresent, Attendance attendance, Boolean isCheckedIn) {
         if (!isPresent) {
             attendanceList.add(attendance);
             try {
@@ -457,12 +467,13 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                 e.printStackTrace();
             }
         }
-        attendance.setSynch("false");
 
+        attendance.setSynch("false");
         AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().insertAttendance(attendance);
 
         dates.clear();
         attendanceList.clear();
+
         attendanceList = AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().getAllAttendance();
         for (Attendance attendance1 : attendanceList) {
             try {
@@ -471,50 +482,52 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                 e.printStackTrace();
             }
         }
-        setButtonView();
-        binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, dates, getResources().getDrawable(R.drawable.circle_background)));
 
-        if (isCheckedIn)
+        setButtonView();
+        binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this,
+                dates, getResources().getDrawable(R.drawable.circle_background)));
+
+        if (isCheckedIn) {
             Utills.showToast("Offline Checked In Successfully...", AttendanceActivity.this);
-        else
+        } else {
             Utills.showToast("Offline Checked Out Successfully...", AttendanceActivity.this);
+        }
+
         setButtonView();
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void checkOutClick() {
-        if(location==null){
+        if (location == null) {
             Utills.showToast("Current location is not available, Please try again", AttendanceActivity.this);
             return;
         }
+
         if (checkOutClickable == 1) {
             Utills.showToast("Already Check Out", AttendanceActivity.this);
             return;
         } else if (checkOutClickable == 2) {
             Utills.showToast("Please First Check In and then try to Check Out...", AttendanceActivity.this);
             return;
-        }  else if (!gps.canGetLocation()) {
+        } else if (!gps.canGetLocation()) {
             gps.showSettingsAlert();
             return;
-//        } else if (0.0==gps.getLongitude() && 0.0==gps.getLatitude()) {
-//            Utills.showToast(getResources().getString(R.string.location_not_found), AttendanceActivity.this);
-//            initViews();
-//            return;
-//        } else if (location==null) {
-//            gps.showSettingsAlert();
-//            return;
-        } else if (0.0==location.getLongitude() && 0.0==location.getLatitude()) {
+        } else if (0.0 == location.getLongitude() && 0.0 == location.getLatitude()) {
             Utills.showToast(getResources().getString(R.string.location_not_found), AttendanceActivity.this);
             initViews();
             return;
         }
+
         Attendance attendance;
         Boolean isPresent;
         CalendarDay day = null;
+
         try {
             day = CalendarDay.from(formatter.parse(getCurrentDate()));
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
         if (dates.contains(day)) {
             isPresent = true;
             attendance = attendanceList.get(dates.indexOf(day));
@@ -522,34 +535,37 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             isPresent = false;
             attendance = new Attendance();
         }
+
         attendance.setDate(getCurrentDate());
-//        attendance.setCheckOutLng("" + gps.getLongitude());
-//        attendance.setCheckOutLat("" + gps.getLatitude());
         attendance.setStatus("");
+
         double Lat = location.getLatitude();
         double Long = location.getLongitude();
         attendance.setCheckOutLng("" + Long);
         attendance.setCheckOutLat("" + Lat);
         attendance.setStatus("Approved");
         attendance.setUser(User.getCurrentUser(getApplicationContext()).getMvUser().getId());
+
         //send relative address of lat long to server
         String address = ConvertToAddress(Lat, Long);
         attendance.setCheckOut_Attendance_Address__c(address);
+
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
-        Calendar c = Calendar.getInstance();
         SimpleDateFormat time1 = new SimpleDateFormat("kk.mm");
         long date = System.currentTimeMillis();
         String timeString1 = time1.format(date);
         attendance.setCheckOutTime("" + timeString1);
+
         LocaleManager.setNewLocale(this, preferenceHelper.getString(Constants.LANGUAGE));
-        if(leavesDates.contains(day))
+        if (leavesDates.contains(day)) {
             Utills.showToast("You are on leave", AttendanceActivity.this);
-        else
+        } else {
             sendAttendance(attendance, false, isPresent);
+        }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private void initViews() {
-
         gps = new GPSTracker(AttendanceActivity.this);
         setActionbar(getString(R.string.attendance));
         setCalendar();
@@ -567,6 +583,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
 
         //  String url = "http://www.json-generator.com/api/json/get/bTUvLZXUjm?indent=2";
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -574,9 +591,11 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                 try {
                     if (response != null && response.isSuccess()) {
                         attendanceList.clear();
+
                         String str = response.body().string();
                         if (str.length() > 0) {
                             dates.clear();
+
                             JSONArray jsonArray = new JSONArray(str);
                             if (jsonArray.length() > 0) {
                                 List<Attendance> tempAttendances = Arrays.asList(gson.fromJson(jsonArray.toString(), Attendance[].class));
@@ -584,14 +603,16 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                                 AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().deleteAllAttendance();
                                 AppDatabase.getAppDatabase(AttendanceActivity.this).userDao().insertAllAttendance(attendanceList);
                             }
+
                             for (Attendance attendance : attendanceList) {
                                 dates.add(CalendarDay.from(formatter.parse(attendance.getDate())));
                             }
+
                             setButtonView();
-                            binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this, dates, getResources().getDrawable(R.drawable.circle_background)));
+                            binding.calendarView.addDecorator(new EventDecorator(AttendanceActivity.this,
+                                    dates, getResources().getDrawable(R.drawable.circle_background)));
                         }
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
@@ -599,13 +620,11 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utills.hideProgressDialog();
-
             }
         });
     }
@@ -617,7 +636,8 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if (dates != null && dates.contains(day)) {
+
+        if (dates != null && dates.contains(day) && attendanceList.size() > dates.indexOf(day)) {
             Attendance attendance = attendanceList.get(dates.indexOf(day));
             if (attendance.getCheckInTime() == null) {
                 binding.chekInLayout.setBackgroundResource(R.drawable.orange_box);
@@ -643,19 +663,17 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     private void setCalendar() {
         binding.calendarView.setOnDateChangedListener(this);
         binding.calendarView.setShowOtherDates(MaterialCalendarView.SHOW_ALL);
+
         Calendar instance = Calendar.getInstance();
         binding.calendarView.setSelectedDate(instance.getTime());
+
         Calendar instance1 = Calendar.getInstance();
         instance1.set(instance1.get(Calendar.YEAR), Calendar.JANUARY, 1);
         binding.calendarView.state().edit()
                 .setMinimumDate(instance1.getTime())
                 .commit();
 
-        binding.calendarView.addDecorators(
-                //new MySelectorDecorator(context),
-                new HighlightWeekendsDecorator(),
-                oneDayDecorator
-        );
+        binding.calendarView.addDecorators(new HighlightWeekendsDecorator(), oneDayDecorator);
     }
 
     @Override
@@ -678,24 +696,25 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
 
-    private void setActionbar(String Title) {
+    private void setActionbar(String title) {
+        String str = title;
+        if (title != null && title.contains("\n")) {
+            str = title.replace("\n", " ");
+        }
 
-        mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        String str = Title;
-        if (Title != null && Title.contains("\n"))
-            str = Title.replace("\n", " ");
+        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         toolbar_title.setText(str);
-        img_back = (ImageView) findViewById(R.id.img_back);
+
+        ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
-        img_list = (ImageView) findViewById(R.id.img_list);
+
+        ImageView img_list = (ImageView) findViewById(R.id.img_list);
         img_list.setVisibility(View.GONE);
-        img_list.setOnClickListener(this);
-        img_logout = (ImageView) findViewById(R.id.img_logout);
+
+        ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
     }
-
 
     /**
      * Called when a user clicks on a day.
@@ -725,37 +744,46 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void buildDialog(int animationSource, int position, int dialogType) {
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
         if (dialogType == 0) {
             Attendance attendance = attendanceList.get(position);
+            buffer.append(String.format("Check In Time : %s", attendance.getCheckInTime()));
 
-            buffer.append("Check In Time : " + attendance.getCheckInTime());
             if (attendance.getCheckOutTime() != null) {
                 if (!attendance.getCheckOutTime().equals("null")) {
+                    String checkOutTime = "Check Out Time : " + attendance.getCheckOutTime();
                     buffer.append("\n\n");
-                    buffer.append("Check Out Time : " + attendance.getCheckOutTime());
+                    buffer.append(checkOutTime);
                 }
             }
+
+            String status = "Status : " + attendance.getStatus();
             buffer.append("\n\n");
-            buffer.append("Status : " + attendance.getStatus());
+            buffer.append(status);
             builder.setTitle("Date : " + attendance.getDate());
+
         } else if (dialogType == 1) {
             HolidayListModel holidayListModel = holidayListModels.get(position);
             builder.setTitle("Date : " + holidayListModel.getHoliday_Date__c());
-            buffer.append("" + holidayListModel.getName());
-        }
 
+            String modelName = "" + holidayListModel.getName();
+            buffer.append(modelName);
+        }
 
         builder.setMessage(buffer.toString());
         builder.setNegativeButton(getString(R.string.ok), null);
         AlertDialog dialog = builder.create();
-        dialog.getWindow().getAttributes().windowAnimations = animationSource;
+
+        if (dialog.getWindow() != null) {
+            dialog.getWindow().getAttributes().windowAnimations = animationSource;
+        }
+
         dialog.show();
     }
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
-
     }
 }

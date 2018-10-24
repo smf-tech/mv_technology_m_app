@@ -165,12 +165,14 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
 
         // Setting OK Button
         alertDialog.setButton(mContext.getString(android.R.string.ok), (dialog, which) -> {
-            if (resultList.get(0).getIsSave().equals("false")) {
-                mContext.deleteForm(resultList.get(position));
-            } else {
-                AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(resultList.get(position).getUnique_Id(),
-                        resultList.get(position).getMV_Process__c());
-                mContext.getAllProcessData();
+            if (resultList != null && resultList.size() > 0) {
+                if (resultList.get(0).getIsSave().equals("false")) {
+                    mContext.deleteForm(resultList.get(position));
+                } else {
+                    AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(resultList.get(position).getUnique_Id(),
+                            resultList.get(position).getMV_Process__c());
+                    mContext.getAllProcessData();
+                }
             }
         });
 
