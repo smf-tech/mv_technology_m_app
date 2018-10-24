@@ -224,7 +224,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             mStateList.clear();
                             mStateList.add("Select");
@@ -264,7 +264,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(response.body().string());
                             mListDistrict.clear();
                             mListDistrict.add("Select");
@@ -302,7 +302,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListTaluka.clear();
                             mListTaluka.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -343,7 +343,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             mListOrganization.clear();
                             mListOrganization.add("Select");
@@ -383,7 +383,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
 
 
                             JSONObject obj = new JSONObject(data);
@@ -424,7 +424,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListCluster.clear();
                             mListCluster.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -457,7 +457,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListVillage.clear();
                             mListVillage.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -491,7 +491,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListSchoolName.clear();
                             mListSchoolName.add("Select");
 
@@ -569,9 +569,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
     private void setFilter(String s) {
         list = new ArrayList<>();
         eventUsersFliter.clear();
-        for (int i = 0; i < eventUsers.size(); i++) {
-            eventUsersFliter.add(eventUsers.get(i));
-        }
+        eventUsersFliter.addAll(eventUsers);
         list.clear();
         for (int i = 0; i < eventUsersFliter.size(); i++) {
             if (eventUsersFliter.get(i).getUserName().toLowerCase().contains(s.toLowerCase())) {
@@ -699,7 +697,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 
-                        if (mSelection != null && which < mSelection.length) {
+                        if (which < mSelection.length) {
                             mSelection[which] = isChecked;
 
                         } else {
@@ -1015,7 +1013,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         Utills.showProgressDialog(context, "Loading ", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String role = "";
+        String role;
         if (selectedRolename.length() > 0) {
             role = selectedRolename;
         } else {
@@ -1064,7 +1062,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             eventUsers.clear();
                             calenderEventUserArrayList = new ArrayList<>();
@@ -1134,7 +1132,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             eventUsers.clear();
                             eventUsersOld.clear();

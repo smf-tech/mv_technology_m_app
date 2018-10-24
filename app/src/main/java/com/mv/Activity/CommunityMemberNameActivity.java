@@ -92,7 +92,7 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
     /*Get Community members by calling userdetails api*/
     public void GetCommunityMember() {
         Utills.showProgressDialog(this, getString(R.string.loading_members), getString(R.string.progress_please_wait));
-        String url = "";
+        String url;
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         /*UserDetails Url for getting community members*/
@@ -176,18 +176,14 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
     private void setFilter(String s) {
         List<String> list = new ArrayList<>();
         repplicaCahart.clear();
-        for (int i = 0; i < CommunityMemberList.size(); i++) {
-            repplicaCahart.add(CommunityMemberList.get(i));
-        }
+        repplicaCahart.addAll(CommunityMemberList);
         for (int i = 0; i < repplicaCahart.size(); i++) {
             if (repplicaCahart.get(i).toLowerCase().contains(s.toLowerCase())) {
                 list.add(repplicaCahart.get(i));
             }
         }
         repplicaCahart.clear();
-        for (int i = 0; i < list.size(); i++) {
-            repplicaCahart.add(list.get(i));
-        }
+        repplicaCahart.addAll(list);
         adapter = new CommunityMemberAdapter(getApplicationContext(), repplicaCahart);
         recyclerView.setAdapter(adapter);
         if (repplicaCahart.size() == 0) {

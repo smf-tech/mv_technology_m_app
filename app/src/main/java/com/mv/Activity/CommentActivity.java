@@ -33,10 +33,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -132,9 +130,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                     List<Comment> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Comment[].class));
                     if (temp.size() != 0) {
-                        for (int i = 0; i < temp.size(); i++) {
-                            commentList.add(temp.get(i));
-                        }
+                        commentList.addAll(temp);
                         textNoData.setVisibility(View.GONE);
                     } else {
                         textNoData.setVisibility(View.VISIBLE);

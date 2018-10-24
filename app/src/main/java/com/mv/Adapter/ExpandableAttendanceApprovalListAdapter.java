@@ -72,9 +72,9 @@ public class ExpandableAttendanceApprovalListAdapter extends BaseExpandableListA
         TextView txtCount, txtName;
         RelativeLayout layoutMain;
 
-        layoutMain = (RelativeLayout) convertView.findViewById(R.id.layoutMain);
+        layoutMain = convertView.findViewById(R.id.layoutMain);
 
-        txtCount = (TextView) convertView.findViewById(R.id.txtCount);
+        txtCount = convertView.findViewById(R.id.txtCount);
 
         layoutMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +86,7 @@ public class ExpandableAttendanceApprovalListAdapter extends BaseExpandableListA
             }
         });
 
-        txtName = (TextView) convertView.findViewById(R.id.txtName);
+        txtName = convertView.findViewById(R.id.txtName);
 
         txtCount.setVisibility(View.GONE);
         if(attendance_approval.getUser_Name__c()!=null)
@@ -130,14 +130,14 @@ public class ExpandableAttendanceApprovalListAdapter extends BaseExpandableListA
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group, null);
         }
-        ImageView imgGroup = (ImageView) convertView.findViewById(R.id.imgGroup);
+        ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
 
         if (isExpanded) {
             imgGroup.setImageResource(R.drawable.downarrow);
         } else {
             imgGroup.setImageResource(R.drawable.rightarrow);
         }
-        TextView txtName = (TextView) convertView
+        TextView txtName = convertView
                 .findViewById(R.id.txtName);
         // date.setTypeface(null, Typeface.BOLD);
         txtName.setText(headerTitle);

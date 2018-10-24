@@ -65,9 +65,9 @@ public class EventAttendanceListAdapter extends RecyclerView.Adapter<EventAttend
 
         public MyViewHolder(View view) {
             super(view);
-            eventUserName = (TextView) view.findViewById(R.id.tv_event_user_name);
-            eventUserRole = (TextView) view.findViewById(R.id.tv_event_user_role);
-            checkBox = (CheckBox) view.findViewById(R.id.cb_event_user_cb);
+            eventUserName = view.findViewById(R.id.tv_event_user_name);
+            eventUserRole = view.findViewById(R.id.tv_event_user_role);
+            checkBox = view.findViewById(R.id.cb_event_user_cb);
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

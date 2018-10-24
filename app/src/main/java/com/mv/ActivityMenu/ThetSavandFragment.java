@@ -263,7 +263,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));

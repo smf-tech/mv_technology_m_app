@@ -32,7 +32,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class EventUserAttendanceActivity extends AppCompatActivity implements Vi
     private Activity context;
     private ArrayList<EventUser> eventUsers = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
-    private ArrayList<EventUser> calenderEventUserArrayList = new ArrayList<>();
+  //  private ArrayList<EventUser> calenderEventUserArrayList = new ArrayList<>();
     private EventAttendanceListAdapter mAdapter;
     private ArrayList<EventUser> selectedUser = new ArrayList<>();
     private ArrayList<EventUser> eventUsersFliter = new ArrayList<>();
@@ -152,9 +151,7 @@ public class EventUserAttendanceActivity extends AppCompatActivity implements Vi
         List<EventUser> list = new ArrayList<>();
 
         eventUsersFliter.clear();
-        for (int i = 0; i < eventUsers.size(); i++) {
-            eventUsersFliter.add(eventUsers.get(i));
-        }
+        eventUsersFliter.addAll(eventUsers);
         list.clear();
         for (int i = 0; i < eventUsersFliter.size(); i++) {
             if (eventUsersFliter.get(i).getUserName().toLowerCase().contains(s.toLowerCase())) {
@@ -191,10 +188,10 @@ public class EventUserAttendanceActivity extends AppCompatActivity implements Vi
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             eventUsers.clear();
-                            calenderEventUserArrayList = new ArrayList<>();
+                         //   calenderEventUserArrayList = new ArrayList<>();
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 EventUser eventUser = new EventUser();
                                 JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -203,7 +200,7 @@ public class EventUserAttendanceActivity extends AppCompatActivity implements Vi
                                 eventUser.setUserName(jsonObject.getString("userName"));
                                 eventUser.setUserSelected(false);
                                 eventUsers.add(eventUser);
-                                calenderEventUserArrayList = new ArrayList<>();
+                              //  calenderEventUserArrayList = new ArrayList<>();
                             }
 
                             for (int i=0;i<eventUsers.size();i++) {

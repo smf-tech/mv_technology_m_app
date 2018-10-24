@@ -369,9 +369,9 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 PopupMenu popup = new PopupMenu(mContext, holder.imgMore);
                 //Inflating the Popup using xml file
                 popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
-                MenuItem edit = (MenuItem) popup.getMenu().findItem(R.id.edit);
-                MenuItem delete = (MenuItem) popup.getMenu().findItem(R.id.delete);
-                MenuItem spam = (MenuItem) popup.getMenu().findItem(R.id.spam);
+                MenuItem edit = popup.getMenu().findItem(R.id.edit);
+                MenuItem delete = popup.getMenu().findItem(R.id.delete);
+                MenuItem spam = popup.getMenu().findItem(R.id.spam);
                 spam.setVisible(true);
                 if (mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
                     spam.setVisible(false);
@@ -510,26 +510,26 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
-            txt_title = (TextView) itemLayoutView.findViewById(R.id.txt_title);
-            txt_template_type = (TextView) itemLayoutView.findViewById(R.id.txt_template_type);
-            txt_audio_txt = (TextView) itemLayoutView.findViewById(R.id.audio_text);
-            txt_desc = (TextView) itemLayoutView.findViewById(R.id.txt_desc);
-            txt_time = (TextView) itemLayoutView.findViewById(R.id.txt_time);
-            txtLikeCount = (TextView) itemLayoutView.findViewById(R.id.txtLikeCount);
-            txtCommentCount = (TextView) itemLayoutView.findViewById(R.id.txtCommentCount);
-            userImage = (ImageView) itemLayoutView.findViewById(R.id.userImage);
-            picture = (ImageView) itemLayoutView.findViewById(R.id.card_image);
-            card_view = (CardView) itemLayoutView.findViewById(R.id.card_view);
+            txt_title = itemLayoutView.findViewById(R.id.txt_title);
+            txt_template_type = itemLayoutView.findViewById(R.id.txt_template_type);
+            txt_audio_txt = itemLayoutView.findViewById(R.id.audio_text);
+            txt_desc = itemLayoutView.findViewById(R.id.txt_desc);
+            txt_time = itemLayoutView.findViewById(R.id.txt_time);
+            txtLikeCount = itemLayoutView.findViewById(R.id.txtLikeCount);
+            txtCommentCount = itemLayoutView.findViewById(R.id.txtCommentCount);
+            userImage = itemLayoutView.findViewById(R.id.userImage);
+            picture = itemLayoutView.findViewById(R.id.card_image);
+            card_view = itemLayoutView.findViewById(R.id.card_view);
             // songProgressBar = (ProgressBar) itemLayoutView.findViewById(R.id.songProgressBar);
-            imgLike = (ImageView) itemLayoutView.findViewById(R.id.imgLike);
-            textViewLike = (TextView) itemLayoutView.findViewById(R.id.textViewLike);
-            img_comment = (ImageView) itemLayoutView.findViewById(R.id.img_comment);
-            layout_comment = (LinearLayout) itemLayoutView.findViewById(R.id.layout_comment);
-            imageThumbnail = (ImageView) itemLayoutView.findViewById(R.id.card_Thumbnail);
-            txt_type = (TextView) itemLayoutView.findViewById(R.id.txt_type);
-            layout_download_file = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download_file);
-            lnr_content = (LinearLayout) itemLayoutView.findViewById(R.id.lnr_content);
-            txt_detail = (TextView) itemLayoutView.findViewById(R.id.txt_detail);
+            imgLike = itemLayoutView.findViewById(R.id.imgLike);
+            textViewLike = itemLayoutView.findViewById(R.id.textViewLike);
+            img_comment = itemLayoutView.findViewById(R.id.img_comment);
+            layout_comment = itemLayoutView.findViewById(R.id.layout_comment);
+            imageThumbnail = itemLayoutView.findViewById(R.id.card_Thumbnail);
+            txt_type = itemLayoutView.findViewById(R.id.txt_type);
+            layout_download_file = itemLayoutView.findViewById(R.id.layout_download_file);
+            lnr_content = itemLayoutView.findViewById(R.id.lnr_content);
+            txt_detail = itemLayoutView.findViewById(R.id.txt_detail);
 
             txt_detail.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -561,7 +561,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
 
                 }
             });
-            imgMore = (ImageView) itemLayoutView.findViewById(R.id.imgMore);
+            imgMore = itemLayoutView.findViewById(R.id.imgMore);
 
             layout_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -573,9 +573,9 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             });
 
 
-            audioLayout = (RelativeLayout) itemLayoutView.findViewById(R.id.audioLayout);
-            mediaLayout = (LinearLayout) itemLayoutView.findViewById(R.id.mediaLayout);
-            layout_share = (LinearLayout) itemLayoutView.findViewById(R.id.layout_share);
+            audioLayout = itemLayoutView.findViewById(R.id.audioLayout);
+            mediaLayout = itemLayoutView.findViewById(R.id.mediaLayout);
+            layout_share = itemLayoutView.findViewById(R.id.layout_share);
             layout_share.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -583,8 +583,8 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
 
                 }
             });
-            play = (ImageView) itemLayoutView.findViewById(R.id.play);
-            layout_Video = (RelativeLayout) itemLayoutView.findViewById(R.id.layout_Video);
+            play = itemLayoutView.findViewById(R.id.play);
+            layout_Video = itemLayoutView.findViewById(R.id.layout_Video);
             layout_Video.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -594,7 +594,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                     mContext.startActivity(myIntent);
                 }
             });
-            layout_download = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download);
+            layout_download = itemLayoutView.findViewById(R.id.layout_download);
             layout_download.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -677,7 +677,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                     }*/
                 }
             });
-            layout_like = (LinearLayout) itemLayoutView.findViewById(R.id.layout_like);
+            layout_like = itemLayoutView.findViewById(R.id.layout_like);
             layout_like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

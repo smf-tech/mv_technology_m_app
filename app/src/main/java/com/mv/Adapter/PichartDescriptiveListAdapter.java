@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.mv.ActivityMenu.TrainingCalender;
 import com.mv.Model.CalenderEvent;
 import com.mv.Model.PiaChartModel;
-import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
@@ -22,7 +21,6 @@ import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -55,10 +53,10 @@ public class PichartDescriptiveListAdapter extends RecyclerView.Adapter<PichartD
             district = (TextView) view.findViewById(R.id.txtTemplateName);
             taluka = (TextView) view.findViewById(R.id.txtTemplateName);
             name = (TextView) view.findViewById(R.id.txtTemplateName);*/
-            title = (TextView) view.findViewById(R.id.tv_piachart);
-            detail = (TextView) view.findViewById(R.id.tv_piachart_description);
-            index = (TextView) view.findViewById(R.id.tv_piachart_number);
-            delete = (ImageView) view.findViewById(R.id.iv_calender_delete);
+            title = view.findViewById(R.id.tv_piachart);
+            detail = view.findViewById(R.id.tv_piachart_description);
+            index = view.findViewById(R.id.tv_piachart_number);
+            delete = view.findViewById(R.id.iv_calender_delete);
             delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

@@ -1,7 +1,6 @@
 package com.mv.Adapter;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,18 +10,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.mv.Activity.IndicatorTrainingFeedBackTaskList;
-import com.mv.Activity.PiachartActivity;
-import com.mv.Activity.ProcessApprovalActivity;
-import com.mv.Activity.ProcessListActivity;
-import com.mv.Activity.TeamManagementUserProfileListActivity;
-import com.mv.Activity.TemplatesActivity;
-import com.mv.ActivityMenu.ProgrammeManagmentFragment;
-import com.mv.Model.CalenderEvent;
 import com.mv.Model.OverAllModel;
 
 import com.mv.R;
-import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 
 import java.util.List;
@@ -45,12 +35,12 @@ public class OverallReportAdapter extends RecyclerView.Adapter<OverallReportAdap
 
         public MyViewHolder(View view) {
             super(view);
-            txtCommunityName = (TextView) view.findViewById(R.id.txtTemplateName);
-            txt_targeted_date = (TextView) view.findViewById(R.id.txt_traget_date);
-            txt_targeted_count = (TextView) view.findViewById(R.id.txt_traget_count);
-            arraow = (ImageView) view.findViewById(R.id.row_img);
-            layout = (LinearLayout) view.findViewById(R.id.layoutTemplate);
-            expectedLayout = (LinearLayout) view.findViewById(R.id.ll_expected);
+            txtCommunityName = view.findViewById(R.id.txtTemplateName);
+            txt_targeted_date = view.findViewById(R.id.txt_traget_date);
+            txt_targeted_count = view.findViewById(R.id.txt_traget_count);
+            arraow = view.findViewById(R.id.row_img);
+            layout = view.findViewById(R.id.layoutTemplate);
+            expectedLayout = view.findViewById(R.id.ll_expected);
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

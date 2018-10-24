@@ -1,19 +1,8 @@
 package com.mv.Activity;
 
-import android.app.ProgressDialog;
 import android.databinding.DataBindingUtil;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
-import android.view.View;
-import android.webkit.WebChromeClient;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
@@ -39,7 +28,11 @@ public class ActivityImageView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_image_view);
         binding.setActivity(this);
-        Id = getIntent().getExtras().getString(Constants.ID);
+
+        if(getIntent().getExtras().getString(Constants.ID)!=null){
+            Id = getIntent().getExtras().getString(Constants.ID);
+        }
+
         preferenceHelper = new PreferenceHelper(this);
 
         Glide.with(this)

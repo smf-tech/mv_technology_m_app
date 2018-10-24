@@ -195,7 +195,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().deleteTask("false", proceesId);
                             resultList = new ArrayList<>();
                             resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(proceesId, Constants.TASK_ANSWER);
@@ -324,7 +324,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONObject jsonObject = new JSONObject(data);
                             JSONArray resultArray = jsonObject.getJSONArray("tsk");
                             //list of task

@@ -3,7 +3,6 @@ package com.mv.Adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
@@ -15,22 +14,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.model.GlideUrl;
 import com.bumptech.glide.load.model.LazyHeaders;
-import com.mv.Activity.CalenderFliterActivity;
 import com.mv.Activity.CommentActivity;
-import com.mv.Activity.IssueTemplateActivity;
-import com.mv.Activity.ReportingTemplateActivity;
-import com.mv.Model.CalenderEvent;
 import com.mv.Model.Comment;
 import com.mv.Model.User;
 import com.mv.R;
-import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
-import com.mv.Utils.Utills;
 
 import java.util.ArrayList;
 
@@ -108,10 +100,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 //Inflating the Popup using xml file
                 popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
                 //   popup.getMenu().getItem(R.id.spam).setVisible(true);
-                MenuItem spam = (MenuItem) popup.getMenu().findItem(R.id.spam);
-                MenuItem edit = (MenuItem) popup.getMenu().findItem(R.id.edit);
-                MenuItem delete = (MenuItem) popup.getMenu().findItem(R.id.delete);
-                MenuItem status = (MenuItem) popup.getMenu().findItem(R.id.status);
+                MenuItem spam = popup.getMenu().findItem(R.id.spam);
+                MenuItem edit = popup.getMenu().findItem(R.id.edit);
+                MenuItem delete = popup.getMenu().findItem(R.id.delete);
+                MenuItem status = popup.getMenu().findItem(R.id.status);
                 spam.setVisible(false);
                 status.setVisible(false);
 
@@ -184,11 +176,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
-            txt_username = (TextView) itemLayoutView.findViewById(R.id.txt_username);
-            txt_comment = (TextView) itemLayoutView.findViewById(R.id.txt_comment);
-            txt_time = (TextView) itemLayoutView.findViewById(R.id.txt_time);
-            userImage = (ImageView) itemLayoutView.findViewById(R.id.userImage);
-            imgMore = (ImageView) itemLayoutView.findViewById(R.id.imgMore);
+            txt_username = itemLayoutView.findViewById(R.id.txt_username);
+            txt_comment = itemLayoutView.findViewById(R.id.txt_comment);
+            txt_time = itemLayoutView.findViewById(R.id.txt_time);
+            userImage = itemLayoutView.findViewById(R.id.userImage);
+            imgMore = itemLayoutView.findViewById(R.id.imgMore);
         }
 
 

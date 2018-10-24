@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.google.android.flexbox.AlignSelf;
 import com.google.android.flexbox.FlexboxLayoutManager;
-import com.mv.Activity.LeaveApprovalActivity;
 import com.mv.Model.HomeModel;
 import com.mv.R;
 import com.mv.Utils.Constants;
@@ -45,12 +44,12 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         public MyViewHolder(View view) {
             super(view);
 
-            menu_name = (TextView) view.findViewById(R.id.tv_home_menu_name);
-            menu_icon = (ImageView) view.findViewById(R.id.iv_home_menu_icon);
+            menu_name = view.findViewById(R.id.tv_home_menu_name);
+            menu_icon = view.findViewById(R.id.iv_home_menu_icon);
 
 
-            layout = (LinearLayout) view.findViewById(R.id.layout_home);
-            invisiblityLayout = (RelativeLayout) view.findViewById(R.id.invisiblityLayout);
+            layout = view.findViewById(R.id.layout_home);
+            invisiblityLayout = view.findViewById(R.id.invisiblityLayout);
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -58,8 +57,6 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
                         preferenceHelper.insertString(Constants.Leave,"");
                         Intent openClass = new Intent(mContext, menuList.get(getAdapterPosition()).getDestination());
                         mContext.startActivity(openClass);
-                    } else {
-
                     }
                 }
             });

@@ -10,11 +10,8 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.mv.Activity.AttendanceApproval2Activity;
-import com.mv.Activity.AttendanceApproveDetailActivity;
 import com.mv.Activity.TeamManagementUserProfileListActivity;
 import com.mv.Activity.UserApproveDetail;
-import com.mv.Model.AttendanceApproval;
 import com.mv.Model.Template;
 import com.mv.R;
 import com.mv.Utils.Constants;
@@ -51,7 +48,7 @@ public class UserApprovalAdapter extends RecyclerView.Adapter<UserApprovalAdapte
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Template userApproval = (Template) mDataList.get(position);
+        final Template userApproval = mDataList.get(position);
         if(userApproval.getName()!=null)
             holder.txtName.setText(userApproval.getName()+"");
     }
@@ -67,8 +64,8 @@ public class UserApprovalAdapter extends RecyclerView.Adapter<UserApprovalAdapte
         RelativeLayout layoutMain;
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
-            layoutMain = (RelativeLayout) itemLayoutView.findViewById(R.id.layoutMain);
-            txtName = (TextView) itemLayoutView.findViewById(R.id.txtName);
+            layoutMain = itemLayoutView.findViewById(R.id.layoutMain);
+            txtName = itemLayoutView.findViewById(R.id.txtName);
 
             layoutMain.setOnClickListener(new View.OnClickListener() {
                 @Override

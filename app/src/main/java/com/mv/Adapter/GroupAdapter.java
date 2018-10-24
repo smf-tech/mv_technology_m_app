@@ -34,11 +34,11 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.MyViewHolder
 
         public MyViewHolder(View view) {
             super(view);
-            txtCommunityName = (TextView) view.findViewById(R.id.txtCommunityName);
+            txtCommunityName = view.findViewById(R.id.txtCommunityName);
             txtCommunityName.setSelected(true);
-            imgNextArrow = (ImageView) view.findViewById(R.id.imgNextArrow);
-            txtCount = (TextView) view.findViewById(R.id.txtCount);
-            layout = (LinearLayout) view.findViewById(R.id.layoutGroup);
+            imgNextArrow = view.findViewById(R.id.imgNextArrow);
+            txtCount = view.findViewById(R.id.txtCount);
+            layout = view.findViewById(R.id.layoutGroup);
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

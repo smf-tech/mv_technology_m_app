@@ -66,25 +66,25 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         public MyViewHolder(View view) {
             super(view);
 
-            llLayout = (LinearLayout) view.findViewById(R.id.ll_spinner_layout);
-            llEdittext = (LinearLayout) view.findViewById(R.id.ll_edittext_layout);
-            llDate = (LinearLayout) view.findViewById(R.id.ll_date_layout);
-            llLocation = (LinearLayout) view.findViewById(R.id.ll_location_layout);
-            llHeaderLay = (LinearLayout) view.findViewById(R.id.ll_headerr_lay);
-            llCheck = (LinearLayout) view.findViewById(R.id.check_lay);
+            llLayout = view.findViewById(R.id.ll_spinner_layout);
+            llEdittext = view.findViewById(R.id.ll_edittext_layout);
+            llDate = view.findViewById(R.id.ll_date_layout);
+            llLocation = view.findViewById(R.id.ll_location_layout);
+            llHeaderLay = view.findViewById(R.id.ll_headerr_lay);
+            llCheck = view.findViewById(R.id.check_lay);
             //   llMutiselect = (LinearLayout) view.findViewById(R.id.ll_multispinner_lay);
 
-            question = (TextView) view.findViewById(R.id.tv_pd_question);
-            header = (TextView) view.findViewById(R.id.tv_header);
+            question = view.findViewById(R.id.tv_pd_question);
+            header = view.findViewById(R.id.tv_header);
             ///location layout
-            locHeader = (TextView) view.findViewById(R.id.tv_loc_hed);
-            locText = (TextView) view.findViewById(R.id.loc_text);
-            editHeader = (TextView) view.findViewById(R.id.tv_edittext_question);
-            spinnerResponse = (Spinner) view.findViewById(R.id.sp_response);
+            locHeader = view.findViewById(R.id.tv_loc_hed);
+            locText = view.findViewById(R.id.loc_text);
+            editHeader = view.findViewById(R.id.tv_edittext_question);
+            spinnerResponse = view.findViewById(R.id.sp_response);
             //    multiSelect = (MultiSelectionSpinner) view.findViewById(R.id.multi_spinner);
             //date  and timelayout
 
-            date = (EditText) view.findViewById(R.id.et_process_detail_date);
+            date = view.findViewById(R.id.et_process_detail_date);
             date.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -133,7 +133,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             });
             //text and multiline
             // inputLayout = (TextInputLayout) view.findViewById(R.id.input_content);
-            questionResponse = (EditText) view.findViewById(R.id.et_process_detail);
+            questionResponse = view.findViewById(R.id.et_process_detail);
             questionResponse.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -174,9 +174,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
                 }
             });
-            dateHeader = (TextView) view.findViewById(R.id.tv_date_question);
-            checkText = (TextView) view.findViewById(R.id.check_header);
-            checkBox = (CheckBox) view.findViewById(R.id.detail_chk);
+            dateHeader = view.findViewById(R.id.tv_date_question);
+            checkText = view.findViewById(R.id.check_header);
+            checkBox = view.findViewById(R.id.detail_chk);
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

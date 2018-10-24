@@ -1,9 +1,7 @@
 package com.mv.Adapter;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,19 +9,10 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.mv.Activity.IndicatorTrainingFeedBackTaskList;
-import com.mv.Activity.LeaveApprovalActivity;
-import com.mv.Activity.LeaveDetailActivity;
-import com.mv.Activity.PiachartActivity;
-import com.mv.Activity.ProcessApprovalActivity;
 import com.mv.Activity.ProcessListActivity;
-import com.mv.Activity.TeamManagementUserProfileListActivity;
-import com.mv.Activity.TemplatesActivity;
 import com.mv.ActivityMenu.ProgrammeManagmentFragment;
-import com.mv.Model.LeavesModel;
 import com.mv.Model.Template;
 import com.mv.R;
 import com.mv.Utils.Constants;
@@ -76,12 +65,12 @@ public class ExpandableProcessListAdapter extends BaseExpandableListAdapter {
         TextView txtCommunityName, txt_targeted_date, txt_targeted_count, expectedCount, submittedCount;
         LinearLayout layout;
 
-        txtCommunityName = (TextView) convertView.findViewById(R.id.txtTemplateName);
-        txt_targeted_date = (TextView) convertView.findViewById(R.id.txt_traget_date);
-        expectedCount = (TextView) convertView.findViewById(R.id.txt_expected_count);
-        submittedCount = (TextView) convertView.findViewById(R.id.txt_submmited_date);
-        txt_targeted_count = (TextView) convertView.findViewById(R.id.txt_traget_count);
-        layout = (LinearLayout) convertView.findViewById(R.id.layoutTemplate);
+        txtCommunityName = convertView.findViewById(R.id.txtTemplateName);
+        txt_targeted_date = convertView.findViewById(R.id.txt_traget_date);
+        expectedCount = convertView.findViewById(R.id.txt_expected_count);
+        submittedCount = convertView.findViewById(R.id.txt_submmited_date);
+        txt_targeted_count = convertView.findViewById(R.id.txt_traget_count);
+        layout = convertView.findViewById(R.id.layoutTemplate);
         layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,14 +136,14 @@ public class ExpandableProcessListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group, null);
         }
-        ImageView imgGroup = (ImageView) convertView.findViewById(R.id.imgGroup);
+        ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
 
         if (isExpanded) {
             imgGroup.setImageResource(R.drawable.downarrow);
         } else {
             imgGroup.setImageResource(R.drawable.rightarrow);
         }
-        TextView txtName = (TextView) convertView
+        TextView txtName = convertView
                 .findViewById(R.id.txtName);
         // date.setTypeface(null, Typeface.BOLD);
         txtName.setText(headerTitle);

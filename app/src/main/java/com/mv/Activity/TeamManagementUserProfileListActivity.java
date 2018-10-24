@@ -16,8 +16,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.mv.Adapter.AttendanceAdapter;
-import com.mv.Adapter.TeamManagementAdapter;
 import com.mv.Adapter.UserApprovalAdapter;
 import com.mv.Model.Template;
 import com.mv.Model.User;
@@ -266,9 +264,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
             }
         }
         repplicaCahart.clear();
-        for (int i = 0; i < list.size(); i++) {
-            repplicaCahart.add(list.get(i));
-        }
+        repplicaCahart.addAll(list);
         mAdapter = new UserApprovalAdapter(context,repplicaCahart);
         binding.recyclerView.setAdapter(mAdapter);
     }

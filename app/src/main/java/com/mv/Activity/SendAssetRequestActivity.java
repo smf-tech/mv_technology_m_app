@@ -103,8 +103,7 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
         edit_text_tentative_return_date.setOnClickListener(this);
         btn_send_request.setOnClickListener(this);
         setActionbar(getResources().getString(R.string.asset_request_screen));
-        if (getIntent().getExtras() == null) {
-        } else if (getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
+        if (getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
             isAdd = true;
         } else {
             isAdd = false;
@@ -141,7 +140,7 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             assetList.clear();

@@ -78,15 +78,15 @@ public class ExpandableAssetListAdapter extends BaseExpandableListAdapter {
         ImageView imgEdit, imgDelete;
 
 
-        imgEdit = (ImageView) convertView.findViewById(R.id.imgEdit);
-        imgDelete = (ImageView) convertView.findViewById(R.id.imgDelete);
-        cardView = (CardView) convertView.findViewById(R.id.cardView);
-        txt_asset_name = (TextView) convertView.findViewById(R.id.txt_asset_name);
-        tvProjectDateTitle = (TextView) convertView.findViewById(R.id.tvProjectDateTitle);
-        txt_asset_id = (TextView) convertView.findViewById(R.id.txt_asset_id);
-        txt_asset_issue_date = (TextView) convertView.findViewById(R.id.txt_asset_issue_date);
+        imgEdit = convertView.findViewById(R.id.imgEdit);
+        imgDelete = convertView.findViewById(R.id.imgDelete);
+        cardView = convertView.findViewById(R.id.cardView);
+        txt_asset_name = convertView.findViewById(R.id.txt_asset_name);
+        tvProjectDateTitle = convertView.findViewById(R.id.tvProjectDateTitle);
+        txt_asset_id = convertView.findViewById(R.id.txt_asset_id);
+        txt_asset_issue_date = convertView.findViewById(R.id.txt_asset_issue_date);
         view1 = convertView.findViewById(R.id.view1);
-        imgLayout = (LinearLayout) convertView.findViewById(R.id.imgLayout);
+        imgLayout = convertView.findViewById(R.id.imgLayout);
         cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -236,14 +236,14 @@ public class ExpandableAssetListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group, null);
         }
-        ImageView imgGroup = (ImageView) convertView.findViewById(R.id.imgGroup);
+        ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
 
         if (isExpanded) {
             imgGroup.setImageResource(R.drawable.downarrow);
         } else {
             imgGroup.setImageResource(R.drawable.rightarrow);
         }
-        TextView txtName = (TextView) convertView
+        TextView txtName = convertView
                 .findViewById(R.id.txtName);
         // date.setTypeface(null, Typeface.BOLD);
         txtName.setText(headerTitle);

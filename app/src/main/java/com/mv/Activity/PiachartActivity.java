@@ -173,7 +173,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (mSelection != null && which < mSelection.length) {
+                        if (which < mSelection.length) {
                             mSelection[which] = isChecked;
 
 
@@ -245,7 +245,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (mSelection != null && which < mSelection.length) {
+                        if (which < mSelection.length) {
                             mSelection[which] = isChecked;
 
 
@@ -498,18 +498,14 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     private void setFilter(String s) {
         List<PiaChartModel> list = new ArrayList<>();
         repplicaCahart.clear();
-        for (int i = 0; i < piaChartModelArrayList.size(); i++) {
-            repplicaCahart.add(piaChartModelArrayList.get(i));
-        }
+        repplicaCahart.addAll(piaChartModelArrayList);
         for (int i = 0; i < repplicaCahart.size(); i++) {
             if (repplicaCahart.get(i).getDetail().toLowerCase().contains(s.toLowerCase())) {
                 list.add(repplicaCahart.get(i));
             }
         }
         repplicaCahart.clear();
-        for (int i = 0; i < list.size(); i++) {
-            repplicaCahart.add(list.get(i));
-        }
+        repplicaCahart.addAll(list);
         adapter = new PichartDescriptiveListAdapter(context, repplicaCahart);
         rvPiaChartDeatail.setAdapter(adapter);
     }
@@ -858,7 +854,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<Community> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Community[].class));

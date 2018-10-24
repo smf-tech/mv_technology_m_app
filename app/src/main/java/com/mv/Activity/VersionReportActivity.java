@@ -243,18 +243,14 @@ public class VersionReportActivity extends AppCompatActivity implements View.OnC
     private void setFilter(String s) {
         List<Template> list = new ArrayList<>();
         repplicaCahart.clear();
-        for (int i = 0; i < processAllList.size(); i++) {
-            repplicaCahart.add(processAllList.get(i));
-        }
+        repplicaCahart.addAll(processAllList);
         for (int i = 0; i < repplicaCahart.size(); i++) {
             if (repplicaCahart.get(i).getName().toLowerCase().contains(s.toLowerCase())) {
                 list.add(repplicaCahart.get(i));
             }
         }
         repplicaCahart.clear();
-        for (int i = 0; i < list.size(); i++) {
-            repplicaCahart.add(list.get(i));
-        }
+        repplicaCahart.addAll(list);
         mAdapter = new VersionReportAdapter(repplicaCahart, context);
         binding.recyclerView.setAdapter(mAdapter);
     }
@@ -283,7 +279,7 @@ public class VersionReportActivity extends AppCompatActivity implements View.OnC
                 .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (mSelection != null && which < mSelection.length) {
+                        if (which < mSelection.length) {
                             mSelection[which] = isChecked;
 
 

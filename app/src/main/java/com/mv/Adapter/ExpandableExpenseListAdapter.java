@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.mv.Activity.AdavanceListActivity;
 import com.mv.Activity.ExpenseListActivity;
 import com.mv.Model.Expense;
 import com.mv.R;
@@ -74,14 +73,14 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
         CardView cardView;
         RelativeLayout textLayout;
 
-        imgEdit = (ImageView) convertView.findViewById(R.id.imgEdit);
-        imgDelete = (ImageView) convertView.findViewById(R.id.imgDelete);
-        tvProjectName = (TextView) convertView.findViewById(R.id.tvProjectName);
-        tvDateName = (TextView) convertView.findViewById(R.id.tvDateName);
-        tvNoOfPeopleName = (TextView) convertView.findViewById(R.id.tvNoOfPeopleName);
-        tvNoOfPeopleTitle = (TextView) convertView.findViewById(R.id.tvNoOfPeopleTitle);
+        imgEdit = convertView.findViewById(R.id.imgEdit);
+        imgDelete = convertView.findViewById(R.id.imgDelete);
+        tvProjectName = convertView.findViewById(R.id.tvProjectName);
+        tvDateName = convertView.findViewById(R.id.tvDateName);
+        tvNoOfPeopleName = convertView.findViewById(R.id.tvNoOfPeopleName);
+        tvNoOfPeopleTitle = convertView.findViewById(R.id.tvNoOfPeopleTitle);
         view = convertView.findViewById(R.id.view1);
-        cardView = (CardView) convertView.findViewById(R.id.cardView);
+        //cardView = convertView.findViewById(R.id.cardView);
         textLayout = convertView.findViewById(R.id.textLayout);
 
         if(groupPosition==1|| groupPosition==2){
@@ -193,14 +192,14 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group, null);
         }
-        ImageView imgGroup = (ImageView) convertView.findViewById(R.id.imgGroup);
+        ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
 
         if (isExpanded) {
             imgGroup.setImageResource(R.drawable.downarrow);
         } else {
             imgGroup.setImageResource(R.drawable.rightarrow);
         }
-        TextView txtName = (TextView) convertView
+        TextView txtName = convertView
                 .findViewById(R.id.txtName);
         // date.setTypeface(null, Typeface.BOLD);
         txtName.setText(headerTitle);

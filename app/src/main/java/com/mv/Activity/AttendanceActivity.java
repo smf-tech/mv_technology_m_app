@@ -9,7 +9,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
-import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -17,7 +16,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -57,7 +55,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -395,9 +392,9 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                         Utills.hideProgressDialog();
                         try {
                             if (response.body() != null) {
-                                if (response != null && response.isSuccess()) {
+                                if (response.isSuccess()) {
                                     String data = response.body().string();
-                                    if (data != null && data.length() > 0) {
+                                    if (data.length() > 0) {
                                         JSONObject object = new JSONObject(data);
                                         if (object.has("Status")) {
                                             if (object.getString("Status").equalsIgnoreCase("done")) {
@@ -578,7 +575,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                     if (response != null && response.isSuccess()) {
                         attendanceList.clear();
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
                             dates.clear();
                             JSONArray jsonArray = new JSONArray(str);
                             if (jsonArray.length() > 0) {

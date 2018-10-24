@@ -226,7 +226,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                     binding.inputHrToDate.setEnabled(false);
                     binding.inputHrToDate.setText(binding.inputHrFormDate.getText().toString());
                     binding.leavesCountText.setVisibility(View.VISIBLE);
-                    if(binding.inputHrToDate.getText().toString()!=null && binding.inputHrToDate.getText().toString().length()>0)
+                    if(binding.inputHrToDate.getText().toString().length()>0)
                         binding.leavesCountText.setText(Utills.getNumberofDaysBetweenTwoDates(binding.inputHrFormDate.getText().toString(),binding.inputHrToDate.getText().toString()));
                 } else {
                     halfDayCheck = "false";
@@ -252,7 +252,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.input_hr_to_date:
-                if (binding.inputHrFormDate.getText().toString().equals("")||binding.inputHrFormDate.getText().toString().equals(null))
+                if (binding.inputHrFormDate.getText().toString().equals("")||binding.inputHrFormDate.getText().toString()==null)
                     Utills.showToast("Please Select From Date",context);
                 else {
                     binding.leavesCountText.setVisibility(View.VISIBLE);
@@ -491,7 +491,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                             binding.leavesCountText.setText(Utills.getNumberofDaysBetweenTwoDates(binding.inputHrFormDate.getText().toString(),binding.inputHrToDate.getText().toString()));
 //                            }
                         }else{
-                            if(binding.inputHrToDate.getText().toString()!=null && binding.inputHrToDate.getText().toString().length()>0)
+                            if(binding.inputHrToDate.getText().toString().length()>0)
                                 Utills.showToast("Please enter proper range.",LeaveDetailActivity.this);
                             binding.inputHrToDate.setText("");
                         }

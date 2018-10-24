@@ -15,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -125,9 +124,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 showPopUp();
         } else {
             chatList.clear();
-            for (int i = 0; i < temp.size(); i++) {
-                chatList.add(temp.get(i));
-            }
+            chatList.addAll(temp);
             adapter.notifyDataSetChanged();
             if (Utills.isConnected(this))
                 getAllChats(true, isDialogShow, false);
@@ -140,7 +137,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
             Utills.showProgressDialog(this, getString(R.string.loading_chats), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = "";
+        String url;
         if (isTimePresent && AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID)).size() > 0) {
             if (!isPrevious) {
                 url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -164,7 +161,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             List<Community> list = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities();
                             Community community = new Community();
                             for (int i = 0; i < list.size(); i++) {
@@ -259,7 +256,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
             Utills.showProgressDialog(this, getString(R.string.loading_chats), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = "";
+        String url;
         if (isTimePresent && AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID)).size() > 0) {
             if (!isPrevious) {
                 url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -283,7 +280,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             List<Community> list = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities();
                             Community community = new Community();
                             for (int i = 0; i < list.size(); i++) {
@@ -545,9 +542,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         filterflag = 0;
         mypostlist = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllChats(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), true, false);
         chatList.clear();
-        for (int i = 0; i < mypostlist.size(); i++) {
-            chatList.add(mypostlist.get(i));
-        }
+        chatList.addAll(mypostlist);
         adapter.notifyDataSetChanged();
     }
 
@@ -643,9 +638,9 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                 //Inflating the Popup using xml file
                 popup.getMenuInflater().inflate(R.menu.popup_menu_cammunity, popup.getMenu());
                 //   popup.getMenu().getItem(R.id.spam).setVisible(true);
-                MenuItem filtr = (MenuItem) popup.getMenu().findItem(R.id.mn_filter);
-                MenuItem group = (MenuItem) popup.getMenu().findItem(R.id.mn_mumbers);
-                MenuItem mute = (MenuItem) popup.getMenu().findItem(R.id.mn_mute);
+                MenuItem filtr = popup.getMenu().findItem(R.id.mn_filter);
+                MenuItem group = popup.getMenu().findItem(R.id.mn_mumbers);
+                MenuItem mute = popup.getMenu().findItem(R.id.mn_mute);
 
                 img_filter = (ImageView) findViewById(R.id.img_filter);
                 if (Title != null) {
@@ -764,9 +759,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
                     templateList.clear();
                     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                     List<Template> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Template[].class));
-                    for (int i = 0; i < temp.size(); i++) {
-                        templateList.add(temp.get(i));
-                    }
+                    templateList.addAll(temp);
                     showDialog();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -790,9 +783,6 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
             if (i == 0)
                 type = templateList.get(i).getName();
             items[i] = templateList.get(i).getName();
-            if (getIntent().getExtras().getString(Constants.TITLE).equalsIgnoreCase("HO Support")) {
-
-            }
         }
 
 // arraylist to keep the selected items
@@ -943,24 +933,16 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         } else {
             if (filterflag == 0) {
                 List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getAllChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filtertype);
-                for (int i = 0; i < contentList.size(); i++) {
-                    chatList.add(contentList.get(i));
-                }
+                chatList.addAll(contentList);
             } else if (filterflag == 1) {
                 List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getMyChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), User.getCurrentUser(getApplicationContext()).getMvUser().getId(), filtertype);
-                for (int i = 0; i < contentList.size(); i++) {
-                    chatList.add(contentList.get(i));
-                }
+                chatList.addAll(contentList);
             } else if (filterflag == 2) {
                 List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getMyLocationChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filtertype, User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
-                for (int i = 0; i < contentList.size(); i++) {
-                    chatList.add(contentList.get(i));
-                }
+                chatList.addAll(contentList);
             } else if (filterflag == 3) {
                 List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().getOtherChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filtertype, User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
-                for (int i = 0; i < contentList.size(); i++) {
-                    chatList.add(contentList.get(i));
-                }
+                chatList.addAll(contentList);
             }
         }
 

@@ -4,9 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -20,18 +18,13 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.mv.Activity.HomeActivity;
 import com.mv.Adapter.TeamManagementAdapter;
 import com.mv.BR;
 import com.mv.Model.ParentViewModel;
 import com.mv.Model.Template;
-import com.mv.Model.User;
 import com.mv.R;
-import com.mv.Service.LocationService;
-import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
-import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityNewTemplateBinding;
 
 import java.util.ArrayList;

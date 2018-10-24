@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mv.Adapter.ExpandableExpenseListAdapter;
-import com.mv.Adapter.ExpenseAdapter;
 import com.mv.Model.Expense;
 import com.mv.Model.User;
 import com.mv.Model.Voucher;
@@ -157,7 +155,7 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
                 try {
                     if (response != null && response.isSuccess()) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
 
                             JSONObject object = new JSONObject(str);
                             if (object.has("salaries") && !(object.getString("salaries").equalsIgnoreCase("null"))) {
@@ -206,8 +204,8 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
                 try {
                     if (response != null && response.isSuccess()) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
-                            if (Arrays.asList(gson.fromJson(str, Expense[].class)) != null) {
+                        if (str.length() > 0) {
+                            if (Arrays.asList(gson.fromJson(str, Expense[].class)).size()>0) {
                                 AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().deleteExpense(voucher.getId());
                                 AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().insertExpense(Arrays.asList(gson.fromJson(str, Expense[].class)));
                                 setRecyclerView();

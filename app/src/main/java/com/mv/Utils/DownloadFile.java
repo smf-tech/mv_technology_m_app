@@ -151,8 +151,6 @@ public class DownloadFile {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-            } else {
-
             }
         }
 

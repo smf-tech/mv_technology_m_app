@@ -14,17 +14,12 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mv.Adapter.ExpandableApprovalListAdapter;
 import com.mv.Adapter.ExpandableAttendanceApprovalListAdapter;
-import com.mv.Model.Attendance;
 import com.mv.Model.AttendanceApproval;
 import com.mv.Model.HolidayListModel;
-import com.mv.Model.LeavesModel;
 import com.mv.Model.User;
-import com.mv.Model.Voucher;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
-import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
@@ -33,10 +28,8 @@ import com.mv.databinding.ActivityAttendanceApprovalBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -114,11 +107,11 @@ public class AttendanceApprovalActivity extends AppCompatActivity implements Vie
         toolbar_title.setText(str);
         ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
-        img_back.setOnClickListener((View.OnClickListener) this);
+        img_back.setOnClickListener(this);
         ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setImageResource(R.drawable.ic_action_calender);
-        img_logout.setOnClickListener((View.OnClickListener) this);
+        img_logout.setOnClickListener(this);
     }
 
     @Override
@@ -167,14 +160,14 @@ public class AttendanceApprovalActivity extends AppCompatActivity implements Vie
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
 
                             ArrayList<AttendanceApproval> pendingList = new ArrayList<>();
                             ArrayList<AttendanceApproval> approveList = new ArrayList<>();
                             ArrayList<AttendanceApproval> rejectList = new ArrayList<>();
 
-                            if (Arrays.asList(gson.fromJson(str, AttendanceApproval[].class)) != null) {
+                            if (Arrays.asList(gson.fromJson(str, AttendanceApproval[].class)).size()>0) {
 //                                AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().deleteAllVoucher();
 //                                AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().insertVoucher();
                                 attendanceList = Arrays.asList(gson.fromJson(str, AttendanceApproval[].class));

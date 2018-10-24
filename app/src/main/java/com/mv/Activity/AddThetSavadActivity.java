@@ -208,7 +208,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListTaluka.clear();
                             mListTaluka.add("Select");
                             JSONArray jsonArr = new JSONArray(response.body().string());
@@ -232,7 +232,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
 
     private void initViews() {
         setActionbar(getString(R.string.thet_savnd));
-        isEdit = getIntent().getExtras().getBoolean("EDIT");
+            isEdit = getIntent().getExtras().getBoolean("EDIT");
 
         preferenceHelper = new PreferenceHelper(this);
         binding.spinnerDistrict.setOnItemSelectedListener(this);
@@ -253,14 +253,10 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         mListTaluka.add("Select");
         if (!Utills.isConnected(this)) {
             List<String> list = AppDatabase.getAppDatabase(this).userDao().getTaluka(User.getCurrentUser(this).getMvUser().getState(), User.getCurrentUser(this).getMvUser().getDistrict());
-            if (list.size() == 0) {
+            if (list.size() == 0)
                 showPopUp();
-            } else {
-
-                for (int k = 0; k < list.size(); k++) {
-                    mListTaluka.add(list.get(k));
-                }
-            }
+            else
+                mListTaluka.addAll(list);
         }
 
         district_adapter = new ArrayAdapter<String>(this,
@@ -287,7 +283,9 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         }
         if (isEdit) {
             mContent = (Content) getIntent().getExtras().getSerializable(Constants.CONTENT);
-            binding.editTextContent.setText(mContent.getTitle());
+            if(mContent.getTitle()!=null){
+                binding.editTextContent.setText(mContent.getTitle());
+            }
             binding.editTextDescription.setText(mContent.getDescription());
             List<String> mList = new ArrayList<String>();
             Collections.addAll(mList, getResources().getStringArray(R.array.array_of_thet_savad));
@@ -507,7 +505,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
                         }*/
                         jsonObject1.put("contentType", "Image");
                         jsonObject1.put("isAttachmentPresent", "true");
-                        InputStream iStream = null;
+                        InputStream iStream;
                         iStream = getContentResolver().openInputStream(FinalUri);
                         img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
                       /*  JSONObject jsonObjectAttachment = new JSONObject();
@@ -644,7 +642,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         dialogrecord.setCancelable(true);
         dialogrecord.setContentView(R.layout.activity_recordaudio);
 
-        final LinearLayout record = (LinearLayout) dialogrecord.findViewById(R.id.record);
+        final LinearLayout record = dialogrecord.findViewById(R.id.record);
         record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -667,7 +665,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-        final ImageView play = (ImageView) dialogrecord.findViewById(R.id.play);
+        final ImageView play = dialogrecord.findViewById(R.id.play);
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -714,9 +712,9 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
             }
         });
 
-        rectext = (TextView) dialogrecord.findViewById(R.id.rectext);
-        TextView done = (TextView) dialogrecord.findViewById(R.id.done);
-        TextView cancel = (TextView) dialogrecord.findViewById(R.id.cancel);
+        rectext = dialogrecord.findViewById(R.id.rectext);
+        TextView done = dialogrecord.findViewById(R.id.done);
+        TextView cancel = dialogrecord.findViewById(R.id.cancel);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1053,16 +1051,18 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int len = 0;
+        int len;
         try {
             while ((len = inputStream.read(buffer)) != -1) {
                 byteBuffer.write(buffer, 0, len);
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }catch (Exception e) {
+            e.printStackTrace();
         }
         System.out.println("converted!");
-        String videoData = "";
+        String videoData;
         //Converting bytes into base64
         videoData = Base64.encodeToString(byteBuffer.toByteArray(), Base64.DEFAULT);
         Log.d("VideoData**>  ", videoData);
@@ -1096,16 +1096,14 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
                     if (Utills.isConnected(this)) {
                         getTaluka();
                     } else {
-
+                        Utills.showToast("No Internet Connectivity.",this);
                     }
 
                 }
                 mListTaluka.clear();
                 List<String> list = AppDatabase.getAppDatabase(this).userDao().getTaluka(User.getCurrentUser(this).getMvUser().getState(), User.getCurrentUser(this).getMvUser().getDistrict());
                 mListTaluka.add("Select");
-                for (int k = 0; k < list.size(); k++) {
-                    mListTaluka.add(list.get(k));
-                }
+                mListTaluka.addAll(list);
                 taluka_adapter.notifyDataSetChanged();
                 break;
             case R.id.spinner_taluka:

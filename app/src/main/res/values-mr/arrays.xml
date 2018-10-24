@@ -54,7 +54,6 @@
     </string-array>
 
     <string-array name="array_of_school">
-        <item></item>
         <item>School 1</item>
         <item>School 2</item>
         <item>School 3</item>
@@ -82,7 +81,6 @@
     </string-array>
 
     <string-array name="array_of_district">
-        <item></item>
         <item>District 1</item>
         <item>District 2</item>
         <item>District 3</item>
@@ -92,7 +90,6 @@
     </string-array>
 
     <string-array name="array_of_taluka">
-        <item></item>
         <item>Taluka 1</item>
         <item>Taluka 2</item>
         <item>Taluka 3</item>
@@ -102,7 +99,6 @@
     </string-array>
 
     <string-array name="array_of_cluster">
-        <item></item>
         <item>Cluster 1</item>
         <item>Cluster 2</item>
         <item>Cluster 3</item>

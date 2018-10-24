@@ -66,7 +66,10 @@ public class AssetApprovalActivity extends AppCompatActivity implements View.OnC
 
     private void InitViews() {
         setActionbar(getString(R.string.asset_approval));
-        asset = (Asset) getIntent().getExtras().getSerializable("Assets");
+        if(getIntent().getExtras().getSerializable("Assets")!=null){
+            asset = (Asset) getIntent().getExtras().getSerializable("Assets");
+        }
+
         asset_statuslist = Arrays.asList(getResources().getStringArray(R.array.array_of_asset_status));
 
         edit_text_name = (EditText) findViewById(R.id.edit_text_name);

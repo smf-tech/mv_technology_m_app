@@ -120,7 +120,7 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
                 try {
                     if (response != null && response.isSuccess()) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
                             if (Arrays.asList(gson.fromJson(str, Voucher[].class)) != null) {
 //                                AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().deleteAllVoucher();
 //                                AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().insertVoucher();
@@ -157,7 +157,7 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
                 try {
                     if (response != null && response.isSuccess()) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
                             if (Arrays.asList(gson.fromJson(str, Voucher[].class)) != null) {
                                 AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().deleteAllVoucher();
                                 AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().insertVoucher(Arrays.asList(gson.fromJson(str, Voucher[].class)));
@@ -205,9 +205,7 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
         List<Voucher> list = new ArrayList<>();
 
         voucherUsersFliter.clear();
-        for (int i = 0; i < mList.size(); i++) {
-            voucherUsersFliter.add(mList.get(i));
-        }
+        voucherUsersFliter.addAll(mList);
         list.clear();
         for (int i = 0; i < voucherUsersFliter.size(); i++) {
             if (voucherUsersFliter.get(i).getUserName()!=null && voucherUsersFliter.get(i).getUserName().toLowerCase().contains(s.toLowerCase())) {

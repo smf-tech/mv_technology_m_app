@@ -1,7 +1,6 @@
 package com.mv.Activity;
 
 import android.content.Context;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import com.mv.Adapter.ProcessListAdapter;
 import com.mv.Model.Task;
 import com.mv.Model.TaskContainerModel;
-import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 
@@ -26,7 +24,6 @@ import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityProcessListApprovalBinding;
-import com.mv.databinding.ActivityProcessListBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;

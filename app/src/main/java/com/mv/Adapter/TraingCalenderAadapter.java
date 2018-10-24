@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -61,15 +60,15 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
             super(view);
 /*            state = (TextView) view.findViewById(R.id.txtTemplateName);
             district = (TextView) view.findViewById(R.id.txtTemplateName);*/
-            tvTotalExpenseName = (TextView) view.findViewById(R.id.tvTotalExpenseName);
-            lnr_content = (RelativeLayout) view.findViewById(R.id.lnr_content);
-            tvProjectName = (TextView) view.findViewById(R.id.tvProjectName);
-            tvDateName = (TextView) view.findViewById(R.id.tvDateName);
-            tvNoOfPeopleName = (TextView) view.findViewById(R.id.tvNoOfPeopleName);
+            tvTotalExpenseName = view.findViewById(R.id.tvTotalExpenseName);
+            lnr_content = view.findViewById(R.id.lnr_content);
+            tvProjectName = view.findViewById(R.id.tvProjectName);
+            tvDateName = view.findViewById(R.id.tvDateName);
+            tvNoOfPeopleName = view.findViewById(R.id.tvNoOfPeopleName);
 
-            tvStatusName = (TextView) view.findViewById(R.id.tvStatusName);
+            tvStatusName = view.findViewById(R.id.tvStatusName);
 
-            imgDelete = (ImageView) view.findViewById(R.id.imgDelete);
+            imgDelete = view.findViewById(R.id.imgDelete);
             imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -107,7 +106,7 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        CalenderEvent piaChartModel = (CalenderEvent) calenderlsList.get(position);
+        CalenderEvent piaChartModel = calenderlsList.get(position);
         holder.tvProjectName.setText(piaChartModel.getTitle());
         holder.tvDateName.setText(piaChartModel.getDescription());
         holder.tvNoOfPeopleName.setText(piaChartModel.getProceesSubmittedCount() + "/" + piaChartModel.getProceesTotalCount());
@@ -160,7 +159,7 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
             public void onClick(DialogInterface dialog, int which) {
 
                 if (calenderlsList.get(position) instanceof CalenderEvent)
-                    deleteEvent(((CalenderEvent) calenderlsList.get(position)));
+                    deleteEvent(calenderlsList.get(position));
 
             }
         });

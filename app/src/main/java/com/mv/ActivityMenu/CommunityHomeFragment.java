@@ -21,7 +21,6 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mv.Activity.BroadCastActivity;
-import com.mv.Activity.HomeActivity;
 import com.mv.Activity.LoginActivity;
 import com.mv.Adapter.FragmentContentAdapter;
 import com.mv.Model.Content;
@@ -129,9 +128,7 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
                 showPopUp();
         } else {
             chatList.clear();
-            for (int i = 0; i < temp.size(); i++) {
-                chatList.add(temp.get(i));
-            }
+            chatList.addAll(temp);
             adapter.notifyDataSetChanged();
             if (Utills.isConnected(context))
                 getAllChats(true, isDialogShow);
@@ -144,7 +141,7 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
             Utills.showProgressDialog(CommunityHomeFragment.this, "Loading Chats", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
-        String url = "";
+        String url;
         if (isTimePresent)
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/getBroadcastContent?userId=" + User.getCurrentUser(context).getMvUser().getId()
@@ -159,7 +156,7 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
 
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();

@@ -138,7 +138,7 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             mListState.clear();
                             mListState.add("Select");
@@ -409,7 +409,7 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(response.body().string());
                             mListDistrict.clear();
                             mListDistrict.add("Select");
@@ -543,7 +543,7 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
                     if (FinalUri != null) {
 
                         try {
-                            InputStream iStream = null;
+                            InputStream iStream;
                             iStream = getContentResolver().openInputStream(FinalUri);
                             String img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
                             jsonObjectAttachment.put("Body", img_str);
@@ -600,7 +600,7 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
         String str = "";
         if (mSelectState == 0) {
             str = "Please Select State";
-        } else if (TextUtils.isEmpty(selectedRoles.toString().toString().trim())) {
+        } else if (TextUtils.isEmpty(selectedRoles.toString().trim())) {
             str = "Please Select Roles";
         } else if (TextUtils.isEmpty(binding.editTextContent.getText().toString().trim())) {
             str = "Please Enter Title";

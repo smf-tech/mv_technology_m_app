@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ImageView;
@@ -156,7 +155,7 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
                 try {
                     if (response != null && response.isSuccess()) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
                             JSONObject object = new JSONObject(str);
                             if (object.has("salaries") && !(object.getString("salaries").equalsIgnoreCase("null"))) {
                                 mList = Arrays.asList(gson.fromJson(object.getString("salaries"), Adavance[].class));
@@ -204,8 +203,8 @@ public class AdavanceListActivity extends AppCompatActivity implements View.OnCl
                 try {
                     if (response != null && response.isSuccess()) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
-                            if (Arrays.asList(gson.fromJson(str, Adavance[].class)) != null) {
+                        if (str.length() > 0) {
+                            if (Arrays.asList(gson.fromJson(str, Adavance[].class)).size()>0) {
                                 AppDatabase.getAppDatabase(AdavanceListActivity.this).userDao().deleteAllAdavance();
                                 AppDatabase.getAppDatabase(AdavanceListActivity.this).userDao().insertAdavance(Arrays.asList(gson.fromJson(str, Adavance[].class)));
                                 setRecyclerView();

@@ -557,7 +557,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             mStateList.clear();
                             mStateList.add("Select");
@@ -597,7 +597,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListDistrict.clear();
                             mListDistrict.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -635,7 +635,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListTaluka.clear();
                             mListTaluka.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -674,7 +674,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListCluster.clear();
                             mListCluster.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -711,7 +711,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListVillage.clear();
                             mListVillage.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -749,7 +749,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListSchoolName.clear();
                             mListSchoolName.add("Select");
 

@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mv.Adapter.CommentAdapter;
 import com.mv.Adapter.NotificatioAdapter;
 import com.mv.Model.Notifications;
 import com.mv.R;

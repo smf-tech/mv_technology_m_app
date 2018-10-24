@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -138,12 +137,13 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
         String receivedType = receivedIntent.getType();
         //make sure it's an action and type we can handle
         if (receivedAction != null && receivedAction.equals(Intent.ACTION_SEND)) {
-            if (receivedType.startsWith("text/")) {
-                //handle sent text
-            } else if (receivedType.startsWith("image/")) {
+             if (receivedType.startsWith("image/")) {
                 //handle sent image
-                Constants.shareUri = (Uri) receivedIntent.getParcelableExtra(Intent.EXTRA_STREAM);
+                Constants.shareUri = receivedIntent.getParcelableExtra(Intent.EXTRA_STREAM);
             }
+//            else if (receivedType.startsWith("text/")) {
+//                //handle sent text
+//            }
             //content is being shared
         } else {
             //app has been launched directly, not from share list
@@ -201,7 +201,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<Community> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Community[].class));
@@ -343,18 +343,14 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
     private void setFilter(String s) {
         List<Community> list = new ArrayList<>();
         communityList.clear();
-        for (int i = 0; i < replicaCommunityList.size(); i++) {
-            communityList.add(replicaCommunityList.get(i));
-        }
+        communityList.addAll(replicaCommunityList);
         for (int i = 0; i < communityList.size(); i++) {
             if (communityList.get(i).getName().toLowerCase().contains(s.toLowerCase())) {
                 list.add(communityList.get(i));
             }
         }
         communityList.clear();
-        for (int i = 0; i < list.size(); i++) {
-            communityList.add(list.get(i));
-        }
+        communityList.addAll(list);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -378,9 +374,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
         } else {
             preferenceHelper.insertString(PreferenceHelper.COMMUNITYID, communityList.get(position).getId());
             List<Community> list = new ArrayList<Community>();
-            for (int i = 0; i < communityList.size(); i++) {
-                list.add(communityList.get(i));
-            }
+            list.addAll(communityList);
             list.remove(position);
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
             String json = gson.toJson(list);

@@ -16,10 +16,8 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.mv.Adapter.GroupAdapter;
 import com.mv.Adapter.TemplateAdapter;
 import com.mv.BR;
-import com.mv.Model.Community;
 import com.mv.Model.ParentViewModel;
 import com.mv.Model.Template;
 import com.mv.Model.User;
@@ -85,9 +83,7 @@ public class TemplatesActivity extends AppCompatActivity implements View.OnClick
                     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                     List<Template> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Template[].class));
                     if(temp.size()!=0) {
-                        for (int i = 0; i < temp.size(); i++) {
-                            templateList.add(temp.get(i));
-                        }
+                        templateList.addAll(temp);
                         mAdapter.notifyDataSetChanged();
                         textNoData.setVisibility(View.GONE);
                     }else {

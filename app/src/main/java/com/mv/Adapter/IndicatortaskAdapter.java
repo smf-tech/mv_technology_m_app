@@ -39,8 +39,8 @@ public class IndicatortaskAdapter extends RecyclerView.Adapter<IndicatortaskAdap
 
         public MyViewHolder(View view) {
             super(view);
-            txtCommunityName = (TextView) view.findViewById(R.id.txtTemplateName);
-            layout = (LinearLayout) view.findViewById(R.id.layoutTemplate);
+            txtCommunityName = view.findViewById(R.id.txtTemplateName);
+            layout = view.findViewById(R.id.layoutTemplate);
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

@@ -76,8 +76,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         RelativeLayout layoutMain;
 
 
-        layoutMain = (RelativeLayout) convertView.findViewById(R.id.layoutMain);
-        txtCount = (TextView) convertView.findViewById(R.id.txtCount);
+        layoutMain = convertView.findViewById(R.id.layoutMain);
+        txtCount = convertView.findViewById(R.id.txtCount);
         layoutMain.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,15 +161,15 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
             }
         });
-        imgDownload = (ImageView) convertView.findViewById(R.id.imgDownload);
-        imgshare = (ImageView) convertView.findViewById(R.id.imgshare);
+        imgDownload = convertView.findViewById(R.id.imgDownload);
+        imgshare = convertView.findViewById(R.id.imgshare);
         imgDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 _activity.startDownload(content);
             }
         });
-        imgshare = (ImageView) convertView.findViewById(R.id.imgshare);
+        imgshare = convertView.findViewById(R.id.imgshare);
         imgshare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -199,7 +199,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             }
         });
 
-        txtName = (TextView) convertView.findViewById(R.id.txtName);
+        txtName = convertView.findViewById(R.id.txtName);
 
         txtCount.setVisibility(View.GONE);
         txtName.setText(content.getName());
@@ -309,13 +309,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group, null);
         }
-        ImageView imgGroup = (ImageView) convertView.findViewById(R.id.imgGroup);
+        ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
         if (isExpanded) {
             imgGroup.setImageResource(R.drawable.downarrow);
         } else {
             imgGroup.setImageResource(R.drawable.rightarrow);
         }
-        TextView txtName = (TextView) convertView
+        TextView txtName = convertView
                 .findViewById(R.id.txtName);
         //     date.setTypeface(null, Typeface.BOLD);
         txtName.setText(headerTitle);

@@ -71,11 +71,11 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
 
             super(itemLayoutView);
 
-            imgEdit = (ImageView) itemLayoutView.findViewById(R.id.imgEdit);
-            imgDelete = (ImageView) itemLayoutView.findViewById(R.id.imgDelete);
-            tvProjectName = (TextView) itemLayoutView.findViewById(R.id.tvProjectName);
-            tvDateName = (TextView) itemLayoutView.findViewById(R.id.tvDateName);
-            tvNoOfPeopleName = (TextView) itemLayoutView.findViewById(R.id.tvNoOfPeopleName);
+            imgEdit = itemLayoutView.findViewById(R.id.imgEdit);
+            imgDelete = itemLayoutView.findViewById(R.id.imgDelete);
+            tvProjectName = itemLayoutView.findViewById(R.id.tvProjectName);
+            tvDateName = itemLayoutView.findViewById(R.id.tvDateName);
+            tvNoOfPeopleName = itemLayoutView.findViewById(R.id.tvNoOfPeopleName);
             imgEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -96,13 +96,13 @@ public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHold
                         mUserExpenseListActivity.changeStatus(getAdapterPosition(), "Rejected");
                 }
             });
-            cardView = (CardView) itemLayoutView.findViewById(R.id.cardView);
+            cardView = itemLayoutView.findViewById(R.id.cardView);
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (mContext instanceof UserExpenseListActivity) {
-
-                    }
+//                    if (mContext instanceof UserExpenseListActivity) {
+//
+//                    }
                 }
             });
         }

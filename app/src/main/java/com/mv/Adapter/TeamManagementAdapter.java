@@ -10,15 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mv.Activity.AttendanceApproval2Activity;
-import com.mv.Activity.AttendanceApprovalActivity;
 import com.mv.Activity.LeaveApprovalActivity;
 import com.mv.Activity.MapsActivity;
 import com.mv.Activity.ProcessApprovalActivity;
 import com.mv.Activity.ProcessListApproval;
 import com.mv.Activity.TeamManagementUserProfileListActivity;
-import com.mv.Activity.UserAdavanceListActivity;
 import com.mv.Activity.UserApproveDetail;
-import com.mv.Activity.UserExpenseListActivity;
 import com.mv.Activity.VoucherListActivity;
 import com.mv.ActivityMenu.TeamManagementFragment;
 import com.mv.Model.Task;
@@ -47,9 +44,9 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
 
         public MyViewHolder(View view) {
             super(view);
-            txtCommunityName = (TextView) view.findViewById(R.id.txtTemplateName);
-            layout = (LinearLayout) view.findViewById(R.id.layoutTemplate);
-            textViewColor = (TextView) view.findViewById(R.id.temp_color);
+            txtCommunityName = view.findViewById(R.id.txtTemplateName);
+            layout = view.findViewById(R.id.layoutTemplate);
+            textViewColor = view.findViewById(R.id.temp_color);
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

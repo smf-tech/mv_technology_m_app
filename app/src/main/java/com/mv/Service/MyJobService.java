@@ -81,7 +81,7 @@ public class MyJobService extends JobService {
                     try {
                         if (response.body() != null) {
                             String data = response.body().string();
-                            if (data != null && data.length() > 0) {
+                            if (data.length() > 0) {
                                 JSONObject jsonObject = new JSONObject(data);
                                 String status = jsonObject.getString("status");
                                 String message = jsonObject.getString("msg");
@@ -92,8 +92,6 @@ public class MyJobService extends JobService {
                                     preferenceHelper.insetLong(PreferenceHelper.APICALLTIME,APICALLDATE.getTime());
 
 
-                                } else {
-                                   // Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
                                 }
                             }
                         }

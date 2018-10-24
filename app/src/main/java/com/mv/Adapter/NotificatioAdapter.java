@@ -9,9 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.mv.Activity.NotificationActivity;
 import com.mv.Model.Notifications;
 import com.mv.R;
 import com.mv.Retrofit.AppDatabase;
@@ -59,10 +57,11 @@ public class NotificatioAdapter extends RecyclerView.Adapter<NotificatioAdapter.
                 else if (event.getAction() == MotionEvent.ACTION_UP) {
                     upX = (int) event.getX();
                     Log.i("event.getX()", " upX " + upX);
-                    if (upX - downX > 200) {
-                        // swipe right
-                    }
-                    else if (downX - upX > 50) {
+//                    if (upX - downX > 200) {
+//                        // swipe right
+//                    }
+                //    else
+                        if (downX - upX > 50) {
                         // swipe left
 //                        Toast.makeText(activity,""+(downX - upX),Toast.LENGTH_SHORT).show();
                         AppDatabase.getAppDatabase(activity).userDao().deleteNotification(notificationList.get(position).getUniqueId());
@@ -86,9 +85,9 @@ public class NotificatioAdapter extends RecyclerView.Adapter<NotificatioAdapter.
         RelativeLayout layNotification;
         public MyViewHolder(View itemView) {
             super(itemView);
-            tvTitle=(TextView)itemView.findViewById(R.id.tv_title);
-            tvDetel=(TextView)itemView.findViewById(R.id.tv_Detels);
-            layNotification=(RelativeLayout)itemView.findViewById(R.id.lay_notification);
+            tvTitle= itemView.findViewById(R.id.tv_title);
+            tvDetel= itemView.findViewById(R.id.tv_Detels);
+            layNotification= itemView.findViewById(R.id.lay_notification);
         }
     }
 }

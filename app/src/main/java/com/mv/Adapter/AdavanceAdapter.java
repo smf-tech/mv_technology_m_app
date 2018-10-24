@@ -70,12 +70,12 @@ public class AdavanceAdapter extends RecyclerView.Adapter<AdavanceAdapter.ViewHo
 
             super(itemLayoutView);
 
-            imgEdit = (ImageView) itemLayoutView.findViewById(R.id.imgEdit);
-            imgDelete = (ImageView) itemLayoutView.findViewById(R.id.imgDelete);
+            imgEdit = itemLayoutView.findViewById(R.id.imgEdit);
+            imgDelete = itemLayoutView.findViewById(R.id.imgDelete);
             view = itemLayoutView.findViewById(R.id.view1);
-            tvProjectName = (TextView) itemLayoutView.findViewById(R.id.tvProjectName);
-            tvDateName = (TextView) itemLayoutView.findViewById(R.id.tvDateName);
-            tvAmountName = (TextView) itemLayoutView.findViewById(R.id.tvAmountName);
+            tvProjectName = itemLayoutView.findViewById(R.id.tvProjectName);
+            tvDateName = itemLayoutView.findViewById(R.id.tvDateName);
+            tvAmountName = itemLayoutView.findViewById(R.id.tvAmountName);
             imgEdit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

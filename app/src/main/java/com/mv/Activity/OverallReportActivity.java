@@ -10,27 +10,16 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.data.PieEntry;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.mv.Adapter.GroupAdapter;
 import com.mv.Adapter.OverallReportAdapter;
-import com.mv.Adapter.PichartDescriptiveListAdapter;
-import com.mv.Adapter.ProgramMangementAdapter;
-import com.mv.Model.Community;
 import com.mv.Model.LocationModel;
 import com.mv.Model.OverAllModel;
-import com.mv.Model.PiaChartModel;
 import com.mv.Model.Task;
 import com.mv.Model.User;
 import com.mv.R;
@@ -40,12 +29,10 @@ import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
-import com.mv.databinding.ActivityGroupBinding;
 import com.mv.databinding.ActivityOverallReportBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -247,7 +234,7 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
                 .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (mSelection != null && which < mSelection.length) {
+                        if (which < mSelection.length) {
                             mSelection[which] = isChecked;
 
                         } else {

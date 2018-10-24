@@ -143,7 +143,7 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
 
                             JSONArray jsonArray = null;
                             jsonArray = new JSONArray(data);
@@ -264,7 +264,7 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
                             if (response != null && response.isSuccess()) {
                                 if (response.body() != null) {
                                     String data = response.body().string();
-                                    if (data != null && data.length() > 0) {
+                                    if (data.length() > 0) {
                                         JSONObject object = new JSONObject(data);
                                         JSONArray array = object.getJSONArray("Records");
                                         if (array.length() != 0) {

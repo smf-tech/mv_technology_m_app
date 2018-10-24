@@ -97,15 +97,15 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
-            imgEdit = (ImageView) itemLayoutView.findViewById(R.id.imgEdit);
-            imgDelete = (ImageView) itemLayoutView.findViewById(R.id.imgDelete);
-            cardView = (CardView) itemLayoutView.findViewById(R.id.cardView);
-            txt_asset_name = (TextView) itemLayoutView.findViewById(R.id.txt_asset_name);
-            tvProjectDateTitle = (TextView) itemLayoutView.findViewById(R.id.tvProjectDateTitle);
-            txt_asset_id = (TextView) itemLayoutView.findViewById(R.id.txt_asset_id);
-            txt_asset_issue_date = (TextView) itemLayoutView.findViewById(R.id.txt_asset_issue_date);
+            imgEdit = itemLayoutView.findViewById(R.id.imgEdit);
+            imgDelete = itemLayoutView.findViewById(R.id.imgDelete);
+            cardView = itemLayoutView.findViewById(R.id.cardView);
+            txt_asset_name = itemLayoutView.findViewById(R.id.txt_asset_name);
+            tvProjectDateTitle = itemLayoutView.findViewById(R.id.tvProjectDateTitle);
+            txt_asset_id = itemLayoutView.findViewById(R.id.txt_asset_id);
+            txt_asset_issue_date = itemLayoutView.findViewById(R.id.txt_asset_issue_date);
             view1 = itemLayoutView.findViewById(R.id.view1);
-            imgLayout = (LinearLayout) itemLayoutView.findViewById(R.id.imgLayout);
+            imgLayout = itemLayoutView.findViewById(R.id.imgLayout);
             cardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

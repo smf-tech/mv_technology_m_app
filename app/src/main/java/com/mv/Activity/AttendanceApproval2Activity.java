@@ -1,8 +1,6 @@
 package com.mv.Activity;
 
 import android.app.Activity;
-import android.content.Context;
-import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -20,26 +18,18 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mv.Adapter.AttendanceAdapter;
-import com.mv.Adapter.ExpandableAttendanceApprovalListAdapter;
 import com.mv.Model.AttendanceApproval;
-import com.mv.Model.HolidayListModel;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
-import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
-import com.mv.databinding.ActivityAttendanceApprovalBinding;
-
-import org.json.JSONArray;
-import org.json.JSONException;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -120,8 +110,8 @@ public class AttendanceApproval2Activity extends AppCompatActivity implements Vi
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
-                            if (Arrays.asList(gson.fromJson(str, AttendanceApproval[].class)) != null) {
+                        if (str.length() > 0) {
+                            if (Arrays.asList(gson.fromJson(str, AttendanceApproval[].class)).size()>0) {
                                 attendanceList = Arrays.asList(gson.fromJson(str, AttendanceApproval[].class));
                                 setRecyclerView(sortString);
                             }
@@ -247,11 +237,11 @@ public class AttendanceApproval2Activity extends AppCompatActivity implements Vi
         toolbar_title.setText(str);
         ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
-        img_back.setOnClickListener((View.OnClickListener) this);
+        img_back.setOnClickListener(this);
         ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setImageResource(R.drawable.ic_action_calender);
-        img_logout.setOnClickListener((View.OnClickListener) this);
+        img_logout.setOnClickListener(this);
     }
 
 }

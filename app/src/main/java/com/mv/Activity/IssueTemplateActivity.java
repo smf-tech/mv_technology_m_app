@@ -175,7 +175,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListDistrict.clear();
                             mListDistrict.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -214,7 +214,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListTaluka.clear();
                             mListTaluka.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -268,9 +268,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                 showPopUp();
             } else {
 
-                for (int k = 0; k < list.size(); k++) {
-                    mListTaluka.add(list.get(k));
-                }
+                mListTaluka.addAll(list);
             }
         }
 
@@ -739,17 +737,12 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                 if (mSelectDistrict != 0) {
                     if (Utills.isConnected(this)) {
                         getTaluka();
-                    } else {
-                        //showPopUp();
-
                     }
                 }
                 mListTaluka.clear();
                 List<String> list = AppDatabase.getAppDatabase(this).userDao().getTaluka(User.getCurrentUser(this).getMvUser().getState(), User.getCurrentUser(this).getMvUser().getDistrict());
                 mListTaluka.add("Select");
-                for (int k = 0; k < list.size(); k++) {
-                    mListTaluka.add(list.get(k));
-                }
+                mListTaluka.addAll(list);
                 taluka_adapter.notifyDataSetChanged();
                 break;
             case R.id.spinner_taluka:
@@ -1003,7 +996,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         dialogrecord.setCancelable(true);
         dialogrecord.setContentView(R.layout.activity_recordaudio);
 
-        final LinearLayout record = (LinearLayout) dialogrecord.findViewById(R.id.record);
+        final LinearLayout record = dialogrecord.findViewById(R.id.record);
         record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1026,7 +1019,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
             }
         });
 
-        final ImageView play = (ImageView) dialogrecord.findViewById(R.id.play);
+        final ImageView play = dialogrecord.findViewById(R.id.play);
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1073,9 +1066,9 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
             }
         });
 
-        rectext = (TextView) dialogrecord.findViewById(R.id.rectext);
-        TextView done = (TextView) dialogrecord.findViewById(R.id.done);
-        TextView cancel = (TextView) dialogrecord.findViewById(R.id.cancel);
+        rectext = dialogrecord.findViewById(R.id.rectext);
+        TextView done = dialogrecord.findViewById(R.id.done);
+        TextView cancel = dialogrecord.findViewById(R.id.cancel);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

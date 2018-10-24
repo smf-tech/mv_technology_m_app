@@ -20,7 +20,6 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.mv.Model.DashaBoardListModel;
 import com.mv.Model.LocationModel;
 import com.mv.Model.Task;
 import com.mv.Model.User;
@@ -44,7 +43,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import okhttp3.ResponseBody;
-import okhttp3.internal.Util;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -115,9 +113,9 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         binding.editMultiselectTaluka.setText(User.getCurrentUser(context).getMvUser().getTaluka());
         binding.lyState.setOnClickListener(this);
         //added for date filter but not implemented
-        binding.txtDateFrom.setOnClickListener(this);
-        binding.txtDateTo.setOnClickListener(this);
-        binding.sortButton.setOnClickListener(this);
+//        binding.txtDateFrom.setOnClickListener(this);
+//        binding.txtDateTo.setOnClickListener(this);
+//        binding.sortButton.setOnClickListener(this);
 
         mListDistrict = new ArrayList<String>();
         mListTaluka = new ArrayList<String>();
@@ -190,16 +188,16 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
             }
         });
         // if button is clicked, close the custom dialog
-        binding.sortButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(binding.txtDateFrom.getText().toString().trim().length()>0 && binding.txtDateTo.getText().toString().trim().length()>0) {
-                    //  FilterVouchers_withDate(binding.txtDateFrom.getText().toString().trim(), binding.txtDateTo.getText().toString().trim());
-                }
-                else
-                    Utills.showToast("Enter proper date range.", IndicatorLocationSelectionActivity.this);
-            }
-        });
+//        binding.sortButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(binding.txtDateFrom.getText().toString().trim().length()>0 && binding.txtDateTo.getText().toString().trim().length()>0) {
+//                    //  FilterVouchers_withDate(binding.txtDateFrom.getText().toString().trim(), binding.txtDateTo.getText().toString().trim());
+//                }
+//                else
+//                    Utills.showToast("Enter proper date range.", IndicatorLocationSelectionActivity.this);
+//            }
+//        });
     }
     //adding date picker dialog for voucher date filteration
     private void showDateDialog(TextView textView) {
@@ -575,7 +573,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListVillage.clear();
                             mListVillage.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -609,7 +607,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListSchoolName.clear();
                             mListSchoolName.add("Select");
 
@@ -647,7 +645,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             mStateList.clear();
                             mStateList.add("Select");
@@ -685,7 +683,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             mListDistrict.clear();
                             mListDistrict.add("Select");
@@ -729,7 +727,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListTaluka.clear();
                             mListTaluka.add("Select");
                             JSONArray jsonArr = new JSONArray(data);

@@ -2,37 +2,21 @@ package com.mv.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
-import android.os.Environment;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mv.Activity.AttendanceApproval2Activity;
 import com.mv.Activity.AttendanceApproveDetailActivity;
-import com.mv.Activity.CommentActivity;
-import com.mv.Activity.CommunityDetailsActivity;
-import com.mv.Activity.CommunityHomeActivity;
-import com.mv.Activity.VideoViewActivity;
 import com.mv.Model.AttendanceApproval;
-import com.mv.Model.Content;
 import com.mv.R;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
-import com.mv.Utils.Utills;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -66,7 +50,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
     @Override
     public void onBindViewHolder(AttendanceAdapter.ViewHolder holder, int position) {
 
-        final AttendanceApproval attendance_approval = (AttendanceApproval) mDataList.get(position);
+        final AttendanceApproval attendance_approval = mDataList.get(position);
         if(attendance_approval.getUser_Name__c()!=null)
             holder.txtName.setText(attendance_approval.getUser_Name__c()+"("+attendance_approval.getAttendanceDateC()+")");
         else
@@ -84,8 +68,8 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
         RelativeLayout layoutMain;
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
-            layoutMain = (RelativeLayout) itemLayoutView.findViewById(R.id.layoutMain);
-            txtName = (TextView) itemLayoutView.findViewById(R.id.txtName);
+            layoutMain = itemLayoutView.findViewById(R.id.layoutMain);
+            txtName = itemLayoutView.findViewById(R.id.txtName);
 
             layoutMain.setOnClickListener(new View.OnClickListener() {
                 @Override

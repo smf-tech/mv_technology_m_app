@@ -152,7 +152,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
 
                                         try {
                                             File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mContent.getId() + ".png");
-                                            FileOutputStream out = null;
+                                            FileOutputStream out;
                                             out = new FileOutputStream(file);
                                             theBitmap.compress(Bitmap.CompressFormat.PNG, 90, out);
                                             out.close();
@@ -544,9 +544,10 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         layout_download_file.setOnClickListener(this);
         layout_share.setOnClickListener(this);
 
-        if (TextUtils.isEmpty(mContent.getUserAttachmentId())) {
-        } else if (mContent.getUserAttachmentId().equalsIgnoreCase("null")) {
-        } else {
+//        if (TextUtils.isEmpty(mContent.getUserAttachmentId())) {
+//        } else if (mContent.getUserAttachmentId().equalsIgnoreCase("null")) {
+//        }
+        if(!TextUtils.isEmpty(mContent.getUserAttachmentId()) && !mContent.getUserAttachmentId().equalsIgnoreCase("null")) {
             // holder.picture.setImageDrawable(mPlacePictures[position % mPlacePictures.length]);
             Glide.with(this)
                     .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mContent.getUserAttachmentId() + "/Body"))

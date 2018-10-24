@@ -17,7 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
-import com.mv.Activity.AttendanceApproveDetailActivity;
 import com.mv.Activity.LeaveApprovalActivity;
 import com.mv.Activity.LeaveDetailActivity;
 import com.mv.Model.LeavesModel;
@@ -77,9 +76,9 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
         TextView txtCount, txtName;
         RelativeLayout layoutMain;
 
-        layoutMain = (RelativeLayout) convertView.findViewById(R.id.layoutMain);
+        layoutMain = convertView.findViewById(R.id.layoutMain);
 
-        txtCount = (TextView) convertView.findViewById(R.id.txtCount);
+        txtCount = convertView.findViewById(R.id.txtCount);
 
         layoutMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +88,7 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
                     _context.startActivity(intent);
             }
         });
-        imgDownload = (ImageView) convertView.findViewById(R.id.imgDownload);
+        imgDownload = convertView.findViewById(R.id.imgDownload);
      if(groupPosition==0&&!preferenceHelper.getString(Constants.Leave).equals(Constants.Leave_Approve))
      {
 
@@ -108,10 +107,10 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
 
 
 
-        imgshare = (ImageView) convertView.findViewById(R.id.imgshare);
+     //   imgshare = convertView.findViewById(R.id.imgshare);
 
 
-        txtName = (TextView) convertView.findViewById(R.id.txtName);
+        txtName = convertView.findViewById(R.id.txtName);
 
         txtCount.setVisibility(View.GONE);
         if(leavesModel.getRequested_User_Name__c()!=null)
@@ -157,14 +156,14 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group, null);
         }
-        ImageView imgGroup = (ImageView) convertView.findViewById(R.id.imgGroup);
+        ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
 
         if (isExpanded) {
             imgGroup.setImageResource(R.drawable.downarrow);
         } else {
             imgGroup.setImageResource(R.drawable.rightarrow);
         }
-        TextView txtName = (TextView) convertView
+        TextView txtName = convertView
                 .findViewById(R.id.txtName);
        // date.setTypeface(null, Typeface.BOLD);
         txtName.setText(headerTitle);

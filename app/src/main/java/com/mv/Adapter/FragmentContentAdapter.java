@@ -178,9 +178,9 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                 //Inflating the Popup using xml file
                 popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
                 //   popup.getMenu().getItem(R.id.spam).setVisible(true);
-                MenuItem spam= (MenuItem) popup.getMenu().findItem(R.id.spam);
-                MenuItem edit= (MenuItem) popup.getMenu().findItem(R.id.edit);
-                MenuItem delete= (MenuItem) popup.getMenu().findItem(R.id.delete);
+                MenuItem spam= popup.getMenu().findItem(R.id.spam);
+                MenuItem edit= popup.getMenu().findItem(R.id.edit);
+                MenuItem delete= popup.getMenu().findItem(R.id.delete);
                 spam.setVisible(true);
                 edit.setVisible(false);
                 delete.setVisible(false);
@@ -298,28 +298,28 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
-            txt_title = (TextView) itemLayoutView.findViewById(R.id.txt_title);
-            txt_template_type = (TextView) itemLayoutView.findViewById(R.id.txt_template_type);
-            txt_desc = (TextView) itemLayoutView.findViewById(R.id.txt_desc);
-            txt_time = (TextView) itemLayoutView.findViewById(R.id.txt_time);
-            txtLikeCount = (TextView) itemLayoutView.findViewById(R.id.txtLikeCount);
-            txtCommentCount = (TextView) itemLayoutView.findViewById(R.id.txtCommentCount);
-            userImage = (ImageView) itemLayoutView.findViewById(R.id.userImage);
-            picture = (ImageView) itemLayoutView.findViewById(R.id.card_image);
-            card_view = (CardView) itemLayoutView.findViewById(R.id.card_view);
-            imgLike = (ImageView) itemLayoutView.findViewById(R.id.imgLike);
-            textViewLike = (TextView) itemLayoutView.findViewById(R.id.textViewLike);
-            img_share = (ImageView) itemLayoutView.findViewById(R.id.img_share);
-            img_comment = (ImageView) itemLayoutView.findViewById(R.id.img_comment);
-            txt_detail = (TextView) itemLayoutView.findViewById(R.id.txt_detail);
-            txt_forward = (TextView) itemLayoutView.findViewById(R.id.txt_forward);
-            layout_comment = (LinearLayout) itemLayoutView.findViewById(R.id.layout_comment);
-            layout_download = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download);
-            layout_like = (LinearLayout) itemLayoutView.findViewById(R.id.layout_like);
-            layout_share = (LinearLayout) itemLayoutView.findViewById(R.id.layout_share);
-            mediaLayout = (LinearLayout) itemLayoutView.findViewById(R.id.mediaLayout);
-            layout_download_file = (LinearLayout) itemLayoutView.findViewById(R.id.layout_download_file);
-            imgMore = (ImageView) itemLayoutView.findViewById(R.id.imgMore);
+            txt_title = itemLayoutView.findViewById(R.id.txt_title);
+            txt_template_type = itemLayoutView.findViewById(R.id.txt_template_type);
+            txt_desc = itemLayoutView.findViewById(R.id.txt_desc);
+            txt_time = itemLayoutView.findViewById(R.id.txt_time);
+            txtLikeCount = itemLayoutView.findViewById(R.id.txtLikeCount);
+            txtCommentCount = itemLayoutView.findViewById(R.id.txtCommentCount);
+            userImage = itemLayoutView.findViewById(R.id.userImage);
+            picture = itemLayoutView.findViewById(R.id.card_image);
+            card_view = itemLayoutView.findViewById(R.id.card_view);
+            imgLike = itemLayoutView.findViewById(R.id.imgLike);
+            textViewLike = itemLayoutView.findViewById(R.id.textViewLike);
+            img_share = itemLayoutView.findViewById(R.id.img_share);
+            img_comment = itemLayoutView.findViewById(R.id.img_comment);
+            txt_detail = itemLayoutView.findViewById(R.id.txt_detail);
+            txt_forward = itemLayoutView.findViewById(R.id.txt_forward);
+            layout_comment = itemLayoutView.findViewById(R.id.layout_comment);
+            layout_download = itemLayoutView.findViewById(R.id.layout_download);
+            layout_like = itemLayoutView.findViewById(R.id.layout_like);
+            layout_share = itemLayoutView.findViewById(R.id.layout_share);
+            mediaLayout = itemLayoutView.findViewById(R.id.mediaLayout);
+            layout_download_file = itemLayoutView.findViewById(R.id.layout_download_file);
+            imgMore = itemLayoutView.findViewById(R.id.imgMore);
 
             txt_detail.setOnClickListener(new View.OnClickListener() {
                 @Override

@@ -49,7 +49,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -356,7 +355,7 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                             if (response != null && response.isSuccess()) {
                                 if (response.body() != null) {
                                     String data = response.body().string();
-                                    if (data != null && data.length() > 0) {
+                                    if (data.length() > 0) {
                                         Utills.showToast("Status of expense changed successfully", ExpenseNewActivity.this);
                                         finish();
                                         overridePendingTransition(R.anim.left_in, R.anim.right_out);
@@ -468,7 +467,7 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                             if (response != null && response.isSuccess()) {
                                 if (response.body() != null) {
                                     String data = response.body().string();
-                                    if (data != null && data.length() > 0) {
+                                    if (data.length() > 0) {
                                         JSONObject object = new JSONObject(data);
                                         JSONArray array = object.getJSONArray("Records");
                                         if (array.length() != 0) {
@@ -531,9 +530,8 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                 try {
                     if (response != null && response.isSuccess()) {
                         String str = response.body().string();
-                        if (str.contains("deleted")) {
-
-                        }
+//                        if (str.contains("deleted")) {
+//                        }
                     }
 
                 } catch (IOException e) {

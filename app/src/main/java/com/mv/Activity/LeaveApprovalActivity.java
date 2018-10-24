@@ -149,7 +149,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
 
                             ArrayList<LeavesModel> pendingList = new ArrayList<>();
@@ -229,9 +229,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
 
     public void onAddClick() {
         ArrayList<HolidayListModel> tem = new ArrayList<>();
-        for (int i = 0; i < holidayListModels.size(); i++) {
-            tem.add(holidayListModels.get(i));
-        }
+        tem.addAll(holidayListModels);
         Intent intent = new Intent(mContext, LeaveDetailActivity.class);
         intent.putParcelableArrayListExtra(Constants.PROCESS_ID, tem);
         mContext.startActivity(intent);
@@ -257,7 +255,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
 
                             ArrayList<LeavesModel> pendingList = new ArrayList<>();

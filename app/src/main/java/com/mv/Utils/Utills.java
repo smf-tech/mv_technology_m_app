@@ -188,9 +188,9 @@ public class Utills {
             pgDialog = new Dialog(cntxt);
             pgDialog.setContentView(R.layout.custome_progress_dialog);
             pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-            TextView text = (TextView) pgDialog.findViewById(R.id.tv_progress);
+            TextView text = pgDialog.findViewById(R.id.tv_progress);
             text.setText(cntxt.getString(R.string.progress_please_wait));
-            ImageView proImg = (ImageView) pgDialog.findViewById(R.id.img_progress);
+            ImageView proImg = pgDialog.findViewById(R.id.img_progress);
             proImg.setBackgroundResource(R.drawable.progress_dialog);
             AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
             rocketAnimation = (AnimationDrawable) proImg.getBackground();
@@ -244,13 +244,13 @@ public class Utills {
             pgDialog = new Dialog(cntxt);
             pgDialog.setContentView(R.layout.custome_progress_dialog);
             pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-            TextView text = (TextView) pgDialog.findViewById(R.id.tv_progress);
+            TextView text = pgDialog.findViewById(R.id.tv_progress);
             text.setText(Msg);
-            TextView tv_desc = (TextView) pgDialog.findViewById(R.id.tv_desc);
+            TextView tv_desc = pgDialog.findViewById(R.id.tv_desc);
             if (Title != null && !TextUtils.isEmpty(Title))
                 tv_desc.setVisibility(View.VISIBLE);
             tv_desc.setText(Title);
-            ImageView proImg = (ImageView) pgDialog.findViewById(R.id.img_progress);
+            ImageView proImg = pgDialog.findViewById(R.id.img_progress);
             proImg.setBackgroundResource(R.drawable.progress_dialog);
             AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
             rocketAnimation = (AnimationDrawable) proImg.getBackground();
@@ -471,7 +471,7 @@ public class Utills {
      */
     public static int progressToTimer(int progress, int totalDuration) {
         int currentDuration = 0;
-        totalDuration = (int) (totalDuration / 1000);
+        totalDuration = totalDuration / 1000;
         currentDuration = (int) ((((double) progress) / 100) * totalDuration);
 
         // return current duration in milliseconds
@@ -482,9 +482,9 @@ public class Utills {
         LayoutInflater inflater = LayoutInflater.from(context);
         final View view = inflater.inflate(R.layout.image_zoom_dialog, null);
 
-        TouchImageView img_post = (TouchImageView) view.findViewById(R.id.img_post);
-        RelativeLayout rel_dialog = (RelativeLayout) view.findViewById(R.id.rel_dialog);
-        ImageView close_dialog = (ImageView) view.findViewById(R.id.close_dialog);
+        TouchImageView img_post = view.findViewById(R.id.img_post);
+        RelativeLayout rel_dialog = view.findViewById(R.id.rel_dialog);
+        ImageView close_dialog = view.findViewById(R.id.close_dialog);
         Glide.with(context)
                 .load(Constants.IMAGEURL + id + ".png")
                 .placeholder(context.getResources().getDrawable(R.drawable.mulya_bg))
@@ -508,9 +508,9 @@ public class Utills {
     public static void showImagewithheaderZoomDialog(Context context, GlideUrl url) {
         LayoutInflater inflater = LayoutInflater.from(context);
         final View view = inflater.inflate(R.layout.image_zoom_dialog, null);
-        final ImageView close_dialog = (ImageView) view.findViewById(R.id.close_dialog);
-        TouchImageView img_post = (TouchImageView) view.findViewById(R.id.img_post);
-        RelativeLayout rel_dialog = (RelativeLayout) view.findViewById(R.id.rel_dialog);
+        final ImageView close_dialog = view.findViewById(R.id.close_dialog);
+        TouchImageView img_post = view.findViewById(R.id.img_post);
+        RelativeLayout rel_dialog = view.findViewById(R.id.rel_dialog);
         Glide.with(context)
                 .load(url)
                 .placeholder(context.getResources().getDrawable(R.drawable.mulya_bg))
@@ -542,7 +542,7 @@ public class Utills {
         //alertDialog.setMessage("Your Message Here");
 
 
-        final EditText etComments = (EditText) view.findViewById(R.id.addtag);
+        final EditText etComments = view.findViewById(R.id.addtag);
 
         alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(R.string.ok), new DialogInterface.OnClickListener() {
             @Override
@@ -580,7 +580,7 @@ public class Utills {
                 String data = null;
                 try {
                     data = response.body().string();
-                    if (data != null && data.length() > 0) {
+                    if (data.length() > 0) {
                         JSONObject jsonObject = new JSONObject(data);
 
 

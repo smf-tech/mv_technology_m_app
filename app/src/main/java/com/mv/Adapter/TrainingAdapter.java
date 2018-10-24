@@ -75,8 +75,8 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
         public ViewHolder(View itemLayoutView) {
 
             super(itemLayoutView);
-            layoutMain = (RelativeLayout) itemLayoutView.findViewById(R.id.layoutMain);
-            txtCount = (TextView) itemLayoutView.findViewById(R.id.txtCount);
+            layoutMain = itemLayoutView.findViewById(R.id.layoutMain);
+            txtCount = itemLayoutView.findViewById(R.id.txtCount);
             layoutMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -160,15 +160,15 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
 
                 }
             });
-            imgDownload = (ImageView) itemLayoutView.findViewById(R.id.imgDownload);
-            imgshare = (ImageView) itemLayoutView.findViewById(R.id.imgshare);
+            imgDownload = itemLayoutView.findViewById(R.id.imgDownload);
+            imgshare = itemLayoutView.findViewById(R.id.imgshare);
             imgDownload.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     trainingFragment.startDownload(getAdapterPosition());
                 }
             });
-            imgshare = (ImageView) itemLayoutView.findViewById(R.id.imgshare);
+            imgshare = itemLayoutView.findViewById(R.id.imgshare);
             imgshare.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -198,7 +198,7 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
                 }
             });
 
-            txtName = (TextView) itemLayoutView.findViewById(R.id.txtName);
+            txtName = itemLayoutView.findViewById(R.id.txtName);
         }
     }
 

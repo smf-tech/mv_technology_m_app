@@ -11,8 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mv.Activity.IndicatorTask;
-import com.mv.Activity.IndicatorTrainingFeedBackTaskList;
-import com.mv.Activity.OverallReportActivity;
 import com.mv.Activity.VersionReportActivity;
 import com.mv.Model.DashaBoardListModel;
 import com.mv.R;
@@ -61,8 +59,8 @@ public class IndicatorListAdapter extends RecyclerView.Adapter<IndicatorListAdap
         public ViewHolder(View itemLayoutView) {
 
             super(itemLayoutView);
-            layoutMain = (RelativeLayout) itemLayoutView.findViewById(R.id.layoutMain);
-            txtCount = (TextView) itemLayoutView.findViewById(R.id.txtCount);
+            layoutMain = itemLayoutView.findViewById(R.id.layoutMain);
+            txtCount = itemLayoutView.findViewById(R.id.txtCount);
             layoutMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -77,7 +75,7 @@ public class IndicatorListAdapter extends RecyclerView.Adapter<IndicatorListAdap
                     }
                 }
             });
-            txtName = (TextView) itemLayoutView.findViewById(R.id.txtName);
+            txtName = itemLayoutView.findViewById(R.id.txtName);
         }
     }
 

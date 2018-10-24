@@ -2,7 +2,6 @@ package com.mv.Activity;
 
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -10,16 +9,10 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -29,7 +22,6 @@ import android.widget.TimePicker;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mv.Adapter.EventAttendanceListAdapter;
 import com.mv.Model.CalenderEvent;
 import com.mv.Model.EventUser;
 import com.mv.Model.Template;
@@ -59,6 +51,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.TreeSet;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -284,16 +277,17 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         mStateList.add(0, "Select");
         setSpinnerAdapter(mStateList, state_adapter, binding.spinnerState, selectedState);
         //  mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
-        ArrayList<String> catagory = new ArrayList<>();
-        catagory.add("Select");
-        catagory.add("Training Observation");
-        catagory.add("Classroom Observation");
-        catagory.add("School Visit");
-        catagory.add("School and Classroom Observation");
-        catagory.add("Training");
-        if (User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.State)) {
-
-        } else if (User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.DISTRICT)) {
+//        ArrayList<String> catagory = new ArrayList<>();
+//        catagory.add("Select");
+//        catagory.add("Training Observation");
+//        catagory.add("Classroom Observation");
+//        catagory.add("School Visit");
+//        catagory.add("School and Classroom Observation");
+//        catagory.add("Training");
+//        if (User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.State)) {
+//
+//        } else
+        if (User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.DISTRICT)) {
             binding.spinnerState.setEnabled(false);
 
         } else if (User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.TALUKA)) {
@@ -355,7 +349,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             mStateList.clear();
                             mStateList.add("Select");
@@ -515,7 +509,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
     private String updateTime(int hours, int mins) {
 
-        String timeSet = "";
+        String timeSet;
         if (hours > 12) {
             hours -= 12;
             timeSet = "PM";
@@ -528,7 +522,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             timeSet = "AM";
 
 
-        String minutes = "";
+        String minutes;
         if (mins < 10)
             minutes = "0" + mins;
         else
@@ -824,7 +818,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
 
 
                             JSONObject obj = new JSONObject(data);
@@ -869,7 +863,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             mListOrganization.clear();
                             mListOrganization.add("Select");
@@ -910,7 +904,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListTaluka.clear();
                             mListTaluka.add("Select");
                             JSONArray jsonArr = new JSONArray(response.body().string());
@@ -949,7 +943,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListCluster.clear();
                             mListCluster.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -982,7 +976,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListVillage.clear();
                             mListVillage.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -1016,7 +1010,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListSchoolName.clear();
                             mListSchoolName.add("Select");
 
@@ -1070,7 +1064,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             StringBuffer sb = new StringBuffer();
                             String prefix = "";
@@ -1093,7 +1087,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                             if (selectedProcessId.contains("Other")) {
                                 sb.append(prefix);
 
-                                prefix = ",";
+                           //     prefix = ",";
                                 sb.append("Other");
 
                                 //now original string is changed
@@ -1153,14 +1147,14 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 eventAttendanceUsers = data.getParcelableArrayListExtra("EventSelectedUsers");
 
                 StringBuffer sb = new StringBuffer();
-                StringBuffer sbName = new StringBuffer();
+             //   StringBuffer sbName = new StringBuffer();
                 String prefix = "";
                 for (int i = 0; i < eventAttendanceUsers.size(); i++) {
                     sb.append(prefix);
-                    sbName.append(prefix);
+            //        sbName.append(prefix);
                     prefix = ",";
                     sb.append(eventAttendanceUsers.get(i).getUserID());
-                    sbName.append(eventAttendanceUsers.get(i).getUserName());
+            //        sbName.append(eventAttendanceUsers.get(i).getUserName());
                     //now original string is changed
                 }
                 SelectedEventAttendanceIDs = sb.toString();
@@ -1200,7 +1194,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
 
-                        if (mSelection != null && which < mSelection.length) {
+                        if (which < mSelection.length) {
                             mSelection[which] = isChecked;
 
 
@@ -1265,7 +1259,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (mSelection != null && which < mSelection.length) {
+                        if (which < mSelection.length) {
                             mSelection[which] = isChecked;
 
 

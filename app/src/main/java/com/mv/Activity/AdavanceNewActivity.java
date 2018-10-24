@@ -1,6 +1,5 @@
 package com.mv.Activity;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,7 +33,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -276,7 +273,7 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
                             if (response != null && response.isSuccess()) {
                                 if (response.body() != null) {
                                     String data = response.body().string();
-                                    if (data != null && data.length() > 0) {
+                                    if (data.length() > 0) {
                                         Utills.showToast("Status of expense changed successfully", AdavanceNewActivity.this);
                                         finish();
                                         overridePendingTransition(R.anim.left_in, R.anim.right_out);
@@ -331,9 +328,9 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
                         Utills.hideProgressDialog();
                         try {
                             if (response.body() != null) {
-                                if (response != null && response.isSuccess()) {
+                                if (response.isSuccess()) {
                                     String data = response.body().string();
-                                    if (data != null && data.length() > 0) {
+                                    if (data.length() > 0) {
                                         JSONObject object = new JSONObject(data);
                                         JSONArray array = object.getJSONArray("Records");
                                         if (array.length() != 0) {

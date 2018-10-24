@@ -36,7 +36,7 @@ public class VideoViewActivity extends Activity {
 
         VideoURL = getIntent().getExtras().getString("URL");
         // Find your VideoView in your video_main.xml layout
-        videoview = (VideoView) findViewById(R.id.VideoView);
+        videoview = findViewById(R.id.VideoView);
         // Execute StreamVideo AsyncTask
         // Create a progressbar
         pDialog = new ProgressDialog(VideoViewActivity.this);

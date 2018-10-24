@@ -11,7 +11,6 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.ThumbnailUtils;
@@ -38,7 +37,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mv.Model.Content;
@@ -59,20 +57,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -285,9 +279,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             if (list.size() == 0) {
                 showPopUp();
             } else {
-                for (int k = 0; k < list.size(); k++) {
-                    mListTaluka.add(list.get(k));
-                }
+                mListTaluka.addAll(list);
             }
         }
 
@@ -345,16 +337,14 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             case R.id.layoutMore:
                 if (binding.layoutMoreDetail.getVisibility() == View.GONE) {
                     binding.layoutMoreDetail.setVisibility(View.VISIBLE);
-                    if (User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getRoll().equalsIgnoreCase("TC")) {
-                    } else {
+                    if (!User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getRoll().equalsIgnoreCase("TC")) {
                         binding.txtSpinner.setVisibility(View.VISIBLE);
                         binding.spinnerIssue.setVisibility(View.VISIBLE);
                     }
 
                 } else {
                     binding.layoutMoreDetail.setVisibility(View.GONE);
-                    if (User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getRoll().equalsIgnoreCase("TC")) {
-                    } else {
+                    if (!User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getRoll().equalsIgnoreCase("TC")) {
                         binding.txtSpinner.setVisibility(View.GONE);
                         binding.spinnerIssue.setVisibility(View.GONE);
                     }
@@ -979,9 +969,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                         mListTaluka.clear();
                         List<String> list = AppDatabase.getAppDatabase(this).userDao().getTaluka(User.getCurrentUser(this).getMvUser().getState(), User.getCurrentUser(this).getMvUser().getDistrict());
                         mListTaluka.add("Select");
-                        for (int k = 0; k < list.size(); k++) {
-                            mListTaluka.add(list.get(k));
-                        }
+                        mListTaluka.addAll(list);
                         taluka_adapter.notifyDataSetChanged();
                     }
 
@@ -1187,7 +1175,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         dialogrecord.setCancelable(true);
         dialogrecord.setContentView(R.layout.activity_recordaudio);
 
-        final LinearLayout record = (LinearLayout) dialogrecord.findViewById(R.id.record);
+        final LinearLayout record = dialogrecord.findViewById(R.id.record);
         record.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1210,7 +1198,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             }
         });
 
-        final ImageView play = (ImageView) dialogrecord.findViewById(R.id.play);
+        final ImageView play = dialogrecord.findViewById(R.id.play);
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1257,9 +1245,9 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             }
         });
 
-        rectext = (TextView) dialogrecord.findViewById(R.id.rectext);
-        TextView done = (TextView) dialogrecord.findViewById(R.id.done);
-        TextView cancel = (TextView) dialogrecord.findViewById(R.id.cancel);
+        rectext = dialogrecord.findViewById(R.id.rectext);
+        TextView done = dialogrecord.findViewById(R.id.done);
+        TextView cancel = dialogrecord.findViewById(R.id.cancel);
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

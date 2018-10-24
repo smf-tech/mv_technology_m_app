@@ -66,8 +66,8 @@ public class HorizontalCalenderAdapter extends RecyclerView.Adapter<HorizontalCa
         public ViewHolder(View itemLayoutView) {
 
             super(itemLayoutView);
-            layoutMain = (LinearLayout) itemLayoutView.findViewById(R.id.layout_main);
-            day = (TextView) itemLayoutView.findViewById(R.id.hv_day);
+            layoutMain = itemLayoutView.findViewById(R.id.layout_main);
+            day = itemLayoutView.findViewById(R.id.hv_day);
             layoutMain.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -78,7 +78,7 @@ public class HorizontalCalenderAdapter extends RecyclerView.Adapter<HorizontalCa
 
                 }
             });
-            date = (TextView) itemLayoutView.findViewById(R.id.hv_date);
+            date = itemLayoutView.findViewById(R.id.hv_date);
 
 
         }

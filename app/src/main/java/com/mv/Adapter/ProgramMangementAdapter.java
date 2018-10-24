@@ -41,12 +41,12 @@ public class ProgramMangementAdapter  extends RecyclerView.Adapter<ProgramMangem
 
         public MyViewHolder(View view) {
             super(view);
-            txtCommunityName = (TextView) view.findViewById(R.id.txtTemplateName);
-            txt_targeted_date = (TextView) view.findViewById(R.id.txt_traget_date);
-            expectedCount = (TextView) view.findViewById(R.id.txt_expected_count);
-            submittedCount = (TextView) view.findViewById(R.id.txt_submmited_date);
-            txt_targeted_count = (TextView) view.findViewById(R.id.txt_traget_count);
-            layout = (LinearLayout) view.findViewById(R.id.layoutTemplate);
+            txtCommunityName = view.findViewById(R.id.txtTemplateName);
+            txt_targeted_date = view.findViewById(R.id.txt_traget_date);
+            expectedCount = view.findViewById(R.id.txt_expected_count);
+            submittedCount = view.findViewById(R.id.txt_submmited_date);
+            txt_targeted_count = view.findViewById(R.id.txt_traget_count);
+            layout = view.findViewById(R.id.layoutTemplate);
             layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

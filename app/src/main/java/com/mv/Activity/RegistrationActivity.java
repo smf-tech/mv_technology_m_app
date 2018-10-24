@@ -66,7 +66,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -84,8 +83,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private EditText edit_text_midle_name, edit_text_last_name, edit_text_name, edit_text_mobile_number, edit_text_school_code, edit_text_email;
     private Spinner spinner_project, spinner_organization, spinner_role, spinner_state, spinner_district, spinner_taluka, spinner_cluster, spinner_village, spinner_school_name;
     private int mSelectProject = 0, mSelectOrganization = 0, mSelectRole = 0, mSelectState = 0, mSelectDistrict = 0, mSelectTaluka = 0, mSelectCluster = 0, mSelectVillage = 0, mSelectSchoolName = 0;
-    private ArrayList<String> mListProjectId, mListProject, mListOrganization, mListState, mListDistrict, mListTaluka, mListCluster, mListVillage, mListSchoolName;
-    private List<String> mListRoleName, mListCode, mListRoleId, mListRoleJuridiction;
+    private ArrayList<String>  mListProject, mListOrganization, mListState, mListDistrict, mListTaluka, mListCluster, mListVillage, mListSchoolName;//,mListProjectId;
+    private List<String> mListRoleName, mListRoleId, mListRoleJuridiction;//,mListCode;
     private TextView txt_district, txt_taluka, txt_cluster, txt_village, txt_school;
     private TextInputLayout input_school_code;
     private ArrayAdapter<String> state_adapter, district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, role_adapter, organization_adapter, project_adapter;
@@ -154,14 +153,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             JSONArray jsonArray = null;
                             jsonArray = new JSONArray(data);
                             mListProject.clear();
-                            mListProjectId.clear();
+                          //  mListProjectId.clear();
                             mListProject.add("Select");
-                            mListProjectId.add("Select");
+                          //  mListProjectId.add("Select");
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject object = jsonArray.getJSONObject(i);
 //                                mListProject.add(object.getString("Project_Name__c"));
                                 mListProject.add(object.getString("Name"));
-                                mListProjectId.add(object.getString("Id"));
+                            //    mListProjectId.add(object.getString("Id"));
                             }
                             project_adapter.notifyDataSetChanged();
                             if (!isAdd && !isProjectSet) {
@@ -536,10 +535,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         mListCluster = new ArrayList<String>();
         mListVillage = new ArrayList<String>();
         mListSchoolName = new ArrayList<String>();
-        mListCode = new ArrayList<String>();
+    //    mListCode = new ArrayList<String>();
         mListOrganization = new ArrayList<String>();
         mListProject = new ArrayList<String>();
-        mListProjectId = new ArrayList<String>();
+     //   mListProjectId = new ArrayList<String>();
 
         mListState.add("Select");
         mListDistrict.add("Select");
@@ -547,11 +546,11 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         mListCluster.add("Select");
         mListVillage.add("Select");
         mListSchoolName.add("Select");
-        mListCode.add("Select");
+    //    mListCode.add("Select");
         mListOrganization.add("Select");
         mListRoleName.add("Select");
         mListProject.add("Select");
-        mListProjectId.add("Select");
+    //   mListProjectId.add("Select");
 
         input_school_code = (TextInputLayout) findViewById(R.id.input_school_code);
         edit_text_school_code = (EditText) findViewById(R.id.edit_text_school_code);
@@ -1503,9 +1502,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         String data = response.body().string();
                         if (data != null && data.length() > 0) {
                             mListSchoolName.clear();
-                            mListCode.clear();
+                    //        mListCode.clear();
                             mListSchoolName.add("Select");
-                            mListCode.add("");
+                    //        mListCode.add("");
                             JSONArray jsonArr = new JSONArray(data);
                             for (int i = 0; i < jsonArr.length(); i++) {
                        /* JSONObject jsonObject = jsonArr.getJSONObject(i);

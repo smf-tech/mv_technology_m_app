@@ -67,14 +67,12 @@ import com.mv.ActivityMenu.ProgrammeManagmentFragment;
 import com.mv.ActivityMenu.TeamManagementFragment;
 import com.mv.ActivityMenu.ThetSavandFragment;
 import com.mv.ActivityMenu.TrainingCalender;
-import com.mv.Adapter.ExpandableApprovalListAdapter;
 import com.mv.Adapter.HomeAdapter;
 import com.mv.Model.Attendance;
 import com.mv.Model.HolidayListModel;
 import com.mv.Model.HomeModel;
 import com.mv.Model.LeavesModel;
 import com.mv.Model.LocationModel;
-import com.mv.Model.Notifications;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -157,7 +155,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         View headerLayout = navigationView.getHeaderView(0);
-        TextView versionName = (TextView) headerLayout.findViewById(R.id.versionName);
+        TextView versionName = headerLayout.findViewById(R.id.versionName);
         versionName.setText("Version is : " + getAppVersion());
         //    tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         //  viewPager = (ViewPager) findViewById(R.id.pager);
@@ -292,21 +290,39 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 }
             }
         }
-        if (User.getCurrentUser(this).getMvUser().getUserMobileAppVersion() != null &&
-                User.getCurrentUser(this).getMvUser().getUserMobileAppVersion().equalsIgnoreCase(getAppVersion()) &&
-                User.getCurrentUser(this).getMvUser().getPhoneId() != null &&
-                User.getCurrentUser(this).getMvUser().getPhoneId().equalsIgnoreCase(Utills.getDeviceId(HomeActivity.this))
-                ) {
+//        if (User.getCurrentUser(this).getMvUser().getUserMobileAppVersion() != null &&
+//                User.getCurrentUser(this).getMvUser().getUserMobileAppVersion().equalsIgnoreCase(getAppVersion()) &&
+//                User.getCurrentUser(this).getMvUser().getPhoneId() != null &&
+//                User.getCurrentUser(this).getMvUser().getPhoneId().equalsIgnoreCase(Utills.getDeviceId(HomeActivity.this))
+//                ) {
+//
+//        } else {
+//            if (Utills.isConnected(this)) {
+//                User.getCurrentUser(this).getMvUser().setPhoneId(Utills.getDeviceId(HomeActivity.this));
+//                User.getCurrentUser(this).getMvUser().setUserMobileAppVersion(getAppVersion());
+//                sendData();
+//            } else {
+//                Utills.showToast(getString(R.string.error_no_internet), this);
+//            }
+//        }
 
-        } else {
             if (Utills.isConnected(this)) {
-                User.getCurrentUser(this).getMvUser().setPhoneId(Utills.getDeviceId(HomeActivity.this));
-                User.getCurrentUser(this).getMvUser().setUserMobileAppVersion(getAppVersion());
-                sendData();
+                if(User.getCurrentUser(this).getMvUser().getUserMobileAppVersion() == null ||
+                        !User.getCurrentUser(this).getMvUser().getUserMobileAppVersion().equalsIgnoreCase(getAppVersion()) ||
+                        User.getCurrentUser(this).getMvUser().getPhoneId() == null || !User.getCurrentUser(this).getMvUser().getPhoneId().equalsIgnoreCase(Utills.getDeviceId(HomeActivity.this))
+                        ) {
+                    User.getCurrentUser(this).getMvUser().setPhoneId(Utills.getDeviceId(HomeActivity.this));
+                    User.getCurrentUser(this).getMvUser().setUserMobileAppVersion(getAppVersion());
+                    sendData();
+                }
             } else {
                 Utills.showToast(getString(R.string.error_no_internet), this);
             }
-        }
+
+
+
+
+
         if (AppDatabase.getAppDatabase(HomeActivity.this).userDao().getAllHolidayList().size() == 0) {
             getHolidayList();
         }
@@ -362,7 +378,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     try {
                         if (response.body() != null) {
                             String data = response.body().string();
-                            if (data != null && data.length() > 0) {
+                            if (data.length() > 0) {
                                 List<HolidayListModel> holidayListModels;
                                 JSONArray jsonArray = new JSONArray(data);
                                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
@@ -443,7 +459,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
                         if (response.body() != null) {
                             String data = response.body().string();
-                            if (data != null && data.length() > 0) {
+                            if (data.length() > 0) {
                                   /*  JSONObject object = new JSONObject(data);
                                     JSONArray array = object.getJSONArray("Records");
                                     for (int i = 0; i < array.length(); i++) {
@@ -740,16 +756,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             getSupportActionBar().setDisplayShowCustomEnabled(true);
             getSupportActionBar().setCustomView(R.layout.toolbar);
             View view = getSupportActionBar().getCustomView();
-            toolbar_title = (TextView) view.findViewById(R.id.toolbar_title);
+            toolbar_title = view.findViewById(R.id.toolbar_title);
             toolbar_title.setText(Title);
             img_back = (ImageView) findViewById(R.id.img_back);
             img_back.setVisibility(View.GONE);
             img_back.setOnClickListener(this);
-            img_logout = (ImageView) view.findViewById(R.id.img_logout);
+            img_logout = view.findViewById(R.id.img_logout);
             img_logout.setVisibility(View.GONE);
             img_logout.setOnClickListener(this);
-            img_list = (ImageView) view.findViewById(R.id.img_list);
-            img_lang = (ImageView) view.findViewById(R.id.img_lang);
+            img_list = view.findViewById(R.id.img_list);
+            img_lang = view.findViewById(R.id.img_lang);
             img_lang.setVisibility(View.GONE);
             img_lang.setOnClickListener(this);
             img_list.setImageResource(R.drawable.ic_account_circle_white_36dp);
@@ -777,8 +793,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.ISROLECHANGE && resultCode == RESULT_OK) {
 
-            if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
-            } else {
+            if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() == null || !User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
                 if (alertDialogApproved != null && alertDialogApproved.isShowing())
                     alertDialogApproved.dismiss();
             }
@@ -1122,8 +1137,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         String data = response.body().string();
                         preferenceHelper.insertString(PreferenceHelper.UserData, data);
                         User.clearUser();
-                        if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null && User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
-                        } else {
+                        if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() == null || !User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
                             if (alertDialogApproved != null && alertDialogApproved.isShowing())
                                 alertDialogApproved.dismiss();
                         }
@@ -1258,26 +1272,20 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     try {
                         if (response.body() != null) {
                             String data = response.body().string();
-                            if (data != null && data.length() > 0) {
+                            if (data.length() > 0) {
                                 JSONObject jsonObject = new JSONObject(data);
                                 String statusofmap = jsonObject.getString("status");
                                 String message = jsonObject.getString("msg");
 
-                                if (statusofmap.equals("Success")) {
-
-
-
-
-/*
-                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
-                                    Date APICALLDATE = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
-
-                                    preferenceHelper.insetLong(PreferenceHelper.APICALLTIME,APICALLDATE.getTime());
-*/
-
-
-                                } else {
-                                }
+//                                if (statusofmap.equals("Success")) {
+///*
+//                                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
+//                                    Date APICALLDATE = simpleDateFormat.parse(simpleDateFormat.format(new Date()));
+//
+//                                    preferenceHelper.insetLong(PreferenceHelper.APICALLTIME,APICALLDATE.getTime());
+//*/
+//                                } else {
+//                                }
                             }
                         }
 
@@ -1365,7 +1373,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
 
                             ArrayList<LeavesModel> leavesList = new ArrayList<>();

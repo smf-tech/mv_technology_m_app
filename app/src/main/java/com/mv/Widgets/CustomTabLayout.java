@@ -5,8 +5,6 @@ import android.support.design.widget.TabLayout;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
 
-import java.lang.reflect.Field;
-
 /**
  * Created by nanostuffs on 08-11-2017.
  */

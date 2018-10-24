@@ -122,7 +122,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
 
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = "";
+        String url;
 
 
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -135,7 +135,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
                     Utills.hideProgressDialog();
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             final List<Asset> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Asset[].class));
@@ -236,7 +236,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
         Utills.showProgressDialog(this, "Sending", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = "";
+        String url;
 
 
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -246,11 +246,11 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
-                String data = null;
+                String data;
                 try {
                     if (response.body() != null) {
                         data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             Asset asset = gson.fromJson(data, Asset.class);
                             Id = asset.getAsset_id();

@@ -65,12 +65,12 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expandable_list);
         setActionbar(getString(R.string.training_content));
-        textNoData = (TextView) findViewById(R.id.textNoData);
+        textNoData = findViewById(R.id.textNoData);
         registerReceiver();
         preferenceHelper = new PreferenceHelper(this);
 
         // get the listview
-        expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        expListView = findViewById(R.id.lvExp);
 
         // preparing list data
         prepareListData();
@@ -144,7 +144,7 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
         Utills.showProgressDialog(ExpandableListActivity.this, "Loading Downloads", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(ExpandableListActivity.this).create(ServiceRequest.class);
-        String url = "";
+        String url;
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + "/services/apexrest/getdownloadContentData?userId=" + User.getCurrentUser(ExpandableListActivity.this).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
@@ -154,7 +154,7 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
 
                             JSONArray jsonArray = new JSONArray(str);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
@@ -186,15 +186,15 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
         if (str.contains("\n")) {
             str = str.replace("\n", " ");
         }
-        LinearLayout layoutList = (LinearLayout) findViewById(R.id.layoutList);
+        LinearLayout layoutList = findViewById(R.id.layoutList);
         layoutList.setVisibility(View.GONE);
-        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        RelativeLayout mToolBar = findViewById(R.id.toolbar);
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText(str);
-        ImageView img_back = (ImageView) findViewById(R.id.img_back);
+        ImageView img_back = findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
-        ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
+        ImageView img_logout = findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
@@ -254,9 +254,7 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
         if (lang == null || lang.length() == 0)
             lang = Constants.LANGUAGE_ENGLISH;
         temp = AppDatabase.getAppDatabase(ExpandableListActivity.this).userDao().getDistinctDownloadContent(lang);
-        for (String s : temp) {
-            listDataHeader.add(s);
-        }
+        listDataHeader.addAll(temp);
         for (String downloadContent : listDataHeader) {
             listDataChild.put(downloadContent, AppDatabase.getAppDatabase(ExpandableListActivity.this).userDao().getDownloadContent(downloadContent, preferenceHelper.getString(LANGUAGE)));
         }

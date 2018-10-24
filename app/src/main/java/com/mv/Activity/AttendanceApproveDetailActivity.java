@@ -1,7 +1,6 @@
 package com.mv.Activity;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,13 +9,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.mv.Model.Adavance;
 import com.mv.Model.AttendanceApproval;
 import com.mv.Model.User;
 import com.mv.R;
@@ -25,7 +22,6 @@ import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
-import com.mv.databinding.ActivityAttendanceApprovalBinding;
 import com.mv.databinding.ActivityAttendanceApproveDetailBinding;
 
 import org.json.JSONArray;
@@ -92,11 +88,11 @@ public class AttendanceApproveDetailActivity extends AppCompatActivity implement
         toolbar_title.setText(str);
         ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
-        img_back.setOnClickListener((View.OnClickListener) this);
+        img_back.setOnClickListener(this);
         ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setImageResource(R.drawable.ic_action_calender);
-        img_logout.setOnClickListener((View.OnClickListener) this);
+        img_logout.setOnClickListener(this);
     }
 
     @Override
@@ -104,7 +100,7 @@ public class AttendanceApproveDetailActivity extends AppCompatActivity implement
         switch (v.getId()) {
             case R.id.btn_reject:
                 binding.approveRemarks.setVisibility(View.VISIBLE);
-                if(binding.editApproveRemarks.getText().toString()!=null && binding.editApproveRemarks.getText().toString().trim().length()>0){
+                if(binding.editApproveRemarks.getText().toString().trim().length()>0){
                     updateAttendance("Rejected");
                 }else{
                     Utills.showToast(getString(R.string.attendance_rejection_reason), getApplicationContext());
@@ -156,7 +152,7 @@ public class AttendanceApproveDetailActivity extends AppCompatActivity implement
                             if (response != null && response.isSuccess()) {
                                 if (response.body() != null) {
                                     String data = response.body().string();
-                                    if (data != null && data.length() > 0) {
+                                    if (data.length() > 0) {
                                         Utills.showToast("Status of attendance updated successfully.", AttendanceApproveDetailActivity.this);
                                         finish();
                                         overridePendingTransition(R.anim.left_in, R.anim.right_out);

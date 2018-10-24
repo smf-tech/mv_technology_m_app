@@ -18,30 +18,20 @@ import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mv.Activity.AdavanceListActivity;
-import com.mv.Activity.AdavanceNewActivity;
 import com.mv.Activity.ExpenseListActivity;
-import com.mv.Activity.IssueTemplateActivity;
-import com.mv.Activity.ReportingTemplateActivity;
 import com.mv.Activity.VoucherListActivity;
-import com.mv.Activity.VoucherNewActivity;
-import com.mv.Model.Adavance;
-import com.mv.Model.Expense;
 import com.mv.Model.User;
 import com.mv.Model.Voucher;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
-import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -111,9 +101,9 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
                 //Inflating the Popup using xml file
                 popup.getMenuInflater().inflate(R.menu.popup_menu_vouchar, popup.getMenu());
                 //   popup.getMenu().getItem(R.id.spam).setVisible(true);
-                MenuItem edit = (MenuItem) popup.getMenu().findItem(R.id.edit);
-                MenuItem delete = (MenuItem) popup.getMenu().findItem(R.id.delete);
-                MenuItem sendMail = (MenuItem) popup.getMenu().findItem(R.id.send_mail);
+                MenuItem edit = popup.getMenu().findItem(R.id.edit);
+                MenuItem delete = popup.getMenu().findItem(R.id.delete);
+                MenuItem sendMail = popup.getMenu().findItem(R.id.send_mail);
 
                 //registering popup with OnMenuItemClickListener
                 popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
@@ -161,19 +151,19 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
 
             super(itemLayoutView);
 
-            imgMore = (ImageView) itemLayoutView.findViewById(R.id.img_more);
+            imgMore = itemLayoutView.findViewById(R.id.img_more);
 
-            cardView = (CardView) itemLayoutView.findViewById(R.id.cardView);
+            cardView = itemLayoutView.findViewById(R.id.cardView);
 
-            tvUser = (TextView) itemLayoutView.findViewById(R.id.tvUser);
-            tvUserName = (TextView) itemLayoutView.findViewById(R.id.tvUserName);
-            tvProjectName = (TextView) itemLayoutView.findViewById(R.id.tvProjectName);
-            tvDateName = (TextView) itemLayoutView.findViewById(R.id.tvDateName);
-            tvNoOfPeopleName = (TextView) itemLayoutView.findViewById(R.id.tvNoOfPeopleName);
-            tvTotalExpenseName = (TextView) itemLayoutView.findViewById(R.id.tvTotalExpenseName);
-            tvTotalAdvance = (TextView) itemLayoutView.findViewById(R.id.tvTotalAdvance);
-            layout_expense = (LinearLayout) itemLayoutView.findViewById(R.id.layout_expense);
-            layout_adavance = (LinearLayout) itemLayoutView.findViewById(R.id.layout_adavance);
+            tvUser = itemLayoutView.findViewById(R.id.tvUser);
+            tvUserName = itemLayoutView.findViewById(R.id.tvUserName);
+            tvProjectName = itemLayoutView.findViewById(R.id.tvProjectName);
+            tvDateName = itemLayoutView.findViewById(R.id.tvDateName);
+            tvNoOfPeopleName = itemLayoutView.findViewById(R.id.tvNoOfPeopleName);
+            tvTotalExpenseName = itemLayoutView.findViewById(R.id.tvTotalExpenseName);
+            tvTotalAdvance = itemLayoutView.findViewById(R.id.tvTotalAdvance);
+            layout_expense = itemLayoutView.findViewById(R.id.layout_expense);
+            layout_adavance = itemLayoutView.findViewById(R.id.layout_adavance);
 
             layout_expense.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -216,9 +206,9 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
                         Utills.hideProgressDialog();
                         try {
                             if (response.body() != null) {
-                                if (response != null && response.isSuccess()) {
+                                if (response.isSuccess()) {
                                     String data = response.body().string();
-                                    if (data != null && data.length() > 0) {
+                                    if (data.length() > 0) {
                                         JSONObject object = new JSONObject(data);
                                         Utills.showToast(object.getString("Status"), mContext);
                                     }

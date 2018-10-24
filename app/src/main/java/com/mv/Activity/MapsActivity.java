@@ -1,6 +1,5 @@
 package com.mv.Activity;
 
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,22 +14,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.mv.Model.HolidayListModel;
 import com.mv.Model.MapUserData;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
-import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -106,7 +100,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                     try {
                         if (response.body() != null) {
                             String data = response.body().string();
-                            if (data != null && data.length() > 0) {
+                            if (data.length() > 0) {
                                 List<MapUserData> mapUserData;
                                 JSONArray jsonArray = new JSONArray(data);
                                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();

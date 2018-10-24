@@ -172,16 +172,14 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
 
                             JSONArray jsonArray = new JSONArray(str);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<DownloadContent> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), DownloadContent[].class));
                             if (temp.size() != 0) {
                                 mList.clear();
-                                for (DownloadContent content : temp) {
-                                    mList.add(content);
-                                }
+                                mList.addAll(temp);
                                 AppDatabase.getAppDatabase(TrainingFragment.this).userDao().clearDownloadContent();
                                 AppDatabase.getAppDatabase(TrainingFragment.this).userDao().insertDownloadContent(mList);
                                 adapter.notifyDataSetChanged();

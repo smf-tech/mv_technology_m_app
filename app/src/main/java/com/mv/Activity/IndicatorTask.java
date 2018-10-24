@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.mv.Adapter.IndicatortaskAdapter;
 import com.mv.Model.DashaBoardListModel;
-import com.mv.Model.LocationModel;
 import com.mv.R;
 import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
