@@ -172,11 +172,14 @@ public class EventUserAttendanceActivity extends AppCompatActivity implements Vi
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
 
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetEventCalenderMembers_Url);
-     //   https://cs57.salesforce.com/services/apexrest/getUserDataForCalnderAttendance?eventId=a1C0k000000Sh1l
-        buffer.append("?eventId="+eventID);
+        String s = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetEventCalenderMembers_Url;
+
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(s);
+
+        s = "?eventId=" + eventID;
+        buffer.append(s);
 
         Log.e("Url",buffer.toString());
 

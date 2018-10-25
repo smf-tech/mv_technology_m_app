@@ -51,7 +51,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.TreeSet;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -529,9 +528,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             minutes = String.valueOf(mins);
 
         // Append in a StringBuilder
-        String aTime = new StringBuilder().append(hours).append(':')
-                .append(minutes).append(" ").append(timeSet).toString();
-
+        String aTime = String.valueOf(hours) + ':' + minutes + " " + timeSet;
         return aTime;
     }
 

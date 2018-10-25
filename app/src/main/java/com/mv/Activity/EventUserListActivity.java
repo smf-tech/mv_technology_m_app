@@ -1016,40 +1016,54 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         } else {
             role = "Select";
         }
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetUserDataForCalnder);
+        StringBuilder buffer = new StringBuilder();
+        String s = preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.GetUserDataForCalnder;
+        buffer.append(s);
+
         if (binding.spinnerState != null && binding.spinnerState.getSelectedItem() != null) {
-            buffer.append("?state=" + binding.spinnerState.getSelectedItem().toString());
+            s = "?state=" + binding.spinnerState.getSelectedItem().toString();
         } else {
-            buffer.append("?state=Select");
+            s = "?state=Select";
         }
+        buffer.append(s);
+
         if (binding.spinnerDistrict != null && binding.spinnerDistrict.getSelectedItem() != null) {
-            buffer.append("&dist=" + binding.spinnerDistrict.getSelectedItem().toString());
+            s = "&dist=" + binding.spinnerDistrict.getSelectedItem().toString();
         } else {
-            buffer.append("?&dist==Select");
+            s = "?&dist==Select";
         }
+        buffer.append(s);
+
         if (binding.spinnerTaluka != null && binding.spinnerTaluka.getSelectedItem() != null) {
-            buffer.append("&tal=" + binding.spinnerTaluka.getSelectedItem().toString());
+            s = "&tal=" + binding.spinnerTaluka.getSelectedItem().toString();
         } else {
-            buffer.append("&tal==Select");
+            s = "&tal==Select";
         }
+        buffer.append(s);
+
         if (binding.spinnerCluster != null && binding.spinnerCluster.getSelectedItem() != null) {
-            buffer.append("&cluster=" + binding.spinnerCluster.getSelectedItem().toString());
+            s = "&cluster=" + binding.spinnerCluster.getSelectedItem().toString();
         } else {
-            buffer.append("&cluster=Select");
+            s = "&cluster=Select";
         }
+        buffer.append(s);
+
         if (binding.spinnerVillage != null && binding.spinnerVillage.getSelectedItem() != null) {
-            buffer.append("&village=" + binding.spinnerVillage.getSelectedItem().toString());
+            s = "&village=" + binding.spinnerVillage.getSelectedItem().toString();
         } else {
-            buffer.append("&village=Select");
+            s = "&village=Select";
         }
+        buffer.append(s);
+
         if (binding.spinnerSchoolName != null && binding.spinnerSchoolName.getSelectedItem() != null) {
-            buffer.append("&school=" + binding.spinnerSchoolName.getSelectedItem().toString());
+            s = "&school=" + binding.spinnerSchoolName.getSelectedItem().toString();
         } else {
-            buffer.append("&school==Select");
+            s = "&school==Select";
         }
-        buffer.append("&role=" + role);
+        buffer.append(s);
+
+        s = "&role=" + role;
+        buffer.append(s);
 
         apiService.getSalesForceData(buffer.toString()).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -1113,11 +1127,14 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
 
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetEventCalenderMembers_Url);
-        //   https://cs57.salesforce.com/services/apexrest/getUserDataForCalnderAttendance?eventId=a1C0k000000Sh1l
-        buffer.append("?eventId=" + eventID);
+        String s = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetEventCalenderMembers_Url;
+
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(s);
+
+        s = "?eventId=" + eventID;
+        buffer.append(s);
 
         Log.e("Url", buffer.toString());
 

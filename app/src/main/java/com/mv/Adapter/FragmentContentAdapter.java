@@ -139,7 +139,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
         holder.txt_template_type.setText("Title : " + mDataList.get(position).getTitle());
         holder.txt_desc.setText("Description : " + mDataList.get(position).getDescription());
         Linkify.addLinks(holder.txt_desc, urlPattern, mDataList.get(position).getDescription());
-        holder.txt_time.setText(mDataList.get(position).getTime().toString());
+        holder.txt_time.setText(mDataList.get(position).getTime());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");
         holder.txtCommentCount.setText(mDataList.get(position).getCommentCount() + " Comments");
         holder.img_share.setImageResource(R.drawable.download);

@@ -294,7 +294,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         //  Linkify.addLinks(holder.txt_desc,Linkify.WEB_URLS);
         //  android.util.Patterns.WEB_URL.matcher( mDataList.get(position).getDescription()).matches();
 
-        holder.txt_time.setText(mDataList.get(position).getTime().toString());
+        holder.txt_time.setText(mDataList.get(position).getTime());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");
         holder.txtCommentCount.setText(mDataList.get(position).getCommentCount() + " Comments");
 

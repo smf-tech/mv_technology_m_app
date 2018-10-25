@@ -431,7 +431,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     ArrayList<String> selectedLanList1 = new ArrayList<String>(Arrays.asList(getColumnIdex((taskList.get(position).getPicklist_Value_Lan__c()).split(","))));
                     ArrayList<String> answer = new ArrayList<String>(Arrays.asList(getColumnIdex((task.getTask_Response__c()).split(","))));
                         for(String strAns:answer){
-                            answerStr=answerStr+(selectedLanList1.get(myList1.indexOf(strAns))+",");
+                            answerStr=answerStr.concat((selectedLanList1.get(myList1.indexOf(strAns))).concat(","));
                         }
                         holder.date.setText(answerStr);
                 } else
@@ -655,9 +655,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             minutes = String.valueOf(mins);
 
         // Append in a StringBuilder
-        String aTime = new StringBuilder().append(hours).append(':')
-                .append(minutes).append(" ").append(timeSet).toString();
-
+        String aTime = String.valueOf(hours) + ':' + minutes + " " + timeSet;
         return aTime;
     }
 }
