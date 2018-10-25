@@ -1190,12 +1190,8 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                 } else {
 
                     record.setBackgroundResource(R.drawable.red_box_mic_radius);
-                    try {
-                        if (hasMicrophone())
-                            recordAudio(v);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    if (hasMicrophone())
+                        recordAudio(v);
                 }
             }
         });

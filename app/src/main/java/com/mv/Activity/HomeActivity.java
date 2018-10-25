@@ -446,13 +446,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         menuListName.add(Constants.Attendance);
 
         List<String> allTabNotApprove = new ArrayList<>();
-        if (!User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().equals("")) {
-            allTabNotApprove = Arrays.asList(getColumnIndex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().split(";")));
+        if (User.getCurrentUser(getApplicationContext()).getMvUser() != null &&
+                !User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().equals("")) {
+
+            allTabNotApprove = Arrays.asList(getColumnIndex(
+                    User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameNoteApproved().split(";")));
         }
 
         List<String> allTab = new ArrayList<>();
-        if (!User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().equals("")) {
-            allTab = Arrays.asList(getColumnIndex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().split(";")));
+        if (User.getCurrentUser(getApplicationContext()).getMvUser() != null &&
+                !User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().equals("")) {
+
+            allTab = Arrays.asList(getColumnIndex(User.getCurrentUser(
+                    getApplicationContext()).getMvUser().getTabNameApproved().split(";")));
         }
 
         ArrayList<HomeModel> menuList = new ArrayList<>();

@@ -145,12 +145,7 @@ public class DownloadFile {
             pDialog.dismiss();
 
             if (file_url.equalsIgnoreCase("true")) {
-                try {
-                    unzip();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                unzip();
             }
         }
 

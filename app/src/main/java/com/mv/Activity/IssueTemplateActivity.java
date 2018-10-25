@@ -1010,12 +1010,8 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                 } else {
 
                     record.setBackgroundResource(R.drawable.red_box_mic_radius);
-                    try {
-                        if (hasMicrophone())
-                            recordAudio(v);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    if (hasMicrophone())
+                        recordAudio(v);
                 }
             }
         });
