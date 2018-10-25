@@ -233,7 +233,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-        if (User.getCurrentUser(this).getMvUser().getUserMobileAppVersion() == null ||
+        if (User.getCurrentUser(this).getMvUser() != null &&
+                User.getCurrentUser(this).getMvUser().getUserMobileAppVersion() == null ||
                 !User.getCurrentUser(this).getMvUser().getUserMobileAppVersion().equalsIgnoreCase(getAppVersion()) ||
                 User.getCurrentUser(this).getMvUser().getPhoneId() == null ||
                 !User.getCurrentUser(this).getMvUser().getPhoneId().equalsIgnoreCase(Utills.getDeviceId(HomeActivity.this))) {
