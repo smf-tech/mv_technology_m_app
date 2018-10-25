@@ -253,29 +253,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (downloadContent.getFileType() != null) {
             if (downloadContent.getFileType().equalsIgnoreCase("zip")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/UnZip/" + downloadContent.getName();
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (downloadContent.getFileType().equalsIgnoreCase("pdf")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + downloadContent.getName() + ".pdf";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (downloadContent.getFileType().equalsIgnoreCase("video")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + downloadContent.getName() + ".mp4";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (downloadContent.getFileType().equalsIgnoreCase("audio")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + downloadContent.getName() + ".mp3";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (downloadContent.getFileType().equalsIgnoreCase("ppt")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + downloadContent.getName() + ".ppt";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             }
         }
         return false;

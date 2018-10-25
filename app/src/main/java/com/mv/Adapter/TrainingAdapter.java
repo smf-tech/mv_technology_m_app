@@ -260,29 +260,19 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
         if (mDataList.get(position).getFileType() != null) {
             if (mDataList.get(position).getFileType().equalsIgnoreCase("zip")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/UnZip/" + mDataList.get(position).getName();
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (mDataList.get(position).getFileType().equalsIgnoreCase("pdf")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getName() + ".pdf";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (mDataList.get(position).getFileType().equalsIgnoreCase("video")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getName() + ".mp4";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (mDataList.get(position).getFileType().equalsIgnoreCase("audio")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getName() + ".mp3";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (mDataList.get(position).getFileType().equalsIgnoreCase("ppt")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getName() + ".ppt";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             }
         }
         return false;

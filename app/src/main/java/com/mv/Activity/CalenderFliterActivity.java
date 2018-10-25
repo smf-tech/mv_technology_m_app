@@ -1177,10 +1177,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         final boolean[] mSelection = new boolean[items.length];
         for (int i = 0; i < temp.size(); i++) {
             items[i] = temp.get(i);
-            if (selectedRole.contains(temp.get(i)))
-                mSelection[i] = true;
-            else
-                mSelection[i] = false;
+            mSelection[i] = selectedRole.contains(temp.get(i));
         }
 
        /* if (mListRoleName.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll()) > 0)
@@ -1242,10 +1239,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
         for (int i = 0; i < processList.size(); i++) {
             items[i] = processList.get(i).getName();
-            if (selectedProcessId.contains(processList.get(i).getMV_Process__c()))
-                mSelection[i] = true;
-            else
-                mSelection[i] = false;
+            mSelection[i] = selectedProcessId.contains(processList.get(i).getMV_Process__c());
         }
 
 

@@ -347,7 +347,6 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 mListCluster.clear();
                 mListVillage.clear();
                 mListSchoolName.clear();
-                ;
                 mListTaluka.add("Select");
                 mListCluster.add("Select");
                 mListVillage.add("Select");

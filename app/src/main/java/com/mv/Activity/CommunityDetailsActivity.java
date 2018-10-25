@@ -771,14 +771,10 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         if (mContent.getIsAttachmentPresent().equalsIgnoreCase("true")) {
             if (mContent.getAttachmentId() == null) {
                 String filepath = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mContent.getId() + ".png");
-                if (new File(filepath).exists())
-                    return true;
-                return false;
+                return new File(filepath).exists();
             } else {
                 String filepath = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mContent.getAttachmentId() + ".png");
-                if (new File(filepath).exists())
-                    return true;
-                return false;
+                return new File(filepath).exists();
             }
 
 

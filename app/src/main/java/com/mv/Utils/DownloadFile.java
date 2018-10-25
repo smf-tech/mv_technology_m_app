@@ -156,7 +156,7 @@ public class DownloadFile {
 
     }
 
-    public void unzip() throws IOException {
+    public void unzip() {
         mProgressDialog = new ProgressDialog(context);
         mProgressDialog.setTitle("Please Wait...");
         mProgressDialog.setMessage("Unzipping Files...");

@@ -203,7 +203,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
                             List<Community> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Community[].class));
                             List<Community> list = AppDatabase.getAppDatabase(context).userDao().getAllCommunities();
                             if ((temp.size() != 0) || (list.size() != 0)) {
-                                AppDatabase.getAppDatabase(context).userDao().clearTableCommunity();;
+                                AppDatabase.getAppDatabase(context).userDao().clearTableCommunity();
                                 for (int i = 0; i < temp.size(); i++) {
                                    /* if (temp.get(i).getErrorMsg().equalsIgnoreCase("User is Inactive")) {
                                         AppDatabase.getAppDatabase(context).userDao().clearTableCommunity();

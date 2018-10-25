@@ -773,9 +773,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         long fileSizeInKB = fileSizeInBytes / 1024;
         // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
         long fileSizeInMB = fileSizeInKB / 1024;
-        if (fileSizeInMB > 5)
-            return true;
-        return false;
+        return fileSizeInMB > 5;
     }
 
     private String getVideoString(Uri selectedImageUri) {
@@ -1132,7 +1130,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    public void recordAudio(View view) throws IOException {
+    public void recordAudio(View view) {
         isRecording = true;
         rectext.setText("Done");
 

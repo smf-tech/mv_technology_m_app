@@ -383,7 +383,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                         Utills.hideProgressDialog();
 
                         if (binding.spTypeOfCatagory.getSelectedItem().equals("Leaves")) {
-                            Utills.showToast(getString(R.string.leave_leave_approoval), LeaveDetailActivity.this);;
+                            Utills.showToast(getString(R.string.leave_leave_approoval), LeaveDetailActivity.this);
                         } else {
                             Utills.showToast(getString(R.string.compoff_leave_approoval), LeaveDetailActivity.this);
                         }

@@ -1004,30 +1004,20 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         if (mDataList.get(position).getContentType() != null) {
             if (mDataList.get(position).getContentType().equalsIgnoreCase("zip")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/UnZip/" + mDataList.get(position).getTitle();
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (mDataList.get(position).getContentType().equalsIgnoreCase("pdf")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getTitle() + ".pdf";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (mDataList.get(position).getContentType().equalsIgnoreCase("video")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getTitle() + ".mp4";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (mDataList.get(position).getContentType().equalsIgnoreCase("audio")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getTitle() + ".mp3";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (mDataList.get(position).getContentType().equalsIgnoreCase("Image")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getTitle() + ".png";
                 //   Log.e("Image path-->" +m)
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             }
         }
         return false;

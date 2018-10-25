@@ -680,10 +680,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         final boolean[] mSelection = new boolean[items.length];
         for (int i = 0; i < temp.size(); i++) {
             items[i] = temp.get(i);
-            if (selectedRole.contains(temp.get(i)))
-                mSelection[i] = true;
-            else
-                mSelection[i] = false;
+            mSelection[i] = selectedRole.contains(temp.get(i));
         }
 
        /* if (mListRoleName.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll()) > 0)
