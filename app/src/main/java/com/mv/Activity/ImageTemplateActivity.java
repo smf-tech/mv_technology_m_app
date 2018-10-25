@@ -101,20 +101,16 @@ public class ImageTemplateActivity extends AppCompatActivity implements View.OnC
         String[] items = {getString(R.string.text_gallary),
                 getString(R.string.text_camera)};
 
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
+        dialog.setItems(items, (dialog1, which) -> {
+            // TODO Auto-generated method stub
+            switch (which) {
+                case 0:
+                    choosePhotoFromGallery();
+                    break;
+                case 1:
+                    takePhotoFromCamera();
+                    break;
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                switch (which) {
-                    case 0:
-                        choosePhotoFromGallery();
-                        break;
-                    case 1:
-                        takePhotoFromCamera();
-                        break;
-
-                }
             }
         });
         dialog.show();

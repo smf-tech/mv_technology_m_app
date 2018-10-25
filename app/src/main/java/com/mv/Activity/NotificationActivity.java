@@ -64,12 +64,7 @@ public class NotificationActivity extends AppCompatActivity {
         ImageView back=(ImageView)findViewById(R.id.img_back);
         ImageView img=(ImageView)findViewById(R.id.img_logout);
         img.setVisibility(View.GONE);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        back.setOnClickListener(v -> finish());
     }
 
     @Override

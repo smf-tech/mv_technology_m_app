@@ -57,12 +57,9 @@ public class PichartDescriptiveListAdapter extends RecyclerView.Adapter<PichartD
             detail = view.findViewById(R.id.tv_piachart_description);
             index = view.findViewById(R.id.tv_piachart_number);
             delete = view.findViewById(R.id.iv_calender_delete);
-            delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    position=getAdapterPosition();
-                    showDeleteDialog();
-                }
+            delete.setOnClickListener(v -> {
+                position=getAdapterPosition();
+                showDeleteDialog();
             });
 
         }
@@ -131,19 +128,13 @@ public class PichartDescriptiveListAdapter extends RecyclerView.Adapter<PichartD
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(mContext.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-            }
-        });
+        alertDialog.setButton2(mContext.getString(R.string.cancel), (dialog, which) -> alertDialog.dismiss());
         // Setting OK Button
-        alertDialog.setButton(mContext.getString(R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
+        alertDialog.setButton(mContext.getString(R.string.ok), (dialog, which) -> {
 
-                if(piaChartModelsList.get(position)instanceof CalenderEvent)
-                    deleteEvent(((CalenderEvent) piaChartModelsList.get(position)));
+            if(piaChartModelsList.get(position)instanceof CalenderEvent)
+                deleteEvent(((CalenderEvent) piaChartModelsList.get(position)));
 
-            }
         });
 
         // Showing Alert Message
@@ -193,7 +184,7 @@ public class PichartDescriptiveListAdapter extends RecyclerView.Adapter<PichartD
     }
 
 
-    public void removeAt(int position,CalenderEvent calenderEvent) {
+    private void removeAt(int position, CalenderEvent calenderEvent) {
         piaChartModelsList.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, piaChartModelsList.size());

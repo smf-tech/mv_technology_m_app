@@ -26,9 +26,9 @@ import java.util.List;
 
 
 public class HolidayListActivity extends AppCompatActivity implements View.OnClickListener {
-    protected ActivityHolidayListBinding binding;
-    Activity context;
-    List<HolidayListModel> holidayListModels = new ArrayList<>();
+    private ActivityHolidayListBinding binding;
+    private Activity context;
+    private List<HolidayListModel> holidayListModels = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +50,9 @@ public class HolidayListActivity extends AppCompatActivity implements View.OnCli
         binding.recyclerView.setAdapter(holldayListAdapter);
         setActionbar(getString(R.string.holiday_list));
         binding.swiperefresh.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        if (Utills.isConnected(context))
-                            binding.swiperefresh.setRefreshing(false);
-                    }
+                () -> {
+                    if (Utills.isConnected(context))
+                        binding.swiperefresh.setRefreshing(false);
                 }
         );
 

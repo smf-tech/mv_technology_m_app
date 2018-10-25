@@ -63,7 +63,17 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
     private RelativeLayout mToolBar;
     //private ActivityProgrammeManagmentBinding binding;
     private PreferenceHelper preferenceHelper;
-    public String selectedState = "", selectedDisrict = "", selectedRolename = "", selectedTaluka = "", selectedCluster = "", selectedVillage = "", selectedSchool = "", selectedOrganization = "", selectedUserId = "", selectedUserName = "", selectedCatagory = "";
+    private String selectedState = "";
+    private String selectedDisrict = "";
+    private String selectedRolename = "";
+    private String selectedTaluka = "";
+    private String selectedCluster = "";
+    private String selectedVillage = "";
+    private String selectedSchool = "";
+    private String selectedOrganization = "";
+    public String selectedUserId = "";
+    public String selectedUserName = "";
+    public String selectedCatagory = "";
     private EventUserListAdapter mAdapter;
     private ArrayList<String> selectedProcessId = new ArrayList<>();
     private ArrayList<String> selectedRole = new ArrayList<>();
@@ -73,8 +83,8 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
     private ArrayAdapter<String> district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, state_adapter, organization_adapter, role_adapter, catagory_adapter;
     private Activity context;
     private ArrayList<EventUser> calenderEventUserArrayList = new ArrayList<>();
-    String eventID;
-    List<EventUser> list;
+    private String eventID;
+    private List<EventUser> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,8 +109,8 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         selectedSchool = User.getCurrentUser(getApplicationContext()).getMvUser().getSchool_Name();
         selectedOrganization = User.getCurrentUser(getApplicationContext()).getMvUser().getOrganisation();
         // selectedRolename = User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
-        selectedRole = new ArrayList<String>(Arrays.asList(getColumnIdex("Select".split(","))));
-        selectedProcessId = new ArrayList<String>(Arrays.asList(getColumnIdex(("Other").split(","))));
+        selectedRole = new ArrayList<>(Arrays.asList(getColumnIdex("Select".split(","))));
+        selectedProcessId = new ArrayList<>(Arrays.asList(getColumnIdex(("Other").split(","))));
         binding.spinnerRole.setText("Select");
 
         binding.rlMoreLocation.setOnClickListener(this);
@@ -114,20 +124,20 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
 
         binding.spinnerRole.setOnClickListener(this);
         //
-        mStateList = new ArrayList<String>();
+        mStateList = new ArrayList<>();
         mStateList.add("Select");
         //mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
-        mListDistrict = new ArrayList<String>();
+        mListDistrict = new ArrayList<>();
         mListDistrict.add("Select");
 
-        mListTaluka = new ArrayList<String>();
+        mListTaluka = new ArrayList<>();
         mListTaluka.add("Select");
-        mListCluster = new ArrayList<String>();
+        mListCluster = new ArrayList<>();
         mListCluster.add("Select");
-        mListVillage = new ArrayList<String>();
+        mListVillage = new ArrayList<>();
         mListVillage.add("Select");
 
-        mListSchoolName = new ArrayList<String>();
+        mListSchoolName = new ArrayList<>();
         mListSchoolName.add("Select");
 
         setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
@@ -136,10 +146,10 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         setSpinnerAdapter(mListVillage, village_adapter, binding.spinnerVillage, selectedVillage);
         setSpinnerAdapter(mListSchoolName, school_adapter, binding.spinnerSchoolName, selectedSchool);
 
-        mListOrganization = new ArrayList<String>();
+        mListOrganization = new ArrayList<>();
         mListOrganization.add("Select");
 
-        mListRoleName = new ArrayList<String>();
+        mListRoleName = new ArrayList<>();
 
         mStateList.clear();
         mStateList = AppDatabase.getAppDatabase(context).userDao().getState();
@@ -514,8 +524,8 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         });
     }
 
-    public void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, itemList);
+    private void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, itemList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         if (!selectedValue.isEmpty() && itemList.indexOf(selectedValue) >= 0)
@@ -523,7 +533,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
             spinner.setSelection(itemList.indexOf(selectedValue));
     }
 
-    public static String[] getColumnIdex(String[] value) {
+    private static String[] getColumnIdex(String[] value) {
         for (int i = 0; i < value.length; i++) {
             value[i] = value[i].trim();
         }
@@ -543,7 +553,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
 
     }
 
-    TextWatcher watch = new TextWatcher() {
+    private TextWatcher watch = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable arg0) {
@@ -693,48 +703,39 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         final ArrayList seletedItems = new ArrayList();
         android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(context)
                 .setTitle("Select ")
-                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                .setMultiChoiceItems(items, mSelection, (dialog13, which, isChecked) -> {
 
-                        if (which < mSelection.length) {
-                            mSelection[which] = isChecked;
+                    if (which < mSelection.length) {
+                        mSelection[which] = isChecked;
 
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Argument 'which' is out of bounds.");
-                        }
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Argument 'which' is out of bounds.");
                     }
                 })
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        StringBuffer sb = new StringBuffer();
-                        String prefix = "";
-                        for (int i = 0; i < items.length; i++) {
-                            if (mSelection[i]) {
-                                sb.append(prefix);
-                                prefix = ",";
-                                sb.append(temp.get(i));
-                                //now original string is changed
-                            }
+                .setPositiveButton(getString(R.string.ok), (dialog12, id) -> {
+                    StringBuffer sb = new StringBuffer();
+                    String prefix = "";
+                    for (int i = 0; i < items.length; i++) {
+                        if (mSelection[i]) {
+                            sb.append(prefix);
+                            prefix = ",";
+                            sb.append(temp.get(i));
+                            //now original string is changed
                         }
-                        selectedRolename = sb.toString();
-                        if (selectedRolename.length() > 0)
-                            binding.spinnerRole.setText(selectedRolename);
-                        else
-                            binding.spinnerRole.setText("Select");
-                        selectedRole = new ArrayList<String>(Arrays.asList(getColumnIdex((selectedRolename).split(","))));
-                        getAllFilterUser();
-                        Log.e("StringValue", selectedRolename);
+                    }
+                    selectedRolename = sb.toString();
+                    if (selectedRolename.length() > 0)
+                        binding.spinnerRole.setText(selectedRolename);
+                    else
+                        binding.spinnerRole.setText("Select");
+                    selectedRole = new ArrayList<String>(Arrays.asList(getColumnIdex((selectedRolename).split(","))));
+                    getAllFilterUser();
+                    Log.e("StringValue", selectedRolename);
 
 
-                    }
-                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
-                    }
+                }).setNegativeButton(getString(R.string.cancel), (dialog1, id) -> {
+                    //  Your code when user clicked on Cancel
                 }).create();
         dialog.show();
     }
@@ -1019,7 +1020,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         } else {
             role = "Select";
         }
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         buffer.append(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.GetUserDataForCalnder);
         if (binding.spinnerState != null && binding.spinnerState.getSelectedItem() != null) {
@@ -1027,9 +1028,9 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         } else {
             buffer.append("?state=Select");
         }
-        if (binding.spinnerDistrict != null && binding.spinnerDistrict.getSelectedItem() != null) {
+        if (binding.spinnerDistrict != null && binding.spinnerDistrict.getSelectedItem() != null)
             buffer.append("&dist=" + binding.spinnerDistrict.getSelectedItem().toString());
-        } else {
+        else {
             buffer.append("?&dist==Select");
         }
         if (binding.spinnerTaluka != null && binding.spinnerTaluka.getSelectedItem() != null) {
@@ -1116,7 +1117,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
 
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         buffer.append(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.GetEventCalenderMembers_Url);
         //   https://cs57.salesforce.com/services/apexrest/getUserDataForCalnderAttendance?eventId=a1C0k000000Sh1l

@@ -38,22 +38,15 @@ public class Mulyavardhan extends Application {
 
         firebaseRemoteConfig.setDefaults(remoteConfigDefaults);
         firebaseRemoteConfig.fetch(1000*60) // fetch every minutes
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "remote config is fetched.");
-                            firebaseRemoteConfig.activateFetched();
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "remote config is fetched.");
+                        firebaseRemoteConfig.activateFetched();
                     }
-
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Log.d(TAG, "Fetch failed");
-                // Do whatever should be done on failure
-            }
-        });
+                }).addOnFailureListener(exception -> {
+                    Log.d(TAG, "Fetch failed");
+                    // Do whatever should be done on failure
+                });
     }
 
     @Override

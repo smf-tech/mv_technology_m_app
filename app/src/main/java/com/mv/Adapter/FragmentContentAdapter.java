@@ -139,7 +139,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
         holder.txt_template_type.setText("Title : " + mDataList.get(position).getTitle());
         holder.txt_desc.setText("Description : " + mDataList.get(position).getDescription());
         Linkify.addLinks(holder.txt_desc, urlPattern, mDataList.get(position).getDescription());
-        holder.txt_time.setText(mDataList.get(position).getTime().toString());
+        holder.txt_time.setText(mDataList.get(position).getTime());
         holder.txtLikeCount.setText(mDataList.get(position).getLikeCount() + " Likes");
         holder.txtCommentCount.setText(mDataList.get(position).getCommentCount() + " Comments");
         holder.img_share.setImageResource(R.drawable.download);
@@ -171,44 +171,39 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             holder.layout_download_file.setVisibility(View.VISIBLE);
         }
         holder.imgMore.setVisibility(View.GONE);
-        holder.imgMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                PopupMenu popup = new PopupMenu(mContext,holder.imgMore);
-                //Inflating the Popup using xml file
-                popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
-                //   popup.getMenu().getItem(R.id.spam).setVisible(true);
-                MenuItem spam= popup.getMenu().findItem(R.id.spam);
-                MenuItem edit= popup.getMenu().findItem(R.id.edit);
-                MenuItem delete= popup.getMenu().findItem(R.id.delete);
-                spam.setVisible(true);
-                edit.setVisible(false);
-                delete.setVisible(false);
+        holder.imgMore.setOnClickListener(view -> {
+            PopupMenu popup = new PopupMenu(mContext,holder.imgMore);
+            //Inflating the Popup using xml file
+            popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
+            //   popup.getMenu().getItem(R.id.spam).setVisible(true);
+            MenuItem spam= popup.getMenu().findItem(R.id.spam);
+            MenuItem edit= popup.getMenu().findItem(R.id.edit);
+            MenuItem delete= popup.getMenu().findItem(R.id.delete);
+            spam.setVisible(true);
+            edit.setVisible(false);
+            delete.setVisible(false);
 
-                if (mDataList.get(position).getPostUserDidSpam().equals(false)){
-                    spam.setTitle("Mark As Spam");
-                }else {
-                    spam.setTitle("Mark As Unspam");
-                }
-
-
-                //registering popup with OnMenuItemClickListener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (mDataList.get(position).getPostUserDidSpam().equals(false)){
-                            Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),true);
-                            mDataList.get(position).setPostUserDidSpam(!mDataList.get(position).getPostUserDidSpam());
-                            notifyDataSetChanged();
-                        }else {
-                            Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),false);
-                            mDataList.get(position).setPostUserDidSpam(!mDataList.get(position).getPostUserDidSpam());
-                            notifyDataSetChanged();
-                        }
-                        return true;
-                    }
-                });
-                popup.show();
+            if (mDataList.get(position).getPostUserDidSpam().equals(false)){
+                spam.setTitle("Mark As Spam");
+            }else {
+                spam.setTitle("Mark As Unspam");
             }
+
+
+            //registering popup with OnMenuItemClickListener
+            popup.setOnMenuItemClickListener(item -> {
+                if (mDataList.get(position).getPostUserDidSpam().equals(false)){
+                    Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),true);
+                    mDataList.get(position).setPostUserDidSpam(!mDataList.get(position).getPostUserDidSpam());
+                    notifyDataSetChanged();
+                }else {
+                    Utills.spamContent(mContext,preferenceHelper,mDataList.get(position).getId(),User.getCurrentUser(mContext).getMvUser().getId(),false);
+                    mDataList.get(position).setPostUserDidSpam(!mDataList.get(position).getPostUserDidSpam());
+                    notifyDataSetChanged();
+                }
+                return true;
+            });
+            popup.show();
         });
 
 
@@ -224,7 +219,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
         return position;
     }
 
-    GlideUrl getUrlWithHeaders(String url) {
+    private GlideUrl getUrlWithHeaders(String url) {
 //
         return new GlideUrl(url, new LazyHeaders.Builder()
                 .addHeader("Authorization", "OAuth " + preferenceHelper.getString(PreferenceHelper.AccessToken))
@@ -321,90 +316,67 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             layout_download_file = itemLayoutView.findViewById(R.id.layout_download_file);
             imgMore = itemLayoutView.findViewById(R.id.imgMore);
 
-            txt_detail.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                    intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                    intent.putExtra("flag", "not_forward_flag");
-                    mContext.startActivity(intent);
-                }
+            txt_detail.setOnClickListener(view -> {
+                Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
+                intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
+                intent.putExtra("flag", "not_forward_flag");
+                mContext.startActivity(intent);
             });
-            layout_comment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(mContext, CommentActivity.class);
-                    intent.putExtra(Constants.ID, mDataList.get(getAdapterPosition()).getId());
-                    mContext.startActivity(intent);
-                }
+            layout_comment.setOnClickListener(view -> {
+                Intent intent = new Intent(mContext, CommentActivity.class);
+                intent.putExtra(Constants.ID, mDataList.get(getAdapterPosition()).getId());
+                mContext.startActivity(intent);
             });
 
-            layout_download_file.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    downloadImage(getAdapterPosition());
+            layout_download_file.setOnClickListener(v -> downloadImage(getAdapterPosition()));
 
-                }
-            });
+            layout_download.setOnClickListener(view -> {
+                //showGroupDialog(getAdapterPosition());
+                if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getAttachmentId()) ||mDataList.get(getAdapterPosition()).getAttachmentId()==null
+                        || mDataList.get(getAdapterPosition()).getAttachmentId().equalsIgnoreCase("null")) {
 
-            layout_download.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //showGroupDialog(getAdapterPosition());
-                    if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getAttachmentId()) ||mDataList.get(getAdapterPosition()).getAttachmentId()==null
-                            || mDataList.get(getAdapterPosition()).getAttachmentId().equalsIgnoreCase("null")) {
+                    Intent i = new Intent(Intent.ACTION_SEND);
+                    i.setType("image*//**//*");
+                    i.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
+                    Utills.hideProgressDialog();
+                    mContext.startActivity(Intent.createChooser(i, "Share Post"));
+                }else {
+                    String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId()+".png";
 
-                        Intent i = new Intent(Intent.ACTION_SEND);
-                        i.setType("image*//**//*");
-                        i.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
-                        Utills.hideProgressDialog();
-                        mContext.startActivity(Intent.createChooser(i, "Share Post"));
-                    }else {
-                        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId()+".png";
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType( "application/*");
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
 
-                        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-                        shareIntent.setType( "application/*");
-                        shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
-
-                        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
-                        mContext.startActivity(Intent.createChooser(shareIntent, "Share Content"));
+                    shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                    mContext.startActivity(Intent.createChooser(shareIntent, "Share Content"));
 
 
-                    }
                 }
             });
 
-            layout_like.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (Utills.isConnected(mContext)) {
-                        mPosition = getAdapterPosition();
-                        if (!mDataList.get(getAdapterPosition()).getIsLike()) {
-                            sendLikeAPI(mDataList.get(getAdapterPosition()).getId(), !(mDataList.get(getAdapterPosition()).getIsLike()));
-                            mDataList.get(mPosition).setIsLike(!mDataList.get(mPosition).getIsLike());
-                            mDataList.get(mPosition).setLikeCount((mDataList.get(mPosition).getLikeCount() + 1));
-                            notifyDataSetChanged();
-                        } else {
-                            sendDisLikeAPI(mDataList.get(getAdapterPosition()).getId(), !(mDataList.get(getAdapterPosition()).getIsLike()));
-                            mDataList.get(mPosition).setIsLike(!mDataList.get(mPosition).getIsLike());
-                            mDataList.get(mPosition).setLikeCount((mDataList.get(mPosition).getLikeCount() - 1));
-                            notifyDataSetChanged();
-                        }
+            layout_like.setOnClickListener(view -> {
+                if (Utills.isConnected(mContext)) {
+                    mPosition = getAdapterPosition();
+                    if (!mDataList.get(getAdapterPosition()).getIsLike()) {
+                        sendLikeAPI(mDataList.get(getAdapterPosition()).getId(), !(mDataList.get(getAdapterPosition()).getIsLike()));
+                        mDataList.get(mPosition).setIsLike(!mDataList.get(mPosition).getIsLike());
+                        mDataList.get(mPosition).setLikeCount((mDataList.get(mPosition).getLikeCount() + 1));
+                        notifyDataSetChanged();
                     } else {
-                        Utills.showToast(mContext.getString(R.string.error_no_internet), mContext);
+                        sendDisLikeAPI(mDataList.get(getAdapterPosition()).getId(), !(mDataList.get(getAdapterPosition()).getIsLike()));
+                        mDataList.get(mPosition).setIsLike(!mDataList.get(mPosition).getIsLike());
+                        mDataList.get(mPosition).setLikeCount((mDataList.get(mPosition).getLikeCount() - 1));
+                        notifyDataSetChanged();
                     }
-
-
+                } else {
+                    Utills.showToast(mContext.getString(R.string.error_no_internet), mContext);
                 }
+
+
             });
 
 
-            picture.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Utills.showImagewithheaderZoomDialog(v.getContext(),getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(getAdapterPosition()).getAttachmentId() + "/Body"));
-                }
-            });
+            picture.setOnClickListener(v -> Utills.showImagewithheaderZoomDialog(v.getContext(),getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(getAdapterPosition()).getAttachmentId() + "/Body")));
         }
 
 

@@ -26,7 +26,7 @@ import java.util.zip.ZipFile;
  * Created by Rohit Gujar on 30-11-2017.
  */
 
-public class DownloadFile {
+class DownloadFile {
     private Context context;
     private ProgressDialog mProgressDialog;
     private String StorezipFileLocation = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/";
@@ -42,12 +42,9 @@ public class DownloadFile {
         pDialog.setIndeterminate(false);
         pDialog.setMax(100);
         pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        pDialog.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                downloadFileFromURL.cancel(true);
-            }
+        pDialog.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.cancel), (dialog, which) -> {
+            dialog.dismiss();
+            downloadFileFromURL.cancel(true);
         });
         pDialog.setCancelable(false);
     }
@@ -156,7 +153,7 @@ public class DownloadFile {
 
     }
 
-    public void unzip() throws IOException {
+    private void unzip() throws IOException {
         mProgressDialog = new ProgressDialog(context);
         mProgressDialog.setTitle("Please Wait...");
         mProgressDialog.setMessage("Unzipping Files...");

@@ -70,25 +70,28 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private ImageView img_back, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
-    String comment;
-    String isSave;
-    String msg;
-    Boolean manditoryFlag = false;
+    private String comment;
+    private String isSave;
+    private String msg;
+    private Boolean manditoryFlag = false;
     int i;
     private PreferenceHelper preferenceHelper;
-    ArrayList<Task> taskList = new ArrayList<>();
+    private ArrayList<Task> taskList = new ArrayList<>();
     private GPSTracker gps;
-    String timestamp;
-    Activity context;
+    private String timestamp;
+    private Activity context;
 
-    Button submit, save, approve, reject;
+    private Button submit;
+    private Button save;
+    private Button approve;
+    private Button reject;
 
-    ProcessDetailAdapter adapter;
-    RecyclerView rvProcessDetail;
+    private ProcessDetailAdapter adapter;
+    private RecyclerView rvProcessDetail;
 
-    LinearLayout layout_photo;
-    ImageView img_add;
-    String id = "";
+    private LinearLayout layout_photo;
+    private ImageView img_add;
+    private String id = "";
 
     private String imageId, uniqueId = "";
     private Uri outputUri = null;
@@ -117,7 +120,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     }
 
     private void savetoDB() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         String prefix = "";
         for (int i = 0; i < taskList.size(); i++) {
                 /*    if(dashaBoardListModel.get(i).getIsSave().equals(Constants.PROCESS_STATE_SUBMIT))
@@ -324,21 +327,15 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             alertDialog.setIcon(R.drawable.logomulya);
 
             // Setting CANCEL Button
-            alertDialog.setButton2(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    alertDialog.dismiss();
-                    finish();
-                    // Write your code here to execute after dialog closed
-              /*  listOfWrongQuestions.add(mPosition);
-                prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
-                }
+            alertDialog.setButton2(getString(R.string.cancel), (dialog, which) -> {
+                alertDialog.dismiss();
+                finish();
+                // Write your code here to execute after dialog closed
+          /*  listOfWrongQuestions.add(mPosition);
+            prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
             });
             // Setting OK Button
-            alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    savetoDB();
-                }
-            });
+            alertDialog.setButton(getString(R.string.ok), (dialog, which) -> savetoDB());
 
             // Showing Alert Message
             alertDialog.show();
@@ -347,7 +344,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
     }
 
-    public void showDialog() {
+    private void showDialog() {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(ProcessDeatailActivity.this);
         alertDialog.setTitle(getString(R.string.comments));
@@ -361,26 +358,19 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         alertDialog.setView(input);
 
         alertDialog.setPositiveButton(getString(R.string.ok),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        isSave = "false";
-                        comment = input.getText().toString();
-                        if (!comment.isEmpty()) {
-                            sendApprovedData();
-                        } else {
-                            Utills.showToast("Please Enter Comment", ProcessDeatailActivity.this);
-                        }
-
+                (dialog, which) -> {
+                    isSave = "false";
+                    comment = input.getText().toString();
+                    if (!comment.isEmpty()) {
+                        sendApprovedData();
+                    } else {
+                        Utills.showToast("Please Enter Comment", ProcessDeatailActivity.this);
                     }
 
                 });
 
         alertDialog.setNegativeButton(getString(R.string.cancel),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+                (dialog, which) -> dialog.cancel());
 
         alertDialog.show();
     }

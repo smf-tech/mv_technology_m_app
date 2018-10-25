@@ -51,7 +51,7 @@ public class TemplatesActivity extends AppCompatActivity implements View.OnClick
     private TemplateAdapter mAdapter;
     private List<Template> templateList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
-    TextView textNoData;
+    private TextView textNoData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,20 +117,16 @@ public class TemplatesActivity extends AppCompatActivity implements View.OnClick
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
 
         // Showing Alert Message

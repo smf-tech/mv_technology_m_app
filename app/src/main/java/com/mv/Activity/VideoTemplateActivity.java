@@ -99,20 +99,16 @@ public class VideoTemplateActivity extends AppCompatActivity implements View.OnC
         String[] items = {getString(R.string.text_gallary),
                 getString(R.string.text_camera)};
 
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
+        dialog.setItems(items, (dialog1, which) -> {
+            // TODO Auto-generated method stub
+            switch (which) {
+                case 0:
+                    chooseVideoFromGallery();
+                    break;
+                case 1:
+                    takeVideoFromCamera();
+                    break;
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                switch (which) {
-                    case 0:
-                        chooseVideoFromGallery();
-                        break;
-                    case 1:
-                        takeVideoFromCamera();
-                        break;
-
-                }
             }
         });
         dialog.show();
@@ -175,7 +171,7 @@ public class VideoTemplateActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    public String getPath(Uri uri) {
+    private String getPath(Uri uri) {
         String[] projection = {MediaStore.Video.Media.DATA};
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
         if (cursor != null) {

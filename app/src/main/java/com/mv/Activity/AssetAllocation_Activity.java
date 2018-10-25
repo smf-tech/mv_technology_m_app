@@ -46,21 +46,30 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AssetAllocation_Activity extends AppCompatActivity implements View.OnClickListener {
-    Spinner spinner_stock;
-    EditText edit_text_username, edit_text_assetname, edit_text_no, edit_text_name,edit_asset_status;
-    Button btn_allocate_asset,btn_reject_asset;
-    PreferenceHelper preferenceHelper;
-    Asset asset;
-    ArrayList<String> stocklist = new ArrayList<>();
+    private Spinner spinner_stock;
+    private EditText edit_text_username;
+    private EditText edit_text_assetname;
+    private EditText edit_text_no;
+    private EditText edit_text_name;
+    private EditText edit_asset_status;
+    private Button btn_allocate_asset;
+    private Button btn_reject_asset;
+    private PreferenceHelper preferenceHelper;
+    private Asset asset;
+    private ArrayList<String> stocklist = new ArrayList<>();
     private ArrayAdapter<String> stock_adapter;
-    String stock_id, asset_id;
+    private String stock_id;
+    private String asset_id;
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     TextInputLayout input_no, input_name;
-    LinearLayout lnr_asset_manager, lnr_user;
-    String Fname, Lname, Id;
-    int selectstockid = 0;
+    private LinearLayout lnr_asset_manager;
+    private LinearLayout lnr_user;
+    private String Fname;
+    private String Lname;
+    private String Id;
+    private int selectstockid = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,7 +153,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
                                 if (temp.get(i).getCode() != null)
                                     stocklist.add(temp.get(i).getCode());
                             }
-                            stock_adapter = new ArrayAdapter<String>(AssetAllocation_Activity.this,
+                            stock_adapter = new ArrayAdapter<>(AssetAllocation_Activity.this,
                                     android.R.layout.simple_spinner_item, stocklist);
                             stock_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spinner_stock.setAdapter(stock_adapter);
@@ -274,7 +283,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
         });
     }
 
-    TextWatcher watch = new TextWatcher() {
+    private TextWatcher watch = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable arg0) {

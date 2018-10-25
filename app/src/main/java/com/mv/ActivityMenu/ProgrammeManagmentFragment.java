@@ -50,17 +50,17 @@ import retrofit2.Response;
 public class
 ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickListener {
     private PreferenceHelper preferenceHelper;
-    List<Template> processAllList = new ArrayList<>();
+    private List<Template> processAllList = new ArrayList<>();
     private ProgramMangementAdapter mAdapter;
     private ActivityProgramManagementBinding binding;
-    RecyclerView.LayoutManager mLayoutManager;
-    TextView textNoData;
-    ArrayList<Task> taskList = new ArrayList<>();
-    TaskContainerModel taskContainerModel;
-    ExpandableProcessListAdapter adapter;
-    ArrayList<String> processCategory = new ArrayList<>();
-    HashMap<String, List<Template>> childList = new HashMap<>();
-    Activity context;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private TextView textNoData;
+    private ArrayList<Task> taskList = new ArrayList<>();
+    private TaskContainerModel taskContainerModel;
+    private ExpandableProcessListAdapter adapter;
+    private ArrayList<String> processCategory = new ArrayList<>();
+    private HashMap<String, List<Template>> childList = new HashMap<>();
+    private Activity context;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,12 +79,9 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
         setActionbar(getString(R.string.programme_management));
         preferenceHelper = new PreferenceHelper(context);
         binding.swiperefresh.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        if (Utills.isConnected(context))
-                            getAllProcess();
-                    }
+                () -> {
+                    if (Utills.isConnected(context))
+                        getAllProcess();
                 }
         );
 
@@ -210,7 +207,7 @@ ProgrammeManagmentFragment extends AppCompatActivity implements View.OnClickList
                                 taskContainerModel = new TaskContainerModel();
                                 taskList = new ArrayList<>();
                                 User user = User.getCurrentUser(getApplicationContext());
-                                StringBuffer sb = new StringBuffer();
+                                StringBuilder sb = new StringBuilder();
                                 String prefix = "";
                                 for (int i = 0; i < resultArray.length(); i++) {
                                     JSONObject resultJsonObj = resultArray.getJSONObject(i);

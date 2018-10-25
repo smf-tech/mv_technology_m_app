@@ -83,11 +83,9 @@ public class Utills {
 
         // Set up touch listener for non-text box views to hide keyboard.
         if (!(view instanceof EditText)) {
-            view.setOnTouchListener(new View.OnTouchListener() {
-                public boolean onTouch(View v, MotionEvent event) {
-                    hideSoftKeyboard(activity);
-                    return false;
-                }
+            view.setOnTouchListener((v, event) -> {
+                hideSoftKeyboard(activity);
+                return false;
             });
         }
 
@@ -160,18 +158,11 @@ public class Utills {
         final int mMonth = c.get(Calendar.MONTH);
         final int mDay = c.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog dpd = new DatePickerDialog(context,
-                new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-                        text.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
-                    }
-                }, mYear, mMonth, mDay);
+                (view, year, monthOfYear, dayOfMonth) -> text.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth)), mYear, mMonth, mDay);
         dpd.show();
     }
 
-    public static String getTwoDigit(int i) {
+    private static String getTwoDigit(int i) {
         if (i < 10)
             return "0" + i;
         return "" + i;
@@ -357,18 +348,12 @@ public class Utills {
         alertDialog.setCancelable(true);
         alertDialog.setMessage(context.getString(R.string.error_no_internet));
         alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
-        alertDialog.setButton(context.getString(R.string.Setting), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Intent settingsIntent = new Intent(Settings.ACTION_SETTINGS);
+        alertDialog.setButton(context.getString(R.string.Setting), (dialog, which) -> {
+            Intent settingsIntent = new Intent(Settings.ACTION_SETTINGS);
 
-                context.startActivity(settingsIntent);
-            }
+            context.startActivity(settingsIntent);
         });
-        alertDialog.setButton2(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        alertDialog.setButton2(context.getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
         // Showing Alert Message
         alertDialog.show();
     }
@@ -380,7 +365,7 @@ public class Utills {
      * @param context
      * @return
      */
-    public static NetworkInfo getNetworkInfo(Context context) {
+    private static NetworkInfo getNetworkInfo(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo();
     }
@@ -495,12 +480,7 @@ public class Utills {
         final AlertDialog alertD = alertDialog.create();
 
         alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        close_dialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertD.dismiss();
-            }
-        });
+        close_dialog.setOnClickListener(v -> alertD.dismiss());
         alertD.show();
 
     }
@@ -521,12 +501,7 @@ public class Utills {
         final AlertDialog alertD = alertDialog.create();
 
         alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        close_dialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertD.dismiss();
-            }
-        });
+        close_dialog.setOnClickListener(v -> alertD.dismiss());
         alertD.show();
 
     }
@@ -544,20 +519,12 @@ public class Utills {
 
         final EditText etComments = view.findViewById(R.id.addtag);
 
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(R.string.ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(R.string.ok), (dialog, which) -> {
 
-            }
         });
 
 
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-            }
-        });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", (dialog, which) -> alertDialog.dismiss());
 
 
         alertDialog.setView(view);
@@ -587,10 +554,9 @@ public class Utills {
                     }
 
                 } catch (IOException e) {
-
                     e.printStackTrace();
                 } catch (JSONException e) {
-
+                    e.printStackTrace();
                 }
             }
 

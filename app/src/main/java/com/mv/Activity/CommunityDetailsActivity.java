@@ -73,9 +73,11 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
     private Content mContent;
     private PreferenceHelper preferenceHelper;
     private List<Community> communityList = new ArrayList<>();
-    LinearLayout layout_forward, layout_download_file, layout_share;
+    private LinearLayout layout_forward;
+    private LinearLayout layout_download_file;
+    private LinearLayout layout_share;
     private boolean[] mSelection = null;
-    String value;
+    private String value;
     private JSONArray jsonArrayAttchment = new JSONArray();
     private static final Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
@@ -137,9 +139,9 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                                                 into(200, 200).
                                                 get();
                                     } catch (final ExecutionException e) {
-
+                                        e.printStackTrace();
                                     } catch (final InterruptedException e) {
-
+                                        e.printStackTrace();
                                     }
                                     return null;
                                 }
@@ -365,24 +367,14 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         builderSingle.setIcon(R.drawable.logomulya);
         builderSingle.setTitle(getString(R.string.select_one));
 
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_singlechoice);
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_singlechoice);
         for (int i = 0; i < this.communityList.size(); i++) {
             arrayAdapter.add(this.communityList.get(i).getName());
         }
 
-        builderSingle.setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        builderSingle.setNegativeButton(getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
 
-        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                sendShareRecord(mContent.getId());
-            }
-        });
+        builderSingle.setAdapter(arrayAdapter, (dialog, which) -> sendShareRecord(mContent.getId()));
         builderSingle.show();
     }
 
@@ -392,7 +384,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
 
-    GlideUrl getUrlWithHeaders(String url) {
+    private GlideUrl getUrlWithHeaders(String url) {
 //
         return new GlideUrl(url, new LazyHeaders.Builder()
                 .addHeader("Authorization", "OAuth " + preferenceHelper.getString(PreferenceHelper.AccessToken))
@@ -722,30 +714,21 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         final ArrayList seletedItems = new ArrayList();
         android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(CommunityDetailsActivity.this)
                 .setTitle("Select Communities")
-                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (mSelection != null && which < mSelection.length) {
-                            mSelection[which] = isChecked;
-                            value = buildSelectedItemString(items);
+                .setMultiChoiceItems(items, mSelection, (dialog13, which, isChecked) -> {
+                    if (mSelection != null && which < mSelection.length) {
+                        mSelection[which] = isChecked;
+                        value = buildSelectedItemString(items);
 
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Argument 'which' is out of bounds.");
-                        }
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Argument 'which' is out of bounds.");
                     }
                 })
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        sendShareRecord(mContent.getId());
-                        Log.i("value", "value");
-                    }
-                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
-                    }
+                .setPositiveButton("Ok", (dialog12, id) -> {
+                    sendShareRecord(mContent.getId());
+                    Log.i("value", "value");
+                }).setNegativeButton(getString(R.string.cancel), (dialog1, id) -> {
+                    //  Your code when user clicked on Cancel
                 }).create();
         dialog.show();
     }

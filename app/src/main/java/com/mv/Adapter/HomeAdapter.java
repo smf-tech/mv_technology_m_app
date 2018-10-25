@@ -50,14 +50,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
 
             layout = view.findViewById(R.id.layout_home);
             invisiblityLayout = view.findViewById(R.id.invisiblityLayout);
-            layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (menuList.get(getAdapterPosition()).getAccessible()) {
-                        preferenceHelper.insertString(Constants.Leave,"");
-                        Intent openClass = new Intent(mContext, menuList.get(getAdapterPosition()).getDestination());
-                        mContext.startActivity(openClass);
-                    }
+            layout.setOnClickListener(view1 -> {
+                if (menuList.get(getAdapterPosition()).getAccessible()) {
+                    preferenceHelper.insertString(Constants.Leave,"");
+                    Intent openClass = new Intent(mContext, menuList.get(getAdapterPosition()).getDestination());
+                    mContext.startActivity(openClass);
                 }
             });
         }

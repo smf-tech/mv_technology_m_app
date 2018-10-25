@@ -37,13 +37,7 @@ public class HolldayListAdapter extends RecyclerView.Adapter<HolldayListAdapter.
             detail = view.findViewById(R.id.tv_piachart_description);
             index = view.findViewById(R.id.tv_piachart_number);
             delete = view.findViewById(R.id.iv_calender_delete);
-            delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    position = getAdapterPosition();
-
-                }
-            });
+            delete.setOnClickListener(v -> position = getAdapterPosition());
 
 
         }

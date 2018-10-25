@@ -93,31 +93,22 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
             imgEdit.setVisibility(View.GONE);
             imgDelete.setVisibility(View.GONE);
         }
-            textLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (_context instanceof ExpenseListActivity)
-                        _activity.editExpense(expense);
-                }
+            textLayout.setOnClickListener(view13 -> {
+                if (_context instanceof ExpenseListActivity)
+                    _activity.editExpense(expense);
             });
 
         imgDelete.setImageResource(R.drawable.form_delete);
         imgEdit.setImageResource(R.drawable.ic_form);
         view.setVisibility(View.GONE);
-        imgEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (_context instanceof ExpenseListActivity)
-                    _activity.editExpense(expense);
-            }
+        imgEdit.setOnClickListener(view12 -> {
+            if (_context instanceof ExpenseListActivity)
+                _activity.editExpense(expense);
         });
 
-        imgDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (_context instanceof ExpenseListActivity)
-                    showLogoutPopUp(expense);
-            }
+        imgDelete.setOnClickListener(view1 -> {
+            if (_context instanceof ExpenseListActivity)
+                showLogoutPopUp(expense);
         });
 
         tvProjectName.setText(expense.getPartuculars());
@@ -141,20 +132,14 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
         // Setting Icon to Dialog
         alertDialog.setIcon(R.drawable.logomulya);
         // Setting CANCEL Button
-        alertDialog.setButton2(_context.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                // Write your code here to execute after dialog closed
-              /*  listOfWrongQuestions.add(mPosition);
-                prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
-            }
+        alertDialog.setButton2(_context.getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            // Write your code here to execute after dialog closed
+          /*  listOfWrongQuestions.add(mPosition);
+            prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
         });
         // Setting OK Button
-        alertDialog.setButton(_context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                _activity.deleteExpense(expense);
-            }
-        });
+        alertDialog.setButton(_context.getString(android.R.string.ok), (dialog, which) -> _activity.deleteExpense(expense));
         // Showing Alert Message
         alertDialog.show();
     }

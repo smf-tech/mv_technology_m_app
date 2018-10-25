@@ -71,22 +71,19 @@ public class ExpandableProcessListAdapter extends BaseExpandableListAdapter {
         submittedCount = convertView.findViewById(R.id.txt_submmited_date);
         txt_targeted_count = convertView.findViewById(R.id.txt_traget_count);
         layout = convertView.findViewById(R.id.layoutTemplate);
-        layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        layout.setOnClickListener(view -> {
 
-                preferenceHelper.insertBoolean(Constants.IS_EDITABLE, template.getIs_Editable__c());
-                preferenceHelper.insertBoolean(Constants.IS_LOCATION, template.getLocation());
-                preferenceHelper.insertBoolean(Constants.IS_MULTIPLE, template.getIs_Multiple_Entry_Allowed__c());
-                preferenceHelper.insertString(Constants.STATE_LOCATION_LEVEL, template.getLocationLevel());
+            preferenceHelper.insertBoolean(Constants.IS_EDITABLE, template.getIs_Editable__c());
+            preferenceHelper.insertBoolean(Constants.IS_LOCATION, template.getLocation());
+            preferenceHelper.insertBoolean(Constants.IS_MULTIPLE, template.getIs_Multiple_Entry_Allowed__c());
+            preferenceHelper.insertString(Constants.STATE_LOCATION_LEVEL, template.getLocationLevel());
 
-                Intent openClass = new Intent(_context, ProcessListActivity.class);
-                openClass.putExtra(Constants.PROCESS_ID, template.getId());
-                openClass.putExtra(Constants.PROCESS_NAME, template.getName());
-                _context.startActivity(openClass);
-                _context.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            Intent openClass = new Intent(_context, ProcessListActivity.class);
+            openClass.putExtra(Constants.PROCESS_ID, template.getId());
+            openClass.putExtra(Constants.PROCESS_NAME, template.getName());
+            _context.startActivity(openClass);
+            _context.overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
-            }
         });
 
 

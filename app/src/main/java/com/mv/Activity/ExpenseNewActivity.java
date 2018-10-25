@@ -111,20 +111,16 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
         String[] items = {getString(R.string.text_gallary),
                 getString(R.string.text_camera)};
 
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
+        dialog.setItems(items, (dialog1, which) -> {
+            // TODO Auto-generated method stub
+            switch (which) {
+                case 0:
+                    choosePhotoFromGallery();
+                    break;
+                case 1:
+                    takePhotoFromCamera();
+                    break;
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                switch (which) {
-                    case 0:
-                        choosePhotoFromGallery();
-                        break;
-                    case 1:
-                        takePhotoFromCamera();
-                        break;
-
-                }
             }
         });
         dialog.show();
@@ -619,14 +615,7 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
         final int mMonth = c.get(Calendar.MONTH);
         final int mDay = c.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog dpd = new DatePickerDialog(this,
-                new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-                        binding.txtDate.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
-                    }
-                }, mYear, mMonth, mDay);
+                (view, year, monthOfYear, dayOfMonth) -> binding.txtDate.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth)), mYear, mMonth, mDay);
         dpd.show();
     }
 

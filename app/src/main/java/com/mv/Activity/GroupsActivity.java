@@ -52,7 +52,7 @@ public class GroupsActivity extends AppCompatActivity implements View.OnClickLis
     private List<Community> communityList = new ArrayList<>();
     private List<Community> replicaCommunityList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
-    TextView textNoData;
+    private TextView textNoData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,20 +120,16 @@ public class GroupsActivity extends AppCompatActivity implements View.OnClickLis
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
 
         // Showing Alert Message
@@ -172,7 +168,7 @@ public class GroupsActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 
-    TextWatcher watch = new TextWatcher() {
+    private TextWatcher watch = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable arg0) {
@@ -227,7 +223,7 @@ public class GroupsActivity extends AppCompatActivity implements View.OnClickLis
 
     public void onLayoutGroupClick(int position) {
         preferenceHelper.insertString(PreferenceHelper.COMMUNITYID, communityList.get(position).getId());
-        List<Community> list = new ArrayList<Community>();
+        List<Community> list = new ArrayList<>();
         list.addAll(communityList);
         list.remove(position);
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();

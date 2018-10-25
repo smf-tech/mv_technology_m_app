@@ -47,14 +47,16 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
 
     //private ActivityProgrammeManagmentBinding binding;
     private PreferenceHelper preferenceHelper;
-    ArrayList<Task> taskList = new ArrayList<>();
+    private ArrayList<Task> taskList = new ArrayList<>();
     private ProcessListAdapter mAdapter;
-    String proceesId, Processname, userId;
-    Context mContext;
+    private String proceesId;
+    private String Processname;
+    private String userId;
+    private Context mContext;
 
 
-    TaskContainerModel taskContainerModel;
-    List<TaskContainerModel> resultList = new ArrayList<>();
+    private TaskContainerModel taskContainerModel;
+    private List<TaskContainerModel> resultList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +108,7 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
 
     }
 
-    public void getAllProcessData() {
+    private void getAllProcessData() {
         if (Utills.isConnected(this))
             getAllProcess();
         else {
@@ -146,7 +148,7 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
         finish();
     }
 
-    public void getAllProcess() {
+    private void getAllProcess() {
         Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
@@ -168,8 +170,8 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
                     for (int j = 0; j < resultArray.length(); j++) {
                         JSONArray jsonArray = resultArray.getJSONArray(j);
                         taskContainerModel = new TaskContainerModel();
-                        taskList = new ArrayList<Task>();
-                        StringBuffer sb = new StringBuffer();
+                        taskList = new ArrayList<>();
+                        StringBuilder sb = new StringBuilder();
                         String prefix = "";
                         for (int i = 0; i < jsonArray.length(); i++) {
                             Task processList = new Task();

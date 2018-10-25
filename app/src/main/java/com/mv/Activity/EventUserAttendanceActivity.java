@@ -50,7 +50,8 @@ public class EventUserAttendanceActivity extends AppCompatActivity implements Vi
     private EventAttendanceListAdapter mAdapter;
     private ArrayList<EventUser> selectedUser = new ArrayList<>();
     private ArrayList<EventUser> eventUsersFliter = new ArrayList<>();
-    String eventID,PresentUsersID;
+    private String eventID;
+    private String PresentUsersID;
     public boolean isAllSelect=true;
 
     public String selectedState = "Maharashtra", selectedDisrict = "Select", selectedRolename = "TC", selectedTaluka = "Select", selectedCluster = "Select", selectedVillage = "Select", selectedSchool = "Select", selectedOrganization = "SMF", selectedUserId = "", selectedUserName = "", selectedCatagory = "";
@@ -82,12 +83,7 @@ public class EventUserAttendanceActivity extends AppCompatActivity implements Vi
 //        else
 //            binding.cbEventSelectAll.setChecked(false);
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        back.setOnClickListener(v -> finish());
         getAllFilterUserr();
         binding.editTextEmail.addTextChangedListener(watch);
     }
@@ -124,7 +120,7 @@ public class EventUserAttendanceActivity extends AppCompatActivity implements Vi
         eventUsers.set(eventUsers.indexOf(eventUser), eventUser);
     }
 
-    TextWatcher watch = new TextWatcher() {
+    private TextWatcher watch = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable arg0) {
@@ -172,7 +168,7 @@ public class EventUserAttendanceActivity extends AppCompatActivity implements Vi
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
 
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         buffer.append(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.GetEventCalenderMembers_Url);
      //   https://cs57.salesforce.com/services/apexrest/getUserDataForCalnderAttendance?eventId=a1C0k000000Sh1l
@@ -253,7 +249,7 @@ public class EventUserAttendanceActivity extends AppCompatActivity implements Vi
             binding.cbEventSelectAll.setChecked(false);
     }
 
-    public void submitResult(){
+    private void submitResult(){
         Intent returnIntent = new Intent();
         returnIntent.putExtra("EventSelectedUsers",selectedUser);
         setResult(RESULT_OK,returnIntent);

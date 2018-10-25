@@ -50,18 +50,20 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
     private List<OverAllModel> overAllTaskList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
     TextView textNoData;
-    Activity context;
-    RecyclerView.LayoutManager mLayoutManager;
-    LocationModel locationModel;
-    String roleList;
+    private Activity context;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private LocationModel locationModel;
+    private String roleList;
     private ImageView img_back, img_list, img_logout, location;
     private TextView toolbar_title;
-    List<String> temp;
-    String title,processId;
-    int totalExpectedCount,totalSubmitedCount;
-    Task task;
+    private List<String> temp;
+    private String title;
+    private String processId;
+    private int totalExpectedCount;
+    private int totalSubmitedCount;
+    private Task task;
     private RelativeLayout mToolBar;
-    ArrayList<String> selectedRoleList=new ArrayList<>();
+    private ArrayList<String> selectedRoleList=new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +77,7 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
         processId = getIntent().getExtras().getString(Constants.PROCESS_ID);
         locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
         roleList = getIntent().getStringExtra(Constants.INDICATOR_TASK_ROLE);
-        selectedRoleList = new ArrayList<String>(Arrays.asList(getColumnIdex((roleList).split(";"))));
+        selectedRoleList = new ArrayList<>(Arrays.asList(getColumnIdex((roleList).split(";"))));
         if (locationModel == null) {
             locationModel = new LocationModel();
             locationModel.setState(User.getCurrentUser(getApplicationContext()).getMvUser().getState());
@@ -86,12 +88,7 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
         Utills.setupUI(findViewById(R.id.layout_main), context);
 
         binding.spinnerRole.setText(roleList);
-        binding.spinnerRole.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showRoleDialog();
-            }
-        });
+        binding.spinnerRole.setOnClickListener(v -> showRoleDialog());
         setActionbar("Overall Report");
         mAdapter = new OverallReportAdapter(overAllTaskList, context);
         mLayoutManager = new LinearLayoutManager(context);
@@ -208,7 +205,7 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
 
 
         if (preferenceHelper.getString(Constants.RoleList) != null && !preferenceHelper.getString(Constants.RoleList).isEmpty()) {
-            temp = new ArrayList<String>(Arrays.asList(preferenceHelper.getString(Constants.RoleList).split(";")));
+            temp = new ArrayList<>(Arrays.asList(preferenceHelper.getString(Constants.RoleList).split(";")));
 
         }
 
@@ -231,49 +228,40 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
         final ArrayList seletedItems = new ArrayList();
         android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(context)
                 .setTitle("Select Role")
-                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (which < mSelection.length) {
-                            mSelection[which] = isChecked;
+                .setMultiChoiceItems(items, mSelection, (dialog13, which, isChecked) -> {
+                    if (which < mSelection.length) {
+                        mSelection[which] = isChecked;
 
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Argument 'which' is out of bounds.");
-                        }
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Argument 'which' is out of bounds.");
                     }
                 })
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        StringBuffer sb = new StringBuffer();
-                        String prefix = "";
-                        for (int i = 0; i < items.length; i++) {
-                            if (mSelection[i]) {
-                                sb.append(prefix);
-                                prefix = ";";
-                                sb.append(temp.get(i));
+                .setPositiveButton(getString(R.string.ok), (dialog12, id) -> {
+                    StringBuffer sb = new StringBuffer();
+                    String prefix = "";
+                    for (int i = 0; i < items.length; i++) {
+                        if (mSelection[i]) {
+                            sb.append(prefix);
+                            prefix = ";";
+                            sb.append(temp.get(i));
 
-                            }
                         }
+                    }
 
-                        if (Utills.isConnected(getApplicationContext()))
-                            getDashBoardData(sb.toString());
-                        binding.spinnerRole.setText(sb.toString());
-                        roleList=sb.toString();
-                        selectedRoleList = new ArrayList<String>(Arrays.asList(getColumnIdex((roleList).split(";"))));
-                    }
-                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
-                    }
+                    if (Utills.isConnected(getApplicationContext()))
+                        getDashBoardData(sb.toString());
+                    binding.spinnerRole.setText(sb.toString());
+                    roleList=sb.toString();
+                    selectedRoleList = new ArrayList<String>(Arrays.asList(getColumnIdex((roleList).split(";"))));
+                }).setNegativeButton(getString(R.string.cancel), (dialog1, id) -> {
+                    //  Your code when user clicked on Cancel
                 }).create();
 
 
         dialog.show();
     }
-    public static String[] getColumnIdex(String[] value) {
+    private static String[] getColumnIdex(String[] value) {
 
         for (int i = 0; i < value.length; i++) {
             value[i] = value[i].trim();

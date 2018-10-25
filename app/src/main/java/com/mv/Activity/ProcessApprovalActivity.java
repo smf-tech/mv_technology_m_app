@@ -48,9 +48,9 @@ public class ProcessApprovalActivity extends AppCompatActivity implements View.O
     private RelativeLayout mToolBar;
     //private ActivityProgrammeManagmentBinding binding;
     private PreferenceHelper preferenceHelper;
-    ArrayList<Template> programManagementProcessLists=new ArrayList<>();
+    private ArrayList<Template> programManagementProcessLists=new ArrayList<>();
     private TemplateAdapter mAdapter;
-    TextView textNoData;
+    private TextView textNoData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,12 +74,9 @@ public class ProcessApprovalActivity extends AppCompatActivity implements View.O
         if (Utills.isConnected(this))
             getAllProcess();
         binding.swiperefresh.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        if (Utills.isConnected(getApplicationContext()))
-                            getAllProcess();
-                    }
+                () -> {
+                    if (Utills.isConnected(getApplicationContext()))
+                        getAllProcess();
                 }
         );
         binding.swiperefresh.setRefreshing(false);

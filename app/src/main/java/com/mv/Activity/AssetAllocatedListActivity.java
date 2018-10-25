@@ -45,18 +45,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AssetAllocatedListActivity extends AppCompatActivity implements View.OnClickListener {
-    FloatingActionButton fab_send_asset;
+    private FloatingActionButton fab_send_asset;
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     private RecyclerView recycler_view;
-    PreferenceHelper preferenceHelper;
-    EditText editTextEmail;
-    List<Asset> assetList = new ArrayList<>();
-    AssetAdapter adapter;
+    private PreferenceHelper preferenceHelper;
+    private EditText editTextEmail;
+    private List<Asset> assetList = new ArrayList<>();
+    private AssetAdapter adapter;
     RecyclerView.LayoutManager mLayoutManager;
-    ArrayList<Asset> repplicaCahart = new ArrayList<>();
-    TextView textNoData;
+    private ArrayList<Asset> repplicaCahart = new ArrayList<>();
+    private TextView textNoData;
     private ArrayList<String> headerList;
     private HashMap<String, ArrayList<Asset>> childList;
     private ExpandableAssetListAdapter evAdapter;
@@ -307,7 +307,7 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
 
     }
 
-    TextWatcher watch = new TextWatcher() {
+    private TextWatcher watch = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable arg0) {

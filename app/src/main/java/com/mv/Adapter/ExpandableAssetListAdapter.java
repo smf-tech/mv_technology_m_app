@@ -87,55 +87,46 @@ public class ExpandableAssetListAdapter extends BaseExpandableListAdapter {
         txt_asset_issue_date = convertView.findViewById(R.id.txt_asset_issue_date);
         view1 = convertView.findViewById(R.id.view1);
         imgLayout = convertView.findViewById(R.id.imgLayout);
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (asset.getAllocationStatus().equalsIgnoreCase("Requested")
-                            && User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
-                        Intent intent = new Intent(_context, AssetAllocation_Activity.class);
-                        intent.putExtra("Assets", asset);
-                        _context.startActivity(intent);
-                }else if (asset.getAllocationStatus().equalsIgnoreCase("Allocated")) {
+        cardView.setOnClickListener(view -> {
+            if (asset.getAllocationStatus().equalsIgnoreCase("Requested")
+                        && User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
+                    Intent intent = new Intent(_context, AssetAllocation_Activity.class);
+                    intent.putExtra("Assets", asset);
+                    _context.startActivity(intent);
+            }else if (asset.getAllocationStatus().equalsIgnoreCase("Allocated")) {
+                Intent intent = new Intent(_context, AssetApprovalActivity.class);
+                intent.putExtra("Assets", asset);
+                _context.startActivity(intent);
+            } else if (asset.getAllocationStatus().equalsIgnoreCase("Accepted")) {
+                if(User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")){
                     Intent intent = new Intent(_context, AssetApprovalActivity.class);
                     intent.putExtra("Assets", asset);
                     _context.startActivity(intent);
-                } else if (asset.getAllocationStatus().equalsIgnoreCase("Accepted")) {
-                    if(User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")){
-                        Intent intent = new Intent(_context, AssetApprovalActivity.class);
-                        intent.putExtra("Assets", asset);
-                        _context.startActivity(intent);
-                    }else {
-                        Intent intent = new Intent(_context, AssetAllocation_Activity.class);
-                        intent.putExtra("Assets", asset);
-                        _context.startActivity(intent);
-                    }
-                    }
-                else if (asset.getAllocationStatus().equalsIgnoreCase("Rejected")) {
-                    Intent intent = new Intent(_context, AssetApprovalActivity.class);
+                }else {
+                    Intent intent = new Intent(_context, AssetAllocation_Activity.class);
                     intent.putExtra("Assets", asset);
                     _context.startActivity(intent);
                 }
-                else if (asset.getAllocationStatus().equalsIgnoreCase("Released")) {
-                    Intent intent = new Intent(_context, AssetApprovalActivity.class);
-                    intent.putExtra("Assets", asset);
-                    _context.startActivity(intent);
                 }
+            else if (asset.getAllocationStatus().equalsIgnoreCase("Rejected")) {
+                Intent intent = new Intent(_context, AssetApprovalActivity.class);
+                intent.putExtra("Assets", asset);
+                _context.startActivity(intent);
+            }
+            else if (asset.getAllocationStatus().equalsIgnoreCase("Released")) {
+                Intent intent = new Intent(_context, AssetApprovalActivity.class);
+                intent.putExtra("Assets", asset);
+                _context.startActivity(intent);
             }
         });
-        imgDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (_activity != null)
-                    showLogoutPopUp(asset);
-            }
+        imgDelete.setOnClickListener(view -> {
+            if (_activity != null)
+                showLogoutPopUp(asset);
         });
-        imgEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (_activity != null)
-                    _activity.editExpense(asset);
+        imgEdit.setOnClickListener(view -> {
+            if (_activity != null)
+                _activity.editExpense(asset);
 
-            }
         });
 
         if (asset.getAssetModel().equalsIgnoreCase("null")) {
@@ -183,20 +174,14 @@ public class ExpandableAssetListAdapter extends BaseExpandableListAdapter {
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(_context.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                // Write your code here to execute after dialog closed
-              /*  listOfWrongQuestions.add(mPosition);
-                prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
-            }
+        alertDialog.setButton2(_context.getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            // Write your code here to execute after dialog closed
+          /*  listOfWrongQuestions.add(mPosition);
+            prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
         });
         // Setting OK Button
-        alertDialog.setButton(_context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                _activity.deleteExpense(asset);
-            }
-        });
+        alertDialog.setButton(_context.getString(android.R.string.ok), (dialog, which) -> _activity.deleteExpense(asset));
 
         // Showing Alert Message
         alertDialog.show();

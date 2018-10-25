@@ -36,14 +36,14 @@ import java.util.List;
 
 public class TeamManagementFragment extends AppCompatActivity implements View.OnClickListener {
     private PreferenceHelper preferenceHelper;
-    List<Template> processAllList = new ArrayList<>();
+    private List<Template> processAllList = new ArrayList<>();
     private TeamManagementAdapter mAdapter;
-    ArrayList<String> menuList;
+    private ArrayList<String> menuList;
     private ActivityNewTemplateBinding binding;
-    RecyclerView.LayoutManager mLayoutManager;
-    TextView textNoData;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private TextView textNoData;
 
-    Activity context;
+    private Activity context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,12 +119,7 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(mAdapter);
         binding.swiperefresh.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        binding.swiperefresh.setRefreshing(false);
-                    }
-                }
+                () -> binding.swiperefresh.setRefreshing(false)
         );
         binding.swiperefresh.setRefreshing(false);
 
@@ -170,20 +165,16 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
 
         // Showing Alert Message

@@ -76,29 +76,21 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
         TextView txtCount, txtName;
         RelativeLayout layoutMain;
 
-            layoutMain = convertView.findViewById(R.id.layoutMain);
+        layoutMain = convertView.findViewById(R.id.layoutMain);
 
         txtCount = convertView.findViewById(R.id.txtCount);
 
-        layoutMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    Intent intent=new Intent(_context, LeaveDetailActivity.class);
-                    intent.putExtra(Constants.Leave ,leavesModel);
-                    _context.startActivity(intent);
-            }
+        layoutMain.setOnClickListener(v -> {
+                Intent intent=new Intent(_context, LeaveDetailActivity.class);
+                intent.putExtra(Constants.Leave ,leavesModel);
+                _context.startActivity(intent);
         });
         imgDownload = convertView.findViewById(R.id.imgDownload);
      if(groupPosition==0&&!preferenceHelper.getString(Constants.Leave).equals(Constants.Leave_Approve))
      {
 
          imgDownload.setVisibility(View.VISIBLE);
-         imgDownload.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                showDeleteDialog(leavesModel.getId());
-             }
-         });
+         imgDownload.setOnClickListener(view -> showDeleteDialog(leavesModel.getId()));
      }
      else
      {
@@ -160,11 +152,13 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
         if (convertView != null) {
             imgGroup = convertView.findViewById(R.id.imgGroup);
         }
+        if (imgGroup != null) {
+            if (isExpanded) {
+                imgGroup.setImageResource(R.drawable.downarrow);
 
-        if (isExpanded) {
-            imgGroup.setImageResource(R.drawable.downarrow);
-        } else {
-            imgGroup.setImageResource(R.drawable.rightarrow);
+            } else {
+                imgGroup.setImageResource(R.drawable.rightarrow);
+            }
         }
         TextView txtName = convertView
                 .findViewById(R.id.txtName);
@@ -197,20 +191,9 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(_context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-            }
-        });
+        alertDialog.setButton2(_context.getString(R.string.cancel), (dialog, which) -> alertDialog.dismiss());
         // Setting OK Button
-        alertDialog.setButton(_context.getString(R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-
-
-                    _context.deleteLeave(id);
-
-            }
-        });
+        alertDialog.setButton(_context.getString(R.string.ok), (dialog, which) -> _context.deleteLeave(id));
 
         // Showing Alert Message
         alertDialog.show();

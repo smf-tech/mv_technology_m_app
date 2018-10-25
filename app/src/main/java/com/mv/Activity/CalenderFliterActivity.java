@@ -51,7 +51,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.TreeSet;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -64,28 +63,38 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
     private ActivityClalenderFliterBinding binding;
     private int mSelectOrganization = 0, mSelectRole = 0, mSelectState = 1, mSelectDistrict = 1, mSelectTaluka = 0, mSelectCluster = 0, mSelectVillage = 0, mSelectSchoolName = 0;
     private List<String> mListOrganization, mListRoleName, mListDistrict, mListTaluka, mListCluster, mListVillage, mListSchoolName, mStateList;
-    ArrayList<EventUser> selectedUser = new ArrayList<>();
+    private ArrayList<EventUser> selectedUser = new ArrayList<>();
     private ArrayAdapter<String> district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, state_adapter, organization_adapter, role_adapter, catagory_adapter;
     private PreferenceHelper preferenceHelper;
     private RelativeLayout mToolBar;
     private Spinner selectedSpinner;
     String msg = "";
     private int locationState;
-    public String selectedState = "", selectedDisrict = "", selectedRolename = "", selectedTaluka = "", selectedCluster = "", selectedVillage = "", selectedSchool = "", selectedOrganization = "", selectedUserId = "", selectedUserName = "", selectedCatagory = "";
-    CalenderEvent calenderEvent = new CalenderEvent();
-    ArrayList<EventUser> calenderEventUserArrayList;
+    private String selectedState = "";
+    private String selectedDisrict = "";
+    private String selectedRolename = "";
+    private String selectedTaluka = "";
+    private String selectedCluster = "";
+    private String selectedVillage = "";
+    private String selectedSchool = "";
+    private String selectedOrganization = "";
+    private String selectedUserId = "";
+    private String selectedUserName = "";
+    private String selectedCatagory = "";
+    private CalenderEvent calenderEvent = new CalenderEvent();
+    private ArrayList<EventUser> calenderEventUserArrayList;
 
-    ArrayList<Template> processList;
+    private ArrayList<Template> processList;
     private String processId = "";
 
-    ArrayList<String> selectedProcessId = new ArrayList<>();
-    ArrayList<String> selectedRole = new ArrayList<>();
-    Activity context;
-    String url = "";
-    String id = "";
+    private ArrayList<String> selectedProcessId = new ArrayList<>();
+    private ArrayList<String> selectedRole = new ArrayList<>();
+    private Activity context;
+    private String url = "";
+    private String id = "";
     //change made for event attendance
     private ArrayList<EventUser> eventAttendanceUsers = new ArrayList<>();
-    String SelectedEventAttendanceIDs="";
+    private String SelectedEventAttendanceIDs="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,7 +129,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             if (calenderEvent.getStatus() != null && calenderEvent.getStatus().length() > 0) {
                 binding.spinnerStatus.setSelection(Arrays.asList(getResources().getStringArray(R.array.array_of_status)).indexOf(calenderEvent.getStatus()));
             }
-            selectedRole = new ArrayList<String>(Arrays.asList(getColumnIdex((calenderEvent.getRole__c()).split(","))));
+            selectedRole = new ArrayList<>(Arrays.asList(getColumnIdex((calenderEvent.getRole__c()).split(","))));
             selectedRolename = calenderEvent.getRole__c();
             binding.spinnerRole.setText(calenderEvent.getRole__c());
             binding.etEventTime.setText(calenderEvent.getEvent_Time__c());
@@ -132,9 +141,9 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
             binding.etEventDiscription.setText(calenderEvent.getDescription());
             if (calenderEvent.getMV_Process__c() != null)
-                selectedProcessId = new ArrayList<String>(Arrays.asList(getColumnIdex(("Other," + calenderEvent.getMV_Process__c()).split(","))));
+                selectedProcessId = new ArrayList<>(Arrays.asList(getColumnIdex(("Other," + calenderEvent.getMV_Process__c()).split(","))));
             else
-                selectedProcessId = new ArrayList<String>(Arrays.asList(getColumnIdex(("Other,").split(","))));
+                selectedProcessId = new ArrayList<>(Arrays.asList(getColumnIdex(("Other,").split(","))));
 
             if (User.getCurrentUser(this).getMvUser().getHide_Role_On_Calendar__c().contains(User.getCurrentUser(this).getMvUser().getRoll())) {
                 binding.lyAttendance.setVisibility(View.GONE);
@@ -166,8 +175,8 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             selectedSchool = User.getCurrentUser(getApplicationContext()).getMvUser().getSchool_Name();
             selectedOrganization = User.getCurrentUser(getApplicationContext()).getMvUser().getOrganisation();
             //  selectedRolename = User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
-            selectedRole = new ArrayList<String>(Arrays.asList(getColumnIdex("Select".split(","))));
-            selectedProcessId = new ArrayList<String>(Arrays.asList(getColumnIdex(("Other").split(","))));
+            selectedRole = new ArrayList<>(Arrays.asList(getColumnIdex("Select".split(","))));
+            selectedProcessId = new ArrayList<>(Arrays.asList(getColumnIdex(("Other").split(","))));
             binding.spinnerRole.setText("Select");
             binding.spinnerCatogory.setText("Other");
         }
@@ -190,7 +199,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             Utills.showToast(getString(R.string.error_no_internet), CalenderFliterActivity.this);
     }
 
-    public static String[] getColumnIdex(String[] value) {
+    private static String[] getColumnIdex(String[] value) {
 
         for (int i = 0; i < value.length; i++) {
             value[i] = value[i].trim();
@@ -238,26 +247,26 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
         binding.spinnerRole.setOnClickListener(this);
         //
-        mStateList = new ArrayList<String>();
+        mStateList = new ArrayList<>();
         mStateList.add("Select");
         //mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
-        mListDistrict = new ArrayList<String>();
+        mListDistrict = new ArrayList<>();
         mListDistrict.add("Select");
 
-        mListTaluka = new ArrayList<String>();
+        mListTaluka = new ArrayList<>();
         mListTaluka.add("Select");
-        mListCluster = new ArrayList<String>();
+        mListCluster = new ArrayList<>();
         mListCluster.add("Select");
-        mListVillage = new ArrayList<String>();
+        mListVillage = new ArrayList<>();
         mListVillage.add("Select");
 
-        mListSchoolName = new ArrayList<String>();
+        mListSchoolName = new ArrayList<>();
         mListSchoolName.add("Select");
 
-        mListOrganization = new ArrayList<String>();
+        mListOrganization = new ArrayList<>();
         mListOrganization.add("Select");
 
-        mListRoleName = new ArrayList<String>();
+        mListRoleName = new ArrayList<>();
         mListRoleName.add("Select");
         mStateList.clear();
         mStateList = AppDatabase.getAppDatabase(context).userDao().getState();
@@ -427,11 +436,9 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             case R.id.et_event_time:
 
 
-                mTimePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                mTimePicker = new TimePickerDialog(context, (TimePicker timePicker, int selectedHour, int selectedMinute)-> {
                         binding.etEventTime.setText(updateTime(selectedHour, selectedMinute));
-                    }
+
                 }, hour, minute, false);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
                 mTimePicker.show();
@@ -447,12 +454,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             case R.id.et_event_end_time:
 
 
-                mTimePicker = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        binding.etEventEndTime.setText(updateTime(selectedHour, selectedMinute));
-                    }
-                }, hour, minute, false);//Yes 24 hour time
+                mTimePicker = new TimePickerDialog(context, (timePicker, selectedHour, selectedMinute) -> binding.etEventEndTime.setText(updateTime(selectedHour, selectedMinute)), hour, minute, false);//Yes 24 hour time
                 mTimePicker.setTitle("Select Time");
                 mTimePicker.show();
 
@@ -529,8 +531,8 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             minutes = String.valueOf(mins);
 
         // Append in a StringBuilder
-        String aTime = new StringBuilder().append(hours).append(':')
-                .append(minutes).append(" ").append(timeSet).toString();
+        String aTime = String.valueOf(hours) + ':' +
+                minutes + " " + timeSet;
 
         return aTime;
     }
@@ -758,7 +760,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         }
     }
 
-    public void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
+    private void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
        /* adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, itemList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -1066,7 +1068,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                         String data = response.body().string();
                         if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
-                            StringBuffer sb = new StringBuffer();
+                            StringBuilder sb = new StringBuilder();
                             String prefix = "";
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 Template process = new Template();
@@ -1120,8 +1122,8 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 selectedUser = data.getParcelableArrayListExtra(Constants.PROCESS_ID);
                 calenderEventUserArrayList = data.getParcelableArrayListExtra(Constants.ALLUSER);
                 selectedRolename = data.getStringExtra("Role");
-                StringBuffer sb = new StringBuffer();
-                StringBuffer sbName = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
+                StringBuilder sbName = new StringBuilder();
                 String prefix = "";
                 for (int i = 0; i < selectedUser.size(); i++) {
                     sb.append(prefix);
@@ -1146,7 +1148,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             if (resultCode == RESULT_OK) {
                 eventAttendanceUsers = data.getParcelableArrayListExtra("EventSelectedUsers");
 
-                StringBuffer sb = new StringBuffer();
+                StringBuilder sb = new StringBuilder();
              //   StringBuffer sbName = new StringBuffer();
                 String prefix = "";
                 for (int i = 0; i < eventAttendanceUsers.size(); i++) {
@@ -1190,45 +1192,36 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         final ArrayList seletedItems = new ArrayList();
         android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(CalenderFliterActivity.this)
                 .setTitle("Select ")
-                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                .setMultiChoiceItems(items, mSelection, (dialog1, which, isChecked) -> {
 
-                        if (which < mSelection.length) {
-                            mSelection[which] = isChecked;
+                    if (which < mSelection.length) {
+                        mSelection[which] = isChecked;
 
 
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Argument 'which' is out of bounds.");
-                        }
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Argument 'which' is out of bounds.");
                     }
                 })
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        StringBuffer sb = new StringBuffer();
-                        String prefix = "";
-                        for (int i = 0; i < items.length; i++) {
-                            if (mSelection[i]) {
-                                sb.append(prefix);
-                                prefix = ",";
-                                sb.append(temp.get(i));
-                                //now original string is changed
-                            }
+                .setPositiveButton(getString(R.string.ok), (dialog12, id) -> {
+                    StringBuffer sb = new StringBuffer();
+                    String prefix = "";
+                    for (int i = 0; i < items.length; i++) {
+                        if (mSelection[i]) {
+                            sb.append(prefix);
+                            prefix = ",";
+                            sb.append(temp.get(i));
+                            //now original string is changed
                         }
-                        selectedRolename = sb.toString();
-                        binding.spinnerRole.setText(selectedRolename);
-                        selectedRole = new ArrayList<String>(Arrays.asList(getColumnIdex((selectedRolename).split(","))));
-
-                        Log.e("StringValue", selectedRolename);
-
                     }
-                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
-                    }
+                    selectedRolename = sb.toString();
+                    binding.spinnerRole.setText(selectedRolename);
+                    selectedRole = new ArrayList<String>(Arrays.asList(getColumnIdex((selectedRolename).split(","))));
+
+                    Log.e("StringValue", selectedRolename);
+
+                }).setNegativeButton(getString(R.string.cancel), (dialog13, id) -> {
+                    //  Your code when user clicked on Cancel
                 }).create();
         dialog.show();
     }
@@ -1256,44 +1249,36 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
         android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(CalenderFliterActivity.this)
                 .setTitle("Select Category")
-                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (which < mSelection.length) {
-                            mSelection[which] = isChecked;
+                .setMultiChoiceItems(items, mSelection, (dialog1, which, isChecked) -> {
+                    if (which < mSelection.length) {
+                        mSelection[which] = isChecked;
 
 
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Argument 'which' is out of bounds.");
-                        }
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Argument 'which' is out of bounds.");
                     }
                 })
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        StringBuffer sb = new StringBuffer();
-                        StringBuffer roleId = new StringBuffer();
-                        String prefix = "";
-                        for (int i = 0; i < items.length; i++) {
-                            if (mSelection[i]) {
-                                sb.append(prefix);
-                                roleId.append(prefix);
-                                prefix = ",";
-                                sb.append(processList.get(i).getName());
-                                roleId.append(processList.get(i).getMV_Process__c());
-                                //now original string is changed
-                            }
+                .setPositiveButton(getString(R.string.ok), (dialog12, id) -> {
+                    StringBuffer sb = new StringBuffer();
+                    StringBuffer roleId = new StringBuffer();
+                    String prefix = "";
+                    for (int i = 0; i < items.length; i++) {
+                        if (mSelection[i]) {
+                            sb.append(prefix);
+                            roleId.append(prefix);
+                            prefix = ",";
+                            sb.append(processList.get(i).getName());
+                            roleId.append(processList.get(i).getMV_Process__c());
+                            //now original string is changed
                         }
-                        processId = roleId.toString();
-                        selectedProcessId = new ArrayList<String>(Arrays.asList(getColumnIdex((processId).split(","))));
-                        binding.spinnerCatogory.setText(sb.toString());
                     }
-                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
+                    processId = roleId.toString();
+                    selectedProcessId = new ArrayList<String>(Arrays.asList(getColumnIdex((processId).split(","))));
+                    binding.spinnerCatogory.setText(sb.toString());
+                }).setNegativeButton(getString(R.string.cancel), (DialogInterface dialog1, int id)-> {
                         //  Your code when user clicked on Cancel
-                    }
+
                 }).create();
 
 
@@ -1465,38 +1450,34 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         }
     }
 
-    public void showDateDialog(Context context, int type) {
+    private void showDateDialog(Context context, int type) {
 
 
         final Calendar c = Calendar.getInstance();
         final int mYear = c.get(Calendar.YEAR);
         final int mMonth = c.get(Calendar.MONTH);
         final int mDay = c.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog dpd = new DatePickerDialog(context,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
+        DatePickerDialog dpd = new DatePickerDialog(context,(DatePicker view, int year,
+                                          int monthOfYear, int dayOfMonth)-> {
                         if (type == 1) {
                             binding.etEventDate.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
                             binding.etEventEndDate.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
                         } else if (type == 2) {
                             binding.etEventEndDate.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
                         }
-                    }
-                }, mYear, mMonth, mDay);
+                    }, mYear, mMonth, mDay);
         dpd.getDatePicker().setMinDate(System.currentTimeMillis() - 10000);
         dpd.show();
     }
 
-    public static String getTwoDigit(int i) {
+    private static String getTwoDigit(int i) {
         if (i < 10)
             return "0" + i;
         return "" + i;
     }
 
     private static List<Date> getDates(String dateString1, String dateString2) {
-        ArrayList<Date> dates = new ArrayList<Date>();
+        ArrayList<Date> dates = new ArrayList<>();
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
 
         Date date1 = null;

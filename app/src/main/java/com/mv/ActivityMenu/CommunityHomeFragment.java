@@ -54,13 +54,13 @@ import retrofit2.Response;
 public class CommunityHomeFragment extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private FragmentCommunityHomeBinding binding;
     private PreferenceHelper preferenceHelper;
-    private List<Content> chatList = new ArrayList<Content>();
+    private List<Content> chatList = new ArrayList<>();
     private FragmentContentAdapter adapter;
-    TextView textNoData;
+    private TextView textNoData;
 
     private FloatingActionButton fab_add_broadcast;
     RecyclerView recyclerView;
-    Activity context;
+    private Activity context;
     private RelativeLayout mToolBar;
     private TextView toolbar_title;
     private ImageView img_back, img_list, img_logout;
@@ -247,20 +247,16 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                context.finish();
-                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            context.finish();
+            context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                context.finish();
-                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+            alertDialog.dismiss();
+            context.finish();
+            context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
 
         // Showing Alert Message

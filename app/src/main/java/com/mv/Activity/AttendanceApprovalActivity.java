@@ -45,12 +45,14 @@ public class AttendanceApprovalActivity extends AppCompatActivity implements Vie
     private ActivityAttendanceApprovalBinding binding;
     private PreferenceHelper preferenceHelper;
     private ArrayList<String> headerList;
-    HashMap<String, ArrayList<AttendanceApproval>> childList;
+    private HashMap<String, ArrayList<AttendanceApproval>> childList;
     private List<AttendanceApproval> attendanceList = new ArrayList<>();
-    String proceesId, Processname,tabName;
-    Activity mContext;
+    private String proceesId;
+    String Processname;
+    private String tabName;
+    private Activity mContext;
     List<HolidayListModel> holidayListModels = new ArrayList<>();
-    TextView textNoData;
+    private TextView textNoData;
 
     private ExpandableAttendanceApprovalListAdapter adapter;
     String url = "";
@@ -139,7 +141,7 @@ public class AttendanceApprovalActivity extends AppCompatActivity implements Vie
         finish();
     }
 
-    public void getAllProcess() {
+    private void getAllProcess() {
 
         Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
         ServiceRequest apiService =

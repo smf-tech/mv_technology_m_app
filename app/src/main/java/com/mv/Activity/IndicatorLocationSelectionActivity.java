@@ -70,11 +70,12 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
     private Boolean isAdd;
 
     private boolean isDistrictSet = false, isRollSet = false;
-    Activity context;
-    LocationModel locationModel;
-    Task task;
-    String roleList;
-    String title,processId;
+    private Activity context;
+    private LocationModel locationModel;
+    private Task task;
+    private String roleList;
+    private String title;
+    private String processId;
     private boolean[] mSelection = null;
     private String value = "";
 
@@ -119,13 +120,13 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
 //        binding.txtDateTo.setOnClickListener(this);
 //        binding.sortButton.setOnClickListener(this);
 
-        mListDistrict = new ArrayList<String>();
-        mListTaluka = new ArrayList<String>();
-        mListCluster = new ArrayList<String>();
-        mListVillage = new ArrayList<String>();
-        mListSchoolName = new ArrayList<String>();
+        mListDistrict = new ArrayList<>();
+        mListTaluka = new ArrayList<>();
+        mListCluster = new ArrayList<>();
+        mListVillage = new ArrayList<>();
+        mListSchoolName = new ArrayList<>();
 
-        mStateList = new ArrayList<String>();
+        mStateList = new ArrayList<>();
         mListDistrict.add(User.getCurrentUser(context).getMvUser().getDistrict());
         mListTaluka.add("Select");
         mListCluster.add("Select");
@@ -140,19 +141,19 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         }*/
 
 
-        mStateList = new ArrayList<String>(Arrays.asList(getColumnIdex((User.getCurrentUser(getApplicationContext()).getMvUser().getState()).split(","))));
+        mStateList = new ArrayList<>(Arrays.asList(getColumnIdex((User.getCurrentUser(getApplicationContext()).getMvUser().getState()).split(","))));
         mStateList.add(0, "Select");
-        state_adapter = new ArrayAdapter<String>(this,
+        state_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mStateList);
         state_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerState.setAdapter(state_adapter);
 
-        district_adapter = new ArrayAdapter<String>(this,
+        district_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListDistrict);
         district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerDistrict.setAdapter(district_adapter);
 
-        taluka_adapter = new ArrayAdapter<String>(this,
+        taluka_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListTaluka);
         taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerTaluka.setAdapter(taluka_adapter);
@@ -176,19 +177,9 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
             getState();
         // code related to date filter
         // set the components - text, image and button
-        binding.txtDateFrom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDateDialog(binding.txtDateFrom);
-            }
-        });
+        binding.txtDateFrom.setOnClickListener(v -> showDateDialog(binding.txtDateFrom));
 
-        binding.txtDateTo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDateDialog(binding.txtDateTo);
-            }
-        });
+        binding.txtDateTo.setOnClickListener(v -> showDateDialog(binding.txtDateTo));
         // if button is clicked, close the custom dialog
 //        binding.sortButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -208,13 +199,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         final int mMonth = c.get(Calendar.MONTH);
         final int mDay = c.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog dpd = new DatePickerDialog(this,
-                new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-                        textView.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
-                    }
-                }, mYear, mMonth, mDay);
+                (view, year, monthOfYear, dayOfMonth) -> textView.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth)), mYear, mMonth, mDay);
         dpd.show();
     }
     //returns two digit number of month
@@ -224,7 +209,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         return "" + i;
     }
 
-    public static String[] getColumnIdex(String[] value) {
+    private static String[] getColumnIdex(String[] value) {
 
         for (int i = 0; i < value.length; i++) {
             value[i] = value[i].trim();
@@ -330,7 +315,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                     } else {
                         mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(User.getCurrentUser(context).getMvUser().getState());
                         mListDistrict.add(0, "Select");
-                        district_adapter = new ArrayAdapter<String>(this,
+                        district_adapter = new ArrayAdapter<>(this,
                                 android.R.layout.simple_spinner_item, mListDistrict);
                         district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         binding.spinnerDistrict.setAdapter(district_adapter);
@@ -353,12 +338,12 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 mListVillage.add("Select");
                 mListSchoolName.add("Select");
                 district_adapter.notifyDataSetChanged();
-                district_adapter = new ArrayAdapter<String>(this,
+                district_adapter = new ArrayAdapter<>(this,
                         android.R.layout.simple_spinner_item, mListDistrict);
                 district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 binding.spinnerDistrict.setAdapter(district_adapter);
 
-                taluka_adapter = new ArrayAdapter<String>(this,
+                taluka_adapter = new ArrayAdapter<>(this,
                         android.R.layout.simple_spinner_item, mListTaluka);
                 taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 binding.spinnerTaluka.setAdapter(taluka_adapter);
@@ -378,7 +363,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                         mListTaluka.clear();
                         mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict));
                         mListTaluka.add(0, "Select");
-                        taluka_adapter = new ArrayAdapter<String>(this,
+                        taluka_adapter = new ArrayAdapter<>(this,
                                 android.R.layout.simple_spinner_item, mListTaluka);
                         taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         binding.spinnerTaluka.setAdapter(taluka_adapter);
@@ -394,7 +379,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 mListCluster.add("Select");
                 mListVillage.add("Select");
                 mListSchoolName.add("Select");
-                taluka_adapter = new ArrayAdapter<String>(this,
+                taluka_adapter = new ArrayAdapter<>(this,
                         android.R.layout.simple_spinner_item, mListTaluka);
                 taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
            /*   binding.spinnerTaluka.setAdapter(taluka_adapter);
@@ -495,8 +480,8 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 break;
         }
     }
-    public void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, itemList);
+    private void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, itemList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         if (!selectedValue.isEmpty() && itemList.indexOf(selectedValue) >= 0)
@@ -515,9 +500,9 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         Arrays.fill(mSelection, false);
         if (value.length() != 0) {
             String[] talukas = value.split(",");
-            for (int i = 0; i < talukas.length; i++) {
-                if (arrayList.contains(talukas[i].trim())) {
-                    mSelection[arrayList.indexOf(talukas[i].trim())] = true;
+            for (String taluka : talukas) {
+                if (arrayList.contains(taluka.trim())) {
+                    mSelection[arrayList.indexOf(taluka.trim())] = true;
                 }
             }
         }
@@ -526,29 +511,20 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         final ArrayList seletedItems = new ArrayList();
         AlertDialog dialog = new AlertDialog.Builder(IndicatorLocationSelectionActivity.this)
                 .setTitle(getString(R.string.taluka))
-                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (mSelection != null && which < mSelection.length) {
-                            mSelection[which] = isChecked;
-                            value = buildSelectedItemString(items);
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Argument 'which' is out of bounds.");
-                        }
+                .setMultiChoiceItems(items, mSelection, (dialog13, which, isChecked) -> {
+                    if (mSelection != null && which < mSelection.length) {
+                        mSelection[which] = isChecked;
+                        value = buildSelectedItemString(items);
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Argument 'which' is out of bounds.");
                     }
                 })
-                .setPositiveButton(IndicatorLocationSelectionActivity.this.getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        binding.editMultiselectTaluka.setText(value);
-                        locationModel.setTaluka(value);
-                    }
-                }).setNegativeButton(IndicatorLocationSelectionActivity.this.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
-                    }
+                .setPositiveButton(IndicatorLocationSelectionActivity.this.getString(R.string.ok), (dialog12, id) -> {
+                    binding.editMultiselectTaluka.setText(value);
+                    locationModel.setTaluka(value);
+                }).setNegativeButton(IndicatorLocationSelectionActivity.this.getString(R.string.cancel), (dialog1, id) -> {
+                    //  Your code when user clicked on Cancel
                 }).create();
         dialog.show();
     }

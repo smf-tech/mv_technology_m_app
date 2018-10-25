@@ -95,30 +95,21 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
             imgDelete.setVisibility(View.GONE);
         }
 
-            textLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (_context instanceof AdavanceListActivity)
-                        _activity.editAdavance(adavance);
-                }
+            textLayout.setOnClickListener(view13 -> {
+                if (_context instanceof AdavanceListActivity)
+                    _activity.editAdavance(adavance);
             });
 
 
 
 
-        imgEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (_context instanceof AdavanceListActivity)
-                    _activity.editAdavance(adavance);
-            }
+        imgEdit.setOnClickListener(view12 -> {
+            if (_context instanceof AdavanceListActivity)
+                _activity.editAdavance(adavance);
         });
-        imgDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (_context instanceof AdavanceListActivity)
-                    showLogoutPopUp(adavance);
-            }
+        imgDelete.setOnClickListener(view1 -> {
+            if (_context instanceof AdavanceListActivity)
+                showLogoutPopUp(adavance);
         });
 
         imgDelete.setImageResource(R.drawable.form_delete);
@@ -151,20 +142,14 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(_context.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                // Write your code here to execute after dialog closed
-              /*  listOfWrongQuestions.add(mPosition);
-                prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
-            }
+        alertDialog.setButton2(_context.getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            // Write your code here to execute after dialog closed
+          /*  listOfWrongQuestions.add(mPosition);
+            prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
         });
         // Setting OK Button
-        alertDialog.setButton(_context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                _activity.deleteAdavance(adavance);
-            }
-        });
+        alertDialog.setButton(_context.getString(android.R.string.ok), (dialog, which) -> _activity.deleteAdavance(adavance));
 
         // Showing Alert Message
         alertDialog.show();
@@ -210,12 +195,19 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
         }
 
         if (isExpanded) {
-            imgGroup.setImageResource(R.drawable.downarrow);
+            if (imgGroup != null) {
+                imgGroup.setImageResource(R.drawable.downarrow);
+            }
         } else {
-            imgGroup.setImageResource(R.drawable.rightarrow);
+            if (imgGroup != null) {
+                imgGroup.setImageResource(R.drawable.rightarrow);
+            }
         }
-        TextView txtName = convertView
-                .findViewById(R.id.txtName);
+        TextView txtName = null;
+        if (convertView != null) {
+            txtName = convertView
+                    .findViewById(R.id.txtName);
+        }
         // date.setTypeface(null, Typeface.BOLD);
         txtName.setText(headerTitle);
         return convertView;

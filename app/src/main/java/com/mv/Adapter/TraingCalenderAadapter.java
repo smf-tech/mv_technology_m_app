@@ -40,7 +40,7 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
     private List<CalenderEvent> calenderlsList;
     private Activity mContext;
     private PreferenceHelper preferenceHelper;
-    boolean isAllPlans;
+    private boolean isAllPlans;
     private int position;
 
     public TraingCalenderAadapter(Activity context, List<CalenderEvent> moviesList,boolean isAllPlans) {
@@ -69,24 +69,18 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
             tvStatusName = view.findViewById(R.id.tvStatusName);
 
             imgDelete = view.findViewById(R.id.imgDelete);
-            imgDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    position = getAdapterPosition();
-                    showDeleteDialog();
-                }
+            imgDelete.setOnClickListener(v -> {
+                position = getAdapterPosition();
+                showDeleteDialog();
             });
-            lnr_content.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (calenderlsList.get(position).getMV_User1__c() != null) {
-                        CalenderEvent cc= calenderlsList.get(getAdapterPosition());
-                    //    if (calenderlsList.get(getAdapterPosition()).getMV_User1__c().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
-                            Intent intent = new Intent(mContext, CalenderFliterActivity.class);
-                            intent.putExtra(Constants.My_Calendar, calenderlsList.get(getAdapterPosition()));
-                            mContext.startActivity(intent);
-                     //   }
-                    }
+            lnr_content.setOnClickListener(v -> {
+                if (calenderlsList.get(position).getMV_User1__c() != null) {
+                    CalenderEvent cc= calenderlsList.get(getAdapterPosition());
+                //    if (calenderlsList.get(getAdapterPosition()).getMV_User1__c().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
+                        Intent intent = new Intent(mContext, CalenderFliterActivity.class);
+                        intent.putExtra(Constants.My_Calendar, calenderlsList.get(getAdapterPosition()));
+                        mContext.startActivity(intent);
+                 //   }
                 }
             });
 
@@ -149,19 +143,13 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(mContext.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-            }
-        });
+        alertDialog.setButton2(mContext.getString(R.string.cancel), (dialog, which) -> alertDialog.dismiss());
         // Setting OK Button
-        alertDialog.setButton(mContext.getString(R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
+        alertDialog.setButton(mContext.getString(R.string.ok), (dialog, which) -> {
 
-                if (calenderlsList.get(position) != null)
-                    deleteEvent(calenderlsList.get(position));
+            if (calenderlsList.get(position) != null)
+                deleteEvent(calenderlsList.get(position));
 
-            }
         });
 
         // Showing Alert Message
@@ -207,7 +195,7 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
     }
 
 
-    public void removeAt(int position, CalenderEvent calenderEvent) {
+    private void removeAt(int position, CalenderEvent calenderEvent) {
         calenderlsList.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, calenderlsList.size());

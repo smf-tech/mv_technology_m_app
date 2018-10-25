@@ -90,7 +90,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private ArrayAdapter<String> state_adapter, district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, role_adapter, organization_adapter, project_adapter;
     private PreferenceHelper preferenceHelper;
     private User user;
-    String SelectedLat = "", SelectedLon = "";
+    private String SelectedLat = "";
+    private String SelectedLon = "";
     private String mGenderSelect = "";
     private Uri FinalUri = null;
     private Uri outputUri = null;
@@ -325,22 +326,18 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                setResult(RESULT_CANCELED);
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            setResult(RESULT_CANCELED);
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                setResult(RESULT_CANCELED);
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+            alertDialog.dismiss();
+            setResult(RESULT_CANCELED);
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
 
         // Showing Alert Message
@@ -464,16 +461,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         radioGroup = (RadioGroup) findViewById(R.id.gender_group);
         binding.birthDate.setOnClickListener(this);
-        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
-                if (checkedId == R.id.gender_male)
-                    mGenderSelect = "Male";
-                else if (checkedId == R.id.gender_female)
-                    mGenderSelect = "Female";
-                else if (checkedId == R.id.gender_other)
-                    mGenderSelect = "Other";
-            }
+        radioGroup.setOnCheckedChangeListener((radioGroup, checkedId) -> {
+            if (checkedId == R.id.gender_male)
+                mGenderSelect = "Male";
+            else if (checkedId == R.id.gender_female)
+                mGenderSelect = "Female";
+            else if (checkedId == R.id.gender_other)
+                mGenderSelect = "Other";
         });
 
         edit_text_name = (EditText) findViewById(R.id.edit_text_name);
@@ -526,18 +520,18 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         spinner_village.setOnItemSelectedListener(this);
         spinner_school_name.setOnItemSelectedListener(this);
 
-        mListState = new ArrayList<String>();
-        mListRoleName = new ArrayList<String>();
-        mListRoleId = new ArrayList<String>();
-        mListRoleJuridiction = new ArrayList<String>();
-        mListDistrict = new ArrayList<String>();
-        mListTaluka = new ArrayList<String>();
-        mListCluster = new ArrayList<String>();
-        mListVillage = new ArrayList<String>();
-        mListSchoolName = new ArrayList<String>();
+        mListState = new ArrayList<>();
+        mListRoleName = new ArrayList<>();
+        mListRoleId = new ArrayList<>();
+        mListRoleJuridiction = new ArrayList<>();
+        mListDistrict = new ArrayList<>();
+        mListTaluka = new ArrayList<>();
+        mListCluster = new ArrayList<>();
+        mListVillage = new ArrayList<>();
+        mListSchoolName = new ArrayList<>();
     //    mListCode = new ArrayList<String>();
-        mListOrganization = new ArrayList<String>();
-        mListProject = new ArrayList<String>();
+        mListOrganization = new ArrayList<>();
+        mListProject = new ArrayList<>();
      //   mListProjectId = new ArrayList<String>();
 
         mListState.add("Select");
@@ -555,17 +549,17 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         input_school_code = (TextInputLayout) findViewById(R.id.input_school_code);
         edit_text_school_code = (EditText) findViewById(R.id.edit_text_school_code);
 
-        project_adapter = new ArrayAdapter<String>(this,
+        project_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListProject);
         project_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_project.setAdapter(project_adapter);
 
-        organization_adapter = new ArrayAdapter<String>(this,
+        organization_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListOrganization);
         organization_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_organization.setAdapter(organization_adapter);
 
-        role_adapter = new ArrayAdapter<String>(this,
+        role_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListRoleName);
         role_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_role.setAdapter(role_adapter);
@@ -577,32 +571,32 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         txt_village = (TextView) findViewById(R.id.txt_village);
         txt_school = (TextView) findViewById(R.id.txt_school);
 
-        state_adapter = new ArrayAdapter<String>(this,
+        state_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListState);
         state_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_state.setAdapter(state_adapter);
 
-        district_adapter = new ArrayAdapter<String>(this,
+        district_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListDistrict);
         district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_district.setAdapter(district_adapter);
 
-        taluka_adapter = new ArrayAdapter<String>(this,
+        taluka_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListTaluka);
         taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_taluka.setAdapter(taluka_adapter);
 
-        cluster_adapter = new ArrayAdapter<String>(this,
+        cluster_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListCluster);
         cluster_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_cluster.setAdapter(cluster_adapter);
 
-        village_adapter = new ArrayAdapter<String>(this,
+        village_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListVillage);
         village_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_village.setAdapter(village_adapter);
 
-        school_adapter = new ArrayAdapter<String>(this,
+        school_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListSchoolName);
         school_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_school_name.setAdapter(school_adapter);
@@ -653,7 +647,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     /*
     * add required header to glide
     * */
-    GlideUrl getUrlWithHeaders(String url) {
+    private GlideUrl getUrlWithHeaders(String url) {
 //
         return new GlideUrl(url, new LazyHeaders.Builder()
                 .addHeader("Authorization", "OAuth " + preferenceHelper.getString(PreferenceHelper.AccessToken))
@@ -952,10 +946,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         alertDialog.setTitle(getString(R.string.alreadyPresent));
         alertDialog.setMessage(getString(R.string.alreadyPresentDetail));
 
-        alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
+        alertDialog.setButton(getString(R.string.ok), (dialog, which) -> {
 
-            }
         });
         alertDialog.show();
     }
@@ -1553,20 +1545,16 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         String[] items = {getString(R.string.text_gallary),
                 getString(R.string.text_camera)};
 
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
+        dialog.setItems(items, (dialog1, which) -> {
+            // TODO Auto-generated method stub
+            switch (which) {
+                case 0:
+                    choosePhotoFromGallery();
+                    break;
+                case 1:
+                    takePhotoFromCamera();
+                    break;
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                switch (which) {
-                    case 0:
-                        choosePhotoFromGallery();
-                        break;
-                    case 1:
-                        takePhotoFromCamera();
-                        break;
-
-                }
             }
         });
         dialog.show();
@@ -1643,7 +1631,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         showPictureDialog();
     }
 
-    public void showDateDialog(Context context, final EditText editText) {
+    private void showDateDialog(Context context, final EditText editText) {
 
 
         final Calendar c = Calendar.getInstance();
@@ -1651,23 +1639,18 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         final int mMonth = c.get(Calendar.MONTH);
         final int mDay = c.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog dpd = new DatePickerDialog(context,
-                new DatePickerDialog.OnDateSetListener() {
+                (view, year, monthOfYear, dayOfMonth) -> {
+                    //  taskList.get(Position).setTask_Response__c(getTwoDigit(dayOfMonth) + "/" + getTwoDigit(monthOfYear + 1) + "/" + year);
+                    // notifyItemChanged(Position);
+                    editText.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
 
-                    @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-                        //  taskList.get(Position).setTask_Response__c(getTwoDigit(dayOfMonth) + "/" + getTwoDigit(monthOfYear + 1) + "/" + year);
-                        // notifyItemChanged(Position);
-                        editText.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
-
-                    }
                 }, mYear, mMonth, mDay);
 
         dpd.getDatePicker().setMaxDate(System.currentTimeMillis());
         dpd.show();
     }
 
-    public static String getTwoDigit(int i) {
+    private static String getTwoDigit(int i) {
         if (i < 10)
             return "0" + i;
         return "" + i;
@@ -1685,9 +1668,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         Arrays.fill(mSelection, false);
         if (value.length() != 0) {
             String[] talukas = value.split(",");
-            for (int i = 0; i < talukas.length; i++) {
-                if (arrayList.contains(talukas[i].trim())) {
-                    mSelection[arrayList.indexOf(talukas[i].trim())] = true;
+            for (String taluka : talukas) {
+                if (arrayList.contains(taluka.trim())) {
+                    mSelection[arrayList.indexOf(taluka.trim())] = true;
                 }
             }
         }
@@ -1696,28 +1679,17 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         final ArrayList seletedItems = new ArrayList();
         AlertDialog dialog = new AlertDialog.Builder(RegistrationActivity.this)
                 .setTitle(getString(R.string.taluka))
-                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (mSelection != null && which < mSelection.length) {
-                            mSelection[which] = isChecked;
-                            value = buildSelectedItemString(items);
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Argument 'which' is out of bounds.");
-                        }
+                .setMultiChoiceItems(items, mSelection, (dialog13, which, isChecked) -> {
+                    if (mSelection != null && which < mSelection.length) {
+                        mSelection[which] = isChecked;
+                        value = buildSelectedItemString(items);
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Argument 'which' is out of bounds.");
                     }
                 })
-                .setPositiveButton(RegistrationActivity.this.getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        binding.editMultiselectTaluka.setText(value);
-                    }
-                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
-                    }
+                .setPositiveButton(RegistrationActivity.this.getString(R.string.ok), (dialog12, id) -> binding.editMultiselectTaluka.setText(value)).setNegativeButton(getString(R.string.cancel), (dialog1, id) -> {
+                    //  Your code when user clicked on Cancel
                 }).create();
         dialog.show();
     }
@@ -1733,9 +1705,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         Arrays.fill(mSelection, false);
         if (valueProject.length() != 0) {
             String[] talukas = valueProject.split(";");
-            for (int i = 0; i < talukas.length; i++) {
-                if (arrayList.contains(talukas[i].trim())) {
-                    mSelection[arrayList.indexOf(talukas[i].trim())] = true;
+            for (String taluka : talukas) {
+                if (arrayList.contains(taluka.trim())) {
+                    mSelection[arrayList.indexOf(taluka.trim())] = true;
                 }
             }
         }
@@ -1743,28 +1715,17 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         // arraylist to keep the selected items
         AlertDialog dialog = new AlertDialog.Builder(RegistrationActivity.this)
                 .setTitle(getString(R.string.project))
-                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (mSelection != null && which < mSelection.length) {
-                            mSelection[which] = isChecked;
-                            valueProject = buildSelectedItemStringProject(items);
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Argument 'which' is out of bounds.");
-                        }
+                .setMultiChoiceItems(items, mSelection, (dialog13, which, isChecked) -> {
+                    if (mSelection != null && which < mSelection.length) {
+                        mSelection[which] = isChecked;
+                        valueProject = buildSelectedItemStringProject(items);
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Argument 'which' is out of bounds.");
                     }
                 })
-                .setPositiveButton(RegistrationActivity.this.getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        binding.editMultiselectProject.setText(valueProject);
-                    }
-                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
-                    }
+                .setPositiveButton(RegistrationActivity.this.getString(R.string.ok), (dialog12, id) -> binding.editMultiselectProject.setText(valueProject)).setNegativeButton(getString(R.string.cancel), (dialog1, id) -> {
+                    //  Your code when user clicked on Cancel
                 }).create();
         dialog.show();
     }

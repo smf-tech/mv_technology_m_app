@@ -51,9 +51,9 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
     private RecyclerView recyclerView;
     private TrainingAdapter adapter;
     private PreferenceHelper preferenceHelper;
-    private ArrayList<DownloadContent> mList = new ArrayList<DownloadContent>();
-    TextView textNoData;
-    Activity context;
+    private ArrayList<DownloadContent> mList = new ArrayList<>();
+    private TextView textNoData;
+    private Activity context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,20 +133,16 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
 
         // Showing Alert Message
@@ -236,7 +232,7 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
         @Override
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction().equals(MESSAGE_PROGRESS)) {
-                Download download = intent.getParcelableExtra("download");
+            //    Download download = intent.getParcelableExtra("download");
                 if (adapter != null)
                     adapter.notifyDataSetChanged();
             }

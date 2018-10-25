@@ -60,25 +60,27 @@ import retrofit2.Response;
 public class LeaveDetailActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener {
     private ActivityLeaveDetailBinding binding;
     private PreferenceHelper preferenceHelper;
-    String userId, comment;
-    String status;
-    String halfDayCheck = "false";
+    private String userId;
+    private String comment;
+    private String status;
+    private String halfDayCheck = "false";
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
-    ArrayAdapter spinnerAdapter;
+    private ArrayAdapter spinnerAdapter;
     User mUser;
-    SimpleDateFormat formatter;
-    ArrayList<String> typeOfleaves = new ArrayList<>();
-    ArrayList<String> category = new ArrayList<>();
-    LeavesModel leavesModel;
-    Context context;
-    String leaveId = "",tabName;
-    String selected = "";
+    private SimpleDateFormat formatter;
+    private ArrayList<String> typeOfleaves = new ArrayList<>();
+    private ArrayList<String> category = new ArrayList<>();
+    private LeavesModel leavesModel;
+    private Context context;
+    private String leaveId = "";
+    String tabName;
+    private String selected = "";
 
-    List<HolidayListModel> holidayListModels = new ArrayList<>();
-    ArrayList<Date> holidayLiistDate = new ArrayList<>();
-    LeaveCountModel leaveCountModel = new LeaveCountModel();
+    private List<HolidayListModel> holidayListModels = new ArrayList<>();
+    private ArrayList<Date> holidayLiistDate = new ArrayList<>();
+    private LeaveCountModel leaveCountModel = new LeaveCountModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,34 +210,31 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
 
         // typeOfleaves.add("Half Day");
         setActionbar(getString(R.string.leave_detail));
-        spinnerAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, category);
+        spinnerAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, category);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spTypeOfCatagory.setPrompt(getString(R.string.catagory));
         binding.spTypeOfCatagory.setAdapter(spinnerAdapter);
 
-        spinnerAdapter = new ArrayAdapter<String>(context, android.R.layout.simple_spinner_item, typeOfleaves);
+        spinnerAdapter = new ArrayAdapter<>(context, android.R.layout.simple_spinner_item, typeOfleaves);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spTypeOfLeaves.setPrompt(getString(R.string.type_of_leaves));
         binding.spTypeOfLeaves.setAdapter(spinnerAdapter);
 
-        binding.detailChk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (((CheckBox) v).isChecked()) {
-                    halfDayCheck = "true";
-                    binding.inputHrToDate.setEnabled(false);
-                    binding.inputHrToDate.setText(binding.inputHrFormDate.getText().toString());
-                    binding.leavesCountText.setVisibility(View.VISIBLE);
-                    if(binding.inputHrToDate.getText().toString().length()>0)
-                        binding.leavesCountText.setText(Utills.getNumberofDaysBetweenTwoDates(binding.inputHrFormDate.getText().toString(),binding.inputHrToDate.getText().toString()));
-                } else {
-                    halfDayCheck = "false";
-                    binding.inputHrToDate.setEnabled(true);
-                    binding.inputHrToDate.setText("");
+        binding.detailChk.setOnClickListener(v -> {
+            if (((CheckBox) v).isChecked()) {
+                halfDayCheck = "true";
+                binding.inputHrToDate.setEnabled(false);
+                binding.inputHrToDate.setText(binding.inputHrFormDate.getText().toString());
+                binding.leavesCountText.setVisibility(View.VISIBLE);
+                if(binding.inputHrToDate.getText().toString().length()>0)
+                    binding.leavesCountText.setText(Utills.getNumberofDaysBetweenTwoDates(binding.inputHrFormDate.getText().toString(),binding.inputHrToDate.getText().toString()));
+            } else {
+                halfDayCheck = "false";
+                binding.inputHrToDate.setEnabled(true);
+                binding.inputHrToDate.setText("");
 //                    if(binding.inputHrToDate.getText().toString()!=null && binding.inputHrToDate.getText().toString().length()>0)
 //                    binding.leavesCountText.setText(Utills.getNumberofDaysBetweenTwoDates(binding.inputHrFormDate.getText().toString(),binding.inputHrToDate.getText().toString()));
-                        binding.leavesCountText.setVisibility(View.INVISIBLE);
-                }
+                    binding.leavesCountText.setVisibility(View.INVISIBLE);
             }
         });
     }
@@ -467,7 +466,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
         img_logout.setOnClickListener(this);
     }
 
-    public void showDateDialog(Context context, final EditText editText) {
+    private void showDateDialog(Context context, final EditText editText) {
 
 
         final Calendar c = Calendar.getInstance();
@@ -475,32 +474,27 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
         final int mMonth = c.get(Calendar.MONTH);
         final int mDay = c.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog dpd = new DatePickerDialog(context,
-                new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-                        //  taskList.get(Position).setTask_Response__c(getTwoDigit(dayOfMonth) + "/" + getTwoDigit(monthOfYear + 1) + "/" + year);
-                        // notifyItemChanged(Position);
-                        editText.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
-                        if (halfDayCheck.equals("true")) {
-                            binding.inputHrToDate.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
-                        }
-                        if (isDatesAreValid(binding.inputHrFormDate.getText().toString().trim(), binding.inputHrToDate.getText().toString().trim())) {
+                (view, year, monthOfYear, dayOfMonth) -> {
+                    //  taskList.get(Position).setTask_Response__c(getTwoDigit(dayOfMonth) + "/" + getTwoDigit(monthOfYear + 1) + "/" + year);
+                    // notifyItemChanged(Position);
+                    editText.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
+                    if (halfDayCheck.equals("true")) {
+                        binding.inputHrToDate.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
+                    }
+                    if (isDatesAreValid(binding.inputHrFormDate.getText().toString().trim(), binding.inputHrToDate.getText().toString().trim())) {
 //                            if(binding.inputHrToDate.getText().toString()!=null && binding.inputHrToDate.getText().toString().length()>0){
-                            binding.leavesCountText.setText(Utills.getNumberofDaysBetweenTwoDates(binding.inputHrFormDate.getText().toString(),binding.inputHrToDate.getText().toString()));
+                        binding.leavesCountText.setText(Utills.getNumberofDaysBetweenTwoDates(binding.inputHrFormDate.getText().toString(),binding.inputHrToDate.getText().toString()));
 //                            }
-                        }else{
-                            if(binding.inputHrToDate.getText().toString().length()>0)
-                                Utills.showToast("Please enter proper range.",LeaveDetailActivity.this);
-                            binding.inputHrToDate.setText("");
-                        }
+                    }else{
+                        if(binding.inputHrToDate.getText().toString().length()>0)
+                            Utills.showToast("Please enter proper range.",LeaveDetailActivity.this);
+                        binding.inputHrToDate.setText("");
                     }
                 }, mYear, mMonth, mDay);
         dpd.show();
     }
 
-    public static String getTwoDigit(int i) {
+    private static String getTwoDigit(int i) {
         if (i < 10)
             return "0" + i;
         return "" + i;
@@ -541,7 +535,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    public void showDialog() {
+    private void showDialog() {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
         alertDialog.setTitle(getString(R.string.comments));
@@ -555,31 +549,25 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
         alertDialog.setView(input);
 
         alertDialog.setPositiveButton(getString(R.string.ok),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        status = "Rejected";
-                        comment = input.getText().toString();
-                        if (!comment.isEmpty()) {
-                            sendApprovedData();
-                        } else {
-                            Utills.showToast("Please Enter Comment", context);
-                        }
+                (dialog, which) -> {
+                    status = "Rejected";
+                    comment = input.getText().toString();
+                    if (!comment.isEmpty()) {
+                        sendApprovedData();
+                    } else {
+                        Utills.showToast("Please Enter Comment", context);
                     }
                 });
 
         alertDialog.setNegativeButton(getString(R.string.cancel),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+                (dialog, which) -> dialog.cancel());
 
         alertDialog.show();
 
     }
 
     private List<Date> getDates(String dateString1, String dateString2) {
-        ArrayList<Date> dates = new ArrayList<Date>();
+        ArrayList<Date> dates = new ArrayList<>();
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
 
         Date date1 = null;

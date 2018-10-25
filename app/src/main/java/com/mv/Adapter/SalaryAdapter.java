@@ -66,14 +66,11 @@ public class SalaryAdapter extends RecyclerView.Adapter<SalaryAdapter.ViewHolder
             tvSalaryAmountName = itemLayoutView.findViewById(R.id.tvSalaryAmountName);
             tvSalaryDateName = itemLayoutView.findViewById(R.id.tvSalaryDateName);
             tvSalaryMonthName = itemLayoutView.findViewById(R.id.tvSalaryMonthName);
-            eachCard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent;
-                    intent = new Intent(mContext, SalaryDetailActivity.class);
-                    intent.putExtra(Constants.SALARY, mDataList.get(getAdapterPosition()));
-                    mContext.startActivity(intent);
-                }
+            eachCard.setOnClickListener(view -> {
+                Intent intent;
+                intent = new Intent(mContext, SalaryDetailActivity.class);
+                intent.putExtra(Constants.SALARY, mDataList.get(getAdapterPosition()));
+                mContext.startActivity(intent);
             });
         }
     }

@@ -74,51 +74,61 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         layoutMain = convertView.findViewById(R.id.layoutMain);
         txtCount = convertView.findViewById(R.id.txtCount);
-        layoutMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                   /* Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("file:///" + Environment.getExternalStorageDirectory().getPath() + "/MV_e-learning_Mar/Modules/1/story_html5.html"));
-                    _context.startActivity(browserIntent);*/
-                if (isFileAvalible(content)) {
-                    if (content.getFileType().equalsIgnoreCase("zip")) {
-                        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/UnZip/" + content.getName();
-                        if (new File(filePath + "/story_html5.html").exists()) {
-                            Intent intent = new Intent(_context, ActivityWebView.class);
-                            intent.putExtra(Constants.URL, "file:///" + filePath + "/story_html5.html");
-                            intent.putExtra(Constants.TITLE, content.getName());
-                            _context.startActivity(intent);
-                        } else {
-                            deleteRecursive(new File(filePath));
-                            notifyDataSetChanged();
-                            Utills.showToast("File is corrupted. Please download again.", _context);
-                        }
-                    } else if (content.getFileType().equalsIgnoreCase("audio")) {
-                        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".mp3";
+        layoutMain.setOnClickListener(v -> {
+               /* Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("file:///" + Environment.getExternalStorageDirectory().getPath() + "/MV_e-learning_Mar/Modules/1/story_html5.html"));
+                _context.startActivity(browserIntent);*/
+            if (isFileAvalible(content)) {
+                if (content.getFileType().equalsIgnoreCase("zip")) {
+                    String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/UnZip/" + content.getName();
+                    if (new File(filePath + "/story_html5.html").exists()) {
+                        Intent intent = new Intent(_context, ActivityWebView.class);
+                        intent.putExtra(Constants.URL, "file:///" + filePath + "/story_html5.html");
+                        intent.putExtra(Constants.TITLE, content.getName());
+                        _context.startActivity(intent);
+                    } else {
+                        deleteRecursive(new File(filePath));
+                        notifyDataSetChanged();
+                        Utills.showToast("File is corrupted. Please download again.", _context);
+                    }
+                } else if (content.getFileType().equalsIgnoreCase("audio")) {
+                    String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".mp3";
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    File file = new File("/sdcard/test.mp3");
+                    intent.setDataAndType(Uri.fromFile(new File(filePath)), "audio/*");
+                    PackageManager packageManager = _context.getPackageManager();
+                    if (intent.resolveActivity(packageManager) != null) {
+                        _context.startActivity(intent);
+                    } else {
+                        Utills.showToast("No Application available to open Audio file", _context);
+                    }
+                } else if (content.getFileType().equalsIgnoreCase("video")) {
+                    String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".mp4";
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.fromFile(new File(filePath)), "video/*");
+                    PackageManager packageManager = _context.getPackageManager();
+                    if (intent.resolveActivity(packageManager) != null) {
+                        _context.startActivity(intent);
+                    } else {
+                        Utills.showToast("No Application available to open Video file", _context);
+                    }
+                } else if (content.getFileType().equalsIgnoreCase("pdf")) {
+                    String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".pdf";
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.setDataAndType(Uri.fromFile(new File(filePath)), "application/pdf");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    PackageManager packageManager = _context.getPackageManager();
+                    if (intent.resolveActivity(packageManager) != null) {
+                        _context.startActivity(intent);
+                    } else {
+                        Utills.showToast("No Application available to open PDF file", _context);
+                    }
+                } else if (content.getFileType().equalsIgnoreCase("ppt")) {
+                      /*  String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".pdf";
                         Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_VIEW);
-                        File file = new File("/sdcard/test.mp3");
-                        intent.setDataAndType(Uri.fromFile(new File(filePath)), "audio/*");
-                        PackageManager packageManager = _context.getPackageManager();
-                        if (intent.resolveActivity(packageManager) != null) {
-                            _context.startActivity(intent);
-                        } else {
-                            Utills.showToast("No Application available to open Audio file", _context);
-                        }
-                    } else if (content.getFileType().equalsIgnoreCase("video")) {
-                        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".mp4";
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_VIEW);
-                        intent.setDataAndType(Uri.fromFile(new File(filePath)), "video/*");
-                        PackageManager packageManager = _context.getPackageManager();
-                        if (intent.resolveActivity(packageManager) != null) {
-                            _context.startActivity(intent);
-                        } else {
-                            Utills.showToast("No Application available to open Video file", _context);
-                        }
-                    } else if (content.getFileType().equalsIgnoreCase("pdf")) {
-                        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".pdf";
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.setAction(android.content.Intent.ACTION_VIEW);
                         intent.setDataAndType(Uri.fromFile(new File(filePath)), "application/pdf");
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         PackageManager packageManager = _context.getPackageManager();
@@ -126,73 +136,52 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                             _context.startActivity(intent);
                         } else {
                             Utills.showToast("No Application available to open PDF file", _context);
-                        }
-                    } else if (content.getFileType().equalsIgnoreCase("ppt")) {
-                          /*  String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".pdf";
-                            Intent intent = new Intent();
-                            intent.setAction(android.content.Intent.ACTION_VIEW);
-                            intent.setDataAndType(Uri.fromFile(new File(filePath)), "application/pdf");
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                            PackageManager packageManager = _context.getPackageManager();
-                            if (intent.resolveActivity(packageManager) != null) {
-                                _context.startActivity(intent);
-                            } else {
-                                Utills.showToast("No Application available to open PDF file", _context);
-                            }*/
-                        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".ppt";
-                        Uri uri = Uri.fromFile(new File(filePath));
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
-                        PackageManager pm = _context.getPackageManager();
-                        List<ResolveInfo> list = pm.queryIntentActivities(intent, 0);
-                        if (list.size() > 0)
-                            _context.startActivity(intent);
-                        else
-                            Utills.showToast("No Application available to open PPT file", _context);
-                    }
-                } else {
-                    showNoFilePresentPopUp();
+                        }*/
+                    String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".ppt";
+                    Uri uri = Uri.fromFile(new File(filePath));
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setDataAndType(uri, "application/vnd.ms-powerpoint");
+                    PackageManager pm = _context.getPackageManager();
+                    List<ResolveInfo> list = pm.queryIntentActivities(intent, 0);
+                    if (list.size() > 0)
+                        _context.startActivity(intent);
+                    else
+                        Utills.showToast("No Application available to open PPT file", _context);
                 }
-
-
+            } else {
+                showNoFilePresentPopUp();
             }
+
+
         });
         imgDownload = convertView.findViewById(R.id.imgDownload);
         imgshare = convertView.findViewById(R.id.imgshare);
-        imgDownload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                _activity.startDownload(content);
-            }
-        });
+        imgDownload.setOnClickListener(view -> _activity.startDownload(content));
         imgshare = convertView.findViewById(R.id.imgshare);
-        imgshare.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String filePath = "";
+        imgshare.setOnClickListener(v -> {
+            String filePath = "";
 
-                if (content.getFileType().equalsIgnoreCase("audio")) {
-                    filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".mp3";
+            if (content.getFileType().equalsIgnoreCase("audio")) {
+                filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".mp3";
 
-                } else if (content.getFileType().equalsIgnoreCase("video")) {
-                    filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".mp4";
+            } else if (content.getFileType().equalsIgnoreCase("video")) {
+                filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".mp4";
 
-                } else if (content.getFileType().equalsIgnoreCase("pdf")) {
-                    filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".pdf";
+            } else if (content.getFileType().equalsIgnoreCase("pdf")) {
+                filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".pdf";
 
-                } else if (content.getFileType().equalsIgnoreCase("zip")) {
-                    filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".zip";
-                }
-
-                Intent intent = new Intent();
-                intent.setAction(Intent.ACTION_SEND);
-                intent.setType("application/*");
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                Log.e("file path", filePath);
-
-                intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
-                _context.startActivity(Intent.createChooser(intent, "Share Content"));
+            } else if (content.getFileType().equalsIgnoreCase("zip")) {
+                filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".zip";
             }
+
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_SEND);
+            intent.setType("application/*");
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            Log.e("file path", filePath);
+
+            intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+            _context.startActivity(Intent.createChooser(intent, "Share Content"));
         });
 
         txtName = convertView.findViewById(R.id.txtName);
@@ -210,7 +199,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
-    public void deleteRecursive(File fileOrDirectory) {
+    private void deleteRecursive(File fileOrDirectory) {
 
         if (fileOrDirectory.isDirectory()) {
             for (File child : fileOrDirectory.listFiles()) {
@@ -233,11 +222,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         // Setting Icon to Dialog
         alertDialog.setIcon(R.drawable.logomulya);
         // Setting OK Button
-        alertDialog.setButton(_context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-            }
-        });
+        alertDialog.setButton(_context.getString(android.R.string.ok), (dialog, which) -> alertDialog.dismiss());
 
         // Showing Alert Message
         alertDialog.show();

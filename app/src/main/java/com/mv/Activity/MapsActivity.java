@@ -55,12 +55,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         ImageView imgLogout = (ImageView) findViewById(R.id.img_logout);
         imgLogout.setVisibility(View.GONE);
         ImageView imgBack = (ImageView) findViewById(R.id.img_back);
-        imgBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        imgBack.setOnClickListener(v -> finish());
 
     }
 

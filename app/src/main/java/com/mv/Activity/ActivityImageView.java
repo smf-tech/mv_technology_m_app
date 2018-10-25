@@ -41,7 +41,7 @@ public class ActivityImageView extends AppCompatActivity {
                 .into(binding.imageView);
     }
 
-    GlideUrl getUrlWithHeaders(String url) {
+    private GlideUrl getUrlWithHeaders(String url) {
 //
         return new GlideUrl(url, new LazyHeaders.Builder()
                 .addHeader("Authorization", "OAuth " + preferenceHelper.getString(PreferenceHelper.AccessToken))

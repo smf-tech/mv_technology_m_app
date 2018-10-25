@@ -52,13 +52,13 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     private ActivityCommentBinding binding;
-    private ArrayList<Comment> commentList = new ArrayList<Comment>();
+    private ArrayList<Comment> commentList = new ArrayList<>();
     private CommentAdapter adapter;
     private String conetentId;
     private PreferenceHelper preferenceHelper;
-    TextView textNoData;
+    private TextView textNoData;
     public String HoSupportCommunity = "";
-    String commentId;
+    private String commentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,20 +166,16 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
 
         // Showing Alert Message

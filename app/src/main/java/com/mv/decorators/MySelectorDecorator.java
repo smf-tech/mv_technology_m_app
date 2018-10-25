@@ -12,7 +12,7 @@ import com.prolificinteractive.materialcalendarview.DayViewFacade;
 /**
  * Use a custom selector
  */
-public class MySelectorDecorator implements DayViewDecorator {
+class MySelectorDecorator implements DayViewDecorator {
 
     private final Drawable drawable;
 

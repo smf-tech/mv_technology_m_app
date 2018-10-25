@@ -528,7 +528,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public HomeModel checkList(List<String> allTab, int i, Boolean isAccessible) {
+    private HomeModel checkList(List<String> allTab, int i, Boolean isAccessible) {
         HomeModel homeModel = new HomeModel();
         homeModel.setAccessible(isAccessible);
 
@@ -964,7 +964,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         new Handler().postDelayed(() -> doubleBackToExitPressedOnce = false, 2000);
     }
 
-    public static String[] getColumnIndex(String[] value) {
+    private static String[] getColumnIndex(String[] value) {
         for (int i = 0; i < value.length; i++) {
             value[i] = value[i].trim();
         }
@@ -1165,7 +1165,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 //        Toast.makeText(this, "Alarm Set", Toast.LENGTH_SHORT).show();
 //    }
 
-    public void getAllLeaves() {
+    private void getAllLeaves() {
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl) +
                 Constants.GetAllMyLeave + "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
 

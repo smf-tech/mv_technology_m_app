@@ -75,11 +75,11 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
         mVoucher = (Voucher) getIntent().getSerializableExtra(Constants.VOUCHER);
         preferenceHelper = new PreferenceHelper(this);
         projectList = Arrays.asList(getResources().getStringArray(R.array.array_of_project));
-        projectList = new ArrayList<String>();
+        projectList = new ArrayList<>();
         projectList.add("Select");
       /*  if (Utills.isConnected(this))
             getProject();*/
-        project_adapter = new ArrayAdapter<String>(this,
+        project_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, projectList);
         project_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerProject.setAdapter(project_adapter);
@@ -154,7 +154,7 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    public String getCurrentDate() {
+    private String getCurrentDate() {
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");

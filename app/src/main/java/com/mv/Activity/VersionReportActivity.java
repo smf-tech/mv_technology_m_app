@@ -45,23 +45,24 @@ import retrofit2.Response;
 
 public class VersionReportActivity extends AppCompatActivity implements View.OnClickListener {
     private PreferenceHelper preferenceHelper;
-    List<Template> processAllList = new ArrayList<>();
-    LocationModel locationModel;
-    ArrayList<Template> repplicaCahart = new ArrayList<>();
+    private List<Template> processAllList = new ArrayList<>();
+    private LocationModel locationModel;
+    private ArrayList<Template> repplicaCahart = new ArrayList<>();
     private VersionReportAdapter mAdapter;
     private ActivityVersionReportBinding binding;
-    RecyclerView.LayoutManager mLayoutManager;
-    Activity context;
+    private RecyclerView.LayoutManager mLayoutManager;
+    private Activity context;
     private RelativeLayout mToolBar;
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
     public static String approvalType, id, processTitle;
     String url;
-    TextView textNoData;
-    String title, processId;
-    Task task;
-    String roleList;
-    List<String> temp;
+    private TextView textNoData;
+    private String title;
+    private String processId;
+    private Task task;
+    private String roleList;
+    private List<String> temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,21 +94,13 @@ public class VersionReportActivity extends AppCompatActivity implements View.OnC
 
         setActionbar(getString(R.string.app_versio_report));
         binding.swiperefresh.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        if (Utills.isConnected(context))
-                            getAllProcess(roleList);
-                    }
+                () -> {
+                    if (Utills.isConnected(context))
+                        getAllProcess(roleList);
                 }
         );
         binding.spinnerRole.setText(roleList);
-        binding.spinnerRole.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showRoleDialog();
-            }
-        });
+        binding.spinnerRole.setOnClickListener(v -> showRoleDialog());
         binding.editTextEmail.addTextChangedListener(watch);
         mAdapter = new VersionReportAdapter(processAllList, context);
         mLayoutManager = new LinearLayoutManager(context);
@@ -219,7 +212,7 @@ public class VersionReportActivity extends AppCompatActivity implements View.OnC
         });
     }
 
-    TextWatcher watch = new TextWatcher() {
+    private TextWatcher watch = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable arg0) {
@@ -261,7 +254,7 @@ public class VersionReportActivity extends AppCompatActivity implements View.OnC
 
 
         if (roleList != null && !roleList.isEmpty()) {
-            temp = new ArrayList<String>(Arrays.asList(roleList.split(";")));
+            temp = new ArrayList<>(Arrays.asList(roleList.split(";")));
 
         }
         //  final List<Community> temp = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities();
@@ -278,42 +271,33 @@ public class VersionReportActivity extends AppCompatActivity implements View.OnC
         final ArrayList seletedItems = new ArrayList();
         android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(context)
                 .setTitle("Select Role")
-                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (which < mSelection.length) {
-                            mSelection[which] = isChecked;
+                .setMultiChoiceItems(items, mSelection, (dialog13, which, isChecked) -> {
+                    if (which < mSelection.length) {
+                        mSelection[which] = isChecked;
 
 
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Argument 'which' is out of bounds.");
-                        }
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Argument 'which' is out of bounds.");
                     }
                 })
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        StringBuffer sb = new StringBuffer();
-                        String prefix = "";
-                        for (int i = 0; i < items.length; i++) {
-                            if (mSelection[i]) {
-                                sb.append(prefix);
-                                prefix = ";";
-                                sb.append(temp.get(i));
-                                //now original string is changed
-                            }
+                .setPositiveButton(getString(R.string.ok), (dialog12, id) -> {
+                    StringBuffer sb = new StringBuffer();
+                    String prefix = "";
+                    for (int i = 0; i < items.length; i++) {
+                        if (mSelection[i]) {
+                            sb.append(prefix);
+                            prefix = ";";
+                            sb.append(temp.get(i));
+                            //now original string is changed
                         }
+                    }
 
-                        if (Utills.isConnected(getApplicationContext()))
-                            getAllProcess(sb.toString());
-                        binding.spinnerRole.setText(sb.toString());
-                    }
-                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
-                    }
+                    if (Utills.isConnected(getApplicationContext()))
+                        getAllProcess(sb.toString());
+                    binding.spinnerRole.setText(sb.toString());
+                }).setNegativeButton(getString(R.string.cancel), (dialog1, id) -> {
+                    //  Your code when user clicked on Cancel
                 }).create();
 
 
