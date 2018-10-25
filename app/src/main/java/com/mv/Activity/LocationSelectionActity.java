@@ -73,10 +73,10 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         binding.setActivity(this);
         preferenceHelper = new PreferenceHelper(this);
 
-        if (getIntent().getSerializableExtra(Constants.PROCESS_ID) != null) {
+        if (getIntent().getExtras()!=null && getIntent().getSerializableExtra(Constants.PROCESS_ID) != null) {
             position = getIntent().getExtras().getInt(Constants.POSITION);
             taskType = getIntent().getExtras().getString(Constants.LOCATION_TYPE);
-            if (taskType.equals("Task Location"))
+            if (taskType != null && taskType.equals("Task Location"))
                 locationType = getIntent().getExtras().getString(Constants.LOCATION);
             else {
                 locationType = preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL);
@@ -148,71 +148,78 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         setSpinnerAdapter(mListSchoolName, school_adapter, binding.spinnerSchoolName, selectedSchool);
 
 
-        if (locationType.equals("State")) {
-            locationState = 1;
-            binding.spinnerDistrict.setVisibility(View.GONE);
-            binding.tvDistrict.setVisibility(View.GONE);
+        switch (locationType) {
+            case "State":
+                locationState = 1;
+                binding.spinnerDistrict.setVisibility(View.GONE);
+                binding.tvDistrict.setVisibility(View.GONE);
 
-            binding.spinnerTaluka.setVisibility(View.GONE);
-            binding.tvTaluka.setVisibility(View.GONE);
+                binding.spinnerTaluka.setVisibility(View.GONE);
+                binding.tvTaluka.setVisibility(View.GONE);
 
-            binding.spinnerCluster.setVisibility(View.GONE);
-            binding.tvCluster.setVisibility(View.GONE);
+                binding.spinnerCluster.setVisibility(View.GONE);
+                binding.tvCluster.setVisibility(View.GONE);
 
-            binding.spinnerVillage.setVisibility(View.GONE);
-            binding.tvVillage.setVisibility(View.GONE);
-            selectedSpinner = binding.spinnerState;
-            selectedLocation = "State";
+                binding.spinnerVillage.setVisibility(View.GONE);
+                binding.tvVillage.setVisibility(View.GONE);
+                selectedSpinner = binding.spinnerState;
+                selectedLocation = "State";
 
-            binding.spinnerSchoolName.setVisibility(View.GONE);
-            binding.tvSchool.setVisibility(View.GONE);
-        } else if (locationType.equals("District")) {
-            locationState = 2;
-            binding.spinnerTaluka.setVisibility(View.GONE);
-            binding.tvTaluka.setVisibility(View.GONE);
+                binding.spinnerSchoolName.setVisibility(View.GONE);
+                binding.tvSchool.setVisibility(View.GONE);
+                break;
+            case "District":
+                locationState = 2;
+                binding.spinnerTaluka.setVisibility(View.GONE);
+                binding.tvTaluka.setVisibility(View.GONE);
 
-            binding.spinnerCluster.setVisibility(View.GONE);
-            binding.tvCluster.setVisibility(View.GONE);
+                binding.spinnerCluster.setVisibility(View.GONE);
+                binding.tvCluster.setVisibility(View.GONE);
 
-            binding.spinnerVillage.setVisibility(View.GONE);
-            binding.tvVillage.setVisibility(View.GONE);
-            selectedSpinner = binding.spinnerDistrict;
-            selectedLocation = "District";
-            binding.spinnerSchoolName.setVisibility(View.GONE);
-            binding.tvSchool.setVisibility(View.GONE);
-        } else if (locationType.equals("Taluka")) {
-            locationState = 3;
-            binding.spinnerCluster.setVisibility(View.GONE);
-            binding.tvCluster.setVisibility(View.GONE);
+                binding.spinnerVillage.setVisibility(View.GONE);
+                binding.tvVillage.setVisibility(View.GONE);
+                selectedSpinner = binding.spinnerDistrict;
+                selectedLocation = "District";
+                binding.spinnerSchoolName.setVisibility(View.GONE);
+                binding.tvSchool.setVisibility(View.GONE);
+                break;
+            case "Taluka":
+                locationState = 3;
+                binding.spinnerCluster.setVisibility(View.GONE);
+                binding.tvCluster.setVisibility(View.GONE);
 
-            binding.spinnerVillage.setVisibility(View.GONE);
-            binding.tvVillage.setVisibility(View.GONE);
+                binding.spinnerVillage.setVisibility(View.GONE);
+                binding.tvVillage.setVisibility(View.GONE);
 
-            binding.spinnerSchoolName.setVisibility(View.GONE);
-            binding.tvSchool.setVisibility(View.GONE);
-            selectedSpinner = binding.spinnerTaluka;
-            selectedLocation = "Taluka";
-        } else if (locationType.equals("Cluster")) {
-            locationState = 4;
-            binding.spinnerVillage.setVisibility(View.GONE);
-            binding.tvVillage.setVisibility(View.GONE);
+                binding.spinnerSchoolName.setVisibility(View.GONE);
+                binding.tvSchool.setVisibility(View.GONE);
+                selectedSpinner = binding.spinnerTaluka;
+                selectedLocation = "Taluka";
+                break;
+            case "Cluster":
+                locationState = 4;
+                binding.spinnerVillage.setVisibility(View.GONE);
+                binding.tvVillage.setVisibility(View.GONE);
 
-            binding.spinnerSchoolName.setVisibility(View.GONE);
-            binding.tvSchool.setVisibility(View.GONE);
-            selectedSpinner = binding.spinnerCluster;
-            selectedLocation = "Cluster";
-        } else if (locationType.equals("Village")) {
-            locationState = 5;
-            binding.spinnerSchoolName.setVisibility(View.GONE);
-            binding.tvSchool.setVisibility(View.GONE);
-            selectedSpinner = binding.spinnerVillage;
-            selectedLocation = "Village";
+                binding.spinnerSchoolName.setVisibility(View.GONE);
+                binding.tvSchool.setVisibility(View.GONE);
+                selectedSpinner = binding.spinnerCluster;
+                selectedLocation = "Cluster";
+                break;
+            case "Village":
+                locationState = 5;
+                binding.spinnerSchoolName.setVisibility(View.GONE);
+                binding.tvSchool.setVisibility(View.GONE);
+                selectedSpinner = binding.spinnerVillage;
+                selectedLocation = "Village";
             /*if (task.getTask_Response__c() != null)
                 holder.spinnerResponse.setSelection(myList.indexOf(task.getTask_Response__c().trim()));*/
-        } else if (locationType.equals("School")) {
-            selectedLocation = "School";
-            locationState = 6;
-            selectedSpinner = binding.spinnerSchoolName;
+                break;
+            case "School":
+                selectedLocation = "School";
+                locationState = 6;
+                selectedSpinner = binding.spinnerSchoolName;
+                break;
         }
 
 
@@ -580,7 +587,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             mStateList.clear();
                             mStateList.add("Select");
@@ -620,7 +627,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListDistrict.clear();
                             mListDistrict.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -658,7 +665,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListTaluka.clear();
                             mListTaluka.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -697,7 +704,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListCluster.clear();
                             mListCluster.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -730,7 +737,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListVillage.clear();
                             mListVillage.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -764,7 +771,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListSchoolName.clear();
                             mListSchoolName.add("Select");
 

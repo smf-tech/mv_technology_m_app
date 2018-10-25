@@ -72,7 +72,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
     private void Initviews() {
         preferenceHelper = new PreferenceHelper(this);
         asset = (Asset) getIntent().getExtras().getSerializable("Assets");
-        asset_id = asset.getAsset_id();
+        asset_id = asset != null ? asset.getAsset_id() : null;
         spinner_stock = (Spinner) findViewById(R.id.spinner_stock);
         edit_text_username = (EditText) findViewById(R.id.edit_text_username);
         edit_text_assetname = (EditText) findViewById(R.id.edit_text_assetname);

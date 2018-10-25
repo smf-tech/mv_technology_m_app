@@ -65,21 +65,22 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.each_adavance, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.each_adavance, null) : null;
         }
         TextView tvProjectName, tvDateName, tvAmountName,tvAmount;
         ImageView imgEdit, imgDelete;
         RelativeLayout textLayout;
         View view;
 
-        imgEdit = convertView.findViewById(R.id.imgEdit);
-        imgDelete = convertView.findViewById(R.id.imgDelete);
-        view = convertView.findViewById(R.id.view1);
-        tvProjectName = convertView.findViewById(R.id.tvProjectName);
-        tvDateName = convertView.findViewById(R.id.tvDateName);
-        tvAmountName = convertView.findViewById(R.id.tvAmountName);
-        tvAmount = convertView.findViewById(R.id.tvAmount);
-        textLayout = convertView.findViewById(R.id.textLayout);
+            imgEdit = convertView.findViewById(R.id.imgEdit);
+            imgDelete = convertView.findViewById(R.id.imgDelete);
+            view = convertView.findViewById(R.id.view1);
+            tvProjectName = convertView.findViewById(R.id.tvProjectName);
+            tvDateName = convertView.findViewById(R.id.tvDateName);
+            tvAmountName = convertView.findViewById(R.id.tvAmountName);
+            tvAmount = convertView.findViewById(R.id.tvAmount);
+            textLayout = convertView.findViewById(R.id.textLayout);
+
 
         Log.e("Group", String.valueOf(groupPosition));
 
@@ -201,9 +202,12 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
         }
-        ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
+        ImageView imgGroup = null;
+        if (convertView != null) {
+            imgGroup = convertView.findViewById(R.id.imgGroup);
+        }
 
         if (isExpanded) {
             imgGroup.setImageResource(R.drawable.downarrow);

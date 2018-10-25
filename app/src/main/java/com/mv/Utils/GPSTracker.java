@@ -1,9 +1,5 @@
 package com.mv.Utils;
 
-/**
- * Created by acer on 12/19/2016.
- */
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
@@ -59,8 +55,8 @@ public class GPSTracker extends Service implements LocationListener {
                     .getSystemService(LOCATION_SERVICE);
 
             // getting GPS status
-            isGPSEnabled = locationManager
-                    .isProviderEnabled(LocationManager.GPS_PROVIDER);
+            isGPSEnabled = locationManager != null ? locationManager
+                    .isProviderEnabled(LocationManager.GPS_PROVIDER) : false;
 
             // getting network status
             isNetworkEnabled = locationManager

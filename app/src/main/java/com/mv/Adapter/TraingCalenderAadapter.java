@@ -158,7 +158,7 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
         alertDialog.setButton(mContext.getString(R.string.ok), new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
 
-                if (calenderlsList.get(position) instanceof CalenderEvent)
+                if (calenderlsList.get(position) != null)
                     deleteEvent(calenderlsList.get(position));
 
             }

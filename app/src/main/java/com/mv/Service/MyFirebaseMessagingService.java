@@ -1,9 +1,5 @@
 package com.mv.Service;
 
-/**
- * Created by Rohit Gujar on 06-11-2017.
- */
-
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -160,7 +156,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             }
         }
 
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        }
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
         Uri defaultSoundUri = null;
@@ -178,7 +176,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        notificationManager.notify(0, notificationBuilder.build());
+        if (notificationManager != null) {
+            notificationManager.notify(0, notificationBuilder.build());
+        }
     }
 
     public static String[] getColumnIdex(String[] value) {

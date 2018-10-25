@@ -55,7 +55,9 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_approve_detail);
         binding.setActivity(this);
-        userId = getIntent().getExtras().getString(Constants.ID);
+        if(getIntent().getExtras() != null) {
+            userId = getIntent().getExtras().getString(Constants.ID);
+        }
         preferenceHelper = new PreferenceHelper(this);
         setActionbar(getString(R.string.team_user_approval));
         if (Utills.isConnected(this)) {

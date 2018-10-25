@@ -64,7 +64,8 @@ public class IndicatorTrainingFeedBackTaskList extends AppCompatActivity impleme
     private void initViews() {
         preferenceHelper = new PreferenceHelper(this);
         textNoData = (TextView) findViewById(R.id.textNoData);
-        setActionbar(getIntent().getExtras().getString(Constants.TITLE));
+        if(getIntent().getExtras()!=null)
+           setActionbar(getIntent().getExtras().getString(Constants.TITLE));
         binding.swiperefresh.setOnRefreshListener(this);
         mAdapter = new TemplateAdapter(programManagementProcessLists, this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());

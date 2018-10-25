@@ -1,9 +1,5 @@
 package com.mv.Utils;
 
-/**
- * Created by acer on 7/28/2017.
- */
-
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;

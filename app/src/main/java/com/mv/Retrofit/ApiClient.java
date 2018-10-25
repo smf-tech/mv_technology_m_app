@@ -49,11 +49,13 @@ public class ApiClient {
                 e.printStackTrace();
             }
 
-            retrofitImageHeader = new Retrofit.Builder()
-                    .baseUrl("http://mobileapp.mulyavardhan.org/")
-                    .client(client)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
+            if (client != null) {
+                retrofitImageHeader = new Retrofit.Builder()
+                        .baseUrl("http://mobileapp.mulyavardhan.org/")
+                        .client(client)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+            }
         }
         return retrofitImageHeader;
     }
@@ -75,11 +77,13 @@ public class ApiClient {
                 e.printStackTrace();
             }
 
-            retrofit = new Retrofit.Builder()
-                    .baseUrl(BuildConfig.BASEURL)
-                    .client(client)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
+            if (client != null) {
+                retrofit = new Retrofit.Builder()
+                        .baseUrl(BuildConfig.BASEURL)
+                        .client(client)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+            }
         }
         return retrofit;
     }
@@ -123,11 +127,13 @@ public class ApiClient {
                 e.printStackTrace();
             }
 
-            retrofitWithHeader = new Retrofit.Builder()
-                    .baseUrl(new PreferenceHelper(context).getString(PreferenceHelper.InstanceUrl))
-                    .client(client)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
+            if (client != null) {
+                retrofitWithHeader = new Retrofit.Builder()
+                        .baseUrl(new PreferenceHelper(context).getString(PreferenceHelper.InstanceUrl))
+                        .client(client)
+                        .addConverterFactory(GsonConverterFactory.create())
+                        .build();
+            }
         }
         return retrofitWithHeader;
     }

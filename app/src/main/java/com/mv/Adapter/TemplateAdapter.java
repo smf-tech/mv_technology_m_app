@@ -1,9 +1,5 @@
 package com.mv.Adapter;
 
-/**
- * Created by Rohit Gujar on 13-09-2017.
- */
-
 
 import android.app.Activity;
 import android.content.Intent;

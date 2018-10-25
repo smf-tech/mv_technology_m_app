@@ -177,7 +177,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
 
                             mListDistrict.clear();
                             mListDistrict.add("Select");
@@ -223,7 +223,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListTaluka.clear();
                             mListTaluka.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -306,7 +306,9 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
 
         if (isEdit) {
             mContent = (Content) getIntent().getExtras().getSerializable(Constants.CONTENT);
-            binding.editTextContent.setText(mContent.getTitle());
+            if (mContent != null) {
+                binding.editTextContent.setText(mContent.getTitle());
+            }
             binding.editTextDescription.setText(mContent.getDescription());
             List<String> mList = new ArrayList<String>();
             Collections.addAll(mList, getResources().getStringArray(R.array.array_of_reporting_type));
@@ -938,8 +940,10 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
         int len = 0;
         try {
-            while ((len = inputStream.read(buffer)) != -1) {
-                byteBuffer.write(buffer, 0, len);
+            if (inputStream != null) {
+                while ((len = inputStream.read(buffer)) != -1) {
+                    byteBuffer.write(buffer, 0, len);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -1287,7 +1291,9 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                 rectext.setText("Start");
                 if (mediaRecorder != null)
                     mediaRecorder.stop();
-                mediaRecorder.release();
+                if (mediaRecorder != null) {
+                    mediaRecorder.release();
+                }
                 mediaRecorder = null;
                 isRecording = false;
                 audioUri = Uri.fromFile(new File(audioFilePath));

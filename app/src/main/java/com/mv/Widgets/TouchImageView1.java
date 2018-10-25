@@ -1,9 +1,5 @@
 package com.mv.Widgets;
 
-/**
- * Created by Rohit Gujar on 19-09-2017.
- */
-
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.PointF;

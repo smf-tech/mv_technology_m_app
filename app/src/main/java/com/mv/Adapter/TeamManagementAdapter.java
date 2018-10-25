@@ -153,15 +153,19 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
             if (TeamManagementUserProfileListActivity.approvalType.equals(Constants.USER_APPROVAL)) {
 
                 if (template.getStatus() != null) {
-                    if (template.getStatus().equals("true")) {
-                        holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
-                        holder.textViewColor.setVisibility(View.VISIBLE);
-                    } else if (template.getStatus().equals("false")) {
-                        holder.textViewColor.setVisibility(View.VISIBLE);
-                        holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.purple));
-                    } else if (template.getStatus().equals("Rejected")) {
-                        holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.red));
-                        holder.textViewColor.setVisibility(View.VISIBLE);
+                    switch (template.getStatus()) {
+                        case "true":
+                            holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
+                            holder.textViewColor.setVisibility(View.VISIBLE);
+                            break;
+                        case "false":
+                            holder.textViewColor.setVisibility(View.VISIBLE);
+                            holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.purple));
+                            break;
+                        case "Rejected":
+                            holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.red));
+                            holder.textViewColor.setVisibility(View.VISIBLE);
+                            break;
                     }
                     //  else if (template.getStatus().equals("false"))
                 }

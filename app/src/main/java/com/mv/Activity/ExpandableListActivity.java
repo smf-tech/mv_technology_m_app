@@ -1,9 +1,5 @@
 package com.mv.Activity;
 
-/**
- * Created by Rohit Gujar on 12-02-2018.
- */
-
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -211,7 +207,7 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(MESSAGE_PROGRESS)) {
+            if (intent.getAction()!=null && intent.getAction().equals(MESSAGE_PROGRESS)) {
                 Download download = intent.getParcelableExtra("download");
                 if (listAdapter != null)
                     listAdapter.notifyDataSetChanged();

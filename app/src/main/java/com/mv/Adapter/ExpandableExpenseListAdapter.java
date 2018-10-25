@@ -65,7 +65,7 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.each_expense, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.each_expense, null) : null;
         }
         TextView tvProjectName, tvDateName, tvNoOfPeopleName,tvNoOfPeopleTitle;
         ImageView imgEdit, imgDelete;
@@ -190,7 +190,7 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
         }
         ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
 

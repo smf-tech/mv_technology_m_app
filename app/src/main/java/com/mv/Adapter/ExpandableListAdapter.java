@@ -1,9 +1,5 @@
 package com.mv.Adapter;
 
-/**
- * Created by Rohit Gujar on 12-02-2018.
- */
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -68,7 +64,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.each_trainging, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.each_trainging, null) : null;
         }
 
         ImageView imgDownload, imgshare;
@@ -307,7 +303,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
         }
         ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
         if (isExpanded) {

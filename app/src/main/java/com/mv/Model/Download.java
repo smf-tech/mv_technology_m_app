@@ -1,9 +1,5 @@
 package com.mv.Model;
 
-/**
- * Created by Rohit Gujar on 05-12-2017.
- */
-
 import android.os.Parcel;
 import android.os.Parcelable;
 

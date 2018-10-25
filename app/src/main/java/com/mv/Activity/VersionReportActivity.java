@@ -69,7 +69,9 @@ public class VersionReportActivity extends AppCompatActivity implements View.OnC
         context = this;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_version_report);
         binding.setActivity(this);
-        locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
+        if(getIntent().getExtras()!=null) {
+            locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
+        }
         initViews();
 
     }

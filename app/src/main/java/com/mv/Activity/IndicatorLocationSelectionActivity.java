@@ -87,8 +87,10 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         binding.setActivity(this);
         task = getIntent().getParcelableExtra(Constants.INDICATOR_TASK);
         roleList = getIntent().getStringExtra(Constants.INDICATOR_TASK_ROLE);
-        title = getIntent().getExtras().getString(Constants.TITLE);
-        processId = getIntent().getExtras().getString(Constants.PROCESS_ID);
+        if(getIntent().getExtras()!=null) {
+            title = getIntent().getExtras().getString(Constants.TITLE);
+            processId = getIntent().getExtras().getString(Constants.PROCESS_ID);
+        }
         locationModel=new LocationModel();
         locationModel.setState("");
         locationModel.setDistrict("");
@@ -261,34 +263,40 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
 
     private void sendLocation() {
         if(locationModel.getState().equals("")||!locationModel.getState().equals("Select")) {
-            if (processId.equals("")) {
-                Intent intent = new Intent(IndicatorLocationSelectionActivity.this, PiachartActivity.class);
-                intent.putExtra(Constants.TITLE, title);
-                intent.putExtra(Constants.INDICATOR_TASK, task);
-                //  preferenceHelper.insertString(Constants.RoleList,roleList);
-                intent.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
-                intent.putExtra(Constants.LOCATION, locationModel);
+            switch (processId) {
+                case "": {
+                    Intent intent = new Intent(IndicatorLocationSelectionActivity.this, PiachartActivity.class);
+                    intent.putExtra(Constants.TITLE, title);
+                    intent.putExtra(Constants.INDICATOR_TASK, task);
+                    //  preferenceHelper.insertString(Constants.RoleList,roleList);
+                    intent.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
+                    intent.putExtra(Constants.LOCATION, locationModel);
 //                if(binding.txtDateFrom.getText().toString().trim().length()>0 && binding.txtDateTo.getText().toString().trim().length()>0) {
 //                intent.putExtra("DateFrom", binding.txtDateFrom.getText().toString().trim());
 //                intent.putExtra("DateTo", binding.txtDateTo.getText().toString().trim());
 //                }
-                startActivity(intent);
-                finish();
-            }
-            else if (processId.equals("version")) {
-                Intent intent = new Intent(IndicatorLocationSelectionActivity.this, VersionReportActivity.class);
-                intent.putExtra(Constants.LOCATION, locationModel);
-                startActivity(intent);
-                finish();
-            }else {
-                Intent intent = new Intent(IndicatorLocationSelectionActivity.this, OverallReportActivity.class);
-                intent.putExtra(Constants.TITLE, title);
-                intent.putExtra(Constants.INDICATOR_TASK, task);
-                intent.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
-                intent.putExtra(Constants.LOCATION, locationModel);
-                intent.putExtra(Constants.PROCESS_ID, processId);
-                startActivity(intent);
-                finish();
+                    startActivity(intent);
+                    finish();
+                    break;
+                }
+                case "version": {
+                    Intent intent = new Intent(IndicatorLocationSelectionActivity.this, VersionReportActivity.class);
+                    intent.putExtra(Constants.LOCATION, locationModel);
+                    startActivity(intent);
+                    finish();
+                    break;
+                }
+                default: {
+                    Intent intent = new Intent(IndicatorLocationSelectionActivity.this, OverallReportActivity.class);
+                    intent.putExtra(Constants.TITLE, title);
+                    intent.putExtra(Constants.INDICATOR_TASK, task);
+                    intent.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
+                    intent.putExtra(Constants.LOCATION, locationModel);
+                    intent.putExtra(Constants.PROCESS_ID, processId);
+                    startActivity(intent);
+                    finish();
+                    break;
+                }
             }
         }else
         {

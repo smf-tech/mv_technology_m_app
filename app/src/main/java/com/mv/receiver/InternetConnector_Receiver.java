@@ -59,8 +59,8 @@ public class InternetConnector_Receiver extends BroadcastReceiver {
             mContext = context;
             ConnectivityManager connectivityManager = (ConnectivityManager) context
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
-            NetworkInfo networkInfo = connectivityManager
-                    .getActiveNetworkInfo();
+            NetworkInfo networkInfo = connectivityManager != null ? connectivityManager
+                    .getActiveNetworkInfo() : null;
             // Check internet connection and accrding to state change the
             // text of activity by calling method
             if (networkInfo != null) {

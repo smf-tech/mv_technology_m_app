@@ -121,7 +121,7 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
                     if (response != null && response.isSuccess()) {
                         String str = response.body().string();
                         if (str.length() > 0) {
-                            if (Arrays.asList(gson.fromJson(str, Voucher[].class)) != null) {
+                            if (Arrays.asList(gson.fromJson(str, Voucher[].class)).size()>0) {
 //                                AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().deleteAllVoucher();
 //                                AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().insertVoucher();
                                 mList = Arrays.asList(gson.fromJson(str, Voucher[].class));
@@ -158,7 +158,7 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
                     if (response != null && response.isSuccess()) {
                         String str = response.body().string();
                         if (str.length() > 0) {
-                            if (Arrays.asList(gson.fromJson(str, Voucher[].class)) != null) {
+                            if (Arrays.asList(gson.fromJson(str, Voucher[].class)).size()>0) {
                                 AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().deleteAllVoucher();
                                 AppDatabase.getAppDatabase(VoucherListActivity.this).userDao().insertVoucher(Arrays.asList(gson.fromJson(str, Voucher[].class)));
                                 setRecyclerView();

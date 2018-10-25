@@ -58,7 +58,7 @@ public class ExpandableProcessListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.each_programe, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.each_programe, null) : null;
         }
 
 
@@ -134,7 +134,7 @@ public class ExpandableProcessListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
         }
         ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
 

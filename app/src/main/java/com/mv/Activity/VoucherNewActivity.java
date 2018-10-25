@@ -92,7 +92,7 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
         binding.spinnerProject.setAdapter(project_adapter);
         if (Utills.isConnected(this))
             getProject();
-        if (getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
+        if (getIntent().getExtras()!=null && getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
             isAdd = true;
 
         } else {

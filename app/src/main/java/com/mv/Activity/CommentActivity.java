@@ -102,8 +102,9 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         binding.imgSend.setOnClickListener(this);
-
-        conetentId = getIntent().getExtras().getString(Constants.ID);
+        if(getIntent().getExtras()!=null) {
+            conetentId = getIntent().getExtras().getString(Constants.ID);
+        }
 
         if (Utills.isConnected(this)) {
             getComments(true);

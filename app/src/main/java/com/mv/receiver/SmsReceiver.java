@@ -39,14 +39,7 @@ public class SmsReceiver extends BroadcastReceiver {
         }
     }
 
-    /**
-     * Getting the OTP from sms message body
-     * ':' is the separator of OTP from the message
-     *
-     * @param message
-     * @return
-     */
-/*    private String getVerificationCode(String message) {
+    /*    private String getVerificationCode(String message) {
         String code = null;
         int index = message.indexOf(Config.OTP_DELIMITER);
 

@@ -1,9 +1,5 @@
 package com.mv.Service;
 
-/**
- * Created by Rohit Gujar on 06-11-2017.
- */
-
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;

@@ -1,9 +1,5 @@
 package com.mv.Adapter;
 
-/**
- * Created by Rohit Gujar on 18-10-2017.
- */
-
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;

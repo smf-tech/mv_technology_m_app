@@ -63,7 +63,9 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         context = this;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_team_management_user_profile_activity);
         binding.setActivity(this);
-        approvalType = getIntent().getExtras().getString(Constants.APPROVAL_TYPE);
+        if(getIntent().getExtras()!=null) {
+            approvalType = getIntent().getExtras().getString(Constants.APPROVAL_TYPE);
+        }
         initViews();
     }
 
@@ -79,8 +81,10 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
 
             setActionbar(getString(R.string.team_user_approval));
         } else if (approvalType.equals(Constants.PROCESS_APPROVAL)) {
-            id = getIntent().getExtras().getString(Constants.ID);
-            processTitle = getIntent().getExtras().getString(Constants.TITLE);
+            if(getIntent().getExtras()!=null) {
+                id = getIntent().getExtras().getString(Constants.ID);
+                processTitle = getIntent().getExtras().getString(Constants.TITLE);
+            }
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + Constants.WS_getProcessAprovalUserUrl + "?UserId=" + User.getCurrentUser(context).getMvUser().getId() + "&processId=" + id;
             ;

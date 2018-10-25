@@ -245,7 +245,8 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
 
     private void initViews() {
         setActionbar(getString(R.string.issue_template));
-        isEdit = getIntent().getExtras().getBoolean("EDIT");
+        if(getIntent().getExtras()!=null)
+           isEdit = getIntent().getExtras().getBoolean("EDIT");
         preferenceHelper = new PreferenceHelper(this);
 
         binding.spinnerDistrict.setOnItemSelectedListener(this);
@@ -302,8 +303,10 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
 
         if (isEdit) {
             mContent = (Content) getIntent().getExtras().getSerializable(Constants.CONTENT);
-            binding.editTextContent.setText(mContent.getTitle());
-            binding.editTextDescription.setText(mContent.getDescription());
+            if(mContent.getTitle()!=null)
+               binding.editTextContent.setText(mContent.getTitle());
+            if(mContent.getDescription()!=null)
+               binding.editTextDescription.setText(mContent.getDescription());
             List<String> mList = new ArrayList<String>();
             Collections.addAll(mList, getResources().getStringArray(R.array.array_of_issue));
             binding.spinnerIssue.setSelection(mList.indexOf(mContent.getIssue_type()));
@@ -787,7 +790,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
         int len = 0;
         try {
-            while ((len = inputStream.read(buffer)) != -1) {
+            while ((len = inputStream != null ? inputStream.read(buffer) : 0) != -1) {
                 byteBuffer.write(buffer, 0, len);
             }
         } catch (IOException e) {
@@ -1108,6 +1111,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                 rectext.setText("Start");
                 if (mediaRecorder != null)
                     mediaRecorder.stop();
+                assert mediaRecorder != null;
                 mediaRecorder.release();
                 mediaRecorder = null;
                 isRecording = false;

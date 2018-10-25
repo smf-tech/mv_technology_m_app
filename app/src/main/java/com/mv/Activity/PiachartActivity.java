@@ -119,7 +119,9 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         selectedRoleList = new ArrayList<String>(Arrays.asList(getColumnIdex((roleList).split(";"))));
 
 
-        title = getIntent().getExtras().getString(Constants.TITLE);
+        if(getIntent().getExtras()!=null) {
+            title = getIntent().getExtras().getString(Constants.TITLE);
+        }
 //        dateFrom = getIntent().getExtras().getString("DateFrom");
 //        dateTo = getIntent().getExtras().getString("DateTo");
         locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);

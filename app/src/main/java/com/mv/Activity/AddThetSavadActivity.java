@@ -232,7 +232,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
 
     private void initViews() {
         setActionbar(getString(R.string.thet_savnd));
-            isEdit = getIntent().getExtras().getBoolean("EDIT");
+        if(getIntent().getExtras()!=null) isEdit = getIntent().getExtras().getBoolean("EDIT");
 
         preferenceHelper = new PreferenceHelper(this);
         binding.spinnerDistrict.setOnItemSelectedListener(this);
@@ -283,7 +283,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         }
         if (isEdit) {
             mContent = (Content) getIntent().getExtras().getSerializable(Constants.CONTENT);
-            if(mContent.getTitle()!=null){
+            if(getIntent().getExtras()!=null && null != mContent.getTitle()){
                 binding.editTextContent.setText(mContent.getTitle());
             }
             binding.editTextDescription.setText(mContent.getDescription());
@@ -776,9 +776,12 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         try {
             if (isRecording) {
                 rectext.setText("Start");
-                if (mediaRecorder != null)
+                if (mediaRecorder != null) {
                     mediaRecorder.stop();
-                mediaRecorder.release();
+                }
+                if (mediaRecorder != null) {
+                    mediaRecorder.release();
+                }
                 mediaRecorder = null;
                 isRecording = false;
                 audioUri = Uri.fromFile(new File(audioFilePath));
@@ -1053,8 +1056,10 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
         int len;
         try {
-            while ((len = inputStream.read(buffer)) != -1) {
-                byteBuffer.write(buffer, 0, len);
+            if (inputStream != null) {
+                while ((len = inputStream.read(buffer)) != -1) {
+                    byteBuffer.write(buffer, 0, len);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,9 +1,5 @@
 package com.mv.Service;
 
-/**
- * Created by Rohit Gujar on 05-12-2017.
- */
-
 import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Context;

@@ -69,14 +69,14 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.each_child_leave_application, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.each_child_leave_application, null) : null;
         }
 
         ImageView imgDownload, imgshare;
         TextView txtCount, txtName;
         RelativeLayout layoutMain;
 
-        layoutMain = convertView.findViewById(R.id.layoutMain);
+            layoutMain = convertView.findViewById(R.id.layoutMain);
 
         txtCount = convertView.findViewById(R.id.txtCount);
 
@@ -154,9 +154,12 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
         }
-        ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
+        ImageView imgGroup = null;
+        if (convertView != null) {
+            imgGroup = convertView.findViewById(R.id.imgGroup);
+        }
 
         if (isExpanded) {
             imgGroup.setImageResource(R.drawable.downarrow);

@@ -65,7 +65,7 @@ public class ExpandableAttendanceApprovalListAdapter extends BaseExpandableListA
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.each_child_leave_application, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.each_child_leave_application, null) : null;
         }
 
         ImageView imgDownload, imgshare;
@@ -128,7 +128,7 @@ public class ExpandableAttendanceApprovalListAdapter extends BaseExpandableListA
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
         }
         ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
 

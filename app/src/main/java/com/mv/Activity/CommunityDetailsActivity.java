@@ -522,7 +522,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         layout_forward = (LinearLayout) findViewById(R.id.layout_forward);
         layout_download_file = (LinearLayout) findViewById(R.id.layout_download_file);
         layout_share = (LinearLayout) findViewById(R.id.layout_share);
-        if (getIntent().getExtras().getString("flag").equalsIgnoreCase("forward_flag")) {
+        if (getIntent().getExtras()!=null && "forward_flag".equalsIgnoreCase(getIntent().getExtras().getString("flag"))) {
             layout_forward.setVisibility(View.VISIBLE);
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
             String json = getIntent().getExtras().getString(Constants.LIST);
@@ -531,8 +531,9 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
             layout_forward.setVisibility(View.GONE);
         }
         layout_forward.setOnClickListener(this);
-        String json;
-        json = getIntent().getExtras().getString(Constants.LIST);
+        String json="";
+        if(getIntent().getExtras()!=null)
+            json = getIntent().getExtras().getString(Constants.LIST);
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         if (!TextUtils.isEmpty(json))
             communityList = Arrays.asList(gson.fromJson(json, Community[].class));

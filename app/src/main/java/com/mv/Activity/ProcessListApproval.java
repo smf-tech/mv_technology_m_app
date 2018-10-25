@@ -63,9 +63,11 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_process_list_approval);
         binding.setProcesslistApprove(this);
-        proceesId = getIntent().getExtras().getString(Constants.PROCESS_ID);
-        Processname = getIntent().getExtras().getString(Constants.PROCESS_NAME);
-        userId = getIntent().getExtras().getString(Constants.ID);
+
+            proceesId = getIntent().getExtras().getString(Constants.PROCESS_ID);
+            Processname = getIntent().getExtras().getString(Constants.PROCESS_NAME);
+            userId = getIntent().getExtras().getString(Constants.ID);
+
         initViews();
     }
 

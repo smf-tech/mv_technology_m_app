@@ -252,7 +252,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 break;
 
             case R.id.input_hr_to_date:
-                if (binding.inputHrFormDate.getText().toString().equals("")||binding.inputHrFormDate.getText().toString()==null)
+                if (binding.inputHrFormDate.getText().toString().equals(""))
                     Utills.showToast("Please Select From Date",context);
                 else {
                     binding.leavesCountText.setVisibility(View.VISIBLE);

@@ -1,9 +1,5 @@
 package com.mv.ActivityMenu;
 
-/**
- * Created by Rohit Gujar on 09-10-2017.
- */
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;

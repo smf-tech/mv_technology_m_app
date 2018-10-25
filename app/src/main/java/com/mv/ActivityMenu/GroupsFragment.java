@@ -1,9 +1,5 @@
 package com.mv.ActivityMenu;
 
-/**
- * Created by Rohit Gujar on 09-10-2017.
- */
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -137,7 +133,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
         String receivedType = receivedIntent.getType();
         //make sure it's an action and type we can handle
         if (receivedAction != null && receivedAction.equals(Intent.ACTION_SEND)) {
-             if (receivedType.startsWith("image/")) {
+             if (receivedType!= null && receivedType.startsWith("image/")) {
                 //handle sent image
                 Constants.shareUri = receivedIntent.getParcelableExtra(Intent.EXTRA_STREAM);
             }

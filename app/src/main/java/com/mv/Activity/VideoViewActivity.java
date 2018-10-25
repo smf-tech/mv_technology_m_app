@@ -1,9 +1,5 @@
 package com.mv.Activity;
 
-/**
- * Created by Rohit Gujar on 28-12-2017.
- */
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -33,8 +29,9 @@ public class VideoViewActivity extends Activity {
         super.onCreate(savedInstanceState);
         // Get the layout from video_main.xml
         setContentView(R.layout.videoview_main);
-
-        VideoURL = getIntent().getExtras().getString("URL");
+        if(getIntent().getExtras()!=null) {
+            VideoURL = getIntent().getExtras().getString("URL");
+        }
         // Find your VideoView in your video_main.xml layout
         videoview = findViewById(R.id.VideoView);
         // Execute StreamVideo AsyncTask

@@ -72,8 +72,8 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
         task = getIntent().getParcelableExtra(Constants.INDICATOR_TASK);
         roleList = getIntent().getStringExtra(Constants.INDICATOR_TASK_ROLE);
         title = getIntent().getExtras().getString(Constants.TITLE);
-        locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
         processId = getIntent().getExtras().getString(Constants.PROCESS_ID);
+        locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
         roleList = getIntent().getStringExtra(Constants.INDICATOR_TASK_ROLE);
         selectedRoleList = new ArrayList<String>(Arrays.asList(getColumnIdex((roleList).split(";"))));
         if (locationModel == null) {

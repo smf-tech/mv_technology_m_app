@@ -87,7 +87,8 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
         binding.txtDate.setText(getCurrentDate());
         binding.txtDate.setOnClickListener(this);
         binding.spinnerProject.setOnItemSelectedListener(this);
-        if (getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
+
+        if (getIntent().getExtras()!=null && Constants.ACTION_ADD.equalsIgnoreCase(getIntent().getExtras().getString(Constants.ACTION))) {
             isAdd = true;
         } else {
             isAdd = false;

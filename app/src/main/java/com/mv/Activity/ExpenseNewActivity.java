@@ -202,7 +202,7 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
         preferenceHelper = new PreferenceHelper(this);
         binding.txtDate.setOnClickListener(this);
         binding.spinnerParticular.setOnItemSelectedListener(this);
-        if (getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
+        if (getIntent().getExtras()!=null && getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
             isAdd = true;
 
         } else {

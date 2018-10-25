@@ -1,9 +1,5 @@
 package com.mv.Adapter;
 
-/**
- * Created by Rohit Gujar on 13-09-2017.
- */
-
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;

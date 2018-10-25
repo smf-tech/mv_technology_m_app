@@ -148,7 +148,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
 
                             JSONArray jsonArray = null;
                             jsonArray = new JSONArray(data);
@@ -209,7 +209,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
 
 
                             JSONObject obj = new JSONObject(data);
@@ -273,7 +273,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             mListOrganization.clear();
                             mListOrganization.add("Select");
@@ -367,7 +367,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             mListState.clear();
                             mListState.add("Select");
@@ -418,7 +418,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             mListDistrict.clear();
                             mListDistrict.add("Select");
@@ -876,7 +876,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                             if (response.body() != null) {
                                 String data = response.body().string();
-                                if (data != null && data.length() > 0) {
+                                if (data.length() > 0) {
                                     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                                     User user = gson.fromJson(data, User.class);
                                     if (user.getDuplicateMobileNo() != null && user.getDuplicateMobileNo().equalsIgnoreCase("true")) {
@@ -1351,7 +1351,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListCluster.clear();
                             mListCluster.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -1401,7 +1401,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListTaluka.clear();
                             mListTaluka.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -1451,7 +1451,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListVillage.clear();
                             mListVillage.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -1500,7 +1500,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListSchoolName.clear();
                     //        mListCode.clear();
                             mListSchoolName.add("Select");
