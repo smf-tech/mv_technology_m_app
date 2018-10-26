@@ -5,6 +5,7 @@ import android.net.Uri;
 import com.mv.Model.Asset;
 
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  * Created by User on 6/1/2017.
@@ -236,5 +237,8 @@ public class Constants {
     public static String AccountTeamCode;
     public static final String PUSH_NOTIFICATION = "pushNotification";
 
+    public static final Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
+            + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
+            + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
 }
 
