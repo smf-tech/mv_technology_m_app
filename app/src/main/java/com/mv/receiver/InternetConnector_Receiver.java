@@ -42,7 +42,6 @@ import retrofit2.Response;
 
 public class InternetConnector_Receiver extends BroadcastReceiver {
     private static boolean firstConnect = true;
-    private static int cnt = 0;
 
     public InternetConnector_Receiver() {
 
@@ -108,10 +107,12 @@ public class InternetConnector_Receiver extends BroadcastReceiver {
                     Uri FinalUri = Uri.fromFile(file);
                     if (FinalUri != null) {
                         try {
+                            InputStream iStream = mContext.getContentResolver().openInputStream(FinalUri);
+                            String img_str = "";
+                            if (iStream != null) {
+                                img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
+                            }
 
-                            InputStream iStream = null;
-                            iStream = mContext.getContentResolver().openInputStream(FinalUri);
-                            String img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
                             JSONObject jsonObjectAttachment = new JSONObject();
                             jsonObjectAttachment.put("Body", img_str);
                             jsonObjectAttachment.put("Name", contentList.get(i).getTitle());

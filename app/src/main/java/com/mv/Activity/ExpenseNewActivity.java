@@ -202,9 +202,10 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
         preferenceHelper = new PreferenceHelper(this);
         binding.txtDate.setOnClickListener(this);
         binding.spinnerParticular.setOnItemSelectedListener(this);
-        if (getIntent().getExtras()!=null && getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
-            isAdd = true;
 
+        if (getIntent().getExtras() != null &&
+                Constants.ACTION_ADD.equalsIgnoreCase(getIntent().getExtras().getString(Constants.ACTION))) {
+            isAdd = true;
         } else {
             isAdd = false;
             mExpense = (Expense) getIntent().getSerializableExtra(Constants.EXPENSE);
@@ -441,9 +442,10 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                 JSONArray jsonArray = new JSONArray();
                 try {
                     if (FinalUri != null) {
-                        InputStream iStream = null;
-                        iStream = getContentResolver().openInputStream(FinalUri);
-                        img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
+                        InputStream iStream = getContentResolver().openInputStream(FinalUri);
+                        if (iStream != null) {
+                            img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
+                        }
                         expense.setAttachmentPresent("true");
                     }
                 } catch (Exception e) {

@@ -57,41 +57,44 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
     private ImageView img_back, img_list, img_logout, location;
     private TextView toolbar_title;
     List<String> temp;
-    String title,processId;
-    int totalExpectedCount,totalSubmitedCount;
+    String title, processId;
+    int totalExpectedCount, totalSubmitedCount;
     Task task;
     private RelativeLayout mToolBar;
-    ArrayList<String> selectedRoleList=new ArrayList<>();
+    ArrayList<String> selectedRoleList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_overall_report);
         binding.setActivity(this);
+
         preferenceHelper = new PreferenceHelper(this);
         task = getIntent().getParcelableExtra(Constants.INDICATOR_TASK);
         roleList = getIntent().getStringExtra(Constants.INDICATOR_TASK_ROLE);
-        title = getIntent().getExtras().getString(Constants.TITLE);
-        processId = getIntent().getExtras().getString(Constants.PROCESS_ID);
-        locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
-        roleList = getIntent().getStringExtra(Constants.INDICATOR_TASK_ROLE);
-        selectedRoleList = new ArrayList<String>(Arrays.asList(getColumnIdex((roleList).split(";"))));
+
+        if (getIntent().getExtras() != null) {
+            title = getIntent().getExtras().getString(Constants.TITLE);
+            processId = getIntent().getExtras().getString(Constants.PROCESS_ID);
+            locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
+        }
+
+        selectedRoleList = new ArrayList<>(Arrays.asList(getColumnIdex((roleList).split(";"))));
         if (locationModel == null) {
             locationModel = new LocationModel();
             locationModel.setState(User.getCurrentUser(getApplicationContext()).getMvUser().getState());
             locationModel.setDistrict(User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
             locationModel.setTaluka(User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
         }
+
         //here data must be an instance of the class MarsDataProvider
         Utills.setupUI(findViewById(R.id.layout_main), context);
 
         binding.spinnerRole.setText(roleList);
-        binding.spinnerRole.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showRoleDialog();
-            }
-        });
+        binding.spinnerRole.setOnClickListener(v -> showRoleDialog());
+
         setActionbar("Overall Report");
         mAdapter = new OverallReportAdapter(overAllTaskList, context);
         mLayoutManager = new LinearLayoutManager(context);
@@ -99,11 +102,12 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(mAdapter);
 
-        if (Utills.isConnected(getApplicationContext()))
+        if (Utills.isConnected(getApplicationContext())) {
             getDashBoardData(roleList);
-        totalExpectedCount=0;
-        totalSubmitedCount=0;
+        }
 
+        totalExpectedCount = 0;
+        totalSubmitedCount = 0;
     }
 
     private void setActionbar(String Title) {
@@ -129,32 +133,33 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
     private void getDashBoardData(String role) {
         if (Utills.isConnected(this)) {
 
-                Utills.showProgressDialog(this);
+            Utills.showProgressDialog(this);
 
-                String  url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                        + "/services/apexrest/getDashboardExpectedCount1?state=" + locationModel.getState()
-                        + "&district=" + locationModel.getDistrict() + "&taluka=" + locationModel.getTaluka()+ "&role=" + role+ "&processId=" + processId;
-                ServiceRequest apiService =
-                        ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-                apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {        @Override
+            String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                    + "/services/apexrest/getDashboardExpectedCount1?state=" + locationModel.getState()
+                    + "&district=" + locationModel.getDistrict() + "&taluka=" + locationModel.getTaluka() + "&role=" + role + "&processId=" + processId;
+            ServiceRequest apiService =
+                    ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+            apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+                @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Utills.hideProgressDialog();
                     try {
                         if (response.body() != null) {
                             String data = response.body().string();
-                            JSONArray jsonArray=new JSONArray(data);
+                            JSONArray jsonArray = new JSONArray(data);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             overAllTaskList = Arrays.asList(gson.fromJson(data, OverAllModel[].class));
                                 /*for (int i=0;i<jsonArray.length();i++) {
                                     OverAllModel overAllModel=new OverAllModel();
                                     overAllTaskList.add(overAllModel);
                                 }*/
-                            for(int i=0;i<overAllTaskList.size();i++){
-                                totalExpectedCount=totalExpectedCount+overAllTaskList.get(i).getExpectedCount();
-                                totalSubmitedCount=totalSubmitedCount+overAllTaskList.get(i).getSubmittedCount();
+                            for (int i = 0; i < overAllTaskList.size(); i++) {
+                                totalExpectedCount = totalExpectedCount + overAllTaskList.get(i).getExpectedCount();
+                                totalSubmitedCount = totalSubmitedCount + overAllTaskList.get(i).getSubmittedCount();
                             }
-                            binding.tvTotalExpectedCount.setText("Total Expected Count:"+totalExpectedCount);
-                            binding.tvTotalSubmitedCount.setText("Total Submited Count:"+totalSubmitedCount);
+                            binding.tvTotalExpectedCount.setText("Total Expected Count:" + totalExpectedCount);
+                            binding.tvTotalSubmitedCount.setText("Total Submited Count:" + totalSubmitedCount);
                             mAdapter = new OverallReportAdapter(overAllTaskList, context);
                             binding.recyclerView.setAdapter(mAdapter);
                         }
@@ -165,18 +170,19 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
                     }
                 }
 
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Utills.hideProgressDialog();
-                        Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
-                    }
-                });
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Utills.hideProgressDialog();
+                    Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                }
+            });
 
         } else {
             Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
         }
 
     }
+
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(LocaleManager.setLocale(base));
@@ -204,6 +210,7 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
         }
 
     }
+
     private void showRoleDialog() {
 
 
@@ -217,9 +224,8 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
         final boolean[] mSelection = new boolean[items.length];
         for (int i = 0; i < temp.size(); i++) {
             items[i] = temp.get(i);
-            if(selectedRoleList.contains(temp.get(i)))
-            {
-                mSelection[i]=true;
+            if (selectedRoleList.contains(temp.get(i))) {
+                mSelection[i] = true;
             }
         }
 
@@ -260,7 +266,7 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
                         if (Utills.isConnected(getApplicationContext()))
                             getDashBoardData(sb.toString());
                         binding.spinnerRole.setText(sb.toString());
-                        roleList=sb.toString();
+                        roleList = sb.toString();
                         selectedRoleList = new ArrayList<String>(Arrays.asList(getColumnIdex((roleList).split(";"))));
                     }
                 }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -273,6 +279,7 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
 
         dialog.show();
     }
+
     public static String[] getColumnIdex(String[] value) {
 
         for (int i = 0; i < value.length; i++) {

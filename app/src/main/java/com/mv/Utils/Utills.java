@@ -125,10 +125,12 @@ public class Utills {
     public static void hideSoftKeyboard(Activity activity) {
         if (activity != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-            if (activity.getCurrentFocus() != null)
-                inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+            if (activity.getCurrentFocus() != null) {
+                if (inputMethodManager != null) {
+                    inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+                }
+            }
         }
-
     }
 
     public static void showToast(String msg, Context context) {
@@ -184,7 +186,11 @@ public class Utills {
             Log.i("Dialog", "Show");
             pgDialog = new Dialog(cntxt);
             pgDialog.setContentView(R.layout.custome_progress_dialog);
-            pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+            if (pgDialog.getWindow() != null) {
+                pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            }
+
             TextView text = pgDialog.findViewById(R.id.tv_progress);
             text.setText(cntxt.getString(R.string.progress_please_wait));
             ImageView proImg = pgDialog.findViewById(R.id.img_progress);
@@ -240,7 +246,11 @@ public class Utills {
             Log.i("Dialog", "Show");
             pgDialog = new Dialog(cntxt);
             pgDialog.setContentView(R.layout.custome_progress_dialog);
-            pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+
+            if (pgDialog.getWindow() != null) {
+                pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            }
+
             TextView text = pgDialog.findViewById(R.id.tv_progress);
             text.setText(Msg);
             TextView tv_desc = pgDialog.findViewById(R.id.tv_desc);
@@ -379,7 +389,11 @@ public class Utills {
      */
     public static NetworkInfo getNetworkInfo(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo();
+        if (cm != null) {
+            return cm.getActiveNetworkInfo();
+        }
+
+        return null;
     }
 
     public static String convertArrayListToString(ArrayList<Task> arrayList) {
@@ -405,10 +419,11 @@ public class Utills {
             OutputStream out = new FileOutputStream(file);  // I'm assuming you already have the File object for where you're writing to
 
             int bytesRead;
-            while ((bytesRead = in.read(imageData)) > 0) {
-                out.write(Arrays.copyOfRange(imageData, 0, Math.max(0, bytesRead)));
+            if (in != null) {
+                while ((bytesRead = in.read(imageData)) > 0) {
+                    out.write(Arrays.copyOfRange(imageData, 0, Math.max(0, bytesRead)));
+                }
             }
-
         } catch (Exception ex) {
             Log.e("Something went wrong.", ex.getMessage());
             ex.printStackTrace();
@@ -480,26 +495,23 @@ public class Utills {
         final View view = inflater.inflate(R.layout.image_zoom_dialog, null);
 
         TouchImageView img_post = view.findViewById(R.id.img_post);
-        RelativeLayout rel_dialog = view.findViewById(R.id.rel_dialog);
         ImageView close_dialog = view.findViewById(R.id.close_dialog);
         Glide.with(context)
                 .load(Constants.IMAGEURL + id + ".png")
                 .placeholder(context.getResources().getDrawable(R.drawable.mulya_bg))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(img_post);
+
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
         alertDialog.setView(view);
-        final AlertDialog alertD = alertDialog.create();
+        AlertDialog alertD = alertDialog.create();
 
-        alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        close_dialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertD.dismiss();
-            }
-        });
+        if (alertD.getWindow() != null) {
+            alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
+
+        close_dialog.setOnClickListener(v -> alertD.dismiss());
         alertD.show();
-
     }
 
     public static void showImagewithheaderZoomDialog(Context context, GlideUrl url) {
@@ -507,25 +519,22 @@ public class Utills {
         final View view = inflater.inflate(R.layout.image_zoom_dialog, null);
         final ImageView close_dialog = view.findViewById(R.id.close_dialog);
         TouchImageView img_post = view.findViewById(R.id.img_post);
-        RelativeLayout rel_dialog = view.findViewById(R.id.rel_dialog);
         Glide.with(context)
                 .load(url)
                 .placeholder(context.getResources().getDrawable(R.drawable.mulya_bg))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(img_post);
+
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
         alertDialog.setView(view);
-        final AlertDialog alertD = alertDialog.create();
+        AlertDialog alertD = alertDialog.create();
 
-        alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        close_dialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertD.dismiss();
-            }
-        });
+        if (alertD.getWindow() != null) {
+            alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
+
+        close_dialog.setOnClickListener(v -> alertD.dismiss());
         alertD.show();
-
     }
 
 

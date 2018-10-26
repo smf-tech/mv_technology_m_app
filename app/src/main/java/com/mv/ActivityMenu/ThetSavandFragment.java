@@ -415,7 +415,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(MESSAGE_PROGRESS)) {
+            if (intent.getAction() != null && intent.getAction().equals(MESSAGE_PROGRESS)) {
                 Download download = intent.getParcelableExtra("download");
                 if (adapter != null)
                     adapter.notifyDataSetChanged();
