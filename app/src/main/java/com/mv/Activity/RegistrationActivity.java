@@ -1210,7 +1210,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                         if (!isAdd && !isMultipleTalukatSet) {
                             isMultipleTalukatSet = true;
-                            value = User.getCurrentUser(RegistrationActivity.this).getMvUser().getMultipleTaluka();
+                            value = User.getCurrentUser(RegistrationActivity.this).getMvUser() != null ?
+                                    User.getCurrentUser(RegistrationActivity.this).getMvUser().getMultipleTaluka() : "";
                             binding.editMultiselectTaluka.setText(value);
                         }
 

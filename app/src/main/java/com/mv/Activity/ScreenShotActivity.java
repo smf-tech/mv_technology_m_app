@@ -45,8 +45,7 @@ public class ScreenShotActivity extends AppCompatActivity {
     public Bitmap getBitmapOFRootView(View v) {
         View rootview = v.getRootView();
         rootview.setDrawingCacheEnabled(true);
-        Bitmap bitmap1 = rootview.getDrawingCache();
-        return bitmap1;
+        return rootview.getDrawingCache();
     }
 
     public void createImage(Bitmap bmp) {

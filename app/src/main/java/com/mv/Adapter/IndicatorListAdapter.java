@@ -41,8 +41,7 @@ public class IndicatorListAdapter extends RecyclerView.Adapter<IndicatorListAdap
                 .inflate(R.layout.each_trainging, parent, false);
 
         // create ViewHolder
-        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
-        return viewHolder;
+        return new ViewHolder(itemLayoutView);
     }
 
 

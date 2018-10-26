@@ -48,8 +48,7 @@ public class HorizontalCalenderAdapter extends RecyclerView.Adapter<HorizontalCa
                 .inflate(R.layout.each_horizontal_calender, parent, false);
 
         // create ViewHolder
-        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
-        return viewHolder;
+        return new ViewHolder(itemLayoutView);
     }
 
 

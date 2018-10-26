@@ -94,8 +94,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                 .inflate(R.layout.each_content, parent, false);
 
         // create ViewHolder
-        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
-        return viewHolder;
+        return new ViewHolder(itemLayoutView);
     }
 
 

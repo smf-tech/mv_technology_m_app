@@ -802,8 +802,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         String sinSaltoFinal2 = videoData.trim();
         String sinsinSalto2 = sinSaltoFinal2.replaceAll("\n", "");
         Log.d("VideoData**>  ", sinsinSalto2);
-        String baseVideo = sinsinSalto2;
-        return baseVideo;
+        return sinsinSalto2;
     }
 
     public String getPath(Uri uri) {

@@ -101,16 +101,14 @@ public class Utills {
     }
 
     public static String getDeviceId(Context context) {
-        String deviceId = Settings.Secure.getString(context.getContentResolver(),
+        return Settings.Secure.getString(context.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        return deviceId;
     }
 
     public static String getCurrentDate() {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        String formattedDate = df.format(c.getTime());
-        return formattedDate;
+        return df.format(c.getTime());
     }
 
     /**
@@ -121,8 +119,7 @@ public class Utills {
     public static String getDateForAPI() {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM");
-        String formattedDate = df.format(c.getTime());
-        return formattedDate;
+        return df.format(c.getTime());
     }
 
     public static void hideSoftKeyboard(Activity activity) {
