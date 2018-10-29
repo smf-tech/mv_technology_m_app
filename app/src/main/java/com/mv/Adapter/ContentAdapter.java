@@ -68,7 +68,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.regex.Pattern;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -95,10 +94,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
     private JSONArray jsonArrayAttachment = new JSONArray();
     private MediaPlayer mPlayer = new MediaPlayer();
-
-    private static final Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
-            + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
-            + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);
 
     public ContentAdapter(Context context, List<Content> chatList) {
         mContext = context;
@@ -283,7 +278,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         holder.txt_title.setText(String.format("%s", mDataList.get(position).getUserName()));
         holder.txt_template_type.setText(String.format("Title : %s", mDataList.get(position).getTitle()));
         holder.txt_desc.setText(String.format("Description : %s", mDataList.get(position).getDescription()));
-        Linkify.addLinks(holder.txt_desc, urlPattern, mDataList.get(position).getDescription());
+        Linkify.addLinks(holder.txt_desc, Constants.urlPattern, mDataList.get(position).getDescription());
         holder.txt_time.setText(mDataList.get(position).getTime());
         holder.txtLikeCount.setText(String.format("%d Likes", mDataList.get(position).getLikeCount()));
         holder.txtCommentCount.setText(String.format("%d Comments", mDataList.get(position).getCommentCount()));

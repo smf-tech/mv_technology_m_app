@@ -44,8 +44,7 @@ public class SalaryAdapter extends RecyclerView.Adapter<SalaryAdapter.ViewHolder
                 .inflate(R.layout.each_salary, parent, false);
 
         // create ViewHolder
-        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
-        return viewHolder;
+        return new ViewHolder(itemLayoutView);
     }
 
 

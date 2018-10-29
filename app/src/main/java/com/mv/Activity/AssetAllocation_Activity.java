@@ -80,8 +80,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
 
     private void Initviews() {
         preferenceHelper = new PreferenceHelper(this);
-        asset = (Asset) getIntent().getExtras().getSerializable("Assets");
-        asset_id = asset != null ? asset.getAsset_id() : null;
+
         spinner_stock = (Spinner) findViewById(R.id.spinner_stock);
         edit_text_username = (EditText) findViewById(R.id.edit_text_username);
         edit_text_assetname = (EditText) findViewById(R.id.edit_text_assetname);
@@ -95,8 +94,15 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
         btn_allocate_asset.setOnClickListener(this);
         btn_reject_asset.setOnClickListener(this);
         edit_text_no.addTextChangedListener(watch);
-        edit_asset_status.setText(asset.getAllocationStatus());
-        if (User.getCurrentUser(AssetAllocation_Activity.this).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
+
+        if (getIntent().getExtras() != null) {
+            asset = (Asset) getIntent().getExtras().getSerializable("Assets");
+            asset_id = asset != null ? asset.getAsset_id() : null;
+            edit_asset_status.setText(asset != null ? asset.getAllocationStatus() : "");
+        }
+
+        if (asset != null && User.getCurrentUser(AssetAllocation_Activity.this).getMvUser() != null &&
+                User.getCurrentUser(AssetAllocation_Activity.this).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
             lnr_asset_manager.setVisibility(View.VISIBLE);
             lnr_user.setVisibility(View.GONE);
             btn_allocate_asset.setText(getResources().getString(R.string.allocate));
@@ -109,9 +115,8 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
             btn_allocate_asset.setText(getResources().getString(R.string.reallocate));
             setActionbar(getResources().getString(R.string.asset_reallocation));
         }
+
         GetStock();
-
-
     }
 
     private void setActionbar(String Title) {

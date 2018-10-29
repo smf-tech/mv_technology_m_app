@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mv.Adapter.TrainingAdapter;
+import com.mv.Model.Download;
 import com.mv.Model.DownloadContent;
 import com.mv.Model.User;
 import com.mv.R;
@@ -228,8 +229,8 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(MESSAGE_PROGRESS)) {
-            //    Download download = intent.getParcelableExtra("download");
+            if (intent.getAction() != null && intent.getAction().equals(MESSAGE_PROGRESS)) {
+                Download download = intent.getParcelableExtra("download");
                 if (adapter != null)
                     adapter.notifyDataSetChanged();
             }

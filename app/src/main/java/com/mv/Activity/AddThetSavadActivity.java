@@ -1033,8 +1033,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         String sinSaltoFinal2 = videoData.trim();
         String sinsinSalto2 = sinSaltoFinal2.replaceAll("\n", "");
         Log.d("VideoData**>  ", sinsinSalto2);
-        String baseVideo = sinsinSalto2;
-        return baseVideo;
+        return sinsinSalto2;
     }
 
     public String getPath(Uri uri) {

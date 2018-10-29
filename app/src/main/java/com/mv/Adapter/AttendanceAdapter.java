@@ -43,8 +43,7 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
                 .inflate(R.layout.each_child_leave_application, parent, false);
 
         // create ViewHolder
-        AttendanceAdapter.ViewHolder viewHolder = new AttendanceAdapter.ViewHolder(itemLayoutView);
-        return viewHolder;
+        return new ViewHolder(itemLayoutView);
     }
 
     @Override

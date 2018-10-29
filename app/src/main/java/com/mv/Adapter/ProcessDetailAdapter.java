@@ -629,7 +629,6 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             minutes = String.valueOf(mins);
 
         // Append in a StringBuilder
-        String aTime = String.valueOf(hours) + ':' + minutes + " " + timeSet;
-        return aTime;
+        return String.valueOf(hours) + ':' + minutes + " " + timeSet;
     }
 }

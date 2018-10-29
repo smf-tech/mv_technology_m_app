@@ -42,8 +42,7 @@ public class UserApprovalAdapter extends RecyclerView.Adapter<UserApprovalAdapte
                 .inflate(R.layout.each_child_leave_application, parent, false);
 
         // create ViewHolder
-        UserApprovalAdapter.ViewHolder viewHolder = new UserApprovalAdapter.ViewHolder(itemLayoutView);
-        return viewHolder;
+        return new ViewHolder(itemLayoutView);
     }
 
     @Override

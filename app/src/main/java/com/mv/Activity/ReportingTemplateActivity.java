@@ -944,8 +944,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         String sinSaltoFinal2 = videoData.trim();
         String sinsinSalto2 = sinSaltoFinal2.replaceAll("\n", "");
         Log.d("VideoData**>  ", sinsinSalto2);
-        String baseVideo = sinsinSalto2;
-        return baseVideo;
+        return sinsinSalto2;
     }
 
 

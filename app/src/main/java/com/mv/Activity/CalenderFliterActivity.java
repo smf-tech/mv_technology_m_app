@@ -518,8 +518,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             minutes = String.valueOf(mins);
 
         // Append in a StringBuilder
-        String aTime = String.valueOf(hours) + ':' + minutes + " " + timeSet;
-        return aTime;
+        return String.valueOf(hours) + ':' + minutes + " " + timeSet;
     }
 
     @Override

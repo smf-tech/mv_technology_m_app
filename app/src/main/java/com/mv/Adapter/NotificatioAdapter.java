@@ -36,8 +36,7 @@ public class NotificatioAdapter extends RecyclerView.Adapter<NotificatioAdapter.
                 .inflate(R.layout.each_notification, parent, false);
 
         // create ViewHolder
-        NotificatioAdapter.MyViewHolder viewHolder = new NotificatioAdapter.MyViewHolder(itemLayoutView);
-        return viewHolder;
+        return new MyViewHolder(itemLayoutView);
     }
 
     @Override

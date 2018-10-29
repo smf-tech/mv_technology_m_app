@@ -487,12 +487,11 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
     }
 
     private void showMultiselectDialog(ArrayList<String> arrayList) {
-        ArrayList<String> list = arrayList;
-        if (list.contains("Select")) {
-            list.remove(list.indexOf("Select"));
+        if (arrayList.contains("Select")) {
+            arrayList.remove(arrayList.indexOf("Select"));
         }
 
-        final String[] items = arrayList.toArray(new String[list.size()]);
+        final String[] items = arrayList.toArray(new String[arrayList.size()]);
         mSelection = new boolean[(items.length)];
         Arrays.fill(mSelection, false);
         if (value.length() != 0) {

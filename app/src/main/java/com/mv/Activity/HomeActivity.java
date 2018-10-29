@@ -233,18 +233,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-        if (User.getCurrentUser(this).getMvUser() != null &&
-                User.getCurrentUser(this).getMvUser().getUserMobileAppVersion() == null ||
-                !User.getCurrentUser(this).getMvUser().getUserMobileAppVersion().equalsIgnoreCase(getAppVersion()) ||
-                User.getCurrentUser(this).getMvUser().getPhoneId() == null ||
-                !User.getCurrentUser(this).getMvUser().getPhoneId().equalsIgnoreCase(Utills.getDeviceId(HomeActivity.this))) {
+        if (User.getCurrentUser(this).getMvUser() != null) {
+            if (User.getCurrentUser(this).getMvUser().getUserMobileAppVersion() == null ||
+                    !User.getCurrentUser(this).getMvUser().getUserMobileAppVersion().equalsIgnoreCase(getAppVersion()) ||
+                    User.getCurrentUser(this).getMvUser().getPhoneId() == null ||
+                    !User.getCurrentUser(this).getMvUser().getPhoneId().equalsIgnoreCase(Utills.getDeviceId(HomeActivity.this))) {
 
-            if (Utills.isConnected(this)) {
-                User.getCurrentUser(this).getMvUser().setPhoneId(Utills.getDeviceId(HomeActivity.this));
-                User.getCurrentUser(this).getMvUser().setUserMobileAppVersion(getAppVersion());
-                sendData();
-            } else {
-                Utills.showToast(getString(R.string.error_no_internet), this);
+                if (Utills.isConnected(this)) {
+                    User.getCurrentUser(this).getMvUser().setPhoneId(Utills.getDeviceId(HomeActivity.this));
+                    User.getCurrentUser(this).getMvUser().setUserMobileAppVersion(getAppVersion());
+                    sendData();
+                } else {
+                    Utills.showToast(getString(R.string.error_no_internet), this);
+                }
             }
         }
 
@@ -253,10 +254,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         // add infos for the service which file to download and where to store
-        Intent intent = new Intent(this, LocationService.class);
-        intent.putExtra(Constants.State, User.getCurrentUser(getApplicationContext()).getMvUser().getState());
-        intent.putExtra(Constants.DISTRICT, User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
-        startService(intent);
+        if (User.getCurrentUser(getApplicationContext()).getMvUser() != null) {
+            Intent intent = new Intent(this, LocationService.class);
+            intent.putExtra(Constants.State, User.getCurrentUser(getApplicationContext()).getMvUser().getState());
+            intent.putExtra(Constants.DISTRICT, User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
+            startService(intent);
+        }
 
         // Send offline attendance to server
         Attendance temp = AppDatabase.getAppDatabase(HomeActivity.this).userDao().getUnSynchAttendance();
@@ -294,13 +297,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getHolidayList() {
+        if (User.getCurrentUser(getApplicationContext()).getMvUser() == null) {
+            return;
+        }
+
         if (Utills.isConnected(HomeActivity.this)) {
             Utills.showProgressDialog(HomeActivity.this, "Loading Holidays", getString(R.string.progress_please_wait));
             ServiceRequest apiService =
                     ApiClient.getClientWitHeader(HomeActivity.this).create(ServiceRequest.class);
 
             String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/getAllHolidays?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
+                    + "/services/apexrest/getAllHolidays?userId="
+                    + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
 
             apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
                 @Override
@@ -699,12 +707,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.ISROLECHANGE && resultCode == RESULT_OK) {
 
-            if (User.getCurrentUser(getApplicationContext()).getMvUser() == null ||
-                    User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() == null ||
-                    !User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
+            if (User.getCurrentUser(getApplicationContext()).getMvUser() != null) {
+                if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() == null ||
+                        !User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
 
-                if (alertDialogApproved != null && alertDialogApproved.isShowing())
-                    alertDialogApproved.dismiss();
+                    if (alertDialogApproved != null && alertDialogApproved.isShowing())
+                        alertDialogApproved.dismiss();
+                }
             }
 
             initViews();
@@ -978,9 +987,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void getUserData() {
+        if (User.getCurrentUser(getApplicationContext()).getMvUser() == null) {
+            return;
+        }
+
         Utills.showProgressDialog(this, "Loading Data", getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.GetUserData_url + "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
 
@@ -994,12 +1007,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         preferenceHelper.insertString(PreferenceHelper.UserData, data);
                         User.clearUser();
 
-                        if (User.getCurrentUser(getApplicationContext()).getMvUser() == null ||
-                                User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() == null ||
-                                !User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("false")) {
+                        if (User.getCurrentUser(getApplicationContext()).getMvUser() != null) {
+                            if (User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() == null ||
+                                    !User.getCurrentUser(getApplicationContext()).getMvUser()
+                                            .getIsApproved().equalsIgnoreCase("false")) {
 
-                            if (alertDialogApproved != null && alertDialogApproved.isShowing())
-                                alertDialogApproved.dismiss();
+                                if (alertDialogApproved != null && alertDialogApproved.isShowing())
+                                    alertDialogApproved.dismiss();
+                            }
                         }
                         initViews();
                     }
@@ -1085,7 +1100,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("lat", latitude);
             jsonObject.put("lon", longitude);
-            jsonObject.put("id", User.getCurrentUser(this).getMvUser().getId());
+            jsonObject.put("id", User.getCurrentUser(this).getMvUser() != null ?
+                    User.getCurrentUser(this).getMvUser().getId() : "");
 
             JsonParser jsonParser = new JsonParser();
             JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
@@ -1172,6 +1188,10 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 //    }
 
     private void getAllLeaves() {
+        if (User.getCurrentUser(getApplicationContext()).getMvUser() == null) {
+            return;
+        }
+
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl) +
                 Constants.GetAllMyLeave + "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
 
