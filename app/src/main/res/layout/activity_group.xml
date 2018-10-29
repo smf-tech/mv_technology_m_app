@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -42,7 +41,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:drawableLeft="@drawable/search"
+                android:drawableStart="@drawable/search"
                 android:drawablePadding="10dp"
                 android:focusableInTouchMode="true"
                 android:hint="Search Community"

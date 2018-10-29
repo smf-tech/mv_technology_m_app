@@ -1,5 +1,4 @@
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -37,19 +36,19 @@
                 android:textSize="@dimen/small_text" />
 
 
-                <com.sujalamsufalam.Widgets.MyEditTextView
-                    android:id="@+id/spinner_role"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:padding="@dimen/dimen_5dp"
-                    android:inputType="textPersonName"
-                    android:background="@drawable/lighter_grey_box"
-                    android:textColor="@color/black"
+            <com.sujalamsufalam.Widgets.MyEditTextView
+                android:id="@+id/spinner_role"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="3dp"
+                android:padding="@dimen/dimen_5dp"
+                android:inputType="textPersonName"
+                android:background="@drawable/lighter_grey_box"
+                android:textColor="@color/black"
 
-                    android:textSize="@dimen/medium_text" />
+                android:textSize="@dimen/medium_text" />
 
         </LinearLayout>
 
@@ -79,20 +78,17 @@
                     android:layout_marginRight="10dp"
                     android:weightSum="2">
 
-                    <TableRow>
+                    <TextView
+                        android:id="@+id/process_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:text="ProcessName "
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/small_text"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/process_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_column="1"
-                            android:layout_weight="1"
-                            android:text="ProcessName "
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/small_text"
-                            android:textStyle="bold" />
-
-                    </TableRow>
 
                 </TableLayout>
 
@@ -103,19 +99,15 @@
                     android:layout_marginRight="10dp"
                     android:weightSum="2">
 
-                    <TableRow>
-
-                        <TextView
-                            android:id="@+id/caption_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_column="1"
-                            android:layout_weight="1"
-                            android:text="Caption"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/small_text" />
-
-                    </TableRow>
+                    <TextView
+                        android:id="@+id/caption_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:text="Caption"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/small_text" />
 
                 </TableLayout>
 
@@ -126,28 +118,26 @@
                     android:layout_marginRight="10dp"
                     android:weightSum="2">
 
-                    <TableRow>
+                    <TextView
+                        android:id="@+id/total_feedback"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_column="1"
+                        android:layout_weight="1"
+                        android:text="Total Feedback Coun"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/small_text" />
 
-                        <TextView
-                            android:id="@+id/total_feedback"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_column="1"
-                            android:layout_weight="1"
-                            android:text="Total Feedback Coun"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/small_text" />
+                    <TextView
+                        android:id="@+id/valid_feedback"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_column="2"
+                        android:layout_weight="1"
+                        android:text="Valid Feedback Count"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/small_text" />
 
-                        <TextView
-                            android:id="@+id/valid_feedback"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_column="2"
-                            android:layout_weight="1"
-                            android:text="Valid Feedback Count"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/small_text" />
-                    </TableRow>
 
                 </TableLayout>
 
@@ -251,24 +241,24 @@
 
 
 
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/rv_menu"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_weight="3"
-                            android:scrollbars="vertical" />
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/rv_menu"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_weight="3"
+                        android:scrollbars="vertical" />
 
-                        <com.github.mikephil.charting.charts.PieChart
-                            android:id="@+id/chart1"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_above="@+id/seekBar1"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:layout_weight="7" />
+                    <com.github.mikephil.charting.charts.PieChart
+                        android:id="@+id/chart1"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_above="@+id/seekBar1"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_weight="7" />
 
 
                 </LinearLayout>

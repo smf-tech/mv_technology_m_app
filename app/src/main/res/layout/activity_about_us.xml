@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:my_font="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,7 +7,7 @@
 
     <include
         android:id="@+id/toolbar_layout"
-        layout="@layout/toolbar"></include>
+        layout="@layout/toolbar"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -32,10 +30,6 @@
                 android:text="@string/aboutus_info"
                 android:textAppearance="?attr/textAppearanceListItem"
                 android:textColor="@color/dark_grey" />
-
-
         </LinearLayout>
     </ScrollView>
-
-
 </RelativeLayout>

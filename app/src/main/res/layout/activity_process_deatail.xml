@@ -1,7 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:my_font="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_feed"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -61,7 +59,7 @@
                     android:layout_centerVertical="true"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginTop="5dp"
-                    android:layout_toRightOf="@+id/edt_unit_purvizalele"
+                    android:layout_toEndOf="@+id/edt_unit_purvizalele"
                     android:text="फोटो घ्या "
                     android:textSize="@dimen/large_text" />
             </LinearLayout>

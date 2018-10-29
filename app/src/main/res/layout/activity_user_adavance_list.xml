@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -18,7 +16,7 @@
 
         <include
             android:id="@+id/toolbar_layout"
-            layout="@layout/toolbar"></include>
+            layout="@layout/toolbar" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -31,7 +29,6 @@
                 android:id="@+id/rv_expense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/toolbar"
                 android:layout_marginTop="10dp"
                 android:scrollbars="vertical" />
 
@@ -44,6 +41,5 @@
                 android:textColor="@color/dark_grey"
                 android:textSize="@dimen/large_text" />
         </RelativeLayout>
-
     </LinearLayout>
 </layout>

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:my_font="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -53,14 +51,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:text="Loacation"
+                        android:text="Location"
                         android:textColor="@color/black"
                         android:textSize="@dimen/medium_text" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:src="@drawable/ic_keyboard_arrow_down_black_24dp" />
                 </RelativeLayout>
@@ -309,7 +307,7 @@
                     android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
                     android:paddingBottom="10dp"
-                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:paddingStart="@dimen/dimen_10dp"
                     android:paddingTop="10dp"
                     android:prompt="@string/state" />
 
@@ -457,7 +455,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:gravity="left"
+                        android:gravity="start"
                         android:hint="@string/enter_description"
                         android:lines="4"
                         android:textColor="@color/black"
@@ -495,21 +493,21 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                <com.sujalamsufalam.Widgets.MyTextView
-                    android:id="@+id/tv_event_add_user"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:drawableLeft="@android:drawable/ic_menu_add"
-                    android:gravity="left"
-                    android:paddingBottom="@dimen/dimen_10dp"
-                    android:text="@string/add_members"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/medium_text" />
+                    <com.sujalamsufalam.Widgets.MyTextView
+                        android:id="@+id/tv_event_add_user"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_weight="1"
+                        android:background="@null"
+                        android:drawableStart="@android:drawable/ic_menu_add"
+                        android:gravity="start"
+                        android:paddingBottom="@dimen/dimen_10dp"
+                        android:text="@string/add_members"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/medium_text" />
 
                     <com.sujalamsufalam.Widgets.MyTextView
                         android:id="@+id/tv_event_attendance"
@@ -520,8 +518,8 @@
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
                         android:background="@null"
-                        android:drawableLeft="@android:drawable/ic_menu_add"
-                        android:gravity="left"
+                        android:drawableStart="@android:drawable/ic_menu_add"
+                        android:gravity="start"
                         android:paddingBottom="@dimen/dimen_10dp"
                         android:text="@string/attendance"
                         android:textColor="@color/black"
