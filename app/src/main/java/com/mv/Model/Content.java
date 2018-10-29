@@ -25,90 +25,111 @@ public class Content implements Serializable {
     @ColumnInfo(name = "isAttachmentPresent")
     @SerializedName("isAttachmentPresent")
     @Expose
+    private
     String isAttachmentPresent;
 
     @ColumnInfo(name = "synchStatus")
+    private
     String synchStatus;
     @ColumnInfo(name = "Id")
     @SerializedName("Id")
     @Expose
+    private
     String id;
     @ColumnInfo(name = "UserId")
     @SerializedName("UserId")
     @Expose
+    private
     String user_id;
 
 
     @ColumnInfo(name = "CommunityId")
     @SerializedName("CommunityId")
     @Expose
+    private
     String community_id;
     @ColumnInfo(name = "District")
     @SerializedName("District")
     @Expose
+    private
     String district;
     @ColumnInfo(name = "taluka")
     @SerializedName("taluka")
     @Expose
+    private
     String taluka;
 
     @ColumnInfo(name = "likeCount")
     @SerializedName("likeCount")
     @Expose
+    private
     int likeCount;
     @ColumnInfo(name = "commentCount")
     @SerializedName("commentCount")
     @Expose
+    private
     int commentCount;
     @ColumnInfo(name = "isLike")
     @SerializedName("isLike")
     @Expose
+    private
     Boolean isLike;
     @ColumnInfo(name = "Issue_Type")
     @SerializedName("Issue_Type")
     @Expose
+    private
     String issue_type;
     @ColumnInfo(name = "Report_Type")
     @SerializedName("Report_Type")
     @Expose
+    private
     String reporting_type;
     @ColumnInfo(name = "Priority")
     @SerializedName("Priority")
     @Expose
+    private
     String issue_priority;
     @ColumnInfo(name = "Title")
     @SerializedName("Title")
     @Expose
+    private
     String title;
     @ColumnInfo(name = "Description")
     @SerializedName("Description")
     @Expose
+    private
     String description;
     @ColumnInfo(name = "TemplateId")
     @SerializedName("TemplateId")
     @Expose
+    private
     String template;
 
 
     @ColumnInfo(name = "TemplateName")
+    private
     String templateName;
     @ColumnInfo(name = "userAttachmentId")
     @SerializedName("userAttachmentId")
     @Expose
+    private
     String userAttachmentId;
     @ColumnInfo(name = "CreatedDate")
     @SerializedName("CreatedDate")
     @Expose
+    private
     String time;
     @ColumnInfo(name = "isbroadcast")
     @SerializedName("isbroadcast")
     @Expose
+    private
     String isBroadcast;
 
 
     @ColumnInfo(name = "userName")
     @SerializedName("userName")
     @Expose
+    private
     String userName;
 
     public Boolean getMediaPlay() {
@@ -122,6 +143,7 @@ public class Content implements Serializable {
     @ColumnInfo(name = "isMediaPlay")
     @SerializedName("isMediaPlay")
     @Expose
+    private
     Boolean mediaPlay = false;
 
     @ColumnInfo(name = "isActive")
@@ -152,17 +174,20 @@ public class Content implements Serializable {
     @ColumnInfo(name = "contentType")
     @SerializedName("contentType")
     @Expose
+    private
     String contentType;
 
     @ColumnInfo(name = "isTheatMessage")
     @SerializedName("isTheatMessage")
     @Expose
+    private
     String isTheatMessage;
 
 
     @ColumnInfo(name = "isDelete")
     @SerializedName("isDelete")
     @Expose
+    private
     Boolean isDelete;
 
     public String getStatus() {
@@ -176,10 +201,12 @@ public class Content implements Serializable {
     @ColumnInfo(name = "status")
     @SerializedName("status")
     @Expose
+    private
     String status;
 
     @SerializedName("isPostUserDidSpam")
     @Expose
+    private
     Boolean isPostUserDidSpam;
 
     public String getIsAttachmentPresent() {
@@ -273,6 +300,7 @@ public class Content implements Serializable {
 
     @SerializedName("attachmentId")
     @Expose
+    private
     String attachmentId;
 
     public String getCommunity_id() {

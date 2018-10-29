@@ -2,14 +2,10 @@ package com.mv;
 
 import android.app.Application;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.mv.Utils.ForceUpdateChecker;
 
@@ -38,22 +34,15 @@ public class Mulyavardhan extends Application {
 
         firebaseRemoteConfig.setDefaults(remoteConfigDefaults);
         firebaseRemoteConfig.fetch(1000*60) // fetch every minutes
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "remote config is fetched.");
-                            firebaseRemoteConfig.activateFetched();
-                        }
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "remote config is fetched.");
+                        firebaseRemoteConfig.activateFetched();
                     }
-
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                Log.d(TAG, "Fetch failed");
-                // Do whatever should be done on failure
-            }
-        });
+                }).addOnFailureListener(exception -> {
+                    Log.d(TAG, "Fetch failed");
+                    // Do whatever should be done on failure
+                });
     }
 
     @Override

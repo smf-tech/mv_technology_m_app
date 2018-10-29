@@ -2,7 +2,6 @@ package com.mv.Adapter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -105,9 +104,7 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
             txt_asset_issue_date = itemLayoutView.findViewById(R.id.txt_asset_issue_date);
             view1 = itemLayoutView.findViewById(R.id.view1);
             imgLayout = itemLayoutView.findViewById(R.id.imgLayout);
-            cardView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            cardView.setOnClickListener((view)-> {
                     if (assetList.get(getAdapterPosition()).getAllocationStatus().equalsIgnoreCase("Allocated")
                             && !(User.getCurrentUser(mContext).getMvUser().getRoll().equalsIgnoreCase("Asset Manager"))) {
                         Intent intent = new Intent(mContext, AssetApprovalActivity.class);
@@ -125,22 +122,14 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
                         intent.putExtra("Assets", assetList.get(getAdapterPosition()));
                         mContext.startActivity(intent);
                     }
-                }
             });
-            imgDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            imgDelete.setOnClickListener((view)-> {
                     if (activity != null)
                         showLogoutPopUp(getAdapterPosition());
-                }
             });
-            imgEdit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            imgEdit.setOnClickListener((view)-> {
                     if (activity != null)
                         activity.editExpense(assetList.get(getAdapterPosition()));
-
-                }
             });
         }
 
@@ -159,19 +148,15 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(mContext.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
+        alertDialog.setButton2(mContext.getString(android.R.string.cancel),(dialog, which)-> {
                 alertDialog.dismiss();
                 // Write your code here to execute after dialog closed
               /*  listOfWrongQuestions.add(mPosition);
                 prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
-            }
         });
         // Setting OK Button
-        alertDialog.setButton(mContext.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
+        alertDialog.setButton(mContext.getString(android.R.string.ok), (dialog, which)-> {
                 activity.deleteExpense(assetList.get(postion));
-            }
         });
 
         // Showing Alert Message

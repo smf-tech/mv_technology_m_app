@@ -26,7 +26,7 @@ public class IndicatorTask extends AppCompatActivity implements View.OnClickList
     private ActivityIndicatorTaskBinding binding;
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
-    DashaBoardListModel dashaBoardListModel;
+    private DashaBoardListModel dashaBoardListModel;
     private RelativeLayout mToolBar;
     //private ActivityProgrammeManagmentBinding binding;
     private PreferenceHelper preferenceHelper;

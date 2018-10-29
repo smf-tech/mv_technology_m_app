@@ -32,11 +32,11 @@ import retrofit2.Response;
 
 public class LocationService extends IntentService {
 
-    public String state;
-    public String district;
+    private String state;
+    private String district;
     private PreferenceHelper preferenceHelper;
-    List<LocationModel> locationModelArrayList = new ArrayList<>();
-    List<String> locationState = new ArrayList<>();
+    private List<LocationModel> locationModelArrayList = new ArrayList<>();
+    private List<String> locationState = new ArrayList<>();
 //    List<String> locationDistrct = new ArrayList<>();
 //    List<String> mDistrictList = new ArrayList();
 

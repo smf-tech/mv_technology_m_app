@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -16,12 +15,10 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -83,11 +80,9 @@ public class Utills {
 
         // Set up touch listener for non-text box views to hide keyboard.
         if (!(view instanceof EditText)) {
-            view.setOnTouchListener(new View.OnTouchListener() {
-                public boolean onTouch(View v, MotionEvent event) {
-                    hideSoftKeyboard(activity);
-                    return false;
-                }
+            view.setOnTouchListener((v, event) -> {
+                hideSoftKeyboard(activity);
+                return false;
             });
         }
 
@@ -159,18 +154,11 @@ public class Utills {
         final int mMonth = c.get(Calendar.MONTH);
         final int mDay = c.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog dpd = new DatePickerDialog(context,
-                new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-                        text.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
-                    }
-                }, mYear, mMonth, mDay);
+                (view, year, monthOfYear, dayOfMonth) -> text.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth)), mYear, mMonth, mDay);
         dpd.show();
     }
 
-    public static String getTwoDigit(int i) {
+    private static String getTwoDigit(int i) {
         if (i < 10)
             return "0" + i;
         return "" + i;
@@ -196,7 +184,6 @@ public class Utills {
             ImageView proImg = pgDialog.findViewById(R.id.img_progress);
             proImg.setBackgroundResource(R.drawable.progress_dialog);
             AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
-            rocketAnimation = (AnimationDrawable) proImg.getBackground();
             rocketAnimation.start();
             pgDialog.setCancelable(false);
             pgDialog.show();
@@ -260,7 +247,6 @@ public class Utills {
             ImageView proImg = pgDialog.findViewById(R.id.img_progress);
             proImg.setBackgroundResource(R.drawable.progress_dialog);
             AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
-            rocketAnimation = (AnimationDrawable) proImg.getBackground();
             rocketAnimation.start();
             pgDialog.setCancelable(false);
             pgDialog.show();
@@ -287,7 +273,7 @@ public class Utills {
         int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
 
-        int len = 0;
+        int len ;
         while ((len = inputStream.read(buffer)) != -1) {
             byteBuffer.write(buffer, 0, len);
         }
@@ -364,18 +350,12 @@ public class Utills {
         alertDialog.setCancelable(true);
         alertDialog.setMessage(context.getString(R.string.error_no_internet));
         alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
-        alertDialog.setButton(context.getString(R.string.Setting), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Intent settingsIntent = new Intent(Settings.ACTION_SETTINGS);
+        alertDialog.setButton(context.getString(R.string.Setting), (dialog, which) -> {
+            Intent settingsIntent = new Intent(Settings.ACTION_SETTINGS);
 
-                context.startActivity(settingsIntent);
-            }
+            context.startActivity(settingsIntent);
         });
-        alertDialog.setButton2(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        alertDialog.setButton2(context.getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
         // Showing Alert Message
         alertDialog.show();
     }
@@ -387,7 +367,7 @@ public class Utills {
      * @param context
      * @return
      */
-    public static NetworkInfo getNetworkInfo(Context context) {
+    private static NetworkInfo getNetworkInfo(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         if (cm != null) {
             return cm.getActiveNetworkInfo();
@@ -432,7 +412,7 @@ public class Utills {
 
     public static String milliSecondsToTimer(long milliseconds) {
         String finalTimerString = "";
-        String secondsString = "";
+        String secondsString;
 
         // Convert total duration into time
         int hours = (int) (milliseconds / (1000 * 60 * 60));
@@ -449,7 +429,6 @@ public class Utills {
         } else {
             secondsString = "" + seconds;
         }
-
         finalTimerString = finalTimerString + minutes + ":" + secondsString;
 
         // return timer string
@@ -463,7 +442,7 @@ public class Utills {
      * @param totalDuration
      */
     public static int getProgressPercentage(long currentDuration, long totalDuration) {
-        Double percentage = (double) 0;
+        Double percentage;
 
         long currentSeconds = (int) (currentDuration / 1000);
         long totalSeconds = (int) (totalDuration / 1000);
@@ -482,7 +461,7 @@ public class Utills {
      * @param totalDuration returns current duration in milliseconds
      */
     public static int progressToTimer(int progress, int totalDuration) {
-        int currentDuration = 0;
+        int currentDuration;
         totalDuration = totalDuration / 1000;
         currentDuration = (int) ((((double) progress) / 100) * totalDuration);
 
@@ -550,20 +529,12 @@ public class Utills {
 
         final EditText etComments = view.findViewById(R.id.addtag);
 
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(R.string.ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(R.string.ok), (dialog, which) -> {
 
-            }
         });
 
 
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-            }
-        });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", (dialog, which) -> alertDialog.dismiss());
 
 
         alertDialog.setView(view);
@@ -572,18 +543,17 @@ public class Utills {
 
 
     public static void spamContent(Context mContext, PreferenceHelper preferenceHelper, String ID, String UserId, Boolean isSpam) {
-        String url = "";
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
 
 
-        url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.SpamContentUrl + "?Id=" + ID + "&userId=" + UserId + "&isSpam=" + isSpam;
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                String data = null;
+                String data;
                 try {
                     data = response.body().string();
                     if (data.length() > 0) {
@@ -593,10 +563,9 @@ public class Utills {
                     }
 
                 } catch (IOException e) {
-
                     e.printStackTrace();
                 } catch (JSONException e) {
-
+                    e.printStackTrace();
                 }
             }
 

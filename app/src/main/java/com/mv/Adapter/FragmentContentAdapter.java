@@ -160,6 +160,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             MenuItem spam = popup.getMenu().findItem(R.id.spam);
             MenuItem edit = popup.getMenu().findItem(R.id.edit);
             MenuItem delete = popup.getMenu().findItem(R.id.delete);
+
             spam.setVisible(true);
             edit.setVisible(false);
             delete.setVisible(false);

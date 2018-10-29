@@ -99,8 +99,8 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         selectedSchool = User.getCurrentUser(getApplicationContext()).getMvUser().getSchool_Name();
         selectedOrganization = User.getCurrentUser(getApplicationContext()).getMvUser().getOrganisation();
         // selectedRolename = User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
-        selectedRole = new ArrayList<String>(Arrays.asList(getColumnIdex("Select".split(","))));
-        selectedProcessId = new ArrayList<String>(Arrays.asList(getColumnIdex(("Other").split(","))));
+        selectedRole = new ArrayList<>(Arrays.asList(getColumnIdex("Select".split(","))));
+        selectedProcessId = new ArrayList<>(Arrays.asList(getColumnIdex(("Other").split(","))));
         binding.spinnerRole.setText("Select");
 
         binding.rlMoreLocation.setOnClickListener(this);
@@ -114,20 +114,20 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
 
         binding.spinnerRole.setOnClickListener(this);
         //
-        mStateList = new ArrayList<String>();
+        mStateList = new ArrayList<>();
         mStateList.add("Select");
         //mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
-        mListDistrict = new ArrayList<String>();
+        mListDistrict = new ArrayList<>();
         mListDistrict.add("Select");
 
-        mListTaluka = new ArrayList<String>();
+        mListTaluka = new ArrayList<>();
         mListTaluka.add("Select");
-        mListCluster = new ArrayList<String>();
+        mListCluster = new ArrayList<>();
         mListCluster.add("Select");
-        mListVillage = new ArrayList<String>();
+        mListVillage = new ArrayList<>();
         mListVillage.add("Select");
 
-        mListSchoolName = new ArrayList<String>();
+        mListSchoolName = new ArrayList<>();
         mListSchoolName.add("Select");
 
         setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
@@ -136,10 +136,10 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         setSpinnerAdapter(mListVillage, village_adapter, binding.spinnerVillage, selectedVillage);
         setSpinnerAdapter(mListSchoolName, school_adapter, binding.spinnerSchoolName, selectedSchool);
 
-        mListOrganization = new ArrayList<String>();
+        mListOrganization = new ArrayList<>();
         mListOrganization.add("Select");
 
-        mListRoleName = new ArrayList<String>();
+        mListRoleName = new ArrayList<>();
 
         mStateList.clear();
         mStateList = AppDatabase.getAppDatabase(context).userDao().getState();
@@ -515,7 +515,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
     }
 
     public void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, itemList);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, itemList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         if (!selectedValue.isEmpty() && itemList.indexOf(selectedValue) >= 0)
@@ -690,48 +690,39 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         final ArrayList seletedItems = new ArrayList();
         android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(context)
                 .setTitle("Select ")
-                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                .setMultiChoiceItems(items, mSelection, (dialog13, which, isChecked) -> {
 
-                        if (which < mSelection.length) {
-                            mSelection[which] = isChecked;
+                    if (which < mSelection.length) {
+                        mSelection[which] = isChecked;
 
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Argument 'which' is out of bounds.");
-                        }
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Argument 'which' is out of bounds.");
                     }
                 })
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        StringBuffer sb = new StringBuffer();
-                        String prefix = "";
-                        for (int i = 0; i < items.length; i++) {
-                            if (mSelection[i]) {
-                                sb.append(prefix);
-                                prefix = ",";
-                                sb.append(temp.get(i));
-                                //now original string is changed
-                            }
+                .setPositiveButton(getString(R.string.ok), (dialog12, id) -> {
+                    StringBuffer sb = new StringBuffer();
+                    String prefix = "";
+                    for (int i = 0; i < items.length; i++) {
+                        if (mSelection[i]) {
+                            sb.append(prefix);
+                            prefix = ",";
+                            sb.append(temp.get(i));
+                            //now original string is changed
                         }
-                        selectedRolename = sb.toString();
-                        if (selectedRolename.length() > 0)
-                            binding.spinnerRole.setText(selectedRolename);
-                        else
-                            binding.spinnerRole.setText("Select");
-                        selectedRole = new ArrayList<String>(Arrays.asList(getColumnIdex((selectedRolename).split(","))));
-                        getAllFilterUser();
-                        Log.e("StringValue", selectedRolename);
+                    }
+                    selectedRolename = sb.toString();
+                    if (selectedRolename.length() > 0)
+                        binding.spinnerRole.setText(selectedRolename);
+                    else
+                        binding.spinnerRole.setText("Select");
+                    selectedRole = new ArrayList<String>(Arrays.asList(getColumnIdex((selectedRolename).split(","))));
+                    getAllFilterUser();
+                    Log.e("StringValue", selectedRolename);
 
 
-                    }
-                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
-                    }
+                }).setNegativeButton(getString(R.string.cancel), (dialog1, id) -> {
+                    //  Your code when user clicked on Cancel
                 }).create();
         dialog.show();
     }

@@ -40,17 +40,19 @@ import retrofit2.Response;
 public class AttendanceApproval2Activity extends AppCompatActivity implements View.OnClickListener {
 
     private AttendanceAdapter adapter;
-    public List<AttendanceApproval> attendanceList = new ArrayList<>();
-    public List<AttendanceApproval> attendanceSortedList = new ArrayList<>();
-    TextView textNoData;
+    private List<AttendanceApproval> attendanceList = new ArrayList<>();
+    private List<AttendanceApproval> attendanceSortedList = new ArrayList<>();
+    private TextView textNoData;
     private PreferenceHelper preferenceHelper;
-    LinearLayout sortLayout;
-    String proceesId;
-    EditText edittextsort;
-    Activity mContext;
-    RecyclerView recyclerView;
-    Button btn_pending,btn_approve,btn_reject;
-    String sortString;
+    private LinearLayout sortLayout;
+    private String proceesId;
+    private EditText edittextsort;
+    private Activity mContext;
+    private RecyclerView recyclerView;
+    private Button btn_pending;
+    private Button btn_approve;
+    private Button btn_reject;
+    private String sortString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +95,7 @@ public class AttendanceApproval2Activity extends AppCompatActivity implements Vi
             onBackPressed();
         }
     }
-    public void getAllProcess() {
+    private void getAllProcess() {
 
         Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
@@ -180,7 +182,7 @@ public class AttendanceApproval2Activity extends AppCompatActivity implements Vi
     }
 
     //added this code for sorting vouchers by username
-    TextWatcher watch = new TextWatcher() {
+    private TextWatcher watch = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable arg0) {

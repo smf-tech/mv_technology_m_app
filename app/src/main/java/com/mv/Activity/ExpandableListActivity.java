@@ -47,13 +47,13 @@ import retrofit2.Response;
 
 public class ExpandableListActivity extends Activity implements View.OnClickListener {
     private int lastExpandedPosition = -1;
-    public static final String LANGUAGE = "language";
-    ExpandableListAdapter listAdapter;
-    ExpandableListView expListView;
-    List<String> listDataHeader = new ArrayList<String>();
-    HashMap<String, List<DownloadContent>> listDataChild = new HashMap<String, List<DownloadContent>>();
-    public static final String MESSAGE_PROGRESS = "message_progress";
-    TextView textNoData;
+    private static final String LANGUAGE = "language";
+    private ExpandableListAdapter listAdapter;
+    private ExpandableListView expListView;
+    private List<String> listDataHeader = new ArrayList<>();
+    private HashMap<String, List<DownloadContent>> listDataChild = new HashMap<>();
+    private static final String MESSAGE_PROGRESS = "message_progress";
+    private TextView textNoData;
     private PreferenceHelper preferenceHelper;
 
     @Override
@@ -76,34 +76,18 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
         // setting list adapter
         expListView.setAdapter(listAdapter);
         // Listview on child click listener
-        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-
-                return false;
-            }
-        });
+        expListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> false);
         // Listview Group expanded listener
-        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                if (lastExpandedPosition != -1
-                        && groupPosition != lastExpandedPosition) {
-                    expListView.collapseGroup(lastExpandedPosition);
-                }
-                lastExpandedPosition = groupPosition;
-
+        expListView.setOnGroupExpandListener(groupPosition -> {
+            if (lastExpandedPosition != -1
+                    && groupPosition != lastExpandedPosition) {
+                expListView.collapseGroup(lastExpandedPosition);
             }
+            lastExpandedPosition = groupPosition;
+
         });
         // Listview Group collasped listener
-        expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-            }
+        expListView.setOnGroupCollapseListener(groupPosition -> {
         });
         if (AppDatabase.getAppDatabase(ExpandableListActivity.this).userDao().getDownloadContent(preferenceHelper.getString(LANGUAGE)).size() == 0) {
             if (Utills.isConnected(ExpandableListActivity.this)) {
@@ -245,7 +229,7 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
     private void prepareListData() {
         listDataHeader.clear();
         listDataChild.clear();
-        List<String> temp = new ArrayList<String>();
+        List<String> temp = new ArrayList<>();
         String lang = preferenceHelper.getString(LANGUAGE);
         if (lang == null || lang.length() == 0)
             lang = Constants.LANGUAGE_ENGLISH;

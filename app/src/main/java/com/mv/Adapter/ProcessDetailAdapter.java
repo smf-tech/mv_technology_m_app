@@ -85,51 +85,42 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             //date  and timelayout
 
             date = view.findViewById(R.id.et_process_detail_date);
-            date.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.DATE) || taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.EVENT_DATE))
-                        showDateDialog(mContext, getAdapterPosition());
-                    else if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.MULTI_SELECT)) {
-                        myList = new ArrayList<String>(Arrays.asList(getColumnIdex((taskList.get(getAdapterPosition()).getPicklist_Value__c()).split(","))));
-                        //added this code to enable marathi language in multiselect filed
-                        selectedLanList = new ArrayList<String>(Arrays.asList(getColumnIdex((taskList.get(getAdapterPosition()).getPicklist_Value_Lan__c()).split(","))));
-                       // taskList.get(getAdapterPosition()).setTask_Response__c(myList.get(getAdapterPosition()));
-                        if (myList.size() == selectedLanList.size())
-                            showDialog(selectedLanList, getAdapterPosition());
-                        else
-                            showDialog(myList, getAdapterPosition());
+            date.setOnClickListener(v -> {
+                if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.DATE) || taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.EVENT_DATE))
+                    showDateDialog(mContext, getAdapterPosition());
+                else if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.MULTI_SELECT)) {
+                    myList = new ArrayList<String>(Arrays.asList(getColumnIdex((taskList.get(getAdapterPosition()).getPicklist_Value__c()).split(","))));
+                    //added this code to enable marathi language in multiselect filed
+                    selectedLanList = new ArrayList<String>(Arrays.asList(getColumnIdex((taskList.get(getAdapterPosition()).getPicklist_Value_Lan__c()).split(","))));
+                   // taskList.get(getAdapterPosition()).setTask_Response__c(myList.get(getAdapterPosition()));
+                    if (myList.size() == selectedLanList.size())
+                        showDialog(selectedLanList, getAdapterPosition());
+                    else
+                        showDialog(myList, getAdapterPosition());
 
-                    } else if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.TIME)) {
-                        Calendar mcurrentTime = Calendar.getInstance();
-                        int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                        int minute = mcurrentTime.get(Calendar.MINUTE);
-                        TimePickerDialog mTimePicker;
-                        mTimePicker = new TimePickerDialog(mContext, new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                                taskList.get(getAdapterPosition()).setTask_Response__c(updateTime(selectedHour, selectedMinute));
-                                notifyItemChanged(getAdapterPosition());
-                            }
-                        }, hour, minute, false);//Yes 24 hour time
-                        mTimePicker.setTitle("Select Time");
-                        mTimePicker.show();
-
-                    }
+                } else if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.TIME)) {
+                    Calendar mcurrentTime = Calendar.getInstance();
+                    int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                    int minute = mcurrentTime.get(Calendar.MINUTE);
+                    TimePickerDialog mTimePicker;
+                    mTimePicker = new TimePickerDialog(mContext, (timePicker, selectedHour, selectedMinute) -> {
+                        taskList.get(getAdapterPosition()).setTask_Response__c(updateTime(selectedHour, selectedMinute));
+                        notifyItemChanged(getAdapterPosition());
+                    }, hour, minute, false);//Yes 24 hour time
+                    mTimePicker.setTitle("Select Time");
+                    mTimePicker.show();
 
                 }
+
             });
 
-            llLocation.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(mContext, LocationSelectionActity.class);
-                    intent.putExtra(Constants.LOCATION_TYPE, taskList.get(getAdapterPosition()).getTask_type__c());
-                    intent.putExtra(Constants.LOCATION, taskList.get(getAdapterPosition()).getLocationLevel());
-                    intent.putExtra(Constants.POSITION, getAdapterPosition());
-                    intent.putParcelableArrayListExtra(Constants.PROCESS_ID, taskList);
-                    mContext.startActivityForResult(intent, 1);
-                }
+            llLocation.setOnClickListener(v -> {
+                Intent intent = new Intent(mContext, LocationSelectionActity.class);
+                intent.putExtra(Constants.LOCATION_TYPE, taskList.get(getAdapterPosition()).getTask_type__c());
+                intent.putExtra(Constants.LOCATION, taskList.get(getAdapterPosition()).getLocationLevel());
+                intent.putExtra(Constants.POSITION, getAdapterPosition());
+                intent.putParcelableArrayListExtra(Constants.PROCESS_ID, taskList);
+                mContext.startActivityForResult(intent, 1);
             });
             //text and multiline
             // inputLayout = (TextInputLayout) view.findViewById(R.id.input_content);
@@ -162,7 +153,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     if (position == 0)
                         taskList.get(getAdapterPosition()).setTask_Response__c("");
                     else {
-                        myList = new ArrayList<String>(Arrays.asList(getColumnIdex(("Select," + taskList.get(getAdapterPosition()).getPicklist_Value__c()).split(","))));
+                        myList = new ArrayList<>(Arrays.asList(getColumnIdex(("Select," + taskList.get(getAdapterPosition()).getPicklist_Value__c()).split(","))));
                         taskList.get(getAdapterPosition()).setTask_Response__c(myList.get(position));
                     }
                     ((ProcessDeatailActivity) mContext).saveDataToList(taskList.get(getAdapterPosition()), getAdapterPosition());
@@ -177,19 +168,16 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             dateHeader = view.findViewById(R.id.tv_date_question);
             checkText = view.findViewById(R.id.check_header);
             checkBox = view.findViewById(R.id.detail_chk);
-            checkBox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (((CheckBox) v).isChecked()) {
-                        taskList.get(getAdapterPosition()).setTask_Response__c("true");
+            checkBox.setOnClickListener(v -> {
+                if (((CheckBox) v).isChecked()) {
+                    taskList.get(getAdapterPosition()).setTask_Response__c("true");
 
-                        ((ProcessDeatailActivity) mContext).saveDataToList(taskList.get(getAdapterPosition()), getAdapterPosition());
-                    } else {
-                        taskList.get(getAdapterPosition()).setTask_Response__c("false");
+                    ((ProcessDeatailActivity) mContext).saveDataToList(taskList.get(getAdapterPosition()), getAdapterPosition());
+                } else {
+                    taskList.get(getAdapterPosition()).setTask_Response__c("false");
 
-                        ((ProcessDeatailActivity) mContext).saveDataToList(taskList.get(getAdapterPosition()), getAdapterPosition());
+                    ((ProcessDeatailActivity) mContext).saveDataToList(taskList.get(getAdapterPosition()), getAdapterPosition());
 
-                    }
                 }
             });
 
@@ -265,12 +253,12 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llDate.setVisibility(View.GONE);
                 holder.llLayout.setVisibility(View.VISIBLE);
 
-                myList = new ArrayList<String>(Arrays.asList(getColumnIdex(("Select," + task.getPicklist_Value__c()).split(","))));
-                selectedLanList = new ArrayList<String>(Arrays.asList(getColumnIdex(("Select," + task.getPicklist_Value_Lan__c()).split(","))));
+                myList = new ArrayList<>(Arrays.asList(getColumnIdex(("Select," + task.getPicklist_Value__c()).split(","))));
+                selectedLanList = new ArrayList<>(Arrays.asList(getColumnIdex(("Select," + task.getPicklist_Value_Lan__c()).split(","))));
                 if (myList.size() == selectedLanList.size())
-                    dimen_adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, selectedLanList);
+                    dimen_adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, selectedLanList);
                 else
-                    dimen_adapter = new ArrayAdapter<String>(mContext, android.R.layout.simple_spinner_item, myList);
+                    dimen_adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, myList);
                 dimen_adapter.setDropDownViewResource(R.layout.spinnerlayout);
                 holder.spinnerResponse.setPrompt(task.getTask_Text___Lan_c());
                 holder.spinnerResponse.setAdapter(dimen_adapter);
@@ -427,9 +415,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
                 if (task.getTask_Response__c() != null && task.getTask_Response__c().length() > 0) {
                     String answerStr="";
-                    ArrayList<String> myList1 = new ArrayList<String>(Arrays.asList(getColumnIdex((taskList.get(position).getPicklist_Value__c()).split(","))));
-                    ArrayList<String> selectedLanList1 = new ArrayList<String>(Arrays.asList(getColumnIdex((taskList.get(position).getPicklist_Value_Lan__c()).split(","))));
-                    ArrayList<String> answer = new ArrayList<String>(Arrays.asList(getColumnIdex((task.getTask_Response__c()).split(","))));
+                    ArrayList<String> myList1 = new ArrayList<>(Arrays.asList(getColumnIdex((taskList.get(position).getPicklist_Value__c()).split(","))));
+                    ArrayList<String> selectedLanList1 = new ArrayList<>(Arrays.asList(getColumnIdex((taskList.get(position).getPicklist_Value_Lan__c()).split(","))));
+                    ArrayList<String> answer = new ArrayList<>(Arrays.asList(getColumnIdex((task.getTask_Response__c()).split(","))));
                         for(String strAns:answer){
                             answerStr=answerStr.concat((selectedLanList1.get(myList1.indexOf(strAns))).concat(","));
                         }
@@ -553,15 +541,10 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         final int mMonth = c.get(Calendar.MONTH);
         final int mDay = c.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog dpd = new DatePickerDialog(context,
-                new DatePickerDialog.OnDateSetListener() {
+                (view, year, monthOfYear, dayOfMonth) -> {
+                    taskList.get(Position).setTask_Response__c(getTwoDigit(dayOfMonth) + "/" + getTwoDigit(monthOfYear + 1) + "/" + year);
+                    notifyItemChanged(Position);
 
-                    @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-                        taskList.get(Position).setTask_Response__c(getTwoDigit(dayOfMonth) + "/" + getTwoDigit(monthOfYear + 1) + "/" + year);
-                        notifyItemChanged(Position);
-
-                    }
                 }, mYear, mMonth, mDay);
         dpd.show();
     }
@@ -586,32 +569,23 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         final ArrayList seletedItems = new ArrayList();
         AlertDialog dialog = new AlertDialog.Builder(mContext)
                 .setTitle(taskList.get(pos).getTask_Text___Lan_c())
-                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (mSelection != null && which < mSelection.length) {
-                            mSelection[which] = isChecked;
+                .setMultiChoiceItems(items, mSelection, (dialog13, which, isChecked) -> {
+                    if (mSelection != null && which < mSelection.length) {
+                        mSelection[which] = isChecked;
 //                            value = buildSelectedItemString(items);
-                            value = buildSelectedItemString(deafultLangitems);
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Argument 'which' is out of bounds.");
-                        }
+                        value = buildSelectedItemString(deafultLangitems);
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Argument 'which' is out of bounds.");
                     }
                 })
-                .setPositiveButton(mContext.getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        taskList.get(pos).setTask_Response__c(value);
-                        notifyItemChanged(pos);
+                .setPositiveButton(mContext.getString(R.string.ok), (dialog12, id) -> {
+                    taskList.get(pos).setTask_Response__c(value);
+                    notifyItemChanged(pos);
 
 
-                    }
-                }).setNegativeButton(mContext.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
-                    }
+                }).setNegativeButton(mContext.getString(R.string.cancel), (dialog1, id) -> {
+                    //  Your code when user clicked on Cancel
                 }).create();
         dialog.show();
     }
@@ -635,7 +609,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
     private String updateTime(int hours, int mins) {
 
-        String timeSet = "";
+        String timeSet ;
         if (hours > 12) {
             hours -= 12;
             timeSet = "PM";
@@ -648,7 +622,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             timeSet = "AM";
 
 
-        String minutes = "";
+        String minutes ;
         if (mins < 10)
             minutes = "0" + mins;
         else

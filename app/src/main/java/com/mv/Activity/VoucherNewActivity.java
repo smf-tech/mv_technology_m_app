@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -77,7 +76,7 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
 
     private void initViews() {
         projectList = Arrays.asList(getResources().getStringArray(R.array.array_of_project));
-        projectList = new ArrayList<String>();
+        projectList = new ArrayList<>();
         projectList.add("Select");
         setActionbar(getString(R.string.voucher_new));
         binding.txtDate.setOnClickListener(this);
@@ -86,7 +85,7 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
         binding.spinnerProject.setOnItemSelectedListener(this);
         preferenceHelper = new PreferenceHelper(this);
         binding.txtDate.setText(getCurrentDate());
-        project_adapter = new ArrayAdapter<String>(this,
+        project_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, projectList);
         project_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerProject.setAdapter(project_adapter);
@@ -118,7 +117,7 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
 
     }
 
-    public String getCurrentDate() {
+    private String getCurrentDate() {
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -144,9 +143,7 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
                     if (response.body() != null) {
                         String data = response.body().string();
                         if (data.length() > 0) {
-
-                            JSONArray jsonArray = null;
-                            jsonArray = new JSONArray(data);
+                            JSONArray jsonArray = new JSONArray(data);
                             projectList.clear();
 
                             projectList.add("Select");
@@ -202,14 +199,7 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
         final int mMonth = c.get(Calendar.MONTH);
         final int mDay = c.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog dpd = new DatePickerDialog(this,
-                new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-                        textView.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
-                    }
-                }, mYear, mMonth, mDay);
+                (view, year, monthOfYear, dayOfMonth) -> textView.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth)), mYear, mMonth, mDay);
         dpd.show();
     }
 

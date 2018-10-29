@@ -3,7 +3,6 @@ package com.mv.Adapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,14 +75,11 @@ public class ExpandableAttendanceApprovalListAdapter extends BaseExpandableListA
 
         txtCount = convertView.findViewById(R.id.txtCount);
 
-        layoutMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        layoutMain.setOnClickListener(v -> {
 
-                    Intent intent=new Intent(_context, AttendanceApproveDetailActivity.class);
-                    intent.putExtra(Constants.Attendance ,attendance_approval);
-                    _context.startActivity(intent);
-            }
+                Intent intent=new Intent(_context, AttendanceApproveDetailActivity.class);
+                intent.putExtra(Constants.Attendance ,attendance_approval);
+                _context.startActivity(intent);
         });
 
         txtName = convertView.findViewById(R.id.txtName);
@@ -168,18 +164,12 @@ public class ExpandableAttendanceApprovalListAdapter extends BaseExpandableListA
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(_context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-            }
-        });
+        alertDialog.setButton2(_context.getString(R.string.cancel), (dialog, which) -> alertDialog.dismiss());
         // Setting OK Button
-        alertDialog.setButton(_context.getString(R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
+        alertDialog.setButton(_context.getString(R.string.ok), (dialog, which) -> {
 
-             //   _context.deleteLeave(id);
+         //   _context.deleteLeave(id);
 
-            }
         });
 
         // Showing Alert Message

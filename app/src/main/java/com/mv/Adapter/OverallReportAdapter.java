@@ -41,45 +41,42 @@ public class OverallReportAdapter extends RecyclerView.Adapter<OverallReportAdap
             arraow = view.findViewById(R.id.row_img);
             layout = view.findViewById(R.id.layoutTemplate);
             expectedLayout = view.findViewById(R.id.ll_expected);
-            layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-           /*         if (mContext instanceof TemplatesActivity)
-                        ((TemplatesActivity) mContext).onLayoutTemplateClick(getAdapterPosition());
+            layout.setOnClickListener(view1 -> {
+       /*         if (mContext instanceof TemplatesActivity)
+                    ((TemplatesActivity) mContext).onLayoutTemplateClick(getAdapterPosition());
 
-                    else if (mContext instanceof ProgrammeManagmentFragment) {
+                else if (mContext instanceof ProgrammeManagmentFragment) {
 
 
-                        preferenceHelper.insertBoolean(Constants.IS_EDITABLE, teplateList.get(getAdapterPosition()).getIs_Editable__c());
-                        preferenceHelper.insertBoolean(Constants.IS_LOCATION, teplateList.get(getAdapterPosition()).getLocation());
-                        preferenceHelper.insertBoolean(Constants.IS_MULTIPLE, teplateList.get(getAdapterPosition()).getIs_Multiple_Entry_Allowed__c());
+                    preferenceHelper.insertBoolean(Constants.IS_EDITABLE, teplateList.get(getAdapterPosition()).getIs_Editable__c());
+                    preferenceHelper.insertBoolean(Constants.IS_LOCATION, teplateList.get(getAdapterPosition()).getLocation());
+                    preferenceHelper.insertBoolean(Constants.IS_MULTIPLE, teplateList.get(getAdapterPosition()).getIs_Multiple_Entry_Allowed__c());
 
-                        preferenceHelper.insertString(Constants.STATE_LOCATION_LEVEL, teplateList.get(getAdapterPosition()).getLocationLevel());
+                    preferenceHelper.insertString(Constants.STATE_LOCATION_LEVEL, teplateList.get(getAdapterPosition()).getLocationLevel());
 
-                        Intent openClass = new Intent(mContext, ProcessListActivity.class);
-                        openClass.putExtra(Constants.PROCESS_ID, teplateList.get(getAdapterPosition()).getId());
-                        openClass.putExtra(Constants.PROCESS_NAME, teplateList.get(getAdapterPosition()).getName());
-                        mContext.startActivity(openClass);
-                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    Intent openClass = new Intent(mContext, ProcessListActivity.class);
+                    openClass.putExtra(Constants.PROCESS_ID, teplateList.get(getAdapterPosition()).getId());
+                    openClass.putExtra(Constants.PROCESS_NAME, teplateList.get(getAdapterPosition()).getName());
+                    mContext.startActivity(openClass);
+                    mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
-                    } else if (mContext instanceof IndicatorTrainingFeedBackTaskList) {
+                } else if (mContext instanceof IndicatorTrainingFeedBackTaskList) {
 
-                        //my reports
-                        Intent openClass = new Intent(mContext, PiachartActivity.class);
-                        openClass.putExtra(Constants.TITLE, teplateList.get(getAdapterPosition()).getName());
-                        mContext.startActivity(openClass);
-                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                    } else if (mContext instanceof ProcessApprovalActivity) {
-                        //PROCESS Approval
-                        Intent openClass = new Intent(mContext, TeamManagementUserProfileListActivity.class);
-                        openClass.putExtra(Constants.APPROVAL_TYPE, Constants.PROCESS_APPROVAL);
-                        openClass.putExtra(Constants.TITLE, teplateList.get(getAdapterPosition()).getName());
-                        openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
-                        mContext.startActivity(openClass);
-                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                    }*/
+                    //my reports
+                    Intent openClass = new Intent(mContext, PiachartActivity.class);
+                    openClass.putExtra(Constants.TITLE, teplateList.get(getAdapterPosition()).getName());
+                    mContext.startActivity(openClass);
+                    mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                } else if (mContext instanceof ProcessApprovalActivity) {
+                    //PROCESS Approval
+                    Intent openClass = new Intent(mContext, TeamManagementUserProfileListActivity.class);
+                    openClass.putExtra(Constants.APPROVAL_TYPE, Constants.PROCESS_APPROVAL);
+                    openClass.putExtra(Constants.TITLE, teplateList.get(getAdapterPosition()).getName());
+                    openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
+                    mContext.startActivity(openClass);
+                    mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                }*/
 
-                }
             });
         }
     }

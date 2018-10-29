@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -48,12 +47,12 @@ import retrofit2.Response;
 
 public class MyReportActivity extends AppCompatActivity implements View.OnClickListener {
     private PreferenceHelper preferenceHelper;
-    List<DashaBoardListModel> processAllList = new ArrayList<>();
+    private List<DashaBoardListModel> processAllList = new ArrayList<>();
     private IndicatorListAdapter mAdapter;
     private ActivityNewTemplateBinding binding;
-    RecyclerView.LayoutManager mLayoutManager;
+    private RecyclerView.LayoutManager mLayoutManager;
 
-    Activity context;
+    private Activity context;
 
     @Override
     public void onResume() {
@@ -107,12 +106,9 @@ public class MyReportActivity extends AppCompatActivity implements View.OnClickL
     private void initViews() {
         preferenceHelper = new PreferenceHelper(context);
         binding.swiperefresh.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        if (Utills.isConnected(context))
-                            getAllReportProcess();
-                    }
+                () -> {
+                    if (Utills.isConnected(context))
+                        getAllReportProcess();
                 }
         );
 
@@ -144,7 +140,7 @@ public class MyReportActivity extends AppCompatActivity implements View.OnClickL
                     if (response.isSuccess()) {
                         JSONArray jsonArray = new JSONArray(response.body().string());
                         processAllList.clear();
-                        DashaBoardListModel processList = new DashaBoardListModel();
+                        DashaBoardListModel processList ;
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             processList = new DashaBoardListModel();

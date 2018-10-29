@@ -31,16 +31,19 @@ public class CalenderEvent implements Parcelable {
     @ColumnInfo(name = "Id")
     @SerializedName("Id")
     @Expose
+    private
     String id;
 
     @ColumnInfo(name = "Description__c")
     @SerializedName("Description__c")
     @Expose
+    private
     String description;
 
     @ColumnInfo(name = "Date__c")
     @SerializedName("Date__c")
     @Expose
+    private
     String date;
 
     public String getEnd_Date__c() {
@@ -62,11 +65,13 @@ public class CalenderEvent implements Parcelable {
     @ColumnInfo(name = "End_Date__c")
     @SerializedName("End_Date__c")
     @Expose
+    private
     String End_Date__c;
 
     @ColumnInfo(name = "Event_End_Time__c")
     @SerializedName("Event_End_Time__c")
     @Expose
+    private
     String Event_End_Time__c;
 
     public String getStatus() {
@@ -80,6 +85,7 @@ public class CalenderEvent implements Parcelable {
     @ColumnInfo(name = "Status__c")
     @SerializedName("Status__c")
     @Expose
+    private
     String Status;
 
     public String getOrganization__c() {
@@ -93,17 +99,20 @@ public class CalenderEvent implements Parcelable {
     @ColumnInfo(name = "organization__c")
     @SerializedName("organization__c")
     @Expose
+    private
     String organization__c;
 
 
     @ColumnInfo(name = "MV_User__c")
     @SerializedName("MV_User__c")
     @Expose
+    private
     String MV_User1__c;
 
     @ColumnInfo(name = "Title__c")
     @SerializedName("Title__c")
     @Expose
+    private
     String title;
 
     public String getEvent_Time__c() {
@@ -117,21 +126,25 @@ public class CalenderEvent implements Parcelable {
     @ColumnInfo(name = "Event_Time__c")
     @SerializedName("Event_Time__c")
     @Expose
+    private
     String Event_Time__c;
     @ColumnInfo(name = "Village__c")
     @SerializedName("Village__c")
 
     @Expose
+    private
     String Village__c;
 
     @ColumnInfo(name = "Taluka__c")
     @SerializedName("Taluka__c")
     @Expose
+    private
     String Taluka__c;
 
     @ColumnInfo(name = "State__c")
     @SerializedName("State__c")
     @Expose
+    private
     String State__c;
 
     public String getCreatedUserData() {
@@ -161,16 +174,19 @@ public class CalenderEvent implements Parcelable {
     @ColumnInfo(name = "CreatedRoleData")
     @SerializedName("Assigned_By_Name__c")
     @Expose
+    private
     String CreatedUserData;
 
     @ColumnInfo(name = "ProceesTotalCount")
     @SerializedName("Total_Form__c")
     @Expose
+    private
     String ProceesTotalCount;
 
     @ColumnInfo(name = "ProceesSubmittedCount")
     @SerializedName("Filled_Form__c")
     @Expose
+    private
     String ProceesSubmittedCount;
 
     public String getDistrict__c() {
@@ -193,54 +209,64 @@ public class CalenderEvent implements Parcelable {
     @SerializedName("Role__c")
 
     @Expose
+    private
     String Role__c = "";
     @ColumnInfo(name = "Cluster__c")
     @SerializedName("Cluster__c")
 
     @Expose
+    private
     String Cluster__c;
 
     @ColumnInfo(name = "School__c")
     @SerializedName("School__c")
     @Expose
+    private
     String School__c;
 
     @ColumnInfo(name = "District__c")
     @SerializedName("District__c")
     @Expose
+    private
     String District__c;
 
     @ColumnInfo(name = "Description_New__c")
     @SerializedName("Description_New__c")
     @Expose
+    private
     String Description_New__c;
 
     @ColumnInfo(name = "Is_Event_for_All_Role__c")
     @SerializedName("Is_Event_for_All_Role__c")
     @Expose
+    private
     String Is_Event_for_All_Role__c;
 
 
     @ColumnInfo(name = "Assigned_User_Ids__c")
     @SerializedName("Assigned_User_Ids__c")
     @Expose
+    private
 
     String Assigned_User_Ids__c;
 
     @ColumnInfo(name = "Assign_id_name__c")
     @SerializedName("Assign_id_name__c")
     @Expose
+    private
     String Assign_id_name__c;
 
 
     @ColumnInfo(name = "MV_Process__c")
     @SerializedName("MV_Process__c")
     @Expose
+    private
     String MV_Process__c;
 
     @ColumnInfo(name = "Present_User__c")
     @SerializedName("Present_User__c")
     @Expose
+    private
     String Present_User__c;
 
     public String getPresent_User__c() {
@@ -441,7 +467,7 @@ public class CalenderEvent implements Parcelable {
         this.Present_User__c = in.readString();
     }
 
-    public static final Creator<CalenderEvent> CREATOR = new Creator<CalenderEvent>() {
+    private static final Creator<CalenderEvent> CREATOR = new Creator<CalenderEvent>() {
         @Override
         public CalenderEvent createFromParcel(Parcel source) {
             return new CalenderEvent(source);

@@ -66,13 +66,10 @@ public class UserApprovalAdapter extends RecyclerView.Adapter<UserApprovalAdapte
             layoutMain = itemLayoutView.findViewById(R.id.layoutMain);
             txtName = itemLayoutView.findViewById(R.id.txtName);
 
-            layoutMain.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent=new Intent(mContext, UserApproveDetail.class);
-                    intent.putExtra(Constants.ID, mDataList.get(getAdapterPosition()).getId());
-                    mContext.startActivity(intent);
-                }
+            layoutMain.setOnClickListener(v -> {
+                Intent intent=new Intent(mContext, UserApproveDetail.class);
+                intent.putExtra(Constants.ID, mDataList.get(getAdapterPosition()).getId());
+                mContext.startActivity(intent);
             });
         }
 

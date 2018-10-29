@@ -29,10 +29,10 @@ public class IndicatortaskAdapter extends RecyclerView.Adapter<IndicatortaskAdap
 
 
     private Activity mContext;
-    List<Task> indicatortaskList = new ArrayList<>();
+    private List<Task> indicatortaskList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
     private DashaBoardListModel moviesList;
-    LocationModel locationModel;
+    private LocationModel locationModel;
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView txtCommunityName;
         public LinearLayout layout;
@@ -41,28 +41,25 @@ public class IndicatortaskAdapter extends RecyclerView.Adapter<IndicatortaskAdap
             super(view);
             txtCommunityName = view.findViewById(R.id.txtTemplateName);
             layout = view.findViewById(R.id.layoutTemplate);
-            layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(getAdapterPosition()==0)
-                    {
-                        Intent openClass = new Intent(mContext, OverallReportActivity.class);
-                        openClass.putExtra(Constants.INDICATOR_TASK_ROLE, moviesList.getMultiple_Role__c());
-                        preferenceHelper.insertString(Constants.RoleList,moviesList.getMultiple_Role__c());
-                        openClass.putExtra(Constants.TITLE, indicatortaskList.get(getAdapterPosition()).getSection_Name__c());
-                        openClass.putExtra(Constants.INDICATOR_TASK, indicatortaskList.get(getAdapterPosition()));
-                        openClass.putExtra(Constants.PROCESS_ID, moviesList.getId());
-                        mContext.startActivity(openClass);
-                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                    }else {
-                        Intent openClass = new Intent(mContext, PiachartActivity.class);
-                        openClass.putExtra(Constants.TITLE, indicatortaskList.get(getAdapterPosition()).getSection_Name__c());
-                        openClass.putExtra(Constants.INDICATOR_TASK, indicatortaskList.get(getAdapterPosition()));
-                        openClass.putExtra(Constants.INDICATOR_TASK_ROLE, moviesList.getMultiple_Role__c());
-                        preferenceHelper.insertString(Constants.RoleList,moviesList.getMultiple_Role__c());
-                        mContext.startActivity(openClass);
-                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                    }
+            layout.setOnClickListener(view1 -> {
+                if(getAdapterPosition()==0)
+                {
+                    Intent openClass = new Intent(mContext, OverallReportActivity.class);
+                    openClass.putExtra(Constants.INDICATOR_TASK_ROLE, moviesList.getMultiple_Role__c());
+                    preferenceHelper.insertString(Constants.RoleList,moviesList.getMultiple_Role__c());
+                    openClass.putExtra(Constants.TITLE, indicatortaskList.get(getAdapterPosition()).getSection_Name__c());
+                    openClass.putExtra(Constants.INDICATOR_TASK, indicatortaskList.get(getAdapterPosition()));
+                    openClass.putExtra(Constants.PROCESS_ID, moviesList.getId());
+                    mContext.startActivity(openClass);
+                    mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                }else {
+                    Intent openClass = new Intent(mContext, PiachartActivity.class);
+                    openClass.putExtra(Constants.TITLE, indicatortaskList.get(getAdapterPosition()).getSection_Name__c());
+                    openClass.putExtra(Constants.INDICATOR_TASK, indicatortaskList.get(getAdapterPosition()));
+                    openClass.putExtra(Constants.INDICATOR_TASK_ROLE, moviesList.getMultiple_Role__c());
+                    preferenceHelper.insertString(Constants.RoleList,moviesList.getMultiple_Role__c());
+                    mContext.startActivity(openClass);
+                    mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 }
             });
         }

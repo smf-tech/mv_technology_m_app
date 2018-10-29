@@ -1,10 +1,8 @@
 package com.mv.Adapter;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +16,6 @@ import com.mv.Activity.AdavanceListActivity;
 import com.mv.Model.Adavance;
 import com.mv.R;
 import com.mv.Utils.Constants;
-import com.mv.Utils.PreferenceHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,9 +26,10 @@ import java.util.List;
  */
 
 public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
-    private PreferenceHelper preferenceHelper;
+
     private AdavanceListActivity _context;
     private List<String> _listDataHeader; // header titles
+
     // child data in format of header title, child title
     private HashMap<String, ArrayList<Adavance>> _listDataChild;
     private AdavanceListActivity _activity;
@@ -42,7 +40,6 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
         this._activity = (AdavanceListActivity) context;
-        preferenceHelper = new PreferenceHelper(context);
     }
 
     @Override
@@ -133,6 +130,7 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+    @SuppressWarnings("deprecation")
     private void showLogoutPopUp(Adavance adavance) {
         final AlertDialog alertDialog = new AlertDialog.Builder(_context).create();
 
@@ -146,20 +144,14 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(_context.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                // Write your code here to execute after dialog closed
-              /*  listOfWrongQuestions.add(mPosition);
-                prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
-            }
+        alertDialog.setButton2(_context.getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            // Write your code here to execute after dialog closed
+          /*  listOfWrongQuestions.add(mPosition);
+            prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
         });
         // Setting OK Button
-        alertDialog.setButton(_context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                _activity.deleteAdavance(adavance);
-            }
-        });
+        alertDialog.setButton(_context.getString(android.R.string.ok), (dialog, which) -> _activity.deleteAdavance(adavance));
 
         // Showing Alert Message
         alertDialog.show();

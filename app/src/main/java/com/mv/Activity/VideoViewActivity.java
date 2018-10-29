@@ -1,11 +1,7 @@
 package com.mv.Activity;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
-import android.media.MediaPlayer;
-import android.media.MediaPlayer.OnPreparedListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,11 +14,11 @@ import com.mv.R;
 public class VideoViewActivity extends Activity {
 
     // Declare variables
-    ProgressDialog pDialog;
-    VideoView videoview;
+    private ProgressDialog pDialog;
+    private VideoView videoview;
 
     // Insert your Video URL
-    String VideoURL = "";
+    private String VideoURL = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,18 +40,12 @@ public class VideoViewActivity extends Activity {
         pDialog.setIndeterminate(false);
         pDialog.setCanceledOnTouchOutside(false);
         // Show progressbar
-        pDialog.setOnKeyListener(new Dialog.OnKeyListener() {
-
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK) {
-                    finish();
-                    overridePendingTransition(R.anim.left_in, R.anim.right_out);
-                }
-                return false;
+        pDialog.setOnKeyListener((dialog, keyCode, event) -> {
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                finish();
+                overridePendingTransition(R.anim.left_in, R.anim.right_out);
             }
-
-
+            return false;
         });
         pDialog.show();
 
@@ -75,12 +65,10 @@ public class VideoViewActivity extends Activity {
         }
 
         videoview.requestFocus();
-        videoview.setOnPreparedListener(new OnPreparedListener() {
-            // Close the progress bar and play the video
-            public void onPrepared(MediaPlayer mp) {
-                pDialog.dismiss();
-                videoview.start();
-            }
+        // Close the progress bar and play the video
+        videoview.setOnPreparedListener(mp -> {
+            pDialog.dismiss();
+            videoview.start();
         });
 
     }

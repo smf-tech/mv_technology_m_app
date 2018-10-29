@@ -173,7 +173,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         finish();
     }
 
-    public void getAllProcess() {
+    private void getAllProcess() {
         Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
         ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)

@@ -55,10 +55,15 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
     private Spinner selectedSpinner;
     String msg = "";
     private int locationState;
-    public  String selectedState = "", selectedDisrict = "", selectedTaluka = "", selectedCluster = "", selectedVillage = "", selectedSchool = "";
+    private String selectedState = "";
+    private String selectedDisrict = "";
+    private String selectedTaluka = "";
+    private String selectedCluster = "";
+    private String selectedVillage = "";
+    private String selectedSchool = "";
 
 
-    Activity context;
+    private Activity context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,44 +88,39 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
         binding.spinnerState.setOnItemSelectedListener(this);
         binding.spinnerDistrict.setOnItemSelectedListener(this);
         binding.spinnerTaluka.setOnItemSelectedListener(this);
-        binding.spinnerCluster.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedCluster = (String) parent.getItemAtPosition(position);
+        binding.spinnerCluster.setOnItemClickListener((parent, view, position, id) -> {
+            selectedCluster = (String) parent.getItemAtPosition(position);
 
-                mListVillage.clear();
-                mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), selectedCluster);
-                mListVillage.removeAll(Collections.singleton(null));
-                if (mListVillage.size() == 0) {
-                    if (Utills.isConnected(context))
-                        getVillage();
-                    else {
-                        mListVillage.clear();
-                        mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), selectedCluster);
-                        mListVillage.add(0, "Select");
-                        mListVillage.removeAll(Collections.singleton(null));
-                        ArrayAdapter<String> adapterVillage = new ArrayAdapter<String>
-                                (context, android.R.layout.select_dialog_item, mListVillage);
-
-                        binding.spinnerVillage.setThreshold(1);
-                        binding.spinnerVillage.setAdapter(adapterVillage);
-                    }
-                } else {
+            mListVillage.clear();
+            mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), selectedCluster);
+            mListVillage.removeAll(Collections.singleton(null));
+            if (mListVillage.size() == 0) {
+                if (Utills.isConnected(context))
+                    getVillage();
+                else {
+                    mListVillage.clear();
+                    mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), selectedCluster);
                     mListVillage.add(0, "Select");
                     mListVillage.removeAll(Collections.singleton(null));
-                    ArrayAdapter<String> adapterVillage = new ArrayAdapter<String>
+                    ArrayAdapter<String> adapterVillage = new ArrayAdapter<>
                             (context, android.R.layout.select_dialog_item, mListVillage);
 
                     binding.spinnerVillage.setThreshold(1);
                     binding.spinnerVillage.setAdapter(adapterVillage);
                 }
-                binding.spinnerVillage.setText("");
-                binding.spinnerSchoolName.setText("");
+            } else {
+                mListVillage.add(0, "Select");
+                mListVillage.removeAll(Collections.singleton(null));
+                ArrayAdapter<String> adapterVillage = new ArrayAdapter<>
+                        (context, android.R.layout.select_dialog_item, mListVillage);
+
+                binding.spinnerVillage.setThreshold(1);
+                binding.spinnerVillage.setAdapter(adapterVillage);
             }
+            binding.spinnerVillage.setText("");
+            binding.spinnerSchoolName.setText("");
         });
-        binding.spinnerVillage.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        binding.spinnerVillage.setOnItemClickListener((parent, view, position, id) -> {
                 selectedVillage = (String) parent.getItemAtPosition(position);
 
                 mListSchoolName.clear();
@@ -134,43 +134,41 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                         mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), selectedCluster, selectedVillage);
                         mListSchoolName.add(0, "Select");
                         mListSchoolName.removeAll(Collections.singleton(null));
-                        ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<String>(context, android.R.layout.select_dialog_item, mListSchoolName);
+                        ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<>(context, android.R.layout.select_dialog_item, mListSchoolName);
                         binding.spinnerSchoolName.setThreshold(1);
                         binding.spinnerSchoolName.setAdapter(adapterSchoolname);
                     }
                 } else {
                     mListSchoolName.add(0, "Select");
                     mListSchoolName.removeAll(Collections.singleton(null));
-                    ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<String>(context, android.R.layout.select_dialog_item, mListSchoolName);
+                    ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<>(context, android.R.layout.select_dialog_item, mListSchoolName);
                     binding.spinnerSchoolName.setThreshold(1);
                     binding.spinnerSchoolName.setAdapter(adapterSchoolname);
 
                 }
                 binding.spinnerSchoolName.setText("");
-            }
+
         });
-        binding.spinnerSchoolName.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        binding.spinnerSchoolName.setOnItemClickListener((parent, view, position, id) ->{
                 selectedSchool = (String) parent.getItemAtPosition(position);
-            }
+
         });
         binding.btnSubmit.setOnClickListener(this);
 
-        mStateList = new ArrayList<String>();
+        mStateList = new ArrayList<>();
         mStateList.add("Select");
         //mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
-        mListDistrict = new ArrayList<String>();
+        mListDistrict = new ArrayList<>();
         mListDistrict.add("Select");
 
-        mListTaluka = new ArrayList<String>();
+        mListTaluka = new ArrayList<>();
         mListTaluka.add("Select");
-        mListCluster = new ArrayList<String>();
+        mListCluster = new ArrayList<>();
         mListCluster.add("Select");
-        mListVillage = new ArrayList<String>();
+        mListVillage = new ArrayList<>();
         mListVillage.add("Select");
 
-        mListSchoolName = new ArrayList<String>();
+        mListSchoolName = new ArrayList<>();
         mListSchoolName.add("Select");
 
 
@@ -202,18 +200,18 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
         setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
         setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
 
-        ArrayAdapter<String> adapterVillage = new ArrayAdapter<String>
+        ArrayAdapter<String> adapterVillage = new ArrayAdapter<>
                 (this, android.R.layout.select_dialog_item, mListVillage);
 
         binding.spinnerVillage.setThreshold(1);
         binding.spinnerVillage.setAdapter(adapterVillage);
-        ArrayAdapter<String> adapterCluster = new ArrayAdapter<String>
+        ArrayAdapter<String> adapterCluster = new ArrayAdapter<>
                 (this, android.R.layout.select_dialog_item, mListCluster);
 
         binding.spinnerCluster.setThreshold(1);
         binding.spinnerCluster.setAdapter(adapterCluster);
 
-        ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<String>
+        ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<>
                 (this, android.R.layout.select_dialog_item, mListSchoolName);
 
         binding.spinnerSchoolName.setThreshold(1);
@@ -402,7 +400,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                                 mListCluster = AppDatabase.getAppDatabase(context).userDao().getCluster(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
                                 mListCluster.add(0, "Select");
                                 mListCluster.removeAll(Collections.singleton(null));
-                                ArrayAdapter<String> adapterCluster = new ArrayAdapter<String>
+                                ArrayAdapter<String> adapterCluster = new ArrayAdapter<>
                                         (this, android.R.layout.select_dialog_item, mListCluster);
 
                                 binding.spinnerCluster.setThreshold(1);
@@ -410,7 +408,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                             }
                         } else {
                             mListCluster.add(0, "Select");
-                            ArrayAdapter<String> adapterCluster = new ArrayAdapter<String>
+                            ArrayAdapter<String> adapterCluster = new ArrayAdapter<>
                                     (this, android.R.layout.select_dialog_item, mListCluster);
 
                             binding.spinnerCluster.setThreshold(1);
@@ -420,7 +418,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                 } else {
                     mListCluster.clear();
                     mListCluster.add("Select");
-                    ArrayAdapter<String> adapterCluster = new ArrayAdapter<String>
+                    ArrayAdapter<String> adapterCluster = new ArrayAdapter<>
                             (this, android.R.layout.select_dialog_item, mListCluster);
 
                     binding.spinnerCluster.setThreshold(1);
@@ -449,7 +447,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                                 mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster));
                                 mListVillage.add(0, "Select");
                                 mListVillage.removeAll(Collections.singleton(null));
-                                ArrayAdapter<String> adapterVillage = new ArrayAdapter<String>
+                                ArrayAdapter<String> adapterVillage = new ArrayAdapter<>
                                         (this, android.R.layout.select_dialog_item, mListVillage);
 
                                 binding.spinnerVillage.setThreshold(1);
@@ -457,7 +455,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                             }
                         } else {
                             mListVillage.add(0, "Select");
-                            ArrayAdapter<String> adapterVillage = new ArrayAdapter<String>
+                            ArrayAdapter<String> adapterVillage = new ArrayAdapter<>
                                     (this, android.R.layout.select_dialog_item, mListVillage);
 
                             binding.spinnerVillage.setThreshold(1);
@@ -467,7 +465,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                 } else {
                     mListVillage.clear();
                     mListVillage.add("Select");
-                    ArrayAdapter<String> adapterVillage = new ArrayAdapter<String>
+                    ArrayAdapter<String> adapterVillage = new ArrayAdapter<>
                             (this, android.R.layout.select_dialog_item, mListVillage);
 
                     binding.spinnerVillage.setThreshold(1);
@@ -494,7 +492,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                                 mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), mListCluster.get(mSelectCluster), mListVillage.get(mSelectVillage));
                                 mListSchoolName.add(0, "Select");
                                 mListSchoolName.removeAll(Collections.singleton(null));
-                                ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<String>
+                                ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<>
                                         (this, android.R.layout.select_dialog_item, mListSchoolName);
 
                                 binding.spinnerSchoolName.setThreshold(1);
@@ -502,7 +500,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                             }
                         } else {
                             mListSchoolName.add(0, "Select");
-                            ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<String>
+                            ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<>
                                     (this, android.R.layout.select_dialog_item, mListSchoolName);
 
                             binding.spinnerSchoolName.setThreshold(1);
@@ -513,7 +511,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                 } else {
                     mListSchoolName.clear();
                     mListSchoolName.add("Select");
-                    ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<String>
+                    ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<>
                             (this, android.R.layout.select_dialog_item, mListSchoolName);
 
                     binding.spinnerSchoolName.setThreshold(1);
@@ -528,8 +526,8 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    public void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, itemList);
+    private void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, itemList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         if (!selectedValue.isEmpty() && itemList.indexOf(selectedValue) >= 0)
@@ -681,7 +679,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                             for (int i = 0; i < jsonArr.length(); i++) {
                                 mListCluster.add(jsonArr.getString(i));
                             }
-                            ArrayAdapter<String> adapterCluster = new ArrayAdapter<String>
+                            ArrayAdapter<String> adapterCluster = new ArrayAdapter<>
                                     (AddSchoolActivity.this, android.R.layout.select_dialog_item, mListCluster);
 
                             binding.spinnerCluster.setThreshold(1);
@@ -718,7 +716,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                             for (int i = 0; i < jsonArr.length(); i++) {
                                 mListVillage.add(jsonArr.getString(i));
                             }
-                            ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<String>
+                            ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<>
                                     (AddSchoolActivity.this, android.R.layout.select_dialog_item, mListSchoolName);
 
                             binding.spinnerSchoolName.setThreshold(1);
@@ -757,7 +755,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                             for (int i = 0; i < jsonArr.length(); i++) {
                                 mListSchoolName.add(jsonArr.getString(i));
                             }
-                            ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<String>
+                            ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<>
                                     (AddSchoolActivity.this, android.R.layout.select_dialog_item, mListSchoolName);
 
                             binding.spinnerSchoolName.setThreshold(1);

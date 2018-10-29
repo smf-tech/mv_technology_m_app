@@ -42,7 +42,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
     private ActivityLoactionSelectionActityBinding binding;
-    int position;
+    private int position;
     private String locationType;
     private String taskType;
     private int mSelectState = 1, mSelectDistrict = 1, mSelectTaluka = 0, mSelectCluster = 0, mSelectVillage = 0, mSelectSchoolName = 0;
@@ -53,15 +53,15 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     private RelativeLayout mToolBar;
     private Spinner selectedSpinner;
     private String selectedLocation;
-    String msg = "";
+    private String msg = "";
     private int locationState;
 
     public static String selectedState = "", selectedDisrict = "", selectedTaluka = "", selectedCluster = "", selectedVillage = "", selectedSchool = "";
 
 
-    ArrayList<Task> taskList = new ArrayList<>();
+    private ArrayList<Task> taskList = new ArrayList<>();
 
-    Activity context;
+    private Activity context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,20 +99,20 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         binding.spinnerSchoolName.setOnItemSelectedListener(this);
         binding.btnSubmit.setOnClickListener(this);
 
-        mStateList = new ArrayList<String>();
+        mStateList = new ArrayList<>();
         mStateList.add("Select");
         //mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
-        mListDistrict = new ArrayList<String>();
+        mListDistrict = new ArrayList<>();
         mListDistrict.add("Select");
 
-        mListTaluka = new ArrayList<String>();
+        mListTaluka = new ArrayList<>();
         mListTaluka.add("Select");
-        mListCluster = new ArrayList<String>();
+        mListCluster = new ArrayList<>();
         mListCluster.add("Select");
-        mListVillage = new ArrayList<String>();
+        mListVillage = new ArrayList<>();
         mListVillage.add("Select");
 
-        mListSchoolName = new ArrayList<String>();
+        mListSchoolName = new ArrayList<>();
         mListSchoolName.add("Select");
 
 
@@ -558,8 +558,8 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         }
     }
 
-    public void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, itemList);
+    private void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, itemList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         if (!selectedValue.isEmpty() && itemList.indexOf(selectedValue) >= 0)

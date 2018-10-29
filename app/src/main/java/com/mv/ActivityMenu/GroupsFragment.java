@@ -3,11 +3,9 @@ package com.mv.ActivityMenu;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -59,8 +57,8 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
     private List<Community> communityList = new ArrayList<>();
     private List<Community> replicaCommunityList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
-    TextView textNoData;
-    Activity context;
+    private TextView textNoData;
+    private Activity context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,12 +114,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
         textNoData = (TextView) findViewById(R.id.textNoData);
         binding.editTextEmail.addTextChangedListener(watch);
         binding.swiperefresh.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        getCommunities(false);
-                    }
-                }
+                () -> getCommunities(false)
         );
         preferenceHelper = new PreferenceHelper(context);
         mAdapter = new GroupAdapter(communityList, context, this);
@@ -277,20 +270,16 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                context.finish();
-                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            context.finish();
+            context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                context.finish();
-                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+            alertDialog.dismiss();
+            context.finish();
+            context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
 
         // Showing Alert Message
@@ -313,7 +302,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    TextWatcher watch = new TextWatcher() {
+    private TextWatcher watch = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable arg0) {
@@ -369,7 +358,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
             }
         } else {
             preferenceHelper.insertString(PreferenceHelper.COMMUNITYID, communityList.get(position).getId());
-            List<Community> list = new ArrayList<Community>();
+            List<Community> list = new ArrayList<>();
             list.addAll(communityList);
             list.remove(position);
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();

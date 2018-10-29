@@ -17,7 +17,7 @@ import com.mv.databinding.ActivityMainBinding;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
-    final static int SPLASH_TIME_OUT = 2000;
+    private final static int SPLASH_TIME_OUT = 2000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

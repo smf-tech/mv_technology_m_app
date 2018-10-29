@@ -1,10 +1,8 @@
 package com.mv.Adapter;
 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +15,6 @@ import com.mv.Activity.ExpenseListActivity;
 import com.mv.Model.Expense;
 import com.mv.R;
 import com.mv.Utils.Constants;
-import com.mv.Utils.PreferenceHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,9 +25,10 @@ import java.util.List;
  */
 
 public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
-    private PreferenceHelper preferenceHelper;
+
     private ExpenseListActivity _context;
     private List<String> _listDataHeader; // header titles
+
     // child data in format of header title, child title
     private HashMap<String, ArrayList<Expense>> _listDataChild;
     private ExpenseListActivity _activity;
@@ -41,7 +39,6 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
         this._activity = (ExpenseListActivity) context;
-        preferenceHelper = new PreferenceHelper(context);
     }
 
     @Override
@@ -126,6 +123,7 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+    @SuppressWarnings("deprecation")
     private void showLogoutPopUp(Expense expense) {
         final AlertDialog alertDialog = new AlertDialog.Builder(_context).create();
         // Setting Dialog Title
@@ -135,20 +133,14 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
         // Setting Icon to Dialog
         alertDialog.setIcon(R.drawable.logomulya);
         // Setting CANCEL Button
-        alertDialog.setButton2(_context.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                // Write your code here to execute after dialog closed
-              /*  listOfWrongQuestions.add(mPosition);
-                prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
-            }
+        alertDialog.setButton2(_context.getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            // Write your code here to execute after dialog closed
+          /*  listOfWrongQuestions.add(mPosition);
+            prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
         });
         // Setting OK Button
-        alertDialog.setButton(_context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                _activity.deleteExpense(expense);
-            }
-        });
+        alertDialog.setButton(_context.getString(android.R.string.ok), (dialog, which) -> _activity.deleteExpense(expense));
         // Showing Alert Message
         alertDialog.show();
     }
@@ -208,6 +200,4 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-
-
 }

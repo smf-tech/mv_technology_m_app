@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
@@ -62,19 +61,20 @@ import retrofit2.Response;
 public class ThetSavandFragment extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private FragmentThetSavandBinding binding;
     private PreferenceHelper preferenceHelper;
-    private List<Content> chatList = new ArrayList<Content>();
+    private List<Content> chatList = new ArrayList<>();
     private ArrayList<Content> mypostlist = new ArrayList<>();
     private ThetSavandAdapter adapter;
 
     private Boolean mySelection = false;
     private FloatingActionButton fab_add_broadcast;
-    MediaPlayer mPlayer = MediaSongSingleToneClass.getInstance();
-    ThetSavandFragment fragment;
-    Button btn_mypost, btn_allposts;
-    LinearLayout lnr_filter;
-    RecyclerView recyclerView;
-    TextView textNoData;
-    Activity context;
+    private MediaPlayer mPlayer = MediaSongSingleToneClass.getInstance();
+    private ThetSavandFragment fragment;
+    private Button btn_mypost;
+    private Button btn_allposts;
+    private LinearLayout lnr_filter;
+    private RecyclerView recyclerView;
+    private TextView textNoData;
+    private Activity context;
     private EndlessRecyclerViewScrollListener scrollListener;
     public static final String MESSAGE_PROGRESS = "message_progress";
 
@@ -150,36 +150,30 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         recyclerView.addOnScrollListener(scrollListener);
 
          /*Display the post of only registered users */
-        btn_mypost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mypostlist.clear();
-                chatList.clear();
-                chatList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true, false);
-                btn_mypost.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
-                btn_allposts.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
-                for (int i = 0; i < chatList.size(); i++) {
-                    if (chatList.get(i).getUser_id() != null && (chatList.get(i).getUser_id().equals(User.getCurrentUser(context).getMvUser().getId()))) {
-                        mypostlist.add(chatList.get(i));
-                    }
+        btn_mypost.setOnClickListener(v -> {
+            mypostlist.clear();
+            chatList.clear();
+            chatList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true, false);
+            btn_mypost.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
+            btn_allposts.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+            for (int i = 0; i < chatList.size(); i++) {
+                if (chatList.get(i).getUser_id() != null && (chatList.get(i).getUser_id().equals(User.getCurrentUser(context).getMvUser().getId()))) {
+                    mypostlist.add(chatList.get(i));
                 }
-                mySelection = true;
-                adapter = new ThetSavandAdapter(context, fragment, mypostlist);
-                recyclerView.setAdapter(adapter);
             }
+            mySelection = true;
+            adapter = new ThetSavandAdapter(context, fragment, mypostlist);
+            recyclerView.setAdapter(adapter);
         });
         /*Display all posts*/
-        btn_allposts.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                chatList.clear();
-                chatList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true, false);
-                mySelection = false;
-                btn_allposts.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
-                btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
-                adapter = new ThetSavandAdapter(context, fragment, chatList);
-                recyclerView.setAdapter(adapter);
-            }
+        btn_allposts.setOnClickListener(v -> {
+            chatList.clear();
+            chatList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true, false);
+            mySelection = false;
+            btn_allposts.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
+            btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
+            adapter = new ThetSavandAdapter(context, fragment, chatList);
+            recyclerView.setAdapter(adapter);
         });
 
         /*It is from downloadservice to check file is completely downloaded or not.*/
@@ -346,20 +340,16 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                context.finish();
-                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            context.finish();
+            context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                context.finish();
-                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+            alertDialog.dismiss();
+            context.finish();
+            context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
 
         // Showing Alert Message

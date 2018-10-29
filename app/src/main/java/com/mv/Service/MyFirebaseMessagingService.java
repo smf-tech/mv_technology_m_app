@@ -38,7 +38,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseMsgService";
     private PreferenceHelper preferenceHelper;
     private String mId = "";
-    List<String> allTab = new ArrayList<>();
+    private List<String> allTab = new ArrayList<>();
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -161,8 +161,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_ONE_SHOT);
-        Uri defaultSoundUri = null;
-        defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
 
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this)
@@ -181,7 +180,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
-    public static String[] getColumnIdex(String[] value) {
+    private static String[] getColumnIdex(String[] value) {
 
         for (int i = 0; i < value.length; i++) {
             value[i] = value[i].trim();

@@ -2,7 +2,6 @@ package com.mv.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
@@ -38,7 +37,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     private CommentActivity mActivity;
     private ArrayList<Comment> mDataList;
     private PreferenceHelper preferenceHelper;
-    public PopupMenu popup;
+    private PopupMenu popup;
     private int mPosition;
 
     public CommentAdapter(Context context, ArrayList<Comment> chatList) {
@@ -92,34 +91,29 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             holder.imgMore.setVisibility(View.VISIBLE);
         else
             holder.imgMore.setVisibility(View.GONE);
-        holder.imgMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popup = new PopupMenu(mContext, holder.imgMore);
-                //Inflating the Popup using xml file
-                popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
-                //   popup.getMenu().getItem(R.id.spam).setVisible(true);
-                MenuItem spam = popup.getMenu().findItem(R.id.spam);
-                MenuItem edit = popup.getMenu().findItem(R.id.edit);
-                MenuItem delete = popup.getMenu().findItem(R.id.delete);
-                MenuItem status = popup.getMenu().findItem(R.id.status);
-                spam.setVisible(false);
-                status.setVisible(false);
+        holder.imgMore.setOnClickListener(view -> {
+            popup = new PopupMenu(mContext, holder.imgMore);
+            //Inflating the Popup using xml file
+            popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
+            //   popup.getMenu().getItem(R.id.spam).setVisible(true);
+            MenuItem spam = popup.getMenu().findItem(R.id.spam);
+            MenuItem edit = popup.getMenu().findItem(R.id.edit);
+            MenuItem delete = popup.getMenu().findItem(R.id.delete);
+            MenuItem status = popup.getMenu().findItem(R.id.status);
+            spam.setVisible(false);
+            status.setVisible(false);
 
-                //registering popup with OnMenuItemClickListener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getTitle().toString().equalsIgnoreCase("Delete")) {
-                            showDeleteDialog(position);
+            //registering popup with OnMenuItemClickListener
+            popup.setOnMenuItemClickListener(item -> {
+                if (item.getTitle().toString().equalsIgnoreCase("Delete")) {
+                    showDeleteDialog(position);
 
-                        } else if (item.getTitle().toString().equalsIgnoreCase("Edit")) {
-                            mActivity.editComment(mDataList.get(position).getId(),mDataList.get(position).getComment());
-                        }
-                        return true;
-                    }
-                });
-                popup.show();
-            }
+                } else if (item.getTitle().toString().equalsIgnoreCase("Edit")) {
+                    mActivity.editComment(mDataList.get(position).getId(),mDataList.get(position).getComment());
+                }
+                return true;
+            });
+            popup.show();
         });
 
     }
@@ -137,24 +131,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(mContext.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-            }
-        });
+        alertDialog.setButton2(mContext.getString(R.string.cancel), (dialog, which) -> alertDialog.dismiss());
         // Setting OK Button
-        alertDialog.setButton(mContext.getString(R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                mActivity.deleteComment(mDataList.get(position).getId());
-            }
-        });
+        alertDialog.setButton(mContext.getString(R.string.ok), (dialog, which) -> mActivity.deleteComment(mDataList.get(position).getId()));
 
         // Showing Alert Message
         alertDialog.show();
     }
 
 
-    GlideUrl getUrlWithHeaders(String url) {
+    private GlideUrl getUrlWithHeaders(String url) {
 //
         return new GlideUrl(url, new LazyHeaders.Builder()
                 .addHeader("Authorization", "OAuth " + preferenceHelper.getString(PreferenceHelper.AccessToken))
