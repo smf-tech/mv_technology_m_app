@@ -42,7 +42,7 @@
                     android:padding="5dp"
                     android:visibility="visible">
 
-                    <com.mv.Widgets.MyEditTextView
+                    <com.sujalamsufalam.Widgets.MyEditTextView
                         android:id="@+id/edit_text_email"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
