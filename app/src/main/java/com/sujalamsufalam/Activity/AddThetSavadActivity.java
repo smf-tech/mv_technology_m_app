@@ -140,20 +140,16 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         alertDialog.setIcon(R.drawable.ic_launcher);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
 
         // Showing Alert Message
@@ -208,7 +204,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListTaluka.clear();
                             mListTaluka.add("Select");
                             JSONArray jsonArr = new JSONArray(response.body().string());
@@ -232,16 +228,16 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
 
     private void initViews() {
         setActionbar(getString(R.string.thet_savnd));
-        isEdit = getIntent().getExtras().getBoolean("EDIT");
+        if(getIntent().getExtras()!=null) isEdit = getIntent().getExtras().getBoolean("EDIT");
 
         preferenceHelper = new PreferenceHelper(this);
         binding.spinnerDistrict.setOnItemSelectedListener(this);
         binding.spinnerTaluka.setOnItemSelectedListener(this);
         binding.spinnerIssue.setOnItemSelectedListener(this);
 
-        mListDistrict = new ArrayList<String>();
-        mListTaluka = new ArrayList<String>();
-        mListReportingType = new ArrayList<String>();
+        mListDistrict = new ArrayList<>();
+        mListTaluka = new ArrayList<>();
+        mListReportingType = new ArrayList<>();
 
         mListReportingType = Arrays.asList(getResources().getStringArray(R.array.array_of_thet_savad));
 
@@ -263,7 +259,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
             }
         }
 
-        district_adapter = new ArrayAdapter<String>(this,
+        district_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListDistrict);
         district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerDistrict.setAdapter(district_adapter);
@@ -273,7 +269,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
             binding.spinnerDistrict.setEnabled(true);
             // getDistrict();
         }
-        taluka_adapter = new ArrayAdapter<String>(this,
+        taluka_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListTaluka);
         taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerTaluka.setAdapter(taluka_adapter);
@@ -287,9 +283,11 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         }
         if (isEdit) {
             mContent = (Content) getIntent().getExtras().getSerializable(Constants.CONTENT);
-            binding.editTextContent.setText(mContent.getTitle());
+            if(getIntent().getExtras()!=null && null != mContent.getTitle()){
+                binding.editTextContent.setText(mContent.getTitle());
+            }
             binding.editTextDescription.setText(mContent.getDescription());
-            List<String> mList = new ArrayList<String>();
+            List<String> mList = new ArrayList<>();
             Collections.addAll(mList, getResources().getStringArray(R.array.array_of_thet_savad));
             binding.spinnerIssue.setSelection(mList.indexOf(mContent.getReporting_type()));
         }
@@ -335,22 +333,18 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         String[] items = {getString(R.string.text_image),
                 getString(R.string.text_audio), getString(R.string.text_video)};
 
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                switch (which) {
-                    case 0:
-                        showPictureDialog();
-                        break;
-                    case 1:
-                        showAudioDialog();
-                        break;
-                    case 2:
-                        showVideoDialog();
-                        break;
-                }
+        dialog.setItems(items, (dialog1, which) -> {
+            // TODO Auto-generated method stub
+            switch (which) {
+                case 0:
+                    showPictureDialog();
+                    break;
+                case 1:
+                    showAudioDialog();
+                    break;
+                case 2:
+                    showVideoDialog();
+                    break;
             }
         });
         dialog.show();
@@ -362,20 +356,16 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         String[] items = {getString(R.string.text_gallary),
                 getString(R.string.text_camera)};
 
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
+        dialog.setItems(items, (dialog1, which) -> {
+            // TODO Auto-generated method stub
+            switch (which) {
+                case 0:
+                    chooseVideoFromGallery();
+                    break;
+                case 1:
+                    takeVideoFromCamera();
+                    break;
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                switch (which) {
-                    case 0:
-                        chooseVideoFromGallery();
-                        break;
-                    case 1:
-                        takeVideoFromCamera();
-                        break;
-
-                }
             }
         });
         dialog.show();
@@ -507,7 +497,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
                         }*/
                         jsonObject1.put("contentType", "Image");
                         jsonObject1.put("isAttachmentPresent", "true");
-                        InputStream iStream = null;
+                        InputStream iStream;
                         iStream = getContentResolver().openInputStream(FinalUri);
                         img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
                       /*  JSONObject jsonObjectAttachment = new JSONObject();
@@ -632,9 +622,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         long fileSizeInKB = fileSizeInBytes / 1024;
         // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
         long fileSizeInMB = fileSizeInKB / 1024;
-        if (fileSizeInMB > 5)
-            return true;
-        return false;
+        return fileSizeInMB > 5;
     }
 
     private void showRecorDialog() {
@@ -644,106 +632,87 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         dialogrecord.setCancelable(true);
         dialogrecord.setContentView(R.layout.activity_recordaudio);
 
-        final LinearLayout record = (LinearLayout) dialogrecord.findViewById(R.id.record);
-        record.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isRecording) {
-                    record.setBackgroundResource(R.drawable.blue_box_mic_radius);
+        final LinearLayout record = dialogrecord.findViewById(R.id.record);
+        record.setOnClickListener(v -> {
+            if (isRecording) {
+                record.setBackgroundResource(R.drawable.blue_box_mic_radius);
 
-                    stopClicked(v);
-
-
-                } else {
-
-                    record.setBackgroundResource(R.drawable.red_box_mic_radius);
-                    try {
-                        if (hasMicrophone())
-                            recordAudio(v);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-
-        final ImageView play = (ImageView) dialogrecord.findViewById(R.id.play);
-        play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (auxFileAudio != null) {
-                    if (mp == null)
-                        mp = new MediaPlayer();
-                    mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mp) {
-                            isplaying = false;
-                            isFirstTime = false;
-                            mp.stop();
-                            play.setImageResource(R.drawable.play_song);
-                        }
-                    });
-                    try {
-                        if (isplaying) {
-                            isplaying = false;
-                            mp.pause();
-                            play.setImageResource(R.drawable.play_song);
-                        } else {
-                            isplaying = true;
-                            play.setImageResource(R.drawable.pause_song);
-                            if (!isFirstTime) {
-                                isFirstTime = true;
-                                mp.reset();
-                                mp.setDataSource(audioFilePath);//Write your location here
-                                mp.prepare();
-                                mp.start();
-                            } else {
-                                mp.start();
-                            }
-
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                } else {
-                    Toast.makeText(AddThetSavadActivity.this, "Please record Audio", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        rectext = (TextView) dialogrecord.findViewById(R.id.rectext);
-        TextView done = (TextView) dialogrecord.findViewById(R.id.done);
-        TextView cancel = (TextView) dialogrecord.findViewById(R.id.cancel);
-        done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mp != null) {
-                    mp.pause();
-                }
                 stopClicked(v);
-                if (audioUri != null)
-                    binding.addImage.setImageResource(R.drawable.mic_audio);
-                dialogrecord.dismiss();
+
+
+            } else {
+
+                record.setBackgroundResource(R.drawable.red_box_mic_radius);
+                if (hasMicrophone())
+                    recordAudio(v);
             }
         });
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                audioUri = null;
-                binding.addImage.setImageResource(R.drawable.add);
-                dialogrecord.dismiss();
+        final ImageView play = dialogrecord.findViewById(R.id.play);
+        play.setOnClickListener(v -> {
+
+            if (auxFileAudio != null) {
+                if (mp == null)
+                    mp = new MediaPlayer();
+                mp.setOnCompletionListener(mp -> {
+                    isplaying = false;
+                    isFirstTime = false;
+                    mp.stop();
+                    play.setImageResource(R.drawable.play_song);
+                });
+                try {
+                    if (isplaying) {
+                        isplaying = false;
+                        mp.pause();
+                        play.setImageResource(R.drawable.play_song);
+                    } else {
+                        isplaying = true;
+                        play.setImageResource(R.drawable.pause_song);
+                        if (!isFirstTime) {
+                            isFirstTime = true;
+                            mp.reset();
+                            mp.setDataSource(audioFilePath);//Write your location here
+                            mp.prepare();
+                            mp.start();
+                        } else {
+                            mp.start();
+                        }
+
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                Toast.makeText(AddThetSavadActivity.this, "Please record Audio", Toast.LENGTH_LONG).show();
             }
+        });
+
+        rectext = dialogrecord.findViewById(R.id.rectext);
+        TextView done = dialogrecord.findViewById(R.id.done);
+        TextView cancel = dialogrecord.findViewById(R.id.cancel);
+        done.setOnClickListener(v -> {
+            if (mp != null) {
+                mp.pause();
+            }
+            stopClicked(v);
+            if (audioUri != null)
+                binding.addImage.setImageResource(R.drawable.mic_audio);
+            dialogrecord.dismiss();
+        });
+
+        cancel.setOnClickListener(v -> {
+            audioUri = null;
+            binding.addImage.setImageResource(R.drawable.add);
+            dialogrecord.dismiss();
         });
 
         dialogrecord.show();
 
     }
 
-    public void recordAudio(View view) throws IOException {
+    public void recordAudio(View view) {
         isRecording = true;
         rectext.setText("Done");
 
@@ -778,9 +747,12 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         try {
             if (isRecording) {
                 rectext.setText("Start");
-                if (mediaRecorder != null)
+                if (mediaRecorder != null) {
                     mediaRecorder.stop();
-                mediaRecorder.release();
+                }
+                if (mediaRecorder != null) {
+                    mediaRecorder.release();
+                }
                 mediaRecorder = null;
                 isRecording = false;
                 audioUri = Uri.fromFile(new File(audioFilePath));
@@ -796,7 +768,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
             }
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -891,20 +863,16 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         String[] items = {getString(R.string.text_record),
                 getString(R.string.text_select_audio)};
 
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
+        dialog.setItems(items, (dialog1, which) -> {
+            // TODO Auto-generated method stub
+            switch (which) {
+                case 0:
+                    showRecorDialog();
+                    break;
+                case 1:
+                    showSelectRecorDialog();
+                    break;
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                switch (which) {
-                    case 0:
-                        showRecorDialog();
-                        break;
-                    case 1:
-                        showSelectRecorDialog();
-                        break;
-
-                }
             }
         });
         dialog.show();
@@ -921,20 +889,16 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         String[] items = {getString(R.string.text_gallary),
                 getString(R.string.text_camera)};
 
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
+        dialog.setItems(items, (dialog1, which) -> {
+            // TODO Auto-generated method stub
+            switch (which) {
+                case 0:
+                    choosePhotoFromGallery();
+                    break;
+                case 1:
+                    takePhotoFromCamera();
+                    break;
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                switch (which) {
-                    case 0:
-                        choosePhotoFromGallery();
-                        break;
-                    case 1:
-                        takePhotoFromCamera();
-                        break;
-
-                }
             }
         });
         dialog.show();
@@ -1053,24 +1017,27 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int len = 0;
+        int len;
         try {
-            while ((len = inputStream.read(buffer)) != -1) {
-                byteBuffer.write(buffer, 0, len);
+            if (inputStream != null) {
+                while ((len = inputStream.read(buffer)) != -1) {
+                    byteBuffer.write(buffer, 0, len);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }catch (Exception e) {
+            e.printStackTrace();
         }
         System.out.println("converted!");
-        String videoData = "";
+        String videoData;
         //Converting bytes into base64
         videoData = Base64.encodeToString(byteBuffer.toByteArray(), Base64.DEFAULT);
         Log.d("VideoData**>  ", videoData);
         String sinSaltoFinal2 = videoData.trim();
         String sinsinSalto2 = sinSaltoFinal2.replaceAll("\n", "");
         Log.d("VideoData**>  ", sinsinSalto2);
-        String baseVideo = sinsinSalto2;
-        return baseVideo;
+        return sinsinSalto2;
     }
 
     public String getPath(Uri uri) {
@@ -1096,7 +1063,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
                     if (Utills.isConnected(this)) {
                         getTaluka();
                     } else {
-
+                        Utills.showToast("No Internet Connectivity.",this);
                     }
 
                 }

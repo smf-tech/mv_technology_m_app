@@ -39,18 +39,26 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AssetApprovalActivity extends AppCompatActivity implements View.OnClickListener {
-    Asset asset;
-    PreferenceHelper preferenceHelper;
+    private Asset asset;
+    private PreferenceHelper preferenceHelper;
     private AssetApprovalActivity _context;
-    EditText edit_text_name,edit_text_assetname, edit_text_modelno, edit_text_issue_date, edit_text_specification,edit_text_code,edit_asset_status,asset_reject_remark;
-    Button accept, reject;
+    private EditText edit_text_name;
+    private EditText edit_text_assetname;
+    private EditText edit_text_modelno;
+    private EditText edit_text_issue_date;
+    private EditText edit_text_specification;
+    private EditText edit_text_code;
+    private EditText edit_asset_status;
+    private EditText asset_reject_remark;
+    private Button accept;
+    private Button reject;
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar,rel_Asset_Name;
     private TextInputLayout input_specification,asset_reject_ly;
-    Spinner spinner_assetstaus;
-    String asset_status;
-    List<String> asset_statuslist = new ArrayList<>();
+    private Spinner spinner_assetstaus;
+    private String asset_status;
+    private List<String> asset_statuslist = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +74,10 @@ public class AssetApprovalActivity extends AppCompatActivity implements View.OnC
 
     private void InitViews() {
         setActionbar(getString(R.string.asset_approval));
-        asset = (Asset) getIntent().getExtras().getSerializable("Assets");
+        if(getIntent().getExtras().getSerializable("Assets")!=null){
+            asset = (Asset) getIntent().getExtras().getSerializable("Assets");
+        }
+
         asset_statuslist = Arrays.asList(getResources().getStringArray(R.array.array_of_asset_status));
 
         edit_text_name = (EditText) findViewById(R.id.edit_text_name);

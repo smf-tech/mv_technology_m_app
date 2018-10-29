@@ -46,14 +46,20 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AssetAllocation_Activity extends AppCompatActivity implements View.OnClickListener {
-    Spinner spinner_stock;
-    EditText edit_text_username, edit_text_assetname, edit_text_no, edit_text_name,edit_asset_status;
-    Button btn_allocate_asset,btn_reject_asset;
-    PreferenceHelper preferenceHelper;
-    Asset asset;
-    ArrayList<String> stocklist = new ArrayList<>();
+    private Spinner spinner_stock;
+    private EditText edit_text_username;
+    private EditText edit_text_assetname;
+    private EditText edit_text_no;
+    private EditText edit_text_name;
+    private EditText edit_asset_status;
+    private Button btn_allocate_asset;
+    private Button btn_reject_asset;
+    private PreferenceHelper preferenceHelper;
+    private Asset asset;
+    private ArrayList<String> stocklist = new ArrayList<>();
     private ArrayAdapter<String> stock_adapter;
-    String stock_id, asset_id;
+    private String stock_id;
+    private String asset_id;
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
@@ -71,8 +77,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
 
     private void Initviews() {
         preferenceHelper = new PreferenceHelper(this);
-        asset = (Asset) getIntent().getExtras().getSerializable("Assets");
-        asset_id = asset.getAsset_id();
+
         spinner_stock = (Spinner) findViewById(R.id.spinner_stock);
         edit_text_username = (EditText) findViewById(R.id.edit_text_username);
         edit_text_assetname = (EditText) findViewById(R.id.edit_text_assetname);
@@ -86,8 +91,15 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
         btn_allocate_asset.setOnClickListener(this);
         btn_reject_asset.setOnClickListener(this);
         edit_text_no.addTextChangedListener(watch);
-        edit_asset_status.setText(asset.getAllocationStatus());
-        if (User.getCurrentUser(AssetAllocation_Activity.this).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
+
+        if (getIntent().getExtras() != null) {
+            asset = (Asset) getIntent().getExtras().getSerializable("Assets");
+            asset_id = asset != null ? asset.getAsset_id() : null;
+            edit_asset_status.setText(asset != null ? asset.getAllocationStatus() : "");
+        }
+
+        if (asset != null && User.getCurrentUser(AssetAllocation_Activity.this).getMvUser() != null &&
+                User.getCurrentUser(AssetAllocation_Activity.this).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
             lnr_asset_manager.setVisibility(View.VISIBLE);
             lnr_user.setVisibility(View.GONE);
             btn_allocate_asset.setText(getResources().getString(R.string.allocate));
@@ -100,9 +112,8 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
             btn_allocate_asset.setText(getResources().getString(R.string.reallocate));
             setActionbar(getResources().getString(R.string.asset_reallocation));
         }
+
         GetStock();
-
-
     }
 
     private void setActionbar(String Title) {
@@ -122,7 +133,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
 
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = "";
+        String url;
 
 
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -135,7 +146,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
                     Utills.hideProgressDialog();
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             final List<Asset> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Asset[].class));
@@ -144,7 +155,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
                                 if (temp.get(i).getCode() != null)
                                     stocklist.add(temp.get(i).getCode());
                             }
-                            stock_adapter = new ArrayAdapter<String>(AssetAllocation_Activity.this,
+                            stock_adapter = new ArrayAdapter<>(AssetAllocation_Activity.this,
                                     android.R.layout.simple_spinner_item, stocklist);
                             stock_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spinner_stock.setAdapter(stock_adapter);
@@ -236,7 +247,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
         Utills.showProgressDialog(this, "Sending", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = "";
+        String url;
 
 
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -246,11 +257,11 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
-                String data = null;
+                String data;
                 try {
                     if (response.body() != null) {
                         data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             Asset asset = gson.fromJson(data, Asset.class);
                             Id = asset.getAsset_id();
@@ -274,7 +285,7 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
         });
     }
 
-    TextWatcher watch = new TextWatcher() {
+    private TextWatcher watch = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable arg0) {

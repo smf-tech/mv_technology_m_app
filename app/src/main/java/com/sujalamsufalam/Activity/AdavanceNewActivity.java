@@ -75,11 +75,11 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
         mVoucher = (Voucher) getIntent().getSerializableExtra(Constants.VOUCHER);
         preferenceHelper = new PreferenceHelper(this);
         projectList = Arrays.asList(getResources().getStringArray(R.array.array_of_project));
-        projectList = new ArrayList<String>();
+        projectList = new ArrayList<>();
         projectList.add("Select");
       /*  if (Utills.isConnected(this))
             getProject();*/
-        project_adapter = new ArrayAdapter<String>(this,
+        project_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, projectList);
         project_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerProject.setAdapter(project_adapter);
@@ -87,7 +87,8 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
         binding.txtDate.setText(getCurrentDate());
         binding.txtDate.setOnClickListener(this);
         binding.spinnerProject.setOnItemSelectedListener(this);
-        if (getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
+
+        if (getIntent().getExtras()!=null && Constants.ACTION_ADD.equalsIgnoreCase(getIntent().getExtras().getString(Constants.ACTION))) {
             isAdd = true;
         } else {
             isAdd = false;
@@ -153,7 +154,7 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
-    public String getCurrentDate() {
+    private String getCurrentDate() {
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -273,7 +274,7 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
                             if (response != null && response.isSuccess()) {
                                 if (response.body() != null) {
                                     String data = response.body().string();
-                                    if (data != null && data.length() > 0) {
+                                    if (data.length() > 0) {
                                         Utills.showToast("Status of expense changed successfully", AdavanceNewActivity.this);
                                         finish();
                                         overridePendingTransition(R.anim.left_in, R.anim.right_out);
@@ -328,9 +329,9 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
                         Utills.hideProgressDialog();
                         try {
                             if (response.body() != null) {
-                                if (response != null && response.isSuccess()) {
+                                if (response.isSuccess()) {
                                     String data = response.body().string();
-                                    if (data != null && data.length() > 0) {
+                                    if (data.length() > 0) {
                                         JSONObject object = new JSONObject(data);
                                         JSONArray array = object.getJSONArray("Records");
                                         if (array.length() != 0) {

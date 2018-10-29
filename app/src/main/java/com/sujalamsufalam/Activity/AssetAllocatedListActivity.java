@@ -45,18 +45,18 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AssetAllocatedListActivity extends AppCompatActivity implements View.OnClickListener {
-    FloatingActionButton fab_send_asset;
+    private FloatingActionButton fab_send_asset;
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     private RecyclerView recycler_view;
-    PreferenceHelper preferenceHelper;
-    EditText editTextEmail;
-    List<Asset> assetList = new ArrayList<>();
-    AssetAdapter adapter;
+    private PreferenceHelper preferenceHelper;
+    private EditText editTextEmail;
+    private List<Asset> assetList = new ArrayList<>();
+    private AssetAdapter adapter;
     RecyclerView.LayoutManager mLayoutManager;
-    ArrayList<Asset> repplicaCahart = new ArrayList<>();
-    TextView textNoData;
+    private ArrayList<Asset> repplicaCahart = new ArrayList<>();
+    private TextView textNoData;
     private ArrayList<String> headerList;
     private HashMap<String, ArrayList<Asset>> childList;
     private ExpandableAssetListAdapter evAdapter;
@@ -194,8 +194,7 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
         Utills.showProgressDialog(this, "Loading Asset", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = "";
-
+        String url;
 
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + "/services/apexrest/getAllTransactionManagement?userId=" + User.getCurrentUser(this).getMvUser().getId();
@@ -205,9 +204,9 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
                 Utills.hideProgressDialog();
                 try {
                     if (response.body() != null) {
-                        String data = null;
+                        String data;
                         data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             if (jsonArray.length() != 0) {
                                 assetList.clear();
@@ -308,7 +307,7 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
 
     }
 
-    TextWatcher watch = new TextWatcher() {
+    private TextWatcher watch = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable arg0) {
@@ -334,18 +333,14 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
     private void setFilter(String s) {
         List<Asset> list = new ArrayList<>();
         assetList.clear();
-        for (int i = 0; i < repplicaCahart.size(); i++) {
-            assetList.add(repplicaCahart.get(i));
-        }
+        assetList.addAll(repplicaCahart);
         for (int i = 0; i < assetList.size(); i++) {
             if (assetList.get(i).getAssetModel().toLowerCase().contains(s.toLowerCase())) {
                 list.add(assetList.get(i));
             }
         }
         assetList.clear();
-        for (int i = 0; i < list.size(); i++) {
-            assetList.add(list.get(i));
-        }
+        assetList.addAll(list);
         adapter.notifyDataSetChanged();
         if (assetList.size() == 0) {
             textNoData.setVisibility(View.VISIBLE);

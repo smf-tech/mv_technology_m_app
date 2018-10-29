@@ -29,7 +29,7 @@ public class ActivityWebView extends AppCompatActivity implements View.OnClickLi
     private WebView webView;
     private String path, title;
 
-    ProgressDialog progress;
+    private ProgressDialog progress;
     private ImageView img_back,  img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;

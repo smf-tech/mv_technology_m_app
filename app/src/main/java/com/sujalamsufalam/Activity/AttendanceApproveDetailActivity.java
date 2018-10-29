@@ -36,9 +36,9 @@ import retrofit2.Response;
 public class AttendanceApproveDetailActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ActivityAttendanceApproveDetailBinding binding;
-    AttendanceApproval attendanceApproval;
+    private AttendanceApproval attendanceApproval;
     private PreferenceHelper preferenceHelper;
-    Activity mContext;
+    private Activity mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,11 +88,11 @@ public class AttendanceApproveDetailActivity extends AppCompatActivity implement
         toolbar_title.setText(str);
         ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
-        img_back.setOnClickListener((View.OnClickListener) this);
+        img_back.setOnClickListener(this);
         ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setImageResource(R.drawable.ic_action_calender);
-        img_logout.setOnClickListener((View.OnClickListener) this);
+        img_logout.setOnClickListener(this);
     }
 
     @Override
@@ -100,7 +100,7 @@ public class AttendanceApproveDetailActivity extends AppCompatActivity implement
         switch (v.getId()) {
             case R.id.btn_reject:
                 binding.approveRemarks.setVisibility(View.VISIBLE);
-                if(binding.editApproveRemarks.getText().toString()!=null && binding.editApproveRemarks.getText().toString().trim().length()>0){
+                if(binding.editApproveRemarks.getText().toString().trim().length()>0){
                     updateAttendance("Rejected");
                 }else{
                     Utills.showToast(getString(R.string.attendance_rejection_reason), getApplicationContext());
@@ -152,7 +152,7 @@ public class AttendanceApproveDetailActivity extends AppCompatActivity implement
                             if (response != null && response.isSuccess()) {
                                 if (response.body() != null) {
                                     String data = response.body().string();
-                                    if (data != null && data.length() > 0) {
+                                    if (data.length() > 0) {
                                         Utills.showToast("Status of attendance updated successfully.", AttendanceApproveDetailActivity.this);
                                         finish();
                                         overridePendingTransition(R.anim.left_in, R.anim.right_out);

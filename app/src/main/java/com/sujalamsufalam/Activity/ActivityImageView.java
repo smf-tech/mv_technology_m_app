@@ -28,7 +28,11 @@ public class ActivityImageView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_image_view);
         binding.setActivity(this);
-        Id = getIntent().getExtras().getString(Constants.ID);
+
+        if(getIntent().getExtras().getString(Constants.ID)!=null){
+            Id = getIntent().getExtras().getString(Constants.ID);
+        }
+
         preferenceHelper = new PreferenceHelper(this);
 
         Glide.with(this)
@@ -37,7 +41,7 @@ public class ActivityImageView extends AppCompatActivity {
                 .into(binding.imageView);
     }
 
-    GlideUrl getUrlWithHeaders(String url) {
+    private GlideUrl getUrlWithHeaders(String url) {
 //
         return new GlideUrl(url, new LazyHeaders.Builder()
                 .addHeader("Authorization", "OAuth " + preferenceHelper.getString(PreferenceHelper.AccessToken))
