@@ -43,7 +43,7 @@ public interface UserDao {
 
 
     @Query("DELETE FROM " + Constants.TABLE_HOLIDAY)
-    public void deleteHolidayList();
+    void deleteHolidayList();
 
     @Query("SELECT * FROM " + Constants.TABLE_ATTENDANCE)
     List<Attendance> getAllAttendance();
@@ -64,10 +64,10 @@ public interface UserDao {
     long[] insertAttendance(Attendance... attendance);
 
     @Query("DELETE FROM " + Constants.TABLE_ATTENDANCE)
-    public void deleteAllAttendance();
+    void deleteAllAttendance();
 
     @Update
-    public void updateAttendance(Attendance... attendance);
+    void updateAttendance(Attendance... attendance);
 
     @Query("SELECT * FROM " + Constants.TABLE_VOUCHER)
     List<Voucher> getAllVoucher();
@@ -97,10 +97,10 @@ public interface UserDao {
     long[] insertExpense(List<Expense> expenses);
 
     @Query("DELETE FROM " + Constants.TABLE_ADAVANCE)
-    public void deleteAllAdavance();
+    void deleteAllAdavance();
 
     @Query("DELETE FROM " + Constants.TABLE_VOUCHER)
-    public void deleteAllVoucher();
+    void deleteAllVoucher();
 
     @Query("SELECT * FROM " + Constants.TABLE_SALARY)
     List<Salary> getAllSalary();
@@ -109,7 +109,7 @@ public interface UserDao {
     long[] insertSalary(List<Salary> salaries);
 
     @Query("DELETE FROM " + Constants.TABLE_SALARY)
-    public void deleteAllSalary();
+    void deleteAllSalary();
 
     @Query("SELECT * FROM " + Constants.TABLE_EXPENSE)
     List<Expense> getAllExpense();
@@ -154,10 +154,10 @@ public interface UserDao {
     void insertProcess(List<Template> tasks);
 
     @Update
-    public void updateTask(TaskContainerModel... task);
+    void updateTask(TaskContainerModel... task);
 
     @Update
-    public void updateCommunities(Community... communities);
+    void updateCommunities(Community... communities);
 
     @Query("SELECT * FROM " + Constants.TABLE_DOWNLOAD_CONTENT + " where Lang = :lang")
     List<DownloadContent> getDownloadContent(String lang);
@@ -202,7 +202,7 @@ public interface UserDao {
     long[] insertChats(Content... contents);
 
     @Update
-    public void updateChats(Content content);
+    void updateChats(Content content);
 
     @Update
     void updateContent(Content... contents);
@@ -302,25 +302,25 @@ public interface UserDao {
     List<String> getSchoolCode(String state, String district, String taluka, String cluster, String village, String schoolname);
 
     @Query("DELETE FROM " + Constants.TABLE_CALANDER)
-    public void deleteCalender();
+    void deleteCalender();
 
     @Query("DELETE FROM " + Constants.TABLE_COMMUNITY)
-    public void clearTableCommunity();
+    void clearTableCommunity();
 
     @Query("DELETE FROM " + Constants.TABLE_CONTENT)
-    public void clearTableCotent();
+    void clearTableCotent();
 
     @Query("DELETE FROM " + Constants.TABLE_PROCESS)
-    public void clearProcessTable();
+    void clearProcessTable();
 
     @Query("DELETE FROM " + Constants.TABLE_CONTAINER)
-    public void clearTaskContainer();
+    void clearTaskContainer();
 
     @Query("DELETE FROM " + Constants.TABLE_DOWNLOAD_CONTENT)
-    public void clearDownloadContent();
+    void clearDownloadContent();
 
     @Query("DELETE FROM " + Constants.TABLE_LOCATION)
-    public void clearLocation();
+    void clearLocation();
 
     @Query("SELECT * FROM " + Constants.TABLE_CONTENT + " where synchStatus = '" + Constants.STATUS_LOCAL + "' order by CreatedDate desc")
     List<Content> getAllASynchChats();
@@ -351,7 +351,7 @@ public interface UserDao {
     int deletepost(String communityId, Boolean flag, Boolean deleteflag);
 
     @Query("DELETE FROM " + Constants.TABLE_CALANDER + " where Id = :calenderId")
-    public int deleteCalenderEvent(String calenderId);
+    int deleteCalenderEvent(String calenderId);
 
     //Opretions on Notification table
 
@@ -374,7 +374,7 @@ public interface UserDao {
     void deleteNotification(int unique_Id);
 
     @Query("DELETE FROM " + Constants.TABLE_NOTIFICATION)
-    public void clearNotification();
+    void clearNotification();
 
     //Opretions on Leaves table
 
@@ -388,6 +388,6 @@ public interface UserDao {
     List<LeavesModel> getApprovedLeaves(String status);
 
     @Query("DELETE FROM " + Constants.TABLE_LEAVES)
-    public void deleteAllLeaves();
+    void deleteAllLeaves();
 
 }

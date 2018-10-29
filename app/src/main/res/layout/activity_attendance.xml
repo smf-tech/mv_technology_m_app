@@ -18,7 +18,7 @@
 
         <include
             android:id="@+id/toolbar_layout"
-            layout="@layout/toolbar"></include>
+            layout="@layout/toolbar" />
 
         <LinearLayout
             android:id="@+id/checkIncheckOut"
@@ -33,7 +33,7 @@
                 android:id="@+id/chekInLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="5dp"
+                android:layout_marginEnd="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/orange_box"
                 android:gravity="center"
@@ -47,7 +47,7 @@
                 android:id="@+id/chekOutLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
                 android:layout_weight="1"
                 android:background="@drawable/orange_box"
                 android:gravity="center"
@@ -69,7 +69,5 @@
             android:paddingTop="@dimen/activity_vertical_margin"
             app:mcv_tileHeight="match_parent"
             app:mcv_tileWidth="match_parent" />
-
-
     </RelativeLayout>
 </layout>

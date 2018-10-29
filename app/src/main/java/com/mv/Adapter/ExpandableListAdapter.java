@@ -2,7 +2,6 @@ package com.mv.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -155,7 +154,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         });
         imgDownload = convertView.findViewById(R.id.imgDownload);
-        imgshare = convertView.findViewById(R.id.imgshare);
+     //   imgshare = convertView.findViewById(R.id.imgshare);
         imgDownload.setOnClickListener(view -> _activity.startDownload(content));
         imgshare = convertView.findViewById(R.id.imgshare);
         imgshare.setOnClickListener(v -> {
@@ -238,29 +237,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         if (downloadContent.getFileType() != null) {
             if (downloadContent.getFileType().equalsIgnoreCase("zip")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/UnZip/" + downloadContent.getName();
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (downloadContent.getFileType().equalsIgnoreCase("pdf")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + downloadContent.getName() + ".pdf";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (downloadContent.getFileType().equalsIgnoreCase("video")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + downloadContent.getName() + ".mp4";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (downloadContent.getFileType().equalsIgnoreCase("audio")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + downloadContent.getName() + ".mp3";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (downloadContent.getFileType().equalsIgnoreCase("ppt")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + downloadContent.getName() + ".ppt";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             }
         }
         return false;

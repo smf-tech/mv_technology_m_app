@@ -26,7 +26,7 @@ import java.util.zip.ZipFile;
  * Created by Rohit Gujar on 30-11-2017.
  */
 
-class DownloadFile {
+public class DownloadFile {
     private Context context;
     private ProgressDialog mProgressDialog;
     private String StorezipFileLocation = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/";
@@ -142,18 +142,13 @@ class DownloadFile {
             pDialog.dismiss();
 
             if (file_url.equalsIgnoreCase("true")) {
-                try {
-                    unzip();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
+                unzip();
             }
         }
 
     }
 
-    private void unzip() throws IOException {
+    public void unzip() {
         mProgressDialog = new ProgressDialog(context);
         mProgressDialog.setTitle("Please Wait...");
         mProgressDialog.setMessage("Unzipping Files...");
@@ -207,16 +202,16 @@ class DownloadFile {
             }
 
             // Log.v("", "Extracting: " + entry);
-            BufferedInputStream inputStream = new BufferedInputStream(zipfile.getInputStream(entry));
-            BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
+//            BufferedInputStream inputStream = new BufferedInputStream(zipfile.getInputStream(entry));
+//            BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
 
-            try {
-
-            } finally {
-                outputStream.flush();
-                outputStream.close();
-                inputStream.close();
-            }
+//            try {
+//
+//            } finally {
+//                outputStream.flush();
+//                outputStream.close();
+//                inputStream.close();
+//            }
         }
 
         private void createDir(File dir) {

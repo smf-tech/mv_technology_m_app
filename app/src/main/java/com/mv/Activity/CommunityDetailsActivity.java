@@ -1,7 +1,6 @@
 package com.mv.Activity;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.databinding.DataBindingUtil;
@@ -431,12 +430,12 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
-                        try {
-
-                        } catch (Exception e) {
-                            Utills.hideProgressDialog();
-                            Utills.showToast(getString(R.string.error_something_went_wrong), CommunityDetailsActivity.this);
-                        }
+//                        try {
+//
+//                        } catch (Exception e) {
+//                            Utills.hideProgressDialog();
+//                            Utills.showToast(getString(R.string.error_something_went_wrong), CommunityDetailsActivity.this);
+//                        }
                     }
 
                     @Override
@@ -480,12 +479,12 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
-                        try {
-
-                        } catch (Exception e) {
-                            Utills.hideProgressDialog();
-                            Utills.showToast(getString(R.string.error_something_went_wrong), CommunityDetailsActivity.this);
-                        }
+//                        try {
+//
+//                        } catch (Exception e) {
+//                            Utills.hideProgressDialog();
+//                            Utills.showToast(getString(R.string.error_something_went_wrong), CommunityDetailsActivity.this);
+//                        }
                     }
 
                     @Override
@@ -754,14 +753,10 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         if (mContent.getIsAttachmentPresent().equalsIgnoreCase("true")) {
             if (mContent.getAttachmentId() == null) {
                 String filepath = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mContent.getId() + ".png");
-                if (new File(filepath).exists())
-                    return true;
-                return false;
+                return new File(filepath).exists();
             } else {
                 String filepath = (Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mContent.getAttachmentId() + ".png");
-                if (new File(filepath).exists())
-                    return true;
-                return false;
+                return new File(filepath).exists();
             }
 
 

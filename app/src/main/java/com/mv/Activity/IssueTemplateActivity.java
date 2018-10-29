@@ -383,8 +383,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                         }*/
                             jsonObject1.put("contentType", "Image");
                             jsonObject1.put("isAttachmentPresent", "true");
-                            InputStream iStream = null;
-                            iStream = getContentResolver().openInputStream(FinalUri);
+                            InputStream iStream = getContentResolver().openInputStream(FinalUri);
                             img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
                       /*  JSONObject jsonObjectAttachment = new JSONObject();
                         jsonObjectAttachment.put("Body", img_str);
@@ -579,12 +578,12 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
-                try {
-
-                } catch (Exception e) {
-                    Utills.hideProgressDialog();
-                    Utills.showToast(IssueTemplateActivity.this.getString(R.string.error_something_went_wrong), IssueTemplateActivity.this);
-                }
+//                try {
+//
+//                } catch (Exception e) {
+//                    Utills.hideProgressDialog();
+//                    Utills.showToast(IssueTemplateActivity.this.getString(R.string.error_something_went_wrong), IssueTemplateActivity.this);
+//                }
             }
 
             @Override
@@ -765,9 +764,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         long fileSizeInKB = fileSizeInBytes / 1024;
         // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
         long fileSizeInMB = fileSizeInKB / 1024;
-        if (fileSizeInMB > 5)
-            return true;
-        return false;
+        return fileSizeInMB > 5;
     }
 
     private String getVideoString(Uri selectedImageUri) {
@@ -780,7 +777,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int len = 0;
+        int len;
         try {
             while ((len = inputStream != null ? inputStream.read(buffer) : 0) != -1) {
                 byteBuffer.write(buffer, 0, len);
@@ -789,9 +786,8 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
             e.printStackTrace();
         }
         System.out.println("converted!");
-        String videoData = "";
         //Converting bytes into base64
-        videoData = Base64.encodeToString(byteBuffer.toByteArray(), Base64.DEFAULT);
+        String videoData = Base64.encodeToString(byteBuffer.toByteArray(), Base64.DEFAULT);
         Log.d("VideoData**>  ", videoData);
         String sinSaltoFinal2 = videoData.trim();
         String sinsinSalto2 = sinSaltoFinal2.replaceAll("\n", "");
@@ -800,7 +796,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         return baseVideo;
     }
 
-    private String getPath(Uri uri) {
+    public String getPath(Uri uri) {
         String[] projection = {MediaStore.Video.Media.DATA};
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
         if (cursor != null) {
@@ -990,12 +986,8 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
             } else {
 
                 record.setBackgroundResource(R.drawable.red_box_mic_radius);
-                try {
-                    if (hasMicrophone())
-                        recordAudio(v);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                if (hasMicrophone())
+                    recordAudio(v);
             }
         });
 
@@ -1063,13 +1055,13 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
 
     }
 
-    private boolean hasMicrophone() {
+    protected boolean hasMicrophone() {
         PackageManager pmanager = getPackageManager();
         return pmanager.hasSystemFeature(
                 PackageManager.FEATURE_MICROPHONE);
     }
 
-    private void stopClicked(View view) {
+    public void stopClicked(View view) {
 
         try {
             if (isRecording) {
@@ -1097,7 +1089,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    private void recordAudio(View view) throws IOException {
+    public void recordAudio(View view) {
         isRecording = true;
         rectext.setText("Done");
 

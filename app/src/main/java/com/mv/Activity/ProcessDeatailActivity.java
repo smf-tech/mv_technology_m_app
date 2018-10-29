@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -475,8 +474,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         // AppDatabase.getAppDatabase(context).userDao().updateTask(taskContainerModel);
                         if (isImagePresent && FinalUri != null) {
 
-                            InputStream iStream = null;
-                            iStream = getContentResolver().openInputStream(FinalUri);
+                            InputStream iStream = getContentResolver().openInputStream(FinalUri);
 
                             JSONObject object2 = new JSONObject();
                             object2.put("id", imageId);

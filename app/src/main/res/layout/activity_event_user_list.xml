@@ -302,7 +302,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:drawableLeft="@drawable/search"
+                        android:drawableStart="@drawable/search"
                         android:drawablePadding="10dp"
                         android:focusableInTouchMode="true"
                         android:hint="Search User"
@@ -334,7 +334,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="@dimen/dimen_5dp"
-                            android:layout_marginLeft="10dp"
+                            android:layout_marginStart="10dp"
                             android:layout_marginTop="@dimen/dimen_5dp"
                             android:text="Select All" />
 

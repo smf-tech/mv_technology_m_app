@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -144,9 +143,7 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
                     if (response.body() != null) {
                         String data = response.body().string();
                         if (data.length() > 0) {
-
-                            JSONArray jsonArray = null;
-                            jsonArray = new JSONArray(data);
+                            JSONArray jsonArray = new JSONArray(data);
                             projectList.clear();
 
                             projectList.add("Select");

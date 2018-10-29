@@ -2,7 +2,6 @@ package com.mv.Activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.support.v7.app.AppCompatActivity;
@@ -238,7 +237,7 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
                     }
                 })
                 .setPositiveButton(getString(R.string.ok), (dialog12, id) -> {
-                    StringBuffer sb = new StringBuffer();
+                    StringBuilder sb = new StringBuilder();
                     String prefix = "";
                     for (int i = 0; i < items.length; i++) {
                         if (mSelection[i]) {
@@ -253,7 +252,7 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
                         getDashBoardData(sb.toString());
                     binding.spinnerRole.setText(sb.toString());
                     roleList=sb.toString();
-                    selectedRoleList = new ArrayList<String>(Arrays.asList(getColumnIdex((roleList).split(";"))));
+                    selectedRoleList = new ArrayList<>(Arrays.asList(getColumnIdex((roleList).split(";"))));
                 }).setNegativeButton(getString(R.string.cancel), (dialog1, id) -> {
                     //  Your code when user clicked on Cancel
                 }).create();

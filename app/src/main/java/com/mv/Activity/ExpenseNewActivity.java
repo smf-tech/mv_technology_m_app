@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -15,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -437,8 +435,7 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
                 JSONArray jsonArray = new JSONArray();
                 try {
                     if (FinalUri != null) {
-                        InputStream iStream = null;
-                        iStream = getContentResolver().openInputStream(FinalUri);
+                        InputStream iStream = getContentResolver().openInputStream(FinalUri);
                         img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
                         expense.setAttachmentPresent("true");
                     }

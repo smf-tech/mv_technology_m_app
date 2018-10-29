@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -16,12 +15,10 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -184,7 +181,6 @@ public class Utills {
             ImageView proImg = pgDialog.findViewById(R.id.img_progress);
             proImg.setBackgroundResource(R.drawable.progress_dialog);
             AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
-            rocketAnimation = (AnimationDrawable) proImg.getBackground();
             rocketAnimation.start();
             pgDialog.setCancelable(false);
             pgDialog.show();
@@ -244,7 +240,6 @@ public class Utills {
             ImageView proImg = pgDialog.findViewById(R.id.img_progress);
             proImg.setBackgroundResource(R.drawable.progress_dialog);
             AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
-            rocketAnimation = (AnimationDrawable) proImg.getBackground();
             rocketAnimation.start();
             pgDialog.setCancelable(false);
             pgDialog.show();
@@ -271,7 +266,7 @@ public class Utills {
         int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
 
-        int len = 0;
+        int len ;
         while ((len = inputStream.read(buffer)) != -1) {
             byteBuffer.write(buffer, 0, len);
         }
@@ -405,7 +400,7 @@ public class Utills {
 
     public static String milliSecondsToTimer(long milliseconds) {
         String finalTimerString = "";
-        String secondsString = "";
+        String secondsString;
 
         // Convert total duration into time
         int hours = (int) (milliseconds / (1000 * 60 * 60));
@@ -422,7 +417,6 @@ public class Utills {
         } else {
             secondsString = "" + seconds;
         }
-
         finalTimerString = finalTimerString + minutes + ":" + secondsString;
 
         // return timer string
@@ -436,7 +430,7 @@ public class Utills {
      * @param totalDuration
      */
     public static int getProgressPercentage(long currentDuration, long totalDuration) {
-        Double percentage = (double) 0;
+        Double percentage;
 
         long currentSeconds = (int) (currentDuration / 1000);
         long totalSeconds = (int) (totalDuration / 1000);
@@ -455,7 +449,7 @@ public class Utills {
      * @param totalDuration returns current duration in milliseconds
      */
     public static int progressToTimer(int progress, int totalDuration) {
-        int currentDuration = 0;
+        int currentDuration;
         totalDuration = totalDuration / 1000;
         currentDuration = (int) ((((double) progress) / 100) * totalDuration);
 
@@ -533,18 +527,17 @@ public class Utills {
 
 
     public static void spamContent(Context mContext, PreferenceHelper preferenceHelper, String ID, String UserId, Boolean isSpam) {
-        String url = "";
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
 
 
-        url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.SpamContentUrl + "?Id=" + ID + "&userId=" + UserId + "&isSpam=" + isSpam;
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                String data = null;
+                String data;
                 try {
                     data = response.body().string();
                     if (data.length() > 0) {

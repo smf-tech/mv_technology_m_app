@@ -1,7 +1,6 @@
 package com.mv.Activity;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
@@ -246,7 +245,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                     }
                 })
                 .setPositiveButton(getString(R.string.ok), (dialog12, id) -> {
-                    StringBuffer sb = new StringBuffer();
+                    StringBuilder sb = new StringBuilder();
                     String prefix = "";
                     for (int i = 0; i < items.length; i++) {
                         if (mSelection[i]) {
@@ -261,7 +260,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                         getDashBoardDataForAll(sb.toString());
                     role.setText(sb.toString());
                     roleList = sb.toString();
-                    selectedRoleList = new ArrayList<String>(Arrays.asList(getColumnIdex((roleList).split(";"))));
+                    selectedRoleList = new ArrayList<>(Arrays.asList(getColumnIdex((roleList).split(";"))));
                 }).setNegativeButton(getString(R.string.cancel), (dialog1, id) -> {
                     //  Your code when user clicked on Cancel
                 }).create();
@@ -818,8 +817,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         Utills.showProgressDialog(context, "Loading Communities", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
-        String url = "";
-        url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(context).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -871,8 +869,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                         try {
                             jsonObject1.put("isAttachmentPresent", "true");
                             jsonObject1.put("isAttachmentPresent", "true");
-                            InputStream iStream = null;
-                            iStream = getContentResolver().openInputStream(Uri.fromFile(file));
+                            InputStream iStream = getContentResolver().openInputStream(Uri.fromFile(file));
                             img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
                       /*  JSONObject jsonObjectAttachment = new JSONObject();
                         jsonObjectAttachment.put("Body", img_str);

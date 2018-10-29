@@ -50,8 +50,7 @@ public class EventUserAttendanceActivity extends AppCompatActivity implements Vi
     private EventAttendanceListAdapter mAdapter;
     private ArrayList<EventUser> selectedUser = new ArrayList<>();
     private ArrayList<EventUser> eventUsersFliter = new ArrayList<>();
-    private String eventID;
-    private String PresentUsersID;
+    String eventID,PresentUsersID;
     public boolean isAllSelect=true;
 
     public String selectedState = "Maharashtra", selectedDisrict = "Select", selectedRolename = "TC", selectedTaluka = "Select", selectedCluster = "Select", selectedVillage = "Select", selectedSchool = "Select", selectedOrganization = "SMF", selectedUserId = "", selectedUserName = "", selectedCatagory = "";
@@ -120,7 +119,7 @@ public class EventUserAttendanceActivity extends AppCompatActivity implements Vi
         eventUsers.set(eventUsers.indexOf(eventUser), eventUser);
     }
 
-    private TextWatcher watch = new TextWatcher() {
+    TextWatcher watch = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable arg0) {
@@ -168,11 +167,14 @@ public class EventUserAttendanceActivity extends AppCompatActivity implements Vi
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
 
+        String s = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetEventCalenderMembers_Url;
+
         StringBuilder buffer = new StringBuilder();
-        buffer.append(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetEventCalenderMembers_Url);
-     //   https://cs57.salesforce.com/services/apexrest/getUserDataForCalnderAttendance?eventId=a1C0k000000Sh1l
-        buffer.append("?eventId="+eventID);
+        buffer.append(s);
+
+        s = "?eventId=" + eventID;
+        buffer.append(s);
 
         Log.e("Url",buffer.toString());
 
@@ -249,7 +251,7 @@ public class EventUserAttendanceActivity extends AppCompatActivity implements Vi
             binding.cbEventSelectAll.setChecked(false);
     }
 
-    private void submitResult(){
+    public void submitResult(){
         Intent returnIntent = new Intent();
         returnIntent.putExtra("EventSelectedUsers",selectedUser);
         setResult(RESULT_OK,returnIntent);

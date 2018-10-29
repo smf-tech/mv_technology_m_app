@@ -16,7 +16,7 @@
 
         <include
             android:id="@+id/toolbar_layout"
-            layout="@layout/toolbar"></include>
+            layout="@layout/toolbar" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -29,7 +29,6 @@
                 android:id="@+id/rv_expense"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/toolbar"
                 android:layout_marginTop="10dp"
                 android:scrollbars="vertical" />
 
@@ -42,6 +41,5 @@
                 android:textColor="@color/dark_grey"
                 android:textSize="@dimen/large_text" />
         </RelativeLayout>
-
     </LinearLayout>
 </layout>

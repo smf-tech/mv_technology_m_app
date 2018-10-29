@@ -128,7 +128,7 @@
                         android:background="@null"
                         android:hint="@string/specification"
                         android:minLines="3"
-                        android:gravity="left|top"
+                        android:gravity="start|top"
                         android:textColor="@color/black"
                         android:enabled="false"
                         android:textSize="@dimen/medium_text" />

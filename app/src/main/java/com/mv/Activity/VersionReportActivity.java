@@ -1,11 +1,9 @@
 package com.mv.Activity;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -282,7 +280,7 @@ public class VersionReportActivity extends AppCompatActivity implements View.OnC
                     }
                 })
                 .setPositiveButton(getString(R.string.ok), (dialog12, id) -> {
-                    StringBuffer sb = new StringBuffer();
+                    StringBuilder sb = new StringBuilder();
                     String prefix = "";
                     for (int i = 0; i < items.length; i++) {
                         if (mSelection[i]) {

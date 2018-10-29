@@ -46,13 +46,12 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
     private ArrayList<Task> taskList;
     private Activity mContext;
-    private PreferenceHelper preferenceHelper;
-    private ArrayList<String> myList;
-    private ArrayList<String> selectedLanList;
-    private ArrayAdapter<String> dimen_adapter;
-    private boolean[] mSelection = null;
+    PreferenceHelper preferenceHelper;
+    ArrayList<String> myList, selectedLanList;
+    ArrayAdapter<String> dimen_adapter;
+    boolean[] mSelection = null;
     final String[] items = null;
-    private String value;
+    String value;
     public static String state, village, taluka;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -420,7 +419,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     ArrayList<String> selectedLanList1 = new ArrayList<>(Arrays.asList(getColumnIdex((taskList.get(position).getPicklist_Value_Lan__c()).split(","))));
                     ArrayList<String> answer = new ArrayList<>(Arrays.asList(getColumnIdex((task.getTask_Response__c()).split(","))));
                         for(String strAns:answer){
-                            answerStr=answerStr+(selectedLanList1.get(myList1.indexOf(strAns))+",");
+                            answerStr=answerStr.concat((selectedLanList1.get(myList1.indexOf(strAns))).concat(","));
                         }
                         holder.date.setText(answerStr);
                 } else
@@ -514,7 +513,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         return taskList.size();
     }
 
-    private static String[] getColumnIdex(String[] value) {
+    public static String[] getColumnIdex(String[] value) {
 
         for (int i = 0; i < value.length; i++) {
             value[i] = value[i].trim();
@@ -534,7 +533,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
     }
 
 
-    private void showDateDialog(Context context, final int Position) {
+    public void showDateDialog(Context context, final int Position) {
 
 
         final Calendar c = Calendar.getInstance();
@@ -550,7 +549,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         dpd.show();
     }
 
-    private static String getTwoDigit(int i) {
+    public static String getTwoDigit(int i) {
         if (i < 10)
             return "0" + i;
         return "" + i;
@@ -610,7 +609,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
     private String updateTime(int hours, int mins) {
 
-        String timeSet = "";
+        String timeSet ;
         if (hours > 12) {
             hours -= 12;
             timeSet = "PM";
@@ -623,16 +622,14 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             timeSet = "AM";
 
 
-        String minutes = "";
+        String minutes ;
         if (mins < 10)
             minutes = "0" + mins;
         else
             minutes = String.valueOf(mins);
 
         // Append in a StringBuilder
-        String aTime = String.valueOf(hours) + ':' +
-                minutes + " " + timeSet;
-
+        String aTime = String.valueOf(hours) + ':' + minutes + " " + timeSet;
         return aTime;
     }
 }

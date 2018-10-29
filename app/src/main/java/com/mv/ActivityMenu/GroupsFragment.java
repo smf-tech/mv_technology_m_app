@@ -3,11 +3,9 @@ package com.mv.ActivityMenu;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -198,7 +196,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
                             List<Community> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Community[].class));
                             List<Community> list = AppDatabase.getAppDatabase(context).userDao().getAllCommunities();
                             if ((temp.size() != 0) || (list.size() != 0)) {
-                                AppDatabase.getAppDatabase(context).userDao().clearTableCommunity();;
+                                AppDatabase.getAppDatabase(context).userDao().clearTableCommunity();
                                 for (int i = 0; i < temp.size(); i++) {
                                    /* if (temp.get(i).getErrorMsg().equalsIgnoreCase("User is Inactive")) {
                                         AppDatabase.getAppDatabase(context).userDao().clearTableCommunity();

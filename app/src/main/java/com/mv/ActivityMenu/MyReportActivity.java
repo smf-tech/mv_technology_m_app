@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -141,7 +140,7 @@ public class MyReportActivity extends AppCompatActivity implements View.OnClickL
                     if (response.isSuccess()) {
                         JSONArray jsonArray = new JSONArray(response.body().string());
                         processAllList.clear();
-                        DashaBoardListModel processList = new DashaBoardListModel();
+                        DashaBoardListModel processList ;
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             processList = new DashaBoardListModel();

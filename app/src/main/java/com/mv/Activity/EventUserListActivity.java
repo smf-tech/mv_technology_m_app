@@ -63,17 +63,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
     private RelativeLayout mToolBar;
     //private ActivityProgrammeManagmentBinding binding;
     private PreferenceHelper preferenceHelper;
-    private String selectedState = "";
-    private String selectedDisrict = "";
-    private String selectedRolename = "";
-    private String selectedTaluka = "";
-    private String selectedCluster = "";
-    private String selectedVillage = "";
-    private String selectedSchool = "";
-    private String selectedOrganization = "";
-    public String selectedUserId = "";
-    public String selectedUserName = "";
-    public String selectedCatagory = "";
+    public String selectedState = "", selectedDisrict = "", selectedRolename = "", selectedTaluka = "", selectedCluster = "", selectedVillage = "", selectedSchool = "", selectedOrganization = "", selectedUserId = "", selectedUserName = "", selectedCatagory = "";
     private EventUserListAdapter mAdapter;
     private ArrayList<String> selectedProcessId = new ArrayList<>();
     private ArrayList<String> selectedRole = new ArrayList<>();
@@ -83,8 +73,8 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
     private ArrayAdapter<String> district_adapter, taluka_adapter, cluster_adapter, village_adapter, school_adapter, state_adapter, organization_adapter, role_adapter, catagory_adapter;
     private Activity context;
     private ArrayList<EventUser> calenderEventUserArrayList = new ArrayList<>();
-    private String eventID;
-    private List<EventUser> list;
+    String eventID;
+    List<EventUser> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -524,7 +514,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         });
     }
 
-    private void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
+    public void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, itemList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -533,7 +523,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
             spinner.setSelection(itemList.indexOf(selectedValue));
     }
 
-    private static String[] getColumnIdex(String[] value) {
+    public static String[] getColumnIdex(String[] value) {
         for (int i = 0; i < value.length; i++) {
             value[i] = value[i].trim();
         }
@@ -553,7 +543,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
 
     }
 
-    private TextWatcher watch = new TextWatcher() {
+    TextWatcher watch = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable arg0) {
@@ -690,10 +680,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         final boolean[] mSelection = new boolean[items.length];
         for (int i = 0; i < temp.size(); i++) {
             items[i] = temp.get(i);
-            if (selectedRole.contains(temp.get(i)))
-                mSelection[i] = true;
-            else
-                mSelection[i] = false;
+            mSelection[i] = selectedRole.contains(temp.get(i));
         }
 
        /* if (mListRoleName.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll()) > 0)
@@ -1021,39 +1008,53 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
             role = "Select";
         }
         StringBuilder buffer = new StringBuilder();
-        buffer.append(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetUserDataForCalnder);
+        String s = preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.GetUserDataForCalnder;
+        buffer.append(s);
+
         if (binding.spinnerState != null && binding.spinnerState.getSelectedItem() != null) {
-            buffer.append("?state=" + binding.spinnerState.getSelectedItem().toString());
+            s = "?state=" + binding.spinnerState.getSelectedItem().toString();
         } else {
-            buffer.append("?state=Select");
+            s = "?state=Select";
         }
-        if (binding.spinnerDistrict != null && binding.spinnerDistrict.getSelectedItem() != null)
-            buffer.append("&dist=" + binding.spinnerDistrict.getSelectedItem().toString());
-        else {
-            buffer.append("?&dist==Select");
+        buffer.append(s);
+
+        if (binding.spinnerDistrict != null && binding.spinnerDistrict.getSelectedItem() != null) {
+            s = "&dist=" + binding.spinnerDistrict.getSelectedItem().toString();
+        } else {
+            s = "?&dist==Select";
         }
+        buffer.append(s);
+
         if (binding.spinnerTaluka != null && binding.spinnerTaluka.getSelectedItem() != null) {
-            buffer.append("&tal=" + binding.spinnerTaluka.getSelectedItem().toString());
+            s = "&tal=" + binding.spinnerTaluka.getSelectedItem().toString();
         } else {
-            buffer.append("&tal==Select");
+            s = "&tal==Select";
         }
+        buffer.append(s);
+
         if (binding.spinnerCluster != null && binding.spinnerCluster.getSelectedItem() != null) {
-            buffer.append("&cluster=" + binding.spinnerCluster.getSelectedItem().toString());
+            s = "&cluster=" + binding.spinnerCluster.getSelectedItem().toString();
         } else {
-            buffer.append("&cluster=Select");
+            s = "&cluster=Select";
         }
+        buffer.append(s);
+
         if (binding.spinnerVillage != null && binding.spinnerVillage.getSelectedItem() != null) {
-            buffer.append("&village=" + binding.spinnerVillage.getSelectedItem().toString());
+            s = "&village=" + binding.spinnerVillage.getSelectedItem().toString();
         } else {
-            buffer.append("&village=Select");
+            s = "&village=Select";
         }
+        buffer.append(s);
+
         if (binding.spinnerSchoolName != null && binding.spinnerSchoolName.getSelectedItem() != null) {
-            buffer.append("&school=" + binding.spinnerSchoolName.getSelectedItem().toString());
+            s = "&school=" + binding.spinnerSchoolName.getSelectedItem().toString();
         } else {
-            buffer.append("&school==Select");
+            s = "&school==Select";
         }
-        buffer.append("&role=" + role);
+        buffer.append(s);
+
+        s = "&role=" + role;
+        buffer.append(s);
 
         apiService.getSalesForceData(buffer.toString()).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -1117,11 +1118,14 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
 
+        String s = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetEventCalenderMembers_Url;
+
         StringBuilder buffer = new StringBuilder();
-        buffer.append(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetEventCalenderMembers_Url);
-        //   https://cs57.salesforce.com/services/apexrest/getUserDataForCalnderAttendance?eventId=a1C0k000000Sh1l
-        buffer.append("?eventId=" + eventID);
+        buffer.append(s);
+
+        s = "?eventId=" + eventID;
+        buffer.append(s);
 
         Log.e("Url", buffer.toString());
 

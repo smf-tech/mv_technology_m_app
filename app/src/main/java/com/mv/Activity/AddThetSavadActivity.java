@@ -618,9 +618,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         long fileSizeInKB = fileSizeInBytes / 1024;
         // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
         long fileSizeInMB = fileSizeInKB / 1024;
-        if (fileSizeInMB > 5)
-            return true;
-        return false;
+        return fileSizeInMB > 5;
     }
 
     private void showRecorDialog() {
@@ -641,12 +639,8 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
             } else {
 
                 record.setBackgroundResource(R.drawable.red_box_mic_radius);
-                try {
-                    if (hasMicrophone())
-                        recordAudio(v);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                if (hasMicrophone())
+                    recordAudio(v);
             }
         });
 
@@ -714,7 +708,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
 
     }
 
-    private void recordAudio(View view) throws IOException {
+    public void recordAudio(View view) {
         isRecording = true;
         rectext.setText("Done");
 
@@ -738,13 +732,13 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         mediaRecorder.start();
     }
 
-    private boolean hasMicrophone() {
+    protected boolean hasMicrophone() {
         PackageManager pmanager = getPackageManager();
         return pmanager.hasSystemFeature(
                 PackageManager.FEATURE_MICROPHONE);
     }
 
-    private void stopClicked(View view) {
+    public void stopClicked(View view) {
 
         try {
             if (isRecording) {
@@ -1043,7 +1037,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         return baseVideo;
     }
 
-    private String getPath(Uri uri) {
+    public String getPath(Uri uri) {
         String[] projection = {MediaStore.Video.Media.DATA};
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
         if (cursor != null) {

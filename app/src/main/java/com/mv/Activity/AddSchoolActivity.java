@@ -102,7 +102,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                     mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), selectedCluster);
                     mListVillage.add(0, "Select");
                     mListVillage.removeAll(Collections.singleton(null));
-                    ArrayAdapter<String> adapterVillage = new ArrayAdapter<String>
+                    ArrayAdapter<String> adapterVillage = new ArrayAdapter<>
                             (context, android.R.layout.select_dialog_item, mListVillage);
 
                     binding.spinnerVillage.setThreshold(1);
@@ -111,7 +111,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
             } else {
                 mListVillage.add(0, "Select");
                 mListVillage.removeAll(Collections.singleton(null));
-                ArrayAdapter<String> adapterVillage = new ArrayAdapter<String>
+                ArrayAdapter<String> adapterVillage = new ArrayAdapter<>
                         (context, android.R.layout.select_dialog_item, mListVillage);
 
                 binding.spinnerVillage.setThreshold(1);
@@ -134,14 +134,14 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                         mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), selectedCluster, selectedVillage);
                         mListSchoolName.add(0, "Select");
                         mListSchoolName.removeAll(Collections.singleton(null));
-                        ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<String>(context, android.R.layout.select_dialog_item, mListSchoolName);
+                        ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<>(context, android.R.layout.select_dialog_item, mListSchoolName);
                         binding.spinnerSchoolName.setThreshold(1);
                         binding.spinnerSchoolName.setAdapter(adapterSchoolname);
                     }
                 } else {
                     mListSchoolName.add(0, "Select");
                     mListSchoolName.removeAll(Collections.singleton(null));
-                    ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<String>(context, android.R.layout.select_dialog_item, mListSchoolName);
+                    ArrayAdapter<String> adapterSchoolname = new ArrayAdapter<>(context, android.R.layout.select_dialog_item, mListSchoolName);
                     binding.spinnerSchoolName.setThreshold(1);
                     binding.spinnerSchoolName.setAdapter(adapterSchoolname);
 

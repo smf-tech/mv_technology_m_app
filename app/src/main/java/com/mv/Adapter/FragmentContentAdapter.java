@@ -476,12 +476,12 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
-                        try {
-
-                        } catch (Exception e) {
-                            Utills.hideProgressDialog();
-                            Utills.showToast(mContext.getString(R.string.error_something_went_wrong), mContext);
-                        }
+//                        try {
+//
+//                        } catch (Exception e) {
+//                            Utills.hideProgressDialog();
+//                            Utills.showToast(mContext.getString(R.string.error_something_went_wrong), mContext);
+//                        }
                     }
 
                     @Override
@@ -525,12 +525,12 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
-                        try {
-
-                        } catch (Exception e) {
-                            Utills.hideProgressDialog();
-                            Utills.showToast(mContext.getString(R.string.error_something_went_wrong), mContext);
-                        }
+//                        try {
+//
+//                        } catch (Exception e) {
+//                            Utills.hideProgressDialog();
+//                            Utills.showToast(mContext.getString(R.string.error_something_went_wrong), mContext);
+//                        }
                     }
 
                     @Override
@@ -554,9 +554,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
         if (mDataList.get(position).getAttachmentId() != null) {
             // if (mDataList.get(position).getFileType().equalsIgnoreCase("zip")) {
             String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Download/" + mDataList.get(position).getAttachmentId()+".png";
-            if (new File(filePath).exists())
-                return true;
-            return false;
+            return new File(filePath).exists();
             //}
         }
         return false;

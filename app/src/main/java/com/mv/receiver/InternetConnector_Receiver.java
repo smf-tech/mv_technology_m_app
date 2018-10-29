@@ -109,8 +109,7 @@ public class InternetConnector_Receiver extends BroadcastReceiver {
                     if (FinalUri != null) {
                         try {
 
-                            InputStream iStream = null;
-                            iStream = mContext.getContentResolver().openInputStream(FinalUri);
+                            InputStream iStream = mContext.getContentResolver().openInputStream(FinalUri);
                             String img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
                             JSONObject jsonObjectAttachment = new JSONObject();
                             jsonObjectAttachment.put("Body", img_str);

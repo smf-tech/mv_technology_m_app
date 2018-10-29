@@ -2,7 +2,6 @@ package com.mv.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -820,12 +819,12 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
-                        try {
-
-                        } catch (Exception e) {
-                            Utills.hideProgressDialog();
-                            Utills.showToast(mContext.getString(R.string.error_something_went_wrong), mContext);
-                        }
+//                        try {
+//
+//                        } catch (Exception e) {
+//                            Utills.hideProgressDialog();
+//                            Utills.showToast(mContext.getString(R.string.error_something_went_wrong), mContext);
+//                        }
                     }
 
                     @Override
@@ -869,12 +868,12 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
-                        try {
-
-                        } catch (Exception e) {
-                            Utills.hideProgressDialog();
-                            Utills.showToast(mContext.getString(R.string.error_something_went_wrong), mContext);
-                        }
+//                        try {
+//
+//                        } catch (Exception e) {
+//                            Utills.hideProgressDialog();
+//                            Utills.showToast(mContext.getString(R.string.error_something_went_wrong), mContext);
+//                        }
                     }
 
                     @Override
@@ -957,30 +956,20 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         if (mDataList.get(position).getContentType() != null) {
             if (mDataList.get(position).getContentType().equalsIgnoreCase("zip")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/UnZip/" + mDataList.get(position).getTitle();
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (mDataList.get(position).getContentType().equalsIgnoreCase("pdf")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getTitle() + ".pdf";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (mDataList.get(position).getContentType().equalsIgnoreCase("video")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getTitle() + ".mp4";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (mDataList.get(position).getContentType().equalsIgnoreCase("audio")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getTitle() + ".mp3";
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             } else if (mDataList.get(position).getContentType().equalsIgnoreCase("Image")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(position).getTitle() + ".png";
                 //   Log.e("Image path-->" +m)
-                if (new File(filePath).exists())
-                    return true;
-                return false;
+                return new File(filePath).exists();
             }
         }
         return false;

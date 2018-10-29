@@ -401,8 +401,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                         }*/
                         jsonObject1.put("contentType", "Image");
                         jsonObject1.put("isAttachmentPresent", "true");
-                        InputStream iStream = null;
-                        iStream = getContentResolver().openInputStream(FinalUri);
+                        InputStream iStream = getContentResolver().openInputStream(FinalUri);
                         img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
                       /*  JSONObject jsonObjectAttachment = new JSONObject();
                         jsonObjectAttachment.put("Body", img_str);
@@ -451,8 +450,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                     jsonObject1.put("contentType", "Pdf");
                     jsonObject1.put("isAttachmentPresent", "true");
                     try {
-                        InputStream iStream = null;
-                        iStream = getContentResolver().openInputStream(pdfUri);
+                        InputStream iStream = getContentResolver().openInputStream(pdfUri);
                         img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -707,12 +705,12 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
-                try {
-
-                } catch (Exception e) {
-                    Utills.hideProgressDialog();
-                    Utills.showToast(ReportingTemplateActivity.this.getString(R.string.error_something_went_wrong), ReportingTemplateActivity.this);
-                }
+//                try {
+//
+//                } catch (Exception e) {
+//                    Utills.hideProgressDialog();
+//                    Utills.showToast(ReportingTemplateActivity.this.getString(R.string.error_something_went_wrong), ReportingTemplateActivity.this);
+//                }
             }
 
             @Override
@@ -894,7 +892,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         }
     }
 
-    private String getPath(Uri uri) {
+    public String getPath(Uri uri) {
         String[] projection = {MediaStore.Video.Media.DATA};
         Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
         if (cursor != null) {
@@ -916,9 +914,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         long fileSizeInKB = fileSizeInBytes / 1024;
         // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
         long fileSizeInMB = fileSizeInKB / 1024;
-        if (fileSizeInMB > 5)
-            return true;
-        return false;
+        return fileSizeInMB > 5;
     }
 
     private String getVideoString(Uri selectedImageUri) {
@@ -931,7 +927,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int len = 0;
+        int len ;
         try {
             if (inputStream != null) {
                 while ((len = inputStream.read(buffer)) != -1) {
@@ -942,9 +938,8 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             e.printStackTrace();
         }
         System.out.println("converted!");
-        String videoData = "";
         //Converting bytes into base64
-        videoData = Base64.encodeToString(byteBuffer.toByteArray(), Base64.DEFAULT);
+        String videoData = Base64.encodeToString(byteBuffer.toByteArray(), Base64.DEFAULT);
         Log.d("VideoData**>  ", videoData);
         String sinSaltoFinal2 = videoData.trim();
         String sinsinSalto2 = sinSaltoFinal2.replaceAll("\n", "");
@@ -1171,12 +1166,8 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             } else {
 
                 record.setBackgroundResource(R.drawable.red_box_mic_radius);
-                try {
-                    if (hasMicrophone())
-                        recordAudio(v);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                if (hasMicrophone())
+                    recordAudio(v);
             }
         });
 
@@ -1244,13 +1235,13 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
 
     }
 
-    private boolean hasMicrophone() {
+    protected boolean hasMicrophone() {
         PackageManager pmanager = getPackageManager();
         return pmanager.hasSystemFeature(
                 PackageManager.FEATURE_MICROPHONE);
     }
 
-    private void stopClicked(View view) {
+    public void stopClicked(View view) {
 
         try {
             if (isRecording) {
@@ -1279,7 +1270,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         }
     }
 
-    private void recordAudio(View view) throws IOException {
+    public void recordAudio(View view) {
         isRecording = true;
         rectext.setText("Done");
 
