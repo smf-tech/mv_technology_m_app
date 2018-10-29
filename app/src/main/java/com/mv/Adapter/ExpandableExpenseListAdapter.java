@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,67 +66,62 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater != null ? infalInflater.inflate(R.layout.each_expense, null) : null;
         }
+
         TextView tvProjectName, tvDateName, tvNoOfPeopleName,tvNoOfPeopleTitle;
         ImageView imgEdit, imgDelete;
         View view;
-        CardView cardView;
         RelativeLayout textLayout;
 
-        imgEdit = convertView.findViewById(R.id.imgEdit);
-        imgDelete = convertView.findViewById(R.id.imgDelete);
-        tvProjectName = convertView.findViewById(R.id.tvProjectName);
-        tvDateName = convertView.findViewById(R.id.tvDateName);
-        tvNoOfPeopleName = convertView.findViewById(R.id.tvNoOfPeopleName);
-        tvNoOfPeopleTitle = convertView.findViewById(R.id.tvNoOfPeopleTitle);
-        view = convertView.findViewById(R.id.view1);
-        //cardView = convertView.findViewById(R.id.cardView);
-        textLayout = convertView.findViewById(R.id.textLayout);
+        if (convertView != null) {
+            imgEdit = convertView.findViewById(R.id.imgEdit);
+            imgDelete = convertView.findViewById(R.id.imgDelete);
+            tvDateName = convertView.findViewById(R.id.tvDateName);
+            tvNoOfPeopleName = convertView.findViewById(R.id.tvNoOfPeopleName);
+            tvNoOfPeopleTitle = convertView.findViewById(R.id.tvNoOfPeopleTitle);
+            view = convertView.findViewById(R.id.view1);
+            tvProjectName = convertView.findViewById(R.id.tvProjectName);
+            textLayout = convertView.findViewById(R.id.textLayout);
 
-        if(groupPosition==1|| groupPosition==2){
-            imgEdit.setVisibility(View.GONE);
-            imgDelete.setVisibility(View.GONE);
-        }
+            if (groupPosition == 1 || groupPosition == 2) {
+                imgEdit.setVisibility(View.GONE);
+                imgDelete.setVisibility(View.GONE);
+            }
 
-        // hiding views for team mgmt section
-        if(Constants.AccountTeamCode.equals("TeamManagement")) {
-            imgEdit.setVisibility(View.GONE);
-            imgDelete.setVisibility(View.GONE);
-        }
-            textLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (_context instanceof ExpenseListActivity)
-                        _activity.editExpense(expense);
-                }
-            });
+            // hiding views for team mgmt section
+            if (Constants.AccountTeamCode.equals("TeamManagement")) {
+                imgEdit.setVisibility(View.GONE);
+                imgDelete.setVisibility(View.GONE);
+            }
 
-        imgDelete.setImageResource(R.drawable.form_delete);
-        imgEdit.setImageResource(R.drawable.ic_form);
-        view.setVisibility(View.GONE);
-        imgEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            textLayout.setOnClickListener(view1 -> {
                 if (_context instanceof ExpenseListActivity)
                     _activity.editExpense(expense);
-            }
-        });
+            });
 
-        imgDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+            imgDelete.setImageResource(R.drawable.form_delete);
+            imgEdit.setImageResource(R.drawable.ic_form);
+            view.setVisibility(View.GONE);
+
+            imgEdit.setOnClickListener(view12 -> {
+                if (_context instanceof ExpenseListActivity)
+                    _activity.editExpense(expense);
+            });
+
+            imgDelete.setOnClickListener(view13 -> {
                 if (_context instanceof ExpenseListActivity)
                     showLogoutPopUp(expense);
-            }
-        });
+            });
 
-        tvProjectName.setText(expense.getPartuculars());
-        tvDateName.setText(expense.getDate());
-        if(expense.getStatus().equals("Approved")){
-            tvNoOfPeopleTitle.setText("Approved Amount: ");
-            tvNoOfPeopleName.setText("₹ " + expense.getApproved_Amount__c());
-        }else{
-            tvNoOfPeopleTitle.setText("Amount: ");
-            tvNoOfPeopleName.setText("₹ " + expense.getAmount());
+            tvProjectName.setText(expense.getPartuculars());
+            tvDateName.setText(expense.getDate());
+
+            if (expense.getStatus().equals("Approved")) {
+                tvNoOfPeopleTitle.setText("Approved Amount: ");
+                tvNoOfPeopleName.setText(String.format("₹ %s", expense.getApproved_Amount__c()));
+            } else {
+                tvNoOfPeopleTitle.setText("Amount: ");
+                tvNoOfPeopleName.setText(String.format("₹ %s", expense.getAmount()));
+            }
         }
         return convertView;
     }
@@ -184,25 +178,24 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
-        }
-        ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
-
-        if (isExpanded) {
-            imgGroup.setImageResource(R.drawable.downarrow);
         } else {
-            imgGroup.setImageResource(R.drawable.rightarrow);
+            ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
+            if (isExpanded) {
+                imgGroup.setImageResource(R.drawable.downarrow);
+            } else {
+                imgGroup.setImageResource(R.drawable.rightarrow);
+            }
+
+            String headerTitle = (String) getGroup(groupPosition);
+            TextView txtName = convertView.findViewById(R.id.txtName);
+            txtName.setText(headerTitle);
         }
-        TextView txtName = convertView
-                .findViewById(R.id.txtName);
-        // date.setTypeface(null, Typeface.BOLD);
-        txtName.setText(headerTitle);
         return convertView;
     }
 

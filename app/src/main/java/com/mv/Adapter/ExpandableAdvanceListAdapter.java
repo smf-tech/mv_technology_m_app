@@ -67,11 +67,13 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater != null ? infalInflater.inflate(R.layout.each_adavance, null) : null;
         }
-        TextView tvProjectName, tvDateName, tvAmountName,tvAmount;
+
+        TextView tvProjectName, tvDateName, tvAmountName, tvAmount;
         ImageView imgEdit, imgDelete;
         RelativeLayout textLayout;
         View view;
 
+        if (convertView != null) {
             imgEdit = convertView.findViewById(R.id.imgEdit);
             imgDelete = convertView.findViewById(R.id.imgDelete);
             view = convertView.findViewById(R.id.view1);
@@ -81,58 +83,51 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
             tvAmount = convertView.findViewById(R.id.tvAmount);
             textLayout = convertView.findViewById(R.id.textLayout);
 
+            Log.e("Group", String.valueOf(groupPosition));
 
-        Log.e("Group", String.valueOf(groupPosition));
+            if (groupPosition == 1 || groupPosition == 2) {
+                imgEdit.setVisibility(View.GONE);
+                imgDelete.setVisibility(View.GONE);
+            }
 
-        if(groupPosition==1|| groupPosition==2){
-            imgEdit.setVisibility(View.GONE);
-            imgDelete.setVisibility(View.GONE);
-        }
+            // hiding views for team mgmt section
+            if (Constants.AccountTeamCode.equals("TeamManagement")) {
+                imgEdit.setVisibility(View.GONE);
+                imgDelete.setVisibility(View.GONE);
+            }
 
-        // hiding views for team mgmt section
-        if(Constants.AccountTeamCode.equals("TeamManagement")) {
-            imgEdit.setVisibility(View.GONE);
-            imgDelete.setVisibility(View.GONE);
-        }
-
-            textLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (_context instanceof AdavanceListActivity)
-                        _activity.editAdavance(adavance);
+            textLayout.setOnClickListener(view1 -> {
+                if (_context instanceof AdavanceListActivity) {
+                    _activity.editAdavance(adavance);
                 }
             });
 
 
-
-
-        imgEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (_context instanceof AdavanceListActivity)
+            imgEdit.setOnClickListener(view12 -> {
+                if (_context instanceof AdavanceListActivity) {
                     _activity.editAdavance(adavance);
-            }
-        });
-        imgDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (_context instanceof AdavanceListActivity)
+                }
+            });
+
+            imgDelete.setOnClickListener(view13 -> {
+                if (_context instanceof AdavanceListActivity) {
                     showLogoutPopUp(adavance);
+                }
+            });
+
+            imgDelete.setImageResource(R.drawable.form_delete);
+            imgEdit.setImageResource(R.drawable.ic_form);
+            view.setVisibility(View.GONE);
+            tvProjectName.setText(adavance.getDecription());
+            tvDateName.setText(adavance.getDate());
+
+            if (adavance.getStatus().equals("Approved")) {
+                tvAmount.setText("Approved Amount: ");
+                tvAmountName.setText(String.format("₹ %s", adavance.getApproved_Amount__c()));
+            } else {
+                tvAmount.setText("Amount: ");
+                tvAmountName.setText(String.format("₹ %s", adavance.getAmount()));
             }
-        });
-
-        imgDelete.setImageResource(R.drawable.form_delete);
-        imgEdit.setImageResource(R.drawable.ic_form);
-        view.setVisibility(View.GONE);
-        tvProjectName.setText(adavance.getDecription());
-        tvDateName.setText(adavance.getDate());
-
-        if(adavance.getStatus().equals("Approved")){
-            tvAmount.setText("Approved Amount: ");
-            tvAmountName.setText("₹ " + adavance.getApproved_Amount__c());
-        }else{
-            tvAmount.setText("Amount: ");
-            tvAmountName.setText("₹ " + adavance.getAmount());
         }
 
         return convertView;
@@ -198,26 +193,23 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
-        }
-        ImageView imgGroup = null;
-        if (convertView != null) {
-            imgGroup = convertView.findViewById(R.id.imgGroup);
-        }
-
-        if (isExpanded) {
-            imgGroup.setImageResource(R.drawable.downarrow);
         } else {
-            imgGroup.setImageResource(R.drawable.rightarrow);
+            ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
+            if (isExpanded) {
+                imgGroup.setImageResource(R.drawable.downarrow);
+            } else {
+                imgGroup.setImageResource(R.drawable.rightarrow);
+            }
+
+            String headerTitle = (String) getGroup(groupPosition);
+            TextView txtName = convertView.findViewById(R.id.txtName);
+            txtName.setText(headerTitle);
         }
-        TextView txtName = convertView
-                .findViewById(R.id.txtName);
-        // date.setTypeface(null, Typeface.BOLD);
-        txtName.setText(headerTitle);
         return convertView;
     }
 
@@ -230,6 +222,4 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-
-
 }
