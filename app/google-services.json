@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:104752819252:android:0a74835f09dcb0e0",
         "android_client_info": {
-          "package_name": "com.mv"
+          "package_name": "com.sujalamsufalam"
         }
       },
       "oauth_client": [
@@ -41,7 +41,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:104752819252:android:98cdff3d8d0c86be",
         "android_client_info": {
-          "package_name": "com.mv.debug"
+          "package_name": "com.sujalamsufalam.debug"
         }
       },
       "oauth_client": [

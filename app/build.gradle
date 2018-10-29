@@ -38,7 +38,7 @@ android {
                 files("$projectDir/schemas".toString())
     }
     defaultConfig {
-        applicationId "com.mv"
+        applicationId "com.sujalamsufalam"
         minSdkVersion 17
         targetSdkVersion 22
         versionCode 1
