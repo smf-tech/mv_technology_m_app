@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.crashlytics.android.Crashlytics;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
-import com.mv.Utils.ForceUpdateChecker;
+import com.sujalamsufalam.Utils.ForceUpdateChecker;
 
 import java.util.HashMap;
 import java.util.Map;
