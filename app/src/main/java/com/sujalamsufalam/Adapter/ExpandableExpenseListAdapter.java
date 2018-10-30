@@ -12,10 +12,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.mv.Activity.ExpenseListActivity;
-import com.mv.Model.Expense;
-import com.mv.R;
-import com.mv.Utils.Constants;
+import com.sujalamsufalam.Activity.ExpenseListActivity;
+import com.sujalamsufalam.Model.Expense;
+import com.sujalamsufalam.R;
+import com.sujalamsufalam.Utils.Constants;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -492,7 +492,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
     public void showGroupDialog(final int position) {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(mContext);
-        builderSingle.setIcon(R.drawable.logomulya);
+        builderSingle.setIcon(R.drawable.ic_launcher);
         builderSingle.setTitle("Select Communities");
 
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(mContext, android.R.layout.select_dialog_singlechoice);
