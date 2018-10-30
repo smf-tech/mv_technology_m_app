@@ -34,7 +34,7 @@
             <com.mv.Widgets.MyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_margin="10dp"
                 android:gravity="center"
                 android:text="Schedule Training"
@@ -45,11 +45,10 @@
             <ImageView
                 android:layout_width="15dp"
                 android:layout_height="20dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/arrow"
-                android:contentDescription="@string/todo"/>
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/arrow" />
 
         </RelativeLayout>
 
@@ -68,7 +67,7 @@
             <com.mv.Widgets.MyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_margin="10dp"
                 android:gravity="center"
                 android:text="Class Observation"
@@ -79,11 +78,10 @@
             <ImageView
                 android:layout_width="15dp"
                 android:layout_height="20dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/arrow"
-                android:contentDescription="@string/todo"/>
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/arrow" />
 
         </RelativeLayout>
 
@@ -102,7 +100,7 @@
             <com.mv.Widgets.MyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_margin="10dp"
                 android:gravity="center"
                 android:text="Organize Events"
@@ -113,11 +111,10 @@
             <ImageView
                 android:layout_width="15dp"
                 android:layout_height="20dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/arrow"
-                android:contentDescription="@string/todo"/>
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/arrow" />
 
         </RelativeLayout>
 

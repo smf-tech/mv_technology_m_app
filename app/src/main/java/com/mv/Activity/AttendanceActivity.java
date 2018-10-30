@@ -92,7 +92,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     private Location location;
 
     private int checkInClickable = 0, checkOutClickable = 0;
-    long UPDATE_INTERVAL = 600 * 1000;  /* 10 secs */
+    private long UPDATE_INTERVAL = 600 * 1000;  /* 10 secs */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -227,7 +227,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     }
 
     // Trigger new location updates at interval
-    protected void startLocationUpdates() {
+    private void startLocationUpdates() {
         // Create the location request to start receiving updates
         LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -254,7 +254,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                 Looper.myLooper());
     }
 
-    public void onLocationChanged(Location location) {
+    private void onLocationChanged(Location location) {
         this.location = location;
     }
 
@@ -458,7 +458,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     }
 
     // save offline attendance
-    void addOffLineAttendance(Boolean isPresent, Attendance attendance, Boolean isCheckedIn) {
+    private void addOffLineAttendance(Boolean isPresent, Attendance attendance, Boolean isCheckedIn) {
         if (!isPresent) {
             attendanceList.add(attendance);
             try {

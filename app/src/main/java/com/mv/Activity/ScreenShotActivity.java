@@ -17,10 +17,10 @@ import java.io.FileOutputStream;
 
 public class ScreenShotActivity extends AppCompatActivity {
 
-    TextView textView;
-    ImageView imageView;
-    Bitmap mbitmap;
-    Button captureScreenShot;
+    private TextView textView;
+    private ImageView imageView;
+    private Bitmap mbitmap;
+    private Button captureScreenShot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +42,13 @@ public class ScreenShotActivity extends AppCompatActivity {
         createImage(mbitmap);
     }
 
-    public Bitmap getBitmapOFRootView(View v) {
+    private Bitmap getBitmapOFRootView(View v) {
         View rootview = v.getRootView();
         rootview.setDrawingCacheEnabled(true);
         return rootview.getDrawingCache();
     }
 
-    public void createImage(Bitmap bmp) {
+    private void createImage(Bitmap bmp) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
         File file = new File(Environment.getExternalStorageDirectory() +

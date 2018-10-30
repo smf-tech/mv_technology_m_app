@@ -226,7 +226,6 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                         notifyItemChanged(temp);
                         temp = position;
                     }
-
                     mPlayer.setOnCompletionListener(mp -> {
                         mDataList.get(temp).setMediaPlay(false);
                         notifyItemChanged(temp);
@@ -562,11 +561,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         });
 
         // Setting OK Button
-        alertDialog.setButton(mContext.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                DeletePost();
-            }
-        });
+        alertDialog.setButton(mContext.getString(android.R.string.ok), (dialog, which) -> DeletePost());
 
         // Showing Alert Message
         alertDialog.show();
@@ -747,7 +742,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
 
     private void startAudio(String url) {
         if (mPlayer == null) {
-            mPlayer = new MediaPlayer();
+           mPlayer = new MediaPlayer();
         }
 
         if (mPlayer.isPlaying()) {

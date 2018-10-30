@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -51,9 +50,9 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
     private RecyclerView recyclerView;
     private TrainingAdapter adapter;
     private PreferenceHelper preferenceHelper;
-    private ArrayList<DownloadContent> mList = new ArrayList<DownloadContent>();
-    TextView textNoData;
-    Activity context;
+    private ArrayList<DownloadContent> mList = new ArrayList<>();
+    private TextView textNoData;
+    private Activity context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,20 +132,16 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
 
         // Showing Alert Message
@@ -158,8 +153,7 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
         Utills.showProgressDialog(context, "Loading Downloads", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
-        String url = "";
-        url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + "/services/apexrest/getdownloadContentData?userId=" + User.getCurrentUser(context).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override

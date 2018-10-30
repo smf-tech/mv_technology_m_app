@@ -22,13 +22,14 @@ import java.util.List;
 public class HorizontalCalenderAdapter extends RecyclerView.Adapter<HorizontalCalenderAdapter.ViewHolder> {
 
     private Context mContext;
-    TrainingCalender trainingCalender;
+    private TrainingCalender trainingCalender;
     private Resources resources;
-    DateFormat dateFormat, dayFormat;
-    int row_index;
-    List<Date> dateList;
-    List<Date> eventDateList;
-    int CurrentDate;
+    private DateFormat dateFormat;
+    private DateFormat dayFormat;
+    private int row_index;
+    private List<Date> dateList;
+    private List<Date> eventDateList;
+    private int CurrentDate;
 
     public HorizontalCalenderAdapter(Activity context, List<Date> processAllLis, int currentDate, List<Date> eventDate) {
         mContext = context;
@@ -67,15 +68,12 @@ public class HorizontalCalenderAdapter extends RecyclerView.Adapter<HorizontalCa
             super(itemLayoutView);
             layoutMain = itemLayoutView.findViewById(R.id.layout_main);
             day = itemLayoutView.findViewById(R.id.hv_day);
-            layoutMain.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    trainingCalender.selectDate(dateList.get(getAdapterPosition()));
-                    trainingCalender.binding.fabAddBroadcast.show();
-                    row_index = getAdapterPosition();
-                    notifyDataSetChanged();
+            layoutMain.setOnClickListener(v -> {
+                trainingCalender.selectDate(dateList.get(getAdapterPosition()));
+                trainingCalender.binding.fabAddBroadcast.show();
+                row_index = getAdapterPosition();
+                notifyDataSetChanged();
 
-                }
             });
             date = itemLayoutView.findViewById(R.id.hv_date);
 

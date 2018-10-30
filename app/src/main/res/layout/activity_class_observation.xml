@@ -35,7 +35,7 @@
             <com.mv.Widgets.MyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
                 android:layout_margin="10dp"
                 android:gravity="center"
                 android:text="ट्रेनिंगला जाण्यापुर्वीच्या जबाबदाऱ्या"
@@ -46,11 +46,10 @@
             <ImageView
                 android:layout_width="15dp"
                 android:layout_height="20dp"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="10dp"
-                android:src="@drawable/arrow"
-                android:contentDescription="@string/todo"/>
+                android:layout_marginEnd="10dp"
+                android:src="@drawable/arrow" />
 
         </RelativeLayout>
 

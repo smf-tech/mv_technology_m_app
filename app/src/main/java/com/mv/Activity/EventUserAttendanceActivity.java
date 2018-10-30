@@ -82,12 +82,7 @@ public class EventUserAttendanceActivity extends AppCompatActivity implements Vi
 //        else
 //            binding.cbEventSelectAll.setChecked(false);
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        back.setOnClickListener(v -> finish());
         getAllFilterUserr();
         binding.editTextEmail.addTextChangedListener(watch);
     }

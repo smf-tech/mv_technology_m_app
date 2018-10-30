@@ -35,12 +35,7 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.MyViewHolder
             imgNextArrow = view.findViewById(R.id.imgNextArrow);
             txtCount = view.findViewById(R.id.txtCount);
             layout = view.findViewById(R.id.layoutGroup);
-            layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    fragment.onLayoutGroupClick(getAdapterPosition());
-                }
-            });
+            layout.setOnClickListener(view1 -> fragment.onLayoutGroupClick(getAdapterPosition()));
         }
     }
 

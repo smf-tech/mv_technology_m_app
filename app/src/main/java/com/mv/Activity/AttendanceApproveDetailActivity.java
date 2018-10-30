@@ -36,9 +36,9 @@ import retrofit2.Response;
 public class AttendanceApproveDetailActivity extends AppCompatActivity implements View.OnClickListener{
 
     private ActivityAttendanceApproveDetailBinding binding;
-    AttendanceApproval attendanceApproval;
+    private AttendanceApproval attendanceApproval;
     private PreferenceHelper preferenceHelper;
-    Activity mContext;
+    private Activity mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

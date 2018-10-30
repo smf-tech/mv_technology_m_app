@@ -49,6 +49,7 @@
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
                             android:layout_margin="10dp"
                             android:layout_weight="5"
                             android:ellipsize="marquee"
@@ -64,12 +65,11 @@
                         <ImageView
                             android:layout_width="15dp"
                             android:layout_height="20dp"
-                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="10dp"
-                            android:src="@drawable/arrow"
-                            android:contentDescription="@string/todo" />
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/arrow" />
 
 
                     </LinearLayout>
@@ -96,7 +96,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
                             android:layout_margin="10dp"
                             android:layout_weight="5"
                             android:ellipsize="marquee"
@@ -113,12 +113,11 @@
 
                             android:layout_width="15dp"
                             android:layout_height="20dp"
-                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="10dp"
-                            android:src="@drawable/arrow"
-                            android:contentDescription="@string/todo" />
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/arrow" />
 
 
                     </LinearLayout>
@@ -144,7 +143,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentStart="true"
                             android:layout_margin="10dp"
                             android:layout_weight="5"
                             android:ellipsize="marquee"
@@ -160,12 +159,11 @@
                         <ImageView
                             android:layout_width="15dp"
                             android:layout_height="20dp"
-                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:layout_marginLeft="5dp"
-                            android:layout_marginRight="10dp"
-                            android:src="@drawable/arrow"
-                            android:contentDescription="@string/todo" />
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="10dp"
+                            android:src="@drawable/arrow" />
 
 
                     </LinearLayout>

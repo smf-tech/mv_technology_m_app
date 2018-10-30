@@ -70,14 +70,11 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
             layoutMain = itemLayoutView.findViewById(R.id.layoutMain);
             txtName = itemLayoutView.findViewById(R.id.txtName);
 
-            layoutMain.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            layoutMain.setOnClickListener((View v)-> {
 
                     Intent intent=new Intent(mContext, AttendanceApproveDetailActivity.class);
                     intent.putExtra(Constants.Attendance ,mDataList.get(getAdapterPosition()));
                     mContext.startActivity(intent);
-                }
             });
         }
 

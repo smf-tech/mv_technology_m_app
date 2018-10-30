@@ -138,20 +138,16 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
 
         // Showing Alert Message
@@ -255,8 +251,8 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         binding.spinnerPriority.setOnItemSelectedListener(this);
 
 
-        mListDistrict = new ArrayList<String>();
-        mListTaluka = new ArrayList<String>();
+        mListDistrict = new ArrayList<>();
+        mListTaluka = new ArrayList<>();
 
         mListDistrict.add("Select");
         mListDistrict.add(User.getCurrentUser(this).getMvUser().getDistrict());
@@ -276,7 +272,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         mListIssueType = Arrays.asList(getResources().getStringArray(R.array.array_of_issue));
         mListIssuePriority = Arrays.asList(getResources().getStringArray(R.array.array_of_priority));
 
-        district_adapter = new ArrayAdapter<String>(this,
+        district_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListDistrict);
         district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerDistrict.setAdapter(district_adapter);
@@ -288,7 +284,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
             getDistrict();
         }
 
-        taluka_adapter = new ArrayAdapter<String>(this,
+        taluka_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListTaluka);
         taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerTaluka.setAdapter(taluka_adapter);
@@ -307,7 +303,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                binding.editTextContent.setText(mContent.getTitle());
             if(mContent.getDescription()!=null)
                binding.editTextDescription.setText(mContent.getDescription());
-            List<String> mList = new ArrayList<String>();
+            List<String> mList = new ArrayList<>();
             Collections.addAll(mList, getResources().getStringArray(R.array.array_of_issue));
             binding.spinnerIssue.setSelection(mList.indexOf(mContent.getIssue_type()));
         }
@@ -387,8 +383,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                         }*/
                             jsonObject1.put("contentType", "Image");
                             jsonObject1.put("isAttachmentPresent", "true");
-                            InputStream iStream = null;
-                            iStream = getContentResolver().openInputStream(FinalUri);
+                            InputStream iStream = getContentResolver().openInputStream(FinalUri);
                             img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
                       /*  JSONObject jsonObjectAttachment = new JSONObject();
                         jsonObjectAttachment.put("Body", img_str);
@@ -583,12 +578,12 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
-                try {
-
-                } catch (Exception e) {
-                    Utills.hideProgressDialog();
-                    Utills.showToast(IssueTemplateActivity.this.getString(R.string.error_something_went_wrong), IssueTemplateActivity.this);
-                }
+//                try {
+//
+//                } catch (Exception e) {
+//                    Utills.hideProgressDialog();
+//                    Utills.showToast(IssueTemplateActivity.this.getString(R.string.error_something_went_wrong), IssueTemplateActivity.this);
+//                }
             }
 
             @Override
@@ -622,20 +617,16 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         String[] items = {getString(R.string.text_gallary),
                 getString(R.string.text_camera)};
 
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
+        dialog.setItems(items, (dialog1, which) -> {
+            // TODO Auto-generated method stub
+            switch (which) {
+                case 0:
+                    choosePhotoFromGallery();
+                    break;
+                case 1:
+                    takePhotoFromCamera();
+                    break;
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                switch (which) {
-                    case 0:
-                        choosePhotoFromGallery();
-                        break;
-                    case 1:
-                        takePhotoFromCamera();
-                        break;
-
-                }
             }
         });
         dialog.show();
@@ -786,7 +777,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int len = 0;
+        int len;
         try {
             while ((len = inputStream != null ? inputStream.read(buffer) : 0) != -1) {
                 byteBuffer.write(buffer, 0, len);
@@ -795,9 +786,8 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
             e.printStackTrace();
         }
         System.out.println("converted!");
-        String videoData = "";
         //Converting bytes into base64
-        videoData = Base64.encodeToString(byteBuffer.toByteArray(), Base64.DEFAULT);
+        String videoData = Base64.encodeToString(byteBuffer.toByteArray(), Base64.DEFAULT);
         Log.d("VideoData**>  ", videoData);
         String sinSaltoFinal2 = videoData.trim();
         String sinsinSalto2 = sinSaltoFinal2.replaceAll("\n", "");
@@ -825,22 +815,18 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         String[] items = {getString(R.string.text_image),
                 getString(R.string.text_audio), getString(R.string.text_video)};
 
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                switch (which) {
-                    case 0:
-                        showPictureDialog();
-                        break;
-                    case 1:
-                        showAudioDialog();
-                        break;
-                    case 2:
-                        showVideoDialog();
-                        break;
-                }
+        dialog.setItems(items, (dialog1, which) -> {
+            // TODO Auto-generated method stub
+            switch (which) {
+                case 0:
+                    showPictureDialog();
+                    break;
+                case 1:
+                    showAudioDialog();
+                    break;
+                case 2:
+                    showVideoDialog();
+                    break;
             }
         });
         dialog.show();
@@ -852,20 +838,16 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         String[] items = {getString(R.string.text_record),
                 getString(R.string.text_select_audio)};
 
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
+        dialog.setItems(items, (dialog1, which) -> {
+            // TODO Auto-generated method stub
+            switch (which) {
+                case 0:
+                    showRecorDialog();
+                    break;
+                case 1:
+                    showSelectRecorDialog();
+                    break;
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                switch (which) {
-                    case 0:
-                        showRecorDialog();
-                        break;
-                    case 1:
-                        showSelectRecorDialog();
-                        break;
-
-                }
             }
         });
         dialog.show();
@@ -882,20 +864,16 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         String[] items = {getString(R.string.text_gallary),
                 getString(R.string.text_camera)};
 
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
+        dialog.setItems(items, (dialog1, which) -> {
+            // TODO Auto-generated method stub
+            switch (which) {
+                case 0:
+                    chooseVideoFromGallery();
+                    break;
+                case 1:
+                    takeVideoFromCamera();
+                    break;
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                switch (which) {
-                    case 0:
-                        chooseVideoFromGallery();
-                        break;
-                    case 1:
-                        takeVideoFromCamera();
-                        break;
-
-                }
             }
         });
         dialog.show();
@@ -997,94 +975,79 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         dialogrecord.setContentView(R.layout.activity_recordaudio);
 
         final LinearLayout record = dialogrecord.findViewById(R.id.record);
-        record.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isRecording) {
-                    record.setBackgroundResource(R.drawable.blue_box_mic_radius);
+        record.setOnClickListener(v -> {
+            if (isRecording) {
+                record.setBackgroundResource(R.drawable.blue_box_mic_radius);
 
-                    stopClicked(v);
+                stopClicked(v);
 
 
-                } else {
+            } else {
 
-                    record.setBackgroundResource(R.drawable.red_box_mic_radius);
-                    if (hasMicrophone())
-                        recordAudio(v);
-                }
+                record.setBackgroundResource(R.drawable.red_box_mic_radius);
+                if (hasMicrophone())
+                    recordAudio(v);
             }
         });
 
         final ImageView play = dialogrecord.findViewById(R.id.play);
-        play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        play.setOnClickListener(v -> {
 
-                if (auxFileAudio != null) {
-                    if (mp == null)
-                        mp = new MediaPlayer();
-                    mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mp) {
-                            isplaying = false;
-                            isFirstTime = false;
-                            mp.stop();
-                            play.setImageResource(R.drawable.play_song);
-                        }
-                    });
-                    try {
-                        if (isplaying) {
-                            isplaying = false;
-                            mp.pause();
-                            play.setImageResource(R.drawable.play_song);
+            if (auxFileAudio != null) {
+                if (mp == null)
+                    mp = new MediaPlayer();
+                mp.setOnCompletionListener(mp -> {
+                    isplaying = false;
+                    isFirstTime = false;
+                    mp.stop();
+                    play.setImageResource(R.drawable.play_song);
+                });
+                try {
+                    if (isplaying) {
+                        isplaying = false;
+                        mp.pause();
+                        play.setImageResource(R.drawable.play_song);
+                    } else {
+                        isplaying = true;
+                        play.setImageResource(R.drawable.pause_song);
+                        if (!isFirstTime) {
+                            isFirstTime = true;
+                            mp.reset();
+                            mp.setDataSource(audioFilePath);//Write your location here
+                            mp.prepare();
+                            mp.start();
                         } else {
-                            isplaying = true;
-                            play.setImageResource(R.drawable.pause_song);
-                            if (!isFirstTime) {
-                                isFirstTime = true;
-                                mp.reset();
-                                mp.setDataSource(audioFilePath);//Write your location here
-                                mp.prepare();
-                                mp.start();
-                            } else {
-                                mp.start();
-                            }
-
+                            mp.start();
                         }
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
 
-                } else {
-                    Toast.makeText(IssueTemplateActivity.this, "Please record Audio", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
+
+            } else {
+                Toast.makeText(IssueTemplateActivity.this, "Please record Audio", Toast.LENGTH_LONG).show();
             }
         });
 
         rectext = dialogrecord.findViewById(R.id.rectext);
         TextView done = dialogrecord.findViewById(R.id.done);
         TextView cancel = dialogrecord.findViewById(R.id.cancel);
-        done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mp != null) {
-                    mp.pause();
-                }
-                stopClicked(v);
-                if (audioUri != null)
-                    binding.addImage.setImageResource(R.drawable.mic_audio);
-                dialogrecord.dismiss();
+        done.setOnClickListener(v -> {
+            if (mp != null) {
+                mp.pause();
             }
+            stopClicked(v);
+            if (audioUri != null)
+                binding.addImage.setImageResource(R.drawable.mic_audio);
+            dialogrecord.dismiss();
         });
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                audioUri = null;
-                binding.addImage.setImageResource(R.drawable.add);
-                dialogrecord.dismiss();
-            }
+        cancel.setOnClickListener(v -> {
+            audioUri = null;
+            binding.addImage.setImageResource(R.drawable.add);
+            dialogrecord.dismiss();
         });
 
         dialogrecord.show();
@@ -1121,7 +1084,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
             }
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 

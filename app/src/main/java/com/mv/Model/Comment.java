@@ -11,21 +11,27 @@ public class Comment {
 
     @SerializedName("Id")
     @Expose
+    private
     String id;
     @SerializedName("userId")
     @Expose
+    private
     String userId;
     @SerializedName("userName")
     @Expose
+    private
     String userName;
     @SerializedName("userURLId")
     @Expose
+    private
     String userUrl;
     @SerializedName("commnets")
     @Expose
+    private
     String comment;
     @SerializedName("dateAndTime")
     @Expose
+    private
     String time;
 
     @SerializedName("errorMsg")

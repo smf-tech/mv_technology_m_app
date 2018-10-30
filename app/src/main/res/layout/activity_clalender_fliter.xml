@@ -58,7 +58,7 @@
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
                         android:contentDescription="@string/todo"/>
@@ -308,7 +308,7 @@
                     android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
                     android:paddingBottom="10dp"
-                    android:paddingLeft="@dimen/dimen_10dp"
+                    android:paddingStart="@dimen/dimen_10dp"
                     android:paddingTop="10dp"
                     android:prompt="@string/state" />
 
@@ -456,7 +456,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:gravity="left"
+                        android:gravity="start"
                         android:hint="@string/enter_description"
                         android:lines="4"
                         android:textColor="@color/black"
@@ -503,8 +503,8 @@
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
                         android:background="@null"
-                        android:drawableLeft="@android:drawable/ic_menu_add"
-                        android:gravity="left"
+                        android:drawableStart="@android:drawable/ic_menu_add"
+                        android:gravity="start"
                         android:paddingBottom="@dimen/dimen_10dp"
                         android:text="@string/add_members"
                         android:textColor="@color/black"
@@ -519,8 +519,8 @@
                         android:layout_marginTop="10dp"
                         android:layout_weight="1"
                         android:background="@null"
-                        android:drawableLeft="@android:drawable/ic_menu_add"
-                        android:gravity="left"
+                        android:drawableStart="@android:drawable/ic_menu_add"
+                        android:gravity="start"
                         android:paddingBottom="@dimen/dimen_10dp"
                         android:text="@string/attendance"
                         android:textColor="@color/black"

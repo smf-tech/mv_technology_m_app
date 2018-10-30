@@ -194,7 +194,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:gravity="left|top"
+                        android:gravity="start|top"
                         android:hint="@string/description"
                         android:minLines="3"
                         android:textColor="@color/black"

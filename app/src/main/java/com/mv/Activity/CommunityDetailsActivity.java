@@ -69,6 +69,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
 
     private Bitmap theBitmap;
     private List<Community> communityList = new ArrayList<>();
+
     private JSONArray jsonArrayAttchment = new JSONArray();
     private boolean[] mSelection = null;
 
@@ -115,7 +116,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                                 @Override
                                 protected Void doInBackground(Void... params) {
                                     try {
-                                        theBitmap = Glide.with(getApplicationContext())
+                                       theBitmap = Glide.with(getApplicationContext())
                                                 .load("http://mobileapp.mulyavardhan.org/images/" + mContent.getId() + ".png").
                                                         asBitmap().into(200, 200).get();
                                     } catch (ExecutionException e) {
@@ -289,7 +290,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         builderSingle.setIcon(R.drawable.logomulya);
         builderSingle.setTitle(getString(R.string.select_one));
 
-        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, android.R.layout.select_dialog_singlechoice);
+        final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_singlechoice);
         for (int i = 0; i < this.communityList.size(); i++) {
             arrayAdapter.add(this.communityList.get(i).getName());
         }
@@ -305,7 +306,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         overridePendingTransition(R.anim.left_in, R.anim.right_out);
     }
 
-    GlideUrl getUrlWithHeaders(String url) {
+    private GlideUrl getUrlWithHeaders(String url) {
         return new GlideUrl(url, new LazyHeaders.Builder()
                 .addHeader("Authorization", "OAuth " + preferenceHelper.getString(PreferenceHelper.AccessToken))
                 .addHeader("Content-Type", "image/png")
@@ -623,7 +624,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
 
         android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(CommunityDetailsActivity.this)
                 .setTitle("Select Communities")
-                .setMultiChoiceItems(items, mSelection, (dialog1, which, isChecked) -> {
+                .setMultiChoiceItems(items, mSelection, (dialog13, which, isChecked) -> {
                     if (mSelection != null && which < mSelection.length) {
                         mSelection[which] = isChecked;
                     } else {

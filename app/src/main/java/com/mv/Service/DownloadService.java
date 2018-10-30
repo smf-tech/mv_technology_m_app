@@ -48,7 +48,7 @@ public class DownloadService extends IntentService {
     private String fileName;
     private String DirectoryName = Environment.getExternalStorageDirectory() + "/MV/UnZip/";
     private String filetype;
-    Intent intent;
+    private Intent intent;
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -73,7 +73,7 @@ public class DownloadService extends IntentService {
 
     private final static AtomicInteger c = new AtomicInteger(0);
 
-    public static int getID() {
+    private static int getID() {
         return c.incrementAndGet();
     }
 
@@ -214,17 +214,16 @@ public class DownloadService extends IntentService {
             createDir(outputFile.getParentFile());
         }
 
-        // Log.v("", "Extracting: " + entry);
-        BufferedInputStream inputStream = new BufferedInputStream(zipfile.getInputStream(entry));
-        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
+//        BufferedInputStream inputStream = new BufferedInputStream(zipfile.getInputStream(entry));
+//        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
 
-        try {
-
-        } finally {
-            outputStream.flush();
-            outputStream.close();
-            inputStream.close();
-        }
+//        try {
+//
+//        } finally {
+//            outputStream.flush();
+//            outputStream.close();
+//            inputStream.close();
+//        }
     }
 
     private void createDir(File dir) {

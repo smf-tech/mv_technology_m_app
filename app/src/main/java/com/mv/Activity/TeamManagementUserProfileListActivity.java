@@ -241,7 +241,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         });
     }
 
-    TextWatcher watch = new TextWatcher() {
+    private TextWatcher watch = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable arg0) {

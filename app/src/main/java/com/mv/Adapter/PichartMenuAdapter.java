@@ -24,7 +24,7 @@ public class PichartMenuAdapter extends RecyclerView.Adapter<PichartMenuAdapter.
     private Activity mContext;
 
     private PreferenceHelper preferenceHelper;
-    List<Integer> colorList;
+    private List<Integer> colorList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView txtCommunityName, bacColor;
