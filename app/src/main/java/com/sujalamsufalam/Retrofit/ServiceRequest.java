@@ -49,16 +49,17 @@ public interface ServiceRequest {
     @POST("/services/apexrest/WS_DeleteComments")
     Call<ResponseBody> deleteComment(@Field("commentId") String commentId);
 
+    @FormUrlEncoded
     @POST("user/app_get_state")
-    Call<ResponseBody> getState();
+    Call<ResponseBody> getState(@Field("entity_type") String entity_type);
 
     @FormUrlEncoded
     @POST("user/app_get_district_by_state")
-    Call<ResponseBody> getDistrict(@Field("state") String mState);
+    Call<ResponseBody> getDistrict(@Field("state") String mState, @Field("entity_type") String entity_type);
 
     @FormUrlEncoded
     @POST("user/app_get_taluka")
-    Call<ResponseBody> getTaluka(@Field("state") String mState, @Field("district") String mDistrict);
+    Call<ResponseBody> getTaluka(@Field("state") String mState, @Field("district") String mDistrict, @Field("entity_type") String entity_type);
 
     @FormUrlEncoded
     @POST("user/app_get_cluster")

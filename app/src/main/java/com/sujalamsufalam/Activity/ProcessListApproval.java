@@ -2,8 +2,8 @@ package com.sujalamsufalam.Activity;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +17,6 @@ import com.sujalamsufalam.Model.Task;
 import com.sujalamsufalam.Model.TaskContainerModel;
 import com.sujalamsufalam.R;
 import com.sujalamsufalam.Retrofit.ApiClient;
-
 import com.sujalamsufalam.Retrofit.ServiceRequest;
 import com.sujalamsufalam.Utils.Constants;
 import com.sujalamsufalam.Utils.LocaleManager;

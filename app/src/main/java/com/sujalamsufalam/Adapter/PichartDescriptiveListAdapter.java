@@ -124,7 +124,7 @@ public class PichartDescriptiveListAdapter extends RecyclerView.Adapter<PichartD
         alertDialog.setMessage(mContext.getString(R.string.delete_task_string));
 
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.logomulya);
+        alertDialog.setIcon(R.drawable.ic_launcher);
 
         // Setting CANCEL Button
         alertDialog.setButton2(mContext.getString(R.string.cancel), (dialog, which) -> alertDialog.dismiss());

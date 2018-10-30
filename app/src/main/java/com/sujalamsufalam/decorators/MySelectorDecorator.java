@@ -3,10 +3,10 @@ package com.sujalamsufalam.decorators;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
 
-import com.sujalamsufalam.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
+import com.sujalamsufalam.R;
 
 
 /**

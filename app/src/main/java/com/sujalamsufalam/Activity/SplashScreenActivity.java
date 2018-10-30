@@ -8,23 +8,12 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 
-import com.sujalamsufalam.BuildConfig;
 import com.sujalamsufalam.Model.User;
 import com.sujalamsufalam.R;
-import com.sujalamsufalam.Retrofit.ApiClient;
-import com.sujalamsufalam.Retrofit.ServiceRequest;
 import com.sujalamsufalam.Utils.Constants;
-import com.sujalamsufalam.Utils.Logger;
 import com.sujalamsufalam.Utils.PreferenceHelper;
 import com.sujalamsufalam.Utils.Utills;
 import com.sujalamsufalam.databinding.ActivityMainBinding;
-
-import org.json.JSONObject;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class SplashScreenActivity extends AppCompatActivity {
 

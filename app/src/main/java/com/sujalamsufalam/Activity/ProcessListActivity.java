@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.gson.JsonParser;
 import com.sujalamsufalam.Adapter.ProcessListAdapter;
 import com.sujalamsufalam.Model.Task;
 import com.sujalamsufalam.Model.TaskContainerModel;

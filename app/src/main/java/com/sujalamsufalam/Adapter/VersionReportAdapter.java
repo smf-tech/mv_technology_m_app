@@ -1,4 +1,5 @@
 package com.sujalamsufalam.Adapter;
+
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.sujalamsufalam.Model.Template;
 import com.sujalamsufalam.R;
+
 import java.util.List;
 
 /**

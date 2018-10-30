@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sujalamsufalam.Activity.IndicatorTrainingFeedBackTaskList;
-
 import com.sujalamsufalam.Activity.PiachartActivity;
 import com.sujalamsufalam.Activity.ProcessApprovalActivity;
 import com.sujalamsufalam.Activity.ProcessListActivity;
@@ -20,7 +19,6 @@ import com.sujalamsufalam.Activity.TemplatesActivity;
 import com.sujalamsufalam.ActivityMenu.ProgrammeManagmentFragment;
 import com.sujalamsufalam.Model.Template;
 import com.sujalamsufalam.R;
-
 import com.sujalamsufalam.Utils.Constants;
 import com.sujalamsufalam.Utils.PreferenceHelper;
 

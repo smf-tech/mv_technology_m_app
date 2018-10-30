@@ -38,6 +38,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.soundcloud.android.crop.Crop;
 import com.sujalamsufalam.Model.User;
 import com.sujalamsufalam.R;
 import com.sujalamsufalam.Retrofit.ApiClient;
@@ -50,7 +51,6 @@ import com.sujalamsufalam.Utils.PreferenceHelper;
 import com.sujalamsufalam.Utils.Utills;
 import com.sujalamsufalam.Widgets.MyEditTextView;
 import com.sujalamsufalam.databinding.ActivityRegistrationBinding;
-import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -120,9 +120,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     private boolean isBackPress = false;
     private boolean[] mSelection = null;
-    private boolean isMultipleTalukatSet = false, isProjectSet = false, isOrganizationSet = false,
-            isStateSet = false, isDistrictSet = false, isTalukaSet = false, isClusterSet = false,
-            isVillageSet = false, isSchoolSet = false, isRollSet = false;
+    private boolean isMultipleTalukaSet = false, isProjectSet = false, isOrganizationSet = false,
+            isStateSet = false, isDistrictSet = false, isTalukaSet = false, isVillageSet = false,
+            isSchoolSet = false, isRollSet = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -391,7 +391,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
 
         ServiceRequest apiService = ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getState().enqueue(new Callback<ResponseBody>() {
+        apiService.getState("structure").enqueue(new Callback<ResponseBody>() {
 
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -448,7 +448,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         }
 
         ServiceRequest apiService = ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getDistrict(mListState.get(mSelectState)).enqueue(new Callback<ResponseBody>() {
+        apiService.getDistrict(mListState.get(mSelectState),"structure").enqueue(new Callback<ResponseBody>() {
 
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -1208,8 +1208,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         spinner_taluka.setVisibility(View.VISIBLE);
                         binding.inputMultiselectTaluka.setVisibility(View.VISIBLE);
 
-                        if (!isAdd && !isMultipleTalukatSet) {
-                            isMultipleTalukatSet = true;
+                        if (!isAdd && !isMultipleTalukaSet) {
+                            isMultipleTalukaSet = true;
                             value = User.getCurrentUser(RegistrationActivity.this).getMvUser() != null ?
                                     User.getCurrentUser(RegistrationActivity.this).getMvUser().getMultipleTaluka() : "";
                             binding.editMultiselectTaluka.setText(value);
@@ -1442,6 +1442,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private void getTaluka() {
         if (!isBackPress) {
             Utills.showProgressDialog(this, getString(R.string.loding_taluka), getString(R.string.progress_please_wait));
+        }
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
 
@@ -1497,6 +1498,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private void getVillage() {
         if (!isBackPress) {
             Utills.showProgressDialog(this, getString(R.string.loding_village), getString(R.string.progress_please_wait));
+        }
         ServiceRequest apiService =
                 ApiClient.getClient().create(ServiceRequest.class);
 

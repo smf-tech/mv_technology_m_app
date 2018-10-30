@@ -28,8 +28,6 @@ import com.sujalamsufalam.Adapter.ContentAdapter;
 import com.sujalamsufalam.BuildConfig;
 import com.sujalamsufalam.Model.Community;
 import com.sujalamsufalam.Model.Content;
-import com.sujalamsufalam.Model.Download;
-import com.sujalamsufalam.Model.Template;
 import com.sujalamsufalam.Model.User;
 import com.sujalamsufalam.R;
 import com.sujalamsufalam.Retrofit.ApiClient;

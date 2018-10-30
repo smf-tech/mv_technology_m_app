@@ -78,7 +78,6 @@ import com.sujalamsufalam.Utils.LocaleManager;
 import com.sujalamsufalam.Utils.PreferenceHelper;
 import com.sujalamsufalam.Utils.Utills;
 import com.sujalamsufalam.databinding.ActivityHome1Binding;
-import com.sujalamsufalam.receiver.AlarmReceiver;
 
 import org.json.JSONArray;
 import org.json.JSONException;

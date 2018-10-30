@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sujalamsufalam.Model.OverAllModel;
-
 import com.sujalamsufalam.R;
 import com.sujalamsufalam.Utils.PreferenceHelper;
 

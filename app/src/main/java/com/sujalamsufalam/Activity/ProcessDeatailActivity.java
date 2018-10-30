@@ -33,6 +33,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.soundcloud.android.crop.Crop;
 import com.sujalamsufalam.Adapter.ProcessDetailAdapter;
 import com.sujalamsufalam.Model.Task;
 import com.sujalamsufalam.Model.TaskContainerModel;
@@ -46,7 +47,6 @@ import com.sujalamsufalam.Utils.GPSTracker;
 import com.sujalamsufalam.Utils.LocaleManager;
 import com.sujalamsufalam.Utils.PreferenceHelper;
 import com.sujalamsufalam.Utils.Utills;
-import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONArray;
 import org.json.JSONException;
