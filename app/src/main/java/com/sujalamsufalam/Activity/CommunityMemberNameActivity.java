@@ -35,15 +35,15 @@ import retrofit2.Response;
 
 public class CommunityMemberNameActivity extends AppCompatActivity implements View.OnClickListener {
     private PreferenceHelper preferenceHelper;
-    public ArrayList<String> CommunityMemberList = new ArrayList<>();
-    ArrayList<String> repplicaCahart = new ArrayList<>();
-    CommunityMemberAdapter adapter;
+    private ArrayList<String> CommunityMemberList = new ArrayList<>();
+    private ArrayList<String> repplicaCahart = new ArrayList<>();
+    private CommunityMemberAdapter adapter;
     private CommunityMemberNameActivity binding;
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
     private TextView toolbar_title, textNoData;
     private ImageView img_back, img_logout;
-    EditText edit_text_email;
-    String Member_count = "";
+    private EditText edit_text_email;
+    private String Member_count = "";
 
 
     @Override
@@ -90,9 +90,9 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
 
 
     /*Get Community members by calling userdetails api*/
-    public void GetCommunityMember() {
+    private void GetCommunityMember() {
         Utills.showProgressDialog(this, getString(R.string.loading_members), getString(R.string.progress_please_wait));
-        String url = "";
+        String url;
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         /*UserDetails Url for getting community members*/
@@ -148,7 +148,7 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
     }
 
     // To search community members in searchbox
-    TextWatcher watch = new TextWatcher() {
+    private TextWatcher watch = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable arg0) {
@@ -176,18 +176,14 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
     private void setFilter(String s) {
         List<String> list = new ArrayList<>();
         repplicaCahart.clear();
-        for (int i = 0; i < CommunityMemberList.size(); i++) {
-            repplicaCahart.add(CommunityMemberList.get(i));
-        }
+        repplicaCahart.addAll(CommunityMemberList);
         for (int i = 0; i < repplicaCahart.size(); i++) {
             if (repplicaCahart.get(i).toLowerCase().contains(s.toLowerCase())) {
                 list.add(repplicaCahart.get(i));
             }
         }
         repplicaCahart.clear();
-        for (int i = 0; i < list.size(); i++) {
-            repplicaCahart.add(list.get(i));
-        }
+        repplicaCahart.addAll(list);
         adapter = new CommunityMemberAdapter(getApplicationContext(), repplicaCahart);
         recyclerView.setAdapter(adapter);
         if (repplicaCahart.size() == 0) {

@@ -26,7 +26,7 @@ public class IndicatorTask extends AppCompatActivity implements View.OnClickList
     private ActivityIndicatorTaskBinding binding;
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
-    DashaBoardListModel dashaBoardListModel;
+    private DashaBoardListModel dashaBoardListModel;
     private RelativeLayout mToolBar;
     //private ActivityProgrammeManagmentBinding binding;
     private PreferenceHelper preferenceHelper;
@@ -46,7 +46,8 @@ public class IndicatorTask extends AppCompatActivity implements View.OnClickList
 
     private void initViews() {
 
-        dashaBoardListModel = getIntent().getExtras().getParcelable(Constants.PROCESS_ID);
+        if(getIntent().getExtras().getParcelable(Constants.PROCESS_ID)!=null)
+          dashaBoardListModel = getIntent().getExtras().getParcelable(Constants.PROCESS_ID);
 
         preferenceHelper = new PreferenceHelper(this);
         setActionbar(dashaBoardListModel.getName());

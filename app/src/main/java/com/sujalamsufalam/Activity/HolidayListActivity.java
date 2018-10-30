@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
@@ -26,9 +25,9 @@ import java.util.List;
 
 
 public class HolidayListActivity extends AppCompatActivity implements View.OnClickListener {
-    protected ActivityHolidayListBinding binding;
-    Activity context;
-    List<HolidayListModel> holidayListModels = new ArrayList<>();
+    private ActivityHolidayListBinding binding;
+    private Activity context;
+    private List<HolidayListModel> holidayListModels = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +49,9 @@ public class HolidayListActivity extends AppCompatActivity implements View.OnCli
         binding.recyclerView.setAdapter(holldayListAdapter);
         setActionbar(getString(R.string.holiday_list));
         binding.swiperefresh.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        if (Utills.isConnected(context))
-                            binding.swiperefresh.setRefreshing(false);
-                    }
+                () -> {
+                    if (Utills.isConnected(context))
+                        binding.swiperefresh.setRefreshing(false);
                 }
         );
 

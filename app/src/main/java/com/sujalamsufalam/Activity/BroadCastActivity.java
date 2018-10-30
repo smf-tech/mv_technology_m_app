@@ -3,7 +3,6 @@ package com.sujalamsufalam.Activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -104,22 +103,18 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
         alertDialog.setIcon(R.drawable.ic_launcher);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                setResult(RESULT_CANCELED);
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            setResult(RESULT_CANCELED);
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                setResult(RESULT_CANCELED);
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+            alertDialog.dismiss();
+            setResult(RESULT_CANCELED);
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
 
         alertDialog.show();
@@ -138,7 +133,7 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             mListState.clear();
                             mListState.add("Select");
@@ -211,29 +206,20 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
         final ArrayList seletedItems = new ArrayList();
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("Select Roles")
-                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (mSelection != null && which < mSelection.length) {
-                            mSelection[which] = isChecked;
-                            value = buildSelectedItemString(items);
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Argument 'which' is out of bounds.");
-                        }
+                .setMultiChoiceItems(items, mSelection, (dialog13, which, isChecked) -> {
+                    if (mSelection != null && which < mSelection.length) {
+                        mSelection[which] = isChecked;
+                        value = buildSelectedItemString(items);
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Argument 'which' is out of bounds.");
                     }
                 })
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        Log.i("value", "value");
-                        binding.txtRole.setText(selectedRoles);
-                    }
-                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
-                    }
+                .setPositiveButton(getString(R.string.ok), (dialog12, id) -> {
+                    Log.i("value", "value");
+                    binding.txtRole.setText(selectedRoles);
+                }).setNegativeButton(getString(R.string.cancel), (dialog1, id) -> {
+                    //  Your code when user clicked on Cancel
                 }).create();
         dialog.show();
     }
@@ -271,10 +257,10 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
         spinner_state.setOnItemSelectedListener(this);
         spinner_district.setOnItemSelectedListener(this);
 
-        mListState = new ArrayList<String>();
-        mListRoleName = new ArrayList<String>();
-        mListDistrict = new ArrayList<String>();
-        mListTaluka = new ArrayList<String>();
+        mListState = new ArrayList<>();
+        mListRoleName = new ArrayList<>();
+        mListDistrict = new ArrayList<>();
+        mListTaluka = new ArrayList<>();
 
         mListState.add("Select");
         mListDistrict.add("Select");
@@ -285,17 +271,17 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
         role_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_role.setAdapter(role_adapter);*/
 
-        state_adapter = new ArrayAdapter<String>(this,
+        state_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListState);
         state_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_state.setAdapter(state_adapter);
 
-        district_adapter = new ArrayAdapter<String>(this,
+        district_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListDistrict);
         district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_district.setAdapter(district_adapter);
 
-        taluka_adapter = new ArrayAdapter<String>(this,
+        taluka_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListTaluka);
         taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner_taluka.setAdapter(taluka_adapter);
@@ -409,7 +395,7 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(response.body().string());
                             mListDistrict.clear();
                             mListDistrict.add("Select");
@@ -449,20 +435,16 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
         String[] items = {getString(R.string.text_gallary),
                 getString(R.string.text_camera)};
 
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
+        dialog.setItems(items, (dialog1, which) -> {
+            // TODO Auto-generated method stub
+            switch (which) {
+                case 0:
+                    choosePhotoFromGallery();
+                    break;
+                case 1:
+                    takePhotoFromCamera();
+                    break;
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                switch (which) {
-                    case 0:
-                        choosePhotoFromGallery();
-                        break;
-                    case 1:
-                        takePhotoFromCamera();
-                        break;
-
-                }
             }
         });
         dialog.show();
@@ -543,7 +525,7 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
                     if (FinalUri != null) {
 
                         try {
-                            InputStream iStream = null;
+                            InputStream iStream;
                             iStream = getContentResolver().openInputStream(FinalUri);
                             String img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
                             jsonObjectAttachment.put("Body", img_str);
@@ -600,7 +582,7 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
         String str = "";
         if (mSelectState == 0) {
             str = "Please Select State";
-        } else if (TextUtils.isEmpty(selectedRoles.toString().toString().trim())) {
+        } else if (TextUtils.isEmpty(selectedRoles.toString().trim())) {
             str = "Please Select Roles";
         } else if (TextUtils.isEmpty(binding.editTextContent.getText().toString().trim())) {
             str = "Please Enter Title";

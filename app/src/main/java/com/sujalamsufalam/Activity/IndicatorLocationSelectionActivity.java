@@ -2,8 +2,8 @@ package com.sujalamsufalam.Activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.net.Uri;
@@ -37,6 +37,7 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -67,11 +68,12 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
     private Boolean isAdd;
 
     private boolean isDistrictSet = false, isRollSet = false;
-    Activity context;
-    LocationModel locationModel;
-    Task task;
-    String roleList;
-    String title,processId;
+    private Activity context;
+    private LocationModel locationModel;
+    private Task task;
+    private String roleList;
+    private String title;
+    private String processId;
     private boolean[] mSelection = null;
     private String value = "";
 
@@ -84,8 +86,10 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         binding.setActivity(this);
         task = getIntent().getParcelableExtra(Constants.INDICATOR_TASK);
         roleList = getIntent().getStringExtra(Constants.INDICATOR_TASK_ROLE);
-        title = getIntent().getExtras().getString(Constants.TITLE);
-        processId = getIntent().getExtras().getString(Constants.PROCESS_ID);
+        if(getIntent().getExtras()!=null) {
+            title = getIntent().getExtras().getString(Constants.TITLE);
+            processId = getIntent().getExtras().getString(Constants.PROCESS_ID);
+        }
         locationModel=new LocationModel();
         locationModel.setState("");
         locationModel.setDistrict("");
@@ -114,13 +118,13 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
 //        binding.txtDateTo.setOnClickListener(this);
 //        binding.sortButton.setOnClickListener(this);
 
-        mListDistrict = new ArrayList<String>();
-        mListTaluka = new ArrayList<String>();
-        mListCluster = new ArrayList<String>();
-        mListVillage = new ArrayList<String>();
-        mListSchoolName = new ArrayList<String>();
+        mListDistrict = new ArrayList<>();
+        mListTaluka = new ArrayList<>();
+        mListCluster = new ArrayList<>();
+        mListVillage = new ArrayList<>();
+        mListSchoolName = new ArrayList<>();
 
-        mStateList = new ArrayList<String>();
+        mStateList = new ArrayList<>();
         mListDistrict.add(User.getCurrentUser(context).getMvUser().getDistrict());
         mListTaluka.add("Select");
         mListCluster.add("Select");
@@ -135,19 +139,19 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         }*/
 
 
-        mStateList = new ArrayList<String>(Arrays.asList(getColumnIdex((User.getCurrentUser(getApplicationContext()).getMvUser().getState()).split(","))));
+        mStateList = new ArrayList<>(Arrays.asList(getColumnIdex((User.getCurrentUser(getApplicationContext()).getMvUser().getState()).split(","))));
         mStateList.add(0, "Select");
-        state_adapter = new ArrayAdapter<String>(this,
+        state_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mStateList);
         state_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerState.setAdapter(state_adapter);
 
-        district_adapter = new ArrayAdapter<String>(this,
+        district_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListDistrict);
         district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerDistrict.setAdapter(district_adapter);
 
-        taluka_adapter = new ArrayAdapter<String>(this,
+        taluka_adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, mListTaluka);
         taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerTaluka.setAdapter(taluka_adapter);
@@ -170,26 +174,16 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         if (Utills.isConnected(this))
             getState();
         // code related to date filter
-//        // set the components - text, image and button
-//        binding.txtDateFrom.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showDateDialog(binding.txtDateFrom);
-//            }
-//        });
-//
-//        binding.txtDateTo.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                showDateDialog(binding.txtDateTo);
-//            }
-//        });
-//        // if button is clicked, close the custom dialog
+        // set the components - text, image and button
+        binding.txtDateFrom.setOnClickListener(v -> showDateDialog(binding.txtDateFrom));
+
+        binding.txtDateTo.setOnClickListener(v -> showDateDialog(binding.txtDateTo));
+        // if button is clicked, close the custom dialog
 //        binding.sortButton.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
 //                if(binding.txtDateFrom.getText().toString().trim().length()>0 && binding.txtDateTo.getText().toString().trim().length()>0) {
-//                  //  FilterVouchers_withDate(binding.txtDateFrom.getText().toString().trim(), binding.txtDateTo.getText().toString().trim());
+//                    //  FilterVouchers_withDate(binding.txtDateFrom.getText().toString().trim(), binding.txtDateTo.getText().toString().trim());
 //                }
 //                else
 //                    Utills.showToast("Enter proper date range.", IndicatorLocationSelectionActivity.this);
@@ -197,29 +191,23 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
 //        });
     }
     //adding date picker dialog for voucher date filteration
-//    private void showDateDialog(TextView textView) {
-//        final Calendar c = Calendar.getInstance();
-//        final int mYear = c.get(Calendar.YEAR);
-//        final int mMonth = c.get(Calendar.MONTH);
-//        final int mDay = c.get(Calendar.DAY_OF_MONTH);
-//        DatePickerDialog dpd = new DatePickerDialog(this,
-//                new DatePickerDialog.OnDateSetListener() {
-//                    @Override
-//                    public void onDateSet(DatePicker view, int year,
-//                                          int monthOfYear, int dayOfMonth) {
-//                        textView.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
-//                    }
-//                }, mYear, mMonth, mDay);
-//        dpd.show();
-//    }
-//    //returns two digit number of month
-//    private static String getTwoDigit(int i) {
-//        if (i < 10)
-//            return "0" + i;
-//        return "" + i;
-//    }
+    private void showDateDialog(TextView textView) {
+        final Calendar c = Calendar.getInstance();
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog dpd = new DatePickerDialog(this,
+                (view, year, monthOfYear, dayOfMonth) -> textView.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth)), mYear, mMonth, mDay);
+        dpd.show();
+    }
+    //returns two digit number of month
+    private static String getTwoDigit(int i) {
+        if (i < 10)
+            return "0" + i;
+        return "" + i;
+    }
 
-    public static String[] getColumnIdex(String[] value) {
+    private static String[] getColumnIdex(String[] value) {
 
         for (int i = 0; i < value.length; i++) {
             value[i] = value[i].trim();
@@ -258,34 +246,40 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
 
     private void sendLocation() {
         if(locationModel.getState().equals("")||!locationModel.getState().equals("Select")) {
-            if (processId.equals("")) {
-                Intent intent = new Intent(IndicatorLocationSelectionActivity.this, PiachartActivity.class);
-                intent.putExtra(Constants.TITLE, title);
-                intent.putExtra(Constants.INDICATOR_TASK, task);
-              //  preferenceHelper.insertString(Constants.RoleList,roleList);
-                intent.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
-                intent.putExtra(Constants.LOCATION, locationModel);
+            switch (processId) {
+                case "": {
+                    Intent intent = new Intent(IndicatorLocationSelectionActivity.this, PiachartActivity.class);
+                    intent.putExtra(Constants.TITLE, title);
+                    intent.putExtra(Constants.INDICATOR_TASK, task);
+                    //  preferenceHelper.insertString(Constants.RoleList,roleList);
+                    intent.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
+                    intent.putExtra(Constants.LOCATION, locationModel);
 //                if(binding.txtDateFrom.getText().toString().trim().length()>0 && binding.txtDateTo.getText().toString().trim().length()>0) {
-//                    intent.putExtra("DateFrom", binding.txtDateFrom.getText().toString().trim());
-//                    intent.putExtra("DateTo", binding.txtDateTo.getText().toString().trim());
+//                intent.putExtra("DateFrom", binding.txtDateFrom.getText().toString().trim());
+//                intent.putExtra("DateTo", binding.txtDateTo.getText().toString().trim());
 //                }
-                startActivity(intent);
-                finish();
-            }
-           else if (processId.equals("version")) {
-                Intent intent = new Intent(IndicatorLocationSelectionActivity.this, VersionReportActivity.class);
-                intent.putExtra(Constants.LOCATION, locationModel);
-                startActivity(intent);
-                finish();
-            }else {
-                Intent intent = new Intent(IndicatorLocationSelectionActivity.this, OverallReportActivity.class);
-                intent.putExtra(Constants.TITLE, title);
-                intent.putExtra(Constants.INDICATOR_TASK, task);
-                intent.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
-                intent.putExtra(Constants.LOCATION, locationModel);
-                intent.putExtra(Constants.PROCESS_ID, processId);
-                startActivity(intent);
-                finish();
+                    startActivity(intent);
+                    finish();
+                    break;
+                }
+                case "version": {
+                    Intent intent = new Intent(IndicatorLocationSelectionActivity.this, VersionReportActivity.class);
+                    intent.putExtra(Constants.LOCATION, locationModel);
+                    startActivity(intent);
+                    finish();
+                    break;
+                }
+                default: {
+                    Intent intent = new Intent(IndicatorLocationSelectionActivity.this, OverallReportActivity.class);
+                    intent.putExtra(Constants.TITLE, title);
+                    intent.putExtra(Constants.INDICATOR_TASK, task);
+                    intent.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
+                    intent.putExtra(Constants.LOCATION, locationModel);
+                    intent.putExtra(Constants.PROCESS_ID, processId);
+                    startActivity(intent);
+                    finish();
+                    break;
+                }
             }
         }else
         {
@@ -319,7 +313,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                     } else {
                         mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(User.getCurrentUser(context).getMvUser().getState());
                         mListDistrict.add(0, "Select");
-                        district_adapter = new ArrayAdapter<String>(this,
+                        district_adapter = new ArrayAdapter<>(this,
                                 android.R.layout.simple_spinner_item, mListDistrict);
                         district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         binding.spinnerDistrict.setAdapter(district_adapter);
@@ -336,18 +330,17 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 mListCluster.clear();
                 mListVillage.clear();
                 mListSchoolName.clear();
-                ;
                 mListTaluka.add("Select");
                 mListCluster.add("Select");
                 mListVillage.add("Select");
                 mListSchoolName.add("Select");
                 district_adapter.notifyDataSetChanged();
-                district_adapter = new ArrayAdapter<String>(this,
+                district_adapter = new ArrayAdapter<>(this,
                         android.R.layout.simple_spinner_item, mListDistrict);
                 district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 binding.spinnerDistrict.setAdapter(district_adapter);
 
-                taluka_adapter = new ArrayAdapter<String>(this,
+                taluka_adapter = new ArrayAdapter<>(this,
                         android.R.layout.simple_spinner_item, mListTaluka);
                 taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 binding.spinnerTaluka.setAdapter(taluka_adapter);
@@ -367,7 +360,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                         mListTaluka.clear();
                         mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(User.getCurrentUser(context).getMvUser().getState(), mListDistrict.get(mSelectDistrict));
                         mListTaluka.add(0, "Select");
-                        taluka_adapter = new ArrayAdapter<String>(this,
+                        taluka_adapter = new ArrayAdapter<>(this,
                                 android.R.layout.simple_spinner_item, mListTaluka);
                         taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         binding.spinnerTaluka.setAdapter(taluka_adapter);
@@ -383,7 +376,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 mListCluster.add("Select");
                 mListVillage.add("Select");
                 mListSchoolName.add("Select");
-                taluka_adapter = new ArrayAdapter<String>(this,
+                taluka_adapter = new ArrayAdapter<>(this,
                         android.R.layout.simple_spinner_item, mListTaluka);
                 taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
            /*   binding.spinnerTaluka.setAdapter(taluka_adapter);
@@ -484,8 +477,8 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 break;
         }
     }
-    public void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, itemList);
+    private void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, itemList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         if (!selectedValue.isEmpty() && itemList.indexOf(selectedValue) >= 0)
@@ -494,19 +487,18 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
     }
 
     private void showMultiselectDialog(ArrayList<String> arrayList) {
-        ArrayList<String> list = arrayList;
-        if (list.contains("Select")) {
-            list.remove(list.indexOf("Select"));
+        if (arrayList.contains("Select")) {
+            arrayList.remove(arrayList.indexOf("Select"));
         }
 
-        final String[] items = arrayList.toArray(new String[list.size()]);
+        final String[] items = arrayList.toArray(new String[arrayList.size()]);
         mSelection = new boolean[(items.length)];
         Arrays.fill(mSelection, false);
         if (value.length() != 0) {
             String[] talukas = value.split(",");
-            for (int i = 0; i < talukas.length; i++) {
-                if (arrayList.contains(talukas[i].trim())) {
-                    mSelection[arrayList.indexOf(talukas[i].trim())] = true;
+            for (String taluka : talukas) {
+                if (arrayList.contains(taluka.trim())) {
+                    mSelection[arrayList.indexOf(taluka.trim())] = true;
                 }
             }
         }
@@ -515,29 +507,20 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         final ArrayList seletedItems = new ArrayList();
         AlertDialog dialog = new AlertDialog.Builder(IndicatorLocationSelectionActivity.this)
                 .setTitle(getString(R.string.taluka))
-                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (mSelection != null && which < mSelection.length) {
-                            mSelection[which] = isChecked;
-                            value = buildSelectedItemString(items);
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Argument 'which' is out of bounds.");
-                        }
+                .setMultiChoiceItems(items, mSelection, (dialog13, which, isChecked) -> {
+                    if (mSelection != null && which < mSelection.length) {
+                        mSelection[which] = isChecked;
+                        value = buildSelectedItemString(items);
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Argument 'which' is out of bounds.");
                     }
                 })
-                .setPositiveButton(IndicatorLocationSelectionActivity.this.getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        binding.editMultiselectTaluka.setText(value);
-                        locationModel.setTaluka(value);
-                    }
-                }).setNegativeButton(IndicatorLocationSelectionActivity.this.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
-                    }
+                .setPositiveButton(IndicatorLocationSelectionActivity.this.getString(R.string.ok), (dialog12, id) -> {
+                    binding.editMultiselectTaluka.setText(value);
+                    locationModel.setTaluka(value);
+                }).setNegativeButton(IndicatorLocationSelectionActivity.this.getString(R.string.cancel), (dialog1, id) -> {
+                    //  Your code when user clicked on Cancel
                 }).create();
         dialog.show();
     }
@@ -570,7 +553,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListVillage.clear();
                             mListVillage.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -604,7 +587,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListSchoolName.clear();
                             mListSchoolName.add("Select");
 
@@ -642,7 +625,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             mStateList.clear();
                             mStateList.add("Select");
@@ -680,7 +663,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             mListDistrict.clear();
                             mListDistrict.add("Select");
@@ -724,7 +707,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListTaluka.clear();
                             mListTaluka.add("Select");
                             JSONArray jsonArr = new JSONArray(data);

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.net.Uri;
@@ -70,25 +69,28 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private ImageView img_back, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
-    String comment,imageName;
-    String isSave;
-    String msg;
-    Boolean manditoryFlag = false;
+    private String comment;
+    private String isSave;
+    private String msg;
+    private Boolean manditoryFlag = false;
     int i;
     private PreferenceHelper preferenceHelper;
-    ArrayList<Task> taskList = new ArrayList<>();
+    private ArrayList<Task> taskList = new ArrayList<>();
     private GPSTracker gps;
-    String timestamp;
-    Activity context;
+    private String timestamp;
+    private Activity context;
 
-    Button submit, save, approve, reject;
+    private Button submit;
+    private Button save;
+    private Button approve;
+    private Button reject;
 
-    ProcessDetailAdapter adapter;
-    RecyclerView rvProcessDetail;
+    private ProcessDetailAdapter adapter;
+    private RecyclerView rvProcessDetail;
 
-    LinearLayout layout_photo;
-    ImageView img_add;
-    String id = "",Processname;
+    private LinearLayout layout_photo;
+    private ImageView img_add;
+    private String id = "";
 
     private String imageId, uniqueId = "";
     private Uri outputUri = null;
@@ -108,9 +110,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         if (getIntent().getSerializableExtra(Constants.PROCESS_ID) != null) {
             taskList = getIntent().getParcelableArrayListExtra(Constants.PROCESS_ID);
         }
-        if (getIntent().getStringExtra("PROCESSNAME") != null) {
-            Processname = getIntent().getStringExtra("PROCESSNAME");
-        }
         initViews();
     }
 
@@ -120,7 +119,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     }
 
     private void savetoDB() {
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
         String prefix = "";
         for (int i = 0; i < taskList.size(); i++) {
                 /*    if(dashaBoardListModel.get(i).getIsSave().equals(Constants.PROCESS_STATE_SUBMIT))
@@ -183,7 +182,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     private void initViews() {
 
-        setActionbar(Processname);
+        setActionbar(getString(R.string.Task_List));
         gps = new GPSTracker(ProcessDeatailActivity.this);
         rvProcessDetail = (RecyclerView) findViewById(R.id.rv_process_detail);
         rvProcessDetail.setNestedScrollingEnabled(false);
@@ -221,34 +220,34 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         boolean isPresent = false;
         img_add = (ImageView) findViewById(R.id.img_add);
         img_add.setOnClickListener(this);
-//        for (Task task : taskList) {
-//            if (task.getTask_type__c().equalsIgnoreCase(Constants.IMAGE)) {
-//                isPresent = true;
-//                imageId = task.getTask_Response__c();
-//                break;
-//            }
-//        }
-//        if (isPresent) {
-//            layout_photo.setVisibility(View.VISIBLE);
-//            if (imageId != null && imageId.length() > 0) {
-//                Glide.with(this)
-//                        .load(Constants.IMAGEURL + imageId + ".png")
-//                        .placeholder(getResources().getDrawable(R.drawable.ic_add_photo))
-//                        .into(img_add);
-//            }
-//            if (!(preferenceHelper.getBoolean(Constants.NEW_PROCESS))) {
-//                String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + preferenceHelper.getString(Constants.UNIQUE) + ".jpg";
-//                File imageFile = new File(imageFilePath);
-//                if (imageFile.exists()) {
-//                    FinalUri = Uri.fromFile(imageFile);
-//                    Glide.with(this)
-//                            .load(FinalUri)
-//                            .placeholder(getResources().getDrawable(R.drawable.ic_add_photo))
-//                            .into(img_add);
-//                }
-//
-//            }
-//        }
+        for (Task task : taskList) {
+            if (task.getTask_type__c().equalsIgnoreCase(Constants.IMAGE)) {
+                isPresent = true;
+                imageId = task.getTask_Response__c();
+                break;
+            }
+        }
+        if (isPresent) {
+            layout_photo.setVisibility(View.VISIBLE);
+            if (imageId != null && imageId.length() > 0) {
+                Glide.with(this)
+                        .load(Constants.IMAGEURL + imageId + ".png")
+                        .placeholder(getResources().getDrawable(R.drawable.ic_add_photo))
+                        .into(img_add);
+            }
+            if (!(preferenceHelper.getBoolean(Constants.NEW_PROCESS))) {
+                String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + preferenceHelper.getString(Constants.UNIQUE) + ".jpg";
+                File imageFile = new File(imageFilePath);
+                if (imageFile.exists()) {
+                    FinalUri = Uri.fromFile(imageFile);
+                    Glide.with(this)
+                            .load(FinalUri)
+                            .placeholder(getResources().getDrawable(R.drawable.ic_add_photo))
+                            .into(img_add);
+                }
+
+            }
+        }
     }
 
     private void setActionbar(String Title) {
@@ -263,12 +262,11 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         img_logout.setOnClickListener(this);
     }
 
-    public void sendToCamera(String imgName) {
+    private void sendToCamera() {
         try {
             //use standard intent to capture an image
-            imageName=imgName;
             Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/"+imgName+".jpg";
+            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture.jpg";
             File imageFile = new File(imageFilePath);
             outputUri = Uri.fromFile(imageFile); // convert path to Uri
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
@@ -295,7 +293,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     gps.showSettingsAlert();
                     return;
                 }
-//                sendToCamera(imgName);
+                sendToCamera();
                 break;
             case R.id.btn_save:
                 savetoDB();
@@ -328,21 +326,15 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             alertDialog.setIcon(R.drawable.ic_launcher);
 
             // Setting CANCEL Button
-            alertDialog.setButton2(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    alertDialog.dismiss();
-                    finish();
-                    // Write your code here to execute after dialog closed
-              /*  listOfWrongQuestions.add(mPosition);
-                prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
-                }
+            alertDialog.setButton2(getString(R.string.cancel), (dialog, which) -> {
+                alertDialog.dismiss();
+                finish();
+                // Write your code here to execute after dialog closed
+          /*  listOfWrongQuestions.add(mPosition);
+            prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
             });
             // Setting OK Button
-            alertDialog.setButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int which) {
-                    savetoDB();
-                }
-            });
+            alertDialog.setButton(getString(R.string.ok), (dialog, which) -> savetoDB());
 
             // Showing Alert Message
             alertDialog.show();
@@ -351,7 +343,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
     }
 
-    public void showDialog() {
+    private void showDialog() {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(ProcessDeatailActivity.this);
         alertDialog.setTitle(getString(R.string.comments));
@@ -365,26 +357,19 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         alertDialog.setView(input);
 
         alertDialog.setPositiveButton(getString(R.string.ok),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        isSave = "false";
-                        comment = input.getText().toString();
-                        if (!comment.isEmpty()) {
-                            sendApprovedData();
-                        } else {
-                            Utills.showToast("Please Enter Comment", ProcessDeatailActivity.this);
-                        }
-
+                (dialog, which) -> {
+                    isSave = "false";
+                    comment = input.getText().toString();
+                    if (!comment.isEmpty()) {
+                        sendApprovedData();
+                    } else {
+                        Utills.showToast("Please Enter Comment", ProcessDeatailActivity.this);
                     }
 
                 });
 
         alertDialog.setNegativeButton(getString(R.string.cancel),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+                (dialog, which) -> dialog.cancel());
 
         alertDialog.show();
     }
@@ -471,20 +456,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                                         if (object.getString("Answer").length() > 0) {
                                             isImagePresent = true;
                                             imageId = object.getString("Answer");
-                                            String taskID = object.getString("MV_Task");
-
                                             uniqueId = object.getString("Id");
-                                            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + taskID + ".jpg";
-                                            File imageFile = new File(imageFilePath);
-                                            FinalUri = Uri.fromFile(imageFile);
-                                            InputStream iStream  = getContentResolver().openInputStream(FinalUri);
-                                            JSONObject object2 = new JSONObject();
-                                            object2.put("id", imageId);
-                                            object2.put("type", "png");
-                                            object2.put("img", Base64.encodeToString(Utills.getBytes(iStream), 0));
-                                            JSONArray array1 = new JSONArray();
-                                            array1.put(object2);
-                                            sendImageToServer(array1,taskID);
                                         }
                                     }
                                 }
@@ -500,24 +472,20 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         taskContainerModel.setMV_Process__c(taskList.get(0).getMV_Process__c());
                         AppDatabase.getAppDatabase(context).userDao().deleteSingleTask(preferenceHelper.getString(Constants.UNIQUE), taskContainerModel.getMV_Process__c());
                         // AppDatabase.getAppDatabase(context).userDao().updateTask(taskContainerModel);
-//                        if (isImagePresent && FinalUri != null) {
-//
-//                            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imageName + ".jpg";
-//                            File imageFile = new File(imageFilePath);
-//                            FinalUri = Uri.fromFile(imageFile);
-//
-//                            InputStream iStream  = getContentResolver().openInputStream(FinalUri);
-//
-//                            JSONObject object2 = new JSONObject();
-//                            object2.put("id", imageId);
-//                            object2.put("type", "png");
-//                            object2.put("img", Base64.encodeToString(Utills.getBytes(iStream), 0));
-//                            JSONArray array1 = new JSONArray();
-//                            array1.put(object2);
-//                            sendImageToServer(array1);
-//                        } else {
-//                            finish();
-//                        }
+                        if (isImagePresent && FinalUri != null) {
+
+                            InputStream iStream = getContentResolver().openInputStream(FinalUri);
+
+                            JSONObject object2 = new JSONObject();
+                            object2.put("id", imageId);
+                            object2.put("type", "png");
+                            object2.put("img", Base64.encodeToString(Utills.getBytes(iStream), 0));
+                            JSONArray array1 = new JSONArray();
+                            array1.put(object2);
+                            sendImageToServer(array1);
+                        } else {
+                            finish();
+                        }
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -541,7 +509,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     }
 
-    private void sendImageToServer(JSONArray jsonArray, String taskID) {
+    private void sendImageToServer(JSONArray jsonArray) {
         Utills.showProgressDialog(this);
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
@@ -559,11 +527,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     JSONObject object = new JSONObject(str);
                     if (object.has("status")) {
                         if (object.getString("status").equalsIgnoreCase("1")) {
-                            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + taskID + ".jpg";
-                            File target = new File(imageFilePath);
-                            if (target.exists() && target.isFile() && target.canWrite()) {
-                                target.delete();
-                            }
                             finish();
                             overridePendingTransition(R.anim.left_in, R.anim.right_out);
                         }
@@ -620,7 +583,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
-                String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imageName + ".jpg";
+                String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + id + ".jpg";
                 File imageFile = new File(imageFilePath);
                 FinalUri = Uri.fromFile(imageFile);
                 Crop.of(outputUri, FinalUri).start(this);
@@ -629,9 +592,13 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             }
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             if (FinalUri != null) {
+                Glide.with(this)
+                        .load(FinalUri)
+                        .skipMemoryCache(true)
+                        .diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .into(img_add);
                 outputUri = null;
             }
-            adapter.notifyDataSetChanged();
         } else if (resultCode == RESULT_OK) {
             // tvResult.setText(data.getIntExtra("result",-1)+"");
             taskList = data.getParcelableArrayListExtra(Constants.PROCESS_ID);
@@ -705,7 +672,9 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 if (!outRect.contains((int) event.getRawX(), (int) event.getRawY())) {
                     v.clearFocus();
                     InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    if (imm != null) {
+                        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+                    }
                 }
             }
         }

@@ -99,8 +99,8 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         selectedSchool = User.getCurrentUser(getApplicationContext()).getMvUser().getSchool_Name();
         selectedOrganization = User.getCurrentUser(getApplicationContext()).getMvUser().getOrganisation();
         // selectedRolename = User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
-        selectedRole = new ArrayList<String>(Arrays.asList(getColumnIdex("Select".split(","))));
-        selectedProcessId = new ArrayList<String>(Arrays.asList(getColumnIdex(("Other").split(","))));
+        selectedRole = new ArrayList<>(Arrays.asList(getColumnIdex("Select".split(","))));
+        selectedProcessId = new ArrayList<>(Arrays.asList(getColumnIdex(("Other").split(","))));
         binding.spinnerRole.setText("Select");
 
         binding.rlMoreLocation.setOnClickListener(this);
@@ -114,20 +114,20 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
 
         binding.spinnerRole.setOnClickListener(this);
         //
-        mStateList = new ArrayList<String>();
+        mStateList = new ArrayList<>();
         mStateList.add("Select");
         //mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
-        mListDistrict = new ArrayList<String>();
+        mListDistrict = new ArrayList<>();
         mListDistrict.add("Select");
 
-        mListTaluka = new ArrayList<String>();
+        mListTaluka = new ArrayList<>();
         mListTaluka.add("Select");
-        mListCluster = new ArrayList<String>();
+        mListCluster = new ArrayList<>();
         mListCluster.add("Select");
-        mListVillage = new ArrayList<String>();
+        mListVillage = new ArrayList<>();
         mListVillage.add("Select");
 
-        mListSchoolName = new ArrayList<String>();
+        mListSchoolName = new ArrayList<>();
         mListSchoolName.add("Select");
 
         setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
@@ -136,10 +136,10 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         setSpinnerAdapter(mListVillage, village_adapter, binding.spinnerVillage, selectedVillage);
         setSpinnerAdapter(mListSchoolName, school_adapter, binding.spinnerSchoolName, selectedSchool);
 
-        mListOrganization = new ArrayList<String>();
+        mListOrganization = new ArrayList<>();
         mListOrganization.add("Select");
 
-        mListRoleName = new ArrayList<String>();
+        mListRoleName = new ArrayList<>();
 
         mStateList.clear();
         mStateList = AppDatabase.getAppDatabase(context).userDao().getState();
@@ -224,7 +224,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             mStateList.clear();
                             mStateList.add("Select");
@@ -264,7 +264,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(response.body().string());
                             mListDistrict.clear();
                             mListDistrict.add("Select");
@@ -302,7 +302,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListTaluka.clear();
                             mListTaluka.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -343,7 +343,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             mListOrganization.clear();
                             mListOrganization.add("Select");
@@ -383,7 +383,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
 
 
                             JSONObject obj = new JSONObject(data);
@@ -424,7 +424,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListCluster.clear();
                             mListCluster.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -457,7 +457,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListVillage.clear();
                             mListVillage.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -491,7 +491,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListSchoolName.clear();
                             mListSchoolName.add("Select");
 
@@ -515,7 +515,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
     }
 
     public void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, itemList);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, itemList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         if (!selectedValue.isEmpty() && itemList.indexOf(selectedValue) >= 0)
@@ -569,9 +569,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
     private void setFilter(String s) {
         list = new ArrayList<>();
         eventUsersFliter.clear();
-        for (int i = 0; i < eventUsers.size(); i++) {
-            eventUsersFliter.add(eventUsers.get(i));
-        }
+        eventUsersFliter.addAll(eventUsers);
         list.clear();
         for (int i = 0; i < eventUsersFliter.size(); i++) {
             if (eventUsersFliter.get(i).getUserName().toLowerCase().contains(s.toLowerCase())) {
@@ -682,10 +680,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         final boolean[] mSelection = new boolean[items.length];
         for (int i = 0; i < temp.size(); i++) {
             items[i] = temp.get(i);
-            if (selectedRole.contains(temp.get(i)))
-                mSelection[i] = true;
-            else
-                mSelection[i] = false;
+            mSelection[i] = selectedRole.contains(temp.get(i));
         }
 
        /* if (mListRoleName.indexOf(User.getCurrentUser(getApplicationContext()).getMvUser().getRoll()) > 0)
@@ -695,48 +690,39 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         final ArrayList seletedItems = new ArrayList();
         android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(context)
                 .setTitle("Select ")
-                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                .setMultiChoiceItems(items, mSelection, (dialog13, which, isChecked) -> {
 
-                        if (mSelection != null && which < mSelection.length) {
-                            mSelection[which] = isChecked;
+                    if (which < mSelection.length) {
+                        mSelection[which] = isChecked;
 
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Argument 'which' is out of bounds.");
-                        }
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Argument 'which' is out of bounds.");
                     }
                 })
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        StringBuffer sb = new StringBuffer();
-                        String prefix = "";
-                        for (int i = 0; i < items.length; i++) {
-                            if (mSelection[i]) {
-                                sb.append(prefix);
-                                prefix = ",";
-                                sb.append(temp.get(i));
-                                //now original string is changed
-                            }
+                .setPositiveButton(getString(R.string.ok), (dialog12, id) -> {
+                    StringBuffer sb = new StringBuffer();
+                    String prefix = "";
+                    for (int i = 0; i < items.length; i++) {
+                        if (mSelection[i]) {
+                            sb.append(prefix);
+                            prefix = ",";
+                            sb.append(temp.get(i));
+                            //now original string is changed
                         }
-                        selectedRolename = sb.toString();
-                        if (selectedRolename.length() > 0)
-                            binding.spinnerRole.setText(selectedRolename);
-                        else
-                            binding.spinnerRole.setText("Select");
-                        selectedRole = new ArrayList<String>(Arrays.asList(getColumnIdex((selectedRolename).split(","))));
-                        getAllFilterUser();
-                        Log.e("StringValue", selectedRolename);
+                    }
+                    selectedRolename = sb.toString();
+                    if (selectedRolename.length() > 0)
+                        binding.spinnerRole.setText(selectedRolename);
+                    else
+                        binding.spinnerRole.setText("Select");
+                    selectedRole = new ArrayList<String>(Arrays.asList(getColumnIdex((selectedRolename).split(","))));
+                    getAllFilterUser();
+                    Log.e("StringValue", selectedRolename);
 
 
-                    }
-                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
-                    }
+                }).setNegativeButton(getString(R.string.cancel), (dialog1, id) -> {
+                    //  Your code when user clicked on Cancel
                 }).create();
         dialog.show();
     }
@@ -1015,46 +1001,60 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         Utills.showProgressDialog(context, "Loading ", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String role = "";
+        String role;
         if (selectedRolename.length() > 0) {
             role = selectedRolename;
         } else {
             role = "Select";
         }
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetUserDataForCalnder);
+        StringBuilder buffer = new StringBuilder();
+        String s = preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.GetUserDataForCalnder;
+        buffer.append(s);
+
         if (binding.spinnerState != null && binding.spinnerState.getSelectedItem() != null) {
-            buffer.append("?state=" + binding.spinnerState.getSelectedItem().toString());
+            s = "?state=" + binding.spinnerState.getSelectedItem().toString();
         } else {
-            buffer.append("?state=Select");
+            s = "?state=Select";
         }
+        buffer.append(s);
+
         if (binding.spinnerDistrict != null && binding.spinnerDistrict.getSelectedItem() != null) {
-            buffer.append("&dist=" + binding.spinnerDistrict.getSelectedItem().toString());
+            s = "&dist=" + binding.spinnerDistrict.getSelectedItem().toString();
         } else {
-            buffer.append("?&dist==Select");
+            s = "?&dist==Select";
         }
+        buffer.append(s);
+
         if (binding.spinnerTaluka != null && binding.spinnerTaluka.getSelectedItem() != null) {
-            buffer.append("&tal=" + binding.spinnerTaluka.getSelectedItem().toString());
+            s = "&tal=" + binding.spinnerTaluka.getSelectedItem().toString();
         } else {
-            buffer.append("&tal==Select");
+            s = "&tal==Select";
         }
+        buffer.append(s);
+
         if (binding.spinnerCluster != null && binding.spinnerCluster.getSelectedItem() != null) {
-            buffer.append("&cluster=" + binding.spinnerCluster.getSelectedItem().toString());
+            s = "&cluster=" + binding.spinnerCluster.getSelectedItem().toString();
         } else {
-            buffer.append("&cluster=Select");
+            s = "&cluster=Select";
         }
+        buffer.append(s);
+
         if (binding.spinnerVillage != null && binding.spinnerVillage.getSelectedItem() != null) {
-            buffer.append("&village=" + binding.spinnerVillage.getSelectedItem().toString());
+            s = "&village=" + binding.spinnerVillage.getSelectedItem().toString();
         } else {
-            buffer.append("&village=Select");
+            s = "&village=Select";
         }
+        buffer.append(s);
+
         if (binding.spinnerSchoolName != null && binding.spinnerSchoolName.getSelectedItem() != null) {
-            buffer.append("&school=" + binding.spinnerSchoolName.getSelectedItem().toString());
+            s = "&school=" + binding.spinnerSchoolName.getSelectedItem().toString();
         } else {
-            buffer.append("&school==Select");
+            s = "&school==Select";
         }
-        buffer.append("&role=" + role);
+        buffer.append(s);
+
+        s = "&role=" + role;
+        buffer.append(s);
 
         apiService.getSalesForceData(buffer.toString()).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -1064,7 +1064,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             eventUsers.clear();
                             calenderEventUserArrayList = new ArrayList<>();
@@ -1118,11 +1118,14 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
 
-        StringBuffer buffer = new StringBuffer();
-        buffer.append(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetEventCalenderMembers_Url);
-        //   https://cs57.salesforce.com/services/apexrest/getUserDataForCalnderAttendance?eventId=a1C0k000000Sh1l
-        buffer.append("?eventId=" + eventID);
+        String s = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetEventCalenderMembers_Url;
+
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(s);
+
+        s = "?eventId=" + eventID;
+        buffer.append(s);
 
         Log.e("Url", buffer.toString());
 
@@ -1134,7 +1137,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             eventUsers.clear();
                             eventUsersOld.clear();

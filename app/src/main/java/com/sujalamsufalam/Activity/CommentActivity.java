@@ -2,7 +2,6 @@ package com.sujalamsufalam.Activity;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -52,13 +51,13 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     private ActivityCommentBinding binding;
-    private ArrayList<Comment> commentList = new ArrayList<Comment>();
+    private ArrayList<Comment> commentList = new ArrayList<>();
     private CommentAdapter adapter;
     private String conetentId;
     private PreferenceHelper preferenceHelper;
-    TextView textNoData;
+    private TextView textNoData;
     public String HoSupportCommunity = "";
-    String commentId;
+    private String commentId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +101,9 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         binding.imgSend.setOnClickListener(this);
-
-        conetentId = getIntent().getExtras().getString(Constants.ID);
+        if(getIntent().getExtras()!=null) {
+            conetentId = getIntent().getExtras().getString(Constants.ID);
+        }
 
         if (Utills.isConnected(this)) {
             getComments(true);
@@ -130,9 +130,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                     List<Comment> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Comment[].class));
                     if (temp.size() != 0) {
-                        for (int i = 0; i < temp.size(); i++) {
-                            commentList.add(temp.get(i));
-                        }
+                        commentList.addAll(temp);
                         textNoData.setVisibility(View.GONE);
                     } else {
                         textNoData.setVisibility(View.VISIBLE);
@@ -167,20 +165,16 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         alertDialog.setIcon(R.drawable.ic_launcher);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
 
         // Showing Alert Message

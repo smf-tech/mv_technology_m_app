@@ -2,7 +2,6 @@ package com.sujalamsufalam.Activity;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -52,7 +51,7 @@ public class GroupsActivity extends AppCompatActivity implements View.OnClickLis
     private List<Community> communityList = new ArrayList<>();
     private List<Community> replicaCommunityList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
-    TextView textNoData;
+    private TextView textNoData;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,20 +119,16 @@ public class GroupsActivity extends AppCompatActivity implements View.OnClickLis
         alertDialog.setIcon(R.drawable.ic_launcher);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
 
         // Showing Alert Message
@@ -172,7 +167,7 @@ public class GroupsActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 
-    TextWatcher watch = new TextWatcher() {
+    private TextWatcher watch = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable arg0) {
@@ -198,18 +193,14 @@ public class GroupsActivity extends AppCompatActivity implements View.OnClickLis
     private void setFilter(String s) {
         List<Community> list = new ArrayList<>();
         communityList.clear();
-        for (int i = 0; i < replicaCommunityList.size(); i++) {
-            communityList.add(replicaCommunityList.get(i));
-        }
+        communityList.addAll(replicaCommunityList);
         for (int i = 0; i < communityList.size(); i++) {
             if (communityList.get(i).getName().toLowerCase().contains(s.toLowerCase())) {
                 list.add(communityList.get(i));
             }
         }
         communityList.clear();
-        for (int i = 0; i < list.size(); i++) {
-            communityList.add(list.get(i));
-        }
+        communityList.addAll(list);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -231,10 +222,8 @@ public class GroupsActivity extends AppCompatActivity implements View.OnClickLis
 
     public void onLayoutGroupClick(int position) {
         preferenceHelper.insertString(PreferenceHelper.COMMUNITYID, communityList.get(position).getId());
-        List<Community> list = new ArrayList<Community>();
-        for (int i = 0; i < communityList.size(); i++) {
-            list.add(communityList.get(i));
-        }
+        List<Community> list = new ArrayList<>();
+        list.addAll(communityList);
         list.remove(position);
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String json = gson.toJson(list);
