@@ -27,7 +27,7 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
     private WebView webView;
     private String path;
     private int mTrainingSelect;
-    ProgressDialog progress;
+    private ProgressDialog progress;
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
@@ -39,7 +39,9 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         initUI();
         // "file:///" + Environment.getExternalStorageDirectory().getPath() + "/MV_e-learning_Mar/Modules/" + mTrainingSelect + "/story_html5.html"
-        path = getIntent().getExtras().getString(Constants.URL);
+        if(getIntent().getExtras()!=null) {
+            path = getIntent().getExtras().getString(Constants.URL);
+        }
         init();
     }
 
@@ -72,8 +74,9 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void init() {
-
-        setActionbar(getIntent().getExtras().getString(Constants.TITLE));
+        if(getIntent().getExtras()!=null) {
+            setActionbar(getIntent().getExtras().getString(Constants.TITLE));
+        }
         webView.setWebViewClient(new myWebClient());
         webView.getSettings().setPluginState(WebSettings.PluginState.ON_DEMAND);
         webView.getSettings().setJavaScriptEnabled(true);

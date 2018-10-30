@@ -92,9 +92,9 @@ public class SalaryListActivity extends AppCompatActivity implements View.OnClic
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 try {
                     String str = response.body().string();
-                    if (str != null && str.length() > 0) {
+                    if (str.length() > 0) {
                         if (response.isSuccess()) {
-                            if (Arrays.asList(gson.fromJson(str, Salary[].class)) != null) {
+                            if (Arrays.asList(gson.fromJson(str, Salary[].class)).size()>0) {
                                 AppDatabase.getAppDatabase(SalaryListActivity.this).userDao().deleteAllSalary();
                                 AppDatabase.getAppDatabase(SalaryListActivity.this).userDao().insertSalary(Arrays.asList(gson.fromJson(str, Salary[].class)));
                                 setRecyclerView();

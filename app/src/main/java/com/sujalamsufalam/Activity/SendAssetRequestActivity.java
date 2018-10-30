@@ -54,10 +54,10 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
-    Button btn_send_request;
+    private Button btn_send_request;
     private PreferenceHelper preferenceHelper;
-    List<Asset> assetList = new ArrayList<>();
-    ArrayList<String> assetnameList = new ArrayList<>();
+    private List<Asset> assetList = new ArrayList<>();
+    private ArrayList<String> assetnameList = new ArrayList<>();
     private ArrayAdapter<String> asset_name_adapter;
     private int selectAssetName = 0;
     Asset asset;
@@ -103,16 +103,15 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
         edit_text_tentative_return_date.setOnClickListener(this);
         btn_send_request.setOnClickListener(this);
         setActionbar(getResources().getString(R.string.asset_request_screen));
-        if (getIntent().getExtras() == null) {
-        } else if (getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
-            isAdd = true;
-        } else {
+        if (!getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
             isAdd = false;
             mAsset = (Asset) getIntent().getSerializableExtra(Constants.Asset_management);
             edit_text_issue_date.setText(mAsset.getExpectedIssueDate());
             edit_text_remarks.setText(mAsset.getRemark());
             edit_text_tentative_return_date.setText(mAsset.getTentativeReturnDate());
 //            id = mAsset.getAssetAllocationId();
+        } else {
+            isAdd = true;
         }
     }
 
@@ -132,8 +131,7 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
 
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = "";
-        url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + "/services/apexrest/getAsset?userId=" + User.getCurrentUser(this).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -141,7 +139,7 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             JSONArray jsonArray = new JSONArray(data);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             assetList.clear();
@@ -153,7 +151,7 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
                                 assetnameList.add(assetList.get(i).getName());
 
                             }
-                            asset_name_adapter = new ArrayAdapter<String>(SendAssetRequestActivity.this,
+                            asset_name_adapter = new ArrayAdapter<>(SendAssetRequestActivity.this,
                                     android.R.layout.simple_spinner_item, assetnameList);
                             asset_name_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spinner_Assetname.setAdapter(asset_name_adapter);
@@ -217,7 +215,7 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
 
 
     // public void SendAssetRequest(String AssetID,String Allocation_quantity, String Expected_Issue_Date, String  tentativeReturnDate, String Remark,String Allocation_Status){
-    public void SendAssetRequest() {
+    private void SendAssetRequest() {
 
         try {
             Utills.showProgressDialog(SendAssetRequestActivity.this, "Sending Request", "Please wait");

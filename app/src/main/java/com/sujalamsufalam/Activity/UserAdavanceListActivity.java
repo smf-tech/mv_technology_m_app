@@ -84,7 +84,7 @@ public class UserAdavanceListActivity extends AppCompatActivity implements View.
                 try {
                     if (response != null && response.isSuccess()) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
                             JSONObject object = new JSONObject(str);
                             if (object.has("salaries") && !(object.getString("salaries").equalsIgnoreCase("null"))) {
                                 mList = Arrays.asList(gson.fromJson(object.getString("salaries"), Adavance[].class));
@@ -206,7 +206,7 @@ public class UserAdavanceListActivity extends AppCompatActivity implements View.
                             if (response != null && response.isSuccess()) {
                                 if (response.body() != null) {
                                     String data = response.body().string();
-                                    if (data != null && data.length() > 0) {
+                                    if (data.length() > 0) {
                                         mList.get(changePosition).setStatus(changeStatus);
                                         adapter.notifyItemChanged(changePosition);
                                         Utills.showToast("Status of expense changed successfully", UserAdavanceListActivity.this);

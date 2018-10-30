@@ -1,7 +1,6 @@
 package com.sujalamsufalam.Activity;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -42,12 +41,13 @@ import retrofit2.Response;
 public class UserApproveDetail extends AppCompatActivity implements View.OnClickListener {
     private ActivityUserApproveDetailBinding binding;
     private PreferenceHelper preferenceHelper;
-    String userId, comment;
-    String isSave;
+    private String userId;
+    private String comment;
+    private String isSave;
     private ImageView img_back, img_list, img_logout;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
-    User mUser;
+    private User mUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +55,9 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_user_approve_detail);
         binding.setActivity(this);
-        userId = getIntent().getExtras().getString(Constants.ID);
+        if(getIntent().getExtras() != null) {
+            userId = getIntent().getExtras().getString(Constants.ID);
+        }
         preferenceHelper = new PreferenceHelper(this);
         setActionbar(getString(R.string.team_user_approval));
         if (Utills.isConnected(this)) {
@@ -100,31 +102,25 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
                     binding.editTextEmail.setText(mUser.getMvUser().getEmail());
                     binding.editOrganization.setText(mUser.getMvUser().getOrganisation());
                     binding.editRole.setText(mUser.getMvUser().getRoll());
-                    binding.accept.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (mUser.getMvUser().getIsApproved() != null && mUser.getMvUser().getIsApproved().equalsIgnoreCase("true")) {
-                                Utills.showToast("User Already Approved", UserApproveDetail.this);
-                            } else {
-                                comment = "";
-                                isSave = "true";
-                                sendApprovedData();
-                            }
+                    binding.accept.setOnClickListener(v -> {
+                        if (mUser.getMvUser().getIsApproved() != null && mUser.getMvUser().getIsApproved().equalsIgnoreCase("true")) {
+                            Utills.showToast("User Already Approved", UserApproveDetail.this);
+                        } else {
+                            comment = "";
+                            isSave = "true";
+                            sendApprovedData();
                         }
                     });
-                    binding.reject.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (mUser.getMvUser().getIsApproved() != null
-                                    && mUser.getMvUser().getIsApproved().equalsIgnoreCase("false")
-                                    && mUser.getMvUser().getApprover_Comment__c() != null
-                                    && mUser.getMvUser().getApprover_Comment__c().length() > 0) {
-                                Utills.showToast("User Already Rejected", UserApproveDetail.this);
-                            } else {
-                                showDialog();
-                            }
-
+                    binding.reject.setOnClickListener(v -> {
+                        if (mUser.getMvUser().getIsApproved() != null
+                                && mUser.getMvUser().getIsApproved().equalsIgnoreCase("false")
+                                && mUser.getMvUser().getApprover_Comment__c() != null
+                                && mUser.getMvUser().getApprover_Comment__c().length() > 0) {
+                            Utills.showToast("User Already Rejected", UserApproveDetail.this);
+                        } else {
+                            showDialog();
                         }
+
                     });
 
                     if (mUser.getMvUser().getState() != null && !(!mUser.getMvUser().getState().isEmpty() || !mUser.getMvUser().getState().equalsIgnoreCase("Select"))) {
@@ -207,7 +203,7 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
             binding.editTextLastName.setText(User.getCurrentUser(this).getLastName());
             binding.editTextMobileNumber.setText(User.getCurrentUser(this).getPhone());*/
 
-    GlideUrl getUrlWithHeaders(String url) {
+    private GlideUrl getUrlWithHeaders(String url) {
         //
         return new GlideUrl(url, new LazyHeaders.Builder()
                 .addHeader("Authorization", "OAuth " + preferenceHelper.getString(PreferenceHelper.AccessToken))
@@ -228,7 +224,7 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
         img_logout.setOnClickListener(this);
     }
 
-    public void showDialog() {
+    private void showDialog() {
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(UserApproveDetail.this);
         alertDialog.setTitle(getString(R.string.comments));
@@ -242,37 +238,26 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
         alertDialog.setView(input);
         alertDialog.setCancelable(false);
         alertDialog.setPositiveButton(getString(R.string.ok),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
+                (dialog, which) -> {
 
-                    }
                 });
 
         alertDialog.setNegativeButton(getString(R.string.cancel),
-                new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
+                (dialog, which) -> dialog.cancel());
 
 //        alertDialog.show();
         AlertDialog dialog = alertDialog.create();
         dialog.show();
 
         // comment validations added
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View v)
-            {
-                isSave = "false";
-                comment = input.getText().toString();
-                if (!comment.isEmpty()) {
-                    sendApprovedData();
-                    dialog.dismiss();
-                } else {
-                    Utills.showToast("Please Enter Comment", UserApproveDetail.this);
-                }
+        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(v -> {
+            isSave = "false";
+            comment = input.getText().toString();
+            if (!comment.isEmpty()) {
+                sendApprovedData();
+                dialog.dismiss();
+            } else {
+                Utills.showToast("Please Enter Comment", UserApproveDetail.this);
             }
         });
 

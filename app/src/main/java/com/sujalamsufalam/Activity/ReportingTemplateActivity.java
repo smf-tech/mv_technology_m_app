@@ -145,20 +145,16 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         alertDialog.setIcon(R.drawable.ic_launcher);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                finish();
-                overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+            alertDialog.dismiss();
+            finish();
+            overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
 
         // Showing Alert Message
@@ -177,7 +173,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
 
                             mListDistrict.clear();
                             mListDistrict.add("Select");
@@ -223,7 +219,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             mListTaluka.clear();
                             mListTaluka.add("Select");
                             JSONArray jsonArr = new JSONArray(data);
@@ -259,9 +255,9 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         binding.spinnerTaluka.setOnItemSelectedListener(this);
         binding.spinnerIssue.setOnItemSelectedListener(this);
 
-        mListDistrict = new ArrayList<String>();
-        mListTaluka = new ArrayList<String>();
-        mListReportingType = new ArrayList<String>();
+        mListDistrict = new ArrayList<>();
+        mListTaluka = new ArrayList<>();
+        mListReportingType = new ArrayList<>();
 
         mListReportingType = Arrays.asList(getResources().getStringArray(R.array.array_of_reporting_type));
         binding.layoutMore.setOnClickListener(this);
@@ -279,13 +275,11 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             if (list.size() == 0) {
                 showPopUp();
             } else {
-                for (int k = 0; k < list.size(); k++) {
-                    mListTaluka.add(list.get(k));
-                }
+                mListTaluka.addAll(list);
             }
         }
 
-        district_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mListDistrict);
+        district_adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mListDistrict);
         district_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerDistrict.setAdapter(district_adapter);
         binding.spinnerDistrict.setSelection(1);
@@ -294,7 +288,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             binding.spinnerDistrict.setEnabled(true);
             getDistrict();
         }
-        taluka_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, mListTaluka);
+        taluka_adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mListTaluka);
         taluka_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerTaluka.setAdapter(taluka_adapter);
         if (Constants.shareUri != null) {
@@ -308,9 +302,11 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
 
         if (isEdit) {
             mContent = (Content) getIntent().getExtras().getSerializable(Constants.CONTENT);
-            binding.editTextContent.setText(mContent.getTitle());
+            if (mContent != null) {
+                binding.editTextContent.setText(mContent.getTitle());
+            }
             binding.editTextDescription.setText(mContent.getDescription());
-            List<String> mList = new ArrayList<String>();
+            List<String> mList = new ArrayList<>();
             Collections.addAll(mList, getResources().getStringArray(R.array.array_of_reporting_type));
             binding.spinnerIssue.setSelection(mList.indexOf(mContent.getReporting_type()));
         }
@@ -339,16 +335,14 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             case R.id.layoutMore:
                 if (binding.layoutMoreDetail.getVisibility() == View.GONE) {
                     binding.layoutMoreDetail.setVisibility(View.VISIBLE);
-                    if (User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getRoll().equalsIgnoreCase("TC")) {
-                    } else {
+                    if (!User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getRoll().equalsIgnoreCase("TC")) {
                         binding.txtSpinner.setVisibility(View.VISIBLE);
                         binding.spinnerIssue.setVisibility(View.VISIBLE);
                     }
 
                 } else {
                     binding.layoutMoreDetail.setVisibility(View.GONE);
-                    if (User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getRoll().equalsIgnoreCase("TC")) {
-                    } else {
+                    if (!User.getCurrentUser(ReportingTemplateActivity.this).getMvUser().getRoll().equalsIgnoreCase("TC")) {
                         binding.txtSpinner.setVisibility(View.GONE);
                         binding.spinnerIssue.setVisibility(View.GONE);
                     }
@@ -407,8 +401,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                         }*/
                         jsonObject1.put("contentType", "Image");
                         jsonObject1.put("isAttachmentPresent", "true");
-                        InputStream iStream = null;
-                        iStream = getContentResolver().openInputStream(FinalUri);
+                        InputStream iStream = getContentResolver().openInputStream(FinalUri);
                         img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
                       /*  JSONObject jsonObjectAttachment = new JSONObject();
                         jsonObjectAttachment.put("Body", img_str);
@@ -457,10 +450,10 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                     jsonObject1.put("contentType", "Pdf");
                     jsonObject1.put("isAttachmentPresent", "true");
                     try {
-                        InputStream iStream = null;
-                        iStream = getContentResolver().openInputStream(pdfUri);
+                        InputStream iStream = getContentResolver().openInputStream(pdfUri);
                         img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
                     } catch (Exception e) {
+                        e.printStackTrace();
                     }
                 }
                 /*JSONObject jsonObjectAttachment = new JSONObject();
@@ -712,12 +705,12 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
-                try {
-
-                } catch (Exception e) {
-                    Utills.hideProgressDialog();
-                    Utills.showToast(ReportingTemplateActivity.this.getString(R.string.error_something_went_wrong), ReportingTemplateActivity.this);
-                }
+//                try {
+//
+//                } catch (Exception e) {
+//                    Utills.hideProgressDialog();
+//                    Utills.showToast(ReportingTemplateActivity.this.getString(R.string.error_something_went_wrong), ReportingTemplateActivity.this);
+//                }
             }
 
             @Override
@@ -752,20 +745,16 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         String[] items = {getString(R.string.text_gallary),
                 getString(R.string.text_camera)};
 
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
+        dialog.setItems(items, (dialog1, which) -> {
+            // TODO Auto-generated method stub
+            switch (which) {
+                case 0:
+                    choosePhotoFromGallery();
+                    break;
+                case 1:
+                    takePhotoFromCamera();
+                    break;
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                switch (which) {
-                    case 0:
-                        choosePhotoFromGallery();
-                        break;
-                    case 1:
-                        takePhotoFromCamera();
-                        break;
-
-                }
             }
         });
         dialog.show();
@@ -925,9 +914,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         long fileSizeInKB = fileSizeInBytes / 1024;
         // Convert the KB to MegaBytes (1 MB = 1024 KBytes)
         long fileSizeInMB = fileSizeInKB / 1024;
-        if (fileSizeInMB > 5)
-            return true;
-        return false;
+        return fileSizeInMB > 5;
     }
 
     private String getVideoString(Uri selectedImageUri) {
@@ -940,24 +927,24 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
-        int len = 0;
+        int len ;
         try {
-            while ((len = inputStream.read(buffer)) != -1) {
-                byteBuffer.write(buffer, 0, len);
+            if (inputStream != null) {
+                while ((len = inputStream.read(buffer)) != -1) {
+                    byteBuffer.write(buffer, 0, len);
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
         System.out.println("converted!");
-        String videoData = "";
         //Converting bytes into base64
-        videoData = Base64.encodeToString(byteBuffer.toByteArray(), Base64.DEFAULT);
+        String videoData = Base64.encodeToString(byteBuffer.toByteArray(), Base64.DEFAULT);
         Log.d("VideoData**>  ", videoData);
         String sinSaltoFinal2 = videoData.trim();
         String sinsinSalto2 = sinSaltoFinal2.replaceAll("\n", "");
         Log.d("VideoData**>  ", sinsinSalto2);
-        String baseVideo = sinsinSalto2;
-        return baseVideo;
+        return sinsinSalto2;
     }
 
 
@@ -973,9 +960,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                         mListTaluka.clear();
                         List<String> list = AppDatabase.getAppDatabase(this).userDao().getTaluka(User.getCurrentUser(this).getMvUser().getState(), User.getCurrentUser(this).getMvUser().getDistrict());
                         mListTaluka.add("Select");
-                        for (int k = 0; k < list.size(); k++) {
-                            mListTaluka.add(list.get(k));
-                        }
+                        mListTaluka.addAll(list);
                         taluka_adapter.notifyDataSetChanged();
                     }
 
@@ -1004,29 +989,25 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                 getString(R.string.text_video)
         };
 
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
-
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                switch (which) {
-                    case 0:
-                        showPictureDialog();
-                        break;
-                    case 1:
-                        showAudioDialog();
-                        break;
-                    case 2:
-                        showVideoDialog();
-                        break;
-                    case 3:
-                        Intent intent = new Intent();
-                        intent.setType("application/pdf");
-                        intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
-                        intent.setAction(Intent.ACTION_GET_CONTENT);
-                        startActivityForResult(Intent.createChooser(intent, "Select Picture"), Constants.CHOOSE_PDF);
-                        break;
-                }
+        dialog.setItems(items, (dialog1, which) -> {
+            // TODO Auto-generated method stub
+            switch (which) {
+                case 0:
+                    showPictureDialog();
+                    break;
+                case 1:
+                    showAudioDialog();
+                    break;
+                case 2:
+                    showVideoDialog();
+                    break;
+                case 3:
+                    Intent intent = new Intent();
+                    intent.setType("application/pdf");
+                    intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+                    intent.setAction(Intent.ACTION_GET_CONTENT);
+                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), Constants.CHOOSE_PDF);
+                    break;
             }
         });
         dialog.show();
@@ -1038,20 +1019,16 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         String[] items = {getString(R.string.text_record),
                 getString(R.string.text_select_audio)};
 
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
+        dialog.setItems(items, (dialog1, which) -> {
+            // TODO Auto-generated method stub
+            switch (which) {
+                case 0:
+                    showRecorDialog();
+                    break;
+                case 1:
+                    showSelectRecorDialog();
+                    break;
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                switch (which) {
-                    case 0:
-                        showRecorDialog();
-                        break;
-                    case 1:
-                        showSelectRecorDialog();
-                        break;
-
-                }
             }
         });
         dialog.show();
@@ -1068,20 +1045,16 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         String[] items = {getString(R.string.text_gallary),
                 getString(R.string.text_camera)};
 
-        dialog.setItems(items, new DialogInterface.OnClickListener() {
+        dialog.setItems(items, (dialog1, which) -> {
+            // TODO Auto-generated method stub
+            switch (which) {
+                case 0:
+                    chooseVideoFromGallery();
+                    break;
+                case 1:
+                    takeVideoFromCamera();
+                    break;
 
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // TODO Auto-generated method stub
-                switch (which) {
-                    case 0:
-                        chooseVideoFromGallery();
-                        break;
-                    case 1:
-                        takeVideoFromCamera();
-                        break;
-
-                }
             }
         });
         dialog.show();
@@ -1181,99 +1154,80 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         dialogrecord.setCancelable(true);
         dialogrecord.setContentView(R.layout.activity_recordaudio);
 
-        final LinearLayout record = (LinearLayout) dialogrecord.findViewById(R.id.record);
-        record.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isRecording) {
-                    record.setBackgroundResource(R.drawable.blue_box_mic_radius);
+        final LinearLayout record = dialogrecord.findViewById(R.id.record);
+        record.setOnClickListener(v -> {
+            if (isRecording) {
+                record.setBackgroundResource(R.drawable.blue_box_mic_radius);
 
-                    stopClicked(v);
-
-
-                } else {
-
-                    record.setBackgroundResource(R.drawable.red_box_mic_radius);
-                    try {
-                        if (hasMicrophone())
-                            recordAudio(v);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-
-        final ImageView play = (ImageView) dialogrecord.findViewById(R.id.play);
-        play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (auxFileAudio != null) {
-                    if (mp == null)
-                        mp = new MediaPlayer();
-                    mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mp) {
-                            isplaying = false;
-                            isFirstTime = false;
-                            mp.stop();
-                            play.setImageResource(R.drawable.play_song);
-                        }
-                    });
-                    try {
-                        if (isplaying) {
-                            isplaying = false;
-                            mp.pause();
-                            play.setImageResource(R.drawable.play_song);
-                        } else {
-                            isplaying = true;
-                            play.setImageResource(R.drawable.pause_song);
-                            if (!isFirstTime) {
-                                isFirstTime = true;
-                                mp.reset();
-                                mp.setDataSource(audioFilePath);//Write your location here
-                                mp.prepare();
-                                mp.start();
-                            } else {
-                                mp.start();
-                            }
-
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                } else {
-                    Toast.makeText(ReportingTemplateActivity.this, "Please record Audio", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        rectext = (TextView) dialogrecord.findViewById(R.id.rectext);
-        TextView done = (TextView) dialogrecord.findViewById(R.id.done);
-        TextView cancel = (TextView) dialogrecord.findViewById(R.id.cancel);
-        done.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mp != null) {
-                    mp.pause();
-                }
                 stopClicked(v);
-                if (audioUri != null)
-                    binding.addImage.setImageResource(R.drawable.mic_audio);
-                dialogrecord.dismiss();
+
+
+            } else {
+
+                record.setBackgroundResource(R.drawable.red_box_mic_radius);
+                if (hasMicrophone())
+                    recordAudio(v);
             }
         });
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                audioUri = null;
-                binding.addImage.setImageResource(R.drawable.add);
-                dialogrecord.dismiss();
+        final ImageView play = dialogrecord.findViewById(R.id.play);
+        play.setOnClickListener(v -> {
+
+            if (auxFileAudio != null) {
+                if (mp == null)
+                    mp = new MediaPlayer();
+                mp.setOnCompletionListener(mp -> {
+                    isplaying = false;
+                    isFirstTime = false;
+                    mp.stop();
+                    play.setImageResource(R.drawable.play_song);
+                });
+                try {
+                    if (isplaying) {
+                        isplaying = false;
+                        mp.pause();
+                        play.setImageResource(R.drawable.play_song);
+                    } else {
+                        isplaying = true;
+                        play.setImageResource(R.drawable.pause_song);
+                        if (!isFirstTime) {
+                            isFirstTime = true;
+                            mp.reset();
+                            mp.setDataSource(audioFilePath);//Write your location here
+                            mp.prepare();
+                            mp.start();
+                        } else {
+                            mp.start();
+                        }
+
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            } else {
+                Toast.makeText(ReportingTemplateActivity.this, "Please record Audio", Toast.LENGTH_LONG).show();
             }
+        });
+
+        rectext = dialogrecord.findViewById(R.id.rectext);
+        TextView done = dialogrecord.findViewById(R.id.done);
+        TextView cancel = dialogrecord.findViewById(R.id.cancel);
+        done.setOnClickListener(v -> {
+            if (mp != null) {
+                mp.pause();
+            }
+            stopClicked(v);
+            if (audioUri != null)
+                binding.addImage.setImageResource(R.drawable.mic_audio);
+            dialogrecord.dismiss();
+        });
+
+        cancel.setOnClickListener(v -> {
+            audioUri = null;
+            binding.addImage.setImageResource(R.drawable.add);
+            dialogrecord.dismiss();
         });
 
         dialogrecord.show();
@@ -1293,7 +1247,9 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                 rectext.setText("Start");
                 if (mediaRecorder != null)
                     mediaRecorder.stop();
-                mediaRecorder.release();
+                if (mediaRecorder != null) {
+                    mediaRecorder.release();
+                }
                 mediaRecorder = null;
                 isRecording = false;
                 audioUri = Uri.fromFile(new File(audioFilePath));
@@ -1309,11 +1265,11 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             }
 
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
-    public void recordAudio(View view) throws IOException {
+    public void recordAudio(View view) {
         isRecording = true;
         rectext.setText("Done");
 
