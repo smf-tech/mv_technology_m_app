@@ -92,14 +92,14 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
             selectedCluster = (String) parent.getItemAtPosition(position);
 
             mListVillage.clear();
-            mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), selectedCluster);
+            mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(selectedState, mListDistrict.get(mSelectDistrict), selectedCluster);
             mListVillage.removeAll(Collections.singleton(null));
             if (mListVillage.size() == 0) {
                 if (Utills.isConnected(context))
                     getVillage();
                 else {
                     mListVillage.clear();
-                    mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), selectedCluster);
+                    mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(selectedState, mListDistrict.get(mSelectDistrict), selectedCluster);
                     mListVillage.add(0, "Select");
                     mListVillage.removeAll(Collections.singleton(null));
                     ArrayAdapter<String> adapterVillage = new ArrayAdapter<>
@@ -124,7 +124,7 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                 selectedVillage = (String) parent.getItemAtPosition(position);
 
                 mListSchoolName.clear();
-                mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), selectedCluster, selectedVillage);
+                mListSchoolName = AppDatabase.getAppDatabase(context).userDao().getSchoolName(selectedState, mListDistrict.get(mSelectDistrict), selectedCluster, selectedVillage);
                 mListSchoolName.removeAll(Collections.singleton(null));
                 if (mListSchoolName.size() == 0) {
                     if (Utills.isConnected(context))
