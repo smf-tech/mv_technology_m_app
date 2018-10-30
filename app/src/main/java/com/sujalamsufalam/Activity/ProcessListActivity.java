@@ -366,6 +366,18 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 if (resultJsonObj.has("status")) {
                                     processList.setStatus__c(resultJsonObj.getString("status"));
                                 }
+                                if (resultJsonObj.has("ValidationRule")) {
+                                    processList.setValidationRule(resultJsonObj.getString("ValidationRule"));
+                                }
+                                if (resultJsonObj.has("MinRange")) {
+                                    processList.setMinRange(resultJsonObj.getString("MinRange"));
+                                }
+                                if (resultJsonObj.has("MaxRange")) {
+                                    processList.setMaxRange(resultJsonObj.getString("MaxRange"));
+                                }
+                                if (resultJsonObj.has("LimitValue")) {
+                                    processList.setLimitValue(resultJsonObj.getString("LimitValue"));
+                                }
 
                                 if (resultJsonObj.has("isEditable")) {
                                     processList.setIsEditable__c(resultJsonObj.getString("isEditable"));

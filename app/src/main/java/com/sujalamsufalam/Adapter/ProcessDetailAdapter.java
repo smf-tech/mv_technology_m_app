@@ -84,7 +84,11 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             date = view.findViewById(R.id.et_process_detail_date);
             date.setOnClickListener(v -> {
                 if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.DATE) || taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.EVENT_DATE))
-                    showDateDialog(mContext, getAdapterPosition());
+                    if(taskList.get(getAdapterPosition()).getLimitValue().equals("Today")){
+                        showDateDialog(mContext, getAdapterPosition(), "CustomCalendar");
+                    }else{
+                        showDateDialog(mContext, getAdapterPosition(),"NormalCalendar");
+                    }
                 else if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.MULTI_SELECT)) {
                     myList = new ArrayList<String>(Arrays.asList(getColumnIdex((taskList.get(getAdapterPosition()).getPicklist_Value__c()).split(","))));
                     //added this code to enable marathi language in multiselect filed
@@ -233,6 +237,8 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     holder.questionResponse.setInputType(InputType.TYPE_CLASS_TEXT);
                 } else if (task.getValidation().equals("Number")) {
                     holder.questionResponse.setInputType(InputType.TYPE_CLASS_NUMBER);
+                }  else if (task.getValidation().equals("Decimal")) {
+                    holder.questionResponse.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 }
                 holder.questionResponse.setSingleLine(true);
                 break;
@@ -530,7 +536,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
     }
 
 
-    public void showDateDialog(Context context, final int Position) {
+    public void showDateDialog(Context context, final int Position,String CalendarType) {
 
 
         final Calendar c = Calendar.getInstance();
@@ -543,6 +549,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     notifyItemChanged(Position);
 
                 }, mYear, mMonth, mDay);
+        if(CalendarType.equals("CustomCalendar")){
+            dpd.getDatePicker().setMaxDate(System.currentTimeMillis()-10000);
+        }
         dpd.show();
     }
 

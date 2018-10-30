@@ -57,6 +57,50 @@ public class Task implements Parcelable {
     @Expose
     @ColumnInfo(name = "Task_Text__c")
     private String Task_Text__c;
+    @SerializedName("ValidationRule")
+    @Expose
+    private String validationRule;
+    @SerializedName("MinRange")
+    @Expose
+    private String minRange;
+    @SerializedName("MaxRange")
+    @Expose
+    private String maxRange;
+    @SerializedName("LimitValue")
+    @Expose
+    private String limitValue;
+
+    public String getValidationRule() {
+        return validationRule;
+    }
+
+    public void setValidationRule(String validationRule) {
+        this.validationRule = validationRule;
+    }
+
+    public String getMinRange() {
+        return minRange;
+    }
+
+    public void setMinRange(String minRange) {
+        this.minRange = minRange;
+    }
+
+    public String getMaxRange() {
+        return maxRange;
+    }
+
+    public void setMaxRange(String maxRange) {
+        this.maxRange = maxRange;
+    }
+
+    public String getLimitValue() {
+        return limitValue;
+    }
+
+    public void setLimitValue(String limitValue) {
+        this.limitValue = limitValue;
+    }
 
     public String getProcess_Answer_Status__c() {
         return Process_Answer_Status__c;
@@ -399,6 +443,10 @@ public class Task implements Parcelable {
         dest.writeString(this.status);
         dest.writeString(this.IsEditable);
         dest.writeString(this.isHeader);
+        dest.writeString(this.validationRule);
+        dest.writeString(this.minRange);
+        dest.writeString(this.maxRange);
+        dest.writeString(this.limitValue);
      //   dest.writeValue(this.IsDeleteAllow);
     }
 
@@ -428,6 +476,10 @@ public class Task implements Parcelable {
         this.status = in.readString();
         this.IsEditable = in.readString();
         this.isHeader = in.readString();
+        this.validationRule = in.readString();
+        this.minRange = in.readString();
+        this.maxRange = in.readString();
+        this.limitValue = in.readString();
       //  this.IsDeleteAllow = (Boolean) in.readValue(Boolean.class.getClassLoader());
     }
 

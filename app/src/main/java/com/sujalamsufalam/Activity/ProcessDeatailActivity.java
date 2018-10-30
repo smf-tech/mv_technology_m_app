@@ -396,6 +396,22 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 msg = "please check " + taskList.get(i).getTask_Text__c();
                 break;
             }
+            if(taskList.get(i).getValidationRule()!=null && taskList.get(i).getValidationRule().equals("Range")){
+                double val;
+                if(taskList.get(i).getTask_Response__c()==null || taskList.get(i).getTask_Response__c().equals("")) {
+                    manditoryFlag = true;
+                    msg = "please check " + taskList.get(i).getTask_Text__c();
+                    break;
+                }else{
+                    val = Double.parseDouble(taskList.get(i).getTask_Response__c());
+                }
+
+                if(Double.parseDouble(taskList.get(i).getMaxRange())<val || Double.parseDouble(taskList.get(i).getMinRange())>val) {
+                    manditoryFlag = true;
+                    msg = "please check " + taskList.get(i).getTask_Text__c();
+                    break;
+                }
+            }
             if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.IMAGE)) {
                 if (FinalUri != null) {
                     try {
