@@ -1,9 +1,5 @@
 package com.sujalamsufalam.Activity;
 
-/**
- * Created by Rohit Gujar on 12-02-2018.
- */
-
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -51,13 +47,13 @@ import retrofit2.Response;
 
 public class ExpandableListActivity extends Activity implements View.OnClickListener {
     private int lastExpandedPosition = -1;
-    public static final String LANGUAGE = "language";
-    ExpandableListAdapter listAdapter;
-    ExpandableListView expListView;
-    List<String> listDataHeader = new ArrayList<String>();
-    HashMap<String, List<DownloadContent>> listDataChild = new HashMap<String, List<DownloadContent>>();
-    public static final String MESSAGE_PROGRESS = "message_progress";
-    TextView textNoData;
+    private static final String LANGUAGE = "language";
+    private ExpandableListAdapter listAdapter;
+    private ExpandableListView expListView;
+    private List<String> listDataHeader = new ArrayList<>();
+    private HashMap<String, List<DownloadContent>> listDataChild = new HashMap<>();
+    private static final String MESSAGE_PROGRESS = "message_progress";
+    private TextView textNoData;
     private PreferenceHelper preferenceHelper;
 
     @Override
@@ -65,12 +61,12 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_expandable_list);
         setActionbar(getString(R.string.training_content));
-        textNoData = (TextView) findViewById(R.id.textNoData);
+        textNoData = findViewById(R.id.textNoData);
         registerReceiver();
         preferenceHelper = new PreferenceHelper(this);
 
         // get the listview
-        expListView = (ExpandableListView) findViewById(R.id.lvExp);
+        expListView = findViewById(R.id.lvExp);
 
         // preparing list data
         prepareListData();
@@ -80,34 +76,18 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
         // setting list adapter
         expListView.setAdapter(listAdapter);
         // Listview on child click listener
-        expListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-
-                return false;
-            }
-        });
+        expListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> false);
         // Listview Group expanded listener
-        expListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
-
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                if (lastExpandedPosition != -1
-                        && groupPosition != lastExpandedPosition) {
-                    expListView.collapseGroup(lastExpandedPosition);
-                }
-                lastExpandedPosition = groupPosition;
-
+        expListView.setOnGroupExpandListener(groupPosition -> {
+            if (lastExpandedPosition != -1
+                    && groupPosition != lastExpandedPosition) {
+                expListView.collapseGroup(lastExpandedPosition);
             }
+            lastExpandedPosition = groupPosition;
+
         });
         // Listview Group collasped listener
-        expListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-            }
+        expListView.setOnGroupCollapseListener(groupPosition -> {
         });
         if (AppDatabase.getAppDatabase(ExpandableListActivity.this).userDao().getDownloadContent(preferenceHelper.getString(LANGUAGE)).size() == 0) {
             if (Utills.isConnected(ExpandableListActivity.this)) {
@@ -144,7 +124,7 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
         Utills.showProgressDialog(ExpandableListActivity.this, "Loading Downloads", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(ExpandableListActivity.this).create(ServiceRequest.class);
-        String url = "";
+        String url;
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + "/services/apexrest/getdownloadContentData?userId=" + User.getCurrentUser(ExpandableListActivity.this).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
@@ -154,7 +134,7 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
 
                             JSONArray jsonArray = new JSONArray(str);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
@@ -186,15 +166,15 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
         if (str.contains("\n")) {
             str = str.replace("\n", " ");
         }
-        LinearLayout layoutList = (LinearLayout) findViewById(R.id.layoutList);
+        LinearLayout layoutList = findViewById(R.id.layoutList);
         layoutList.setVisibility(View.GONE);
-        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        RelativeLayout mToolBar = findViewById(R.id.toolbar);
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
         toolbar_title.setText(str);
-        ImageView img_back = (ImageView) findViewById(R.id.img_back);
+        ImageView img_back = findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
-        ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
+        ImageView img_logout = findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
@@ -211,7 +191,7 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(MESSAGE_PROGRESS)) {
+            if (intent.getAction()!=null && intent.getAction().equals(MESSAGE_PROGRESS)) {
                 Download download = intent.getParcelableExtra("download");
                 if (listAdapter != null)
                     listAdapter.notifyDataSetChanged();
@@ -249,14 +229,12 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
     private void prepareListData() {
         listDataHeader.clear();
         listDataChild.clear();
-        List<String> temp = new ArrayList<String>();
+        List<String> temp = new ArrayList<>();
         String lang = preferenceHelper.getString(LANGUAGE);
         if (lang == null || lang.length() == 0)
             lang = Constants.LANGUAGE_ENGLISH;
         temp = AppDatabase.getAppDatabase(ExpandableListActivity.this).userDao().getDistinctDownloadContent(lang);
-        for (String s : temp) {
-            listDataHeader.add(s);
-        }
+        listDataHeader.addAll(temp);
         for (String downloadContent : listDataHeader) {
             listDataChild.put(downloadContent, AppDatabase.getAppDatabase(ExpandableListActivity.this).userDao().getDownloadContent(downloadContent, preferenceHelper.getString(LANGUAGE)));
         }

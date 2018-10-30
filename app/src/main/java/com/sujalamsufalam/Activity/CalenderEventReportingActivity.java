@@ -14,7 +14,7 @@ import com.sujalamsufalam.Utils.LocaleManager;
 import com.sujalamsufalam.databinding.ActivityCalenderEventReportingBinding;
 
 public class CalenderEventReportingActivity extends AppCompatActivity implements View.OnClickListener {
-    Activity context;
+    private Activity context;
     private ActivityCalenderEventReportingBinding binding;
 
     @Override

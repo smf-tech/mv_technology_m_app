@@ -249,14 +249,10 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         mListTaluka.add("Select");
         if (!Utills.isConnected(this)) {
             List<String> list = AppDatabase.getAppDatabase(this).userDao().getTaluka(User.getCurrentUser(this).getMvUser().getState(), User.getCurrentUser(this).getMvUser().getDistrict());
-            if (list.size() == 0) {
+            if (list.size() == 0)
                 showPopUp();
-            } else {
-
-                for (int k = 0; k < list.size(); k++) {
-                    mListTaluka.add(list.get(k));
-                }
-            }
+            else
+                mListTaluka.addAll(list);
         }
 
         district_adapter = new ArrayAdapter<>(this,
@@ -1070,9 +1066,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
                 mListTaluka.clear();
                 List<String> list = AppDatabase.getAppDatabase(this).userDao().getTaluka(User.getCurrentUser(this).getMvUser().getState(), User.getCurrentUser(this).getMvUser().getDistrict());
                 mListTaluka.add("Select");
-                for (int k = 0; k < list.size(); k++) {
-                    mListTaluka.add(list.get(k));
-                }
+                mListTaluka.addAll(list);
                 taluka_adapter.notifyDataSetChanged();
                 break;
             case R.id.spinner_taluka:

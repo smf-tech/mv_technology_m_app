@@ -64,9 +64,12 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
     TextInputLayout input_no, input_name;
-    LinearLayout lnr_asset_manager, lnr_user;
-    String Fname, Lname, Id;
-    int selectstockid = 0;
+    private LinearLayout lnr_asset_manager;
+    private LinearLayout lnr_user;
+    private String Fname;
+    private String Lname;
+    private String Id;
+    private int selectstockid = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

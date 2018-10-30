@@ -55,16 +55,18 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
     ArrayList<String> idList;
     private PreferenceHelper preferenceHelper;
     private ArrayList<String> headerList;
-    HashMap<String, ArrayList<LeavesModel>> childList;
+    private HashMap<String, ArrayList<LeavesModel>> childList;
     ArrayList<LeavesModel> leaveList = new ArrayList<>();
-    String proceesId, Processname,tabName;
-    Activity mContext;
-    List<HolidayListModel> holidayListModels = new ArrayList<>();
-    LeaveCountModel leaveCountModel = new LeaveCountModel();
-    TextView textNoData;
+    private String proceesId;
+    String Processname;
+    private String tabName;
+    private Activity mContext;
+    private List<HolidayListModel> holidayListModels = new ArrayList<>();
+    private LeaveCountModel leaveCountModel = new LeaveCountModel();
+    private TextView textNoData;
 
     private ExpandableApprovalListAdapter adapter;
-    String url = "";
+    private String url = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,7 +151,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
 
                             ArrayList<LeavesModel> pendingList = new ArrayList<>();
@@ -229,9 +231,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
 
     public void onAddClick() {
         ArrayList<HolidayListModel> tem = new ArrayList<>();
-        for (int i = 0; i < holidayListModels.size(); i++) {
-            tem.add(holidayListModels.get(i));
-        }
+        tem.addAll(holidayListModels);
         Intent intent = new Intent(mContext, LeaveDetailActivity.class);
         intent.putParcelableArrayListExtra(Constants.PROCESS_ID, tem);
         mContext.startActivity(intent);
@@ -244,7 +244,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
         finish();
     }
 
-    public void getAllProcess() {
+    private void getAllProcess() {
 
         Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
@@ -257,7 +257,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
 
                             ArrayList<LeavesModel> pendingList = new ArrayList<>();

@@ -155,7 +155,7 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
                 try {
                     if (response != null && response.isSuccess()) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
 
                             JSONObject object = new JSONObject(str);
                             if (object.has("salaries") && !(object.getString("salaries").equalsIgnoreCase("null"))) {
@@ -204,8 +204,8 @@ public class ExpenseListActivity extends AppCompatActivity implements View.OnCli
                 try {
                     if (response != null && response.isSuccess()) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
-                            if (Arrays.asList(gson.fromJson(str, Expense[].class)) != null) {
+                        if (str.length() > 0) {
+                            if (Arrays.asList(gson.fromJson(str, Expense[].class)).size()>0) {
                                 AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().deleteExpense(voucher.getId());
                                 AppDatabase.getAppDatabase(ExpenseListActivity.this).userDao().insertExpense(Arrays.asList(gson.fromJson(str, Expense[].class)));
                                 setRecyclerView();

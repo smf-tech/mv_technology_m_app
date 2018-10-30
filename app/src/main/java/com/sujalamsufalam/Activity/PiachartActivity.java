@@ -1,7 +1,6 @@
 package com.sujalamsufalam.Activity;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Bitmap;
@@ -82,30 +81,30 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     private FragmentIndicaorBinding binding;
     private PreferenceHelper preferenceHelper;
     private PieChart mChart;
-    ArrayList<String> key = new ArrayList<>();
-    ArrayList<PiaChartModel> piaChartModelArrayList = new ArrayList<>();
-    ArrayList<PiaChartModel> repplicaCahart = new ArrayList<>();
-    ArrayList<PieEntry> entries;
-    Task task;
-    File file;
-    List<String> temp;
+    private ArrayList<String> key = new ArrayList<>();
+    private ArrayList<PiaChartModel> piaChartModelArrayList = new ArrayList<>();
+    private ArrayList<PiaChartModel> repplicaCahart = new ArrayList<>();
+    private ArrayList<PieEntry> entries;
+    private Task task;
+    private File file;
+    private List<String> temp;
     ImageView imageView;
-    Bitmap mbitmap;
-    String roleList;
+    private Bitmap mbitmap;
+    private String roleList;
     private ImageView img_back, img_list, img_logout,location, img_lang;
     private TextView toolbar_title;
     private RelativeLayout mToolBar;
-    RecyclerView rvPiaChartDeatail;
-    PichartDescriptiveListAdapter adapter;
-    PichartMenuAdapter menuAdapter;
-    EditText role;
-    LinearLayout llSpinner;
-    LocationModel locationModel;
-    Activity context;
-    String title,dateFrom,dateTo;
+    private RecyclerView rvPiaChartDeatail;
+    private PichartDescriptiveListAdapter adapter;
+    private PichartMenuAdapter menuAdapter;
+    private EditText role;
+    private LinearLayout llSpinner;
+    private LocationModel locationModel;
+    private Activity context;
+    private String title;//dateFrom,dateTo;
     private String img_str;
     public static String selectedRole;
-    ArrayList<String> selectedRoleList = new ArrayList<>();
+    private ArrayList<String> selectedRoleList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,10 +115,12 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         binding.swipeRefreshLayout.setOnRefreshListener(this);
         task = getIntent().getParcelableExtra(Constants.INDICATOR_TASK);
         roleList = getIntent().getStringExtra(Constants.INDICATOR_TASK_ROLE);
-        selectedRoleList = new ArrayList<String>(Arrays.asList(getColumnIdex((roleList).split(";"))));
+        selectedRoleList = new ArrayList<>(Arrays.asList(getColumnIdex((roleList).split(";"))));
 
 
-        title = getIntent().getExtras().getString(Constants.TITLE);
+        if(getIntent().getExtras()!=null) {
+            title = getIntent().getExtras().getString(Constants.TITLE);
+        }
 //        dateFrom = getIntent().getExtras().getString("DateFrom");
 //        dateTo = getIntent().getExtras().getString("DateTo");
         locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
@@ -141,7 +142,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
-    public static String[] getColumnIdex(String[] value) {
+    private static String[] getColumnIdex(String[] value) {
 
         for (int i = 0; i < value.length; i++) {
             value[i] = value[i].trim();
@@ -170,47 +171,38 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         final ArrayList seletedItems = new ArrayList();
         android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(PiachartActivity.this)
                 .setTitle("Select Communities")
-                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (mSelection != null && which < mSelection.length) {
-                            mSelection[which] = isChecked;
+                .setMultiChoiceItems(items, mSelection, (dialog13, which, isChecked) -> {
+                    if (which < mSelection.length) {
+                        mSelection[which] = isChecked;
 
 
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Argument 'which' is out of bounds.");
-                        }
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Argument 'which' is out of bounds.");
                     }
                 })
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        ArrayList<Content> contentsList = new ArrayList<>();
-                        for (int i = 0; i < items.length; i++) {
-                            if (mSelection[i]) {
-                                Content content = new Content();
-                                content.setDescription("");
-                                content.setTitle(title);
-                                content.setDistrict(User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
-                                content.setTaluka(User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
-                                content.setReporting_type("Information Sharing");
-                                content.setUser_id(User.getCurrentUser(getApplicationContext()).getMvUser().getId());
-                                content.setCommunity_id(temp.get(i).getId());
-                                content.setTemplate(preferenceHelper.getString(PreferenceHelper.TEMPLATEID));
-                                contentsList.add(content);
+                .setPositiveButton(getString(R.string.ok), (dialog12, id) -> {
+                    ArrayList<Content> contentsList = new ArrayList<>();
+                    for (int i = 0; i < items.length; i++) {
+                        if (mSelection[i]) {
+                            Content content = new Content();
+                            content.setDescription("");
+                            content.setTitle(title);
+                            content.setDistrict(User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
+                            content.setTaluka(User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
+                            content.setReporting_type("Information Sharing");
+                            content.setUser_id(User.getCurrentUser(getApplicationContext()).getMvUser().getId());
+                            content.setCommunity_id(temp.get(i).getId());
+                            content.setTemplate(preferenceHelper.getString(PreferenceHelper.TEMPLATEID));
+                            contentsList.add(content);
 
-                                Log.i("value", "value");
-                            }
-
+                            Log.i("value", "value");
                         }
-                        setdDataToSalesForcce(contentsList);
+
                     }
-                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
-                    }
+                    setdDataToSalesForcce(contentsList);
+                }).setNegativeButton(getString(R.string.cancel), (dialog1, id) -> {
+                    //  Your code when user clicked on Cancel
                 }).create();
         dialog.show();
     }
@@ -220,7 +212,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
 
         if (preferenceHelper.getString(Constants.RoleList) != null && !preferenceHelper.getString(Constants.RoleList).isEmpty()) {
-            temp = new ArrayList<String>(Arrays.asList(preferenceHelper.getString(Constants.RoleList).split(";")));
+            temp = new ArrayList<>(Arrays.asList(preferenceHelper.getString(Constants.RoleList).split(";")));
 
         }
 
@@ -242,44 +234,35 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         final ArrayList seletedItems = new ArrayList();
         android.app.AlertDialog dialog = new android.app.AlertDialog.Builder(PiachartActivity.this)
                 .setTitle("Select Role")
-                .setMultiChoiceItems(items, mSelection, new DialogInterface.OnMultiChoiceClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                        if (mSelection != null && which < mSelection.length) {
-                            mSelection[which] = isChecked;
+                .setMultiChoiceItems(items, mSelection, (dialog13, which, isChecked) -> {
+                    if (which < mSelection.length) {
+                        mSelection[which] = isChecked;
 
 
-                        } else {
-                            throw new IllegalArgumentException(
-                                    "Argument 'which' is out of bounds.");
-                        }
+                    } else {
+                        throw new IllegalArgumentException(
+                                "Argument 'which' is out of bounds.");
                     }
                 })
-                .setPositiveButton(getString(R.string.ok), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        StringBuffer sb = new StringBuffer();
-                        String prefix = "";
-                        for (int i = 0; i < items.length; i++) {
-                            if (mSelection[i]) {
-                                sb.append(prefix);
-                                prefix = ";";
-                                sb.append(temp.get(i));
+                .setPositiveButton(getString(R.string.ok), (dialog12, id) -> {
+                    StringBuilder sb = new StringBuilder();
+                    String prefix = "";
+                    for (int i = 0; i < items.length; i++) {
+                        if (mSelection[i]) {
+                            sb.append(prefix);
+                            prefix = ";";
+                            sb.append(temp.get(i));
 
-                            }
                         }
+                    }
 
-                        if (Utills.isConnected(getApplicationContext()))
-                            getDashBoardDataForAll(sb.toString());
-                        role.setText(sb.toString());
-                        roleList = sb.toString();
-                        selectedRoleList = new ArrayList<String>(Arrays.asList(getColumnIdex((roleList).split(";"))));
-                    }
-                }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        //  Your code when user clicked on Cancel
-                    }
+                    if (Utills.isConnected(getApplicationContext()))
+                        getDashBoardDataForAll(sb.toString());
+                    role.setText(sb.toString());
+                    roleList = sb.toString();
+                    selectedRoleList = new ArrayList<>(Arrays.asList(getColumnIdex((roleList).split(";"))));
+                }).setNegativeButton(getString(R.string.cancel), (dialog1, id) -> {
+                    //  Your code when user clicked on Cancel
                 }).create();
 
 
@@ -364,20 +347,10 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         img_list.setOnClickListener(this);
         img_list.setImageResource(R.drawable.filter);
 
-
-        //added for date filter but not implemented
-//        img_lang = (ImageView) findViewById(R.id.img_lang);
-//        img_lang.setVisibility(View.VISIBLE);
-//        img_lang.setOnClickListener(this);
         img_logout.setImageResource(R.drawable.share_report);
         llSpinner = (LinearLayout) findViewById(R.id.llrole_lay);
 
-        img_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                screenShot(v);
-            }
-        });
+        img_logout.setOnClickListener(v -> screenShot(v));
 
     }
 
@@ -386,12 +359,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         setActionbar(title);
         role = (EditText) findViewById(R.id.spinner_role);
         role.setText(roleList);
-        role.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showRoleDialog();
-            }
-        });
+        role.setOnClickListener(v -> showRoleDialog());
 
 
     /*    if (roleList != null && !roleList.isEmpty()) {
@@ -467,17 +435,16 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
     private SpannableString generateCenterSpannableText() {
 
-        SpannableString s = new SpannableString(getString(R.string.app_name));
-/*        s.setSpan(new RelativeSizeSpan(1.7f), 0, 14, 0);
+        /*        s.setSpan(new RelativeSizeSpan(1.7f), 0, 14, 0);
         s.setSpan(new StyleSpan(Typeface.NORMAL), 14, s.length() - 15, 0);
         s.setSpan(new ForegroundColorSpan(Color.GRAY), 14, s.length() - 15, 0);
         s.setSpan(new RelativeSizeSpan(.8f), 14, s.length() - 15, 0);
         s.setSpan(new StyleSpan(Typeface.ITALIC), s.length() - 14, s.length(), 0);
         s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), s.length() - 14, s.length(), 0);*/
-        return s;
+        return new SpannableString(getString(R.string.app_name));
     }
 
-    TextWatcher watch = new TextWatcher() {
+    private TextWatcher watch = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable arg0) {
@@ -503,18 +470,14 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     private void setFilter(String s) {
         List<PiaChartModel> list = new ArrayList<>();
         repplicaCahart.clear();
-        for (int i = 0; i < piaChartModelArrayList.size(); i++) {
-            repplicaCahart.add(piaChartModelArrayList.get(i));
-        }
+        repplicaCahart.addAll(piaChartModelArrayList);
         for (int i = 0; i < repplicaCahart.size(); i++) {
             if (repplicaCahart.get(i).getDetail().toLowerCase().contains(s.toLowerCase())) {
                 list.add(repplicaCahart.get(i));
             }
         }
         repplicaCahart.clear();
-        for (int i = 0; i < list.size(); i++) {
-            repplicaCahart.add(list.get(i));
-        }
+        repplicaCahart.addAll(list);
         adapter = new PichartDescriptiveListAdapter(context, repplicaCahart);
         rvPiaChartDeatail.setAdapter(adapter);
     }
@@ -541,7 +504,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
         // add a lot of colors
 
-        ArrayList<Integer> colors = new ArrayList<Integer>();
+        ArrayList<Integer> colors = new ArrayList<>();
         colors.add(Color.rgb(11, 111, 206));
         colors.add(Color.rgb(120, 201, 83));
         colors.add(Color.rgb(226, 112, 1));
@@ -617,112 +580,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 finish();
                 break;
 
-            //added for date filter but not implemented
-//            case R.id.img_lang:
-//                // custom dialog
-//                final Dialog dialog = new Dialog(context);
-//                dialog.setContentView(R.layout.date_filter_dialog_layout);
-//                dialog.setTitle("Title...");
-//
-//                // set the custom dialog components - text, image and button
-//                TextView txtDateFrom = (TextView) dialog.findViewById(R.id.txtDateFrom);
-//
-//                TextView txtDateTo = (TextView) dialog.findViewById(R.id.txtDateTo);
-//
-//                txtDateFrom.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        showDateDialog(txtDateFrom);
-//                    }
-//                });
-//
-//                txtDateTo.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        showDateDialog(txtDateTo);
-//                    }
-//                });
-//
-//                Button sort_button = (Button) dialog.findViewById(R.id.sort_button);
-//                // if button is clicked, close the custom dialog
-//                sort_button.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        if(txtDateFrom.getText().toString().trim().length()>0 && txtDateTo.getText().toString().trim().length()>0)
-//                            FilterVouchers_withDate(txtDateFrom.getText().toString().trim(),txtDateTo.getText().toString().trim());
-//                        else
-//                            Utills.showToast("Enter proper date range.", PiachartActivity.this);
-//                    }
-//                });
-//
-//                dialog.show();
-//
-//                break;
         }
     }
-
-    //added for date filter but not implemented
-//    private void FilterVouchers_withDate(String fromDate, String toDate) {
-//        //firstly convert string to date and check if dates are valid
-//        Date datefrom = ConvertStringToDate(fromDate);
-//        Date dateto = ConvertStringToDate(toDate);
-//        repplicaCahart.clear();
-//        if (datefrom.before(dateto)||datefrom.equals(dateto)) {
-//            for (PiaChartModel p : piaChartModelArrayList) {
-//                Date voucherdate = ConvertStringToDate(p.getKey());
-//                //   boolean b = datefrom.compareTo(voucherdate) * voucherdate.compareTo(dateto) >= 0;
-//                if (datefrom.compareTo(voucherdate) * voucherdate.compareTo(dateto) >= 0) {
-//                    repplicaCahart.add(p);
-//                }
-//            }
-//            if(repplicaCahart.size()>0) {
-//                adapter = new PichartDescriptiveListAdapter(context, repplicaCahart);
-//                rvPiaChartDeatail.setAdapter(adapter);
-//            }else{
-//                Toast.makeText(this, "No voucher available.",Toast.LENGTH_LONG).show();
-//            }
-//        }else{
-//            Toast.makeText(this, R.string.text_proper_date, Toast.LENGTH_LONG).show();
-//        }
-//    }
-//
-//    private Date ConvertStringToDate(String stringDate){
-//        Date parsedDate  = null;
-//        try {
-//            if(stringDate!=null) {
-//                parsedDate = new SimpleDateFormat("yyyy-MM-dd").parse(stringDate);
-//                System.out.println(parsedDate);
-//                return parsedDate;
-//            }
-//        }catch (Exception e){
-//            Log.e("MYAPP", "exception", e);
-//        }
-//        return parsedDate;
-//    }
-//
-//    //adding date picker dialog for voucher date filteration
-//    private void showDateDialog(TextView textView) {
-//        final Calendar c = Calendar.getInstance();
-//        final int mYear = c.get(Calendar.YEAR);
-//        final int mMonth = c.get(Calendar.MONTH);
-//        final int mDay = c.get(Calendar.DAY_OF_MONTH);
-//        DatePickerDialog dpd = new DatePickerDialog(this,
-//                new DatePickerDialog.OnDateSetListener() {
-//
-//                    @Override
-//                    public void onDateSet(DatePicker view, int year,
-//                                          int monthOfYear, int dayOfMonth) {
-//                        textView.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
-//                    }
-//                }, mYear, mMonth, mDay);
-//        dpd.show();
-//    }
-//    //returns two digit number of month
-//    private static String getTwoDigit(int i) {
-//        if (i < 10)
-//            return "0" + i;
-//        return "" + i;
-//    }
 
     @Override
     public void onValueSelected(Entry e, Highlight h) {
@@ -738,7 +597,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-//piechart
+    //piechart
     private void getAllIndicatorTask() {
         Utills.showProgressDialog(this, "Loading Data", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
@@ -802,8 +661,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 jsonObject.put("taluka", locationModel.getTaluka());
                 jsonObject.put("tskId", task.getId());
                 jsonObject.put("role", role);
-              //jsonObject.put("datefrom", dateFrom);
-//              jsonObject.put("dateto", dateTo);
+//                jsonObject.put("datefrom", dateFrom);
+//                jsonObject.put("dateto", dateTo);
 
                 ServiceRequest apiService =
                         ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
@@ -908,19 +767,18 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    public void screenShot(View view) {
+    private void screenShot(View view) {
         mbitmap = getBitmapOFRootView(view);
         createImage(mbitmap);
     }
 
-    public Bitmap getBitmapOFRootView(View v) {
+    private Bitmap getBitmapOFRootView(View v) {
         View rootview = v.getRootView();
         rootview.setDrawingCacheEnabled(true);
-        Bitmap bitmap1 = rootview.getDrawingCache();
-        return bitmap1;
+        return rootview.getDrawingCache();
     }
 
-    public void createImage(Bitmap bmp) {
+    private void createImage(Bitmap bmp) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 40, bytes);
         file = new File(Environment.getExternalStorageDirectory() +
@@ -957,8 +815,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         Utills.showProgressDialog(context, "Loading Communities", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
-        String url = "";
-        url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(context).getMvUser().getId();
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -967,7 +824,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<Community> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Community[].class));
@@ -1010,8 +867,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                         try {
                             jsonObject1.put("isAttachmentPresent", "true");
                             jsonObject1.put("isAttachmentPresent", "true");
-                            InputStream iStream = null;
-                            iStream = getContentResolver().openInputStream(Uri.fromFile(file));
+                            InputStream iStream = getContentResolver().openInputStream(Uri.fromFile(file));
                             img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
                       /*  JSONObject jsonObjectAttachment = new JSONObject();
                         jsonObjectAttachment.put("Body", img_str);
@@ -1091,12 +947,12 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         JsonArray gsonObject = (JsonArray) jsonParser.parse(jsonArray.toString());
         ServiceRequest apiService =
                 ApiClient.getImageClient().create(ServiceRequest.class);
-       // apiService.sendImageToSalesforce("http://mobileapp.mulyavardhan.org/upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
+        // apiService.sendImageToSalesforce("http://mobileapp.mulyavardhan.org/upload.php", gsonObject).enqueue(new Callback<ResponseBody>() {
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("json_data", jsonArray.toString())
                 .build();
-           apiService.sendImageToPHP(requestBody).enqueue(new Callback<ResponseBody>() {
+        apiService.sendImageToPHP(requestBody).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
