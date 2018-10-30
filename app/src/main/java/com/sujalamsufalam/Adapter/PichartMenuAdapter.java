@@ -24,7 +24,7 @@ public class PichartMenuAdapter extends RecyclerView.Adapter<PichartMenuAdapter.
     private Activity mContext;
 
     private PreferenceHelper preferenceHelper;
-    List<Integer> colorList;
+    private List<Integer> colorList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView txtCommunityName, bacColor;
@@ -32,9 +32,9 @@ public class PichartMenuAdapter extends RecyclerView.Adapter<PichartMenuAdapter.
 
         public MyViewHolder(View view) {
             super(view);
-            txtCommunityName = (TextView) view.findViewById(R.id.txtTemplateName);
-            bacColor = (TextView) view.findViewById(R.id.temp_color);
-            layout = (LinearLayout) view.findViewById(R.id.layoutTemplate);
+            txtCommunityName = view.findViewById(R.id.txtTemplateName);
+            bacColor = view.findViewById(R.id.temp_color);
+            layout = view.findViewById(R.id.layoutTemplate);
 
         }
     }

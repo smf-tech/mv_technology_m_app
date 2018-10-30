@@ -24,8 +24,8 @@ public class VersionReportAdapter extends RecyclerView.Adapter<VersionReportAdap
 
         public MyViewHolder(View view) {
             super(view);
-            txtUserName = (TextView) view.findViewById(R.id.tv_version_name);
-            txtVersionNumber = (TextView) view.findViewById(R.id.tv_version_number);
+            txtUserName = view.findViewById(R.id.tv_version_name);
+            txtVersionNumber = view.findViewById(R.id.tv_version_number);
         }
     }
 

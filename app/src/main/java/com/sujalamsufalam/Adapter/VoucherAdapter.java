@@ -4,7 +4,6 @@ package com.sujalamsufalam.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.support.v7.widget.CardView;
@@ -53,8 +52,8 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
     private Resources resources;
     private List<Voucher> mDataList;
     private VoucherListActivity mActivity;
-    public PopupMenu popup;
-    PreferenceHelper preferenceHelper;
+    private PopupMenu popup;
+    private PreferenceHelper preferenceHelper;
 
     public VoucherAdapter(Context context, List<Voucher> list) {
         mContext = context;
@@ -81,12 +80,9 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
         holder.tvTotalExpenseName.setText("₹ " + voucher.getApproved_Expense());
         holder.tvTotalAdvance.setText("₹ " + voucher.getApproved_Advance());
 
-        holder.cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Constants.AccountTeamCode.equals("TeamManagement")) {
-                    mActivity.editVoucher(voucher);
-                }
+        holder.cardView.setOnClickListener(view -> {
+            if (Constants.AccountTeamCode.equals("TeamManagement")) {
+                mActivity.editVoucher(voucher);
             }
         });
 
@@ -94,32 +90,27 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
         if (Constants.AccountTeamCode.equals("TeamManagement")) {
             holder.imgMore.setVisibility(View.GONE);
         }
-        holder.imgMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popup = new PopupMenu(mContext, holder.imgMore);
-                //Inflating the Popup using xml file
-                popup.getMenuInflater().inflate(R.menu.popup_menu_vouchar, popup.getMenu());
-                //   popup.getMenu().getItem(R.id.spam).setVisible(true);
-                MenuItem edit = (MenuItem) popup.getMenu().findItem(R.id.edit);
-                MenuItem delete = (MenuItem) popup.getMenu().findItem(R.id.delete);
-                MenuItem sendMail = (MenuItem) popup.getMenu().findItem(R.id.send_mail);
+        holder.imgMore.setOnClickListener(view -> {
+            popup = new PopupMenu(mContext, holder.imgMore);
+            //Inflating the Popup using xml file
+            popup.getMenuInflater().inflate(R.menu.popup_menu_vouchar, popup.getMenu());
+            //   popup.getMenu().getItem(R.id.spam).setVisible(true);
+            MenuItem edit = popup.getMenu().findItem(R.id.edit);
+            MenuItem delete = popup.getMenu().findItem(R.id.delete);
+            MenuItem sendMail = popup.getMenu().findItem(R.id.send_mail);
 
-                //registering popup with OnMenuItemClickListener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getItemId()==R.id.edit) {
-                            mActivity.editVoucher(voucher);
-                        } else if (item.getItemId()==R.id.delete) {
-                            showLogoutPopUp(position);
-                        } else if (item.getItemId()==R.id.send_mail) {
-                            sendEmail(voucher.getId());
-                        }
-                        return true;
-                    }
-                });
-                popup.show();
-            }
+            //registering popup with OnMenuItemClickListener
+            popup.setOnMenuItemClickListener(item -> {
+                if (item.getItemId()==R.id.edit) {
+                    mActivity.editVoucher(voucher);
+                } else if (item.getItemId()==R.id.delete) {
+                    showLogoutPopUp(position);
+                } else if (item.getItemId()==R.id.send_mail) {
+                    sendEmail(voucher.getId());
+                }
+                return true;
+            });
+            popup.show();
         });
     }
 
@@ -130,8 +121,7 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
                 .inflate(R.layout.each_voucher, parent, false);
 
         // create ViewHolder
-        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
-        return viewHolder;
+        return new ViewHolder(itemLayoutView);
     }
 
 
@@ -151,44 +141,38 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
 
             super(itemLayoutView);
 
-            imgMore = (ImageView) itemLayoutView.findViewById(R.id.img_more);
+            imgMore = itemLayoutView.findViewById(R.id.img_more);
 
-            cardView = (CardView) itemLayoutView.findViewById(R.id.cardView);
+            cardView = itemLayoutView.findViewById(R.id.cardView);
 
-            tvUser = (TextView) itemLayoutView.findViewById(R.id.tvUser);
-            tvUserName = (TextView) itemLayoutView.findViewById(R.id.tvUserName);
-            tvProjectName = (TextView) itemLayoutView.findViewById(R.id.tvProjectName);
-            tvDateName = (TextView) itemLayoutView.findViewById(R.id.tvDateName);
-            tvNoOfPeopleName = (TextView) itemLayoutView.findViewById(R.id.tvNoOfPeopleName);
-            tvTotalExpenseName = (TextView) itemLayoutView.findViewById(R.id.tvTotalExpenseName);
-            tvTotalAdvance = (TextView) itemLayoutView.findViewById(R.id.tvTotalAdvance);
-            layout_expense = (LinearLayout) itemLayoutView.findViewById(R.id.layout_expense);
-            layout_adavance = (LinearLayout) itemLayoutView.findViewById(R.id.layout_adavance);
+            tvUser = itemLayoutView.findViewById(R.id.tvUser);
+            tvUserName = itemLayoutView.findViewById(R.id.tvUserName);
+            tvProjectName = itemLayoutView.findViewById(R.id.tvProjectName);
+            tvDateName = itemLayoutView.findViewById(R.id.tvDateName);
+            tvNoOfPeopleName = itemLayoutView.findViewById(R.id.tvNoOfPeopleName);
+            tvTotalExpenseName = itemLayoutView.findViewById(R.id.tvTotalExpenseName);
+            tvTotalAdvance = itemLayoutView.findViewById(R.id.tvTotalAdvance);
+            layout_expense = itemLayoutView.findViewById(R.id.layout_expense);
+            layout_adavance = itemLayoutView.findViewById(R.id.layout_adavance);
 
-            layout_expense.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent;
-                    intent = new Intent(mContext, ExpenseListActivity.class);
-                    intent.putExtra(Constants.VOUCHER, mDataList.get(getAdapterPosition()));
-                    mActivity.startActivity(intent);
-                }
+            layout_expense.setOnClickListener(view -> {
+                Intent intent;
+                intent = new Intent(mContext, ExpenseListActivity.class);
+                intent.putExtra(Constants.VOUCHER, mDataList.get(getAdapterPosition()));
+                mActivity.startActivity(intent);
             });
-            layout_adavance.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent;
-                    intent = new Intent(mContext, AdavanceListActivity.class);
-                    intent.putExtra(Constants.VOUCHER, mDataList.get(getAdapterPosition()));
-                    mActivity.startActivity(intent);
-                }
+            layout_adavance.setOnClickListener(view -> {
+                Intent intent;
+                intent = new Intent(mContext, AdavanceListActivity.class);
+                intent.putExtra(Constants.VOUCHER, mDataList.get(getAdapterPosition()));
+                mActivity.startActivity(intent);
             });
 
 
         }
     }
 
-    void sendEmail(String id){
+    private void sendEmail(String id){
         if (Utills.isConnected(mContext)) {
             try {
 
@@ -206,9 +190,9 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
                         Utills.hideProgressDialog();
                         try {
                             if (response.body() != null) {
-                                if (response != null && response.isSuccess()) {
+                                if (response.isSuccess()) {
                                     String data = response.body().string();
-                                    if (data != null && data.length() > 0) {
+                                    if (data.length() > 0) {
                                         JSONObject object = new JSONObject(data);
                                         Utills.showToast(object.getString("Status"), mContext);
                                     }
@@ -251,20 +235,14 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
         alertDialog.setIcon(R.drawable.ic_launcher);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(mContext.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                // Write your code here to execute after dialog closed
-              /*  listOfWrongQuestions.add(mPosition);
-                prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
-            }
+        alertDialog.setButton2(mContext.getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            // Write your code here to execute after dialog closed
+          /*  listOfWrongQuestions.add(mPosition);
+            prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
         });
         // Setting OK Button
-        alertDialog.setButton(mContext.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                mActivity.deleteVoucher(postion);
-            }
-        });
+        alertDialog.setButton(mContext.getString(android.R.string.ok), (dialog, which) -> mActivity.deleteVoucher(postion));
 
         // Showing Alert Message
         alertDialog.show();

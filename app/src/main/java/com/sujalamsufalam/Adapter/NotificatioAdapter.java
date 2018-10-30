@@ -22,8 +22,8 @@ import java.util.List;
 
 public class NotificatioAdapter extends RecyclerView.Adapter<NotificatioAdapter.MyViewHolder> {
 
-    Activity activity;
-    List<Notifications> notificationList;
+    private Activity activity;
+    private List<Notifications> notificationList;
 
     public NotificatioAdapter(Activity activity, List<Notifications> notificationList) {
         this.notificationList=notificationList;
@@ -36,8 +36,7 @@ public class NotificatioAdapter extends RecyclerView.Adapter<NotificatioAdapter.
                 .inflate(R.layout.each_notification, parent, false);
 
         // create ViewHolder
-        NotificatioAdapter.MyViewHolder viewHolder = new NotificatioAdapter.MyViewHolder(itemLayoutView);
-        return viewHolder;
+        return new MyViewHolder(itemLayoutView);
     }
 
     @Override
@@ -57,10 +56,11 @@ public class NotificatioAdapter extends RecyclerView.Adapter<NotificatioAdapter.
                 else if (event.getAction() == MotionEvent.ACTION_UP) {
                     upX = (int) event.getX();
                     Log.i("event.getX()", " upX " + upX);
-                    if (upX - downX > 200) {
-                        // swipe right
-                    }
-                    else if (downX - upX > 50) {
+//                    if (upX - downX > 200) {
+//                        // swipe right
+//                    }
+                //    else
+                        if (downX - upX > 50) {
                         // swipe left
 //                        Toast.makeText(activity,""+(downX - upX),Toast.LENGTH_SHORT).show();
                         AppDatabase.getAppDatabase(activity).userDao().deleteNotification(notificationList.get(position).getUniqueId());
@@ -84,9 +84,9 @@ public class NotificatioAdapter extends RecyclerView.Adapter<NotificatioAdapter.
         RelativeLayout layNotification;
         public MyViewHolder(View itemView) {
             super(itemView);
-            tvTitle=(TextView)itemView.findViewById(R.id.tv_title);
-            tvDetel=(TextView)itemView.findViewById(R.id.tv_Detels);
-            layNotification=(RelativeLayout)itemView.findViewById(R.id.lay_notification);
+            tvTitle= itemView.findViewById(R.id.tv_title);
+            tvDetel= itemView.findViewById(R.id.tv_Detels);
+            layNotification= itemView.findViewById(R.id.lay_notification);
         }
     }
 }

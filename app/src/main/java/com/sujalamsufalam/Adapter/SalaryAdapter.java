@@ -44,8 +44,7 @@ public class SalaryAdapter extends RecyclerView.Adapter<SalaryAdapter.ViewHolder
                 .inflate(R.layout.each_salary, parent, false);
 
         // create ViewHolder
-        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
-        return viewHolder;
+        return new ViewHolder(itemLayoutView);
     }
 
 
@@ -62,18 +61,15 @@ public class SalaryAdapter extends RecyclerView.Adapter<SalaryAdapter.ViewHolder
         public ViewHolder(View itemLayoutView) {
 
             super(itemLayoutView);
-            eachCard = (CardView) itemLayoutView.findViewById(R.id.eachCard);
-            tvSalaryAmountName = (TextView) itemLayoutView.findViewById(R.id.tvSalaryAmountName);
-            tvSalaryDateName = (TextView) itemLayoutView.findViewById(R.id.tvSalaryDateName);
-            tvSalaryMonthName = (TextView) itemLayoutView.findViewById(R.id.tvSalaryMonthName);
-            eachCard.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent;
-                    intent = new Intent(mContext, SalaryDetailActivity.class);
-                    intent.putExtra(Constants.SALARY, mDataList.get(getAdapterPosition()));
-                    mContext.startActivity(intent);
-                }
+            eachCard = itemLayoutView.findViewById(R.id.eachCard);
+            tvSalaryAmountName = itemLayoutView.findViewById(R.id.tvSalaryAmountName);
+            tvSalaryDateName = itemLayoutView.findViewById(R.id.tvSalaryDateName);
+            tvSalaryMonthName = itemLayoutView.findViewById(R.id.tvSalaryMonthName);
+            eachCard.setOnClickListener(view -> {
+                Intent intent;
+                intent = new Intent(mContext, SalaryDetailActivity.class);
+                intent.putExtra(Constants.SALARY, mDataList.get(getAdapterPosition()));
+                mContext.startActivity(intent);
             });
         }
     }

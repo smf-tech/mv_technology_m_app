@@ -4,7 +4,6 @@ package com.sujalamsufalam.Adapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
@@ -68,7 +67,7 @@ public class ExpandableAssetListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.each_asset, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.each_asset, null) : null;
         }
 
         CardView cardView;
@@ -78,64 +77,55 @@ public class ExpandableAssetListAdapter extends BaseExpandableListAdapter {
         ImageView imgEdit, imgDelete;
 
 
-        imgEdit = (ImageView) convertView.findViewById(R.id.imgEdit);
-        imgDelete = (ImageView) convertView.findViewById(R.id.imgDelete);
-        cardView = (CardView) convertView.findViewById(R.id.cardView);
-        txt_asset_name = (TextView) convertView.findViewById(R.id.txt_asset_name);
-        tvProjectDateTitle = (TextView) convertView.findViewById(R.id.tvProjectDateTitle);
-        txt_asset_id = (TextView) convertView.findViewById(R.id.txt_asset_id);
-        txt_asset_issue_date = (TextView) convertView.findViewById(R.id.txt_asset_issue_date);
+        imgEdit = convertView.findViewById(R.id.imgEdit);
+        imgDelete = convertView.findViewById(R.id.imgDelete);
+        cardView = convertView.findViewById(R.id.cardView);
+        txt_asset_name = convertView.findViewById(R.id.txt_asset_name);
+        tvProjectDateTitle = convertView.findViewById(R.id.tvProjectDateTitle);
+        txt_asset_id = convertView.findViewById(R.id.txt_asset_id);
+        txt_asset_issue_date = convertView.findViewById(R.id.txt_asset_issue_date);
         view1 = convertView.findViewById(R.id.view1);
-        imgLayout = (LinearLayout) convertView.findViewById(R.id.imgLayout);
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (asset.getAllocationStatus().equalsIgnoreCase("Requested")
-                            && User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
-                        Intent intent = new Intent(_context, AssetAllocation_Activity.class);
-                        intent.putExtra("Assets", asset);
-                        _context.startActivity(intent);
-                }else if (asset.getAllocationStatus().equalsIgnoreCase("Allocated")) {
+        imgLayout = convertView.findViewById(R.id.imgLayout);
+        cardView.setOnClickListener(view -> {
+            if (asset.getAllocationStatus().equalsIgnoreCase("Requested")
+                        && User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
+                    Intent intent = new Intent(_context, AssetAllocation_Activity.class);
+                    intent.putExtra("Assets", asset);
+                    _context.startActivity(intent);
+            }else if (asset.getAllocationStatus().equalsIgnoreCase("Allocated")) {
+                Intent intent = new Intent(_context, AssetApprovalActivity.class);
+                intent.putExtra("Assets", asset);
+                _context.startActivity(intent);
+            } else if (asset.getAllocationStatus().equalsIgnoreCase("Accepted")) {
+                if(User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")){
                     Intent intent = new Intent(_context, AssetApprovalActivity.class);
                     intent.putExtra("Assets", asset);
                     _context.startActivity(intent);
-                } else if (asset.getAllocationStatus().equalsIgnoreCase("Accepted")) {
-                    if(User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")){
-                        Intent intent = new Intent(_context, AssetApprovalActivity.class);
-                        intent.putExtra("Assets", asset);
-                        _context.startActivity(intent);
-                    }else {
-                        Intent intent = new Intent(_context, AssetAllocation_Activity.class);
-                        intent.putExtra("Assets", asset);
-                        _context.startActivity(intent);
-                    }
-                    }
-                else if (asset.getAllocationStatus().equalsIgnoreCase("Rejected")) {
-                    Intent intent = new Intent(_context, AssetApprovalActivity.class);
+                }else {
+                    Intent intent = new Intent(_context, AssetAllocation_Activity.class);
                     intent.putExtra("Assets", asset);
                     _context.startActivity(intent);
                 }
-                else if (asset.getAllocationStatus().equalsIgnoreCase("Released")) {
-                    Intent intent = new Intent(_context, AssetApprovalActivity.class);
-                    intent.putExtra("Assets", asset);
-                    _context.startActivity(intent);
                 }
+            else if (asset.getAllocationStatus().equalsIgnoreCase("Rejected")) {
+                Intent intent = new Intent(_context, AssetApprovalActivity.class);
+                intent.putExtra("Assets", asset);
+                _context.startActivity(intent);
+            }
+            else if (asset.getAllocationStatus().equalsIgnoreCase("Released")) {
+                Intent intent = new Intent(_context, AssetApprovalActivity.class);
+                intent.putExtra("Assets", asset);
+                _context.startActivity(intent);
             }
         });
-        imgDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (_activity != null)
-                    showLogoutPopUp(asset);
-            }
+        imgDelete.setOnClickListener(view -> {
+            if (_activity != null)
+                showLogoutPopUp(asset);
         });
-        imgEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (_activity != null)
-                    _activity.editExpense(asset);
+        imgEdit.setOnClickListener(view -> {
+            if (_activity != null)
+                _activity.editExpense(asset);
 
-            }
         });
 
         if (asset.getAssetModel().equalsIgnoreCase("null")) {
@@ -183,20 +173,14 @@ public class ExpandableAssetListAdapter extends BaseExpandableListAdapter {
         alertDialog.setIcon(R.drawable.ic_launcher);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(_context.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                // Write your code here to execute after dialog closed
-              /*  listOfWrongQuestions.add(mPosition);
-                prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
-            }
+        alertDialog.setButton2(_context.getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            // Write your code here to execute after dialog closed
+          /*  listOfWrongQuestions.add(mPosition);
+            prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
         });
         // Setting OK Button
-        alertDialog.setButton(_context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                _activity.deleteExpense(asset);
-            }
-        });
+        alertDialog.setButton(_context.getString(android.R.string.ok), (dialog, which) -> _activity.deleteExpense(asset));
 
         // Showing Alert Message
         alertDialog.show();
@@ -234,16 +218,16 @@ public class ExpandableAssetListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
         }
-        ImageView imgGroup = (ImageView) convertView.findViewById(R.id.imgGroup);
+        ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
 
         if (isExpanded) {
             imgGroup.setImageResource(R.drawable.downarrow);
         } else {
             imgGroup.setImageResource(R.drawable.rightarrow);
         }
-        TextView txtName = (TextView) convertView
+        TextView txtName = convertView
                 .findViewById(R.id.txtName);
         // date.setTypeface(null, Typeface.BOLD);
         txtName.setText(headerTitle);

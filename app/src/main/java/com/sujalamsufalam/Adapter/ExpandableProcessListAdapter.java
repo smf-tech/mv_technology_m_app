@@ -58,35 +58,32 @@ public class ExpandableProcessListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.each_programe, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.each_programe, null) : null;
         }
 
 
         TextView txtCommunityName, txt_targeted_date, txt_targeted_count, expectedCount, submittedCount;
         LinearLayout layout;
 
-        txtCommunityName = (TextView) convertView.findViewById(R.id.txtTemplateName);
-        txt_targeted_date = (TextView) convertView.findViewById(R.id.txt_traget_date);
-        expectedCount = (TextView) convertView.findViewById(R.id.txt_expected_count);
-        submittedCount = (TextView) convertView.findViewById(R.id.txt_submmited_date);
-        txt_targeted_count = (TextView) convertView.findViewById(R.id.txt_traget_count);
-        layout = (LinearLayout) convertView.findViewById(R.id.layoutTemplate);
-        layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        txtCommunityName = convertView.findViewById(R.id.txtTemplateName);
+        txt_targeted_date = convertView.findViewById(R.id.txt_traget_date);
+        expectedCount = convertView.findViewById(R.id.txt_expected_count);
+        submittedCount = convertView.findViewById(R.id.txt_submmited_date);
+        txt_targeted_count = convertView.findViewById(R.id.txt_traget_count);
+        layout = convertView.findViewById(R.id.layoutTemplate);
+        layout.setOnClickListener(view -> {
 
-                preferenceHelper.insertBoolean(Constants.IS_EDITABLE, template.getIs_Editable__c());
-                preferenceHelper.insertBoolean(Constants.IS_LOCATION, template.getLocation());
-                preferenceHelper.insertBoolean(Constants.IS_MULTIPLE, template.getIs_Multiple_Entry_Allowed__c());
-                preferenceHelper.insertString(Constants.STATE_LOCATION_LEVEL, template.getLocationLevel());
+            preferenceHelper.insertBoolean(Constants.IS_EDITABLE, template.getIs_Editable__c());
+            preferenceHelper.insertBoolean(Constants.IS_LOCATION, template.getLocation());
+            preferenceHelper.insertBoolean(Constants.IS_MULTIPLE, template.getIs_Multiple_Entry_Allowed__c());
+            preferenceHelper.insertString(Constants.STATE_LOCATION_LEVEL, template.getLocationLevel());
 
-                Intent openClass = new Intent(_context, ProcessListActivity.class);
-                openClass.putExtra(Constants.PROCESS_ID, template.getId());
-                openClass.putExtra(Constants.PROCESS_NAME, template.getName());
-                _context.startActivity(openClass);
-                _context.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            Intent openClass = new Intent(_context, ProcessListActivity.class);
+            openClass.putExtra(Constants.PROCESS_ID, template.getId());
+            openClass.putExtra(Constants.PROCESS_NAME, template.getName());
+            _context.startActivity(openClass);
+            _context.overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
-            }
         });
 
 
@@ -134,16 +131,16 @@ public class ExpandableProcessListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
         }
-        ImageView imgGroup = (ImageView) convertView.findViewById(R.id.imgGroup);
+        ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
 
         if (isExpanded) {
             imgGroup.setImageResource(R.drawable.downarrow);
         } else {
             imgGroup.setImageResource(R.drawable.rightarrow);
         }
-        TextView txtName = (TextView) convertView
+        TextView txtName = convertView
                 .findViewById(R.id.txtName);
         // date.setTypeface(null, Typeface.BOLD);
         txtName.setText(headerTitle);

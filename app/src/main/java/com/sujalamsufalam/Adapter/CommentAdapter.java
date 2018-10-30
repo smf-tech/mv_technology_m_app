@@ -2,7 +2,6 @@ package com.sujalamsufalam.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
@@ -38,7 +37,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     private CommentActivity mActivity;
     private ArrayList<Comment> mDataList;
     private PreferenceHelper preferenceHelper;
-    public PopupMenu popup;
+    private PopupMenu popup;
     private int mPosition;
 
     public CommentAdapter(Context context, ArrayList<Comment> chatList) {
@@ -68,8 +67,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
                 .inflate(R.layout.each_comment, parent, false);
 
         // create ViewHolder
-        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
-        return viewHolder;
+        return new ViewHolder(itemLayoutView);
     }
 
     @Override
@@ -93,34 +91,29 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             holder.imgMore.setVisibility(View.VISIBLE);
         else
             holder.imgMore.setVisibility(View.GONE);
-        holder.imgMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                popup = new PopupMenu(mContext, holder.imgMore);
-                //Inflating the Popup using xml file
-                popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
-                //   popup.getMenu().getItem(R.id.spam).setVisible(true);
-                MenuItem spam = (MenuItem) popup.getMenu().findItem(R.id.spam);
-                MenuItem edit = (MenuItem) popup.getMenu().findItem(R.id.edit);
-                MenuItem delete = (MenuItem) popup.getMenu().findItem(R.id.delete);
-                MenuItem status = (MenuItem) popup.getMenu().findItem(R.id.status);
-                spam.setVisible(false);
-                status.setVisible(false);
+        holder.imgMore.setOnClickListener(view -> {
+            popup = new PopupMenu(mContext, holder.imgMore);
+            //Inflating the Popup using xml file
+            popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
+            //   popup.getMenu().getItem(R.id.spam).setVisible(true);
+            MenuItem spam = popup.getMenu().findItem(R.id.spam);
+            MenuItem edit = popup.getMenu().findItem(R.id.edit);
+            MenuItem delete = popup.getMenu().findItem(R.id.delete);
+            MenuItem status = popup.getMenu().findItem(R.id.status);
+            spam.setVisible(false);
+            status.setVisible(false);
 
-                //registering popup with OnMenuItemClickListener
-                popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-                    public boolean onMenuItemClick(MenuItem item) {
-                        if (item.getTitle().toString().equalsIgnoreCase("Delete")) {
-                            showDeleteDialog(position);
+            //registering popup with OnMenuItemClickListener
+            popup.setOnMenuItemClickListener(item -> {
+                if (item.getTitle().toString().equalsIgnoreCase("Delete")) {
+                    showDeleteDialog(position);
 
-                        } else if (item.getTitle().toString().equalsIgnoreCase("Edit")) {
-                            mActivity.editComment(mDataList.get(position).getId(),mDataList.get(position).getComment());
-                        }
-                        return true;
-                    }
-                });
-                popup.show();
-            }
+                } else if (item.getTitle().toString().equalsIgnoreCase("Edit")) {
+                    mActivity.editComment(mDataList.get(position).getId(),mDataList.get(position).getComment());
+                }
+                return true;
+            });
+            popup.show();
         });
 
     }
@@ -138,24 +131,16 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         alertDialog.setIcon(R.drawable.ic_launcher);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(mContext.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-            }
-        });
+        alertDialog.setButton2(mContext.getString(R.string.cancel), (dialog, which) -> alertDialog.dismiss());
         // Setting OK Button
-        alertDialog.setButton(mContext.getString(R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                mActivity.deleteComment(mDataList.get(position).getId());
-            }
-        });
+        alertDialog.setButton(mContext.getString(R.string.ok), (dialog, which) -> mActivity.deleteComment(mDataList.get(position).getId()));
 
         // Showing Alert Message
         alertDialog.show();
     }
 
 
-    GlideUrl getUrlWithHeaders(String url) {
+    private GlideUrl getUrlWithHeaders(String url) {
 //
         return new GlideUrl(url, new LazyHeaders.Builder()
                 .addHeader("Authorization", "OAuth " + preferenceHelper.getString(PreferenceHelper.AccessToken))
@@ -176,11 +161,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
-            txt_username = (TextView) itemLayoutView.findViewById(R.id.txt_username);
-            txt_comment = (TextView) itemLayoutView.findViewById(R.id.txt_comment);
-            txt_time = (TextView) itemLayoutView.findViewById(R.id.txt_time);
-            userImage = (ImageView) itemLayoutView.findViewById(R.id.userImage);
-            imgMore = (ImageView) itemLayoutView.findViewById(R.id.imgMore);
+            txt_username = itemLayoutView.findViewById(R.id.txt_username);
+            txt_comment = itemLayoutView.findViewById(R.id.txt_comment);
+            txt_time = itemLayoutView.findViewById(R.id.txt_time);
+            userImage = itemLayoutView.findViewById(R.id.userImage);
+            imgMore = itemLayoutView.findViewById(R.id.imgMore);
         }
 
 

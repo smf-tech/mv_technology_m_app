@@ -1,9 +1,5 @@
 package com.sujalamsufalam.Adapter;
 
-/**
- * Created by Rohit Gujar on 13-09-2017.
- */
-
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -34,17 +30,12 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.MyViewHolder
 
         public MyViewHolder(View view) {
             super(view);
-            txtCommunityName = (TextView) view.findViewById(R.id.txtCommunityName);
+            txtCommunityName = view.findViewById(R.id.txtCommunityName);
             txtCommunityName.setSelected(true);
-            imgNextArrow = (ImageView) view.findViewById(R.id.imgNextArrow);
-            txtCount = (TextView) view.findViewById(R.id.txtCount);
-            layout = (LinearLayout) view.findViewById(R.id.layoutGroup);
-            layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    fragment.onLayoutGroupClick(getAdapterPosition());
-                }
-            });
+            imgNextArrow = view.findViewById(R.id.imgNextArrow);
+            txtCount = view.findViewById(R.id.txtCount);
+            layout = view.findViewById(R.id.layoutGroup);
+            layout.setOnClickListener(view1 -> fragment.onLayoutGroupClick(getAdapterPosition()));
         }
     }
 

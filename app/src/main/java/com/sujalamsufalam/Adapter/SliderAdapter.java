@@ -1,9 +1,5 @@
 package com.sujalamsufalam.Adapter;
 
-/**
- * Created by Rohit Gujar on 18-10-2017.
- */
-
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -42,7 +38,7 @@ public class SliderAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup view, int position) {
         View myImageLayout = inflater.inflate(R.layout.slide, view, false);
-        ImageView myImage = (ImageView) myImageLayout
+        ImageView myImage = myImageLayout
                 .findViewById(R.id.image);
       //  myImage.setImageResource(images.get(position));
         Glide.with(context)

@@ -44,86 +44,82 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
 
         public MyViewHolder(View view) {
             super(view);
-            txtCommunityName = (TextView) view.findViewById(R.id.txtTemplateName);
-            layout = (LinearLayout) view.findViewById(R.id.layoutTemplate);
-            textViewColor = (TextView) view.findViewById(R.id.temp_color);
-            layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            txtCommunityName = view.findViewById(R.id.txtTemplateName);
+            layout = view.findViewById(R.id.layoutTemplate);
+            textViewColor = view.findViewById(R.id.temp_color);
+            layout.setOnClickListener(view1 -> {
 
 
-                    if (mContext instanceof TeamManagementFragment) {
-                        if (getAdapterPosition() == 0) {
-                            //User Approval
-                            Intent openClass = new Intent(mContext, TeamManagementUserProfileListActivity.class);
-                            openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
-                            openClass.putExtra(Constants.APPROVAL_TYPE, Constants.USER_APPROVAL);
-                            //  openClass.putExtra(Constants.PROCESS_ID, taskList);
-                            // openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
-                            //  openClass.putExtra("stock_list", resultList.get(indicatortaskList()).get(0));
-                            mContext.startActivity(openClass);
-                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        } else if (getAdapterPosition() == 1) {
-                            //redirect to user Approval Process List
-                            Intent openClass = new Intent(mContext, ProcessApprovalActivity.class);
-                            openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
-                            mContext.startActivity(openClass);
-                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        } else if (getAdapterPosition() == 2) {
-                            //redirect to user Approval Process List
-                            Intent intent;
-                            intent = new Intent(mContext, VoucherListActivity.class);
-                            Constants.AccountTeamCode="TeamManagement";//to identify the section
-                            mContext.startActivity(intent);
+                if (mContext instanceof TeamManagementFragment) {
+                    if (getAdapterPosition() == 0) {
+                        //User Approval
+                        Intent openClass = new Intent(mContext, TeamManagementUserProfileListActivity.class);
+                        openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
+                        openClass.putExtra(Constants.APPROVAL_TYPE, Constants.USER_APPROVAL);
+                        //  openClass.putExtra(Constants.PROCESS_ID, taskList);
+                        // openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
+                        //  openClass.putExtra("stock_list", resultList.get(indicatortaskList()).get(0));
+                        mContext.startActivity(openClass);
+                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    } else if (getAdapterPosition() == 1) {
+                        //redirect to user Approval Process List
+                        Intent openClass = new Intent(mContext, ProcessApprovalActivity.class);
+                        openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
+                        mContext.startActivity(openClass);
+                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    } else if (getAdapterPosition() == 2) {
+                        //redirect to user Approval Process List
+                        Intent intent;
+                        intent = new Intent(mContext, VoucherListActivity.class);
+                        Constants.AccountTeamCode="TeamManagement";//to identify the section
+                        mContext.startActivity(intent);
 //                            Intent openClass = new Intent(mContext, UserExpenseListActivity.class);
 //                            mContext.startActivity(openClass);
 //                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        } /*else if (getAdapterPosition() == 3) {
-                            //redirect to user Approval Process List
-                            Intent openClass = new Intent(mContext, UserAdavanceListActivity.class);
-                            mContext.startActivity(openClass);
-                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        }*/
-                        else if (getAdapterPosition() == 3) {
-                            //redirect to user Approval Process List
-                            Intent openClass = new Intent(mContext, LeaveApprovalActivity.class);
-                            mContext.startActivity(openClass);
-                            preferenceHelper.insertString(Constants.Leave,Constants.Leave_Approve);
-                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        }
-                        //adding Attendance approval
-                        else if (getAdapterPosition() == 4) {
-                            //redirect to user Approval Process List
-                        //    Intent openClass = new Intent(mContext, AttendanceApprovalActivity.class);
-                            Intent openClass = new Intent(mContext, AttendanceApproval2Activity.class);
-                            mContext.startActivity(openClass);
-                            preferenceHelper.insertString(Constants.Leave,Constants.Leave_Approve);
-                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        }
-                        //adding maps
-                        else if (getAdapterPosition() == 5) {// shows the tc on map
-                            Intent intent=new Intent(mContext,MapsActivity.class);
-                            mContext.startActivity(intent);
-                        }
-                    } else if (mContext instanceof TeamManagementUserProfileListActivity) {
-                        if (TeamManagementUserProfileListActivity.approvalType.equals(Constants.USER_APPROVAL)) {
-                            Intent openClass = new Intent(mContext, UserApproveDetail.class);
-
-                            openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
-                            mContext.startActivity(openClass);
-                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        } else if (TeamManagementUserProfileListActivity.approvalType.equals(Constants.PROCESS_APPROVAL)) {
-                            Intent openClass = new Intent(mContext, ProcessListApproval.class);
-                            openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
-                            openClass.putExtra(Constants.PROCESS_ID, TeamManagementUserProfileListActivity.id);
-                            openClass.putExtra(Constants.PROCESS_NAME, TeamManagementUserProfileListActivity.processTitle);
-                            mContext.startActivity(openClass);
-                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        }
-
+                    } /*else if (getAdapterPosition() == 3) {
+                        //redirect to user Approval Process List
+                        Intent openClass = new Intent(mContext, UserAdavanceListActivity.class);
+                        mContext.startActivity(openClass);
+                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    }*/
+                    else if (getAdapterPosition() == 3) {
+                        //redirect to user Approval Process List
+                        Intent openClass = new Intent(mContext, LeaveApprovalActivity.class);
+                        mContext.startActivity(openClass);
+                        preferenceHelper.insertString(Constants.Leave,Constants.Leave_Approve);
+                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
                     }
-                }
+                    //adding Attendance approval
+                    else if (getAdapterPosition() == 4) {
+                        //redirect to user Approval Process List
+                    //    Intent openClass = new Intent(mContext, AttendanceApprovalActivity.class);
+                        Intent openClass = new Intent(mContext, AttendanceApproval2Activity.class);
+                        mContext.startActivity(openClass);
+                        preferenceHelper.insertString(Constants.Leave,Constants.Leave_Approve);
+                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    }
+                    //adding maps
+                    else if (getAdapterPosition() == 5) {// shows the tc on map
+                        Intent intent=new Intent(mContext,MapsActivity.class);
+                        mContext.startActivity(intent);
+                    }
+                } else if (mContext instanceof TeamManagementUserProfileListActivity) {
+                    if (TeamManagementUserProfileListActivity.approvalType.equals(Constants.USER_APPROVAL)) {
+                        Intent openClass = new Intent(mContext, UserApproveDetail.class);
 
+                        openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
+                        mContext.startActivity(openClass);
+                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    } else if (TeamManagementUserProfileListActivity.approvalType.equals(Constants.PROCESS_APPROVAL)) {
+                        Intent openClass = new Intent(mContext, ProcessListApproval.class);
+                        openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
+                        openClass.putExtra(Constants.PROCESS_ID, TeamManagementUserProfileListActivity.id);
+                        openClass.putExtra(Constants.PROCESS_NAME, TeamManagementUserProfileListActivity.processTitle);
+                        mContext.startActivity(openClass);
+                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    }
+
+                }
             });
         }
     }
@@ -153,15 +149,19 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
             if (TeamManagementUserProfileListActivity.approvalType.equals(Constants.USER_APPROVAL)) {
 
                 if (template.getStatus() != null) {
-                    if (template.getStatus().equals("true")) {
-                        holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
-                        holder.textViewColor.setVisibility(View.VISIBLE);
-                    } else if (template.getStatus().equals("false")) {
-                        holder.textViewColor.setVisibility(View.VISIBLE);
-                        holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.purple));
-                    } else if (template.getStatus().equals("Rejected")) {
-                        holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.red));
-                        holder.textViewColor.setVisibility(View.VISIBLE);
+                    switch (template.getStatus()) {
+                        case "true":
+                            holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
+                            holder.textViewColor.setVisibility(View.VISIBLE);
+                            break;
+                        case "false":
+                            holder.textViewColor.setVisibility(View.VISIBLE);
+                            holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.purple));
+                            break;
+                        case "Rejected":
+                            holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.red));
+                            holder.textViewColor.setVisibility(View.VISIBLE);
+                            break;
                     }
                     //  else if (template.getStatus().equals("false"))
                 }

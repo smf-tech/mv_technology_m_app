@@ -43,14 +43,13 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
                 .inflate(R.layout.each_child_leave_application, parent, false);
 
         // create ViewHolder
-        AttendanceAdapter.ViewHolder viewHolder = new AttendanceAdapter.ViewHolder(itemLayoutView);
-        return viewHolder;
+        return new ViewHolder(itemLayoutView);
     }
 
     @Override
     public void onBindViewHolder(AttendanceAdapter.ViewHolder holder, int position) {
 
-        final AttendanceApproval attendance_approval = (AttendanceApproval) mDataList.get(position);
+        final AttendanceApproval attendance_approval = mDataList.get(position);
         if(attendance_approval.getUser_Name__c()!=null)
             holder.txtName.setText(attendance_approval.getUser_Name__c()+"("+attendance_approval.getAttendanceDateC()+")");
         else
@@ -68,17 +67,14 @@ public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.Vi
         RelativeLayout layoutMain;
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
-            layoutMain = (RelativeLayout) itemLayoutView.findViewById(R.id.layoutMain);
-            txtName = (TextView) itemLayoutView.findViewById(R.id.txtName);
+            layoutMain = itemLayoutView.findViewById(R.id.layoutMain);
+            txtName = itemLayoutView.findViewById(R.id.txtName);
 
-            layoutMain.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            layoutMain.setOnClickListener((View v)-> {
 
                     Intent intent=new Intent(mContext, AttendanceApproveDetailActivity.class);
                     intent.putExtra(Constants.Attendance ,mDataList.get(getAdapterPosition()));
                     mContext.startActivity(intent);
-                }
             });
         }
 

@@ -2,14 +2,13 @@ package com.sujalamsufalam.Adapter;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sujalamsufalam.Activity.CalenderFliterActivity;
@@ -40,7 +39,7 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
     private List<CalenderEvent> calenderlsList;
     private Activity mContext;
     private PreferenceHelper preferenceHelper;
-    boolean isAllPlans;
+    private boolean isAllPlans;
     private int position;
 
     public TraingCalenderAadapter(Activity context, List<CalenderEvent> moviesList,boolean isAllPlans) {
@@ -60,33 +59,27 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
             super(view);
 /*            state = (TextView) view.findViewById(R.id.txtTemplateName);
             district = (TextView) view.findViewById(R.id.txtTemplateName);*/
-            tvTotalExpenseName = (TextView) view.findViewById(R.id.tvTotalExpenseName);
-            lnr_content = (LinearLayout) view.findViewById(R.id.lnr_content);
-            tvProjectName = (TextView) view.findViewById(R.id.tvProjectName);
-            tvDateName = (TextView) view.findViewById(R.id.tvDateName);
-            tvNoOfPeopleName = (TextView) view.findViewById(R.id.tvNoOfPeopleName);
+            tvTotalExpenseName = view.findViewById(R.id.tvTotalExpenseName);
+            lnr_content = view.findViewById(R.id.lnr_content);
+            tvProjectName = view.findViewById(R.id.tvProjectName);
+            tvDateName = view.findViewById(R.id.tvDateName);
+            tvNoOfPeopleName = view.findViewById(R.id.tvNoOfPeopleName);
 
-            tvStatusName = (TextView) view.findViewById(R.id.tvStatusName);
+            tvStatusName = view.findViewById(R.id.tvStatusName);
 
-            imgDelete = (ImageView) view.findViewById(R.id.imgDelete);
-            imgDelete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    position = getAdapterPosition();
-                    showDeleteDialog();
-                }
+            imgDelete = view.findViewById(R.id.imgDelete);
+            imgDelete.setOnClickListener(v -> {
+                position = getAdapterPosition();
+                showDeleteDialog();
             });
-            lnr_content.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (calenderlsList.get(position).getMV_User1__c() != null) {
-                        CalenderEvent cc= calenderlsList.get(getAdapterPosition());
-                    //    if (calenderlsList.get(getAdapterPosition()).getMV_User1__c().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
-                            Intent intent = new Intent(mContext, CalenderFliterActivity.class);
-                            intent.putExtra(Constants.My_Calendar, calenderlsList.get(getAdapterPosition()));
-                            mContext.startActivity(intent);
-                     //   }
-                    }
+            lnr_content.setOnClickListener(v -> {
+                if (calenderlsList.get(position).getMV_User1__c() != null) {
+                    CalenderEvent cc= calenderlsList.get(getAdapterPosition());
+                //    if (calenderlsList.get(getAdapterPosition()).getMV_User1__c().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
+                        Intent intent = new Intent(mContext, CalenderFliterActivity.class);
+                        intent.putExtra(Constants.My_Calendar, calenderlsList.get(getAdapterPosition()));
+                        mContext.startActivity(intent);
+                 //   }
                 }
             });
 
@@ -106,7 +99,7 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
 
-        CalenderEvent piaChartModel = (CalenderEvent) calenderlsList.get(position);
+        CalenderEvent piaChartModel = calenderlsList.get(position);
         holder.tvProjectName.setText(piaChartModel.getTitle());
         holder.tvDateName.setText(piaChartModel.getDescription());
         holder.tvNoOfPeopleName.setText(piaChartModel.getProceesSubmittedCount() + "/" + piaChartModel.getProceesTotalCount());
@@ -149,19 +142,13 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
         alertDialog.setIcon(R.drawable.ic_launcher);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(mContext.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-            }
-        });
+        alertDialog.setButton2(mContext.getString(R.string.cancel), (dialog, which) -> alertDialog.dismiss());
         // Setting OK Button
-        alertDialog.setButton(mContext.getString(R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
+        alertDialog.setButton(mContext.getString(R.string.ok), (dialog, which) -> {
 
-                if (calenderlsList.get(position) instanceof CalenderEvent)
-                    deleteEvent(((CalenderEvent) calenderlsList.get(position)));
+            if (calenderlsList.get(position) != null)
+                deleteEvent(calenderlsList.get(position));
 
-            }
         });
 
         // Showing Alert Message
@@ -207,7 +194,7 @@ public class TraingCalenderAadapter extends RecyclerView.Adapter<TraingCalenderA
     }
 
 
-    public void removeAt(int position, CalenderEvent calenderEvent) {
+    private void removeAt(int position, CalenderEvent calenderEvent) {
         calenderlsList.remove(position);
         notifyItemRemoved(position);
         notifyItemRangeChanged(position, calenderlsList.size());

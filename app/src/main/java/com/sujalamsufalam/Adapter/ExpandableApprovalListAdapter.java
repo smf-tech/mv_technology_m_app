@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.view.LayoutInflater;
@@ -69,36 +68,28 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.each_child_leave_application, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.each_child_leave_application, null) : null;
         }
 
         ImageView imgDownload, imgshare;
         TextView txtCount, txtName;
         RelativeLayout layoutMain;
 
-        layoutMain = (RelativeLayout) convertView.findViewById(R.id.layoutMain);
+        layoutMain = convertView.findViewById(R.id.layoutMain);
 
-        txtCount = (TextView) convertView.findViewById(R.id.txtCount);
+        txtCount = convertView.findViewById(R.id.txtCount);
 
-        layoutMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    Intent intent=new Intent(_context, LeaveDetailActivity.class);
-                    intent.putExtra(Constants.Leave ,leavesModel);
-                    _context.startActivity(intent);
-            }
+        layoutMain.setOnClickListener(v -> {
+                Intent intent=new Intent(_context, LeaveDetailActivity.class);
+                intent.putExtra(Constants.Leave ,leavesModel);
+                _context.startActivity(intent);
         });
-        imgDownload = (ImageView) convertView.findViewById(R.id.imgDownload);
+        imgDownload = convertView.findViewById(R.id.imgDownload);
      if(groupPosition==0&&!preferenceHelper.getString(Constants.Leave).equals(Constants.Leave_Approve))
      {
 
          imgDownload.setVisibility(View.VISIBLE);
-         imgDownload.setOnClickListener(new View.OnClickListener() {
-             @Override
-             public void onClick(View view) {
-                showDeleteDialog(leavesModel.getId());
-             }
-         });
+         imgDownload.setOnClickListener(view -> showDeleteDialog(leavesModel.getId()));
      }
      else
      {
@@ -107,10 +98,10 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
 
 
 
-        imgshare = (ImageView) convertView.findViewById(R.id.imgshare);
+     //   imgshare = convertView.findViewById(R.id.imgshare);
 
 
-        txtName = (TextView) convertView.findViewById(R.id.txtName);
+        txtName = convertView.findViewById(R.id.txtName);
 
         txtCount.setVisibility(View.GONE);
         if(leavesModel.getRequested_User_Name__c()!=null)
@@ -154,16 +145,21 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
         }
-        ImageView imgGroup = (ImageView) convertView.findViewById(R.id.imgGroup);
+        ImageView imgGroup = null;
+        if (convertView != null) {
+            imgGroup = convertView.findViewById(R.id.imgGroup);
+        }
+        if (imgGroup != null) {
+            if (isExpanded) {
+                imgGroup.setImageResource(R.drawable.downarrow);
 
-        if (isExpanded) {
-            imgGroup.setImageResource(R.drawable.downarrow);
-        } else {
-            imgGroup.setImageResource(R.drawable.rightarrow);
+            } else {
+                imgGroup.setImageResource(R.drawable.rightarrow);
+            }
         }
-        TextView txtName = (TextView) convertView
+        TextView txtName = convertView
                 .findViewById(R.id.txtName);
        // date.setTypeface(null, Typeface.BOLD);
         txtName.setText(headerTitle);
@@ -194,20 +190,9 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
         alertDialog.setIcon(R.drawable.ic_launcher);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(_context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-            }
-        });
+        alertDialog.setButton2(_context.getString(R.string.cancel), (dialog, which) -> alertDialog.dismiss());
         // Setting OK Button
-        alertDialog.setButton(_context.getString(R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-
-
-                    _context.deleteLeave(id);
-
-            }
-        });
+        alertDialog.setButton(_context.getString(R.string.ok), (dialog, which) -> _context.deleteLeave(id));
 
         // Showing Alert Message
         alertDialog.show();

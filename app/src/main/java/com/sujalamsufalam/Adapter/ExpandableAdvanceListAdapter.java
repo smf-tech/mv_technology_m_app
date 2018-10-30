@@ -4,7 +4,6 @@ package com.sujalamsufalam.Adapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,9 +28,10 @@ import java.util.List;
  */
 
 public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
-    private PreferenceHelper preferenceHelper;
+
     private AdavanceListActivity _context;
     private List<String> _listDataHeader; // header titles
+
     // child data in format of header title, child title
     private HashMap<String, ArrayList<Adavance>> _listDataChild;
     private AdavanceListActivity _activity;
@@ -42,7 +42,6 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
         this._activity = (AdavanceListActivity) context;
-        preferenceHelper = new PreferenceHelper(context);
     }
 
     @Override
@@ -65,75 +64,75 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.each_adavance, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.each_adavance, null) : null;
         }
-        TextView tvProjectName, tvDateName, tvAmountName,tvAmount;
+
+        TextView tvProjectName, tvDateName, tvAmountName, tvAmount;
         ImageView imgEdit, imgDelete;
         RelativeLayout textLayout;
         View view;
 
-        imgEdit = (ImageView) convertView.findViewById(R.id.imgEdit);
-        imgDelete = (ImageView) convertView.findViewById(R.id.imgDelete);
-        view = convertView.findViewById(R.id.view1);
-        tvProjectName = (TextView) convertView.findViewById(R.id.tvProjectName);
-        tvDateName = (TextView) convertView.findViewById(R.id.tvDateName);
-        tvAmountName = (TextView) convertView.findViewById(R.id.tvAmountName);
-        tvAmount = (TextView) convertView.findViewById(R.id.tvAmount);
-        textLayout = (RelativeLayout) convertView.findViewById(R.id.textLayout);
+        if (convertView != null) {
+            imgEdit = convertView.findViewById(R.id.imgEdit);
+            imgDelete = convertView.findViewById(R.id.imgDelete);
+            view = convertView.findViewById(R.id.view1);
+            tvProjectName = convertView.findViewById(R.id.tvProjectName);
+            tvDateName = convertView.findViewById(R.id.tvDateName);
+            tvAmountName = convertView.findViewById(R.id.tvAmountName);
+            tvAmount = convertView.findViewById(R.id.tvAmount);
+            textLayout = convertView.findViewById(R.id.textLayout);
 
-        Log.e("Group", String.valueOf(groupPosition));
+            Log.e("Group", String.valueOf(groupPosition));
 
-        if(groupPosition==1|| groupPosition==2){
-            imgEdit.setVisibility(View.GONE);
-            imgDelete.setVisibility(View.GONE);
-        }
+            if (groupPosition == 1 || groupPosition == 2) {
+                imgEdit.setVisibility(View.GONE);
+                imgDelete.setVisibility(View.GONE);
+            }
 
-        // hiding views for team mgmt section
-        if(Constants.AccountTeamCode.equals("TeamManagement")) {
-            imgEdit.setVisibility(View.GONE);
-            imgDelete.setVisibility(View.GONE);
-        }
+            // hiding views for team mgmt section
+            if (Constants.AccountTeamCode.equals("TeamManagement")) {
+                imgEdit.setVisibility(View.GONE);
+                imgDelete.setVisibility(View.GONE);
+            }
 
-            textLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (_context instanceof AdavanceListActivity)
-                        _activity.editAdavance(adavance);
+            textLayout.setOnClickListener(view1 -> {
+                if (_context instanceof AdavanceListActivity) {
+                    _activity.editAdavance(adavance);
                 }
             });
 
-        imgEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (_context instanceof AdavanceListActivity)
+
+            imgEdit.setOnClickListener(view12 -> {
+                if (_context instanceof AdavanceListActivity) {
                     _activity.editAdavance(adavance);
-            }
-        });
-        imgDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (_context instanceof AdavanceListActivity)
+                }
+            });
+
+            imgDelete.setOnClickListener(view13 -> {
+                if (_context instanceof AdavanceListActivity) {
                     showLogoutPopUp(adavance);
+                }
+            });
+
+            imgDelete.setImageResource(R.drawable.form_delete);
+            imgEdit.setImageResource(R.drawable.ic_form);
+            view.setVisibility(View.GONE);
+            tvProjectName.setText(adavance.getDecription());
+            tvDateName.setText(adavance.getDate());
+
+            if (adavance.getStatus().equals("Approved")) {
+                tvAmount.setText("Approved Amount: ");
+                tvAmountName.setText(String.format("₹ %s", adavance.getApproved_Amount__c()));
+            } else {
+                tvAmount.setText("Amount: ");
+                tvAmountName.setText(String.format("₹ %s", adavance.getAmount()));
             }
-        });
-
-        imgDelete.setImageResource(R.drawable.form_delete);
-        imgEdit.setImageResource(R.drawable.ic_form);
-        view.setVisibility(View.GONE);
-        tvProjectName.setText(adavance.getDecription());
-        tvDateName.setText(adavance.getDate());
-
-        if(adavance.getStatus().equals("Approved")){
-            tvAmount.setText("Approved Amount: ");
-            tvAmountName.setText("₹ " + adavance.getApproved_Amount__c());
-        }else{
-            tvAmount.setText("Amount: ");
-            tvAmountName.setText("₹ " + adavance.getAmount());
         }
 
         return convertView;
     }
 
+    @SuppressWarnings("deprecation")
     private void showLogoutPopUp(Adavance adavance) {
         final AlertDialog alertDialog = new AlertDialog.Builder(_context).create();
 
@@ -147,20 +146,14 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
         alertDialog.setIcon(R.drawable.ic_launcher);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(_context.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                // Write your code here to execute after dialog closed
-              /*  listOfWrongQuestions.add(mPosition);
-                prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
-            }
+        alertDialog.setButton2(_context.getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            // Write your code here to execute after dialog closed
+          /*  listOfWrongQuestions.add(mPosition);
+            prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
         });
         // Setting OK Button
-        alertDialog.setButton(_context.getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                _activity.deleteAdavance(adavance);
-            }
-        });
+        alertDialog.setButton(_context.getString(android.R.string.ok), (dialog, which) -> _activity.deleteAdavance(adavance));
 
         // Showing Alert Message
         alertDialog.show();
@@ -194,23 +187,23 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group, null);
-        }
-        ImageView imgGroup = (ImageView) convertView.findViewById(R.id.imgGroup);
-
-        if (isExpanded) {
-            imgGroup.setImageResource(R.drawable.downarrow);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
         } else {
-            imgGroup.setImageResource(R.drawable.rightarrow);
+            ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
+            if (isExpanded) {
+                imgGroup.setImageResource(R.drawable.downarrow);
+            } else {
+                imgGroup.setImageResource(R.drawable.rightarrow);
+            }
+
+            String headerTitle = (String) getGroup(groupPosition);
+            TextView txtName = convertView.findViewById(R.id.txtName);
+            txtName.setText(headerTitle);
         }
-        TextView txtName = (TextView) convertView
-                .findViewById(R.id.txtName);
-        // date.setTypeface(null, Typeface.BOLD);
-        txtName.setText(headerTitle);
         return convertView;
     }
 
@@ -223,6 +216,4 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
     }
-
-
 }

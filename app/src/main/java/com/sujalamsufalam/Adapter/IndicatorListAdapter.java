@@ -27,7 +27,7 @@ public class IndicatorListAdapter extends RecyclerView.Adapter<IndicatorListAdap
     private Context mContext;
     private Resources resources;
 
-    List<DashaBoardListModel> processAllList;
+    private List<DashaBoardListModel> processAllList;
 
     public IndicatorListAdapter(Context context, List<DashaBoardListModel> processAllLis) {
         mContext = context;
@@ -41,8 +41,7 @@ public class IndicatorListAdapter extends RecyclerView.Adapter<IndicatorListAdap
                 .inflate(R.layout.each_trainging, parent, false);
 
         // create ViewHolder
-        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
-        return viewHolder;
+        return new ViewHolder(itemLayoutView);
     }
 
 
@@ -59,23 +58,20 @@ public class IndicatorListAdapter extends RecyclerView.Adapter<IndicatorListAdap
         public ViewHolder(View itemLayoutView) {
 
             super(itemLayoutView);
-            layoutMain = (RelativeLayout) itemLayoutView.findViewById(R.id.layoutMain);
-            txtCount = (TextView) itemLayoutView.findViewById(R.id.txtCount);
-            layoutMain.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(getAdapterPosition()==0) {
-                        Intent intent = new Intent(mContext, VersionReportActivity.class);
-                         intent.putExtra(Constants.PROCESS_ID, "");
-                        mContext.startActivity(intent);
-                    }else {
-                        Intent intent = new Intent(mContext, IndicatorTask.class);
-                        intent.putExtra(Constants.PROCESS_ID, processAllList.get(getAdapterPosition()));
-                        mContext.startActivity(intent);
-                    }
+            layoutMain = itemLayoutView.findViewById(R.id.layoutMain);
+            txtCount = itemLayoutView.findViewById(R.id.txtCount);
+            layoutMain.setOnClickListener(v -> {
+                if(getAdapterPosition()==0) {
+                    Intent intent = new Intent(mContext, VersionReportActivity.class);
+                     intent.putExtra(Constants.PROCESS_ID, "");
+                    mContext.startActivity(intent);
+                }else {
+                    Intent intent = new Intent(mContext, IndicatorTask.class);
+                    intent.putExtra(Constants.PROCESS_ID, processAllList.get(getAdapterPosition()));
+                    mContext.startActivity(intent);
                 }
             });
-            txtName = (TextView) itemLayoutView.findViewById(R.id.txtName);
+            txtName = itemLayoutView.findViewById(R.id.txtName);
         }
     }
 

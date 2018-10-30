@@ -65,21 +65,18 @@ public class EventAttendanceListAdapter extends RecyclerView.Adapter<EventAttend
 
         public MyViewHolder(View view) {
             super(view);
-            eventUserName = (TextView) view.findViewById(R.id.tv_event_user_name);
-            eventUserRole = (TextView) view.findViewById(R.id.tv_event_user_role);
-            checkBox = (CheckBox) view.findViewById(R.id.cb_event_user_cb);
-            checkBox.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (((CheckBox) v).isChecked()) {
-                        ((EventUserAttendanceActivity) mContext).saveDataToList(eventAttendanceList.get(getAdapterPosition()), true);
-                        eventAttendanceList.get(getAdapterPosition()).setUserSelected(true);
-                        ((EventUserAttendanceActivity) mContext).checkAllSelected((ArrayList<EventUser>) eventAttendanceList);
-                    } else {
-                        ((EventUserAttendanceActivity) mContext).saveDataToList(eventAttendanceList.get(getAdapterPosition()), false);
-                        eventAttendanceList.get(getAdapterPosition()).setUserSelected(false);
-                        ((EventUserAttendanceActivity) mContext).checkAllDeSelected();
-                    }
+            eventUserName = view.findViewById(R.id.tv_event_user_name);
+            eventUserRole = view.findViewById(R.id.tv_event_user_role);
+            checkBox = view.findViewById(R.id.cb_event_user_cb);
+            checkBox.setOnClickListener(v -> {
+                if (((CheckBox) v).isChecked()) {
+                    ((EventUserAttendanceActivity) mContext).saveDataToList(eventAttendanceList.get(getAdapterPosition()), true);
+                    eventAttendanceList.get(getAdapterPosition()).setUserSelected(true);
+                    ((EventUserAttendanceActivity) mContext).checkAllSelected((ArrayList<EventUser>) eventAttendanceList);
+                } else {
+                    ((EventUserAttendanceActivity) mContext).saveDataToList(eventAttendanceList.get(getAdapterPosition()), false);
+                    eventAttendanceList.get(getAdapterPosition()).setUserSelected(false);
+                    ((EventUserAttendanceActivity) mContext).checkAllDeSelected();
                 }
             });
         }

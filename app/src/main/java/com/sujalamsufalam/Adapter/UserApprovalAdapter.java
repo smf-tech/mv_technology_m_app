@@ -42,13 +42,12 @@ public class UserApprovalAdapter extends RecyclerView.Adapter<UserApprovalAdapte
                 .inflate(R.layout.each_child_leave_application, parent, false);
 
         // create ViewHolder
-        UserApprovalAdapter.ViewHolder viewHolder = new UserApprovalAdapter.ViewHolder(itemLayoutView);
-        return viewHolder;
+        return new ViewHolder(itemLayoutView);
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        final Template userApproval = (Template) mDataList.get(position);
+        final Template userApproval = mDataList.get(position);
         if(userApproval.getName()!=null)
             holder.txtName.setText(userApproval.getName()+"");
     }
@@ -64,16 +63,13 @@ public class UserApprovalAdapter extends RecyclerView.Adapter<UserApprovalAdapte
         RelativeLayout layoutMain;
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
-            layoutMain = (RelativeLayout) itemLayoutView.findViewById(R.id.layoutMain);
-            txtName = (TextView) itemLayoutView.findViewById(R.id.txtName);
+            layoutMain = itemLayoutView.findViewById(R.id.layoutMain);
+            txtName = itemLayoutView.findViewById(R.id.txtName);
 
-            layoutMain.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent=new Intent(mContext, UserApproveDetail.class);
-                    intent.putExtra(Constants.ID, mDataList.get(getAdapterPosition()).getId());
-                    mContext.startActivity(intent);
-                }
+            layoutMain.setOnClickListener(v -> {
+                Intent intent=new Intent(mContext, UserApproveDetail.class);
+                intent.putExtra(Constants.ID, mDataList.get(getAdapterPosition()).getId());
+                mContext.startActivity(intent);
             });
         }
 

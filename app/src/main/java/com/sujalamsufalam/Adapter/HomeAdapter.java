@@ -44,22 +44,17 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> 
         public MyViewHolder(View view) {
             super(view);
 
-            menu_name = (TextView) view.findViewById(R.id.tv_home_menu_name);
-            menu_icon = (ImageView) view.findViewById(R.id.iv_home_menu_icon);
+            menu_name = view.findViewById(R.id.tv_home_menu_name);
+            menu_icon = view.findViewById(R.id.iv_home_menu_icon);
 
 
-            layout = (LinearLayout) view.findViewById(R.id.layout_home);
-            invisiblityLayout = (RelativeLayout) view.findViewById(R.id.invisiblityLayout);
-            layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (menuList.get(getAdapterPosition()).getAccessible()) {
-                        preferenceHelper.insertString(Constants.Leave,"");
-                        Intent openClass = new Intent(mContext, menuList.get(getAdapterPosition()).getDestination());
-                        mContext.startActivity(openClass);
-                    } else {
-
-                    }
+            layout = view.findViewById(R.id.layout_home);
+            invisiblityLayout = view.findViewById(R.id.invisiblityLayout);
+            layout.setOnClickListener(view1 -> {
+                if (menuList.get(getAdapterPosition()).getAccessible()) {
+                    preferenceHelper.insertString(Constants.Leave,"");
+                    Intent openClass = new Intent(mContext, menuList.get(getAdapterPosition()).getDestination());
+                    mContext.startActivity(openClass);
                 }
             });
         }

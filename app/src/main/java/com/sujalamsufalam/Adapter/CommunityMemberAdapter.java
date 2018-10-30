@@ -50,8 +50,7 @@ public class CommunityMemberAdapter extends RecyclerView.Adapter<CommunityMember
         View itemLayoutView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.each_community_member, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(itemLayoutView);
-        return viewHolder;
+        return new ViewHolder(itemLayoutView);
     }
 
     @Override
@@ -77,7 +76,7 @@ public class CommunityMemberAdapter extends RecyclerView.Adapter<CommunityMember
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
-            txtCommunityMember = (TextView) itemLayoutView.findViewById(R.id.txtCommunityMember);
+            txtCommunityMember = itemLayoutView.findViewById(R.id.txtCommunityMember);
 
         }
 

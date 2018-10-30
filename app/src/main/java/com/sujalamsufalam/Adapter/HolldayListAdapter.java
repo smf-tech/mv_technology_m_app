@@ -32,18 +32,12 @@ public class HolldayListAdapter extends RecyclerView.Adapter<HolldayListAdapter.
 /*            state = (TextView) view.findViewById(R.id.txtTemplateName);
             district = (TextView) view.findViewById(R.id.txtTemplateName);
             taluka = (TextView) view.findViewById(R.id.txtTemplateName);*/
-            layout = (CardView) view.findViewById(R.id.ll_calender_layout_card);
-            title = (TextView) view.findViewById(R.id.tv_piachart);
-            detail = (TextView) view.findViewById(R.id.tv_piachart_description);
-            index = (TextView) view.findViewById(R.id.tv_piachart_number);
-            delete = (ImageView) view.findViewById(R.id.iv_calender_delete);
-            delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    position = getAdapterPosition();
-
-                }
-            });
+            layout = view.findViewById(R.id.ll_calender_layout_card);
+            title = view.findViewById(R.id.tv_piachart);
+            detail = view.findViewById(R.id.tv_piachart_description);
+            index = view.findViewById(R.id.tv_piachart_number);
+            delete = view.findViewById(R.id.iv_calender_delete);
+            delete.setOnClickListener(v -> position = getAdapterPosition());
 
 
         }

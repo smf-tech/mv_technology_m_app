@@ -3,7 +3,6 @@ package com.sujalamsufalam.Adapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,28 +64,25 @@ public class ExpandableAttendanceApprovalListAdapter extends BaseExpandableListA
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.each_child_leave_application, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.each_child_leave_application, null) : null;
         }
 
         ImageView imgDownload, imgshare;
         TextView txtCount, txtName;
         RelativeLayout layoutMain;
 
-        layoutMain = (RelativeLayout) convertView.findViewById(R.id.layoutMain);
+        layoutMain = convertView.findViewById(R.id.layoutMain);
 
-        txtCount = (TextView) convertView.findViewById(R.id.txtCount);
+        txtCount = convertView.findViewById(R.id.txtCount);
 
-        layoutMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        layoutMain.setOnClickListener(v -> {
 
-                    Intent intent=new Intent(_context, AttendanceApproveDetailActivity.class);
-                    intent.putExtra(Constants.Attendance ,attendance_approval);
-                    _context.startActivity(intent);
-            }
+                Intent intent=new Intent(_context, AttendanceApproveDetailActivity.class);
+                intent.putExtra(Constants.Attendance ,attendance_approval);
+                _context.startActivity(intent);
         });
 
-        txtName = (TextView) convertView.findViewById(R.id.txtName);
+        txtName = convertView.findViewById(R.id.txtName);
 
         txtCount.setVisibility(View.GONE);
         if(attendance_approval.getUser_Name__c()!=null)
@@ -128,16 +124,16 @@ public class ExpandableAttendanceApprovalListAdapter extends BaseExpandableListA
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group, null);
+            convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
         }
-        ImageView imgGroup = (ImageView) convertView.findViewById(R.id.imgGroup);
+        ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
 
         if (isExpanded) {
             imgGroup.setImageResource(R.drawable.downarrow);
         } else {
             imgGroup.setImageResource(R.drawable.rightarrow);
         }
-        TextView txtName = (TextView) convertView
+        TextView txtName = convertView
                 .findViewById(R.id.txtName);
         // date.setTypeface(null, Typeface.BOLD);
         txtName.setText(headerTitle);
@@ -168,18 +164,12 @@ public class ExpandableAttendanceApprovalListAdapter extends BaseExpandableListA
         alertDialog.setIcon(R.drawable.ic_launcher);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(_context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-            }
-        });
+        alertDialog.setButton2(_context.getString(R.string.cancel), (dialog, which) -> alertDialog.dismiss());
         // Setting OK Button
-        alertDialog.setButton(_context.getString(R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
+        alertDialog.setButton(_context.getString(R.string.ok), (dialog, which) -> {
 
-             //   _context.deleteLeave(id);
+         //   _context.deleteLeave(id);
 
-            }
         });
 
         // Showing Alert Message
