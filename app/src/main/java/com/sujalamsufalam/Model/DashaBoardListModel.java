@@ -67,7 +67,7 @@ public class DashaBoardListModel implements Parcelable {
         dest.writeTypedList(this.tasksList);
     }
 
-    protected DashaBoardListModel(Parcel in) {
+    private DashaBoardListModel(Parcel in) {
         this.Id = in.readString();
         this.Name = in.readString();
         this.Multiple_Role__c = in.readString();

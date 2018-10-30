@@ -1,18 +1,11 @@
 package com.sujalamsufalam.ActivityMenu;
 
-/**
- * Created by Rohit Gujar on 09-10-2017.
- */
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -64,8 +57,8 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
     private List<Community> communityList = new ArrayList<>();
     private List<Community> replicaCommunityList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
-    TextView textNoData;
-    Activity context;
+    private TextView textNoData;
+    private Activity context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -121,12 +114,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
         textNoData = (TextView) findViewById(R.id.textNoData);
         binding.editTextEmail.addTextChangedListener(watch);
         binding.swiperefresh.setOnRefreshListener(
-                new SwipeRefreshLayout.OnRefreshListener() {
-                    @Override
-                    public void onRefresh() {
-                        getCommunities(false);
-                    }
-                }
+                () -> getCommunities(false)
         );
         preferenceHelper = new PreferenceHelper(context);
         mAdapter = new GroupAdapter(communityList, context, this);
@@ -138,12 +126,13 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
         String receivedType = receivedIntent.getType();
         //make sure it's an action and type we can handle
         if (receivedAction != null && receivedAction.equals(Intent.ACTION_SEND)) {
-            if (receivedType.startsWith("text/")) {
-                //handle sent text
-            } else if (receivedType.startsWith("image/")) {
+             if (receivedType!= null && receivedType.startsWith("image/")) {
                 //handle sent image
-                Constants.shareUri = (Uri) receivedIntent.getParcelableExtra(Intent.EXTRA_STREAM);
+                Constants.shareUri = receivedIntent.getParcelableExtra(Intent.EXTRA_STREAM);
             }
+//            else if (receivedType.startsWith("text/")) {
+//                //handle sent text
+//            }
             //content is being shared
         } else {
             //app has been launched directly, not from share list
@@ -201,13 +190,13 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             List<Community> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Community[].class));
                             List<Community> list = AppDatabase.getAppDatabase(context).userDao().getAllCommunities();
                             if ((temp.size() != 0) || (list.size() != 0)) {
-                                AppDatabase.getAppDatabase(context).userDao().clearTableCommunity();;
+                                AppDatabase.getAppDatabase(context).userDao().clearTableCommunity();
                                 for (int i = 0; i < temp.size(); i++) {
                                    /* if (temp.get(i).getErrorMsg().equalsIgnoreCase("User is Inactive")) {
                                         AppDatabase.getAppDatabase(context).userDao().clearTableCommunity();
@@ -281,20 +270,16 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
         alertDialog.setIcon(R.drawable.ic_launcher);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                context.finish();
-                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            context.finish();
+            context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                context.finish();
-                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+            alertDialog.dismiss();
+            context.finish();
+            context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
 
         // Showing Alert Message
@@ -317,7 +302,7 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
         }
     }
 
-    TextWatcher watch = new TextWatcher() {
+    private TextWatcher watch = new TextWatcher() {
 
         @Override
         public void afterTextChanged(Editable arg0) {
@@ -343,18 +328,14 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
     private void setFilter(String s) {
         List<Community> list = new ArrayList<>();
         communityList.clear();
-        for (int i = 0; i < replicaCommunityList.size(); i++) {
-            communityList.add(replicaCommunityList.get(i));
-        }
+        communityList.addAll(replicaCommunityList);
         for (int i = 0; i < communityList.size(); i++) {
             if (communityList.get(i).getName().toLowerCase().contains(s.toLowerCase())) {
                 list.add(communityList.get(i));
             }
         }
         communityList.clear();
-        for (int i = 0; i < list.size(); i++) {
-            communityList.add(list.get(i));
-        }
+        communityList.addAll(list);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -377,10 +358,8 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
             }
         } else {
             preferenceHelper.insertString(PreferenceHelper.COMMUNITYID, communityList.get(position).getId());
-            List<Community> list = new ArrayList<Community>();
-            for (int i = 0; i < communityList.size(); i++) {
-                list.add(communityList.get(i));
-            }
+            List<Community> list = new ArrayList<>();
+            list.addAll(communityList);
             list.remove(position);
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
             String json = gson.toJson(list);

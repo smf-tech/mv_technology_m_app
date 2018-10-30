@@ -43,7 +43,7 @@ public class HomeModel {
         isAccessible = accessible;
     }
 
-    Boolean isAccessible;
+    private Boolean isAccessible;
 
 }
 

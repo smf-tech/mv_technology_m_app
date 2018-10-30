@@ -402,7 +402,7 @@ public class Task implements Parcelable {
      //   dest.writeValue(this.IsDeleteAllow);
     }
 
-    protected Task(Parcel in) {
+    private Task(Parcel in) {
         this.Unique_Id = in.readInt();
         this.Id = in.readString();
         this.Name = in.readString();

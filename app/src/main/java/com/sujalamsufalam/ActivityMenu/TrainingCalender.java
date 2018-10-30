@@ -65,23 +65,23 @@ import retrofit2.Response;
 
 public class TrainingCalender extends AppCompatActivity implements OnDateSelectedListener, View.OnClickListener, AdapterView.OnItemSelectedListener {
     private PreferenceHelper preferenceHelper;
-    List<CalenderEvent> dateList = new ArrayList<>();
+    private List<CalenderEvent> dateList = new ArrayList<>();
 
     public FragmentTrainigCalenderBinding binding;
-    SimpleDateFormat formatter;
-    SimpleDateFormat formatterNew;
-    ArrayList<CalendarDay> dates;
-    List<Date> allDate = new ArrayList<>();
-    HashMap<CalendarDay, List<CalenderEvent>> eventMap = new HashMap<>();
-    List<String> MonthList = new ArrayList<>();
-    List<String> YearList = new ArrayList<>();
-    TraingCalenderAadapter adapter;
-    List<Date> eventDate = new ArrayList<>();
-    HorizontalCalenderAdapter horizontalCalenderAdapter;
+    private SimpleDateFormat formatter;
+    private SimpleDateFormat formatterNew;
+    private ArrayList<CalendarDay> dates;
+    private List<Date> allDate = new ArrayList<>();
+    private HashMap<CalendarDay, List<CalenderEvent>> eventMap = new HashMap<>();
+    private List<String> MonthList = new ArrayList<>();
+    private List<String> YearList = new ArrayList<>();
+    private TraingCalenderAadapter adapter;
+    private List<Date> eventDate = new ArrayList<>();
+    private HorizontalCalenderAdapter horizontalCalenderAdapter;
     private final OneDayDecorator oneDayDecorator = new OneDayDecorator();
-    Activity context;
-    Date selectDated;
-    boolean isAllPlans;
+    private Activity context;
+    private Date selectDated;
+    private boolean isAllPlans;
     private ArrayAdapter<String> district_adapter, taluka_adapter;
 
     @Override
@@ -193,8 +193,8 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
 
     }
 
-    public void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, itemList);
+    private void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, itemList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
         if (!selectedValue.isEmpty() && itemList.indexOf(selectedValue) >= 0)
@@ -265,7 +265,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
             adapter = new TraingCalenderAadapter(context, eventMap.get(day), isAllPlans);
             binding.recyclerView.setAdapter(adapter);
         } else {
-            adapter = new TraingCalenderAadapter(context, new ArrayList<CalenderEvent>(), isAllPlans);
+            adapter = new TraingCalenderAadapter(context, new ArrayList<>(), isAllPlans);
             binding.recyclerView.setAdapter(adapter);
         }
     }
@@ -277,7 +277,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
             adapter = new TraingCalenderAadapter(context, eventMap.get(date), isAllPlans);
             binding.recyclerView.setAdapter(adapter);
         } else {
-            adapter = new TraingCalenderAadapter(context, new ArrayList<CalenderEvent>(), isAllPlans);
+            adapter = new TraingCalenderAadapter(context, new ArrayList<>(), isAllPlans);
             binding.recyclerView.setAdapter(adapter);
         }
     }
@@ -406,6 +406,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                                 String ss = jsonArray.getJSONObject(i).getString("Present_User__c");
                                 calenderEvent.setPresent_User__c(jsonArray.getJSONObject(i).getString("Present_User__c"));
                             }
+                            Log.i("Id", jsonArray.getJSONObject(i).getString("Id"));
                             if (jsonArray.getJSONObject(i).has("End_Date__c") && jsonArray.getJSONObject(i).has("Date__c")
                                     && jsonArray.getJSONObject(i).getString("End_Date__c") != null
                                     && jsonArray.getJSONObject(i).getString("End_Date__c").length() > 0
@@ -416,7 +417,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
                                 for (Date date : Dates) {
                                     dateList = new ArrayList<>();
                                     CalendarDay day = CalendarDay.from(date);
-                                    Log.i("Current Date", formatter.format(date));
+                                 //   Log.i("Current Date", formatter.format(date));
                                     if (eventMap.get(day) != null)
                                         dateList = eventMap.get(day);
                                     eventDate.add(date);
@@ -469,8 +470,8 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
         });
     }
 
-    public List<Date> getDaysBetweenDates(Date startdate, Date enddate) {
-        List<Date> dates = new ArrayList<Date>();
+    private List<Date> getDaysBetweenDates(Date startdate, Date enddate) {
+        List<Date> dates = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(startdate);
         while (calendar.getTime().before(enddate)) {
@@ -516,7 +517,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
         Log.d("Start Date", dateString1);
         Log.d("End Date", dateString2);
-        ArrayList<Date> dates = new ArrayList<Date>();
+        ArrayList<Date> dates = new ArrayList<>();
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");
 
         Date date1 = null;

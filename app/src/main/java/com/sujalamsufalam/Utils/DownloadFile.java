@@ -42,12 +42,9 @@ public class DownloadFile {
         pDialog.setIndeterminate(false);
         pDialog.setMax(100);
         pDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        pDialog.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-                downloadFileFromURL.cancel(true);
-            }
+        pDialog.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.cancel), (dialog, which) -> {
+            dialog.dismiss();
+            downloadFileFromURL.cancel(true);
         });
         pDialog.setCancelable(false);
     }
@@ -145,20 +142,13 @@ public class DownloadFile {
             pDialog.dismiss();
 
             if (file_url.equalsIgnoreCase("true")) {
-                try {
-                    unzip();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            } else {
-
+                unzip();
             }
         }
 
     }
 
-    public void unzip() throws IOException {
+    public void unzip() {
         mProgressDialog = new ProgressDialog(context);
         mProgressDialog.setTitle("Please Wait...");
         mProgressDialog.setMessage("Unzipping Files...");
@@ -212,16 +202,16 @@ public class DownloadFile {
             }
 
             // Log.v("", "Extracting: " + entry);
-            BufferedInputStream inputStream = new BufferedInputStream(zipfile.getInputStream(entry));
-            BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
+//            BufferedInputStream inputStream = new BufferedInputStream(zipfile.getInputStream(entry));
+//            BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
 
-            try {
-
-            } finally {
-                outputStream.flush();
-                outputStream.close();
-                inputStream.close();
-            }
+//            try {
+//
+//            } finally {
+//                outputStream.flush();
+//                outputStream.close();
+//                inputStream.close();
+//            }
         }
 
         private void createDir(File dir) {

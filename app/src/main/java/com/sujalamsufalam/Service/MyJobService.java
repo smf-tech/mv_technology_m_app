@@ -2,7 +2,6 @@ package com.sujalamsufalam.Service;
 
 import android.location.Geocoder;
 import android.location.Location;
-import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -10,8 +9,6 @@ import com.firebase.jobdispatcher.JobParameters;
 import com.firebase.jobdispatcher.JobService;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.sujalamsufalam.Model.User;
@@ -81,7 +78,7 @@ public class MyJobService extends JobService {
                     try {
                         if (response.body() != null) {
                             String data = response.body().string();
-                            if (data != null && data.length() > 0) {
+                            if (data.length() > 0) {
                                 JSONObject jsonObject = new JSONObject(data);
                                 String status = jsonObject.getString("status");
                                 String message = jsonObject.getString("msg");
@@ -92,8 +89,6 @@ public class MyJobService extends JobService {
                                     preferenceHelper.insetLong(PreferenceHelper.APICALLTIME,APICALLDATE.getTime());
 
 
-                                } else {
-                                   // Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
                                 }
                             }
                         }
@@ -126,38 +121,32 @@ public class MyJobService extends JobService {
 
         mFusedLocationClient.getLastLocation()
 
-                .addOnSuccessListener(new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location == null) {
-                            Log.e("location", "null");
-                            return;
-                        }
-
-                        mLastLocation = location;
-                       String latitude = String.valueOf(mLastLocation.getLatitude());
-                        String longitude = String.valueOf(mLastLocation.getLongitude());
-
-                        GetMapParameters(latitude, longitude);
-                        if (!Geocoder.isPresent()) {
-                            //Toast.makeText(getApplicationContext(),"No geocoder available",Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-
-                        // If the user pressed the fetch address button before we had the location,
-                        // this will be set to true indicating that we should kick off the intent
-                        // service after fetching the location.
-                      /*  if (mAddressRequested) {
-                            startIntentService();
-                        }*/
+                .addOnSuccessListener(location -> {
+                    if (location == null) {
+                        Log.e("location", "null");
+                        return;
                     }
+
+                    mLastLocation = location;
+                   String latitude = String.valueOf(mLastLocation.getLatitude());
+                    String longitude = String.valueOf(mLastLocation.getLongitude());
+
+                    GetMapParameters(latitude, longitude);
+                    if (!Geocoder.isPresent()) {
+                        //Toast.makeText(getApplicationContext(),"No geocoder available",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    // If the user pressed the fetch address button before we had the location,
+                    // this will be set to true indicating that we should kick off the intent
+                    // service after fetching the location.
+                  /*  if (mAddressRequested) {
+                        startIntentService();
+                    }*/
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Log.w(TAG, "getLastLocation:onFailure", e);
-                        Log.e("fail", "unable to connect");
-                    }
+                .addOnFailureListener(e -> {
+                    // Log.w(TAG, "getLastLocation:onFailure", e);
+                    Log.e("fail", "unable to connect");
                 });
 
 

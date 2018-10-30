@@ -12,7 +12,7 @@ import java.util.Locale;
 
 public class LocaleManager {
 
-    public static final String LANGUAGE_ENGLISH   = "en";
+    private static final String LANGUAGE_ENGLISH   = "en";
     public static final String LANGUAGE_MARATHI = "mr";
     private static final String LANGUAGE_KEY       = "language_key";
 
@@ -25,7 +25,7 @@ public class LocaleManager {
         return updateResources(c, language);
     }
 
-    public static String getLanguage(Context c) {
+    private static String getLanguage(Context c) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(c);
         return prefs.getString(LANGUAGE_KEY, LANGUAGE_ENGLISH);
     }

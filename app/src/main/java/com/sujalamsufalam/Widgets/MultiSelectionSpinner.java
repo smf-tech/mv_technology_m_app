@@ -17,15 +17,15 @@ import java.util.List;
 
 public class MultiSelectionSpinner extends android.support.v7.widget.AppCompatSpinner implements
         DialogInterface.OnMultiChoiceClickListener {
-    String[] _items = null;
-    boolean[] mSelection = null;
+    private String[] _items = null;
+    private boolean[] mSelection = null;
 
-    ArrayAdapter<String> simple_adapter;
+    private ArrayAdapter<String> simple_adapter;
 
     public MultiSelectionSpinner(Context context) {
         super(context);
 
-        simple_adapter = new ArrayAdapter<String>(context,
+        simple_adapter = new ArrayAdapter<>(context,
                 android.R.layout.simple_spinner_item);
         super.setAdapter(simple_adapter);
     }
@@ -33,7 +33,7 @@ public class MultiSelectionSpinner extends android.support.v7.widget.AppCompatSp
     public MultiSelectionSpinner(Context context, AttributeSet attrs) {
         super(context, attrs);
 
-        simple_adapter = new ArrayAdapter<String>(context,
+        simple_adapter = new ArrayAdapter<>(context,
                 android.R.layout.simple_spinner_item);
         super.setAdapter(simple_adapter);
     }
@@ -136,7 +136,7 @@ public class MultiSelectionSpinner extends android.support.v7.widget.AppCompatSp
     }
 
     public List<String> getSelectedStrings() {
-        List<String> selection = new LinkedList<String>();
+        List<String> selection = new LinkedList<>();
         for (int i = 0; i < _items.length; ++i) {
             if (mSelection[i]) {
                 selection.add(_items[i]);
@@ -146,7 +146,7 @@ public class MultiSelectionSpinner extends android.support.v7.widget.AppCompatSp
     }
 
     public List<Integer> getSelectedIndicies() {
-        List<Integer> selection = new LinkedList<Integer>();
+        List<Integer> selection = new LinkedList<>();
         for (int i = 0; i < _items.length; ++i) {
             if (mSelection[i]) {
                 selection.add(i);

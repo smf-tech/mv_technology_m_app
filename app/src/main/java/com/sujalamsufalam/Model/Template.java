@@ -363,7 +363,7 @@ public class Template implements Serializable, Parcelable {
         this.Is_Multiple_Entry_Allowed__c = (Boolean) in.readValue(Boolean.class.getClassLoader());
     }
 
-    public static final Creator<Template> CREATOR = new Creator<Template>() {
+    private static final Creator<Template> CREATOR = new Creator<Template>() {
         @Override
         public Template createFromParcel(Parcel source) {
             return new Template(source);

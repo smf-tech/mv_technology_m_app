@@ -1,9 +1,5 @@
 package com.sujalamsufalam.Service;
 
-/**
- * Created by Rohit Gujar on 06-11-2017.
- */
-
 import android.util.Log;
 
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -33,8 +29,8 @@ public class MyFirebaseInstanceIDService extends FirebaseInstanceIdService {
 
     }
 
-    private void sendRegistrationToServer(String token) {
-        //You can implement this method to store the token on your server
-        //Not required for current project
-    }
+//    private void sendRegistrationToServer(String token) {
+//        //You can implement this method to store the token on your server
+//        //Not required for current project
+//    }
 }

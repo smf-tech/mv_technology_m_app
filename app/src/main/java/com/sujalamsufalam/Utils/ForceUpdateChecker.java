@@ -30,13 +30,13 @@ public class ForceUpdateChecker {
         return new Builder(context);
     }
 
-    public ForceUpdateChecker(@NonNull Context context,
-                              OnUpdateNeededListener onUpdateNeededListener) {
+    private ForceUpdateChecker(@NonNull Context context,
+                               OnUpdateNeededListener onUpdateNeededListener) {
         this.context = context;
         this.onUpdateNeededListener = onUpdateNeededListener;
     }
 
-    public void check() {
+    private void check() {
         final FirebaseRemoteConfig remoteConfig = FirebaseRemoteConfig.getInstance();
 
         if (remoteConfig.getBoolean(KEY_UPDATE_REQUIRED)) {

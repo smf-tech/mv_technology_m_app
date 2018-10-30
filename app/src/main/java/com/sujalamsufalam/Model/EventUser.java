@@ -64,7 +64,7 @@ public class EventUser implements Parcelable,Comparable<EventUser> {
         dest.writeString(this.userID);
     }
 
-    protected EventUser(Parcel in) {
+    private EventUser(Parcel in) {
         this.role = in.readString();
         this.isUserSelected = (Boolean) in.readValue(Boolean.class.getClassLoader());
         this.userName = in.readString();

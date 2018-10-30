@@ -1,9 +1,5 @@
 package com.sujalamsufalam.Service;
 
-/**
- * Created by Rohit Gujar on 05-12-2017.
- */
-
 import android.app.IntentService;
 import android.content.Intent;
 
@@ -59,9 +55,9 @@ public class SendAttendance extends IntentService {
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         try {
                             if (response.body() != null) {
-                                if (response != null && response.isSuccess()) {
+                                if (response.isSuccess()) {
                                     String data = response.body().string();
-                                    if (data != null && data.length() > 0) {
+                                    if (data.length() > 0) {
                                         JSONObject object = new JSONObject(data);
                                         if (object.has("Status")) {
                                             if (object.getString("Status").equalsIgnoreCase("done")) {

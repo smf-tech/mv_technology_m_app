@@ -39,7 +39,6 @@ public interface ServiceRequest {
     @POST("")
     Call<ResponseBody> sendDataToSalesforce(@Url String url, @Body JsonObject object);
 
-
     @DELETE("")
     Call<ResponseBody> deleteDataFromSalesforce(@Url String url);
 

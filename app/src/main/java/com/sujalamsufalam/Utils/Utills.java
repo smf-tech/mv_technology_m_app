@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -16,12 +15,10 @@ import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -83,11 +80,9 @@ public class Utills {
 
         // Set up touch listener for non-text box views to hide keyboard.
         if (!(view instanceof EditText)) {
-            view.setOnTouchListener(new View.OnTouchListener() {
-                public boolean onTouch(View v, MotionEvent event) {
-                    hideSoftKeyboard(activity);
-                    return false;
-                }
+            view.setOnTouchListener((v, event) -> {
+                hideSoftKeyboard(activity);
+                return false;
             });
         }
 
@@ -101,16 +96,14 @@ public class Utills {
     }
 
     public static String getDeviceId(Context context) {
-        String deviceId = Settings.Secure.getString(context.getContentResolver(),
+        return Settings.Secure.getString(context.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
-        return deviceId;
     }
 
     public static String getCurrentDate() {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-        String formattedDate = df.format(c.getTime());
-        return formattedDate;
+        return df.format(c.getTime());
     }
 
     /**
@@ -121,17 +114,18 @@ public class Utills {
     public static String getDateForAPI() {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM");
-        String formattedDate = df.format(c.getTime());
-        return formattedDate;
+        return df.format(c.getTime());
     }
 
     public static void hideSoftKeyboard(Activity activity) {
         if (activity != null) {
             InputMethodManager inputMethodManager = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
-            if (activity.getCurrentFocus() != null)
-                inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+            if (activity.getCurrentFocus() != null) {
+                if (inputMethodManager != null) {
+                    inputMethodManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), 0);
+                }
+            }
         }
-
     }
 
     public static void showToast(String msg, Context context) {
@@ -160,18 +154,11 @@ public class Utills {
         final int mMonth = c.get(Calendar.MONTH);
         final int mDay = c.get(Calendar.DAY_OF_MONTH);
         DatePickerDialog dpd = new DatePickerDialog(context,
-                new DatePickerDialog.OnDateSetListener() {
-
-                    @Override
-                    public void onDateSet(DatePicker view, int year,
-                                          int monthOfYear, int dayOfMonth) {
-                        text.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
-                    }
-                }, mYear, mMonth, mDay);
+                (view, year, monthOfYear, dayOfMonth) -> text.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth)), mYear, mMonth, mDay);
         dpd.show();
     }
 
-    public static String getTwoDigit(int i) {
+    private static String getTwoDigit(int i) {
         if (i < 10)
             return "0" + i;
         return "" + i;
@@ -187,15 +174,17 @@ public class Utills {
             Log.i("Dialog", "Show");
             pgDialog = new Dialog(cntxt);
             pgDialog.setContentView(R.layout.custome_progress_dialog);
-            pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-            TextView text = (TextView) pgDialog.findViewById(R.id.tv_progress);
+
+            if (pgDialog.getWindow() != null) {
+                pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            }
+
+            TextView text = pgDialog.findViewById(R.id.tv_progress);
             text.setText(cntxt.getString(R.string.progress_please_wait));
-            //code is for animation of progress dialoh iocn
-//            ImageView proImg = (ImageView) pgDialog.findViewById(R.id.img_progress);
-//            proImg.setBackgroundResource(R.drawable.progress_dialog);
-//            AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
-//            rocketAnimation = (AnimationDrawable) proImg.getBackground();
-//            rocketAnimation.start();
+            ImageView proImg = pgDialog.findViewById(R.id.img_progress);
+            proImg.setBackgroundResource(R.drawable.progress_dialog);
+            AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
+            rocketAnimation.start();
             pgDialog.setCancelable(false);
             pgDialog.show();
             Window window = pgDialog.getWindow();
@@ -244,18 +233,21 @@ public class Utills {
             Log.i("Dialog", "Show");
             pgDialog = new Dialog(cntxt);
             pgDialog.setContentView(R.layout.custome_progress_dialog);
-            pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-            TextView text = (TextView) pgDialog.findViewById(R.id.tv_progress);
+
+            if (pgDialog.getWindow() != null) {
+                pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+            }
+
+            TextView text = pgDialog.findViewById(R.id.tv_progress);
             text.setText(Msg);
-            TextView tv_desc = (TextView) pgDialog.findViewById(R.id.tv_desc);
+            TextView tv_desc = pgDialog.findViewById(R.id.tv_desc);
             if (Title != null && !TextUtils.isEmpty(Title))
                 tv_desc.setVisibility(View.VISIBLE);
             tv_desc.setText(Title);
-//            ImageView proImg = (ImageView) pgDialog.findViewById(R.id.img_progress);
-//            proImg.setBackgroundResource(R.drawable.progress_dialog);
-//            AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
-//            rocketAnimation = (AnimationDrawable) proImg.getBackground();
-//            rocketAnimation.start();
+            ImageView proImg = pgDialog.findViewById(R.id.img_progress);
+            proImg.setBackgroundResource(R.drawable.progress_dialog);
+            AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
+            rocketAnimation.start();
             pgDialog.setCancelable(false);
             pgDialog.show();
             Window window = pgDialog.getWindow();
@@ -281,7 +273,7 @@ public class Utills {
         int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
 
-        int len = 0;
+        int len ;
         while ((len = inputStream.read(buffer)) != -1) {
             byteBuffer.write(buffer, 0, len);
         }
@@ -358,18 +350,12 @@ public class Utills {
         alertDialog.setCancelable(true);
         alertDialog.setMessage(context.getString(R.string.error_no_internet));
         alertDialog.setIcon(android.R.drawable.ic_dialog_alert);
-        alertDialog.setButton(context.getString(R.string.Setting), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                Intent settingsIntent = new Intent(Settings.ACTION_SETTINGS);
+        alertDialog.setButton(context.getString(R.string.Setting), (dialog, which) -> {
+            Intent settingsIntent = new Intent(Settings.ACTION_SETTINGS);
 
-                context.startActivity(settingsIntent);
-            }
+            context.startActivity(settingsIntent);
         });
-        alertDialog.setButton2(context.getString(R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        alertDialog.setButton2(context.getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
         // Showing Alert Message
         alertDialog.show();
     }
@@ -381,9 +367,13 @@ public class Utills {
      * @param context
      * @return
      */
-    public static NetworkInfo getNetworkInfo(Context context) {
+    private static NetworkInfo getNetworkInfo(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        return cm.getActiveNetworkInfo();
+        if (cm != null) {
+            return cm.getActiveNetworkInfo();
+        }
+
+        return null;
     }
 
     public static String convertArrayListToString(ArrayList<Task> arrayList) {
@@ -409,10 +399,11 @@ public class Utills {
             OutputStream out = new FileOutputStream(file);  // I'm assuming you already have the File object for where you're writing to
 
             int bytesRead;
-            while ((bytesRead = in.read(imageData)) > 0) {
-                out.write(Arrays.copyOfRange(imageData, 0, Math.max(0, bytesRead)));
+            if (in != null) {
+                while ((bytesRead = in.read(imageData)) > 0) {
+                    out.write(Arrays.copyOfRange(imageData, 0, Math.max(0, bytesRead)));
+                }
             }
-
         } catch (Exception ex) {
             Log.e("Something went wrong.", ex.getMessage());
             ex.printStackTrace();
@@ -421,7 +412,7 @@ public class Utills {
 
     public static String milliSecondsToTimer(long milliseconds) {
         String finalTimerString = "";
-        String secondsString = "";
+        String secondsString;
 
         // Convert total duration into time
         int hours = (int) (milliseconds / (1000 * 60 * 60));
@@ -438,7 +429,6 @@ public class Utills {
         } else {
             secondsString = "" + seconds;
         }
-
         finalTimerString = finalTimerString + minutes + ":" + secondsString;
 
         // return timer string
@@ -452,7 +442,7 @@ public class Utills {
      * @param totalDuration
      */
     public static int getProgressPercentage(long currentDuration, long totalDuration) {
-        Double percentage = (double) 0;
+        Double percentage;
 
         long currentSeconds = (int) (currentDuration / 1000);
         long totalSeconds = (int) (totalDuration / 1000);
@@ -471,8 +461,8 @@ public class Utills {
      * @param totalDuration returns current duration in milliseconds
      */
     public static int progressToTimer(int progress, int totalDuration) {
-        int currentDuration = 0;
-        totalDuration = (int) (totalDuration / 1000);
+        int currentDuration;
+        totalDuration = totalDuration / 1000;
         currentDuration = (int) ((((double) progress) / 100) * totalDuration);
 
         // return current duration in milliseconds
@@ -483,53 +473,47 @@ public class Utills {
         LayoutInflater inflater = LayoutInflater.from(context);
         final View view = inflater.inflate(R.layout.image_zoom_dialog, null);
 
-        TouchImageView img_post = (TouchImageView) view.findViewById(R.id.img_post);
-        RelativeLayout rel_dialog = (RelativeLayout) view.findViewById(R.id.rel_dialog);
-        ImageView close_dialog = (ImageView) view.findViewById(R.id.close_dialog);
+        TouchImageView img_post = view.findViewById(R.id.img_post);
+        ImageView close_dialog = view.findViewById(R.id.close_dialog);
         Glide.with(context)
                 .load(Constants.IMAGEURL + id + ".png")
                 .placeholder(context.getResources().getDrawable(R.drawable.mulya_bg))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(img_post);
+
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
         alertDialog.setView(view);
-        final AlertDialog alertD = alertDialog.create();
+        AlertDialog alertD = alertDialog.create();
 
-        alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        close_dialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertD.dismiss();
-            }
-        });
+        if (alertD.getWindow() != null) {
+            alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
+
+        close_dialog.setOnClickListener(v -> alertD.dismiss());
         alertD.show();
-
     }
 
     public static void showImagewithheaderZoomDialog(Context context, GlideUrl url) {
         LayoutInflater inflater = LayoutInflater.from(context);
         final View view = inflater.inflate(R.layout.image_zoom_dialog, null);
-        final ImageView close_dialog = (ImageView) view.findViewById(R.id.close_dialog);
-        TouchImageView img_post = (TouchImageView) view.findViewById(R.id.img_post);
-        RelativeLayout rel_dialog = (RelativeLayout) view.findViewById(R.id.rel_dialog);
+        final ImageView close_dialog = view.findViewById(R.id.close_dialog);
+        TouchImageView img_post = view.findViewById(R.id.img_post);
         Glide.with(context)
                 .load(url)
                 .placeholder(context.getResources().getDrawable(R.drawable.mulya_bg))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(img_post);
+
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
         alertDialog.setView(view);
-        final AlertDialog alertD = alertDialog.create();
+        AlertDialog alertD = alertDialog.create();
 
-        alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        close_dialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertD.dismiss();
-            }
-        });
+        if (alertD.getWindow() != null) {
+            alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
+
+        close_dialog.setOnClickListener(v -> alertD.dismiss());
         alertD.show();
-
     }
 
 
@@ -543,22 +527,14 @@ public class Utills {
         //alertDialog.setMessage("Your Message Here");
 
 
-        final EditText etComments = (EditText) view.findViewById(R.id.addtag);
+        final EditText etComments = view.findViewById(R.id.addtag);
 
-        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(R.string.ok), new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+        alertDialog.setButton(AlertDialog.BUTTON_POSITIVE, context.getString(R.string.ok), (dialog, which) -> {
 
-            }
         });
 
 
-        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-            }
-        });
+        alertDialog.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", (dialog, which) -> alertDialog.dismiss());
 
 
         alertDialog.setView(view);
@@ -567,31 +543,29 @@ public class Utills {
 
 
     public static void spamContent(Context mContext, PreferenceHelper preferenceHelper, String ID, String UserId, Boolean isSpam) {
-        String url = "";
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
 
 
-        url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.SpamContentUrl + "?Id=" + ID + "&userId=" + UserId + "&isSpam=" + isSpam;
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                String data = null;
+                String data;
                 try {
                     data = response.body().string();
-                    if (data != null && data.length() > 0) {
+                    if (data.length() > 0) {
                         JSONObject jsonObject = new JSONObject(data);
 
 
                     }
 
                 } catch (IOException e) {
-
                     e.printStackTrace();
                 } catch (JSONException e) {
-
+                    e.printStackTrace();
                 }
             }
 

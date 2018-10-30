@@ -32,13 +32,13 @@ import retrofit2.Response;
 
 public class LocationService extends IntentService {
 
-    public String state;
-    public String district;
+    private String state;
+    private String district;
     private PreferenceHelper preferenceHelper;
-    List<LocationModel> locationModelArrayList = new ArrayList<>();
-    List<String> locationState = new ArrayList<>();
-    List<String> locationDistrct = new ArrayList<>();
-    List<String> mDistrictList = new ArrayList();
+    private List<LocationModel> locationModelArrayList = new ArrayList<>();
+    private List<String> locationState = new ArrayList<>();
+//    List<String> locationDistrct = new ArrayList<>();
+//    List<String> mDistrictList = new ArrayList();
 
     public LocationService() {
         super("LocationService");
@@ -130,13 +130,13 @@ public class LocationService extends IntentService {
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             locationModelArrayList = new ArrayList<>();
                             JSONArray jsonArray = new JSONArray(data);
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 LocationModel locationModel = new LocationModel();
                                 locationModel.setState(jsonArray.getString(i));
-                                if(locationModel!=null)
+                              //  if(locationModel!=null)
                                 locationModelArrayList.add(locationModel);
                             }
                             locationModelArrayList.removeAll(Collections.singleton(null));
@@ -177,14 +177,14 @@ public class LocationService extends IntentService {
                 try {
                     if (response.body() != null) {
                         String data = response.body().string();
-                        if (data != null && data.length() > 0) {
+                        if (data.length() > 0) {
                             locationModelArrayList = new ArrayList<>();
                             JSONArray jsonArray = new JSONArray(data);
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 LocationModel locationModel = new LocationModel();
                                 locationModel.setState(state);
                                 locationModel.setDistrict(jsonArray.getString(i));
-                                if(locationModel!=null)
+                           //     if(locationModel!=null)
                                 locationModelArrayList.add(locationModel);
                             }
                             locationModelArrayList.removeAll(Collections.singleton(null));

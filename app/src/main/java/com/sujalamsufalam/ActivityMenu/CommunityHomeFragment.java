@@ -3,7 +3,6 @@ package com.sujalamsufalam.ActivityMenu;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -54,13 +53,13 @@ import retrofit2.Response;
 public class CommunityHomeFragment extends AppCompatActivity implements View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
     private FragmentCommunityHomeBinding binding;
     private PreferenceHelper preferenceHelper;
-    private List<Content> chatList = new ArrayList<Content>();
+    private List<Content> chatList = new ArrayList<>();
     private FragmentContentAdapter adapter;
-    TextView textNoData;
+    private TextView textNoData;
 
     private FloatingActionButton fab_add_broadcast;
     RecyclerView recyclerView;
-    Activity context;
+    private Activity context;
     private RelativeLayout mToolBar;
     private TextView toolbar_title;
     private ImageView img_back, img_list, img_logout;
@@ -128,9 +127,7 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
                 showPopUp();
         } else {
             chatList.clear();
-            for (int i = 0; i < temp.size(); i++) {
-                chatList.add(temp.get(i));
-            }
+            chatList.addAll(temp);
             adapter.notifyDataSetChanged();
             if (Utills.isConnected(context))
                 getAllChats(true, isDialogShow);
@@ -143,7 +140,7 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
             Utills.showProgressDialog(CommunityHomeFragment.this, "Loading Chats", getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
-        String url = "";
+        String url;
         if (isTimePresent)
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/getBroadcastContent?userId=" + User.getCurrentUser(context).getMvUser().getId()
@@ -158,7 +155,7 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
                 try {
                     if (response.body() != null) {
                         String str = response.body().string();
-                        if (str != null && str.length() > 0) {
+                        if (str.length() > 0) {
                             JSONArray jsonArray = new JSONArray(str);
 
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
@@ -249,20 +246,16 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
         alertDialog.setIcon(R.drawable.ic_launcher);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                context.finish();
-                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
+            alertDialog.dismiss();
+            context.finish();
+            context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
         // Setting OK Button
-        alertDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-                context.finish();
-                context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
-            }
+        alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+            alertDialog.dismiss();
+            context.finish();
+            context.overridePendingTransition(R.anim.left_in, R.anim.right_out);
         });
 
         // Showing Alert Message

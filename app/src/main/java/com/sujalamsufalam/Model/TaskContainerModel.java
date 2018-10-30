@@ -34,7 +34,7 @@ public class TaskContainerModel {
     }
 
     @ColumnInfo(name = "taskListString")
-    public String taskListString;
+    private String taskListString;
 
     public String getIsSave() {
         return isSave;
