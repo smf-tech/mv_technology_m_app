@@ -25,6 +25,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.mv.Activity.LocationSelectionActity;
 import com.mv.Activity.ProcessDeatailActivity;
@@ -88,8 +89,14 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             date.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.DATE) || taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.EVENT_DATE))
-                        showDateDialog(mContext, getAdapterPosition());
+                    if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.DATE) || taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.EVENT_DATE)) {
+                        if(taskList.get(getAdapterPosition()).getLimitValue().equals("Today")){
+                            showDateDialog(mContext, getAdapterPosition(), "CustomCalendar");
+                        }else{
+                            showDateDialog(mContext, getAdapterPosition(),"NormalCalendar");
+                        }
+
+                    }
                     else if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.MULTI_SELECT)) {
                         myList = new ArrayList<String>(Arrays.asList(getColumnIdex((taskList.get(getAdapterPosition()).getPicklist_Value__c()).split(","))));
                         //added this code to enable marathi language in multiselect filed
@@ -134,6 +141,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             //text and multiline
             // inputLayout = (TextInputLayout) view.findViewById(R.id.input_content);
             questionResponse = view.findViewById(R.id.et_process_detail);
+
             questionResponse.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -248,7 +256,27 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     holder.questionResponse.setInputType(InputType.TYPE_CLASS_TEXT);
                 } else if (task.getValidation().equals("Number")) {
                     holder.questionResponse.setInputType(InputType.TYPE_CLASS_NUMBER);
+                }  else if (task.getValidation().equals("Decimal")) {
+                    holder.questionResponse.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                 }
+                if(task.getValidationRule()!=null && task.getValidationRule().equals("Range")){
+
+//                    holder.questionResponse.addTextChangedListener(new TextWatcher() {
+//                        @Override
+//                        public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+//                        @Override
+//                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+////                            double val=Double.parseDouble(holder.questionResponse.getText().toString());
+////                            if(Double.parseDouble(task.getMaxRange())<val || Double.parseDouble(task.getMinRange())>val)
+////                                Toast.makeText(mContext,"value not in range",Toast.LENGTH_SHORT).show();
+//                        }
+//                        @Override
+//                        public void afterTextChanged(Editable s) {
+//
+//                        }
+//                    });
+                }
+
                 holder.questionResponse.setSingleLine(true);
                 break;
             case Constants.TASK_SELECTION:
@@ -375,6 +403,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.date.setTag(position);
                 holder.date.setFocusable(false);
                 holder.date.setClickable(true);
+                if(task.getValidationRule()!=null && task.getValidationRule().equals("Limit")){
+
+                }
 
                 break;
             case Constants.TIME:
@@ -545,7 +576,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
     }
 
 
-    public void showDateDialog(Context context, final int Position) {
+    public void showDateDialog(Context context, final int Position,String CalendarType) {
 
 
         final Calendar c = Calendar.getInstance();
@@ -563,6 +594,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
                     }
                 }, mYear, mMonth, mDay);
+        if(CalendarType.equals("CustomCalendar")){
+            dpd.getDatePicker().setMaxDate(System.currentTimeMillis()-10000);
+        }
         dpd.show();
     }
 

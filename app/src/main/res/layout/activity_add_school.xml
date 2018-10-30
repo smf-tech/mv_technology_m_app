@@ -133,6 +133,7 @@
                     android:ems="10"
                     android:textSize="@dimen/medium_text"
                     android:paddingBottom="10dp"
+                    android:hint="@string/cluster"
                     android:padding="10dp"
                     />
 
@@ -157,6 +158,7 @@
                     android:layout_marginTop="3dp"
                     android:background="@drawable/grey_box"
                     android:ems="10"
+                    android:hint="@string/village"
                     android:textSize="@dimen/medium_text"
                     android:paddingBottom="10dp"
                     android:padding="10dp"
@@ -184,6 +186,7 @@
                     android:background="@drawable/grey_box"
                     android:ems="10"
                     android:paddingBottom="10dp"
+                    android:hint="@string/school_name"
                     android:padding="10dp"
                  />
 

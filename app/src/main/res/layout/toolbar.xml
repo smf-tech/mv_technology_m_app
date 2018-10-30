@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:src="@drawable/ic_keyboard_backspace_white_36dp" />
+        android:src="@drawable/ic_keyboard_backspace_white_36dp"
+        android:contentDescription="@string/todo"/>
 
     <com.mv.Widgets.MyTextView
         android:id="@+id/toolbar_title"
@@ -43,7 +44,8 @@
             android:layout_height="@dimen/dimen_25dp"
             android:layout_centerVertical="true"
             android:src="@drawable/worlwide"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            android:contentDescription="@string/todo"/>
 
         <ImageView
             android:id="@+id/img_filter"
@@ -52,17 +54,19 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:src="@drawable/filter"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            android:contentDescription="@string/todo"/>
 
 
         <ImageView
-                android:id="@+id/img_list"
+            android:id="@+id/img_list"
             android:layout_width="@dimen/dimen_25dp"
             android:layout_height="@dimen/dimen_25dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
             android:src="@drawable/ic_add_circle_outline_white_36dp"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            android:contentDescription="@string/todo"/>
 
         <ImageView
             android:id="@+id/img_logout"
@@ -71,7 +75,8 @@
             android:layout_centerVertical="true"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
-            android:src="@drawable/ic_power_settings_new_white_36dp" />
+            android:src="@drawable/ic_power_settings_new_white_36dp"
+            android:contentDescription="@string/todo"/>
 
         <ImageView
             android:id="@+id/img_more"
@@ -80,7 +85,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@drawable/ic_more_weight"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:contentDescription="@string/todo"/>
 
         <CheckBox
             android:id="@+id/checkbox"

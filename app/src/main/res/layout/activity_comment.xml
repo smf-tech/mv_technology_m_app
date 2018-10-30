@@ -58,7 +58,8 @@
                     android:tint="@color/black"
                     android:padding="8dp"
                     android:src="@drawable/cancel"
-                    android:visibility="gone"/>
+                    android:visibility="gone"
+                    android:contentDescription="@string/todo"/>
 
                 <ImageView
                     android:id="@+id/imgSend"
@@ -66,7 +67,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:padding="8dp"
-                    android:src="@drawable/send" />
+                    android:src="@drawable/send"
+                    android:contentDescription="@string/todo"/>
             </LinearLayout>
 
         </LinearLayout>

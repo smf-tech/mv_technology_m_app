@@ -197,7 +197,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="10dp"
                     android:onClick="@{()->activity.onAddImageClick()}"
-                    android:src="@drawable/add" />
+                    android:src="@drawable/add"
+                    android:contentDescription="@string/todo"/>
 
 
             </LinearLayout>

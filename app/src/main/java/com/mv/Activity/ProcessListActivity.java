@@ -21,6 +21,7 @@ import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
+import com.mv.Utils.EndlessRecyclerViewScrollListener;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -83,6 +84,14 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         binding.rvProcess.setLayoutManager(mLayoutManager);
         binding.rvProcess.setItemAnimator(new DefaultItemAnimator());
+
+//        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
+//            @Override
+//            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+//                getAllProcess();
+//            }
+//        };
+
     }
 
     @Override
@@ -365,6 +374,18 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
                                 if (resultJsonObj.has("status")) {
                                     processList.setStatus__c(resultJsonObj.getString("status"));
+                                }
+                                if (resultJsonObj.has("ValidationRule")) {
+                                    processList.setValidationRule(resultJsonObj.getString("ValidationRule"));
+                                }
+                                if (resultJsonObj.has("MinRange")) {
+                                    processList.setMinRange(resultJsonObj.getString("MinRange"));
+                                }
+                                if (resultJsonObj.has("MaxRange")) {
+                                    processList.setMaxRange(resultJsonObj.getString("MaxRange"));
+                                }
+                                if (resultJsonObj.has("LimitValue")) {
+                                    processList.setLimitValue(resultJsonObj.getString("LimitValue"));
                                 }
 
                                 if (resultJsonObj.has("isEditable")) {

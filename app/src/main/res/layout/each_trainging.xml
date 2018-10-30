@@ -44,7 +44,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:src="@drawable/download_file"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:contentDescription="@string/todo"/>
 
         <ImageView
             android:id="@+id/imgshare"
@@ -54,7 +55,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:src="@drawable/download"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:contentDescription="@string/todo"/>
 
 
     </RelativeLayout>
