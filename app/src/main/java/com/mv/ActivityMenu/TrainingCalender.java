@@ -19,9 +19,6 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.prolificinteractive.materialcalendarview.CalendarDay;
-import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
-import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 import com.mv.Activity.CalenderFliterActivity;
 import com.mv.Adapter.HorizontalCalenderAdapter;
 import com.mv.Adapter.TraingCalenderAadapter;
@@ -39,6 +36,9 @@ import com.mv.databinding.FragmentTrainigCalenderBinding;
 import com.mv.decorators.EventDecorator;
 import com.mv.decorators.HighlightWeekendsDecorator;
 import com.mv.decorators.OneDayDecorator;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
+import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
+import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;

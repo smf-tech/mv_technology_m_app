@@ -1,9 +1,5 @@
 package com.mv.Utils;
 
-/**
- * Created by acer on 12/19/2016.
- */
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Service;
