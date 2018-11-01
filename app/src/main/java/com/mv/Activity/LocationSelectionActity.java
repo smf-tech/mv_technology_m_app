@@ -47,6 +47,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     private int mSelectTaluka = 0;
     private int mSelectCluster = 0;
     private int mSelectVillage = 0;
+    private int locationState;
 
     private Activity context;
     private ArrayList<Task> taskList = new ArrayList<>();
@@ -59,7 +60,6 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     private String msg = "";
     private String locationType;
     private String taskType;
-    private int locationState;
     public static String selectedState = "", selectedDistrict = "", selectedTaluka = "",
             selectedCluster = "", selectedVillage = "", selectedSchool = "";
 
@@ -315,7 +315,6 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     private void sendLocationTask() {
         msg = "";
         taskList.get(position).setTask_Response__c(selectedSpinner.getSelectedItem().toString());
-
         for (int i = 0; i < locationState; i++) {
             if (taskList.get(i).getTask_Response__c().equals("Select")) {
                 msg = "Please Select " + taskList.get(i).getTask_Text__c();
@@ -377,10 +376,8 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
             case R.id.spinner_district:
                 mSelectDistrict = i;
-
                 if (mSelectDistrict != 0) {
                     selectedDistrict = mListDistrict.get(mSelectDistrict);
-
                     mListTaluka.clear();
                     mListTaluka = AppDatabase.getAppDatabase(context).userDao()
                             .getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
@@ -389,7 +386,9 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                     if (mListTaluka.size() == 0) {
                         if (binding.spinnerTaluka.isShown()) {
                             if (Utills.isConnected(this)) {
-                                getTaluka();
+                                if (mListDistrict.size() > 0) {
+                                    getTaluka();
+                                }
                             } else {
                                 mListTaluka.clear();
                                 mListTaluka = AppDatabase.getAppDatabase(context).userDao()
@@ -499,7 +498,9 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                 if (mSelectVillage != 0) {
                     selectedVillage = mListVillage.get(mSelectVillage);
 
-                    if (binding.spinnerSchoolName.isShown()) {
+                    if (binding.spinnerSchoolName.isShown() && mListDistrict.size() > 0 &&
+                            mListTaluka.size() > 0 && mListVillage.size() > 0) {
+
                         mListSchoolName.clear();
                         mListSchoolName = AppDatabase.getAppDatabase(context).userDao()
                                 .getSchoolName(selectedState, mListDistrict.get(mSelectDistrict),
@@ -531,7 +532,9 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                 break;
 
             case R.id.spinner_school_name:
-                selectedSchool = mListSchoolName.get(i);
+                if (mListSchoolName.size() > 0) {
+                    selectedSchool = mListSchoolName.get(i);
+				}
                 break;
         }
     }
@@ -548,6 +551,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 
     private void getState() {
