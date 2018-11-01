@@ -61,8 +61,11 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_process_list);
         binding.setProcesslist(this);
-        processId = getIntent().getExtras().getString(Constants.PROCESS_ID);
-        processName = getIntent().getExtras().getString(Constants.PROCESS_NAME);
+
+        if (getIntent().getExtras() != null) {
+            processId = getIntent().getExtras().getString(Constants.PROCESS_ID);
+            processName = getIntent().getExtras().getString(Constants.PROCESS_NAME);
+        }
 
         initViews();
     }
@@ -177,8 +180,9 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
         ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetprocessAnswerDataUrl + "?processId=" + processId + "&UserId="
-                + User.getCurrentUser(this).getMvUser().getId() + "&language=" + preferenceHelper.getString(Constants.LANGUAGE);
+                + Constants.GetprocessAnswerDataUrl + "?processId=" + processId
+                + "&UserId=" + User.getCurrentUser(this).getMvUser().getId()
+                + "&language=" + preferenceHelper.getString(Constants.LANGUAGE) + "&pageNo=0";
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -324,7 +328,9 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
         ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetprocessTaskUrl + "?Id=" + processId + "&language=" + preferenceHelper.getString(Constants.LANGUAGE);
+                + Constants.GetprocessTaskUrl + "?processId=" + processId
+                + "&UserId=" + User.getCurrentUser(this).getMvUser().getId()
+                + "&language=" + preferenceHelper.getString(Constants.LANGUAGE) + "&pageNo=0";
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
 
