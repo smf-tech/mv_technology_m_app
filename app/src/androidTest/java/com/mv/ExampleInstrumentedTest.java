@@ -1,4 +1,4 @@
-package com.sujalamsufalam;
+package com.mv;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

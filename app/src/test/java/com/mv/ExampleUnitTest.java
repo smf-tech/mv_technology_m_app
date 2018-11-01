@@ -1,4 +1,4 @@
-package com.sujalamsufalam;
+package com.mv;
 
 import org.junit.Test;
 
