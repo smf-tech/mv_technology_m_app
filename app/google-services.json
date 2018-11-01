@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "104752819252-mssqelaov91sfqj0gm5e6j1tag70pcdr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mv",
+            "certificate_hash": "ff23e78f8d363d0e56c84d1d752f805fe75de2f3"
+          }
+        },
+        {
           "client_id": "104752819252-2pv6go1liuor68ik2lhgo88chfcgoeb2.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -29,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "104752819252-2pv6go1liuor68ik2lhgo88chfcgoeb2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
@@ -39,9 +52,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:104752819252:android:0a74835f09dcb0e0",
+        "mobilesdk_app_id": "1:104752819252:android:98cdff3d8d0c86be",
         "android_client_info": {
-          "package_name": "com.ss.debug"
+          "package_name": "com.mv.debug"
         }
       },
       "oauth_client": [
@@ -70,9 +83,40 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:104752819252:android:0a74835f09dcb0e0",
+        "mobilesdk_app_id": "1:104752819252:android:9899c10ab9b64a8d",
         "android_client_info": {
           "package_name": "com.ss"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "104752819252-2pv6go1liuor68ik2lhgo88chfcgoeb2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2sn_fBU-DaiXiGHomIkG5O3DzDBGjrFw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:104752819252:android:aebc71ad6be4d43d",
+        "android_client_info": {
+          "package_name": "com.ss.debug"
         }
       },
       "oauth_client": [
