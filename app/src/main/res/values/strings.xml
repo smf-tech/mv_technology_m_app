@@ -1,5 +1,6 @@
-<resources>
+<resources xmlns:https="http://schemas.android.com/tools">
     <string name="app_name">Mulyavardhan 2.0</string>
+    <string name="progress_loading">Loding</string>
     <string name="progress_please_wait">Please wait</string>
     <string name="error_something_went_wrong">Something went wrong, Please try again</string>
     <string name="error_no_internet">Please check your internet connection</string>
@@ -11,7 +12,7 @@
     <string name="text_audio">Audio</string>
     <string name="text_video">Video</string>
 
-    <string name="login_successful">Login Successful…</string>
+    <string name="login_successful">Login Successful...</string>
 
     <string name="text_record">Record Audio</string>
     <string name="text_select_audio">Select Audio</string>
@@ -84,7 +85,7 @@
     <string name="check_otp">Please Check Password</string>
 
     <string name="cannotLogout">You cannot logout</string>
-    <string name="submitAllForms">Please submit all forms and then logout…</string>
+    <string name="submitAllForms">Please submit all forms and then logout...</string>
 
     <string name="Submit">Submit</string>
     <string name="Save">Save</string>
@@ -118,14 +119,14 @@
     <string name="class_observation">Class Observation</string>
     <string name="training_responsiblity">Training Responsibility </string>
     <string name="loading_comment">Loading Comments</string>
-    <string name="please_comment">Please Enter Comment…</string>
-    <string name="comment_add">Comment Added Successfully…</string>
+    <string name="please_comment">Please Enter Comment...</string>
+    <string name="comment_add">Comment Added Successfully...</string>
     <string name="likes">Likes</string>
     <string name="comments">Comments</string>
     <string name="enter_comment">Please Enter Comment</string>
 
-    <string name="share_post">Sharing Post…</string>
-    <string name="submitted_successfully">Submitted Successfully…</string>
+    <string name="share_post">Sharing Post...</string>
+    <string name="submitted_successfully">Submitted Successfully...</string>
     <string name="select_one">Select One Community</string>
     <string name="comunity_detail">Community Details</string>
     <string name="description">Description</string>
@@ -134,7 +135,7 @@
     <string name="loading_members">Loading Members</string>
     <string name="loading_template">Loading Template</string>
     <string name="forgot_password">Forgot Password</string>
-    <string name="select_temp">Please select template type…</string>
+    <string name="select_temp">Please select template type...</string>
     <string name="img_template">Image Template</string>
     <string name="loding_district">Loading Districts</string>
     <string name="loding_taluka">Loading Taluka</string>
@@ -144,7 +145,7 @@
     <string name="loding_village">Loading Village</string>
 
     <string name="issue_template">Issue Template</string>
-    <string name="broadcast_submit">Broadcast submitted successfully…</string>
+    <string name="broadcast_submit">Broadcast submitted successfully...</string>
     <string name="fileNotPresent">File is not present. Please Press Download Button</string>
     <string name="no_data_available">No Data Available</string>
 
@@ -299,7 +300,7 @@
     <string name="expenseDescription">Description of Expense</string>
     <string name="status">Status</string>
     <string name="comment_delete">Comment deleted successfully.</string>
-    <string name="leave_leave_approoval">Leave request sent successfully…</string>
+    <string name="leave_leave_approoval">Leave request sent successfully...</string>
     <string name="compoff_leave_approoval">Comp Off request submitted successfully</string>
     <string name="adavance_list">Advance List</string>
 
