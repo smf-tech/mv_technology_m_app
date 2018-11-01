@@ -18,7 +18,7 @@
             android:id="@+id/temp_color"
             android:layout_width="@dimen/dimen_20dp"
             android:layout_height="match_parent" />
-        <com.sujalamsufalam.Widgets.MyTextView
+        <com.mv.Widgets.MyTextView
             android:id="@+id/txtTemplateName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

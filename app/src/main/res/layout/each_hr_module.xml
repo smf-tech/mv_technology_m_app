@@ -5,7 +5,7 @@
 
         <variable
             name="processlistApprove"
-            type="com.sujalamsufalam.Activity.ProcessListApproval" />
+            type="com.mv.Activity.ProcessListApproval" />
     </data>
 <LinearLayout
     android:layout_width="match_parent"
@@ -79,7 +79,7 @@
             android:background="@drawable/lighter_grey_box"
             android:padding="10dp">
 
-            <com.sujalamsufalam.Widgets.MyEditTextView
+            <com.mv.Widgets.MyEditTextView
                 android:id="@+id/input_hr_form_date"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -106,7 +106,7 @@
             android:background="@drawable/lighter_grey_box"
             android:padding="10dp">
 
-            <com.sujalamsufalam.Widgets.MyEditTextView
+            <com.mv.Widgets.MyEditTextView
                 android:id="@+id/input_hr_to_date"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -155,7 +155,7 @@
             android:background="@drawable/lighter_grey_box"
             android:padding="10dp">
 
-        <com.sujalamsufalam.Widgets.MyEditTextView
+        <com.mv.Widgets.MyEditTextView
             android:id="@+id/et_process_detail"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -171,7 +171,7 @@
 
     </LinearLayout>
 
-    <com.sujalamsufalam.Widgets.MyFontButton
+    <com.mv.Widgets.MyFontButton
         android:id="@+id/btn_hr_submit"
         android:layout_width="fill_parent"
         android:layout_height="40dp"

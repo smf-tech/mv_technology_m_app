@@ -5,7 +5,7 @@
 
         <variable
             name="activity"
-            type="com.sujalamsufalam.Activity.ExpenseNewActivity" />
+            type="com.mv.Activity.ExpenseNewActivity" />
     </data>
 
     <RelativeLayout
@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:id="@+id/txtDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -43,7 +43,7 @@
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/medium_text" />
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -70,7 +70,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_amount"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_description"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
                     android:padding="10dp"
                     android:visibility="gone">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_approve_amt"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
                     android:padding="10dp"
                     android:visibility="gone">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_approve_remarks"
                         android:layout_width="fill_parent"
                         android:layout_height="35dp"
@@ -159,7 +159,7 @@
                     android:onClick="@{()->activity.onAddImageClick()}"
                     android:src="@drawable/add" />
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:id="@+id/tv_add_attchment"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -174,7 +174,7 @@
         </ScrollView>
 
 
-        <com.sujalamsufalam.Widgets.MyFontButton
+        <com.mv.Widgets.MyFontButton
             android:id="@+id/btn_submit"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -194,7 +194,7 @@
             android:orientation="horizontal"
             android:visibility="gone">
 
-            <com.sujalamsufalam.Widgets.MyFontButton
+            <com.mv.Widgets.MyFontButton
                 android:id="@+id/btn_approve"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -205,7 +205,7 @@
                 android:textColor="@color/white"
                 android:textSize="22sp" />
 
-            <com.sujalamsufalam.Widgets.MyFontButton
+            <com.mv.Widgets.MyFontButton
                 android:id="@+id/btn_reject"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

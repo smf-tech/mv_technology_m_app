@@ -44,7 +44,7 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/logomulya" />
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:id="@+id/txt_template_type"
 
                 android:layout_width="match_parent"
@@ -59,7 +59,7 @@
                 android:textColor="@color/dark_grey"
                 my_font:typeface="Abel-Regular.ttf" />
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:id="@+id/txt_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -76,7 +76,7 @@
                 android:textSize="@dimen/small_text"
                 my_font:typeface="Abel-Regular.ttf" />
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:id="@+id/txt_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -211,7 +211,7 @@
 
         </LinearLayout>
 
-        <com.sujalamsufalam.Widgets.MyTextView
+        <com.mv.Widgets.MyTextView
 
             android:id="@+id/txt_desc"
             android:layout_width="match_parent"
@@ -228,7 +228,7 @@
             android:textSize="@dimen/article_subheading"
             my_font:typeface="Abel-Regular.ttf" />
 
-        <com.sujalamsufalam.Widgets.MyTextView
+        <com.mv.Widgets.MyTextView
 
             android:id="@+id/txt_status"
             android:layout_width="match_parent"
@@ -246,7 +246,7 @@
             android:visibility="gone"
             my_font:typeface="Abel-Regular.ttf" />
 
-        <com.sujalamsufalam.Widgets.MyTextView
+        <com.mv.Widgets.MyTextView
 
             android:id="@+id/txt_tag"
             android:layout_width="match_parent"
@@ -264,7 +264,7 @@
             android:visibility="gone"
             my_font:typeface="Abel-Regular.ttf" />
 
-        <com.sujalamsufalam.Widgets.MyTextView
+        <com.mv.Widgets.MyTextView
 
 
             android:id="@+id/txt_type"
@@ -278,7 +278,7 @@
             android:visibility="gone"
             my_font:typeface="Abel-Regular.ttf" />
 
-        <com.sujalamsufalam.Widgets.MyTextView
+        <com.mv.Widgets.MyTextView
             android:id="@+id/txt_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -322,7 +322,7 @@
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/share" />
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
 
 
                     android:id="@+id/txt_forward"
@@ -353,7 +353,7 @@
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/comment" />
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
 
 
                     android:layout_width="wrap_content"
@@ -384,7 +384,7 @@
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/dislike" />
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
 
 
                     android:id="@+id/textViewLike"
@@ -415,7 +415,7 @@
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/download" />
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
 
 
                     android:id="@+id/textViewDownload"
@@ -446,7 +446,7 @@
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/download_file" />
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
 
 
                     android:layout_width="wrap_content"
@@ -472,7 +472,7 @@
             android:gravity="left"
             android:orientation="horizontal">
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:id="@+id/txtCommentCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -482,7 +482,7 @@
                 android:textSize="12dp"
                 my_font:typeface="Abel-Regular.ttf" />
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:id="@+id/txtLikeCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -493,7 +493,7 @@
                 android:textSize="12dp"
                 my_font:typeface="Abel-Regular.ttf" />
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:id="@+id/txt_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

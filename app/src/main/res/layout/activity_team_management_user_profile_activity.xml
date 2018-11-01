@@ -5,7 +5,7 @@
 
         <variable
             name="activity"
-            type="com.sujalamsufalam.Activity.TeamManagementUserProfileListActivity" />
+            type="com.mv.Activity.TeamManagementUserProfileListActivity" />
     </data>
 
     <LinearLayout
@@ -46,7 +46,7 @@
                 android:background="@drawable/search_rounded"
                 android:padding="10dp">
 
-                <com.sujalamsufalam.Widgets.MyEditTextView
+                <com.mv.Widgets.MyEditTextView
                     android:id="@+id/edit_text_email"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -87,7 +87,7 @@
             android:orientation="horizontal"
             android:layout_weight="1">
 
-            <com.sujalamsufalam.Widgets.MyFontButton
+            <com.mv.Widgets.MyFontButton
                 android:id="@+id/btn_pending"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -97,7 +97,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/small_text" />
 
-            <com.sujalamsufalam.Widgets.MyFontButton
+            <com.mv.Widgets.MyFontButton
                 android:id="@+id/btn_approve"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -107,7 +107,7 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/small_text" />
 
-            <com.sujalamsufalam.Widgets.MyFontButton
+            <com.mv.Widgets.MyFontButton
                 android:id="@+id/btn_reject"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

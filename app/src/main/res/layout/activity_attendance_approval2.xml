@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:orientation="horizontal">
-                <com.sujalamsufalam.Widgets.MyFontButton
+                <com.mv.Widgets.MyFontButton
                     android:id="@+id/btn_pending"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
                     android:text="@string/pending"
                     android:textColor="@color/white"
                     android:textSize="@dimen/small_text" />
-                <com.sujalamsufalam.Widgets.MyFontButton
+                <com.mv.Widgets.MyFontButton
                     android:id="@+id/btn_approve"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -47,7 +47,7 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/small_text" />
 
-                <com.sujalamsufalam.Widgets.MyFontButton
+                <com.mv.Widgets.MyFontButton
                     android:id="@+id/btn_reject"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -75,7 +75,7 @@
                 android:background="@drawable/search_rounded"
                 android:layout_weight="1">
 
-                <com.sujalamsufalam.Widgets.MyEditTextView
+                <com.mv.Widgets.MyEditTextView
                     android:id="@+id/edit_text_email"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

@@ -5,7 +5,7 @@
 
         <variable
             name="activity"
-            type="com.sujalamsufalam.Activity.SalaryListActivity" />
+            type="com.mv.Activity.SalaryListActivity" />
     </data>
 
     <LinearLayout

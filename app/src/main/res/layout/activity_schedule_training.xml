@@ -5,7 +5,7 @@
 
         <variable
             name="activity"
-            type="com.sujalamsufalam.Activity.ScheduleTrainingActivity" />
+            type="com.mv.Activity.ScheduleTrainingActivity" />
     </data>
 
     <LinearLayout
@@ -31,7 +31,7 @@
             android:onClick="@{()->activity.onLayoutMTTraining()}"
             android:padding="8dp">
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"

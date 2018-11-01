@@ -5,7 +5,7 @@
 
         <variable
             name="activity"
-            type="com.sujalamsufalam.Activity.VoucherListActivity" />
+            type="com.mv.Activity.VoucherListActivity" />
     </data>
 
     <LinearLayout
@@ -42,7 +42,7 @@
                     android:padding="5dp"
                     android:visibility="visible">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_email"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"

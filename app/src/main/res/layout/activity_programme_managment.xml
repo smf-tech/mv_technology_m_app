@@ -5,7 +5,7 @@
 
         <variable
             name="activity"
-            type="com.sujalamsufalam.Activity.ProcessApprovalActivity" />
+            type="com.mv.Activity.ProcessApprovalActivity" />
     </data>
 
     <LinearLayout
@@ -31,7 +31,7 @@
             android:onClick="@{()->activity.onLayoutScheduleTraining()}"
             android:padding="8dp">
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -64,7 +64,7 @@
             android:onClick="@{()->activity.onLayoutClassObservation()}"
             android:padding="8dp">
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
@@ -97,7 +97,7 @@
             android:onClick="@{()->activity.onLayoutOrganizeEvents()}"
             android:padding="8dp">
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"

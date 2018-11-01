@@ -37,7 +37,7 @@
             android:background="@drawable/lighter_grey_box"
             android:padding="10dp">
 
-            <com.sujalamsufalam.Widgets.MyEditTextView
+            <com.mv.Widgets.MyEditTextView
                 android:id="@+id/et_process_detail"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -84,7 +84,7 @@
             android:background="@drawable/lighter_grey_box"
             android:padding="10dp">
 
-            <com.sujalamsufalam.Widgets.MyEditTextView
+            <com.mv.Widgets.MyEditTextView
                 android:id="@+id/et_process_detail_date"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -251,7 +251,7 @@
             android:background="@null"
             android:src="@drawable/ic_add_photo" />
 
-        <com.sujalamsufalam.Widgets.MyTextView
+        <com.mv.Widgets.MyTextView
             android:id="@+id/tv_img_hed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

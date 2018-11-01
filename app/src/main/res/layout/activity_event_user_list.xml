@@ -6,7 +6,7 @@
 
         <variable
             name="activity"
-            type="com.sujalamsufalam.Activity.EventUserListActivity" />
+            type="com.mv.Activity.EventUserListActivity" />
     </data>
 
     <RelativeLayout
@@ -68,7 +68,7 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:id="@+id/tv_state"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
                         android:spinnerMode="dialog" />
 
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:id="@+id/tv_district"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -118,7 +118,7 @@
                         android:prompt="@string/district"
                         android:spinnerMode="dialog" />
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:id="@+id/tv_taluka"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -143,7 +143,7 @@
                         android:prompt="@string/taluka"
                         android:spinnerMode="dialog" />
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:id="@+id/tv_cluster"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -168,7 +168,7 @@
                         android:prompt="@string/cluster"
                         android:spinnerMode="dialog" />
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:id="@+id/tv_village"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -193,7 +193,7 @@
                         android:prompt="@string/village"
                         android:spinnerMode="dialog" />
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:id="@+id/tv_school"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -219,7 +219,7 @@
                         android:spinnerMode="dialog" />
                 </LinearLayout>
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:id="@+id/txt_org"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -252,7 +252,7 @@
                         android:spinnerMode="dialog" />
                 </RelativeLayout>
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:id="@+id/txt_role"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -297,7 +297,7 @@
                     android:background="@drawable/search_rounded"
                     android:padding="5dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_email"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -363,7 +363,7 @@
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
 
-        <com.sujalamsufalam.Widgets.MyFontButton
+        <com.mv.Widgets.MyFontButton
             android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

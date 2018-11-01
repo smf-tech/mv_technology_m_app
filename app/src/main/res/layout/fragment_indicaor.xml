@@ -4,7 +4,7 @@
 
         <variable
             name="indicator_fragment"
-            type="com.sujalamsufalam.Activity.PiachartActivity" />
+            type="com.mv.Activity.PiachartActivity" />
     </data>
 
     <LinearLayout
@@ -24,7 +24,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:id="@+id/tv_state"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -36,7 +36,7 @@
                 android:textSize="@dimen/small_text" />
 
 
-            <com.sujalamsufalam.Widgets.MyEditTextView
+            <com.mv.Widgets.MyEditTextView
                 android:id="@+id/spinner_role"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -205,7 +205,7 @@
                         android:background="@drawable/search_rounded"
                         android:padding="5dp">
 
-                        <com.sujalamsufalam.Widgets.MyEditTextView
+                        <com.mv.Widgets.MyEditTextView
                             android:id="@+id/edit_text_email"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"

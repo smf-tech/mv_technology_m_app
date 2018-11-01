@@ -5,7 +5,7 @@
 
         <variable
             name="activity"
-            type="com.sujalamsufalam.Activity.CalenderFliterActivity" />
+            type="com.mv.Activity.CalenderFliterActivity" />
     </data>
 
     <LinearLayout
@@ -71,7 +71,7 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:id="@+id/tv_state"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -96,7 +96,7 @@
                         android:spinnerMode="dialog" />
 
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:id="@+id/tv_district"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
                         android:prompt="@string/district"
                         android:spinnerMode="dialog" />
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:id="@+id/tv_taluka"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                         android:prompt="@string/taluka"
                         android:spinnerMode="dialog" />
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:id="@+id/tv_cluster"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -171,7 +171,7 @@
                         android:prompt="@string/cluster"
                         android:spinnerMode="dialog" />
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:id="@+id/tv_village"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -196,7 +196,7 @@
                         android:prompt="@string/village"
                         android:spinnerMode="dialog" />
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:id="@+id/tv_school"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -222,7 +222,7 @@
                         android:spinnerMode="dialog" />
                 </LinearLayout>
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:id="@+id/txt_org"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -255,7 +255,7 @@
                         android:spinnerMode="dialog" />
                 </RelativeLayout>
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:id="@+id/txt_role"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -287,7 +287,7 @@
                         />
                 </RelativeLayout>
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:id="@+id/tv_catogory"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -324,7 +324,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/et_event_title"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -349,7 +349,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/et_event_date"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -374,7 +374,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/et_event_time"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -400,7 +400,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/et_event_end_date"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -425,7 +425,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/et_event_end_time"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -450,7 +450,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/et_event_discription"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -462,7 +462,7 @@
                         android:textSize="@dimen/medium_text" />
                 </android.support.design.widget.TextInputLayout>
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:id="@+id/txt_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -493,7 +493,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:id="@+id/tv_event_add_user"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -509,7 +509,7 @@
                         android:textColor="@color/black"
                         android:textSize="@dimen/medium_text" />
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:id="@+id/tv_event_attendance"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -529,7 +529,7 @@
             </LinearLayout>
         </ScrollView>
 
-        <com.sujalamsufalam.Widgets.MyFontButton
+        <com.mv.Widgets.MyFontButton
             android:id="@+id/btn_submit"
             android:layout_width="match_parent"
             android:layout_height="0dp"

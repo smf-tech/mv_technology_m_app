@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sujalamsufalam.Activity.AssetApprovalActivity">
+    tools:context="com.mv.Activity.AssetApprovalActivity">
     <LinearLayout
         android:id="@+id/layout_main"
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                     android:focusable="false"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_name"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_assetname"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -93,7 +93,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_modelno"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -120,7 +120,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_specification"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_code"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -168,7 +168,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_asset_status"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -193,7 +193,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/asset_reject_remark"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -244,7 +244,7 @@
             android:weightSum="10"
             android:layout_alignParentBottom="true">
 
-            <com.sujalamsufalam.Widgets.MyFontButton
+            <com.mv.Widgets.MyFontButton
                 android:id="@+id/accept"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -255,7 +255,7 @@
 
                 android:textColor="#ffffff"
                 android:textSize="22sp" />
-            <com.sujalamsufalam.Widgets.MyFontButton
+            <com.mv.Widgets.MyFontButton
                 android:id="@+id/reject"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

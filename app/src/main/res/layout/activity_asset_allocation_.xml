@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sujalamsufalam.Activity.AssetAllocation_Activity">
+    tools:context="com.mv.Activity.AssetAllocation_Activity">
 
     <LinearLayout
         android:id="@+id/layout_main"
@@ -49,7 +49,7 @@
                         android:focusable="false"
                         android:padding="10dp">
 
-                        <com.sujalamsufalam.Widgets.MyEditTextView
+                        <com.mv.Widgets.MyEditTextView
                             android:id="@+id/edit_text_username"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -77,7 +77,7 @@
                         android:focusable="false"
                         android:padding="10dp">
 
-                        <com.sujalamsufalam.Widgets.MyEditTextView
+                        <com.mv.Widgets.MyEditTextView
                             android:id="@+id/edit_text_assetname"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
                         android:background="@drawable/lighter_grey_box"
                         android:padding="10dp">
 
-                        <com.sujalamsufalam.Widgets.MyEditTextView
+                        <com.mv.Widgets.MyEditTextView
                             android:id="@+id/edit_asset_status"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
                         android:focusable="false"
                         android:padding="10dp">
 
-                        <com.sujalamsufalam.Widgets.MyEditTextView
+                        <com.mv.Widgets.MyEditTextView
                             android:id="@+id/edit_text_no"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -189,7 +189,7 @@
                         android:focusable="false"
                         android:padding="10dp">
 
-                        <com.sujalamsufalam.Widgets.MyEditTextView
+                        <com.mv.Widgets.MyEditTextView
                             android:id="@+id/edit_text_name"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -212,7 +212,7 @@
 
         </ScrollView>
 
-        <com.sujalamsufalam.Widgets.MyFontButton
+        <com.mv.Widgets.MyFontButton
             android:id="@+id/btn_allocate_asset"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -222,7 +222,7 @@
             android:textColor="#ffffff"
             android:textSize="22sp" />
 
-        <com.sujalamsufalam.Widgets.MyFontButton
+        <com.mv.Widgets.MyFontButton
             android:id="@+id/btn_reject_asset"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

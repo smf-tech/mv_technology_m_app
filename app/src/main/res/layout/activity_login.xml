@@ -5,7 +5,7 @@
 
         <variable
             name="activity"
-            type="com.sujalamsufalam.Activity.LoginActivity" />
+            type="com.mv.Activity.LoginActivity" />
     </data>
 
     <ScrollView
@@ -34,7 +34,7 @@
                 android:layout_marginTop="50dp"
                 android:src="@drawable/ic_launcher" />
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -90,7 +90,7 @@
                     android:orientation="vertical">
 
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edt_username"
                         android:layout_width="fill_parent"
                         android:layout_height="40dp"
@@ -113,7 +113,7 @@
                         android:textSize="@dimen/medium_text" />
 
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edt_otp"
                         android:layout_width="fill_parent"
                         android:layout_height="40dp"
@@ -144,7 +144,7 @@
                     android:visibility="gone">
 
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:id="@+id/txtForgotPassword"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -157,7 +157,7 @@
                         android:visibility="gone" />
                 </LinearLayout>
 
-                <com.sujalamsufalam.Widgets.MyFontButton
+                <com.mv.Widgets.MyFontButton
                     android:id="@+id/btn_login"
                     android:layout_width="fill_parent"
                     android:layout_height="40dp"
@@ -173,7 +173,7 @@
                     android:textColor="@color/white"
                     android:textSize="@dimen/large_text" />
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:id="@+id/tv_timer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -186,7 +186,7 @@
                     android:textSize="@dimen/medium_text"
                     android:visibility="gone" />
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:id="@+id/tv_resend_otp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

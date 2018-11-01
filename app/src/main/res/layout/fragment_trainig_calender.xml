@@ -6,7 +6,7 @@
 
         <variable
             name="clander"
-            type="com.sujalamsufalam.ActivityMenu.TrainingCalender" />
+            type="com.mv.ActivityMenu.TrainingCalender" />
     </data>
 
     <RelativeLayout

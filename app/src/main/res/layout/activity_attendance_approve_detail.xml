@@ -4,7 +4,7 @@
     <data>
         <variable
             name="activity"
-            type="com.sujalamsufalam.Activity.AttendanceApproveDetailActivity" />
+            type="com.mv.Activity.AttendanceApproveDetailActivity" />
     </data>
 
     <LinearLayout
@@ -296,7 +296,7 @@
                     android:visibility="gone"
                     android:padding="5dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_approve_remarks"
                         android:layout_width="fill_parent"
                         android:layout_height="35dp"
@@ -323,7 +323,7 @@
             android:visibility="gone"
             android:weightSum="10">
 
-            <com.sujalamsufalam.Widgets.MyFontButton
+            <com.mv.Widgets.MyFontButton
                 android:id="@+id/btn_approve"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -334,7 +334,7 @@
                 android:textColor="#ffffff"
                 android:textSize="22sp" />
 
-            <com.sujalamsufalam.Widgets.MyFontButton
+            <com.mv.Widgets.MyFontButton
                 android:id="@+id/btn_reject"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

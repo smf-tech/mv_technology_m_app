@@ -5,7 +5,7 @@
 
         <variable
             name="activity"
-            type="com.sujalamsufalam.Activity.AdavanceNewActivity" />
+            type="com.mv.Activity.AdavanceNewActivity" />
     </data>
 
     <LinearLayout
@@ -26,7 +26,7 @@
             android:layout_margin="10dp"
             android:orientation="vertical">
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:id="@+id/txtDate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -37,7 +37,7 @@
                 android:textColor="@color/dark_grey"
                 android:textSize="@dimen/medium_text" />
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -66,7 +66,7 @@
                 android:background="@drawable/lighter_grey_box"
                 android:padding="10dp">
 
-                <com.sujalamsufalam.Widgets.MyEditTextView
+                <com.mv.Widgets.MyEditTextView
                     android:id="@+id/edit_text_count"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -88,7 +88,7 @@
                 android:background="@drawable/lighter_grey_box"
                 android:padding="10dp">
 
-                <com.sujalamsufalam.Widgets.MyEditTextView
+                <com.mv.Widgets.MyEditTextView
                     android:id="@+id/edit_text_description"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -110,7 +110,7 @@
                 android:padding="10dp"
                 android:visibility="gone">
 
-                <com.sujalamsufalam.Widgets.MyEditTextView
+                <com.mv.Widgets.MyEditTextView
                     android:id="@+id/edit_approve_amt"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -133,7 +133,7 @@
                 android:padding="10dp"
                 android:visibility="gone">
 
-                <com.sujalamsufalam.Widgets.MyEditTextView
+                <com.mv.Widgets.MyEditTextView
                     android:id="@+id/edit_approve_remarks"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -151,7 +151,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <com.sujalamsufalam.Widgets.MyFontButton
+            <com.mv.Widgets.MyFontButton
                 android:id="@+id/btn_submit"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -171,7 +171,7 @@
                 android:visibility="gone"
                 android:weightSum="10">
 
-                <com.sujalamsufalam.Widgets.MyFontButton
+                <com.mv.Widgets.MyFontButton
                     android:id="@+id/btn_approve"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -182,7 +182,7 @@
                     android:textColor="@color/white"
                     android:textSize="22sp" />
 
-                <com.sujalamsufalam.Widgets.MyFontButton
+                <com.mv.Widgets.MyFontButton
                     android:id="@+id/btn_reject"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"

@@ -5,7 +5,7 @@
 
         <variable
             name="activity"
-            type="com.sujalamsufalam.Activity.AddThetSavadActivity" />
+            type="com.mv.Activity.AddThetSavadActivity" />
     </data>
 
     <LinearLayout
@@ -30,7 +30,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -56,7 +56,7 @@
                     android:prompt="@string/disrict"
                     android:spinnerMode="dialog" />
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -82,7 +82,7 @@
                     android:prompt="@string/taluka"
                     android:spinnerMode="dialog" />
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -108,7 +108,7 @@
                     android:prompt="@string/school_name"
                     android:spinnerMode="dialog" />
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -145,7 +145,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_content"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -169,7 +169,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_description"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -196,7 +196,7 @@
 
 
 
-        <com.sujalamsufalam.Widgets.MyFontButton
+        <com.mv.Widgets.MyFontButton
             android:id="@+id/btnSubmit"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

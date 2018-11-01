@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sujalamsufalam.Activity.AboutUsActivity">
+    tools:context="com.mv.Activity.AboutUsActivity">
 
     <include
         android:id="@+id/toolbar_layout"
@@ -21,7 +21,7 @@
             android:layout_margin="@dimen/dimen_10dp"
             android:orientation="vertical">
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:id="@+id/txt_about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

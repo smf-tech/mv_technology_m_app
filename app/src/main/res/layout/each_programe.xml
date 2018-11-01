@@ -24,7 +24,7 @@
             android:id="@+id/temp_color"
             android:layout_width="@dimen/dimen_20dp"
             android:layout_height="match_parent" />
-        <com.sujalamsufalam.Widgets.MyTextView
+        <com.mv.Widgets.MyTextView
             android:id="@+id/txtTemplateName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
                 android:layout_width="@dimen/dimen_20dp"
                 android:layout_height="wrap_content" />
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:id="@+id/txt_traget_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -78,7 +78,7 @@
                 android:textColor="@color/dark_grey"
                 android:textSize="@dimen/small_text" />
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:id="@+id/txt_traget_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -105,7 +105,7 @@
                 android:layout_width="@dimen/dimen_20dp"
                 android:layout_height="wrap_content" />
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:id="@+id/txt_submmited_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -117,7 +117,7 @@
                 android:textColor="@color/dark_grey"
                 android:textSize="@dimen/small_text" />
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:id="@+id/txt_expected_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

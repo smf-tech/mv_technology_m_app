@@ -27,7 +27,7 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/logomulya" />
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:id="@+id/txt_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
                 android:textSize="@dimen/small_text"
                 my_font:typeface="Abel-Regular.ttf" />
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:id="@+id/txt_comment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -54,7 +54,7 @@
                 android:textSize="@dimen/medium_text"
                 my_font:typeface="Abel-Regular.ttf" />
 
-            <com.sujalamsufalam.Widgets.MyTextView
+            <com.mv.Widgets.MyTextView
                 android:id="@+id/txt_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

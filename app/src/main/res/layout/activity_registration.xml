@@ -5,7 +5,7 @@
 
         <variable
             name="activity"
-            type="com.sujalamsufalam.Activity.RegistrationActivity" />
+            type="com.mv.Activity.RegistrationActivity" />
     </data>
 
     <LinearLayout
@@ -43,7 +43,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_name"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -67,7 +67,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_midle_name"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_last_name"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -114,7 +114,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/birth_date"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -140,7 +140,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_mobile_number"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -165,7 +165,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_email"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -197,7 +197,7 @@
                         android:background="@drawable/lighter_grey_box"
                         android:padding="10dp">
 
-                        <com.sujalamsufalam.Widgets.MyEditTextView
+                        <com.mv.Widgets.MyEditTextView
                             android:id="@+id/edit_text_refresh"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
@@ -232,7 +232,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_address"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -253,7 +253,7 @@
                     android:background="@drawable/grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:id="@+id/txt_view1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -299,7 +299,7 @@
                     </RadioGroup>
                 </RelativeLayout>
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -331,7 +331,7 @@
                         android:spinnerMode="dialog" />
                 </RelativeLayout>
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -375,7 +375,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_multiselect_project"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -389,7 +389,7 @@
                         android:textSize="@dimen/medium_text" />
                 </android.support.design.widget.TextInputLayout>
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -422,7 +422,7 @@
                 </RelativeLayout>
 
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -457,7 +457,7 @@
                 </RelativeLayout>
 
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:id="@+id/txt_district"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -491,7 +491,7 @@
                         android:spinnerMode="dialog" />
                 </RelativeLayout>
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:id="@+id/txt_taluka"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -537,7 +537,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_multiselect_taluka"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -551,7 +551,7 @@
                         android:textSize="@dimen/medium_text" />
                 </android.support.design.widget.TextInputLayout>
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:id="@+id/txt_cluster"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -587,7 +587,7 @@
                         android:spinnerMode="dialog" />
                 </RelativeLayout>
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:id="@+id/txt_village"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -622,7 +622,7 @@
                         android:spinnerMode="dialog" />
                 </RelativeLayout>
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:id="@+id/txt_school"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -669,7 +669,7 @@
                     android:padding="10dp"
                     android:visibility="gone">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_school_code"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -692,7 +692,7 @@
                     android:onClick="@{()->activity.onAddImageClick()}"
                     android:src="@drawable/add" />
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -706,7 +706,7 @@
             </LinearLayout>
         </ScrollView>
 
-        <com.sujalamsufalam.Widgets.MyFontButton
+        <com.mv.Widgets.MyFontButton
             android:id="@+id/btn_submit"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

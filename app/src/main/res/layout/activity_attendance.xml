@@ -6,7 +6,7 @@
 
         <variable
             name="activity"
-            type="com.sujalamsufalam.Activity.AttendanceActivity" />
+            type="com.mv.Activity.AttendanceActivity" />
     </data>
 
     <RelativeLayout

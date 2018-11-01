@@ -5,7 +5,7 @@
 
         <variable
             name="activity"
-            type="com.sujalamsufalam.Activity.ReportingTemplateActivity" />
+            type="com.mv.Activity.ReportingTemplateActivity" />
     </data>
 
     <LinearLayout
@@ -44,7 +44,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_content"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
                     android:background="@drawable/lighter_grey_box"
                     android:padding="10dp">
 
-                    <com.sujalamsufalam.Widgets.MyEditTextView
+                    <com.mv.Widgets.MyEditTextView
                         android:id="@+id/edit_text_description"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -139,7 +139,7 @@
                         android:prompt="@string/disrict"
                         android:spinnerMode="dialog" />
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -163,7 +163,7 @@
                         android:prompt="@string/taluka"
                         android:spinnerMode="dialog" />
 
-                    <com.sujalamsufalam.Widgets.MyTextView
+                    <com.mv.Widgets.MyTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -192,7 +192,7 @@
 
                 </LinearLayout>
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:id="@+id/txt_spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -228,7 +228,7 @@
                     android:onClick="@{()->activity.onAddImageClick()}"
                     android:src="@drawable/add" />
 
-                <com.sujalamsufalam.Widgets.MyTextView
+                <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -244,7 +244,7 @@
         </ScrollView>
 
 
-        <com.sujalamsufalam.Widgets.MyFontButton
+        <com.mv.Widgets.MyFontButton
             android:id="@+id/btnSubmit"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

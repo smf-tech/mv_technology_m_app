@@ -6,7 +6,7 @@
 
         <variable
             name="activity"
-            type="com.sujalamsufalam.Activity.AccountSectionActivity" />
+            type="com.mv.Activity.AccountSectionActivity" />
     </data>
 
     <LinearLayout

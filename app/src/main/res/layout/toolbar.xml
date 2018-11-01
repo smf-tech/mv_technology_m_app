@@ -16,7 +16,7 @@
         android:layout_centerVertical="true"
         android:src="@drawable/ic_keyboard_backspace_white_36dp" />
 
-    <com.sujalamsufalam.Widgets.MyTextView
+    <com.mv.Widgets.MyTextView
         android:id="@+id/toolbar_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -5,7 +5,7 @@
 
         <variable
             name="activity"
-            type="com.sujalamsufalam.Activity.CommentActivity" />
+            type="com.mv.Activity.CommentActivity" />
     </data>
 
     <RelativeLayout

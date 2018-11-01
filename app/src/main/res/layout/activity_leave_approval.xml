@@ -5,7 +5,7 @@
 
         <variable
             name="processlist"
-            type="com.sujalamsufalam.Activity.LeaveApprovalActivity" />
+            type="com.mv.Activity.LeaveApprovalActivity" />
     </data>
 
     <RelativeLayout

@@ -5,7 +5,7 @@
 
         <variable
             name="activity"
-            type="com.sujalamsufalam.Activity.ActivityImageView" />
+            type="com.mv.Activity.ActivityImageView" />
     </data>
 
     <RelativeLayout
@@ -15,7 +15,7 @@
         android:background="@color/tranparant_lighter_grey"
         android:orientation="vertical">
 
-        <com.sujalamsufalam.Widgets.TouchImageView
+        <com.mv.Widgets.TouchImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
