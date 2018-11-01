@@ -20,7 +20,8 @@
             android:layout_height="120dp"
             android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_launcher"/>
+            android:src="@drawable/ic_launcher"
+            android:contentDescription="@string/todo"/>
 
         <ImageView
             android:id="@+id/iv_logo"
@@ -28,7 +29,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/mulya_image"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:contentDescription="@string/todo"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recyclerView"

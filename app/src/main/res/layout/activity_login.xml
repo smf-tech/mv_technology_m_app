@@ -32,7 +32,8 @@
                 android:layout_height="175dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="50dp"
-                android:src="@drawable/ic_launcher" />
+                android:src="@drawable/ic_launcher"
+				android:contentDescription="@string/todo"/>
 
             <com.mv.Widgets.MyTextView
                 android:layout_width="wrap_content"

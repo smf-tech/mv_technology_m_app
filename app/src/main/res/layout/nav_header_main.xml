@@ -15,7 +15,8 @@
         android:layout_height="@dimen/dimen_70dp"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/dimen_10dp"
-        android:src="@drawable/ic_launcher" />
+        android:src="@drawable/ic_launcher" 
+        android:contentDescription="@string/todo"/>
 
 
     <ImageView
@@ -24,7 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:src="@drawable/mulya_image"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:contentDescription="@string/todo"/>
 
     <TextView
         android:id="@+id/versionName"
