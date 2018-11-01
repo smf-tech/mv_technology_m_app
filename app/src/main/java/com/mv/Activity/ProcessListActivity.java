@@ -61,8 +61,11 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_process_list);
         binding.setProcesslist(this);
-        processId = getIntent().getExtras().getString(Constants.PROCESS_ID);
-        processName = getIntent().getExtras().getString(Constants.PROCESS_NAME);
+
+        if (getIntent().getExtras() != null) {
+            processId = getIntent().getExtras().getString(Constants.PROCESS_ID);
+            processName = getIntent().getExtras().getString(Constants.PROCESS_NAME);
+        }
 
         initViews();
     }

@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  * Created by nanostuffs on 18-09-2017.
  */
 
-class ProgramManagementProcessList {
+public class ProgramManagementProcessList {
     @SerializedName("type")
     @Expose
     private String type;

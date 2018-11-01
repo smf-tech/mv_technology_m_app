@@ -4,9 +4,7 @@ package com.mv.Adapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-
 import android.content.Intent;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +12,6 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 
 import com.mv.Activity.LeaveApprovalActivity;
 import com.mv.Activity.LeaveDetailActivity;

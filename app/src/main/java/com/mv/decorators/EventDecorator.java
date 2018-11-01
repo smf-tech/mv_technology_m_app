@@ -3,10 +3,10 @@ package com.mv.decorators;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 
-import com.mv.R;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
+import com.mv.R;
 
 import java.util.Collection;
 import java.util.HashSet;
