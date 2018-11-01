@@ -53,8 +53,6 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     private ArrayList<Task> taskList = new ArrayList<>();
     private List<String> mListDistrict, mListTaluka, mListCluster, mListVillage, mListSchoolName, mStateList;
 
-//    private ArrayAdapter<String> district_adapter, taluka_adapter, cluster_adapter,
-//            village_adapter, school_adapter, state_adapter, organization_adapter;
     private PreferenceHelper preferenceHelper;
     private Spinner selectedSpinner;
 
@@ -379,7 +377,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                     mListTaluka.removeAll(Collections.singleton(null));
 
                     if (mListTaluka.size() == 0) {
-                        if (binding.spinnerTaluka.isShown() && mListDistrict.size() > 0) {
+                        if (binding.spinnerTaluka.isShown()) {
                             if (Utills.isConnected(this)) {
                                 if (mListDistrict.size() > 0) {
                                     getTaluka();
@@ -462,9 +460,9 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                         mListVillage.removeAll(Collections.singleton(null));
 
                         if (mListVillage.size() == 0) {
-                            if (Utills.isConnected(this))
+                            if (Utills.isConnected(this)) {
                                 getVillage();
-                            else {
+                            } else {
                                 mListVillage.clear();
                                 mListVillage = AppDatabase.getAppDatabase(context).userDao()
                                         .getVillage(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
@@ -525,8 +523,9 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                 break;
 
             case R.id.spinner_school_name:
-                if (mListSchoolName.size() > 0)
+                if (mListSchoolName.size() > 0) {
                     selectedSchool = mListSchoolName.get(i);
+				}
                 break;
         }
     }
@@ -560,13 +559,14 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                     if (response.body() != null) {
                         String data = response.body().string();
                         if (data.length() > 0) {
-                            JSONArray jsonArray = new JSONArray(data);
                             mStateList.clear();
                             mStateList.add("Select");
 
+                            JSONArray jsonArray = new JSONArray(data);
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 mStateList.add(jsonArray.getString(i));
                             }
+
                             setSpinnerAdapter(mStateList, binding.spinnerState, selectedState);
                         }
                     }
@@ -645,6 +645,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                             }
 
                             setSpinnerAdapter(mListTaluka, binding.spinnerTaluka, selectedTaluka);
+
                             Intent intent = new Intent(getApplicationContext(), LocationService.class);
                             intent.putExtra(Constants.State, mStateList.get(mSelectState));
                             intent.putExtra(Constants.DISTRICT, mListDistrict.get(mSelectDistrict));
@@ -721,6 +722,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                             for (int i = 0; i < jsonArr.length(); i++) {
                                 mListVillage.add(jsonArr.getString(i));
                             }
+
                             setSpinnerAdapter(mListVillage, binding.spinnerVillage, selectedVillage);
                         }
                     }
@@ -758,6 +760,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                             for (int i = 0; i < jsonArr.length(); i++) {
                                 mListSchoolName.add(jsonArr.getString(i));
                             }
+
                             setSpinnerAdapter(mListSchoolName, binding.spinnerSchoolName, selectedSchool);
                         }
                     }
