@@ -1443,10 +1443,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         if (!isBackPress) {
             Utills.showProgressDialog(this, getString(R.string.loding_taluka), getString(R.string.progress_please_wait));
         }
-        ServiceRequest apiService =
-                ApiClient.getClient().create(ServiceRequest.class);
 
-        apiService.getTaluka(mListState.get(mSelectState), mListDistrict.get(mSelectDistrict),"structure").enqueue(new Callback<ResponseBody>() {
+		ServiceRequest apiService = ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getTaluka(mListState.get(mSelectState), 
+				mListDistrict.get(mSelectDistrict),"structure").enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -1499,10 +1499,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         if (!isBackPress) {
             Utills.showProgressDialog(this, getString(R.string.loding_village), getString(R.string.progress_please_wait));
         }
-        ServiceRequest apiService =
-                ApiClient.getClient().create(ServiceRequest.class);
 
-        apiService.getVillage(mListState.get(mSelectState), mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka), "structure").enqueue(new Callback<ResponseBody>() {
+		ServiceRequest apiService = ApiClient.getClient().create(ServiceRequest.class);
+        apiService.getVillage(mListState.get(mSelectState), mListDistrict.get(mSelectDistrict), 
+				mListTaluka.get(mSelectTaluka), "structure").enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
