@@ -21,7 +21,6 @@ import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
-import com.mv.Utils.EndlessRecyclerViewScrollListener;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -84,14 +83,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         binding.rvProcess.setLayoutManager(mLayoutManager);
         binding.rvProcess.setItemAnimator(new DefaultItemAnimator());
-
-//        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(mLayoutManager) {
-//            @Override
-//            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-//                getAllProcess();
-//            }
-//        };
-
     }
 
     @Override
@@ -100,7 +91,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         resultList.clear();
 
         LocationSelectionActity.selectedState = User.getCurrentUser(getApplicationContext()).getMvUser().getState();
-        LocationSelectionActity.selectedDisrict = User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict();
+        LocationSelectionActity.selectedDistrict = User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict();
         LocationSelectionActity.selectedTaluka = User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka();
         LocationSelectionActity.selectedCluster = User.getCurrentUser(getApplicationContext()).getMvUser().getCluster();
         LocationSelectionActity.selectedVillage = User.getCurrentUser(getApplicationContext()).getMvUser().getVillage();

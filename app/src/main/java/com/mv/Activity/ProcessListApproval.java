@@ -2,8 +2,8 @@ package com.mv.Activity;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +17,6 @@ import com.mv.Model.Task;
 import com.mv.Model.TaskContainerModel;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
-
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
@@ -99,7 +98,7 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
         super.onResume();
         resultList.clear();
         LocationSelectionActity.selectedState = "";
-        LocationSelectionActity.selectedDisrict = "";
+        LocationSelectionActity.selectedDistrict = "";
         LocationSelectionActity.selectedTaluka = "";
         LocationSelectionActity.selectedCluster = "";
         LocationSelectionActity.selectedVillage = "";
