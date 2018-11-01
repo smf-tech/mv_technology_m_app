@@ -42,7 +42,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:src="@drawable/form_delete"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:contentDescription="@string/todo"/>
 
         <ImageView
             android:id="@+id/imgshare"
@@ -52,7 +53,8 @@
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
             android:src="@drawable/download"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:contentDescription="@string/todo"/>
 
 
     </RelativeLayout>

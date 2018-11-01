@@ -48,7 +48,8 @@
                             android:layout_height="@dimen/avator_size"
                             android:onClick="@{()->activity.onProfileImageClick()}"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/logomulya" />
+                            android:src="@drawable/logomulya"
+                            android:contentDescription="@string/todo"/>
 
                         <com.mv.Widgets.MyTextView
                             android:id="@+id/type"
@@ -82,13 +83,13 @@
                     </RelativeLayout>
 
                     <ImageView
-
                         android:id="@+id/card_imagedetails"
                         android:layout_width="match_parent"
                         android:layout_height="200dp"
                         android:onClick="@{()->activity.onPostImageClick()}"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/mulya_bg" />
+                        android:src="@drawable/mulya_bg"
+                        android:contentDescription="@string/todo"/>
 
                     <com.mv.Widgets.MyTextView
                         android:id="@+id/Title"
@@ -172,7 +173,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:src="@drawable/share" />
+                                android:src="@drawable/share"
+                                android:contentDescription="@string/todo"/>
 
                             <com.mv.Widgets.MyTextView
                                 android:layout_width="wrap_content"
@@ -199,7 +201,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:src="@drawable/comment" />
+                                android:src="@drawable/comment"
+                                android:contentDescription="@string/todo"/>
 
                             <com.mv.Widgets.MyTextView
                                 android:layout_width="wrap_content"
@@ -227,7 +230,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:src="@drawable/like_n" />
+                                android:src="@drawable/dislike" />
 
                             <com.mv.Widgets.MyTextView
                                 android:layout_width="wrap_content"
@@ -253,7 +256,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:src="@drawable/download" />
+                                android:src="@drawable/download"
+                                android:contentDescription="@string/todo"/>
 
                             <com.mv.Widgets.MyTextView
                                 android:layout_width="wrap_content"
@@ -278,7 +282,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
-                                android:src="@drawable/download_file" />
+                                android:src="@drawable/download_file"
+                                android:contentDescription="@string/todo"/>
 
                             <com.mv.Widgets.MyTextView
                                 android:layout_width="wrap_content"

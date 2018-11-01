@@ -157,7 +157,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="10dp"
                     android:onClick="@{()->activity.onAddImageClick()}"
-                    android:src="@drawable/add" />
+                    android:src="@drawable/add"
+                    android:contentDescription="@string/todo"/>
 
                 <com.mv.Widgets.MyTextView
                     android:id="@+id/tv_add_attchment"
@@ -172,7 +173,6 @@
                     android:textSize="@dimen/large_text" />
             </LinearLayout>
         </ScrollView>
-
 
         <com.mv.Widgets.MyFontButton
             android:id="@+id/btn_submit"

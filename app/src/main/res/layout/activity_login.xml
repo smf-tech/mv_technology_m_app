@@ -143,7 +143,6 @@
                     android:orientation="vertical"
                     android:visibility="gone">
 
-
                     <com.mv.Widgets.MyTextView
                         android:id="@+id/txtForgotPassword"
                         android:layout_width="match_parent"

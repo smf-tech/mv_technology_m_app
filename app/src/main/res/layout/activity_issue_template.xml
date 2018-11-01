@@ -194,7 +194,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:gravity="left|top"
+                        android:gravity="start|top"
                         android:hint="@string/description"
                         android:minLines="3"
                         android:textColor="@color/black"
@@ -208,7 +208,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="10dp"
                     android:onClick="@{()->activity.onAddImageClick()}"
-                    android:src="@drawable/add" />
+                    android:src="@drawable/add"
+                    android:contentDescription="@string/todo"/>
 
                 <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"

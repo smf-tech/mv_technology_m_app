@@ -180,7 +180,8 @@
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_alignParentEnd="true"
-                android:src="@drawable/ic_more_vert_black_24dp" />
+                android:src="@drawable/ic_more_vert_black_24dp"
+                android:contentDescription="@string/todo"/>
         </RelativeLayout>
 
         <View
@@ -209,7 +210,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/ic_expene"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:contentDescription="@string/todo"/>
 
                 <com.mv.Widgets.MyTextView
                     android:id="@+id/txt_forward"
@@ -240,7 +242,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:src="@drawable/comment"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    android:contentDescription="@string/todo"/>
 
                 <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"

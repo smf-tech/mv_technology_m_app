@@ -39,7 +39,8 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="10dp"
-            android:src="@drawable/arrow" />
+            android:src="@drawable/arrow"
+            android:contentDescription="@string/todo"/>
 
         <TextView
             android:id="@+id/txtCount"

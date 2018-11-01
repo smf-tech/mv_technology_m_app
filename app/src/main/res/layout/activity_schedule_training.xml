@@ -48,7 +48,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:src="@drawable/arrow" />
+                android:src="@drawable/arrow"
+                android:contentDescription="@string/todo"/>
 
         </RelativeLayout>
 
