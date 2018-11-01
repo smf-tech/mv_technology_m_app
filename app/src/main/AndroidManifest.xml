@@ -25,6 +25,7 @@
         android:label="Sujalam Sufalam"
         android:largeHeap="true"
         android:supportsRtl="true"
+        android:testOnly="false"
         android:theme="@style/AppTheme">
         <activity
             android:name=".Activity.SplashScreenActivity"

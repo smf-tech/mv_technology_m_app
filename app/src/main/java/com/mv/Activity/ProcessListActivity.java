@@ -91,7 +91,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         resultList.clear();
 
         LocationSelectionActity.selectedState = User.getCurrentUser(getApplicationContext()).getMvUser().getState();
-        LocationSelectionActity.selectedDisrict = User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict();
+        LocationSelectionActity.selectedDistrict = User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict();
         LocationSelectionActity.selectedTaluka = User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka();
         LocationSelectionActity.selectedCluster = User.getCurrentUser(getApplicationContext()).getMvUser().getCluster();
         LocationSelectionActity.selectedVillage = User.getCurrentUser(getApplicationContext()).getMvUser().getVillage();

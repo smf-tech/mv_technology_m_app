@@ -98,7 +98,7 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
         super.onResume();
         resultList.clear();
         LocationSelectionActity.selectedState = "";
-        LocationSelectionActity.selectedDisrict = "";
+        LocationSelectionActity.selectedDistrict = "";
         LocationSelectionActity.selectedTaluka = "";
         LocationSelectionActity.selectedCluster = "";
         LocationSelectionActity.selectedVillage = "";
