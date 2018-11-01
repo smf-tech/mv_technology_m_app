@@ -354,5 +354,6 @@
     <string name="Please_select_project">Please select Project</string>
     <string name="location_not_found">Current location is not available, Please try again</string>
     <string name="title_activity_maps">Map</string>
+    <string name="todo">TODO</string>
     <string name="structure">Structure</string>
 </resources>
