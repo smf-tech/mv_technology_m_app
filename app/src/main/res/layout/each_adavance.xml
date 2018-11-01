@@ -113,14 +113,16 @@
                 android:id="@+id/imgEdit"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/ic_form" />
+                android:src="@drawable/ic_form"
+                android:contentDescription="@string/todo"/>
 
             <ImageView
                 android:id="@+id/imgDelete"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/form_delete" />
+                android:src="@drawable/form_delete"
+                android:contentDescription="@string/todo"/>
 
 
         </LinearLayout>

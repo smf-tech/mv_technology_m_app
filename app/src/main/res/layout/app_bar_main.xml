@@ -26,7 +26,8 @@
                 android:layout_alignParentRight="true"
                 android:padding="@dimen/dimen_5dp"
                 android:layout_marginRight="@dimen/dimen_10dp"
-                android:src="@drawable/bell_icon"/>
+                android:src="@drawable/bell_icon"
+                android:contentDescription="@string/todo"/>
 
             <TextView
                 android:id="@+id/tv_unread_notification"
