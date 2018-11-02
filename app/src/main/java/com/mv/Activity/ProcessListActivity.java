@@ -21,6 +21,7 @@ import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
+import com.mv.Utils.EndlessRecyclerViewScrollListener;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -43,6 +44,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
     private Context mContext;
 
+    private int pageNo = 0;
     private ArrayList<String> idList;
     private ArrayList<Task> taskList = new ArrayList<>();
     private List<TaskContainerModel> resultList = new ArrayList<>();
@@ -83,15 +85,24 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
         setActionbar(processName);
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-        binding.rvProcess.setLayoutManager(mLayoutManager);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        binding.rvProcess.setLayoutManager(layoutManager);
         binding.rvProcess.setItemAnimator(new DefaultItemAnimator());
+
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                pageNo ++;
+                getAllProcess(pageNo);
+            }
+        };
+
+        binding.rvProcess.addOnScrollListener(scrollListener);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        resultList.clear();
 
         LocationSelectionActity.selectedState = User.getCurrentUser(getApplicationContext()).getMvUser().getState();
         LocationSelectionActity.selectedDistrict = User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict();
@@ -99,12 +110,15 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         LocationSelectionActity.selectedCluster = User.getCurrentUser(getApplicationContext()).getMvUser().getCluster();
         LocationSelectionActity.selectedVillage = User.getCurrentUser(getApplicationContext()).getMvUser().getVillage();
         LocationSelectionActity.selectedSchool = User.getCurrentUser(getApplicationContext()).getMvUser().getSchool_Name();
+
+        resultList.clear();
+        resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(processId, Constants.TASK_ANSWER);
         getAllProcessData();
     }
 
     public void getAllProcessData() {
         if (Utills.isConnected(this))
-            getAllProcess();
+            getAllProcess(0);
         else {
             //offline
             //show in process list only type is answer(exclude question)
@@ -176,12 +190,13 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         finish();
     }
 
-    private void getAllProcess() {
+    private void getAllProcess(int pageNo) {
         Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
         ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.GetprocessAnswerDataUrl + "?processId=" + processId + "&UserId="
-                + User.getCurrentUser(this).getMvUser().getId() + "&language=" + preferenceHelper.getString(Constants.LANGUAGE);
+                + User.getCurrentUser(this).getMvUser().getId()
+                + "&language=" + preferenceHelper.getString(Constants.LANGUAGE) + "&pageNo=" + pageNo;
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -192,8 +207,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                         String data = response.body().string();
                         if (data.length() > 0) {
                             AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().deleteTask("false", processId);
-                            resultList = new ArrayList<>();
-                            resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(processId, Constants.TASK_ANSWER);
+//                            resultList = new ArrayList<>();
+//                            resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(processId, Constants.TASK_ANSWER);
                             idList = new ArrayList<>();
 
                             for (int k = 0; k < resultList.size(); k++) {
@@ -280,6 +295,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
                                 taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
                                 taskContainerModel.setHeaderPosition(sb.toString());
+                                taskContainerModel.setTaskTimeStamp(taskList.get(0).getTimestamp__c());
 
                                 //task is with answer
                                 taskContainerModel.setTaskType(Constants.TASK_ANSWER);
@@ -327,7 +343,9 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
         ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetprocessTaskUrl + "?Id=" + processId + "&language=" + preferenceHelper.getString(Constants.LANGUAGE);
+                + Constants.GetprocessTaskUrl + "?Id=" + processId
+                + "&UserId=" + User.getCurrentUser(this).getMvUser().getId()
+                + "&language=" + preferenceHelper.getString(Constants.LANGUAGE);
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
 
@@ -499,7 +517,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
                     try {
                         if (Utills.isConnected(ProcessListActivity.this)) {
-                            getAllProcess();
+                            getAllProcess(0);
                         }
                     } catch (Exception e) {
                         Utills.hideProgressDialog();

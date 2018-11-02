@@ -137,6 +137,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         taskContainerModel.setHeaderPosition(sb.toString());
         taskContainerModel.setIsSave(Constants.PROCESS_STATE_SAVE);
         taskContainerModel.setMV_Process__c(taskList.get(0).getMV_Process__c());
+        Long currentTime = System.currentTimeMillis();
+        taskContainerModel.setTaskTimeStamp(currentTime.toString());
 
         if (preferenceHelper.getBoolean(Constants.NEW_PROCESS)) {
             //if process is new  INSERT it with timestamp as id

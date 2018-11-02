@@ -164,7 +164,9 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                                 leavesModel.setId(data.getString("Id"));
                                 leavesModel.setFromDate(data.getString("From__c"));
                                 leavesModel.setToDate(data.getString("To__c"));
-                                leavesModel.setReason(data.getString("Reason__c"));
+                                if (data.has("Reason__c")) {
+                                    leavesModel.setReason(data.getString("Reason__c"));
+                                }
                                 leavesModel.setTypeOfLeaves(data.getString("Leave_Type__c"));
                                 leavesModel.setStatus(data.getString("Status__c"));
                                 if (data.has("isHalfDay__c")) {
@@ -270,7 +272,9 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                                 leavesModel.setId(data.getString("Id"));
                                 leavesModel.setFromDate(data.getString("From__c"));
                                 leavesModel.setToDate(data.getString("To__c"));
-                                leavesModel.setReason(data.getString("Reason__c"));
+                                if (data.has("Reason__c")) {
+                                    leavesModel.setReason(data.getString("Reason__c"));
+                                }
                                 leavesModel.setTypeOfLeaves(data.getString("Leave_Type__c"));
                                 leavesModel.setStatus(data.getString("Status__c"));
                                 if (data.has("Comment__c"))
