@@ -211,7 +211,7 @@ public interface UserDao {
     void DeleteContent(Content... contents);
 
 
-    @Query("SELECT * FROM " + Constants.TABLE_CONTAINER + " where MV_Process__c = :processId AND  TaskType = :questionType")
+    @Query("SELECT * FROM " + Constants.TABLE_CONTAINER + " where MV_Process__c = :processId AND  TaskType = :questionType ORDER BY taskTimeStamp DESC")
     List<TaskContainerModel> getTask(String processId, String questionType);
 
     @Query("SELECT count(*) FROM " + Constants.TABLE_CONTAINER + " where TaskType = :questionType AND  isSave = :isSave")

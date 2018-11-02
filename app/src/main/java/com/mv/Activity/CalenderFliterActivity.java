@@ -1447,7 +1447,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                         binding.etEventEndDate.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
                     }
                 }, mYear, mMonth, mDay);
-        dpd.getDatePicker().setMinDate(System.currentTimeMillis() - 10000);
+        // dpd.getDatePicker().setMinDate(System.currentTimeMillis() - 10000);
         dpd.show();
     }
 

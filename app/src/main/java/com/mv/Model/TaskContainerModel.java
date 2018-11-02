@@ -97,4 +97,15 @@ public class TaskContainerModel {
     public void setIsDeleteAllow(boolean deleteAllow) {
         IsDeleteAllow = deleteAllow;
     }
+
+    public String getTaskTimeStamp() {
+        return taskTimeStamp;
+    }
+
+    public void setTaskTimeStamp(String taskTimeStamp) {
+        this.taskTimeStamp = taskTimeStamp;
+    }
+
+    @ColumnInfo(name = "taskTimeStamp")
+    private String taskTimeStamp;
 }
