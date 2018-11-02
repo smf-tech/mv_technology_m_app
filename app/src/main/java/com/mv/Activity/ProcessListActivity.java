@@ -344,7 +344,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.GetprocessTaskUrl + "?Id=" + processId
-                + "&UserId=" + User.getCurrentUser(this).getMvUser().getId()
+                + "&userId=" + User.getCurrentUser(this).getMvUser().getId()
                 + "&language=" + preferenceHelper.getString(Constants.LANGUAGE);
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
