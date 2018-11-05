@@ -24,8 +24,10 @@ import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -62,23 +64,17 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                     preferenceHelper.insertString(Constants.UNIQUE, resultList.size() > getAdapterPosition() ?
                             resultList.get(getAdapterPosition()).getUnique_Id() : "");
 
-                    if (preferenceHelper.getBoolean(Constants.IS_LOCATION)) {
-                        preferenceHelper.insertBoolean(Constants.NEW_PROCESS, false);
+                    preferenceHelper.insertBoolean(Constants.NEW_PROCESS, false);
 
-                        Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
-                        openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskArrayList.get(getAdapterPosition()));
+                    Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
+                    openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskArrayList.get(getAdapterPosition()));
 
-                        mContext.startActivity(openClass);
-                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                    } else {
-                        preferenceHelper.insertBoolean(Constants.NEW_PROCESS, false);
+                    String[] structureList = resultList.get(getAdapterPosition())
+                            .getProAnsListString().replace("[", "").replace("]", "").split(",");
+                    openClass.putExtra(Constants.PICK_LIST_ID, (Serializable) Arrays.asList(structureList));
 
-                        Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
-                        openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskArrayList.get(getAdapterPosition()));
-
-                        mContext.startActivity(openClass);
-                        mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                    }
+                    mContext.startActivity(openClass);
+                    mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 } else {
                     Utills.showToast("No Task Available ", mContext);
                 }
@@ -113,7 +109,10 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
 
         Log.d("pos", String.valueOf(position));
         if (resultList.get(position).getHeaderPosition().equals("")) {
-            holder.txtCommunityName.setText(Utills.getDate(Long.valueOf(tasks.get(0).getTimestamp__c()), "dd/MM/yyyy hh:mm:ss.SSS"));
+            if (tasks.get(0).getTimestamp__c() != null && !tasks.get(0).getTimestamp__c().equals("null")) {
+                holder.txtCommunityName.setText(Utills.getDate(
+                        Long.valueOf(tasks.get(0).getTimestamp__c()), "dd/MM/yyyy hh:mm:ss.SSS"));
+            }
         } else {
             holder.txtCommunityName.setText(resultList.get(position).getHeaderPosition());
         }

@@ -33,6 +33,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -48,6 +49,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     private ArrayList<String> idList;
     private ArrayList<Task> taskList = new ArrayList<>();
     private List<TaskContainerModel> resultList = new ArrayList<>();
+    private ArrayList<String> pickListFieldNames = new ArrayList<>();
 
     private PreferenceHelper preferenceHelper;
     private ProcessListAdapter mAdapter;
@@ -112,6 +114,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         LocationSelectionActity.selectedSchool = User.getCurrentUser(getApplicationContext()).getMvUser().getSchool_Name();
 
         resultList.clear();
+        pickListFieldNames.clear();
         resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(processId, Constants.TASK_ANSWER);
         getAllProcessData();
     }
@@ -205,9 +208,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                     if (response.body() != null) {
                         String data = response.body().string();
                         if (data.length() > 0) {
+                            List<String> pickListFieldNames = new ArrayList<>();
                             AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().deleteTask("false", processId);
-//                            resultList = new ArrayList<>();
-//                            resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(processId, Constants.TASK_ANSWER);
                             idList = new ArrayList<>();
 
                             for (int k = 0; k < resultList.size(); k++) {
@@ -217,11 +219,14 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                             JSONObject jsonObject = new JSONObject(data);
                             JSONArray resultArray = jsonObject.getJSONArray("tsk");
 
+                            JSONArray pickListArray = new JSONArray("proAnsList");
+
                             for (int j = 0; j < resultArray.length(); j++) {
                                 JSONArray jsonArray = resultArray.getJSONArray(j);
                                 taskContainerModel = new TaskContainerModel();
                                 taskList = new ArrayList<>();
 
+                                int flag = 0;
                                 StringBuilder sb = new StringBuilder();
                                 String prefix = "";
 
@@ -286,9 +291,42 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                         processList.setIsEditable__c(jsonArray.getJSONObject(i).getString("IsEditable"));
                                     }
 
+                                    if (jsonArray.getJSONObject(i).has("Task_Type") &&
+                                            jsonArray.getJSONObject(i).getString("Task_Type").equals(Constants.TASK_PICK_LIST)) {
+
+                                        if (jsonArray.getJSONObject(i).has("referenceField") &&
+                                                jsonArray.getJSONObject(i).getString("referenceField") != null) {
+                                            pickListFieldNames = Arrays.asList(jsonArray.getJSONObject(i).getString("referenceField").split(","));
+                                            flag = 1;
+                                        }
+                                    }
+
                                     processList.setValidation(jsonArray.getJSONObject(i).getString("Validation_on_text"));
                                     processList.setIsSave(Constants.PROCESS_STATE_SUBMIT);
                                     taskList.add(processList);
+                                }
+
+                                if (flag == 1) {
+                                    ArrayList<String> structureList = new ArrayList<>();
+                                    structureList.add("Select");
+
+                                    for (int i = 0; i < pickListArray.length(); i++) {
+                                        JSONObject pickListJsonObj = pickListArray.getJSONObject(i);
+                                        String pickListValue = "";
+
+                                        for (String fieldName : pickListFieldNames) {
+                                            if (pickListJsonObj.has(fieldName)) {
+                                                if (pickListValue.length() > 0) {
+                                                    pickListValue = pickListValue.concat("_").concat(pickListJsonObj.getString(fieldName));
+                                                } else {
+                                                    pickListValue = pickListJsonObj.getString(fieldName);
+                                                }
+                                            }
+                                        }
+                                        structureList.add(pickListValue);
+                                    }
+
+                                    taskContainerModel.setProAnsListString(structureList.toString());
                                 }
 
                                 taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
@@ -355,6 +393,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                     if (response.body() != null) {
                         String data = response.body().string();
                         if (data.length() > 0) {
+                            List<String> pickListFieldName = new ArrayList<>();
                             JSONObject jsonObject = new JSONObject(data);
                             JSONArray resultArray = jsonObject.getJSONArray("tsk");
 
@@ -450,12 +489,39 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     }
                                 }
 
+                                if (resultJsonObj.has("tasktype") &&
+                                        resultJsonObj.getString("tasktype").equals(Constants.TASK_PICK_LIST)) {
+                                    if (resultJsonObj.has("referenceField")) {
+                                        pickListFieldName = Arrays.asList(resultJsonObj.getString("referenceField").split(","));
+                                    }
+
+                                }
+
                                 processList.setMV_Process__c(resultJsonObj.getString("mVProcess"));
                                 processList.setTask_Text__c(resultJsonObj.getString("taskText"));
                                 processList.setTask_type__c(resultJsonObj.getString("tasktype"));
                                 processList.setValidation(resultJsonObj.getString("validaytionOnText"));
                                 processList.setIsSave(Constants.PROCESS_STATE_SAVE);
                                 taskList.add(processList);
+                            }
+
+                            pickListFieldNames.add("Select");
+
+                            JSONArray pickListArray = jsonObject.getJSONArray("proAnsList");
+                            for (int i = 0; i < pickListArray.length(); i++) {
+                                JSONObject pickListJsonObj = pickListArray.getJSONObject(i);
+                                String pickListValue = "";
+
+                                for (String fieldName : pickListFieldName) {
+                                    if (pickListJsonObj.has(fieldName)) {
+                                        if (pickListValue.length() > 0) {
+                                            pickListValue = pickListValue.concat(", ").concat(pickListJsonObj.getString(fieldName));
+                                        } else {
+                                            pickListValue = pickListJsonObj.getString(fieldName);
+                                        }
+                                    }
+                                }
+                                pickListFieldNames.add(pickListValue);
                             }
 
                             // each task list  convert to String and stored in process task filled
@@ -475,7 +541,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                             if (taskList.size() > 0) {
                                 preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
                                 Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
-                                openClass.putExtra(Constants.PROCESS_ID, taskList);
+                                openClass.putExtra(Constants.PICK_LIST_ID, pickListFieldNames);
                                 openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskList);
                                 startActivity(openClass);
                                 overridePendingTransition(R.anim.right_in, R.anim.left_out);

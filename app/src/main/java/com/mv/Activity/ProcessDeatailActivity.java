@@ -67,6 +67,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     private PreferenceHelper preferenceHelper;
     private ArrayList<Task> taskList = new ArrayList<>();
+    private ArrayList<String> pickListApiFieldNames = new ArrayList<>();
     private GPSTracker gps;
     private Activity context;
 
@@ -96,6 +97,10 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
         if (getIntent().getSerializableExtra(Constants.PROCESS_ID) != null) {
             taskList = getIntent().getParcelableArrayListExtra(Constants.PROCESS_ID);
+        }
+
+        if (getIntent().getStringArrayExtra(Constants.PICK_LIST_ID) != null) {
+            pickListApiFieldNames = getIntent().getStringArrayListExtra(Constants.PICK_LIST_ID);
         }
 
         initViews();
@@ -169,7 +174,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         rvProcessDetail = (RecyclerView) findViewById(R.id.rv_process_detail);
         rvProcessDetail.setNestedScrollingEnabled(false);
         rvProcessDetail.setHasFixedSize(true);
-        adapter = new ProcessDetailAdapter(this, taskList);
+        adapter = new ProcessDetailAdapter(this, taskList, pickListApiFieldNames);
         rvProcessDetail.setHasFixedSize(true);
         rvProcessDetail.setLayoutManager(new LinearLayoutManager(this));
         rvProcessDetail.setAdapter(adapter);
@@ -607,7 +612,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             }
         } else if (resultCode == RESULT_OK) {
             taskList = data.getParcelableArrayListExtra(Constants.PROCESS_ID);
-            adapter = new ProcessDetailAdapter(this, taskList);
+            adapter = new ProcessDetailAdapter(this, taskList, pickListApiFieldNames);
             rvProcessDetail.setAdapter(adapter);
         } else if (requestCode == 100) {
             if (!gps.canGetLocation()) {
