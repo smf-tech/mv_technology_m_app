@@ -512,17 +512,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Utills.hideProgressDialog();
                     AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(tcm.getUnique_Id(), tcm.getMV_Process__c());
-//                    getAllProcessData();
-//
-//                    try {
-//                        if (Utills.isConnected(ProcessListActivity.this)) {
-//                            getAllProcess(0);
-//                        }
-//                    } catch (Exception e) {
-//                        Utills.hideProgressDialog();
-//                        Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
-//                    }
 
+                    // Removed entry from db
                     resultList.remove(position);
                     mAdapter.notifyDataSetChanged();
                 }

@@ -171,7 +171,10 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                 } else {
                     AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(resultList.get(position).getUnique_Id(),
                             resultList.get(position).getMV_Process__c());
-                    mContext.getAllProcessData();
+
+                    // Removed entry from local db
+                    resultList.remove(position);
+                    notifyDataSetChanged();
                 }
             }
         });
