@@ -120,8 +120,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         if (Utills.isConnected(this))
             getAllProcess(0);
         else {
-            //offline
-            //show in process list only type is answer(exclude question)
+            //offline show in process list only type is answer(exclude question)
             resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(processId, Constants.TASK_ANSWER);
             if (resultList.size() > 0) {
                 if (preferenceHelper.getBoolean(Constants.IS_MULTIPLE)) {
@@ -344,8 +343,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.GetprocessTaskUrl + "?Id=" + processId
-                + "&UserId=" + User.getCurrentUser(this).getMvUser().getId()
-                + "&language=" + preferenceHelper.getString(Constants.LANGUAGE);
+                + "&language=" + preferenceHelper.getString(Constants.LANGUAGE)
+                + "&userId=" + User.getCurrentUser(this).getMvUser().getId();
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
 
@@ -500,7 +499,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     }
 
     //Delete post from salesforece and from local database
-    public void deleteForm(TaskContainerModel tcm) {
+    public void deleteForm(TaskContainerModel tcm, int position) {
         if (Utills.isConnected(this)) {
             Utills.showProgressDialog(this);
 
@@ -513,16 +512,10 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Utills.hideProgressDialog();
                     AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(tcm.getUnique_Id(), tcm.getMV_Process__c());
-                    getAllProcessData();
 
-                    try {
-                        if (Utills.isConnected(ProcessListActivity.this)) {
-                            getAllProcess(0);
-                        }
-                    } catch (Exception e) {
-                        Utills.hideProgressDialog();
-                        Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
-                    }
+                    // Removed entry from db
+                    resultList.remove(position);
+                    mAdapter.notifyDataSetChanged();
                 }
 
                 @Override
