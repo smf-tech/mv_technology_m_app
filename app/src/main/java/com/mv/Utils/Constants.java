@@ -224,6 +224,10 @@ public class Constants {
     public static String ALLUSER = "alluser";
     public static String ACTION_ALARM_RECEIVER = "action_alarm";
 
+    // Constants to check permissions
+    public static final int LOCATION_PERMISSION_REQUEST = 0;
+    public static final int MEDIA_PERMISSION_REQUEST = 1;
+    public static final int PHONE_PERMISSION_REQUEST = 2;
 
     ArrayList<Asset> requestedList = new ArrayList<>();
     ArrayList<Asset> acceptedList = new ArrayList<>();

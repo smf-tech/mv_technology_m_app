@@ -30,8 +30,8 @@ android {
             storePassword 'ss@123'
         }
     }
-    compileSdkVersion 26
-    buildToolsVersion '26.0.2'
+    compileSdkVersion 28
+    buildToolsVersion '28.0.3'
     // used by Room, to test migrations
     sourceSets {
         androidTest.assets.srcDirs +=

@@ -22,10 +22,9 @@
         android:allowBackup="true"
         android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
-        android:label="Sujalam Sufalam"
+        android:label="@string/appNameConfig"
         android:largeHeap="true"
         android:supportsRtl="true"
-        android:testOnly="false"
         android:theme="@style/AppTheme">
         <activity
             android:name=".Activity.SplashScreenActivity"
@@ -403,6 +402,16 @@
         <activity
             android:name=".Activity.MapsActivity"
             android:label="@string/title_activity_maps"/>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/filepaths" />
+        </provider>
     </application>
 
 </manifest>
