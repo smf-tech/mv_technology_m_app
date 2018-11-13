@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -13,12 +12,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -1443,7 +1440,8 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                         binding.etEventEndDate.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
                     }
                 }, mYear, mMonth, mDay);
-        dpd.getDatePicker().setMinDate(System.currentTimeMillis() - 10000);
+        //removed for some time to allow user to create back dated events, after some time expected to restrict users to create back dated events.
+        //dpd.getDatePicker().setMinDate(System.currentTimeMillis() - 10000);
         dpd.show();
     }
 

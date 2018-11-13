@@ -2,7 +2,6 @@ package com.mv.Activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -701,7 +700,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                     }
                 })
                 .setPositiveButton(getString(R.string.ok), (dialog12, id) -> {
-                    StringBuffer sb = new StringBuffer();
+                    StringBuilder sb = new StringBuilder();
                     String prefix = "";
                     for (int i = 0; i < items.length; i++) {
                         if (mSelection[i]) {
@@ -716,7 +715,7 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                         binding.spinnerRole.setText(selectedRolename);
                     else
                         binding.spinnerRole.setText("Select");
-                    selectedRole = new ArrayList<String>(Arrays.asList(getColumnIdex((selectedRolename).split(","))));
+                    selectedRole = new ArrayList<>(Arrays.asList(getColumnIdex((selectedRolename).split(","))));
                     getAllFilterUser();
                     Log.e("StringValue", selectedRolename);
 

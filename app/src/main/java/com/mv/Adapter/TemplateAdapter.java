@@ -48,11 +48,9 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.MyView
 
                 else if (mContext instanceof ProgrammeManagmentFragment) {
 
-
                     preferenceHelper.insertBoolean(Constants.IS_EDITABLE, teplateList.get(getAdapterPosition()).getIs_Editable__c());
                     preferenceHelper.insertBoolean(Constants.IS_LOCATION, teplateList.get(getAdapterPosition()).getLocation());
                     preferenceHelper.insertBoolean(Constants.IS_MULTIPLE, teplateList.get(getAdapterPosition()).getIs_Multiple_Entry_Allowed__c());
-
                     preferenceHelper.insertString(Constants.STATE_LOCATION_LEVEL, teplateList.get(getAdapterPosition()).getLocationLevel());
 
                     Intent openClass = new Intent(mContext, ProcessListActivity.class);

@@ -52,11 +52,15 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
     private String proceesId;
     private String Processname;
     private String userId;
+    private String status;
     private Context mContext;
 
 
     private TaskContainerModel taskContainerModel;
     private List<TaskContainerModel> resultList = new ArrayList<>();
+    private List<TaskContainerModel> pendingProcessList = new ArrayList<>();
+    private List<TaskContainerModel> approvedProcessList = new ArrayList<>();
+    private List<TaskContainerModel> rejectedProcessList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,8 +113,11 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
     }
 
     private void getAllProcessData() {
-        if (Utills.isConnected(this))
-            getAllProcess();
+        if (Utills.isConnected(this)) {
+            getProcessByStatus("Pending");
+            getProcessByStatus("Approved");
+            getProcessByStatus("Rejected");
+        }
         else {
             //offline
             //show in process list only type is answer(exclude question)
@@ -148,12 +155,12 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
         finish();
     }
 
-    private void getAllProcess() {
+    private void getProcessByStatus(String status) {
         Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetprocessAnswerDataUrl+"?processId=" + proceesId + "&UserId=" + userId;
+                + Constants.GetprocessAnswerDataUrl+"?processId=" + proceesId + "&UserId=" + userId + "&status=" + status ;
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -237,15 +244,18 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
                         taskContainerModel.setMV_Process__c(proceesId);
                         taskContainerModel.setUnique_Id(taskList.get(0).getId());
 
-                        if(taskList.get(0).getIsApproved__c().equals("false"))
+                        if(taskList.get(0).getIsApproved__c().equals("Pending"))
                             resultList.add(taskContainerModel);
-
-
-
-
+                        if(status.equals("Pending")){
+                            pendingProcessList.add(taskContainerModel);
+                        }else if(status.equals("Approved")){
+                            approvedProcessList.add(taskContainerModel);
+                        }else if(status.equals("Rejected")){
+                            rejectedProcessList.add(taskContainerModel);
+                        }
                     }
                     preferenceHelper.insertBoolean(Constants.IS_EDITABLE, false);
-                    mAdapter = new ProcessListAdapter(resultList, ProcessListApproval.this);
+                    mAdapter = new ProcessListAdapter(pendingProcessList, ProcessListApproval.this);
                     binding.rvProcess.setAdapter(mAdapter);
                 } catch (JSONException e) {
                     e.printStackTrace();

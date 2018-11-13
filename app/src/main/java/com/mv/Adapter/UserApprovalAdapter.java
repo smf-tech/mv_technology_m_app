@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mv.Activity.ProcessListApproval;
 import com.mv.Activity.TeamManagementUserProfileListActivity;
 import com.mv.Activity.UserApproveDetail;
 import com.mv.Model.Template;
@@ -28,13 +29,15 @@ public class UserApprovalAdapter extends RecyclerView.Adapter<UserApprovalAdapte
     private PreferenceHelper preferenceHelper;
     private TeamManagementUserProfileListActivity mActivity;
     private List<Template> mDataList;
+    private String approval_type;
 
-    public UserApprovalAdapter(Context context, List<Template> chatList) {
+    public UserApprovalAdapter(Context context, List<Template> chatList, String approval_type) {
         Resources resources = context.getResources();
         mActivity = (TeamManagementUserProfileListActivity) context;
         mContext = context;
         preferenceHelper = new PreferenceHelper(mContext);
         this.mDataList = chatList;
+        this.approval_type = approval_type;
     }
     @Override
     public UserApprovalAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -67,9 +70,18 @@ public class UserApprovalAdapter extends RecyclerView.Adapter<UserApprovalAdapte
             txtName = itemLayoutView.findViewById(R.id.txtName);
 
             layoutMain.setOnClickListener(v -> {
-                Intent intent=new Intent(mContext, UserApproveDetail.class);
-                intent.putExtra(Constants.ID, mDataList.get(getAdapterPosition()).getId());
-                mContext.startActivity(intent);
+                if(approval_type.equals(Constants.USER_APPROVAL)){
+                    Intent intent=new Intent(mContext, UserApproveDetail.class);
+                    intent.putExtra(Constants.ID, mDataList.get(getAdapterPosition()).getId());
+                    mContext.startActivity(intent);
+                }else if(approval_type.equals(Constants.PROCESS_APPROVAL)){
+                    Intent intent=new Intent(mContext, ProcessListApproval.class);
+                    intent.putExtra(Constants.ID, mDataList.get(getAdapterPosition()).getId());
+                    intent.putExtra(Constants.PROCESS_ID, TeamManagementUserProfileListActivity.id);
+                    intent.putExtra(Constants.PROCESS_NAME, TeamManagementUserProfileListActivity.processTitle);
+                    mContext.startActivity(intent);
+                }
+
             });
         }
 
