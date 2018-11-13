@@ -48,6 +48,18 @@ public class TaskContainerModel {
     @SerializedName("isSave ")
     @Expose
     private String isSave;
+
+    @ColumnInfo(name = "proAnsListString")
+    private String proAnsListString;
+
+    public String getProAnsListString() {
+        return proAnsListString;
+    }
+
+    public void setProAnsListString(String proAnsListString) {
+        this.proAnsListString = proAnsListString;
+    }
+
     @ColumnInfo(name = "MV_Process__c")
     @SerializedName("MV_Process__c")
     @Expose

@@ -40,6 +40,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
     private Activity mContext;
     private PreferenceHelper preferenceHelper;
     private ArrayList<String> myList, selectedLanList;
+    private ArrayList<String> pickListApiFieldNames;
 
     private boolean[] mSelection = null;
     private String value;
@@ -154,9 +155,17 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     if (position == 0) {
                         taskList.get(getAdapterPosition()).setTask_Response__c("");
                     } else {
-                        myList = new ArrayList<>(Arrays.asList(getColumnIndex(("Select," +
-                                taskList.get(getAdapterPosition()).getPicklist_Value__c()).split(","))));
-                        taskList.get(getAdapterPosition()).setTask_Response__c(myList.get(position));
+                        if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.TASK_PICK_LIST)) {
+                            if (pickListApiFieldNames.size() > 0) {
+                                myList = new ArrayList<>();
+                                myList.addAll(pickListApiFieldNames);
+                                taskList.get(getAdapterPosition()).setTask_Response__c(myList.get(position));
+                            }
+                        } else {
+                            myList = new ArrayList<>(Arrays.asList(getColumnIndex(("Select," +
+                                    taskList.get(getAdapterPosition()).getPicklist_Value__c()).split(","))));
+                            taskList.get(getAdapterPosition()).setTask_Response__c(myList.get(position));
+                        }
                     }
 
                     ((ProcessDeatailActivity) mContext).saveDataToList(taskList.get(getAdapterPosition()), getAdapterPosition());
@@ -183,9 +192,10 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         }
     }
 
-    public ProcessDetailAdapter(Activity context, ArrayList<Task> taskList) {
+    public ProcessDetailAdapter(Activity context, ArrayList<Task> taskList, ArrayList<String> pickListApiFieldNames) {
         this.taskList = taskList;
         this.mContext = context;
+        this.pickListApiFieldNames = pickListApiFieldNames;
         preferenceHelper = new PreferenceHelper(context);
     }
 
@@ -271,6 +281,36 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 }
 
                 dimen_adapter.setDropDownViewResource(R.layout.spinnerlayout);
+                holder.spinnerResponse.setPrompt(task.getTask_Text___Lan_c());
+                holder.spinnerResponse.setAdapter(dimen_adapter);
+
+                if (myList.indexOf(task.getTask_Response__c().trim()) >= 0) {
+                    holder.spinnerResponse.setSelection(myList.indexOf(task.getTask_Response__c().trim()));
+                }
+                break;
+
+            case Constants.TASK_PICK_LIST:
+                if (task.getIs_Response_Mnadetory__c()) {
+                    holder.question.setText(String.format("*%s", task.getTask_Text___Lan_c()));
+                } else {
+                    holder.question.setText(task.getTask_Text___Lan_c());
+                }
+
+                holder.llHeaderLay.setVisibility(View.GONE);
+                holder.llEditText.setVisibility(View.GONE);
+                holder.llLocation.setVisibility(View.GONE);
+                holder.llCheck.setVisibility(View.GONE);
+                holder.llDate.setVisibility(View.GONE);
+                holder.llLayout.setVisibility(View.VISIBLE);
+
+                myList = new ArrayList<>();
+                if (pickListApiFieldNames.size() > 0) {
+                    myList.addAll(pickListApiFieldNames);
+                }
+
+                dimen_adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, myList);
+                dimen_adapter.setDropDownViewResource(R.layout.spinnerlayout);
+
                 holder.spinnerResponse.setPrompt(task.getTask_Text___Lan_c());
                 holder.spinnerResponse.setAdapter(dimen_adapter);
 
