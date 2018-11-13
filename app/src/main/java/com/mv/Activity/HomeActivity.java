@@ -1,5 +1,7 @@
 package com.mv.Activity;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,6 +14,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -139,7 +142,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         versionName.setText(String.format("Version is : %s", getAppVersion()));
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         ImageView ivBellNotification = (ImageView) findViewById(R.id.iv_bell_notification);
         tvUnreadNotification = (TextView) findViewById(R.id.tv_unread_notification);
@@ -153,6 +155,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     User.getCurrentUser(HomeActivity.this).getMvUser().getIsApproved() != null &&
                     User.getCurrentUser(HomeActivity.this).getMvUser().getIsApproved().equalsIgnoreCase("true")) {
 
+                final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                 if (manager != null) {
                     if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                         LocationGPSDialog();
@@ -210,8 +213,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             if (User.getCurrentUser(getApplicationContext()).getMvUser() != null &&
                     User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null &&
                     User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("true")) {
-                final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
+                final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
                 if (manager != null) {
                     if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                         LocationGPSDialog();
@@ -674,7 +677,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
 
             case R.id.action_share:
-                ShareApp();
+                shareApp();
                 return true;
 
             case R.id.action_rate:
@@ -1030,7 +1033,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void ShareApp() {
+    private void shareApp() {
         try {
             Intent i = new Intent(Intent.ACTION_SEND);
             i.setType("text/plain");
@@ -1043,7 +1046,30 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case Constants.LOCATION_PERMISSION_REQUEST:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    getLastLocation();
+                }
+                break;
+        }
+    }
+
     private void getAddress() {
+        if (!Utills.isLocationPermissionGranted(this)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.LOCATION_PERMISSION_REQUEST);
+            }
+        } else {
+            getLastLocation();
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getLastLocation() {
         mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, location -> {
                     if (location == null) {
@@ -1051,7 +1077,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     }
 
                     mLastLocation = location;
-                    GetMapParameters(String.valueOf(mLastLocation.getLatitude()),
+                    getMapParameters(String.valueOf(mLastLocation.getLatitude()),
                             String.valueOf(mLastLocation.getLongitude()));
 
                     if (!Geocoder.isPresent()) {
@@ -1090,7 +1116,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void GetMapParameters(String latitude, String longitude) {
+    private void getMapParameters(String latitude, String longitude) {
         if (!Utills.isConnected(this)) {
             return;
         }
@@ -1138,7 +1164,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void CallUSDialog() {
+    private void callUsDialog() {
         final String[] items = {getString(R.string.call_on_hangout), getString(R.string.call_on_landline)};
 
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this).setTitle(getString(R.string.app_name));
@@ -1285,7 +1311,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.action_share:
-                ShareApp();
+                shareApp();
                 break;
 
             case R.id.action_rate:
@@ -1303,7 +1329,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.action_callus:
-                CallUSDialog();
+                callUsDialog();
                 break;
 
             case R.id.action_update_user_data:

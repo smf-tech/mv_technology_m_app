@@ -1,19 +1,24 @@
 package com.mv.Activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.graphics.drawable.AnimationDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -736,7 +741,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 break;
 
             case R.id.edit_multiselect_taluka:
-                showMultiselectDialog(mListTaluka);
+                showMultiSelectDialog(mListTaluka);
                 break;
 
             case R.id.edit_multiselect_project:
@@ -809,9 +814,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             user.getMvUser().setSchool_Name(mListSchoolName.get(mSelectSchoolName));
             user.getMvUser().setMultipleTaluka(value);
 
-            JSONObject jsonObject1 = new JSONObject();
             JSONObject jsonObject2 = new JSONObject();
-
             try {
                 jsonObject2.put("Id", User.getCurrentUser(RegistrationActivity.this).getMvUser().getId());
                 jsonObject2.put("Name", edit_text_name.getText().toString().trim());
@@ -895,10 +898,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 jsonObject2.put("User_Address__c", binding.editTextAddress.getText().toString());
                 jsonObject2.put("Role_Organization__c", binding.spinnerOrganization.getSelectedItem().toString());
 
-                JSONObject jsonObject = new JSONObject();
-                JSONArray jsonArray = new JSONArray();
                 JSONObject jsonObjectAttachment = new JSONObject();
-
                 if (FinalUri != null) {
                     try {
                         InputStream iStream;
@@ -921,11 +921,16 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     }
                 }
 
+                JSONObject jsonObject1 = new JSONObject();
                 jsonObject1.put("user", jsonObject2);
                 jsonObject1.put("attachments", jsonObjectAttachment);
+
+                JSONArray jsonArray = new JSONArray();
                 jsonArray.put(jsonObject1);
 
+                JSONObject jsonObject = new JSONObject();
                 jsonObject.put("listVisitsData", jsonArray);
+
                 JsonParser jsonParser = new JsonParser();
                 JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
 
@@ -942,7 +947,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                                     Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                                     User user = gson.fromJson(data, User.class);
 
-                                    if (user.getDuplicateMobileNo() != null && user.getDuplicateMobileNo().equalsIgnoreCase("true")) {
+                                    if (user.getDuplicateMobileNo() != null &&
+                                            user.getDuplicateMobileNo().equalsIgnoreCase("true")) {
                                         showDuplicatePopUp();
                                         return;
                                     }
@@ -1147,6 +1153,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         spinner_school_name.setVisibility(View.VISIBLE);
                         txt_school.setVisibility(View.VISIBLE);
                         rel_school_name.setVisibility(View.VISIBLE);
+
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("Village")) {
                         spinner_district.setVisibility(View.VISIBLE);
                         txt_district.setVisibility(View.VISIBLE);
@@ -1165,6 +1172,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         rel_school_name.setVisibility(View.GONE);
                         value = "";
                         txt_school.setVisibility(View.GONE);
+
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("Cluster")) {
                         spinner_district.setVisibility(View.VISIBLE);
                         txt_district.setVisibility(View.VISIBLE);
@@ -1183,6 +1191,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         value = "";
                         rel_school_name.setVisibility(View.GONE);
                         txt_school.setVisibility(View.GONE);
+
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("Taluka")) {
                         spinner_district.setVisibility(View.VISIBLE);
                         txt_district.setVisibility(View.VISIBLE);
@@ -1201,6 +1210,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         rel_school_name.setVisibility(View.GONE);
                         txt_school.setVisibility(View.GONE);
                         value = "";
+
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("MultipleTaluka")) {
                         spinner_district.setVisibility(View.VISIBLE);
                         txt_district.setVisibility(View.VISIBLE);
@@ -1226,6 +1236,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         spinner_school_name.setVisibility(View.GONE);
                         rel_school_name.setVisibility(View.GONE);
                         txt_school.setVisibility(View.GONE);
+
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("District")) {
                         spinner_district.setVisibility(View.VISIBLE);
                         txt_district.setVisibility(View.VISIBLE);
@@ -1244,6 +1255,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         spinner_school_name.setVisibility(View.GONE);
                         txt_school.setVisibility(View.GONE);
                         rel_school_name.setVisibility(View.GONE);
+
                     } else if (mListRoleJuridiction.get(i).equalsIgnoreCase("State")) {
                         spinner_district.setVisibility(View.GONE);
                         rel_district.setVisibility(View.GONE);
@@ -1628,7 +1640,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         String[] items = {getString(R.string.text_gallary), getString(R.string.text_camera)};
 
         dialog.setItems(items, (dialog1, which) -> {
-            // TODO Auto-generated method stub
             switch (which) {
                 case 0:
                     choosePhotoFromGallery();
@@ -1649,11 +1660,14 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private void takePhotoFromCamera() {
         try {
             //use standard intent to capture an image
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture.jpg";
             File imageFile = new File(imageFilePath);
-            outputUri = Uri.fromFile(imageFile); // convert path to Uri
+            outputUri = FileProvider.getUriForFile(getApplicationContext(),
+                    getPackageName() + ".fileprovider", imageFile);
+
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
         } catch (ActivityNotFoundException anfe) {
             //display an error message
@@ -1708,7 +1722,25 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
     public void onAddImageClick() {
-        showPictureDialog();
+        if (!Utills.isMediaPermissionGranted(this)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.CAMERA,
+                        Manifest.permission.RECORD_AUDIO}, Constants.MEDIA_PERMISSION_REQUEST);
+            }
+        } else {
+            showPictureDialog();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case Constants.MEDIA_PERMISSION_REQUEST:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    showPictureDialog();
+                }
+                break;
+        }
     }
 
     public void showDateDialog(Context context, final EditText editText) {
@@ -1733,7 +1765,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         return "" + i;
     }
 
-    private void showMultiselectDialog(ArrayList<String> arrayList) {
+    private void showMultiSelectDialog(ArrayList<String> arrayList) {
         if (arrayList.contains("Select")) {
             arrayList.remove(arrayList.indexOf("Select"));
         }
