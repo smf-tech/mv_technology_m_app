@@ -169,7 +169,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         ServiceRequest apiService = ApiClient.getClient().create(ServiceRequest.class);
 
         apiService.getDistrict(User.getCurrentUser(IssueTemplateActivity.this)
-                .getMvUser().getState()).enqueue(new Callback<ResponseBody>() {
+                .getMvUser().getState(), "structure").enqueue(new Callback<ResponseBody>() {
 
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -209,7 +209,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         ServiceRequest apiService = ApiClient.getClient().create(ServiceRequest.class);
 
         apiService.getTaluka(User.getCurrentUser(IssueTemplateActivity.this).getMvUser().getState(),
-                mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
+                mListDistrict.get(mSelectDistrict), "structure").enqueue(new Callback<ResponseBody>() {
 
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

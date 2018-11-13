@@ -133,7 +133,7 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
         Utills.showProgressDialog(this, "Loading States", getString(R.string.progress_please_wait));
         ServiceRequest apiService = ApiClient.getClient().create(ServiceRequest.class);
 
-        apiService.getState().enqueue(new Callback<ResponseBody>() {
+        apiService.getState("structure").enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
@@ -350,7 +350,7 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
         ServiceRequest apiService = ApiClient.getClient().create(ServiceRequest.class);
 
         apiService.getTaluka(mListState.get(mSelectState),
-                mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
+                mListDistrict.get(mSelectDistrict), "structure").enqueue(new Callback<ResponseBody>() {
 
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -381,7 +381,7 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
         Utills.showProgressDialog(this, getString(R.string.loding_district), getString(R.string.progress_please_wait));
         ServiceRequest apiService = ApiClient.getClient().create(ServiceRequest.class);
 
-        apiService.getDistrict(mListState.get(mSelectState)).enqueue(new Callback<ResponseBody>() {
+        apiService.getDistrict(mListState.get(mSelectState), "structure").enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();

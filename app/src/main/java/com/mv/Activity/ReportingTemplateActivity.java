@@ -172,7 +172,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         ServiceRequest apiService = ApiClient.getClient().create(ServiceRequest.class);
 
         apiService.getDistrict(User.getCurrentUser(ReportingTemplateActivity.this)
-                .getMvUser().getState()).enqueue(new Callback<ResponseBody>() {
+                .getMvUser().getState(), "structure").enqueue(new Callback<ResponseBody>() {
 
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -219,7 +219,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         ServiceRequest apiService = ApiClient.getClient().create(ServiceRequest.class);
 
         apiService.getTaluka(User.getCurrentUser(ReportingTemplateActivity.this).getMvUser()
-                .getState(), mListDistrict.get(mSelectDistrict)).enqueue(new Callback<ResponseBody>() {
+                .getState(), mListDistrict.get(mSelectDistrict), "structure").enqueue(new Callback<ResponseBody>() {
 
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
