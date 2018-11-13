@@ -1,15 +1,20 @@
 package com.mv.Activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -251,19 +256,38 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         img_logout.setOnClickListener(this);
     }
 
-    private void sendToCamera() {
+    private void showPictureDialog() {
+        if (!gps.canGetLocation()) {
+            gps.showSettingsAlert();
+            return;
+        }
+
         try {
             //use standard intent to capture an image
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture.jpg";
             File imageFile = new File(imageFilePath);
-            outputUri = Uri.fromFile(imageFile); // convert path to Uri
+            outputUri = FileProvider.getUriForFile(getApplicationContext(),
+                    getPackageName() + ".fileprovider", imageFile);
+
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
         } catch (ActivityNotFoundException anfe) {
             //display an error message
             String errorMessage = "Whoops - your device doesn't support capturing images!";
             Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case Constants.MEDIA_PERMISSION_REQUEST:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    showPictureDialog();
+                }
+                break;
         }
     }
 
@@ -279,11 +303,14 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 break;
 
             case R.id.img_add:
-                if (!gps.canGetLocation()) {
-                    gps.showSettingsAlert();
-                    return;
+                if (!Utills.isMediaPermissionGranted(this)) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                        requestPermissions(new String[]{Manifest.permission.CAMERA,
+                                Manifest.permission.RECORD_AUDIO}, Constants.MEDIA_PERMISSION_REQUEST);
+                    }
+                } else {
+                    showPictureDialog();
                 }
-                sendToCamera();
                 break;
 
             case R.id.btn_save:
