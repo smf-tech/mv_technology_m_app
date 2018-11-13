@@ -85,7 +85,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:104752819252:android:9899c10ab9b64a8d",
         "android_client_info": {
-          "package_name": "com.ss"
+          "package_name": "com.bjs.ss"
         }
       },
       "oauth_client": [
@@ -116,7 +116,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:104752819252:android:aebc71ad6be4d43d",
         "android_client_info": {
-          "package_name": "com.ss.debug"
+          "package_name": "com.bjs.ss.debug"
         }
       },
       "oauth_client": [
