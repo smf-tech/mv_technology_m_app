@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mv.Activity.IndicatorTrainingFeedBackTaskList;
-
 import com.mv.Activity.PiachartActivity;
 import com.mv.Activity.ProcessApprovalActivity;
 import com.mv.Activity.ProcessListActivity;
@@ -20,7 +19,6 @@ import com.mv.Activity.TemplatesActivity;
 import com.mv.ActivityMenu.ProgrammeManagmentFragment;
 import com.mv.Model.Template;
 import com.mv.R;
-
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 

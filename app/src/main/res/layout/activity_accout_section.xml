@@ -17,9 +17,7 @@
 
         <include
             android:id="@+id/toolbar_layout"
-            layout="@layout/toolbar">
-
-        </include>
+            layout="@layout/toolbar"/>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -63,7 +61,6 @@
 
 
                         <ImageView
-
                             android:layout_width="15dp"
                             android:layout_height="20dp"
                             android:layout_alignParentEnd="true"

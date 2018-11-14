@@ -32,7 +32,8 @@
                 android:layout_height="75dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="15dp"
-                android:src="@drawable/logomulya" />
+                android:src="@drawable/logomulya"
+                android:contentDescription="@string/todo"/>
 
             <com.mv.Widgets.MyTextView
                 android:layout_width="wrap_content"

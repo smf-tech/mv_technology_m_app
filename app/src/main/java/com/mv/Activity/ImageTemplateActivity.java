@@ -19,12 +19,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.soundcloud.android.crop.Crop;
 import com.mv.R;
 import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityImageTemplateBinding;
-import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
 

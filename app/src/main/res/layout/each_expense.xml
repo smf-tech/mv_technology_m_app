@@ -121,14 +121,16 @@
                 android:id="@+id/imgEdit"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
-                android:src="@drawable/ic_approve" />
+                android:src="@drawable/ic_approve"
+                android:contentDescription="@string/todo"/>
 
             <ImageView
                 android:id="@+id/imgDelete"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/ic_reject" />
+                android:src="@drawable/ic_reject"
+                android:contentDescription="@string/todo"/>
         </LinearLayout>
     </RelativeLayout>
 

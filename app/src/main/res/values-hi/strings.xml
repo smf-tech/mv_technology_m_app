@@ -39,7 +39,7 @@
     <string name="Save">बचाना</string>
     <string name="claender_reportinng">कार्यक्रम बनाएँ</string>
     <string name="enter_comment">कृपया टिप्पणी दर्ज करें</string>
-    <string name="submitted_successfully">सफलतापूर्वक जमा…</string>
+    <string name="submitted_successfully">सफलतापूर्वक जमा...</string>
     <string name="loading_members">लोड हो रहा सदस्य</string>
     <string name="Please_select_Gender">कृपया लिंग चुनें</string>
     <string name="Community_member">सदस्य</string>
@@ -133,11 +133,11 @@
     <string name="class_observation">कक्षा अवलोकन</string>
     <string name="training_responsiblity">"प्रशिक्षण कार्यक्रम"</string>
     <string name="loading_comment">टिप्पणियाँ लोड हो रही हैं</string>
-    <string name="please_comment">कृपया टिप्पणी दर्ज करें…</string>
-    <string name="comment_add">टिप्पणी सफलतापूर्वक जोड़ा गया…</string>
+    <string name="please_comment">कृपया टिप्पणी दर्ज करें...</string>
+    <string name="comment_add">टिप्पणी सफलतापूर्वक जोड़ा गया...</string>
     <string name="likes">पसंद</string>
     <string name="comments">टिप्पणियाँ</string>
-    <string name="share_post">पोस्ट साझा हो रही है…</string>
+    <string name="share_post">पोस्ट साझा हो रही है...</string>
 
     <string name="select_one">एक समुदाय का चयन करें</string>
     <string name="comunity_detail">सामुदायिक विवरण</string>
@@ -146,7 +146,7 @@
     <string name="loading_chats">चैट लोड हो रहा है</string>
     <string name="loading_template">टेम्पलेट लोड हो रही है</string>
     <string name="forgot_password">पासवर्ड भूल गए</string>
-    <string name="select_temp">कृपया टेम्पलेट प्रकार का चयन करें…</string>
+    <string name="select_temp">कृपया टेम्पलेट प्रकार का चयन करें...</string>
     <string name="img_template">छवि टेम्पलेट</string>
     <string name="loding_district">जिले लोड हो रहे हैं</string>
     <string name="loding_taluka">तहसील लोड हो रहे हैं</string>
@@ -156,7 +156,7 @@
     <string name="loding_village">गांवलोड हो रहे हैं</string>
     <string name="Forward">फॉरवर्ड </string>
     <string name="issue_template">मुद्दा टेम्पलेट</string>
-    <string name="broadcast_submit">प्रसारण सफलतापूर्वक सबमिट किया गया…</string>
+    <string name="broadcast_submit">प्रसारण सफलतापूर्वक सबमिट किया गया...</string>
     <string name="fileNotPresent">फ़ाइल मौजूद नहीं है। कृपया डाउनलोड बटन दबाएं</string>
     <string name="Like">पसंद</string>
     <string name="no_data_available">कोई डेटा उपलब्ध नहीं है</string>
@@ -224,7 +224,7 @@
     <string name="specification">Specification</string>
     <string name="select_model_no">Select Model No.</string>
 
-    <string name="login_successful">सफलतापूर्ण प्रवेश…</string>
+    <string name="login_successful">सफलतापूर्ण प्रवेश...</string>
 
     <!--Accout Section Activity-->
     <string name="adavance">अग्रिम</string>
@@ -289,7 +289,7 @@
     <string name="expenseDescription">खर्च वर्णन</string>
     <string name="status">Status</string>
     <string name="comment_delete">टिप्पणी सफलतापूर्वक हटा दी गई।</string>
-    <string name="leave_leave_approoval"> छुट्टी का अनुमोदन सफलतापूर्वक भेजा गया…</string>
+    <string name="leave_leave_approoval"> छुट्टी का अनुमोदन सफलतापूर्वक भेजा गया...</string>
     <string name="compoff_leave_approoval" >कॉम्प ऑफ अनुरोध सफलतापूर्वक सबमिट किया गया</string>
 
     <string name="select_code">Select Code</string>
@@ -307,4 +307,5 @@
     <string name="Please_select_project">Please select Project</string>
     <string name="location_not_found">वर्तमान स्थान उपलब्ध नहीं है, कृपया पुनः प्रयास करें</string>
     <string name="title_activity_maps">नक्शा</string>
+    <string name="todo">TODO</string>
 </resources>

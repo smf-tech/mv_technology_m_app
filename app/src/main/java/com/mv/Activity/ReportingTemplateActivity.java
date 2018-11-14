@@ -38,6 +38,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.soundcloud.android.crop.Crop;
 import com.mv.Model.Content;
 import com.mv.Model.User;
 import com.mv.R;
@@ -50,7 +51,6 @@ import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityReportingTemplateBinding;
-import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONArray;
 import org.json.JSONException;

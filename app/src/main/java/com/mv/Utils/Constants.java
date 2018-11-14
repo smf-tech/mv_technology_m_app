@@ -175,6 +175,7 @@ public class Constants {
     public static final String InsertAnswerForProcessAnswerUrl = "/services/apexrest/InsertAnswerForProcessAnswer";
     public static final String New_upload_phpUrl = "http://mobileapp.mulyavardhan.org/new_upload.php";
     public static final String GetprocessAnswerDataUrl = "/services/apexrest/getprocessAnswerDataNew";
+    public static final String GetprocessApprovalUrl = "/services/apexrest/getprocessApproval";
     public static final String GetprocessTaskUrl = "/services/apexrest/getprocessTaskNew";
     public static final String GetUserSalaryData = "/services/apexrest/getUserSalaryData";
     public static final String GetUserAdavanceData = "/services/apexrest/getUserAdavanceData";

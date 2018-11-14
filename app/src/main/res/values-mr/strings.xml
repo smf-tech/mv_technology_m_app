@@ -19,7 +19,7 @@
     <string name="attendance_rejection_reason">उपस्थिती नाकारण्याची कारणे प्रदान करा.</string>
 
     <string name="error_no_internet">कृपया आपले इंटरनेट कनेक्शन तपासा</string>
-    <string name="submitted_successfully">यशस्वीरित्या जमा केले…</string>
+    <string name="submitted_successfully">यशस्वीरित्या जमा केले...</string>
     <string name="text_choosepicture">चित्र निवडा</string>
     <string name="text_choosevideo">व्हिडिओ निवडा</string>
     <string name="text_gallary">गॅलरी</string>
@@ -108,11 +108,11 @@
     <string name="class_observation">वर्ग निरीक्षण</string>
     <string name="training_responsiblity">"ट्रेनिंगला जाण्यापुर्वीच्या जबाबदाऱ्या"</string>
     <string name="loading_comment">लोडींग  िप्पणी </string>
-    <string name="please_comment">कृपया  िप्पणी प्रविष्ट करा…</string>
+    <string name="please_comment">कृपया  िप्पणी प्रविष्ट करा...</string>
     <string name="comment_add"> टिपण्णी यशस्वीरित्या जोडले..</string>
     <string name="likes">आवडले </string>
     <string name="comments">टिप्पणी</string>
-    <string name="share_post">शेरिंग पोस्ट …</string>
+    <string name="share_post">शेरिंग पोस्ट ...</string>
 
     <string name="select_one">एक समुदाय निवडा</string>
     <string name="comunity_detail">समुदाय तपशील</string>
@@ -122,7 +122,7 @@
     <string name="loading_members">सदस्य  लोड करत आहे</string>
     <string name="loading_template">चॅट्स लोड करत आहे</string>
     <string name="forgot_password">पासवर्ड विसरला</string>
-    <string name="select_temp">कृपया टेम्पलेट प्रकार निवडा…</string>
+    <string name="select_temp">कृपया टेम्पलेट प्रकार निवडा...</string>
     <string name="img_template">इमेज टेम्पलेट</string>
     <string name="loding_district">जिल्हे लोड करीत आहे</string>
     <string name="loding_taluka">तालुका लोड करीत आहे</string>
@@ -135,7 +135,7 @@
     <string name="loding_village">गाव लोड होत आहे</string>
 
     <string name="issue_template">समस्या टेम्पलेट</string>
-    <string name="broadcast_submit">ब्रॉडकास्ट यशस्वी रित्या सादर झाला …</string>
+    <string name="broadcast_submit">ब्रॉडकास्ट यशस्वी रित्या सादर झाला ...</string>
     <string name="enter_comment">कृपया टिप्पणी प्रविष्ट करा</string>
     <string name="Forward">फॉरवर्ड </string>
     <string name="Share">शेअर</string>
@@ -217,7 +217,7 @@
     <string name="specification">तपशील</string>
     <string name="select_model_no">मॉडेल क्रमांक निवडा</string>
 
-    <string name="login_successful">लॉगिन यशस्वी…</string>
+    <string name="login_successful">लॉगिन यशस्वी...</string>
 
     <!--Accout Section Activity-->
     <string name="adavance">उचल</string>
@@ -286,7 +286,7 @@
     <string name="expenseDescription">खर्च वर्णन</string>
     <string name="status">Status</string>
     <string name="comment_delete">टिप्पणी यशस्वीपणे हटविली.</string>
-    <string name="leave_leave_approoval">रजा मंजूरी साठी यशस्वीरित्या पाठविले …</string>
+    <string name="leave_leave_approoval">रजा मंजूरी साठी यशस्वीरित्या पाठविले ...</string>
     <string name="compoff_leave_approoval">Comp Off विनंती यशस्वीरित्या सबमिट केली</string>
 
     <string name="select_code">Select Code</string>
@@ -304,4 +304,5 @@
     <string name="Please_select_project">Please select Project</string>
     <string name="location_not_found">वर्तमान स्थान उपलब्ध नाही, कृपया पुन्हा प्रयत्न करा</string>
     <string name="title_activity_maps">नकाशा</string>
+    <string name="todo">TODO</string>
 </resources>

@@ -38,6 +38,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.soundcloud.android.crop.Crop;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -50,7 +51,6 @@ import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.Widgets.MyEditTextView;
 import com.mv.databinding.ActivityRegistrationBinding;
-import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -120,7 +120,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     private boolean isBackPress = false;
     private boolean[] mSelection = null;
-    private boolean isMultipleTalukatSet = false, isProjectSet = false, isOrganizationSet = false,
+    private boolean isMultipleTalukaSet = false, isProjectSet = false, isOrganizationSet = false,
             isStateSet = false, isDistrictSet = false, isTalukaSet = false, isClusterSet = false,
             isVillageSet = false, isSchoolSet = false, isRollSet = false;
 
@@ -1208,8 +1208,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                         spinner_taluka.setVisibility(View.VISIBLE);
                         binding.inputMultiselectTaluka.setVisibility(View.VISIBLE);
 
-                        if (!isAdd && !isMultipleTalukatSet) {
-                            isMultipleTalukatSet = true;
+                        if (!isAdd && !isMultipleTalukaSet) {
+                            isMultipleTalukaSet = true;
                             value = User.getCurrentUser(RegistrationActivity.this).getMvUser() != null ?
                                     User.getCurrentUser(RegistrationActivity.this).getMvUser().getMultipleTaluka() : "";
                             binding.editMultiselectTaluka.setText(value);

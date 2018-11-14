@@ -218,7 +218,8 @@
                         android:layout_marginRight="20dp"
                         android:layout_marginTop="20dp"
                         android:layout_weight="2"
-                        android:src="@drawable/ic_refresh" />
+                        android:src="@drawable/ic_refresh"
+                        android:contentDescription="@string/todo"/>
                 </LinearLayout>
 
                 <android.support.design.widget.TextInputLayout
@@ -688,7 +689,8 @@
                     android:layout_gravity="center"
                     android:layout_margin="10dp"
                     android:onClick="@{()->activity.onAddImageClick()}"
-                    android:src="@drawable/add" />
+                    android:src="@drawable/add"
+                    android:contentDescription="@string/todo"/>
 
                 <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"

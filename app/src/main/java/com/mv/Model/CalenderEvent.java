@@ -467,7 +467,7 @@ public class CalenderEvent implements Parcelable {
         this.Present_User__c = in.readString();
     }
 
-    private static final Creator<CalenderEvent> CREATOR = new Creator<CalenderEvent>() {
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator<CalenderEvent>() {
         @Override
         public CalenderEvent createFromParcel(Parcel source) {
             return new CalenderEvent(source);

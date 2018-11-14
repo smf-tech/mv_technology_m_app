@@ -22,7 +22,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -185,8 +184,12 @@ public class Utills {
             proImg.setBackgroundResource(R.drawable.progress_dialog);
             AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
             rocketAnimation.start();
+
             pgDialog.setCancelable(false);
-            pgDialog.show();
+            if (!pgDialog.isShowing()) {
+                pgDialog.show();
+            }
+
             Window window = pgDialog.getWindow();
             window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         }
@@ -248,8 +251,12 @@ public class Utills {
             proImg.setBackgroundResource(R.drawable.progress_dialog);
             AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
             rocketAnimation.start();
+
             pgDialog.setCancelable(false);
-            pgDialog.show();
+            if (!pgDialog.isShowing()) {
+                pgDialog.show();
+            }
+
             Window window = pgDialog.getWindow();
             window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         }

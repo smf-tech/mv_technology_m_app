@@ -31,6 +31,7 @@
         android:id="@+id/img_progress"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:contentDescription="@string/todo"/>
 
 </LinearLayout>

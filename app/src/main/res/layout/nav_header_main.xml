@@ -15,7 +15,8 @@
         android:layout_height="@dimen/dimen_70dp"
         android:layout_gravity="right"
         android:layout_marginTop="@dimen/dimen_10dp"
-        android:src="@drawable/smflogo0001" />
+        android:src="@drawable/smflogo0001"
+        android:contentDescription="@string/todo"/>
 
 
     <ImageView
@@ -23,7 +24,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:src="@drawable/mulya_image" />
+        android:src="@drawable/mulya_image"
+        android:contentDescription="@string/todo"/>
 
     <TextView
         android:id="@+id/versionName"

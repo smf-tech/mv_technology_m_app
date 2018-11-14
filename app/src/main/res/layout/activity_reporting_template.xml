@@ -103,7 +103,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:src="@drawable/ic_keyboard_arrow_down_black_24dp" />
+                        android:src="@drawable/ic_keyboard_arrow_down_black_24dp"
+                        android:contentDescription="@string/todo"/>
                 </RelativeLayout>
 
 
@@ -226,7 +227,8 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_margin="10dp"
                     android:onClick="@{()->activity.onAddImageClick()}"
-                    android:src="@drawable/add" />
+                    android:src="@drawable/add"
+                    android:contentDescription="@string/todo"/>
 
                 <com.mv.Widgets.MyTextView
                     android:layout_width="wrap_content"
