@@ -67,34 +67,33 @@ android {
 //        }
     }
     flavorDimensions "server"
-    productFlavors{
-        Sandbox{
+    productFlavors {
+        Sandbox {
             dimension "server"
-        //    applicationIdSuffix ".sandbox"
-            buildConfigField 'String','LOGIN_URL',"\"https://test.salesforce.com/services/oauth2/token\""
-            buildConfigField 'String','USERNAME',"\"mulyavardhan.smf@gmail.com.dev\""
-            buildConfigField 'String','REPORTID',"\"a1G0k000000522K\""
-            buildConfigField 'String','ISSUEID',"\"a1G0k000000522F\""
-            buildConfigField 'String','PASSWORD',"\"Nano5656\""
-            buildConfigField 'String','CLIENT_ID',"\"3MVG9d8..z.hDcPJhCvdazzxmwecKJ839UtvRRCnGEbq5p_PT49tZaftCOG4eti.6aI2v98zkYM0KQvaOWmTP\""
-            buildConfigField 'String','CLIENT_SECRET',"\"2027871201908212165\""
+            //    applicationIdSuffix ".sandbox"
+            buildConfigField 'String', 'LOGIN_URL', "\"https://test.salesforce.com/services/oauth2/token\""
+            buildConfigField 'String', 'USERNAME', "\"mulyavardhan.smf@gmail.com.dev\""
+            buildConfigField 'String', 'REPORTID', "\"a1G0k000000522K\""
+            buildConfigField 'String', 'ISSUEID', "\"a1G0k000000522F\""
+            buildConfigField 'String', 'PASSWORD', "\"Nano5656\""
+            buildConfigField 'String', 'CLIENT_ID', "\"3MVG9d8..z.hDcPJhCvdazzxmwecKJ839UtvRRCnGEbq5p_PT49tZaftCOG4eti.6aI2v98zkYM0KQvaOWmTP\""
+            buildConfigField 'String', 'CLIENT_SECRET', "\"2027871201908212165\""
             signingConfig signingConfigs.config
             resValue 'string', 'appNameConfig', 'Mulya Test'
         }
-        Production{
+        Production {
             dimension "server"
-        //    applicationIdSuffix ".production"
-            buildConfigField 'String','LOGIN_URL',"\"https://login.salesforce.com/services/oauth2/token\""
-            buildConfigField 'String','USERNAME',"\"mulyavardhan.smf@gmail.com\""
-            buildConfigField 'String','REPORTID',"\"a1L7F000000YNK4\""
-            buildConfigField 'String','ISSUEID',"\"a1L7F000000YNJz\""
-            buildConfigField 'String','PASSWORD',"\"Nano4545\""
-            buildConfigField 'String','CLIENT_ID',"\"3MVG9d8..z.hDcPJhCvdazzxmwecKJ839UtvRRCnGEbq5p_PT49tZaftCOG4eti.6aI2v98zkYM0KQvaOWmTP\""
-            buildConfigField 'String','CLIENT_SECRET',"\"2027871201908212165\""
+            //    applicationIdSuffix ".production"
+            buildConfigField 'String', 'LOGIN_URL', "\"https://login.salesforce.com/services/oauth2/token\""
+            buildConfigField 'String', 'USERNAME', "\"mulyavardhan.smf@gmail.com\""
+            buildConfigField 'String', 'REPORTID', "\"a1L7F000000YNK4\""
+            buildConfigField 'String', 'ISSUEID', "\"a1L7F000000YNJz\""
+            buildConfigField 'String', 'PASSWORD', "\"Nano4545\""
+            buildConfigField 'String', 'CLIENT_ID', "\"3MVG9d8..z.hDcPJhCvdazzxmwecKJ839UtvRRCnGEbq5p_PT49tZaftCOG4eti.6aI2v98zkYM0KQvaOWmTP\""
+            buildConfigField 'String', 'CLIENT_SECRET', "\"2027871201908212165\""
             signingConfig signingConfigs.config
             resValue 'string', 'appNameConfig', '@string/app_name'
         }
-
     }
     dataBinding {
         enabled = true
