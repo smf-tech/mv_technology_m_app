@@ -607,42 +607,46 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
     }
 
     private ArrayList<String> filterPickList(Task task) {
-        HashMap<String, String> filterValues = new HashMap<>();
-        String[] filterArray = task.getFilterFields().split(",");
-        boolean flag = false;
-
-        for (String filter : filterArray) {
-            for (Task tempTask : taskList) {
-                if (tempTask.getaPIFieldName().equalsIgnoreCase(filter)) {
-                    filterValues.put(filter, tempTask.getTask_Response__c());
-                }
-            }
-        }
-
         ArrayList<String> filterList = new ArrayList<>();
         filterList.add("Select");
-        try {
-            for (int i = 0; i < pickListArray.length(); i++) {
-                JSONObject pickListJsonObj = pickListArray.getJSONObject(i);
-                String referenceField = task.getReferenceField();
 
-                if (pickListJsonObj.has(referenceField)) {
-                    for (String filter : filterArray) {
-                        if (filterValues.get(filter).equalsIgnoreCase(pickListJsonObj.getString(filter))) {
-                            flag = true;
-                        } else {
-                            flag = false;
-                            break;
-                        }
-                    }
+        if (pickListArray != null) {
+            HashMap<String, String> filterValues = new HashMap<>();
+            String[] filterArray = task.getFilterFields().split(",");
+            boolean flag = false;
 
-                    if (flag) {
-                        filterList.add(pickListJsonObj.getString(referenceField));
+            for (String filter : filterArray) {
+                for (Task tempTask : taskList) {
+                    if (tempTask.getaPIFieldName().equalsIgnoreCase(filter)) {
+                        filterValues.put(filter, tempTask.getTask_Response__c());
                     }
                 }
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
+
+
+            try {
+                for (int i = 0; i < pickListArray.length(); i++) {
+                    JSONObject pickListJsonObj = pickListArray.getJSONObject(i);
+                    String referenceField = task.getReferenceField();
+
+                    if (pickListJsonObj.has(referenceField)) {
+                        for (String filter : filterArray) {
+                            if (filterValues.get(filter).equalsIgnoreCase(pickListJsonObj.getString(filter))) {
+                                flag = true;
+                            } else {
+                                flag = false;
+                                break;
+                            }
+                        }
+
+                        if (flag) {
+                            filterList.add(pickListJsonObj.getString(referenceField));
+                        }
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
         return filterList;
     }

@@ -93,7 +93,6 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
 
     private GPSTracker gps;
     private Location location;
-    private LocationRequest mLocationRequest;
 
     private int checkInClickable = 0, checkOutClickable = 0;
     private long UPDATE_INTERVAL = 600 * 1000;  /* 10 secs */
@@ -101,6 +100,8 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_attendance);
         binding.setActivity(this);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
@@ -232,8 +233,32 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
 
     // Trigger new location updates at interval
     private void startLocationUpdates() {
+        if (!Utills.isLocationPermissionGranted(this)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.LOCATION_PERMISSION_REQUEST);
+            }
+        } else {
+            getLocationProviderClient();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case Constants.LOCATION_PERMISSION_REQUEST:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    getLocationProviderClient();
+                }
+                break;
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getLocationProviderClient() {
         // Create the location request to start receiving updates
-        mLocationRequest = new LocationRequest();
+        LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(UPDATE_INTERVAL);
 
@@ -246,29 +271,6 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         SettingsClient settingsClient = LocationServices.getSettingsClient(this);
         settingsClient.checkLocationSettings(locationSettingsRequest);
 
-        if (!Utills.isLocationPermissionGranted(this)) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.LOCATION_PERMISSION_REQUEST);
-            }
-        } else {
-            getLocationProviderClient(mLocationRequest);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case Constants.LOCATION_PERMISSION_REQUEST:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    getLocationProviderClient(mLocationRequest);
-                }
-                break;
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    private void getLocationProviderClient(LocationRequest mLocationRequest) {
         // new Google API SDK v11 uses getFusedLocationProviderClient(this)
         getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest, new LocationCallback() {
                     @Override
