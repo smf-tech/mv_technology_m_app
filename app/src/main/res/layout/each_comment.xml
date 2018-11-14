@@ -21,7 +21,7 @@
             android:layout_width="@dimen/avator_size"
             android:layout_height="@dimen/avator_size"
             android:scaleType="centerCrop"
-            android:src="@drawable/logomulya"
+            android:src="@drawable/app_logo"
             android:contentDescription="@string/todo"/>
 
         <com.mv.Widgets.MyTextView

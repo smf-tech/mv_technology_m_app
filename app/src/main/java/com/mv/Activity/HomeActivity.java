@@ -799,7 +799,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             alertDialog.setMessage(getString(R.string.logout_string));
 
             // Setting Icon to Dialog
-            alertDialog.setIcon(R.drawable.logomulya);
+            alertDialog.setIcon(R.drawable.app_logo);
 
             // Setting CANCEL Button
             alertDialog.setButton2(getString(R.string.cancel), (dialog, which) -> alertDialog.dismiss());
@@ -830,7 +830,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         alertDialog.setMessage(getString(R.string.update_data_string));
 
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.logomulya);
+        alertDialog.setIcon(R.drawable.app_logo);
 
         // Setting CANCEL Button
         alertDialog.setButton2(getString(R.string.cancel), (dialog, which) -> alertDialog.dismiss());
@@ -909,7 +909,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         alertDialog.setMessage(getString(R.string.error_no_internet));
 
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.logomulya);
+        alertDialog.setIcon(R.drawable.app_logo);
 
         // Setting CANCEL Button
         alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {
@@ -953,7 +953,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         alertDialogApproved.setMessage(message);
 
         // Setting Icon to Dialog
-        alertDialogApproved.setIcon(R.drawable.logomulya);
+        alertDialogApproved.setIcon(R.drawable.app_logo);
 
         // Setting OK Button
         alertDialogApproved.setButton(getString(android.R.string.ok), (dialog, which) -> alertDialogApproved.dismiss());
@@ -1101,7 +1101,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             alertLocationDialog.setMessage(getString(R.string.no_gps));
 
             // Setting Icon to Dialog
-            alertLocationDialog.setIcon(R.drawable.logomulya);
+            alertLocationDialog.setIcon(R.drawable.app_logo);
 
             // Setting OK Button
             alertLocationDialog.setButton(getString(R.string.gps_settings), (dialog, which) -> {

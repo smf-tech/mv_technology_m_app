@@ -105,13 +105,13 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
 
         if (TextUtils.isEmpty(mDataList.get(position).getUserAttachmentId())
                 || mDataList.get(position).getAttachmentId().equalsIgnoreCase("null")) {
-            holder.userImage.setImageResource(R.drawable.logomulya);
+            holder.userImage.setImageResource(R.drawable.app_logo);
         } else {
             Glide.with(mContext)
                     .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                             + "/services/data/v36.0/sobjects/Attachment/"
                             + mDataList.get(position).getUserAttachmentId() + "/Body"))
-                    .placeholder(mContext.getResources().getDrawable(R.drawable.logomulya))
+                    .placeholder(mContext.getResources().getDrawable(R.drawable.app_logo))
                     .into(holder.userImage);
         }
 

@@ -170,7 +170,7 @@ public class ExpandableAssetListAdapter extends BaseExpandableListAdapter {
         alertDialog.setMessage(_context.getString(R.string.delete_task_string));
 
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.logomulya);
+        alertDialog.setIcon(R.drawable.app_logo);
 
         // Setting CANCEL Button
         alertDialog.setButton2(_context.getString(android.R.string.cancel), (dialog, which) -> {

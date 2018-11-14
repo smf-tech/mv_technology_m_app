@@ -28,7 +28,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         b.setAutoCancel(true)
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.drawable.logomulya)
+                .setSmallIcon(R.drawable.app_logo)
                 .setTicker("Hearty365")
                 .setContentTitle("Check In")
                 .setContentText("You have to Check-In in 10 minuets.")

@@ -158,7 +158,7 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         alertDialog.setMessage(mContext.getString(R.string.delete_task_string));
 
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.logomulya);
+        alertDialog.setIcon(R.drawable.app_logo);
 
         // Setting CANCEL Button
         alertDialog.setButton2(mContext.getString(android.R.string.cancel), (dialog, which) -> alertDialog.dismiss());

@@ -287,7 +287,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
 
     public void showGroupDialog() {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
-        builderSingle.setIcon(R.drawable.logomulya);
+        builderSingle.setIcon(R.drawable.app_logo);
         builderSingle.setTitle(getString(R.string.select_one));
 
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_singlechoice);
@@ -459,7 +459,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                     .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                             + "/services/data/v36.0/sobjects/Attachment/"
                             + mContent.getUserAttachmentId() + "/Body"))
-                    .placeholder(getResources().getDrawable(R.drawable.logomulya))
+                    .placeholder(getResources().getDrawable(R.drawable.app_logo))
                     .into(binding.userImage);
         }
 
