@@ -72,7 +72,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     private PreferenceHelper preferenceHelper;
     private ArrayList<Task> taskList = new ArrayList<>();
-    private ArrayList<String> pickListApiFieldNames = new ArrayList<>();
+    private String pickListApiFieldNames;
     private GPSTracker gps;
     private Activity context;
 
@@ -105,7 +105,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
 
         if (getIntent().getStringArrayExtra(Constants.PICK_LIST_ID) != null) {
-            pickListApiFieldNames = getIntent().getStringArrayListExtra(Constants.PICK_LIST_ID);
+            pickListApiFieldNames = getIntent().getStringExtra(Constants.PICK_LIST_ID);
         }
 
         initViews();

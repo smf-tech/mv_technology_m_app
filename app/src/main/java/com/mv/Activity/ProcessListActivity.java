@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mv.Adapter.ProcessListAdapter;
 import com.mv.Model.Task;
@@ -33,7 +34,6 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -49,7 +49,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     private ArrayList<String> idList;
     private ArrayList<Task> taskList = new ArrayList<>();
     private List<TaskContainerModel> resultList = new ArrayList<>();
-    private ArrayList<String> pickListFieldNames = new ArrayList<>();
 
     private PreferenceHelper preferenceHelper;
     private ProcessListAdapter mAdapter;
@@ -94,8 +93,13 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                pageNo ++;
-                getAllProcess(pageNo);
+                if (Utills.isConnected(ProcessListActivity.this)){
+                    pageNo ++;
+                    getAllProcess(pageNo);
+                } else {
+                    Toast.makeText(ProcessListActivity.this,
+                            "No Internet connection", Toast.LENGTH_SHORT).show();
+                }
             }
         };
 
@@ -114,7 +118,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         LocationSelectionActity.selectedSchool = User.getCurrentUser(getApplicationContext()).getMvUser().getSchool_Name();
 
         resultList.clear();
-        pickListFieldNames.clear();
         resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(processId, Constants.TASK_ANSWER);
         getAllProcessData();
     }
@@ -178,6 +181,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                 openClass.putExtra(Constants.PROCESS_ID, taskList);
                 openClass.putParcelableArrayListExtra(Constants.PROCESS_ID,
                         Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
+                openClass.putExtra(Constants.PICK_LIST_ID, taskContainerModel.getProAnsListString());
 
                 startActivity(openClass);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
@@ -218,8 +222,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
                             JSONObject jsonObject = new JSONObject(data);
                             JSONArray resultArray = jsonObject.getJSONArray("tsk");
-
-                            JSONArray pickListArray = new JSONArray("proAnsList");
+                            JSONArray pickListArray = jsonObject.getJSONArray("proAnsList");
 
                             for (int j = 0; j < resultArray.length(); j++) {
                                 JSONArray jsonArray = resultArray.getJSONArray(j);
@@ -291,12 +294,21 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                         processList.setIsEditable__c(jsonArray.getJSONObject(i).getString("IsEditable"));
                                     }
 
+                                    if (jsonArray.getJSONObject(i).has("referenceField")) {
+                                        processList.setReferenceField(jsonArray.getJSONObject(i).getString("referenceField"));
+                                    }
+                                    if (jsonArray.getJSONObject(i).has("filterFields")) {
+                                        processList.setFilterFields(jsonArray.getJSONObject(i).getString("filterFields"));
+                                    }
+                                    if (jsonArray.getJSONObject(i).has("aPIFieldName")) {
+                                        processList.setaPIFieldName(jsonArray.getJSONObject(i).getString("aPIFieldName"));
+                                    }
+
                                     if (jsonArray.getJSONObject(i).has("Task_Type") &&
                                             jsonArray.getJSONObject(i).getString("Task_Type").equals(Constants.TASK_PICK_LIST)) {
 
                                         if (jsonArray.getJSONObject(i).has("referenceField") &&
                                                 jsonArray.getJSONObject(i).getString("referenceField") != null) {
-                                            pickListFieldNames = Arrays.asList(jsonArray.getJSONObject(i).getString("referenceField").split(","));
                                             flag = 1;
                                         }
                                     }
@@ -307,26 +319,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 }
 
                                 if (flag == 1) {
-                                    ArrayList<String> structureList = new ArrayList<>();
-                                    structureList.add("Select");
-
-                                    for (int i = 0; i < pickListArray.length(); i++) {
-                                        JSONObject pickListJsonObj = pickListArray.getJSONObject(i);
-                                        String pickListValue = "";
-
-                                        for (String fieldName : pickListFieldNames) {
-                                            if (pickListJsonObj.has(fieldName)) {
-                                                if (pickListValue.length() > 0) {
-                                                    pickListValue = pickListValue.concat("_").concat(pickListJsonObj.getString(fieldName));
-                                                } else {
-                                                    pickListValue = pickListJsonObj.getString(fieldName);
-                                                }
-                                            }
-                                        }
-                                        structureList.add(pickListValue);
-                                    }
-
-                                    taskContainerModel.setProAnsListString(structureList.toString());
+                                    taskContainerModel.setProAnsListString(pickListArray.toString());
                                 }
 
                                 taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
@@ -489,12 +482,14 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     }
                                 }
 
-                                if (resultJsonObj.has("tasktype") &&
-                                        resultJsonObj.getString("tasktype").equals(Constants.TASK_PICK_LIST)) {
-                                    if (resultJsonObj.has("referenceField")) {
-                                        pickListFieldName = Arrays.asList(resultJsonObj.getString("referenceField").split(","));
-                                    }
-
+                                if (resultJsonObj.has("referenceField")) {
+                                    processList.setReferenceField(resultJsonObj.getString("referenceField"));
+                                }
+                                if (resultJsonObj.has("filterFields")) {
+                                    processList.setFilterFields(resultJsonObj.getString("filterFields"));
+                                }
+                                if (resultJsonObj.has("aPIFieldName")) {
+                                    processList.setaPIFieldName(resultJsonObj.getString("aPIFieldName"));
                                 }
 
                                 processList.setMV_Process__c(resultJsonObj.getString("mVProcess"));
@@ -503,25 +498,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 processList.setValidation(resultJsonObj.getString("validaytionOnText"));
                                 processList.setIsSave(Constants.PROCESS_STATE_SAVE);
                                 taskList.add(processList);
-                            }
-
-                            pickListFieldNames.add("Select");
-
-                            JSONArray pickListArray = jsonObject.getJSONArray("proAnsList");
-                            for (int i = 0; i < pickListArray.length(); i++) {
-                                JSONObject pickListJsonObj = pickListArray.getJSONObject(i);
-                                String pickListValue = "";
-
-                                for (String fieldName : pickListFieldName) {
-                                    if (pickListJsonObj.has(fieldName)) {
-                                        if (pickListValue.length() > 0) {
-                                            pickListValue = pickListValue.concat(", ").concat(pickListJsonObj.getString(fieldName));
-                                        } else {
-                                            pickListValue = pickListJsonObj.getString(fieldName);
-                                        }
-                                    }
-                                }
-                                pickListFieldNames.add(pickListValue);
                             }
 
                             // each task list  convert to String and stored in process task filled
@@ -534,14 +510,17 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                             taskContainerModel.setMV_Process__c(processId);
 
                             //delete old question
-                            AppDatabase.getAppDatabase(getApplicationContext()).userDao().deleteQuestion(processId, Constants.TASK_QUESTION);
+                            AppDatabase.getAppDatabase(getApplicationContext())
+                                    .userDao().deleteQuestion(processId, Constants.TASK_QUESTION);
+
                             //add new question
                             AppDatabase.getAppDatabase(getApplicationContext()).userDao().insertTask(taskContainerModel);
 
+                            JSONArray pickListArray = jsonObject.getJSONArray("proAnsList");
                             if (taskList.size() > 0) {
                                 preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
                                 Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
-                                openClass.putExtra(Constants.PICK_LIST_ID, pickListFieldNames);
+                                openClass.putExtra(Constants.PICK_LIST_ID, pickListArray.toString());
                                 openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskList);
                                 startActivity(openClass);
                                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
