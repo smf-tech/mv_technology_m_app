@@ -459,7 +459,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                     .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                             + "/services/data/v36.0/sobjects/Attachment/"
                             + mContent.getUserAttachmentId() + "/Body"))
-                    .placeholder(getResources().getDrawable(R.drawable.logomulya))
+                    .placeholder(getResources().getDrawable(R.drawable.app_logo))
                     .into(binding.userImage);
         }
 

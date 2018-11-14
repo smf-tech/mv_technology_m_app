@@ -37,7 +37,7 @@ public class ActivityImageView extends AppCompatActivity {
 
         Glide.with(this)
                 .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + Id + "/Body"))
-                .placeholder(getResources().getDrawable(R.drawable.logomulya))
+                .placeholder(getResources().getDrawable(R.drawable.app_logo))
                 .into(binding.imageView);
     }
 

@@ -161,7 +161,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         alertDialog.show();
     }
 
-//        private void getDistrict() {
+//    private void getDistrict() {
 //        Utills.showProgressDialog(this, "Loading Districts", getString(R.string.progress_please_wait));
 //        ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
 //        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)

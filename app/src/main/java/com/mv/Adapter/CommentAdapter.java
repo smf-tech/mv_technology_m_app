@@ -74,11 +74,11 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public void onBindViewHolder(ViewHolder holder, int position) {
         if (TextUtils.isEmpty(mDataList.get(position).getUserUrl())
                 || mDataList.get(position).getUserUrl().equalsIgnoreCase("null")) {
-            holder.userImage.setImageResource(R.drawable.logomulya);
+            holder.userImage.setImageResource(R.drawable.app_logo);
         } else {
             Glide.with(mContext)
                     .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(position).getUserUrl() + "/Body"))
-                    .placeholder(mContext.getResources().getDrawable(R.drawable.logomulya))
+                    .placeholder(mContext.getResources().getDrawable(R.drawable.app_logo))
                     .into(holder.userImage);
         }
         holder.txt_username.setText(mDataList.get(position).getUserName());
