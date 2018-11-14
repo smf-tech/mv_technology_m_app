@@ -355,7 +355,8 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         if (!Utills.isMediaPermissionGranted(this)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA,
-                        Manifest.permission.RECORD_AUDIO}, Constants.MEDIA_PERMISSION_REQUEST);
+                        Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        Constants.MEDIA_PERMISSION_REQUEST);
             }
         } else {
             showMediaDialog();
@@ -734,7 +735,12 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
             e.printStackTrace();
         }
 
-        mediaRecorder.start();
+        try {
+            mediaRecorder.start();
+        } catch (IllegalStateException ex) {
+            String errorMessage = "Please allow all permissions before you start audio recording.";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        }
     }
 
     protected boolean hasMicrophone() {
@@ -914,6 +920,9 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         } catch (ActivityNotFoundException anfe) {
             //display an error message
             String errorMessage = "Whoops - your device doesn't support capturing images!";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        } catch (SecurityException se) {
+            String errorMessage = "App do not have permission to take a photo, please allow it.";
             Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
         }
     }
