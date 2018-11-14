@@ -1,5 +1,6 @@
 package com.mv.Adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -30,9 +31,14 @@ import com.mv.R;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdapter.MyViewHolder> {
 
@@ -40,7 +46,8 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
     private Activity mContext;
     private PreferenceHelper preferenceHelper;
     private ArrayList<String> myList, selectedLanList;
-    private ArrayList<String> pickListApiFieldNames;
+    private ArrayList<String> filteredPickList;
+    private JSONArray pickListArray;
 
     private boolean[] mSelection = null;
     private String value;
@@ -54,6 +61,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         LinearLayout llLayout, llHeaderLay, llLocation, llCheck, llEditText, llDate;
         TextView question, header, locHeader, locText, checkText, dateHeader, editHeader;
 
+        @SuppressLint("ClickableViewAccessibility")
         public MyViewHolder(View view) {
             super(view);
 
@@ -148,6 +156,17 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 }
             });
 
+            spinnerResponse.setOnTouchListener((v, event) -> {
+                if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.TASK_PICK_LIST)) {
+                    filteredPickList = filterPickList(taskList.get(getAdapterPosition()));
+                    ArrayAdapter<String> dimen_adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, filteredPickList);
+                    dimen_adapter.setDropDownViewResource(R.layout.spinnerlayout);
+                    spinnerResponse.setPrompt(taskList.get(getAdapterPosition()).getTask_Text___Lan_c());
+                    spinnerResponse.setAdapter(dimen_adapter);
+                }
+                return false;
+            });
+
             //spinner
             spinnerResponse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
@@ -156,11 +175,8 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                         taskList.get(getAdapterPosition()).setTask_Response__c("");
                     } else {
                         if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.TASK_PICK_LIST)) {
-                            if (pickListApiFieldNames.size() > 0) {
-                                myList = new ArrayList<>();
-                                myList.addAll(pickListApiFieldNames);
-                                taskList.get(getAdapterPosition()).setTask_Response__c(myList.get(position));
-                            }
+                            myList = filterPickList(taskList.get(getAdapterPosition()));
+                            taskList.get(getAdapterPosition()).setTask_Response__c(myList.get(position));
                         } else {
                             myList = new ArrayList<>(Arrays.asList(getColumnIndex(("Select," +
                                     taskList.get(getAdapterPosition()).getPicklist_Value__c()).split(","))));
@@ -192,10 +208,17 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         }
     }
 
-    public ProcessDetailAdapter(Activity context, ArrayList<Task> taskList, ArrayList<String> pickListApiFieldNames) {
+    public ProcessDetailAdapter(Activity context, ArrayList<Task> taskList, String pickListApiFieldNames) {
         this.taskList = taskList;
         this.mContext = context;
-        this.pickListApiFieldNames = pickListApiFieldNames;
+
+        if (pickListApiFieldNames != null && pickListApiFieldNames.length() > 0) {
+            try {
+                pickListArray = new JSONArray(pickListApiFieldNames);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
         preferenceHelper = new PreferenceHelper(context);
     }
 
@@ -220,6 +243,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             holder.llDate.setEnabled(false);
         }
 
+        ArrayAdapter<String> dimen_adapter;
         switch (task.getTask_type__c().trim()) {
             case Constants.TASK_TEXT:
                 holder.llEditText.setVisibility(View.VISIBLE);
@@ -273,7 +297,6 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 selectedLanList = new ArrayList<>(Arrays.asList(getColumnIndex((
                         "Select," + task.getPicklist_Value_Lan__c()).split(","))));
 
-                ArrayAdapter<String> dimen_adapter;
                 if (myList.size() == selectedLanList.size()) {
                     dimen_adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, selectedLanList);
                 } else {
@@ -303,19 +326,16 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llDate.setVisibility(View.GONE);
                 holder.llLayout.setVisibility(View.VISIBLE);
 
-                myList = new ArrayList<>();
-                if (pickListApiFieldNames.size() > 0) {
-                    myList.addAll(pickListApiFieldNames);
-                }
+                filteredPickList = filterPickList(task);
 
-                dimen_adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, myList);
+                dimen_adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, filteredPickList);
                 dimen_adapter.setDropDownViewResource(R.layout.spinnerlayout);
 
                 holder.spinnerResponse.setPrompt(task.getTask_Text___Lan_c());
                 holder.spinnerResponse.setAdapter(dimen_adapter);
 
-                if (myList.indexOf(task.getTask_Response__c().trim()) >= 0) {
-                    holder.spinnerResponse.setSelection(myList.indexOf(task.getTask_Response__c().trim()));
+                if (filteredPickList.indexOf(task.getTask_Response__c().trim()) >= 0) {
+                    holder.spinnerResponse.setSelection(filteredPickList.indexOf(task.getTask_Response__c().trim()));
                 }
                 break;
 
@@ -543,7 +563,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.questionResponse.setSingleLine(false);
                 holder.questionResponse.setMinLines(3);
                 holder.questionResponse.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
-                holder.questionResponse.setGravity(Gravity.LEFT | Gravity.TOP);
+                holder.questionResponse.setGravity(Gravity.START | Gravity.TOP);
                 holder.questionResponse.setText(task.getTask_Response__c());
                 break;
 
@@ -584,6 +604,47 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llLayout.setVisibility(View.GONE);
                 holder.llDate.setVisibility(View.GONE);
         }
+    }
+
+    private ArrayList<String> filterPickList(Task task) {
+        HashMap<String, String> filterValues = new HashMap<>();
+        String[] filterArray = task.getFilterFields().split(",");
+        boolean flag = false;
+
+        for (String filter : filterArray) {
+            for (Task tempTask : taskList) {
+                if (tempTask.getaPIFieldName().equalsIgnoreCase(filter)) {
+                    filterValues.put(filter, tempTask.getTask_Response__c());
+                }
+            }
+        }
+
+        ArrayList<String> filterList = new ArrayList<>();
+        filterList.add("Select");
+        try {
+            for (int i = 0; i < pickListArray.length(); i++) {
+                JSONObject pickListJsonObj = pickListArray.getJSONObject(i);
+                String referenceField = task.getReferenceField();
+
+                if (pickListJsonObj.has(referenceField)) {
+                    for (String filter : filterArray) {
+                        if (filterValues.get(filter).equalsIgnoreCase(pickListJsonObj.getString(filter))) {
+                            flag = true;
+                        } else {
+                            flag = false;
+                            break;
+                        }
+                    }
+
+                    if (flag) {
+                        filterList.add(pickListJsonObj.getString(referenceField));
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return filterList;
     }
 
     @Override

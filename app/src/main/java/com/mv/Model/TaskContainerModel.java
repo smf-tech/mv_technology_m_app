@@ -25,6 +25,9 @@ public class TaskContainerModel {
         Unique_Id = unique_Id;
     }
 
+    @ColumnInfo(name = "taskListString")
+    private String taskListString;
+
     public String getTaskListString() {
         return taskListString;
     }
@@ -32,9 +35,6 @@ public class TaskContainerModel {
     public void setTaskListString(String taskListString) {
         this.taskListString = taskListString;
     }
-
-    @ColumnInfo(name = "taskListString")
-    private String taskListString;
 
     public String getIsSave() {
         return isSave;

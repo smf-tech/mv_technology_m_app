@@ -24,10 +24,8 @@ import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 
-import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -69,9 +67,8 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                     Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
                     openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskArrayList.get(getAdapterPosition()));
 
-                    String[] structureList = resultList.get(getAdapterPosition())
-                            .getProAnsListString().replace("[", "").replace("]", "").split(",");
-                    openClass.putExtra(Constants.PICK_LIST_ID, (Serializable) Arrays.asList(structureList));
+                    String structureList = resultList.get(getAdapterPosition()).getProAnsListString();
+                    openClass.putExtra(Constants.PICK_LIST_ID, structureList);
 
                     mContext.startActivity(openClass);
                     mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
