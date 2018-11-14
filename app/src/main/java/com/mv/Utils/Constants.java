@@ -243,7 +243,7 @@ public class Constants {
     public static String AccountTeamCode;
     public static final String PUSH_NOTIFICATION = "pushNotification";
 
-    public static String playStoreLink = "https://play.google.com/store/apps/details?id=com.mv&hl=en";
+    public static String playStoreLink = "https://play.google.com/store/apps/details?id=com.bjs.ss&hl=en";
 
     public static final Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
