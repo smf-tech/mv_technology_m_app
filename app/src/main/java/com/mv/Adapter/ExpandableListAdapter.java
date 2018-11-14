@@ -219,7 +219,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         alertDialog.setMessage(_context.getString(R.string.fileNotPresent));
 
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.ic_launcher);
+        alertDialog.setIcon(R.drawable.app_logo);
         // Setting OK Button
         alertDialog.setButton(_context.getString(android.R.string.ok), (dialog, which) -> alertDialog.dismiss());
 

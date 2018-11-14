@@ -15,7 +15,7 @@
         android:layout_height="@dimen/dimen_70dp"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/dimen_10dp"
-        android:src="@drawable/ic_launcher" 
+        android:src="@drawable/app_logo"
         android:contentDescription="@string/todo"/>
 
 

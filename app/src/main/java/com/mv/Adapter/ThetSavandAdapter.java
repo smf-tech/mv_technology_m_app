@@ -551,7 +551,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         alertDialog.setMessage(mContext.getString(R.string.text_delete));
 
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.ic_launcher);
+        alertDialog.setIcon(R.drawable.app_logo);
 
         // Setting CANCEL Button
         alertDialog.setButton2(mContext.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {

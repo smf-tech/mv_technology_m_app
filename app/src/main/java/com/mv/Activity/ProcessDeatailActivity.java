@@ -346,7 +346,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             alertDialog.setMessage(getString(R.string.are_you_really));
 
             // Setting Icon to Dialog
-            alertDialog.setIcon(R.drawable.ic_launcher);
+            alertDialog.setIcon(R.drawable.app_logo);
 
             // Setting CANCEL Button
             alertDialog.setButton2(getString(R.string.cancel), (dialog, which) -> {

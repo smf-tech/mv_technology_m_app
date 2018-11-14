@@ -362,7 +362,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         alertDialog.setMessage(getString(R.string.error_no_internet));
 
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.ic_launcher);
+        alertDialog.setIcon(R.drawable.app_logo);
 
         // Setting CANCEL Button
         alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {

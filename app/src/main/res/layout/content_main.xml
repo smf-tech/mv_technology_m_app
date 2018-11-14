@@ -20,7 +20,7 @@
             android:layout_height="120dp"
             android:layout_marginTop="@dimen/dimen_10dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_launcher"
+            android:src="@drawable/app_logo"
             android:contentDescription="@string/todo"/>
 
         <ImageView

@@ -337,7 +337,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         alertDialog.setMessage(getString(R.string.error_no_internet));
 
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.ic_launcher);
+        alertDialog.setIcon(R.drawable.app_logo);
 
         // Setting CANCEL Button
         alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> {

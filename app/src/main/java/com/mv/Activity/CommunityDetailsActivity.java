@@ -287,7 +287,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
 
     public void showGroupDialog() {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(this);
-        builderSingle.setIcon(R.drawable.ic_launcher);
+        builderSingle.setIcon(R.drawable.app_logo);
         builderSingle.setTitle(getString(R.string.select_one));
 
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_singlechoice);

@@ -210,7 +210,7 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
         alertDialog.setMessage(mContext.getString(R.string.fileNotPresent));
 
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.ic_launcher);
+        alertDialog.setIcon(R.drawable.app_logo);
         // Setting OK Button
         alertDialog.setButton(mContext.getString(android.R.string.ok), (dialog, which) -> alertDialog.dismiss());
 
