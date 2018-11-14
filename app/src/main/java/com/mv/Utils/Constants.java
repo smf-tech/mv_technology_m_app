@@ -223,6 +223,10 @@ public class Constants {
     public static String ALLUSER = "alluser";
     public static String ACTION_ALARM_RECEIVER = "action_alarm";
 
+    // Constants to check permissions
+    public static final int LOCATION_PERMISSION_REQUEST = 0;
+    public static final int MEDIA_PERMISSION_REQUEST = 1;
+    public static final int PHONE_PERMISSION_REQUEST = 2;
 
     ArrayList<Asset> requestedList = new ArrayList<>();
     ArrayList<Asset> acceptedList = new ArrayList<>();
@@ -237,6 +241,8 @@ public class Constants {
     public static String SendData = "SendData";
     public static String AccountTeamCode;
     public static final String PUSH_NOTIFICATION = "pushNotification";
+
+    public static String playStoreLink = "https://play.google.com/store/apps/details?id=com.mv&hl=en";
 
     public static final Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"

@@ -1,11 +1,13 @@
 package com.mv.Activity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -77,6 +79,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!Utills.isPhonePermissionGranted(this)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.CALL_PHONE,
+                        Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_SMS},
+                        Constants.PHONE_PERMISSION_REQUEST);
+            }
+        }
 
         user = new User();
 

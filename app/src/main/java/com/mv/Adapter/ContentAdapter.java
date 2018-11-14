@@ -134,15 +134,15 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         }
 
         if (TextUtils.isEmpty(mDataList.get(position).getUserAttachmentId())) {
-            holder.userImage.setImageResource(R.drawable.logomulya);
+            holder.userImage.setImageResource(R.drawable.app_logo);
         } else if (mDataList.get(position).getUserAttachmentId().equalsIgnoreCase("null")) {
-            holder.userImage.setImageResource(R.drawable.logomulya);
+            holder.userImage.setImageResource(R.drawable.app_logo);
         } else {
             Glide.with(mContext)
                     .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                             + "/services/data/v36.0/sobjects/Attachment/"
                             + mDataList.get(position).getUserAttachmentId() + "/Body"))
-                    .placeholder(mContext.getResources().getDrawable(R.drawable.logomulya))
+                    .placeholder(mContext.getResources().getDrawable(R.drawable.app_logo))
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .into(holder.userImage);
         }
@@ -492,7 +492,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
 
     public void showGroupDialog(final int position) {
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(mContext);
-        builderSingle.setIcon(R.drawable.logomulya);
+        builderSingle.setIcon(R.drawable.app_logo);
         builderSingle.setTitle("Select Communities");
 
         final ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(mContext, android.R.layout.select_dialog_singlechoice);
@@ -1089,7 +1089,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         alertDialog.setMessage(mContext.getString(R.string.text_delete));
 
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.logomulya);
+        alertDialog.setIcon(R.drawable.app_logo);
 
         // Setting CANCEL Button
         alertDialog.setButton2(mContext.getString(android.R.string.cancel), (dialog, which) -> alertDialog.dismiss());
