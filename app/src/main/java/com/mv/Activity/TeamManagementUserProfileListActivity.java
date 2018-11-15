@@ -102,18 +102,11 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         );
 
         binding.editTextEmail.addTextChangedListener(watch);
-    //    mAdapter = new UserApprovalAdapter(context, processAllList);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(mAdapter);
-
-//        if (Utills.isConnected(context)) {
-//            getAllProcess();
-//        } else {
-//            Utills.showInternetPopUp(context);
-//        }
     }
 
     private void setActionbar(String Title) {
@@ -164,9 +157,10 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
 
     private void setRecyclerView(String Status) {
         tempList.clear();
-        if(approvalType.equals(Constants.PROCESS_APPROVAL)){
+
+        if (approvalType.equals(Constants.PROCESS_APPROVAL)) {
             tempList.addAll(processAllList);
-        }else {
+        } else {
             for (int i = 0; i < processAllList.size(); i++) {
                 if (processAllList.get(i).getStatus() != null) {
                     if (processAllList.get(i).getStatus().equals(Status)) {
@@ -175,11 +169,13 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
                 }
             }
         }
+
         if (approvalType.equals(Constants.USER_APPROVAL)) {
-            mAdapter = new UserApprovalAdapter(context, tempList,Constants.USER_APPROVAL);
+            mAdapter = new UserApprovalAdapter(context, tempList, Constants.USER_APPROVAL);
         } else if (approvalType.equals(Constants.PROCESS_APPROVAL)) {
-            mAdapter = new UserApprovalAdapter(context, tempList,Constants.PROCESS_APPROVAL);
+            mAdapter = new UserApprovalAdapter(context, tempList, Constants.PROCESS_APPROVAL);
         }
+
         binding.recyclerView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
 
@@ -286,12 +282,11 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         copyOfProcessAllList.addAll(list);
 
         if (approvalType.equals(Constants.USER_APPROVAL)) {
-            mAdapter = new UserApprovalAdapter(context, copyOfProcessAllList,Constants.USER_APPROVAL);
+            mAdapter = new UserApprovalAdapter(context, copyOfProcessAllList, Constants.USER_APPROVAL);
         } else if (approvalType.equals(Constants.PROCESS_APPROVAL)) {
-            mAdapter = new UserApprovalAdapter(context, copyOfProcessAllList,Constants.PROCESS_APPROVAL);
+            mAdapter = new UserApprovalAdapter(context, copyOfProcessAllList, Constants.PROCESS_APPROVAL);
         }
 
-       // mAdapter = new UserApprovalAdapter(context, copyOfProcessAllList);
         binding.recyclerView.setAdapter(mAdapter);
     }
 
