@@ -101,7 +101,6 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         binding = DataBindingUtil.setContentView(this, R.layout.activity_attendance);
         binding.setActivity(this);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
