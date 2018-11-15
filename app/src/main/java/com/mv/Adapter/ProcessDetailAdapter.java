@@ -7,6 +7,8 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.InputType;
@@ -20,10 +22,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.mv.Activity.LocationSelectionActity;
 import com.mv.Activity.ProcessDeatailActivity;
 import com.mv.Model.Task;
@@ -35,6 +39,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -44,6 +49,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
     private ArrayList<Task> taskList;
     private Activity mContext;
+    private ProcessDeatailActivity activity;
     private PreferenceHelper preferenceHelper;
     private ArrayList<String> myList, selectedLanList;
     private ArrayList<String> filteredPickList;
@@ -58,8 +64,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         CheckBox checkBox;
         Spinner spinnerResponse;
         EditText questionResponse, date;
-        LinearLayout llLayout, llHeaderLay, llLocation, llCheck, llEditText, llDate;
-        TextView question, header, locHeader, locText, checkText, dateHeader, editHeader;
+        LinearLayout llLayout, llHeaderLay, llLocation, llCheck, llEditText, llDate, llPhoto;
+        TextView question, header, locHeader, locText, checkText, dateHeader, editHeader, imgTitle;
+        ImageView imgAdd;
 
         @SuppressLint("ClickableViewAccessibility")
         public MyViewHolder(View view) {
@@ -71,13 +78,16 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             llLocation = view.findViewById(R.id.ll_location_layout);
             llHeaderLay = view.findViewById(R.id.ll_headerr_lay);
             llCheck = view.findViewById(R.id.check_lay);
+            llPhoto = view.findViewById(R.id.layout_photo);
 
+            imgAdd = view.findViewById(R.id.img_add);
             question = view.findViewById(R.id.tv_pd_question);
             header = view.findViewById(R.id.tv_header);
 
             ///location layout
             locHeader = view.findViewById(R.id.tv_loc_hed);
             locText = view.findViewById(R.id.loc_text);
+            imgTitle = view.findViewById(R.id.tv_img_hed);
             editHeader = view.findViewById(R.id.tv_edittext_question);
             spinnerResponse = view.findViewById(R.id.sp_response);
 
@@ -205,12 +215,20 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     ((ProcessDeatailActivity) mContext).saveDataToList(taskList.get(getAdapterPosition()), getAdapterPosition());
                 }
             });
+
+            imgAdd.setOnClickListener(v -> {
+                String imgName=taskList.get(getAdapterPosition()).getMV_Task__c_Id();
+                taskList.get(getAdapterPosition()).setTask_Response__c(imgName);
+                activity.sendToCamera(imgName);
+            });
         }
     }
 
     public ProcessDetailAdapter(Activity context, ArrayList<Task> taskList, String pickListApiFieldNames) {
+
         this.taskList = taskList;
         this.mContext = context;
+        this.activity = (ProcessDeatailActivity)context;
 
         if (pickListApiFieldNames != null && pickListApiFieldNames.length() > 0) {
             try {
@@ -595,6 +613,23 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llLayout.setVisibility(View.GONE);
                 holder.llDate.setVisibility(View.GONE);
                 holder.llCheck.setVisibility(View.GONE);
+                holder.llPhoto.setVisibility(View.VISIBLE);
+                holder.imgTitle.setText(taskList.get(position).getTask_Text___Lan_c());
+
+                if(!taskList.get(position).getTask_Response__c().equals("")){
+                    String imgName=taskList.get(position).getTask_Response__c();
+                    String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imgName + ".jpg";
+                    File imageFile = new  File(imageFilePath);
+
+                    if (imageFile.exists()) {
+                        holder.imgAdd.setImageBitmap(BitmapFactory.decodeFile(imageFile.getAbsolutePath()));
+                    } else {
+                        Glide.with(mContext)
+                                .load(Constants.IMAGEURL + taskList.get(position).getTask_Response__c() + ".png")
+                                .placeholder(mContext.getResources().getDrawable(R.drawable.ic_add_photo))
+                                .into(holder.imgAdd);
+                    }
+                }
                 break;
 
             default:

@@ -1,6 +1,5 @@
 package com.mv.Activity;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -9,7 +8,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -31,8 +29,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -78,10 +74,9 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     private ProcessDetailAdapter adapter;
     private RecyclerView rvProcessDetail;
-    private ImageView img_add;
 
     private String timestamp;
-    private String comment;
+    private String comment, imageName;
     private String isSave;
     private String msg;
     private String id = "";
@@ -209,43 +204,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             save.setVisibility(View.VISIBLE);
         }
 
-        LinearLayout layout_photo = (LinearLayout) findViewById(R.id.layout_photo);
-        boolean isPresent = false;
-        img_add = (ImageView) findViewById(R.id.img_add);
+        ImageView img_add = (ImageView) findViewById(R.id.img_add);
         img_add.setOnClickListener(this);
-
-        for (Task task : taskList) {
-            if (task.getTask_type__c().equalsIgnoreCase(Constants.IMAGE)) {
-                isPresent = true;
-                imageId = task.getTask_Response__c();
-                break;
-            }
-        }
-
-        if (isPresent) {
-            layout_photo.setVisibility(View.VISIBLE);
-
-            if (imageId != null && imageId.length() > 0) {
-                Glide.with(this)
-                        .load(Constants.IMAGEURL + imageId + ".png")
-                        .placeholder(getResources().getDrawable(R.drawable.ic_add_photo))
-                        .into(img_add);
-            }
-
-            if (!(preferenceHelper.getBoolean(Constants.NEW_PROCESS))) {
-                String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                        + "/MV/Image/" + preferenceHelper.getString(Constants.UNIQUE) + ".jpg";
-
-                File imageFile = new File(imageFilePath);
-                if (imageFile.exists()) {
-                    FinalUri = Uri.fromFile(imageFile);
-                    Glide.with(this)
-                            .load(FinalUri)
-                            .placeholder(getResources().getDrawable(R.drawable.ic_add_photo))
-                            .into(img_add);
-                }
-            }
-        }
     }
 
     private void setActionbar(String Title) {
@@ -259,6 +219,29 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
+    }
+
+    public void sendToCamera(String imgName) {
+        try {
+            //use standard intent to capture an image
+            imageName = imgName;
+            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imgName + ".jpg";
+            File imageFile = new File(imageFilePath);
+            outputUri = FileProvider.getUriForFile(getApplicationContext(),
+                    getPackageName() + ".fileprovider", imageFile);
+
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
+        } catch (ActivityNotFoundException anfe) {
+            //display an error message
+            String errorMessage = "Whoops - your device doesn't support capturing images!";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        } catch (SecurityException se) {
+            String errorMessage = "App do not have permission to take a photo, please allow it.";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void showPictureDialog() {
@@ -311,14 +294,9 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 break;
 
             case R.id.img_add:
-                if (!Utills.isMediaPermissionGranted(this)) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                        requestPermissions(new String[]{Manifest.permission.CAMERA,
-                                Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                Constants.MEDIA_PERMISSION_REQUEST);
-                    }
-                } else {
-                    showPictureDialog();
+                if (!gps.canGetLocation()) {
+                    gps.showSettingsAlert();
+                    return;
                 }
                 break;
 
@@ -625,7 +603,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
-                String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + id + ".jpg";
+                String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imageName + ".jpg";
                 File imageFile = new File(imageFilePath);
                 FinalUri = Uri.fromFile(imageFile);
                 Crop.of(outputUri, FinalUri).start(this);
@@ -634,13 +612,9 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             }
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             if (FinalUri != null) {
-                Glide.with(this)
-                        .load(FinalUri)
-                        .skipMemoryCache(true)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .into(img_add);
                 outputUri = null;
             }
+            adapter.notifyDataSetChanged();
         } else if (resultCode == RESULT_OK) {
             taskList = data.getParcelableArrayListExtra(Constants.PROCESS_ID);
             adapter = new ProcessDetailAdapter(this, taskList, pickListApiFieldNames);
@@ -655,9 +629,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private void sendApprovedData() {
         if (Utills.isConnected(this)) {
             try {
-                Utills.showProgressDialog(this, getString(R.string.share_post),
-                        getString(R.string.progress_please_wait));
-
+                Utills.showProgressDialog(this, getString(R.string.share_post), getString(R.string.progress_please_wait));
                 JSONObject jsonObject1 = new JSONObject();
                 jsonObject1.put("uniqueId", taskList.get(0).getId());
                 jsonObject1.put("ApprovedBy", User.getCurrentUser(getApplicationContext()).getMvUser().getId());
