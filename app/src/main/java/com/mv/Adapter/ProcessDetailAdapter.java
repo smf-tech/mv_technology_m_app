@@ -217,7 +217,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             });
 
             imgAdd.setOnClickListener(v -> {
-                String imgName=taskList.get(getAdapterPosition()).getMV_Task__c_Id();
+                String imgName = taskList.get(getAdapterPosition()).getMV_Task__c_Id();
                 taskList.get(getAdapterPosition()).setTask_Response__c(imgName);
                 activity.sendToCamera(imgName);
             });
@@ -228,7 +228,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
         this.taskList = taskList;
         this.mContext = context;
-        this.activity = (ProcessDeatailActivity)context;
+        this.activity = (ProcessDeatailActivity) context;
 
         if (pickListApiFieldNames != null && pickListApiFieldNames.length() > 0) {
             try {
@@ -616,10 +616,10 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llPhoto.setVisibility(View.VISIBLE);
                 holder.imgTitle.setText(taskList.get(position).getTask_Text___Lan_c());
 
-                if(!taskList.get(position).getTask_Response__c().equals("")){
-                    String imgName=taskList.get(position).getTask_Response__c();
+                if (!taskList.get(position).getTask_Response__c().equals("")) {
+                    String imgName = taskList.get(position).getTask_Response__c();
                     String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imgName + ".jpg";
-                    File imageFile = new  File(imageFilePath);
+                    File imageFile = new File(imageFilePath);
 
                     if (imageFile.exists()) {
                         holder.imgAdd.setImageBitmap(BitmapFactory.decodeFile(imageFile.getAbsolutePath()));

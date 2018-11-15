@@ -1,5 +1,6 @@
 package com.mv.Activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -222,34 +224,20 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     }
 
     public void sendToCamera(String imgName) {
-        try {
-            //use standard intent to capture an image
-            imageName = imgName;
-            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imgName + ".jpg";
-            File imageFile = new File(imageFilePath);
-            outputUri = FileProvider.getUriForFile(getApplicationContext(),
-                    getPackageName() + ".fileprovider", imageFile);
+        imageName = imgName;
 
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
-            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
-        } catch (ActivityNotFoundException anfe) {
-            //display an error message
-            String errorMessage = "Whoops - your device doesn't support capturing images!";
-            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
-        } catch (SecurityException se) {
-            String errorMessage = "App do not have permission to take a photo, please allow it.";
-            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        if (!Utills.isMediaPermissionGranted(this)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.CAMERA,
+                                Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        Constants.MEDIA_PERMISSION_REQUEST);
+            }
+        } else {
+            showPictureDialog();
         }
     }
 
     private void showPictureDialog() {
-        if (!gps.canGetLocation()) {
-            gps.showSettingsAlert();
-            return;
-        }
-
         try {
             //use standard intent to capture an image
             String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture.jpg";
