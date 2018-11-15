@@ -76,8 +76,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private RecyclerView rvProcessDetail;
 
     private String timestamp;
+    private String process_status;
     private String comment, imageName;
-    private String isSave;
     private String msg;
     private String id = "";
     private String imageId, uniqueId = "";
@@ -306,7 +306,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
             case R.id.btn_approve:
                 comment = "";
-                isSave = "true";
+                process_status = "Approved";
                 sendApprovedData();
                 break;
 
@@ -359,7 +359,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         alertDialog.setView(input);
 
         alertDialog.setPositiveButton(getString(R.string.ok), (dialog, which) -> {
-            isSave = "false";
+            process_status = "Rejected";
             comment = input.getText().toString();
 
             if (!comment.isEmpty()) {
@@ -633,7 +633,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 JSONObject jsonObject1 = new JSONObject();
                 jsonObject1.put("uniqueId", taskList.get(0).getId());
                 jsonObject1.put("ApprovedBy", User.getCurrentUser(getApplicationContext()).getMvUser().getId());
-                jsonObject1.put("isApproved", isSave);
+                jsonObject1.put("isApproved", process_status);
                 jsonObject1.put("comment", comment);
 
                 ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);

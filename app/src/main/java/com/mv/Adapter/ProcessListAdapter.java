@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.mv.Activity.ProcessDeatailActivity;
 import com.mv.Activity.ProcessListActivity;
+import com.mv.Activity.ProcessListApproval;
 import com.mv.Model.Task;
 import com.mv.Model.TaskContainerModel;
 import com.mv.R;
@@ -36,7 +37,8 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
     private final List<TaskContainerModel> resultList;
     private ArrayList<ArrayList<Task>> taskArrayList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
-    private ProcessListActivity mContext;
+    private ProcessListActivity mcontext;
+    private Activity mContext;
 
     private Gson gson;
     private Type listType;
@@ -81,7 +83,8 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
 
     public ProcessListAdapter(List<TaskContainerModel> resultList, Activity context) {
         this.resultList = resultList;
-        this.mContext = (ProcessListActivity) context;
+       // this.mContext = (ProcessListActivity) context;
+        this.mContext = context;
         this.preferenceHelper = new PreferenceHelper(context);
 
         gson = new Gson();
@@ -162,15 +165,19 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         // Setting OK Button
         alertDialog.setButton(mContext.getString(android.R.string.ok), (dialog, which) -> {
             if (resultList != null && resultList.size() > 0) {
-                if (resultList.get(position).getIsSave().equals("false")) {
-                    mContext.deleteForm(resultList.get(position), position);
-                } else {
-                    AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(resultList.get(position).getUnique_Id(),
-                            resultList.get(position).getMV_Process__c());
+                if(mContext instanceof ProcessListActivity) {
+                    mcontext = (ProcessListActivity) mContext;
+                    if (resultList.get(position).getIsSave().equals("false")) {
+                        //  mContext.deleteForm(resultList.get(position));
+                        mcontext.deleteForm(resultList.get(position), position);
+                    } else {
+                        AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(resultList.get(position).getUnique_Id(),
+                                resultList.get(position).getMV_Process__c());
+                        // Removed entry from local db
+                        resultList.remove(position);
+                        notifyDataSetChanged();
 
-                    // Removed entry from local db
-                    resultList.remove(position);
-                    notifyDataSetChanged();
+                    }
                 }
             }
         });

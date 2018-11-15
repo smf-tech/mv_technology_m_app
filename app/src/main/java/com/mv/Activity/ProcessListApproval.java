@@ -8,6 +8,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -19,6 +20,7 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
+import com.mv.Utils.EndlessRecyclerViewScrollListener;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
@@ -51,11 +53,20 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
     private String proceesId;
     private String Processname;
     private String userId;
+    private String status;
     private Context mContext;
+    private Button btn_pending;
+    private Button btn_approve;
+    private Button btn_reject;
+    private String sortString="Pending";
+    private int pageNo = 0;
 
 
     private TaskContainerModel taskContainerModel;
     private List<TaskContainerModel> resultList = new ArrayList<>();
+    private List<TaskContainerModel> pendingProcessList = new ArrayList<>();
+    private List<TaskContainerModel> approvedProcessList = new ArrayList<>();
+    private List<TaskContainerModel> rejectedProcessList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,32 +100,72 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
         binding.rvProcess.setLayoutManager(mLayoutManager);
         binding.rvProcess.setItemAnimator(new DefaultItemAnimator());
 
+        btn_pending = (Button) findViewById(R.id.btn_pending);
+        btn_approve = (Button) findViewById(R.id.btn_approve);
+        btn_reject = (Button) findViewById(R.id.btn_reject);
+        btn_pending.setOnClickListener(this);
+        btn_approve.setOnClickListener(this);
+        btn_reject.setOnClickListener(this);
+        //by default pending status list will be loaded.
+        btn_pending.setBackgroundResource(R.drawable.selected_btn_background);
+        btn_approve.setBackgroundResource(R.drawable.light_grey_btn_background);
+        btn_reject.setBackgroundResource(R.drawable.light_grey_btn_background);
 
+        mAdapter = new ProcessListAdapter(resultList, ProcessListApproval.this);
+        binding.rvProcess.setAdapter(mAdapter);
+
+        //getAllProcessData();
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        binding.rvProcess.setLayoutManager(layoutManager);
+        binding.rvProcess.setItemAnimator(new DefaultItemAnimator());
+
+        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                pageNo ++;
+                getProcessByStatus(sortString, pageNo);
+            }
+        };
+
+        binding.rvProcess.addOnScrollListener(scrollListener);
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
+//        LocationSelectionActity.selectedState = "";
+//        LocationSelectionActity.selectedDistrict = "";
+//        LocationSelectionActity.selectedTaluka = "";
+//        LocationSelectionActity.selectedCluster = "";
+//        LocationSelectionActity.selectedVillage = "";
+//        LocationSelectionActity.selectedSchool = "";
+        pendingProcessList.clear();
+        approvedProcessList.clear();
+        rejectedProcessList.clear();
         resultList.clear();
-        LocationSelectionActity.selectedState = "";
-        LocationSelectionActity.selectedDistrict = "";
-        LocationSelectionActity.selectedTaluka = "";
-        LocationSelectionActity.selectedCluster = "";
-        LocationSelectionActity.selectedVillage = "";
-        LocationSelectionActity.selectedSchool = "";
         getAllProcessData();
+//        sortString = "Pending";
+//        btn_pending.setBackgroundResource(R.drawable.selected_btn_background);
+//        btn_approve.setBackgroundResource(R.drawable.light_grey_btn_background);
+//        btn_reject.setBackgroundResource(R.drawable.light_grey_btn_background);
+//        setRecyclerView(sortString);
 
     }
 
     private void getAllProcessData() {
-        if (Utills.isConnected(this))
-            getAllProcess();
+        if (Utills.isConnected(this)) {
+            getProcessByStatus("Pending",0);
+            getProcessByStatus("Approved",0);
+            getProcessByStatus("Rejected",0);
+        }
         else {
             //offline
+            Utills.showToast(getString(R.string.error_no_internet), ProcessListApproval.this);
             //show in process list only type is answer(exclude question)
-            mAdapter = new ProcessListAdapter(resultList, ProcessListApproval.this);
-            binding.rvProcess.setAdapter(mAdapter);
+//            mAdapter = new ProcessListAdapter(resultList, ProcessListApproval.this);
+//            binding.rvProcess.setAdapter(mAdapter);
         }
     }
 
@@ -137,7 +188,47 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
+            case R.id.btn_pending:
+                sortString = "Pending";
+                btn_pending.setBackgroundResource(R.drawable.selected_btn_background);
+                btn_approve.setBackgroundResource(R.drawable.light_grey_btn_background);
+                btn_reject.setBackgroundResource(R.drawable.light_grey_btn_background);
+                setRecyclerView(sortString);
+                break;
+            case R.id.btn_approve:
+                sortString = "Approved";
+                btn_pending.setBackgroundResource(R.drawable.light_grey_btn_background);
+                btn_approve.setBackgroundResource(R.drawable.selected_btn_background);
+                btn_reject.setBackgroundResource(R.drawable.light_grey_btn_background);
+                setRecyclerView(sortString);
+                break;
+            case R.id.btn_reject:
+                sortString = "Rejected";
+                btn_pending.setBackgroundResource(R.drawable.light_grey_btn_background);
+                btn_approve.setBackgroundResource(R.drawable.light_grey_btn_background);
+                btn_reject.setBackgroundResource(R.drawable.selected_btn_background);
+                setRecyclerView(sortString);
+                break;
         }
+    }
+
+    private void setRecyclerView(String status) {
+        resultList.clear();
+        if(status.equals("Pending")){
+        //    mAdapter = new ProcessListAdapter(pendingProcessList, ProcessListApproval.this);
+            resultList.addAll(pendingProcessList);
+
+        }else if(status.equals("Approved")){
+        //    mAdapter = new ProcessListAdapter(approvedProcessList, ProcessListApproval.this);
+            resultList.addAll(approvedProcessList);
+        }else if(status.equals("Rejected")){
+         //   mAdapter = new ProcessListAdapter(rejectedProcessList, ProcessListApproval.this);
+            resultList.addAll(rejectedProcessList);
+        }
+
+        //binding.rvProcess.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
+
     }
 
 
@@ -147,12 +238,17 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
         finish();
     }
 
-    private void getAllProcess() {
+    private void getProcessByStatus(String status,int pageNo) {
         Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+//        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+//                + Constants.GetprocessAnswerDataUrl+"?processId=" + proceesId + "&UserId=" + userId + "&status=" + status ;
+
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.GetprocessAnswerDataUrl+"?processId=" + proceesId + "&UserId=" + userId;
+                + Constants.GetprocessApprovalUrl + "?processId=" + proceesId + "&UserId="
+                + userId
+                + "&language=" + preferenceHelper.getString(Constants.LANGUAGE) + "&pageNo=" + pageNo + "&processAnswerStatus=" + status;
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -160,9 +256,8 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
                 Utills.hideProgressDialog();
                 try {
 
-
-                    resultList = new ArrayList<>();
-
+                    //resultList = new ArrayList<>();
+                    resultList.clear();
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     JSONArray resultArray = jsonObject.getJSONArray("tsk");
 
@@ -180,9 +275,6 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
                             processList.setIs_Response_Mnadetory__c(jsonArray.getJSONObject(i).getBoolean("Is_Mandotory"));
                             processList.setTask_type__c(jsonArray.getJSONObject(i).getString("Task_Type"));
                             processList.setTask_Text__c(jsonArray.getJSONObject(i).getString("Question"));
-
-
-
                             processList.setIsHeader(jsonArray.getJSONObject(i).getString("isHeader"));
 
                             if (!jsonArray.getJSONObject(i).getString("lanTsaskText").equals("null"))
@@ -236,16 +328,29 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
                         taskContainerModel.setMV_Process__c(proceesId);
                         taskContainerModel.setUnique_Id(taskList.get(0).getId());
 
-                        if(taskList.get(0).getIsApproved__c().equals("false"))
-                            resultList.add(taskContainerModel);
-
-
-
-
+//                        if(taskList.get(0).getIsApproved__c().equals("Pending"))
+//                            resultList.add(taskContainerModel);
+                        if(status.equals("Pending")){
+                            pendingProcessList.add(taskContainerModel);
+                        }else if(status.equals("Approved")){
+                            approvedProcessList.add(taskContainerModel);
+                        }else if(status.equals("Rejected")){
+                            rejectedProcessList.add(taskContainerModel);
+                        }
                     }
                     preferenceHelper.insertBoolean(Constants.IS_EDITABLE, false);
-                    mAdapter = new ProcessListAdapter(resultList, ProcessListApproval.this);
-                    binding.rvProcess.setAdapter(mAdapter);
+
+                //    resultList.addAll(pendingProcessList);
+                    if(status.equals("Pending")){
+                        resultList.addAll(pendingProcessList);
+                    }else if(status.equals("Approved")){
+                        resultList.addAll(approvedProcessList);
+                    }else if(status.equals("Rejected")){
+                        resultList.addAll(rejectedProcessList);
+                    }
+                    mAdapter.notifyDataSetChanged();
+//                    mAdapter = new ProcessListAdapter(pendingProcessList, ProcessListApproval.this);
+//                    binding.rvProcess.setAdapter(mAdapter);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
