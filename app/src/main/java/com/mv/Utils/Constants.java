@@ -77,6 +77,7 @@ public class Constants {
 
     public static String TEMPLATE_REPORT = "Report";
     public static String PROCESS_ID = "process_id";
+    public static String PICK_LIST_ID = "pickListId";
     public static String NEW_PROCESS = "new_process";
     public static String PROCESS_NAME = "PRocessName";
     public static String TEMPLATE_ISSUE = "Issue";
@@ -105,6 +106,7 @@ public class Constants {
     public static final String EVENT_DATE = "Event Date";
     public static final String EVENT_DESCRIPTION = "Event Description";
     public static final String IMAGE = "Image";
+    public static final String TASK_PICK_LIST = "Picklist Reference";
 
     public static final String State = "State";
     public static final String DISTRICT = "District";

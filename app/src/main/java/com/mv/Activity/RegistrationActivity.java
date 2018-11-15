@@ -1544,7 +1544,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                                 if (User.getCurrentUser(RegistrationActivity.this).getMvUser() != null) {
                                     for (int i = 0; i < mListVillage.size(); i++) {
-                                        if (mListVillage.get(i).equalsIgnoreCase(User.getCurrentUser(
+                                        if (mListVillage.get(i).trim().equalsIgnoreCase(User.getCurrentUser(
                                                 RegistrationActivity.this).getMvUser().getVillage())) {
                                             binding.spinnerVillage.setSelection(i);
                                             break;
