@@ -262,4 +262,5 @@
             android:text=""
             android:textSize="@dimen/large_text" />
     </LinearLayout>
+
 </LinearLayout>

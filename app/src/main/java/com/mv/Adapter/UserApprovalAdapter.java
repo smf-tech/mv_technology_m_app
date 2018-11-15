@@ -2,7 +2,6 @@ package com.mv.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,32 +9,30 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.mv.Activity.ProcessListApproval;
 import com.mv.Activity.TeamManagementUserProfileListActivity;
 import com.mv.Activity.UserApproveDetail;
 import com.mv.Model.Template;
 import com.mv.R;
 import com.mv.Utils.Constants;
-import com.mv.Utils.PreferenceHelper;
 
 import java.util.List;
 
 /**
  * Created by user on 9/3/2018.
  */
+public class UserApprovalAdapter extends RecyclerView.Adapter<UserApprovalAdapter.ViewHolder> {
 
-public class UserApprovalAdapter extends RecyclerView.Adapter<UserApprovalAdapter.ViewHolder>{
     private final Context mContext;
-    private PreferenceHelper preferenceHelper;
-    private TeamManagementUserProfileListActivity mActivity;
     private List<Template> mDataList;
+    private String approval_type;
 
-    public UserApprovalAdapter(Context context, List<Template> chatList) {
-        Resources resources = context.getResources();
-        mActivity = (TeamManagementUserProfileListActivity) context;
+    public UserApprovalAdapter(Context context, List<Template> chatList, String approval_type) {
         mContext = context;
-        preferenceHelper = new PreferenceHelper(mContext);
         this.mDataList = chatList;
+        this.approval_type = approval_type;
     }
+
     @Override
     public UserApprovalAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemLayoutView = LayoutInflater.from(parent.getContext())
@@ -48,8 +45,8 @@ public class UserApprovalAdapter extends RecyclerView.Adapter<UserApprovalAdapte
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         final Template userApproval = mDataList.get(position);
-        if(userApproval.getName()!=null)
-            holder.txtName.setText(userApproval.getName()+"");
+        if (userApproval.getName() != null)
+            holder.txtName.setText(String.format("%s", userApproval.getName()));
     }
 
     @Override
@@ -61,17 +58,25 @@ public class UserApprovalAdapter extends RecyclerView.Adapter<UserApprovalAdapte
 
         public TextView txtName;
         RelativeLayout layoutMain;
+
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
             layoutMain = itemLayoutView.findViewById(R.id.layoutMain);
             txtName = itemLayoutView.findViewById(R.id.txtName);
 
             layoutMain.setOnClickListener(v -> {
-                Intent intent=new Intent(mContext, UserApproveDetail.class);
-                intent.putExtra(Constants.ID, mDataList.get(getAdapterPosition()).getId());
-                mContext.startActivity(intent);
+                if (approval_type.equals(Constants.USER_APPROVAL)) {
+                    Intent intent = new Intent(mContext, UserApproveDetail.class);
+                    intent.putExtra(Constants.ID, mDataList.get(getAdapterPosition()).getId());
+                    mContext.startActivity(intent);
+                } else if (approval_type.equals(Constants.PROCESS_APPROVAL)) {
+                    Intent intent = new Intent(mContext, ProcessListApproval.class);
+                    intent.putExtra(Constants.ID, mDataList.get(getAdapterPosition()).getId());
+                    intent.putExtra(Constants.PROCESS_ID, TeamManagementUserProfileListActivity.id);
+                    intent.putExtra(Constants.PROCESS_NAME, TeamManagementUserProfileListActivity.processTitle);
+                    mContext.startActivity(intent);
+                }
             });
         }
-
     }
 }

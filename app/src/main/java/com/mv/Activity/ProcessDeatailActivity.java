@@ -1,5 +1,6 @@
 package com.mv.Activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -8,6 +9,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -76,8 +78,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private RecyclerView rvProcessDetail;
 
     private String timestamp;
+    private String processStatus;
     private String comment, imageName;
-    private String isSave;
     private String msg;
     private String id = "";
     private String imageId, uniqueId = "";
@@ -99,7 +101,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             taskList = getIntent().getParcelableArrayListExtra(Constants.PROCESS_ID);
         }
 
-        if (getIntent().getStringExtra(Constants.PICK_LIST_ID) != null) {
+        if (getIntent().getStringArrayExtra(Constants.PICK_LIST_ID) != null) {
             pickListApiFieldNames = getIntent().getStringExtra(Constants.PICK_LIST_ID);
         }
 
@@ -222,34 +224,20 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     }
 
     public void sendToCamera(String imgName) {
-        try {
-            //use standard intent to capture an image
-            imageName = imgName;
-            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imgName + ".jpg";
-            File imageFile = new File(imageFilePath);
-            outputUri = FileProvider.getUriForFile(getApplicationContext(),
-                    getPackageName() + ".fileprovider", imageFile);
+        imageName = imgName;
 
-            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
-            takePictureIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            startActivityForResult(takePictureIntent, Constants.CHOOSE_IMAGE_FROM_CAMERA);
-        } catch (ActivityNotFoundException anfe) {
-            //display an error message
-            String errorMessage = "Whoops - your device doesn't support capturing images!";
-            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
-        } catch (SecurityException se) {
-            String errorMessage = "App do not have permission to take a photo, please allow it.";
-            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        if (!Utills.isMediaPermissionGranted(this)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.CAMERA,
+                                Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        Constants.MEDIA_PERMISSION_REQUEST);
+            }
+        } else {
+            showPictureDialog();
         }
     }
 
     private void showPictureDialog() {
-        if (!gps.canGetLocation()) {
-            gps.showSettingsAlert();
-            return;
-        }
-
         try {
             //use standard intent to capture an image
             String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture.jpg";
@@ -306,7 +294,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
             case R.id.btn_approve:
                 comment = "";
-                isSave = "true";
+                processStatus = "Approved";
                 sendApprovedData();
                 break;
 
@@ -359,7 +347,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         alertDialog.setView(input);
 
         alertDialog.setPositiveButton(getString(R.string.ok), (dialog, which) -> {
-            isSave = "false";
+            processStatus = "Rejected";
             comment = input.getText().toString();
 
             if (!comment.isEmpty()) {
@@ -633,7 +621,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 JSONObject jsonObject1 = new JSONObject();
                 jsonObject1.put("uniqueId", taskList.get(0).getId());
                 jsonObject1.put("ApprovedBy", User.getCurrentUser(getApplicationContext()).getMvUser().getId());
-                jsonObject1.put("isApproved", isSave);
+                jsonObject1.put("isApproved", processStatus);
                 jsonObject1.put("comment", comment);
 
                 ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);

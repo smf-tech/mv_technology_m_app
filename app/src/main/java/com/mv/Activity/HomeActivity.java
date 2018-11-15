@@ -860,10 +860,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private void sendLogOutRequest() {
         if (Utills.isConnected(this)) {
             Utills.showProgressDialog(this);
-            ServiceRequest apiService =
-                    ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-            String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + Constants.DoLogout_url + User.getCurrentUser(this).getMvUser().getId();
+            ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+            String userId = User.getCurrentUser(this).getMvUser() != null ? User.getCurrentUser(this).getMvUser().getId() : "";
+            String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.DoLogout_url + userId;
 
             apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
                 @Override

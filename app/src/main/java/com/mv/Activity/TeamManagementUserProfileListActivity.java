@@ -91,6 +91,8 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
                     + User.getCurrentUser(context).getMvUser().getId() + "&processId=" + id;
 
             setActionbar(processTitle);
+
+            binding.lnrFilter.setVisibility(View.GONE);
         }
 
         binding.swiperefresh.setOnRefreshListener(() -> {
@@ -100,18 +102,11 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         );
 
         binding.editTextEmail.addTextChangedListener(watch);
-        mAdapter = new UserApprovalAdapter(context, processAllList);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(mAdapter);
-
-        if (Utills.isConnected(context)) {
-            getAllProcess();
-        } else {
-            Utills.showInternetPopUp(context);
-        }
     }
 
     private void setActionbar(String Title) {
@@ -162,15 +157,25 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
 
     private void setRecyclerView(String Status) {
         tempList.clear();
-        for (int i = 0; i < processAllList.size(); i++) {
-            if (processAllList.get(i).getStatus() != null) {
-                if (processAllList.get(i).getStatus().equals(Status)) {
-                    tempList.add(processAllList.get(i));
+
+        if (approvalType.equals(Constants.PROCESS_APPROVAL)) {
+            tempList.addAll(processAllList);
+        } else {
+            for (int i = 0; i < processAllList.size(); i++) {
+                if (processAllList.get(i).getStatus() != null) {
+                    if (processAllList.get(i).getStatus().equals(Status)) {
+                        tempList.add(processAllList.get(i));
+                    }
                 }
             }
         }
 
-        mAdapter = new UserApprovalAdapter(context, tempList);
+        if (approvalType.equals(Constants.USER_APPROVAL)) {
+            mAdapter = new UserApprovalAdapter(context, tempList, Constants.USER_APPROVAL);
+        } else if (approvalType.equals(Constants.PROCESS_APPROVAL)) {
+            mAdapter = new UserApprovalAdapter(context, tempList, Constants.PROCESS_APPROVAL);
+        }
+
         binding.recyclerView.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
 
@@ -276,7 +281,12 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         copyOfProcessAllList.clear();
         copyOfProcessAllList.addAll(list);
 
-        mAdapter = new UserApprovalAdapter(context, copyOfProcessAllList);
+        if (approvalType.equals(Constants.USER_APPROVAL)) {
+            mAdapter = new UserApprovalAdapter(context, copyOfProcessAllList, Constants.USER_APPROVAL);
+        } else if (approvalType.equals(Constants.PROCESS_APPROVAL)) {
+            mAdapter = new UserApprovalAdapter(context, copyOfProcessAllList, Constants.PROCESS_APPROVAL);
+        }
+
         binding.recyclerView.setAdapter(mAdapter);
     }
 

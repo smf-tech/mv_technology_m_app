@@ -539,6 +539,6 @@
             android:background="@color/colorPink"
             android:text="@string/Submit"
             android:textColor="#ffffff"
-            android:textSize="17sp" />
+            android:textSize="22sp" />
     </LinearLayout>
 </layout>
