@@ -70,6 +70,43 @@ public class Task implements Parcelable {
     @Expose
     private String limitValue;
 
+    @SerializedName("referenceField")
+    @Expose
+    @ColumnInfo(name = "referenceField")
+    private String referenceField;
+    @SerializedName("filterFields")
+    @Expose
+    @ColumnInfo(name = "filterFields")
+    private String filterFields;
+    @SerializedName("aPIFieldName")
+    @Expose
+    @ColumnInfo(name = "aPIFieldName")
+    private String aPIFieldName;
+
+    public String getaPIFieldName() {
+        return aPIFieldName;
+    }
+
+    public void setaPIFieldName(String aPIFieldName) {
+        this.aPIFieldName = aPIFieldName;
+    }
+
+    public String getFilterFields() {
+        return filterFields;
+    }
+
+    public void setFilterFields(String filterFields) {
+        this.filterFields = filterFields;
+    }
+
+    public String getReferenceField() {
+        return referenceField;
+    }
+
+    public void setReferenceField(String referenceField) {
+        this.referenceField = referenceField;
+    }
+
     public String getValidationRule() {
         return validationRule;
     }
@@ -447,6 +484,9 @@ public class Task implements Parcelable {
         dest.writeString(this.minRange);
         dest.writeString(this.maxRange);
         dest.writeString(this.limitValue);
+        dest.writeString(this.filterFields);
+        dest.writeString(this.referenceField);
+        dest.writeString(this.aPIFieldName);
      //   dest.writeValue(this.IsDeleteAllow);
     }
 
@@ -480,6 +520,9 @@ public class Task implements Parcelable {
         this.minRange = in.readString();
         this.maxRange = in.readString();
         this.limitValue = in.readString();
+        this.filterFields = in.readString();
+        this.referenceField = in.readString();
+        this.aPIFieldName = in.readString();
       //  this.IsDeleteAllow = (Boolean) in.readValue(Boolean.class.getClassLoader());
     }
 

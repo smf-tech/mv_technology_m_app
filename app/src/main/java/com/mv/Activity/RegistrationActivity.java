@@ -1544,7 +1544,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                                 if (User.getCurrentUser(RegistrationActivity.this).getMvUser() != null) {
                                     for (int i = 0; i < mListVillage.size(); i++) {
-                                        if (mListVillage.get(i).equalsIgnoreCase(User.getCurrentUser(
+                                        if (mListVillage.get(i).trim().equalsIgnoreCase(User.getCurrentUser(
                                                 RegistrationActivity.this).getMvUser().getVillage())) {
                                             binding.spinnerVillage.setSelection(i);
                                             break;
@@ -1673,6 +1673,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             //display an error message
             String errorMessage = "Whoops - your device doesn't support capturing images!";
             Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        } catch (SecurityException se) {
+            String errorMessage = "App do not have permission to take a photo, please allow it.";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -1725,7 +1728,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         if (!Utills.isMediaPermissionGranted(this)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA,
-                        Manifest.permission.RECORD_AUDIO}, Constants.MEDIA_PERMISSION_REQUEST);
+                        Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        Constants.MEDIA_PERMISSION_REQUEST);
             }
         } else {
             showPictureDialog();

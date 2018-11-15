@@ -25,6 +25,9 @@ public class TaskContainerModel {
         Unique_Id = unique_Id;
     }
 
+    @ColumnInfo(name = "taskListString")
+    private String taskListString;
+
     public String getTaskListString() {
         return taskListString;
     }
@@ -32,9 +35,6 @@ public class TaskContainerModel {
     public void setTaskListString(String taskListString) {
         this.taskListString = taskListString;
     }
-
-    @ColumnInfo(name = "taskListString")
-    private String taskListString;
 
     public String getIsSave() {
         return isSave;
@@ -48,6 +48,18 @@ public class TaskContainerModel {
     @SerializedName("isSave ")
     @Expose
     private String isSave;
+
+    @ColumnInfo(name = "proAnsListString")
+    private String proAnsListString;
+
+    public String getProAnsListString() {
+        return proAnsListString;
+    }
+
+    public void setProAnsListString(String proAnsListString) {
+        this.proAnsListString = proAnsListString;
+    }
+
     @ColumnInfo(name = "MV_Process__c")
     @SerializedName("MV_Process__c")
     @Expose

@@ -99,6 +99,10 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         for (Date date : dates)
             System.out.println(date);*/
 
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            extras.getParcelable(Constants.My_Calendar);
+        }
 
         if (getIntent().getParcelableExtra(Constants.My_Calendar) != null) {
             calenderEvent = getIntent().getParcelableExtra(Constants.My_Calendar);
