@@ -99,7 +99,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             taskList = getIntent().getParcelableArrayListExtra(Constants.PROCESS_ID);
         }
 
-        if (getIntent().getStringArrayExtra(Constants.PICK_LIST_ID) != null) {
+        if (getIntent().getStringExtra(Constants.PICK_LIST_ID) != null) {
             pickListApiFieldNames = getIntent().getStringExtra(Constants.PICK_LIST_ID);
         }
 
