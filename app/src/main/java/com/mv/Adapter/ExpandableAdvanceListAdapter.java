@@ -21,31 +21,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by nanostuffs on 19-03-2018.
- */
-
 public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
 
-    private AdavanceListActivity _context;
-    private List<String> _listDataHeader; // header titles
+    private AdavanceListActivity context;
+    private List<String> listDataHeader;
 
     // child data in format of header title, child title
-    private HashMap<String, ArrayList<Adavance>> _listDataChild;
-    private AdavanceListActivity _activity;
+    private HashMap<String, ArrayList<Adavance>> listDataChild;
+    private AdavanceListActivity activity;
 
     public ExpandableAdvanceListAdapter(Activity context, ArrayList<String> listDataHeader,
                                         HashMap<String, ArrayList<Adavance>> listChildData) {
-        this._context = (AdavanceListActivity) context;
-        this._listDataHeader = listDataHeader;
-        this._listDataChild = listChildData;
-        this._activity = (AdavanceListActivity) context;
+
+        this.context = (AdavanceListActivity) context;
+        this.listDataHeader = listDataHeader;
+        this.listDataChild = listChildData;
+        this.activity = (AdavanceListActivity) context;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .get(childPosititon);
+        return this.listDataChild.get(this.listDataHeader.get(groupPosition)).get(childPosititon);
     }
 
     @Override
@@ -60,9 +56,9 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
         final Adavance adavance = (Adavance) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
+            LayoutInflater layoutInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater != null ? infalInflater.inflate(R.layout.each_adavance, null) : null;
+            convertView = layoutInflater != null ? layoutInflater.inflate(R.layout.each_adavance, null) : null;
         }
 
         TextView tvProjectName, tvDateName, tvAmountName, tvAmount;
@@ -93,27 +89,23 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
                 imgDelete.setVisibility(View.GONE);
             }
 
-            textLayout.setOnClickListener(view1 -> {
-                if (_context instanceof AdavanceListActivity) {
-                    _activity.editAdavance(adavance);
-                }
+            textLayout.setOnClickListener(view13 -> {
+                if (context instanceof AdavanceListActivity)
+                    activity.editAdavance(adavance);
             });
 
-
+            imgEdit.setImageResource(R.drawable.ic_form);
             imgEdit.setOnClickListener(view12 -> {
-                if (_context instanceof AdavanceListActivity) {
-                    _activity.editAdavance(adavance);
-                }
-            });
-
-            imgDelete.setOnClickListener(view13 -> {
-                if (_context instanceof AdavanceListActivity) {
-                    showLogoutPopUp(adavance);
-                }
+                if (context instanceof AdavanceListActivity)
+                    activity.editAdavance(adavance);
             });
 
             imgDelete.setImageResource(R.drawable.form_delete);
-            imgEdit.setImageResource(R.drawable.ic_form);
+            imgDelete.setOnClickListener(view1 -> {
+                if (context instanceof AdavanceListActivity)
+                    showLogoutPopUp(adavance);
+            });
+
             view.setVisibility(View.GONE);
             tvProjectName.setText(adavance.getDecription());
             tvDateName.setText(adavance.getDate());
@@ -132,26 +124,24 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
 
     @SuppressWarnings("deprecation")
     private void showLogoutPopUp(Adavance adavance) {
-        final AlertDialog alertDialog = new AlertDialog.Builder(_context).create();
+        final AlertDialog alertDialog = new AlertDialog.Builder(context).create();
 
         // Setting Dialog Title
-        alertDialog.setTitle(_context.getString(R.string.app_name));
+        alertDialog.setTitle(context.getString(R.string.app_name));
 
         // Setting Dialog Message
-        alertDialog.setMessage(_context.getString(R.string.delete_task_string));
+        alertDialog.setMessage(context.getString(R.string.delete_task_string));
 
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.app_logo);
+        alertDialog.setIcon(R.drawable.logomulya);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(_context.getString(android.R.string.cancel), (dialog, which) -> {
+        alertDialog.setButton2(context.getString(android.R.string.cancel), (dialog, which) -> {
             alertDialog.dismiss();
-            // Write your code here to execute after dialog closed
-          /*  listOfWrongQuestions.add(mPosition);
-            prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
         });
+
         // Setting OK Button
-        alertDialog.setButton(_context.getString(android.R.string.ok), (dialog, which) -> _activity.deleteAdavance(adavance));
+        alertDialog.setButton(context.getString(android.R.string.ok), (dialog, which) -> activity.deleteAdavance(adavance));
 
         // Showing Alert Message
         alertDialog.show();
@@ -159,22 +149,21 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if (this._listDataChild.get(this._listDataHeader.get(groupPosition)) != null)
-            return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                    .size();
-        else
+        if (this.listDataChild.get(this.listDataHeader.get(groupPosition)) != null) {
+            return this.listDataChild.get(this.listDataHeader.get(groupPosition)).size();
+        } else {
             return 0;
+        }
     }
-
 
     @Override
     public Object getGroup(int groupPosition) {
-        return this._listDataHeader.get(groupPosition);
+        return this.listDataHeader.get(groupPosition);
     }
 
     @Override
     public int getGroupCount() {
-        return this._listDataHeader.size();
+        return this.listDataHeader.size();
     }
 
     @Override
@@ -183,22 +172,27 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
-
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+        String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
+            LayoutInflater layoutInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
-        } else {
+            convertView = layoutInflater != null ? layoutInflater.inflate(R.layout.list_group, null) : null;
+        }
+
+        if (convertView != null) {
             ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
+
             if (isExpanded) {
-                imgGroup.setImageResource(R.drawable.downarrow);
+                if (imgGroup != null) {
+                    imgGroup.setImageResource(R.drawable.downarrow);
+                }
             } else {
-                imgGroup.setImageResource(R.drawable.rightarrow);
+                if (imgGroup != null) {
+                    imgGroup.setImageResource(R.drawable.rightarrow);
+                }
             }
 
-            String headerTitle = (String) getGroup(groupPosition);
             TextView txtName = convertView.findViewById(R.id.txtName);
             txtName.setText(headerTitle);
         }
