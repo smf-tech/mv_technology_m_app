@@ -20,21 +20,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-/**
- * Created by nanostuffs on 19-03-2018.
- */
-
 public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
 
     private ExpenseListActivity _context;
     private List<String> _listDataHeader; // header titles
-
-    // child data in format of header title, child title
     private HashMap<String, ArrayList<Expense>> _listDataChild;
     private ExpenseListActivity _activity;
 
     public ExpandableExpenseListAdapter(Activity context, ArrayList<String> listDataHeader,
                                         HashMap<String, ArrayList<Expense>> listChildData) {
+
         this._context = (ExpenseListActivity) context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
@@ -43,8 +38,7 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .get(childPosititon);
+        return this._listDataChild.get(this._listDataHeader.get(groupPosition)).get(childPosititon);
     }
 
     @Override
@@ -59,12 +53,12 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
         final Expense expense = (Expense) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
+            LayoutInflater layoutInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater != null ? infalInflater.inflate(R.layout.each_expense, null) : null;
+            convertView = layoutInflater != null ? layoutInflater.inflate(R.layout.each_expense, null) : null;
         }
 
-        TextView tvProjectName, tvDateName, tvNoOfPeopleName,tvNoOfPeopleTitle;
+        TextView tvProjectName, tvDateName, tvNoOfPeopleName, tvNoOfPeopleTitle;
         ImageView imgEdit, imgDelete;
         View view;
         RelativeLayout textLayout;
@@ -72,11 +66,11 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
         if (convertView != null) {
             imgEdit = convertView.findViewById(R.id.imgEdit);
             imgDelete = convertView.findViewById(R.id.imgDelete);
+            tvProjectName = convertView.findViewById(R.id.tvProjectName);
             tvDateName = convertView.findViewById(R.id.tvDateName);
             tvNoOfPeopleName = convertView.findViewById(R.id.tvNoOfPeopleName);
             tvNoOfPeopleTitle = convertView.findViewById(R.id.tvNoOfPeopleTitle);
             view = convertView.findViewById(R.id.view1);
-            tvProjectName = convertView.findViewById(R.id.tvProjectName);
             textLayout = convertView.findViewById(R.id.textLayout);
 
             if (groupPosition == 1 || groupPosition == 2) {
@@ -90,21 +84,21 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
                 imgDelete.setVisibility(View.GONE);
             }
 
-            textLayout.setOnClickListener(view1 -> {
+            textLayout.setOnClickListener(view13 -> {
                 if (_context instanceof ExpenseListActivity)
                     _activity.editExpense(expense);
             });
 
-            imgDelete.setImageResource(R.drawable.form_delete);
-            imgEdit.setImageResource(R.drawable.ic_form);
             view.setVisibility(View.GONE);
 
+            imgEdit.setImageResource(R.drawable.ic_form);
             imgEdit.setOnClickListener(view12 -> {
                 if (_context instanceof ExpenseListActivity)
                     _activity.editExpense(expense);
             });
 
-            imgDelete.setOnClickListener(view13 -> {
+            imgDelete.setImageResource(R.drawable.form_delete);
+            imgDelete.setOnClickListener(view1 -> {
                 if (_context instanceof ExpenseListActivity)
                     showLogoutPopUp(expense);
             });
@@ -120,6 +114,7 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
                 tvNoOfPeopleName.setText(String.format("₹ %s", expense.getAmount()));
             }
         }
+
         return convertView;
     }
 
@@ -131,7 +126,7 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
         // Setting Dialog Message
         alertDialog.setMessage(_context.getString(R.string.delete_task_string));
         // Setting Icon to Dialog
-        alertDialog.setIcon(R.drawable.app_logo);
+        alertDialog.setIcon(R.drawable.logomulya);
         // Setting CANCEL Button
         alertDialog.setButton2(_context.getString(android.R.string.cancel), (dialog, which) -> {
             alertDialog.dismiss();
@@ -147,11 +142,11 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if (this._listDataChild.get(this._listDataHeader.get(groupPosition)) != null)
-            return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                    .size();
-        else
+        if (this._listDataChild.get(this._listDataHeader.get(groupPosition)) != null) {
+            return this._listDataChild.get(this._listDataHeader.get(groupPosition)).size();
+        } else {
             return 0;
+        }
     }
 
     @Override
@@ -171,20 +166,22 @@ public class ExpandableExpenseListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
-
+        String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
+            LayoutInflater layoutInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
-        } else {
+            convertView = layoutInflater != null ? layoutInflater.inflate(R.layout.list_group, null) : null;
+        }
+
+        if (convertView != null) {
             ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
+
             if (isExpanded) {
                 imgGroup.setImageResource(R.drawable.downarrow);
             } else {
                 imgGroup.setImageResource(R.drawable.rightarrow);
             }
 
-            String headerTitle = (String) getGroup(groupPosition);
             TextView txtName = convertView.findViewById(R.id.txtName);
             txtName.setText(headerTitle);
         }
