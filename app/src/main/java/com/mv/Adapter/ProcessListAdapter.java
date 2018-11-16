@@ -34,7 +34,7 @@ import java.util.List;
 public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.MyViewHolder> {
 
     private final List<TaskContainerModel> resultList;
-    private ArrayList<ArrayList<Task>> taskArrayList = new ArrayList<>();
+    private ArrayList<Task> taskArrayList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
     private ProcessListActivity mcontext;
     private Activity mContext;
@@ -65,8 +65,17 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
 
                     preferenceHelper.insertBoolean(Constants.NEW_PROCESS, false);
 
+                    String locationLevel = "";
+                    for (Task task : taskArrayList) {
+                        if (task.getLocationLevel().equals("null") || task.getLocationLevel() == null) {
+                            break;
+                        }
+                        locationLevel = task.getLocationLevel();
+                    }
+
+                    preferenceHelper.insertString(Constants.STATE_LOCATION_LEVEL, locationLevel);
                     Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
-                    openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskArrayList.get(getAdapterPosition()));
+                    openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskArrayList);
 
                     String structureList = resultList.get(getAdapterPosition()).getProAnsListString();
                     openClass.putExtra(Constants.PICK_LIST_ID, structureList);
@@ -103,7 +112,7 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         ArrayList<Task> tasks = gson.fromJson(resultList.get(position).getTaskListString(), listType);
-        taskArrayList.add(tasks);
+        taskArrayList = tasks;
 
         Log.d("pos", String.valueOf(position));
         if (resultList.get(position).getHeaderPosition().equals("")) {
