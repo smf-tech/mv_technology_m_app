@@ -957,8 +957,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         // Setting OK Button
         alertDialogApproved.setButton(getString(android.R.string.ok), (dialog, which) -> alertDialogApproved.dismiss());
 
-        // Showing Alert Message
-        alertDialogApproved.show();
+        try {
+            // Showing Alert Message
+            alertDialogApproved.show();
+        } catch (Exception e) {
+            Log.e("Error in showing dialog", e.getMessage());
+        }
     }
 
     @Override

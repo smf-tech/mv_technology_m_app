@@ -805,12 +805,24 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             user.getMvUser().setName(edit_text_name.getText().toString().trim());
             user.getMvUser().setEmail(edit_text_email.getText().toString().trim());
             user.getMvUser().setPhone(edit_text_mobile_number.getText().toString().trim());
-            user.getMvUser().setRoll(mListRoleName.get(mSelectRole));
-            user.getMvUser().setCluster(mListCluster.get(mSelectCluster));
-            user.getMvUser().setDistrict(mListDistrict.get(mSelectDistrict));
-            user.getMvUser().setTaluka(mListTaluka.get(mSelectTaluka));
-            user.getMvUser().setVillage(mListVillage.get(mSelectVillage));
             user.getMvUser().setSchool_Code(edit_text_school_code.getText().toString().trim());
+
+            if (mListRoleName.size() > mSelectRole) {
+                user.getMvUser().setRoll(mListRoleName.get(mSelectRole));
+            }
+            if (mListCluster.size() > mSelectCluster) {
+                user.getMvUser().setCluster(mListCluster.get(mSelectCluster));
+            }
+            if (mListDistrict.size() > mSelectDistrict) {
+                user.getMvUser().setDistrict(mListDistrict.get(mSelectDistrict));
+            }
+            if (mListTaluka.size() > mSelectTaluka) {
+                user.getMvUser().setTaluka(mListTaluka.get(mSelectTaluka));
+            }
+            if (mListVillage.size() > mSelectVillage) {
+                user.getMvUser().setVillage(mListVillage.get(mSelectVillage));
+            }
+
             user.getMvUser().setSchool_Name(mListSchoolName.get(mSelectSchoolName));
             user.getMvUser().setMultipleTaluka(value);
 

@@ -212,7 +212,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                     if (response.body() != null) {
                         String data = response.body().string();
                         if (data.length() > 0) {
-                            List<String> pickListFieldNames = new ArrayList<>();
                             AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().deleteTask("false", processId);
                             idList = new ArrayList<>();
 

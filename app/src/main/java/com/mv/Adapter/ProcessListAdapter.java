@@ -67,7 +67,7 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
 
                     String locationLevel = "";
                     for (Task task : taskArrayList) {
-                        if (task.getLocationLevel().equals("null") || task.getLocationLevel() == null) {
+                        if (task.getLocationLevel() == null || task.getLocationLevel().equals("null")) {
                             break;
                         }
                         locationLevel = task.getLocationLevel();
