@@ -53,9 +53,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by acer on 6/7/2016.
- */
+
 public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContentAdapter.ViewHolder> {
 
     private final Context mContext;
@@ -294,6 +292,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                 Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
                 intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
                 intent.putExtra("flag", "not_forward_flag");
+                intent.putExtra("activity", "Broadcast Details");
                 mContext.startActivity(intent);
             });
 
