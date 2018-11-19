@@ -34,13 +34,14 @@ import java.util.List;
 public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.MyViewHolder> {
 
     private final List<TaskContainerModel> resultList;
-    private ArrayList<Task> taskArrayList = new ArrayList<>();
+    private ArrayList<ArrayList<Task>> taskArrayList = new ArrayList<>();
     private PreferenceHelper preferenceHelper;
-    private ProcessListActivity mcontext;
+    private ProcessListActivity _context;
     private Activity mContext;
 
     private Gson gson;
     private Type listType;
+    private String processName;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -66,7 +67,8 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                     preferenceHelper.insertBoolean(Constants.NEW_PROCESS, false);
 
                     String locationLevel = "";
-                    for (Task task : taskArrayList) {
+                    ArrayList<Task> tasks = taskArrayList.get(getAdapterPosition());
+                    for (Task task : tasks) {
                         if (task.getLocationLevel() == null || task.getLocationLevel().equals("null")) {
                             break;
                         }
@@ -74,8 +76,10 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                     }
 
                     preferenceHelper.insertString(Constants.STATE_LOCATION_LEVEL, locationLevel);
+
                     Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
-                    openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskArrayList);
+                    openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskArrayList.get(getAdapterPosition()));
+                    openClass.putExtra(Constants.PROCESS_NAME, processName);
 
                     String structureList = resultList.get(getAdapterPosition()).getProAnsListString();
                     openClass.putExtra(Constants.PICK_LIST_ID, structureList);
@@ -89,9 +93,10 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         }
     }
 
-    public ProcessListAdapter(List<TaskContainerModel> resultList, Activity context) {
+    public ProcessListAdapter(List<TaskContainerModel> resultList, Activity context, String processName) {
         this.resultList = resultList;
         this.mContext = context;
+        this.processName = processName;
         this.preferenceHelper = new PreferenceHelper(context);
 
         gson = new Gson();
@@ -112,7 +117,7 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
         ArrayList<Task> tasks = gson.fromJson(resultList.get(position).getTaskListString(), listType);
-        taskArrayList = tasks;
+        taskArrayList.add(tasks);
 
         Log.d("pos", String.valueOf(position));
         if (resultList.get(position).getHeaderPosition().equals("")) {
@@ -173,9 +178,9 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         alertDialog.setButton(mContext.getString(android.R.string.ok), (dialog, which) -> {
             if (resultList != null && resultList.size() > 0) {
                 if (mContext instanceof ProcessListActivity) {
-                    mcontext = (ProcessListActivity) mContext;
+                    _context = (ProcessListActivity) mContext;
                     if (resultList.get(position).getIsSave().equals("false")) {
-                        mcontext.deleteForm(resultList.get(position), position);
+                        _context.deleteForm(resultList.get(position), position);
                     } else {
                         AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(
                                 resultList.get(position).getUnique_Id(),
