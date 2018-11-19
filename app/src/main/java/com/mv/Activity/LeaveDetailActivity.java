@@ -240,8 +240,12 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 binding.leavesCountText.setVisibility(View.VISIBLE);
 
                 if (binding.inputHrToDate.getText().toString().length() > 0) {
-                    binding.leavesCountText.setText(Utills.getNumberofDaysBetweenTwoDates(
-                            binding.inputHrFormDate.getText().toString(), binding.inputHrToDate.getText().toString()));
+                    if(binding.inputHrFormDate.getText().toString().equals(binding.inputHrToDate.getText().toString())){
+                        binding.leavesCountText.setText("0.5");
+                    }else {
+                        binding.leavesCountText.setText(Utills.getNumberofDaysBetweenTwoDates(
+                                binding.inputHrFormDate.getText().toString(), binding.inputHrToDate.getText().toString()));
+                    }
                 }
             } else {
                 halfDayCheck = "false";

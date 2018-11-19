@@ -12,6 +12,8 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -276,7 +278,8 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             MenuItem spam = popup.getMenu().findItem(R.id.spam);
             spam.setVisible(true);
 
-            if (mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
+            if (mDataList.get(position).getUser_id() != null &&
+                    mDataList.get(position).getUser_id().equals(User.getCurrentUser(mContext).getMvUser().getId())) {
                 spam.setVisible(false);
                 edit.setVisible(true);
                 delete.setVisible(true);
@@ -421,20 +424,13 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             txt_detail = itemLayoutView.findViewById(R.id.txt_detail);
 
             txt_detail.setOnClickListener(view -> {
-                if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())) {
+                if (TextUtils.isEmpty(mDataList.get(getAdapterPosition()).getIsAttachmentPresent())
+                        || (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) ||
+                        (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image"))) {
                     Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
                     intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
                     intent.putExtra("flag", "not_forward_flag");
-                    mContext.startActivity(intent);
-                } else if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) {
-                    Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                    intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                    intent.putExtra("flag", "not_forward_flag");
-                    mContext.startActivity(intent);
-                } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("Image")) {
-                    Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
-                    intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
-                    intent.putExtra("flag", "not_forward_flag");
+                    intent.putExtra("activity", "Thet Savand Details");
                     mContext.startActivity(intent);
                 }
             });
@@ -491,6 +487,10 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                                 + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".png";
                     }
 
+                    File imageFile = new File(filePath);
+                    Uri outputUri = FileProvider.getUriForFile(mContext.getApplicationContext(),
+                            mContext.getPackageName() + ".fileprovider", imageFile);
+
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_SEND);
                     intent.setType("application/*");
@@ -498,7 +498,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                     intent.putExtra(Intent.EXTRA_TEXT, "Title : "
                             + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : "
                             + mDataList.get(getAdapterPosition()).getDescription());
-                    intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                    intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
                     mContext.startActivity(Intent.createChooser(intent, "Share Content"));
                 } else {
                     Intent i = new Intent(Intent.ACTION_SEND);
