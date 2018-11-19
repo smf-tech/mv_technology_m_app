@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -53,9 +55,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by acer on 6/7/2016.
- */
+
 public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContentAdapter.ViewHolder> {
 
     private final Context mContext;
@@ -294,6 +294,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                 Intent intent = new Intent(mContext, CommunityDetailsActivity.class);
                 intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
                 intent.putExtra("flag", "not_forward_flag");
+                intent.putExtra("activity", "Broadcast Details");
                 mContext.startActivity(intent);
             });
 
@@ -319,6 +320,9 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                 } else {
                     String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
                             + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId() + ".png";
+                    File imageFile = new File(filePath);
+                    Uri outputUri = FileProvider.getUriForFile(mContext.getApplicationContext(),
+                            mContext.getPackageName() + ".fileprovider", imageFile);
 
                     Intent shareIntent = new Intent(Intent.ACTION_SEND);
                     shareIntent.setType("application/*");
@@ -326,7 +330,9 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                             + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : "
                             + mDataList.get(getAdapterPosition()).getDescription());
 
-                    shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                //    shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                    shareIntent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
+                    shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     mContext.startActivity(Intent.createChooser(shareIntent, "Share Content"));
                 }
             });

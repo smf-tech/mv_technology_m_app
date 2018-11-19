@@ -72,6 +72,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
 
     private JSONArray jsonArrayAttchment = new JSONArray();
     private boolean[] mSelection = null;
+    private String activityTitleName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -416,7 +417,6 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
     }
 
     private void initViews() {
-        setActionbar(getString(R.string.comunity_detail));
 
         LinearLayout layout_forward = (LinearLayout) findViewById(R.id.layout_forward);
         LinearLayout layout_download_file = (LinearLayout) findViewById(R.id.layout_download_file);
@@ -437,13 +437,14 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         String json = "";
         if (getIntent().getExtras() != null) {
             json = getIntent().getExtras().getString(Constants.LIST);
+            activityTitleName = getIntent().getExtras().getString("activity");
         }
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         if (!TextUtils.isEmpty(json)) {
             communityList = Arrays.asList(gson.fromJson(json, Community[].class));
         }
-
+        setActionbar(activityTitleName);
         preferenceHelper = new PreferenceHelper(this);
         mContent = (Content) getIntent().getExtras().getSerializable(Constants.CONTENT);
         binding.layoutComment.setOnClickListener(this);
