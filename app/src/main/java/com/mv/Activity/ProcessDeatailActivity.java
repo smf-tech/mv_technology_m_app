@@ -78,7 +78,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private RecyclerView rvProcessDetail;
 
     private String timestamp;
-    private String processStatus;
+    private String processStatus, processName;
     private String comment, imageName;
     private String msg;
     private String id = "";
@@ -103,6 +103,10 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
         if (getIntent().getStringExtra(Constants.PICK_LIST_ID) != null) {
             pickListApiFieldNames = getIntent().getStringExtra(Constants.PICK_LIST_ID);
+        }
+
+        if (getIntent().getStringExtra(Constants.PROCESS_NAME) != null) {
+            processName = getIntent().getStringExtra(Constants.PROCESS_NAME);
         }
 
         initViews();
@@ -170,7 +174,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     }
 
     private void initViews() {
-        setActionbar(getString(R.string.Task_List));
+        setActionbar(processName);
 
         gps = new GPSTracker(ProcessDeatailActivity.this);
         rvProcessDetail = (RecyclerView) findViewById(R.id.rv_process_detail);

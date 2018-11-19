@@ -41,6 +41,7 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
 
     private Gson gson;
     private Type listType;
+    private String processName;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
@@ -75,9 +76,10 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                     }
 
                     preferenceHelper.insertString(Constants.STATE_LOCATION_LEVEL, locationLevel);
+
                     Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
-                    openClass.putParcelableArrayListExtra(Constants.PROCESS_ID,
-                            taskArrayList.get(getAdapterPosition()));
+                    openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskArrayList.get(getAdapterPosition()));
+                    openClass.putExtra(Constants.PROCESS_NAME, processName);
 
                     String structureList = resultList.get(getAdapterPosition()).getProAnsListString();
                     openClass.putExtra(Constants.PICK_LIST_ID, structureList);
@@ -91,9 +93,10 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         }
     }
 
-    public ProcessListAdapter(List<TaskContainerModel> resultList, Activity context) {
+    public ProcessListAdapter(List<TaskContainerModel> resultList, Activity context, String processName) {
         this.resultList = resultList;
         this.mContext = context;
+        this.processName = processName;
         this.preferenceHelper = new PreferenceHelper(context);
 
         gson = new Gson();

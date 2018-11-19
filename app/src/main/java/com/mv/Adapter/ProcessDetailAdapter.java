@@ -114,10 +114,11 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                         selectedLanList = new ArrayList<>(Arrays.asList(
                                 getColumnIndex((taskList.get(getAdapterPosition()).getPicklist_Value_Lan__c()).split(","))));
 
+                        String selectedValues = taskList.get(getAdapterPosition()).getTask_Response__c();
                         if (myList.size() == selectedLanList.size()) {
-                            showDialog(selectedLanList, getAdapterPosition());
+                            showDialog(selectedLanList, getAdapterPosition(), selectedValues);
                         } else {
-                            showDialog(myList, getAdapterPosition());
+                            showDialog(myList, getAdapterPosition(), selectedValues);
                         }
                         break;
 
@@ -531,7 +532,10 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     for (String strAns : answer) {
                         answerStr = answerStr.concat((selectedLanList1.get(myList1.indexOf(strAns))).concat(","));
                     }
-                    holder.date.setText(answerStr);
+
+                    if (answerStr.contains(",")) {
+                        holder.date.setText(answerStr.substring(0, answerStr.length() - 1));
+                    }
                 } else {
                     holder.date.setText("Select");
                 }
@@ -734,11 +738,18 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         return "" + i;
     }
 
-    private void showDialog(ArrayList<String> arrayList, final int pos) {
+    private void showDialog(ArrayList<String> arrayList, final int pos, String selectedItems) {
         final String[] items = arrayList.toArray(new String[arrayList.size()]);
         final String[] defaultLangItems = myList.toArray(new String[myList.size()]);
         mSelection = new boolean[items.length];
         Arrays.fill(mSelection, false);
+
+        for(int i = 0; i < items.length; i++) {
+            String item = items[i];
+            if (selectedItems.contains(item)) {
+                mSelection[i] = true;
+            }
+        }
 
         AlertDialog dialog = new AlertDialog.Builder(mContext)
                 .setTitle(taskList.get(pos).getTask_Text___Lan_c())

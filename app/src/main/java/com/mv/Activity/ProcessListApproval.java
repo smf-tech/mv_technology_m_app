@@ -107,7 +107,7 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
         btnApprove.setBackgroundResource(R.drawable.light_grey_btn_background);
         btnReject.setBackgroundResource(R.drawable.light_grey_btn_background);
 
-        mAdapter = new ProcessListAdapter(resultList, ProcessListApproval.this);
+        mAdapter = new ProcessListAdapter(resultList, ProcessListApproval.this, processName);
         binding.rvProcess.setAdapter(mAdapter);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
