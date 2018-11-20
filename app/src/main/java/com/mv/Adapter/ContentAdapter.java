@@ -13,6 +13,7 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -168,8 +169,11 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                             + "/MV/Image" + "/" + mDataList.get(position).getAttachmentId() + ".png");
 
                     if (file.exists()) {
+                        Uri outputUri = FileProvider.getUriForFile(mContext,
+                                mContext.getPackageName() + ".fileprovider", file);
+
                         Glide.with(mContext)
-                                .load(Uri.fromFile(file))
+                                .load(outputUri)
                                 .skipMemoryCache(true)
                                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                                 .into(holder.picture);
@@ -501,7 +505,8 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         }
 
         builderSingle.setNegativeButton(mContext.getString(R.string.cancel), (dialog, which) -> dialog.dismiss());
-        builderSingle.setAdapter(arrayAdapter, (dialog, which) -> {});
+        builderSingle.setAdapter(arrayAdapter, (dialog, which) -> {
+        });
         builderSingle.show();
     }
 
@@ -652,6 +657,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 intent.putExtra("flag", "forward_flag");
                 intent.putExtra(Constants.CONTENT, mDataList.get(getAdapterPosition()));
                 intent.putExtra(Constants.LIST, mActivity.json);
+                intent.putExtra("activity", "Community Details");
                 mContext.startActivity(intent);
             });
 
@@ -701,41 +707,59 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                                     + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".png";
                         }
 
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_SEND);
-                        intent.setType("application/*");
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.putExtra(Intent.EXTRA_TEXT, "Title : "
-                                + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : "
-                                + mDataList.get(getAdapterPosition()).getDescription());
-                        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
-                        mContext.startActivity(Intent.createChooser(intent, "Share Content"));
-                    } else {
-                        filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                                + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".png";
+                        File zipFile = new File(filePath);
+                        Uri outputUri = FileProvider.getUriForFile(mContext,
+                                mContext.getPackageName() + ".fileprovider", zipFile);
 
                         Intent intent = new Intent();
                         intent.setAction(Intent.ACTION_SEND);
                         intent.setType("application/*");
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         intent.putExtra(Intent.EXTRA_TEXT, "Title : "
                                 + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : "
                                 + mDataList.get(getAdapterPosition()).getDescription());
-                        intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                        intent.putExtra(Intent.EXTRA_STREAM, outputUri);
+
+                        mContext.startActivity(Intent.createChooser(intent, "Share Content"));
+                    } else {
+                        filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+                                + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".png";
+
+                        File imageFile = new File(filePath);
+                        Uri outputUri = FileProvider.getUriForFile(mContext,
+                                mContext.getPackageName() + ".fileprovider", imageFile);
+
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_SEND);
+                        intent.setType("application/*");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        intent.putExtra(Intent.EXTRA_TEXT, "Title : "
+                                + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : "
+                                + mDataList.get(getAdapterPosition()).getDescription());
+                        intent.putExtra(Intent.EXTRA_STREAM, outputUri);
+
                         mContext.startActivity(Intent.createChooser(intent, "Share Content"));
                     }
                 } else if (mDataList.get(getAdapterPosition()).getAttachmentId() != null) {
                     String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
                             + "/MV/Download/" + mDataList.get(getAdapterPosition()).getAttachmentId() + ".png";
 
+                    File imageFile = new File(filePath);
+                    Uri outputUri = FileProvider.getUriForFile(mContext,
+                            mContext.getPackageName() + ".fileprovider", imageFile);
+
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_SEND);
                     intent.setType("application/*");
                     intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                     intent.putExtra(Intent.EXTRA_TEXT, "Title : "
                             + mDataList.get(getAdapterPosition()).getTitle() + "\n\nDescription : "
                             + mDataList.get(getAdapterPosition()).getDescription());
-                    intent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                    intent.putExtra(Intent.EXTRA_STREAM, outputUri);
+
                     mContext.startActivity(Intent.createChooser(intent, "Share Content"));
                 } else {
                     Intent i = new Intent(Intent.ACTION_SEND);
@@ -801,15 +825,21 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("pdf")) {
                         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
                                 + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".pdf";
+
                         if (!(new File(filePath).exists())) {
                             Utills.showToast("Unable to open PDF file. Please download it.", mContext);
                             return;
                         }
 
+                        File pdfFile = new File(filePath);
+                        Uri outputUri = FileProvider.getUriForFile(mContext,
+                                mContext.getPackageName() + ".fileprovider", pdfFile);
+
                         Intent intent = new Intent();
                         intent.setAction(Intent.ACTION_VIEW);
-                        intent.setDataAndType(Uri.fromFile(new File(filePath)), "application/pdf");
+                        intent.setDataAndType(outputUri, "application/pdf");
                         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
                         PackageManager packageManager = mContext.getPackageManager();
                         if (intent.resolveActivity(packageManager) != null) {
@@ -863,21 +893,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         } else {
             Utills.showInternetPopUp(mContext);
         }
-    }
-
-    public Uri getLocalBitmapUri(Bitmap bmp, int mPosition) {
-        Uri bmpUri = null;
-        try {
-            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + "/MV/Download/" + mDataList.get(mPosition).getId() + ".png");
-            FileOutputStream out = new FileOutputStream(file);
-            bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
-            out.close();
-            bmpUri = Uri.fromFile(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bmpUri;
     }
 
     /*It calls the removeLike api for dislike the particular post. Here content Id is Id of posts.

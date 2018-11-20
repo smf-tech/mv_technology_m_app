@@ -1,5 +1,6 @@
 package com.mv.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -11,6 +12,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -72,6 +74,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
 
     private JSONArray jsonArrayAttchment = new JSONArray();
     private boolean[] mSelection = null;
+    private String activityTitleName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +90,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
 
+    @SuppressLint("StaticFieldLeak")
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -166,22 +170,30 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                         if (mContent.getAttachmentId() == null) {
                             String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
                                     + "/MV/Download/" + mContent.getId() + ".png";
+                            File imageFile = new File(filePath);
+                            Uri outputUri = FileProvider.getUriForFile(getApplicationContext(),
+                                    getPackageName() + ".fileprovider", imageFile);
 
                             Intent shareIntent = new Intent(Intent.ACTION_SEND);
                             shareIntent.setType("application/*");
-                            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                            shareIntent.putExtra(Intent.EXTRA_STREAM, outputUri);
+                            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                             shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + mContent.getTitle()
                                     + "\n\nDescription : " + mContent.getDescription());
                             startActivity(Intent.createChooser(shareIntent, "Share Content"));
                         } else {
                             String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
                                     + "/MV/Download/" + mContent.getAttachmentId() + ".png";
+                            File imageFile = new File(filePath);
+                            Uri outputUri = FileProvider.getUriForFile(getApplicationContext(),
+                                    getPackageName() + ".fileprovider", imageFile);
 
                             Intent shareIntent = new Intent(Intent.ACTION_SEND);
                             shareIntent.setType("application/*");
                             shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + mContent.getTitle()
                                     + "\n\nDescription : " + mContent.getDescription());
-                            shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                            shareIntent.putExtra(Intent.EXTRA_STREAM, outputUri);
+                            shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                             startActivity(Intent.createChooser(shareIntent, "Share Content"));
                         }
                     } else {
@@ -195,12 +207,16 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                     if (mContent.getAttachmentId() != null) {
                         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
                                 + "/MV/Download/" + mContent.getAttachmentId() + ".png";
+                        File imageFile = new File(filePath);
+                        Uri outputUri = FileProvider.getUriForFile(getApplicationContext(),
+                                getPackageName() + ".fileprovider", imageFile);
 
                         Intent shareIntent = new Intent(Intent.ACTION_SEND);
                         shareIntent.setType("application/*");
                         shareIntent.putExtra(Intent.EXTRA_TEXT, "Title : " + mContent.getTitle()
                                 + "\n\nDescription : " + mContent.getDescription());
-                        shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(filePath)));
+                        shareIntent.putExtra(Intent.EXTRA_STREAM, outputUri);
+                        shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                         startActivity(Intent.createChooser(shareIntent, "Share Content"));
                     } else {
                         Intent i = new Intent(Intent.ACTION_SEND);
@@ -416,7 +432,6 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
     }
 
     private void initViews() {
-        setActionbar(getString(R.string.comunity_detail));
 
         LinearLayout layout_forward = (LinearLayout) findViewById(R.id.layout_forward);
         LinearLayout layout_download_file = (LinearLayout) findViewById(R.id.layout_download_file);
@@ -437,13 +452,14 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         String json = "";
         if (getIntent().getExtras() != null) {
             json = getIntent().getExtras().getString(Constants.LIST);
+            activityTitleName = getIntent().getExtras().getString("activity");
         }
 
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         if (!TextUtils.isEmpty(json)) {
             communityList = Arrays.asList(gson.fromJson(json, Community[].class));
         }
-
+        setActionbar(activityTitleName);
         preferenceHelper = new PreferenceHelper(this);
         mContent = (Content) getIntent().getExtras().getSerializable(Constants.CONTENT);
         binding.layoutComment.setOnClickListener(this);
@@ -477,10 +493,12 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
 
                     File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
                             + "/MV/Image" + "/" + mContent.getAttachmentId() + ".png");
+                    Uri outputUri = FileProvider.getUriForFile(getApplicationContext(),
+                            getPackageName() + ".fileprovider", file);
 
                     if (file.exists()) {
                         Glide.with(this)
-                                .load(Uri.fromFile(file))
+                                .load(outputUri)
                                 .skipMemoryCache(true)
                                 .diskCacheStrategy(DiskCacheStrategy.NONE)
                                 .into(binding.cardImagedetails);
@@ -596,21 +614,6 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
         } else {
             Utills.showInternetPopUp(getApplicationContext());
         }
-    }
-
-    public Uri getLocalBitmapUri(Bitmap bmp) {
-        Uri bmpUri = null;
-        try {
-            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                    + "/MV/Download/downloaded_share_image.png");
-            FileOutputStream out = new FileOutputStream(file);
-            bmp.compress(Bitmap.CompressFormat.PNG, 90, out);
-            out.close();
-            bmpUri = Uri.fromFile(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bmpUri;
     }
 
     private void showDialog() {

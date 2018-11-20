@@ -290,19 +290,20 @@ public class Utills {
         return byteBuffer.toByteArray();
     }
 
-
     /*
       method to hide progress dialog
      */
-
-
     public static void hideProgressDialog() {
-        if (pgDialog != null) {
-            if (pgDialog.isShowing() && pgDialog.getWindow() != null) {
-                Log.i("Dialog", "Dismiss");
-                pgDialog.dismiss();
-                pgDialog = null;
+        try {
+            if (pgDialog != null) {
+                if (pgDialog.isShowing() && pgDialog.getWindow() != null) {
+                    Log.i("Dialog", "Dismiss");
+                    pgDialog.dismiss();
+                    pgDialog = null;
+                }
             }
+        } catch (Exception e) {
+            Log.e("Dialog Ex.", e.getMessage());
         }
     }
 

@@ -532,7 +532,10 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     for (String strAns : answer) {
                         answerStr = answerStr.concat((selectedLanList1.get(myList1.indexOf(strAns))).concat(","));
                     }
-                    holder.date.setText(answerStr);
+
+                    if (answerStr.contains(",")) {
+                        holder.date.setText(answerStr.substring(0, answerStr.length() - 1));
+                    }
                 } else {
                     holder.date.setText("Select");
                 }

@@ -136,7 +136,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                 }
             }
 
-            mAdapter = new ProcessListAdapter(resultList, ProcessListActivity.this);
+            mAdapter = new ProcessListAdapter(resultList, ProcessListActivity.this, processName);
             binding.rvProcess.setAdapter(mAdapter);
         }
     }
@@ -179,6 +179,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
             if (taskContainerModel != null) {
                 Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
                 openClass.putExtra(Constants.PROCESS_ID, taskList);
+                openClass.putExtra(Constants.PROCESS_NAME, processName);
                 openClass.putParcelableArrayListExtra(Constants.PROCESS_ID,
                         Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
                 openClass.putExtra(Constants.PICK_LIST_ID, taskContainerModel.getProAnsListString());
@@ -212,7 +213,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                     if (response.body() != null) {
                         String data = response.body().string();
                         if (data.length() > 0) {
-                            List<String> pickListFieldNames = new ArrayList<>();
                             AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().deleteTask("false", processId);
                             idList = new ArrayList<>();
 
@@ -351,7 +351,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 }
                             }
 
-                            mAdapter = new ProcessListAdapter(resultList, ProcessListActivity.this);
+                            mAdapter = new ProcessListAdapter(resultList, ProcessListActivity.this, processName);
                             binding.rvProcess.setAdapter(mAdapter);
                         }
                     }
@@ -386,7 +386,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                     if (response.body() != null) {
                         String data = response.body().string();
                         if (data.length() > 0) {
-                            List<String> pickListFieldName = new ArrayList<>();
                             JSONObject jsonObject = new JSONObject(data);
                             JSONArray resultArray = jsonObject.getJSONArray("tsk");
 
@@ -521,6 +520,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
                                 Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
                                 openClass.putExtra(Constants.PICK_LIST_ID, pickListArray.toString());
+                                openClass.putExtra(Constants.PROCESS_NAME, processName);
                                 openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskList);
                                 startActivity(openClass);
                                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
