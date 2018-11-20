@@ -67,6 +67,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         LinearLayout llLayout, llHeaderLay, llLocation, llCheck, llEditText, llDate, llPhoto;
         TextView question, header, locHeader, locText, checkText, dateHeader, editHeader, imgTitle;
         ImageView imgAdd;
+        int selectedPosition = 0;
 
         @SuppressLint("ClickableViewAccessibility")
         public MyViewHolder(View view) {
@@ -174,6 +175,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     dimen_adapter.setDropDownViewResource(R.layout.spinnerlayout);
                     spinnerResponse.setPrompt(taskList.get(getAdapterPosition()).getTask_Text___Lan_c());
                     spinnerResponse.setAdapter(dimen_adapter);
+                    spinnerResponse.setSelection(selectedPosition);
                 }
                 return false;
             });
@@ -194,6 +196,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                             taskList.get(getAdapterPosition()).setTask_Response__c(myList.get(position));
                         }
                     }
+                    selectedPosition = position;
 
                     ((ProcessDeatailActivity) mContext).saveDataToList(taskList.get(getAdapterPosition()), getAdapterPosition());
                 }
@@ -744,7 +747,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         mSelection = new boolean[items.length];
         Arrays.fill(mSelection, false);
 
-        for(int i = 0; i < items.length; i++) {
+        for (int i = 0; i < items.length; i++) {
             String item = items[i];
             if (selectedItems.contains(item)) {
                 mSelection[i] = true;
