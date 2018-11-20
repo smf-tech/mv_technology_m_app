@@ -460,11 +460,10 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                                 mListDistrict.get(mSelectDistrict) : mListDistrict.get(mListDistrict.size() - 1);
                         String taluka = mListTaluka.size() > mSelectTaluka ?
                                 mListTaluka.get(mSelectTaluka) : mListTaluka.get(mListTaluka.size() - 1);
-                        String cluster = mListCluster.size() > mSelectCluster ?
-                                mListCluster.get(mSelectCluster) : mListCluster.get(mListCluster.size() - 1);
 
                         mListVillage = AppDatabase.getAppDatabase(context).userDao()
-                                .getVillage(selectedState, district, taluka, cluster);
+                                .getVillage(selectedState, district, taluka);
+
                         mListVillage.removeAll(Collections.singleton(null));
 
                         if (mListVillage.size() == 0) {
