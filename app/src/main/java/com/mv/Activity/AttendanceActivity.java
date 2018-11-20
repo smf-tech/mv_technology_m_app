@@ -775,7 +775,8 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         if (dialogType == 0) {
-            Attendance attendance = attendanceList.get(position);
+            Attendance attendance = attendanceList.size() > position ? attendanceList.get(position) :
+                    attendanceList.get(attendanceList.size() - 1);
             buffer.append(String.format("Check In Time : %s", attendance.getCheckInTime()));
 
             if (attendance.getCheckOutTime() != null) {
