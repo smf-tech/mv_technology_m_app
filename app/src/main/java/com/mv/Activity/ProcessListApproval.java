@@ -132,6 +132,13 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
         super.onResume();
         setActionButtons();
 
+        if (Utills.isActionDone()) {
+            approvedProcessList.clear();
+            rejectedProcessList.clear();
+            pendingProcessList.clear();
+            Utills.setIsActionDone(false);
+        }
+
         if (approvedProcessList.isEmpty() && rejectedProcessList.isEmpty() && pendingProcessList.isEmpty()) {
             getAllProcessData();
         } else {
