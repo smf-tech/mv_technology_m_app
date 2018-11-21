@@ -455,8 +455,15 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
                     if (binding.spinnerVillage.isShown()) {
                         mListVillage.clear();
+
+                        String district = mListDistrict.size() > mSelectDistrict ?
+                                mListDistrict.get(mSelectDistrict) : mListDistrict.get(mListDistrict.size() - 1);
+                        String taluka = mListTaluka.size() > mSelectTaluka ?
+                                mListTaluka.get(mSelectTaluka) : mListTaluka.get(mListTaluka.size() - 1);
+
                         mListVillage = AppDatabase.getAppDatabase(context).userDao()
-                                .getVillage(selectedState, mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka));
+                                .getVillage(selectedState, district, taluka);
+
                         mListVillage.removeAll(Collections.singleton(null));
 
                         if (mListVillage.size() == 0) {

@@ -1,5 +1,5 @@
 <resources xmlns:https="http://schemas.android.com/tools">
-    <string name="app_name">Sujalam Sufalam</string>
+    <string name="app_name">Sujalam Suphalam</string>
     <string name="progress_loading">Loding</string>
     <string name="progress_please_wait">Please wait</string>
     <string name="error_something_went_wrong">Something went wrong, Please try again</string>
@@ -115,7 +115,7 @@
     <string name="broadcast">Broadcast\nMessage</string>
     <string name="community">My\nCommunity</string>
     <string name="programme_management">Programme\nManagement</string>
-    <string name="training_content">Sujalam Sufalam\nContent</string>
+    <string name="training_content">Sujalam Suphalam\nContent</string>
     <string name="indicator">My\nReports</string>
     <string name="training_calendar">My\nCalendar</string>
     <string name="notification">Notification</string>

@@ -235,35 +235,38 @@ public class Utills {
     }
 
     public static void showProgressDialog(Context cntxt, String Msg, String Title) {
-        if (pgDialog == null && cntxt != null) {
-            Log.i("Dialog", "Show");
-            pgDialog = new Dialog(cntxt);
-            pgDialog.setContentView(R.layout.custome_progress_dialog);
+        try {
+            if (pgDialog == null && cntxt != null) {
+                Log.i("Dialog", "Show");
+                pgDialog = new Dialog(cntxt);
+                pgDialog.setContentView(R.layout.custome_progress_dialog);
 
-            if (pgDialog.getWindow() != null) {
-                pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                if (pgDialog.getWindow() != null) {
+                    pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                }
+
+                TextView text = pgDialog.findViewById(R.id.tv_progress);
+                text.setText(Msg);
+                TextView tv_desc = pgDialog.findViewById(R.id.tv_desc);
+                if (Title != null && !TextUtils.isEmpty(Title))
+                    tv_desc.setVisibility(View.VISIBLE);
+                tv_desc.setText(Title);
+                ImageView proImg = pgDialog.findViewById(R.id.img_progress);
+                proImg.setBackgroundResource(R.drawable.progress_dialog);
+                AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
+                rocketAnimation.start();
+
+                pgDialog.setCancelable(false);
+                if (!pgDialog.isShowing()) {
+                    pgDialog.show();
+                }
+
+                Window window = pgDialog.getWindow();
+                window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
             }
-
-            TextView text = pgDialog.findViewById(R.id.tv_progress);
-            text.setText(Msg);
-            TextView tv_desc = pgDialog.findViewById(R.id.tv_desc);
-            if (Title != null && !TextUtils.isEmpty(Title))
-                tv_desc.setVisibility(View.VISIBLE);
-            tv_desc.setText(Title);
-            ImageView proImg = pgDialog.findViewById(R.id.img_progress);
-            proImg.setBackgroundResource(R.drawable.progress_dialog);
-            AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
-            rocketAnimation.start();
-
-            pgDialog.setCancelable(false);
-            if (!pgDialog.isShowing()) {
-                pgDialog.show();
-            }
-
-            Window window = pgDialog.getWindow();
-            window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        } catch (Exception e) {
+            Log.e("Show Dialog Ex.", e.getMessage());
         }
-
     }
 
     public static void openActivity(Activity source, Class<?> destination) {
@@ -303,7 +306,7 @@ public class Utills {
                 }
             }
         } catch (Exception e) {
-            Log.e("Dialog Ex.", e.getMessage());
+            Log.e("Hide Dialog Ex.", e.getMessage());
         }
     }
 
