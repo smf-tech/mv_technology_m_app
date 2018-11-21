@@ -13,7 +13,7 @@
     <string name="text_audio">Audio</string>
     <string name="text_video">Video</string>
 
-    <string name="login_successful">Login Successful...</string>
+    <string name="login_successful">Login Successful…</string>
 
     <string name="text_record">Record Audio</string>
     <string name="text_select_audio">Select Audio</string>
@@ -87,7 +87,7 @@
     <string name="issue">Issue Type</string>
     <string name="priority">Priority</string>
     <string name="item_title">Palais Garnier</string>
-    <string name="item_desc">Description : It�s\nbeen an amazing first months since we launched the App! Here are some of the best moments in case you missed them!</string>
+    <string name="item_desc">Description : It�s\nbeen an amazing first months since we launched the App! Here are some of the best moments in case you missed them!</string>
     <string name="catagory">Categories</string>
     <!--ReportingTemplate Activity-->
     <string name="reporting">Reporting Type</string>
@@ -101,7 +101,7 @@
     <string name="check_otp">Please Check Password</string>
 
     <string name="cannotLogout">You cannot logout</string>
-    <string name="submitAllForms">Please submit all forms and then logout...</string>
+    <string name="submitAllForms">Please submit all forms and then logout…</string>
 
     <string name="Submit">Submit</string>
     <string name="Save">Save</string>
@@ -136,15 +136,15 @@
     <string name="class_observation">Class Observation</string>
     <string name="training_responsiblity">Training Responsibility </string>
     <string name="loading_comment">Loading Comments</string>
-    <string name="please_comment">Please Enter Comment...</string>
-    <string name="comment_add">Comment Added Successfully...</string>
+    <string name="please_comment">Please Enter Comment…</string>
+    <string name="comment_add">Comment Added Successfully…</string>
     <string name="likes">Likes</string>
     <string name="comments">Comments</string>
     <string name="enter_comment">Please Enter Comment</string>
 
-    <string name="share_post">Sharing Post...</string>
-    <string name="post_share_successfully">Post Share Successfully...</string>
-    <string name="submitted_successfully">Submitted Successfully...</string>
+    <string name="share_post">Sharing Post…</string>
+    <string name="post_share_successfully">Post Share Successfully…</string>
+    <string name="submitted_successfully">Submitted Successfully…</string>
     <string name="select_one">Select One Community</string>
     <string name="comunity_detail">Community Details</string>
     <string name="template_type">Template Type</string>
@@ -155,7 +155,7 @@
     <string name="loading_template">Loading Template</string>
     <string name="home">Home</string>
     <string name="forgot_password">Forgot Password</string>
-    <string name="select_temp">Please select template type...</string>
+    <string name="select_temp">Please select template type…</string>
     <string name="img_template">Image Template</string>
     <string name="loding_district">Loading Districts</string>
     <string name="loding_taluka">Loading Taluka</string>
@@ -165,8 +165,8 @@
     <string name="loding_village">Loading Village</string>
 
     <string name="issue_template">Issue Template</string>
-    <string name="issue_submit">Issue submitted successfully...</string>
-    <string name="broadcast_submit">Broadcast submitted successfully...</string>
+    <string name="issue_submit">Issue submitted successfully…</string>
+    <string name="broadcast_submit">Broadcast submitted successfully…</string>
     <string name="Process_Detail">Process Detail</string>
     <string name="fileNotPresent">File is not present. Please Press Download Button</string>
     <string name="no_data_available">No Data Available</string>
@@ -230,7 +230,7 @@
 
     <string name="aboutus_info">Mulyavardhan (MV) is a value education programme to help children imbibe democratic values, attitudes and skills in an enabling school climate.\n\nMulyavardhan was initiated in 2009 and has evolved through an intensive, evidence-based approach to learning and improvement through pilot-project implementation, impact assessment studies and consultations with national and international experts.\n\nThe programme has been reviewed and accepted by the Government of Maharashtra and Government of Goa.  Mulyavardhan pilot projects have been launched by these states in a large number of selected schools, as a first step to implementation of the programme in all schools of the states.\n\nThe programme is currently being implemented in around 1000 schools in Maharashtra and Goa through four projects: ( MV-GoM, MV-Beed, MV-GoG, MV-VB).\n\nhttps://www.youtube.com/watch?v=azVGgQTGQ68
     \n\n<b>Aim</b>\n\nEnabling schools to provide child-friendly and value-based education to nurture caring, responsible, productive democratic citizens.\n\n<b>Rationale</b>\n\nWhile several educational policy documents, framed in India since Independence, have emphasized the need for value education in schools, there is no model of large-scale implementation of value education across states, school bodies and contexts.
-   \n\nMulyavardhan fills this critical gap with a contemporary approach aligned to national and international policies.\n\n<b>Approach</b>\n\nMulyavardhan adopts a whole-school approach, whereby the entire school ethos and all school processes are guided by core democratic values. Under this approach, values are not �taught�, but absorbed by students from the school ethos, processes and practices.\n\n</string>
+   \n\nMulyavardhan fills this critical gap with a contemporary approach aligned to national and international policies.\n\n<b>Approach</b>\n\nMulyavardhan adopts a whole-school approach, whereby the entire school ethos and all school processes are guided by core democratic values. Under this approach, values are not �taught�, but absorbed by students from the school ethos, processes and practices.\n\n</string>
     <string name="add_the_sanvad">पोस्ट जोडा</string>
     <string name="accept">Accept</string>
     <string name="detail"><u>Continue Reading</u></string>
@@ -335,7 +335,7 @@
     <string name="expenseDescription">Description of Expense</string>
     <string name="status">Status</string>
     <string name="comment_delete">Comment deleted successfully.</string>
-    <string name="leave_leave_approoval">Leave request sent successfully...</string>
+    <string name="leave_leave_approoval">Leave request sent successfully…</string>
     <string name="compoff_leave_approoval">Comp Off request submitted successfully</string>
     <string name="adavance_list">Advance List</string>
 

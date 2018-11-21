@@ -61,7 +61,7 @@ public class DownloadService extends IntentService {
         StorezipFileLocation = StorezipFileLocation + fileName;
 
         notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.app_logo)
                 .setContentTitle("Download")
                 .setContentText("Downloading " + fileName)
                 .setAutoCancel(true);

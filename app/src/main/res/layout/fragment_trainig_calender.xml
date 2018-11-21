@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -162,7 +163,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/colorPink"
-                    android:text="@string/all_plans" />
+                    android:text="@string/all_plans"
+                    tools:ignore="ButtonStyle" />
 
                 <Button
                     android:id="@+id/btn_my_plans"
@@ -170,7 +172,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="@color/lightgray01"
-                    android:text="@string/my_plans" />
+                    android:text="@string/my_plans"
+                    tools:ignore="ButtonStyle" />
             </LinearLayout>
 
         </LinearLayout>

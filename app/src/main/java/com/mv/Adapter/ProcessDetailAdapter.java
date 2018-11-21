@@ -661,6 +661,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 for (Task tempTask : taskList) {
                     if (tempTask.getaPIFieldName().equalsIgnoreCase(filter)) {
                         filterValues.put(filter, tempTask.getTask_Response__c());
+                        break;
                     }
                 }
             }
