@@ -358,6 +358,8 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
                 if (filteredPickList.indexOf(task.getTask_Response__c().trim()) >= 0) {
                     holder.spinnerResponse.setSelection(filteredPickList.indexOf(task.getTask_Response__c().trim()));
+                } else {
+                    filteredPickList.add(0, task.getTask_Response__c());
                 }
                 break;
 
