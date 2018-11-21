@@ -51,6 +51,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
     public static String approvalType, id, processTitle;
     private String url;
     private TextView textNoData;
+    String sortString = "false";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,7 +131,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
                 break;
 
             case R.id.btn_pending:
-                String sortString = "false";
+                sortString = "false";
                 binding.btnPending.setBackgroundResource(R.drawable.selected_btn_background);
                 binding.btnApprove.setBackgroundResource(R.drawable.light_grey_btn_background);
                 binding.btnReject.setBackgroundResource(R.drawable.light_grey_btn_background);
@@ -293,6 +294,31 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
     @Override
     protected void onResume() {
         super.onResume();
+        setActionButtons();
         getAllProcess();
+    }
+    private void setActionButtons() {
+        switch (sortString) {
+            case  "false":
+                binding.btnPending.setBackgroundResource(R.drawable.selected_btn_background);
+                binding.btnApprove.setBackgroundResource(R.drawable.light_grey_btn_background);
+                binding.btnReject.setBackgroundResource(R.drawable.light_grey_btn_background);
+                setRecyclerView(sortString);
+                break;
+
+            case "true":
+                binding.btnPending.setBackgroundResource(R.drawable.light_grey_btn_background);
+                binding.btnApprove.setBackgroundResource(R.drawable.selected_btn_background);
+                binding.btnReject.setBackgroundResource(R.drawable.light_grey_btn_background);
+                setRecyclerView(sortString);
+                break;
+
+            case "Rejected":
+                binding.btnPending.setBackgroundResource(R.drawable.light_grey_btn_background);
+                binding.btnApprove.setBackgroundResource(R.drawable.light_grey_btn_background);
+                binding.btnReject.setBackgroundResource(R.drawable.selected_btn_background);
+                setRecyclerView(sortString);
+                break;
+        }
     }
 }
