@@ -44,9 +44,11 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
     private PreferenceHelper preferenceHelper;
 
     private ArrayList<Task> taskList = new ArrayList<>();
-    private ProcessListAdapter mAdapter;
+    private ProcessListAdapter mPendingAdapter;
+    private ProcessListAdapter mApprovedAdapter;
+    private ProcessListAdapter mRejectedAdapter;
 
-    private int pageNo = 0;
+ //   private int pageNo = 0;
     private String processId;
     private String processName;
     private String userId;
@@ -57,7 +59,6 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
     private Button btnReject;
 
     private TaskContainerModel taskContainerModel;
-    private List<TaskContainerModel> resultList = new ArrayList<>();
     private List<TaskContainerModel> pendingProcessList = new ArrayList<>();
     private List<TaskContainerModel> approvedProcessList = new ArrayList<>();
     private List<TaskContainerModel> rejectedProcessList = new ArrayList<>();
@@ -107,33 +108,50 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
         btnApprove.setBackgroundResource(R.drawable.light_grey_btn_background);
         btnReject.setBackgroundResource(R.drawable.light_grey_btn_background);
 
-        mAdapter = new ProcessListAdapter(resultList, ProcessListApproval.this, processName);
-        binding.rvProcess.setAdapter(mAdapter);
+        mPendingAdapter = new ProcessListAdapter(pendingProcessList, ProcessListApproval.this, processName);
+        mApprovedAdapter = new ProcessListAdapter(approvedProcessList, ProcessListApproval.this, processName);
+        mRejectedAdapter = new ProcessListAdapter(rejectedProcessList, ProcessListApproval.this, processName);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         binding.rvProcess.setLayoutManager(layoutManager);
         binding.rvProcess.setItemAnimator(new DefaultItemAnimator());
 
-        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                pageNo++;
-                getProcessByStatus(sortString, pageNo);
-            }
-        };
-
-        binding.rvProcess.addOnScrollListener(scrollListener);
+//        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+//            @Override
+//            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+//                pageNo++;
+//                getProcessByStatus(sortString, pageNo);
+//            }
+//        };
+//
+//        binding.rvProcess.addOnScrollListener(scrollListener);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        pendingProcessList.clear();
-        approvedProcessList.clear();
-        rejectedProcessList.clear();
-        resultList.clear();
+        setActionButtons();
 
-        getAllProcessData();
+        if (approvedProcessList.isEmpty() && rejectedProcessList.isEmpty() && pendingProcessList.isEmpty()) {
+            getAllProcessData();
+        } else {
+            switch (sortString) {
+                case "Pending":
+                    pendingProcessList.clear();
+                    getProcessByStatus("Pending", 0);
+                    break;
+
+                case "Approved":
+                    approvedProcessList.clear();
+                    getProcessByStatus("Approved", 0);
+                    break;
+
+                case "Rejected":
+                    rejectedProcessList.clear();
+                    getProcessByStatus("Rejected", 0);
+                    break;
+            }
+        }
     }
 
     private void getAllProcessData() {
@@ -159,6 +177,31 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
         img_logout.setVisibility(View.GONE);
     }
 
+    private void setActionButtons() {
+        switch (sortString) {
+            case "Pending":
+                btnPending.setBackgroundResource(R.drawable.selected_btn_background);
+                btnApprove.setBackgroundResource(R.drawable.light_grey_btn_background);
+                btnReject.setBackgroundResource(R.drawable.light_grey_btn_background);
+                setRecyclerView(sortString);
+                break;
+
+            case "Approved":
+                btnPending.setBackgroundResource(R.drawable.light_grey_btn_background);
+                btnApprove.setBackgroundResource(R.drawable.selected_btn_background);
+                btnReject.setBackgroundResource(R.drawable.light_grey_btn_background);
+                setRecyclerView(sortString);
+                break;
+
+            case "Rejected":
+                btnPending.setBackgroundResource(R.drawable.light_grey_btn_background);
+                btnApprove.setBackgroundResource(R.drawable.light_grey_btn_background);
+                btnReject.setBackgroundResource(R.drawable.selected_btn_background);
+                setRecyclerView(sortString);
+                break;
+        }
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -169,47 +212,34 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
 
             case R.id.btn_pending:
                 sortString = "Pending";
-                btnPending.setBackgroundResource(R.drawable.selected_btn_background);
-                btnApprove.setBackgroundResource(R.drawable.light_grey_btn_background);
-                btnReject.setBackgroundResource(R.drawable.light_grey_btn_background);
-                setRecyclerView(sortString);
                 break;
 
             case R.id.btn_approve:
                 sortString = "Approved";
-                btnPending.setBackgroundResource(R.drawable.light_grey_btn_background);
-                btnApprove.setBackgroundResource(R.drawable.selected_btn_background);
-                btnReject.setBackgroundResource(R.drawable.light_grey_btn_background);
-                setRecyclerView(sortString);
                 break;
 
             case R.id.btn_reject:
                 sortString = "Rejected";
-                btnPending.setBackgroundResource(R.drawable.light_grey_btn_background);
-                btnApprove.setBackgroundResource(R.drawable.light_grey_btn_background);
-                btnReject.setBackgroundResource(R.drawable.selected_btn_background);
-                setRecyclerView(sortString);
                 break;
         }
+
+        setActionButtons();
     }
 
     private void setRecyclerView(String status) {
-        resultList.clear();
         switch (status) {
             case "Pending":
-                resultList.addAll(pendingProcessList);
-
+                binding.rvProcess.setAdapter(mPendingAdapter);
                 break;
+
             case "Approved":
-                resultList.addAll(approvedProcessList);
+                binding.rvProcess.setAdapter(mApprovedAdapter);
                 break;
 
             case "Rejected":
-                resultList.addAll(rejectedProcessList);
+                binding.rvProcess.setAdapter(mRejectedAdapter);
                 break;
         }
-
-        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -232,7 +262,6 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    resultList.clear();
                     JSONObject jsonObject = new JSONObject(response.body().string());
                     JSONArray resultArray = jsonObject.getJSONArray("tsk");
 
@@ -325,19 +354,18 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
 
                     switch (status) {
                         case "Pending":
-                            resultList.addAll(pendingProcessList);
+                            binding.rvProcess.setAdapter(mPendingAdapter);
+                            mPendingAdapter.notifyDataSetChanged();
                             break;
 
                         case "Approved":
-                            resultList.addAll(approvedProcessList);
+                            mApprovedAdapter.notifyDataSetChanged();
                             break;
 
                         case "Rejected":
-                            resultList.addAll(rejectedProcessList);
+                            mRejectedAdapter.notifyDataSetChanged();
                             break;
                     }
-
-                    mAdapter.notifyDataSetChanged();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
