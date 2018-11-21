@@ -142,24 +142,26 @@ public class ProcessApprovalActivity extends AppCompatActivity implements View.O
                 Utills.hideProgressDialog();
                 binding.swiperefresh.setRefreshing(false);
                 try {
-                    JSONArray jsonArray = new JSONArray(response.body().string());
-                    if (jsonArray.length()!=0) {
-                        programManagementProcessLists.clear();
-                        for (int i = 0; i < jsonArray.length(); i++) {
-                            Template processList = new Template();
+                    if (response.body() != null) {
+                        JSONArray jsonArray = new JSONArray(response.body().string());
+                        if (jsonArray.length() != 0) {
+                            programManagementProcessLists.clear();
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                Template processList = new Template();
 
-                            processList.setType(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("type"));
-                            processList.setUrl(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("url"));
-                            processList.setId(jsonArray.getJSONObject(i).getString("Id"));
-                            processList.setName(jsonArray.getJSONObject(i).getString("Name"));
-                            processList.setIs_Editable__c(jsonArray.getJSONObject(i).getBoolean("Is_Editable__c"));
-                            processList.setIs_Multiple_Entry_Allowed__c(jsonArray.getJSONObject(i).getBoolean("Is_Multiple_Entry_Allowed__c"));
-                            programManagementProcessLists.add(processList);
+                                processList.setType(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("type"));
+                                processList.setUrl(jsonArray.getJSONObject(i).getJSONObject("attributes").getString("url"));
+                                processList.setId(jsonArray.getJSONObject(i).getString("Id"));
+                                processList.setName(jsonArray.getJSONObject(i).getString("Name"));
+                                processList.setIs_Editable__c(jsonArray.getJSONObject(i).getBoolean("Is_Editable__c"));
+                                processList.setIs_Multiple_Entry_Allowed__c(jsonArray.getJSONObject(i).getBoolean("Is_Multiple_Entry_Allowed__c"));
+                                programManagementProcessLists.add(processList);
+                            }
+                            mAdapter.notifyDataSetChanged();
+                            textNoData.setVisibility(View.GONE);
+                        } else {
+                            textNoData.setVisibility(View.VISIBLE);
                         }
-                        mAdapter.notifyDataSetChanged();
-                        textNoData.setVisibility(View.GONE);
-                    }else {
-                        textNoData.setVisibility(View.VISIBLE);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
