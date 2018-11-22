@@ -113,6 +113,12 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         return new MyViewHolder(itemView);
     }
 
+    public void clearTaskList() {
+        if (!taskArrayList.isEmpty()) {
+            taskArrayList.clear();
+        }
+    }
+
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
