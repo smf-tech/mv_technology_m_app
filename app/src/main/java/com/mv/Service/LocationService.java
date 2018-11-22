@@ -62,7 +62,7 @@ public class LocationService extends IntentService {
     private void getAllLocation() {
         ServiceRequest apiService = ApiClient.getClient().create(ServiceRequest.class);
 
-        apiService.getAllLocation(state, district).enqueue(new Callback<ResponseBody>() {
+        apiService.getAllLocation(state, district, "structure").enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
@@ -80,9 +80,9 @@ public class LocationService extends IntentService {
                             locationModel.setState(object.getString("state"));
                             locationModel.setDistrict(object.getString("district"));
                             locationModel.setTaluka(object.getString("taluka"));
-                            locationModel.setCluster(object.getString("cluster"));
-                            locationModel.setSchoolName(object.getString("school_name"));
-                            locationModel.setSchoolCode(object.getString("school_code"));
+                            //locationModel.setCluster(object.getString("cluster"));
+                            //locationModel.setSchoolName(object.getString("school_name"));
+                            //locationModel.setSchoolCode(object.getString("school_code"));
                             locationModel.setVillage(object.getString("village"));
                             locationModel.setId(object.getString("id"));
                             locationModelArrayList.add(locationModel);
