@@ -337,5 +337,6 @@
     <string name="Please_select_project">Please select Project</string>
     <string name="location_not_found">वर्तमान स्थान उपलब्ध नाही, कृपया पुन्हा प्रयत्न करा</string>
     <string name="title_activity_maps">नकाशा</string>
+    <string name="todo">TODO</string>
     <string name="structure">स्टक्चर</string>
 </resources>
