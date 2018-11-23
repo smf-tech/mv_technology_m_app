@@ -75,7 +75,7 @@ public interface ServiceRequest {
 
     @FormUrlEncoded
     @POST("get_all_location")
-    Call<ResponseBody> getAllLocation(@Field("state") String mState, @Field("district") String mDistrict);
+    Call<ResponseBody> getAllLocation(@Field("state") String mState, @Field("district") String mDistrict, @Field("entity_type") String entity_type);
 
     @FormUrlEncoded
     @POST("save_new_location")

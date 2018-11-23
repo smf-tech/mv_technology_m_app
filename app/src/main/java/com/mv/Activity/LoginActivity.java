@@ -312,14 +312,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void onBackPressed() {
         if (binding.edtOtp.isShown()) {
             binding.edtOtp.setText("");
-            //slideOut(binding.edtUsername, binding.edtOtp, getString(R.string.msg_enter_mobile));
+            slideOut(binding.edtUsername, binding.edtOtp, getString(R.string.msg_enter_mobile));
 
             if (yourCountDownTimer != null) {
                 yourCountDownTimer.cancel();
+
             }
 
             binding.tvTimer.setVisibility(View.GONE);
             binding.tvResendOtp.setVisibility(View.GONE);
+
+
         } else {
             if (doubleBackToExitPressedOnce) {
                 super.onBackPressed();
@@ -506,7 +509,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                viewSlideOut.setVisibility(View.GONE);
+                viewSlideOut.setVisibility(View.INVISIBLE);
                 viewSlideIn.setFocusable(true);
 
                 slideIn(viewSlideIn, viewSlideOut, msg);
