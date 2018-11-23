@@ -73,7 +73,7 @@ android {
             dimension "server"
             //    applicationIdSuffix ".sandbox"
             buildConfigField 'String', 'LOGIN_URL', "\"https://test.salesforce.com/services/oauth2/token\""
-            buildConfigField 'String', 'USERNAME', "\"kshevkar@mutthafoundation.org\""
+            buildConfigField 'String', 'USERNAME', "\"kshevkar@mutthafoundation.org.partial\""
             buildConfigField 'String', 'REPORTID', "\"a1G0k000000522K\""
             buildConfigField 'String', 'ISSUEID', "\"a1G0k000000522F\""
             buildConfigField 'String', 'PASSWORD', "\"Bjs@123\$\""
