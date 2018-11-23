@@ -315,6 +315,10 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
                     e.printStackTrace();
                     Utills.hideProgressDialog();
                     binding.swipeRefreshLayout.setRefreshing(false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Utills.hideProgressDialog();
+                    binding.swipeRefreshLayout.setRefreshing(false);
                 }
             }
 

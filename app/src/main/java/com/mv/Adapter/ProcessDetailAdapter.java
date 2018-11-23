@@ -523,7 +523,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     holder.dateHeader.setText(task.getTask_Text___Lan_c());
                 }
 
-                if (task.getTask_Response__c() != null && task.getTask_Response__c().length() > 0) {
+                if (task.getTask_Response__c() != null && task.getTask_Response__c().length() > 0
+                        && taskList.size() > position && position > -1) {
+
                     String answerStr = "";
                     ArrayList<String> myList1 = new ArrayList<>(Arrays.asList(getColumnIndex(
                             (taskList.get(position).getPicklist_Value__c()).split(","))));
@@ -535,7 +537,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                             (task.getTask_Response__c()).split(","))));
 
                     for (String strAns : answer) {
-                        answerStr = answerStr.concat((selectedLanList1.get(myList1.indexOf(strAns))).concat(","));
+                        if (myList1.indexOf(strAns) > -1 && selectedLanList1.size() > myList1.indexOf(strAns)) {
+                            answerStr = answerStr.concat((selectedLanList1.get(myList1.indexOf(strAns))).concat(","));
+                        }
                     }
 
                     if (answerStr.contains(",")) {
