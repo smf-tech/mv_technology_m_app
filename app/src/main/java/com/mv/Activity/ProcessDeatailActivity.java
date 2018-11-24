@@ -467,7 +467,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     try {
                         JSONObject response1 = new JSONObject(response.body().string());
                         JSONArray resultArray = response1.getJSONArray("Records");
-                        boolean isImagePresent = false;
 
                         for (int j = 0; j < resultArray.length(); j++) {
                             JSONObject object = resultArray.getJSONObject(j);
@@ -477,46 +476,20 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                                         if (object.getString("Answer").length() > 0) {
                                             for(ImageData id : imageDataList) {
                                                 if (id.getPosition() == j) {
-                                                    isImagePresent = true;
                                                     imageId = object.getString("Answer");
                                                     uniqueId = object.getString("Id");
-                                                    id.setImageName(imageId);
+                                                    id.setImageId(imageId);
                                                     id.setImageUniqueId(uniqueId);
                                                 }
                                             }
-
                                         }
                                     }
                                 }
                             }
                         }
 
-                        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                        String json = gson.toJson(taskList);
-
-                        TaskContainerModel taskContainerModel = new TaskContainerModel();
-                        taskContainerModel.setTaskListString(json);
-                        taskContainerModel.setTaskType(Constants.TASK_ANSWER);
-                        taskContainerModel.setUnique_Id(preferenceHelper.getString(Constants.UNIQUE));
-                        taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
-                        taskContainerModel.setMV_Process__c(taskList.get(0).getMV_Process__c());
-
-                        AppDatabase.getAppDatabase(context).userDao().deleteSingleTask(
-                                preferenceHelper.getString(Constants.UNIQUE), taskContainerModel.getMV_Process__c());
-
-                        if (isImagePresent && finalUri != null) {
-                            JSONObject object2 = new JSONObject();
-                            object2.put("id", imageId);
-                            object2.put("type", "png");
-
-                            InputStream iStream = getContentResolver().openInputStream(finalUri);
-                            if (iStream != null) {
-                                object2.put("img", Base64.encodeToString(Utills.getBytes(iStream), 0));
-                            }
-
-                            JSONArray array1 = new JSONArray();
-                            array1.put(object2);
-                            sendImageToServer(array1);
+                        if (imageDataList.size() > 0) {
+                            sendImage(imageDataList.get(0));
                         } else {
                             finish();
                         }
@@ -536,6 +509,45 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
     }
 
+    private void sendImage(ImageData imgData) {
+        try {
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            String json = gson.toJson(taskList);
+
+            TaskContainerModel taskContainerModel = new TaskContainerModel();
+            taskContainerModel.setTaskListString(json);
+            taskContainerModel.setTaskType(Constants.TASK_ANSWER);
+            taskContainerModel.setUnique_Id(preferenceHelper.getString(Constants.UNIQUE));
+            taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
+            taskContainerModel.setMV_Process__c(taskList.get(imgData.getPosition()).getMV_Process__c());
+
+            AppDatabase.getAppDatabase(context).userDao().deleteSingleTask(
+                    preferenceHelper.getString(Constants.UNIQUE), taskContainerModel.getMV_Process__c());
+
+            JSONObject object2 = new JSONObject();
+            object2.put("id", imgData.getImageId());
+            object2.put("type", "png");
+
+            InputStream iStream = getContentResolver().openInputStream(imgData.getImageUri());
+            if (iStream != null) {
+                object2.put("img", Base64.encodeToString(Utills.getBytes(iStream), 0));
+            }
+
+            JSONArray array1 = new JSONArray();
+            array1.put(object2);
+
+            // Remove uploaded image
+            if (imageDataList.size() > 0) {
+                imageDataList.remove(0);
+            }
+
+            // Upload image to server
+            sendImageToServer(array1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     private void sendImageToServer(JSONArray jsonArray) {
         Utills.showProgressDialog(this);
         ServiceRequest apiService = ApiClient.getImageClient().create(ServiceRequest.class);
@@ -551,8 +563,12 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     JSONObject object = new JSONObject(str);
                     if (object.has("status")) {
                         if (object.getString("status").equalsIgnoreCase("1")) {
-                            finish();
-                            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                            if (!imageDataList.isEmpty()) {
+                                sendImage(imageDataList.get(0));
+                            } else {
+                                finish();
+                                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                            }
                         }
                     }
                 } catch (Exception e) {
@@ -621,6 +637,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
             ImageData id = new ImageData();
             id.setPosition(imagePosition);
+            id.setImageUri(finalUri);
             imageDataList.add(id);
 
             adapter.notifyDataSetChanged();

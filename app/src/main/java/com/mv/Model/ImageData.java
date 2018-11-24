@@ -1,5 +1,7 @@
 package com.mv.Model;
 
+import android.net.Uri;
+
 /**
  * Created by user on 11/23/2018.
  */
@@ -7,28 +9,28 @@ package com.mv.Model;
 public class ImageData {
 
     private int position;
-    private String imagePath;
-    private String imageName;
+    private Uri imageUri;
+    private String imageId;
     private String imageUniqueId;
 
     public int getPosition() {
         return position;
     }
 
-    public String getImagePath() {
-        return imagePath;
+    public Uri getImageUri() {
+        return imageUri;
     }
 
-    public void setImagePath(String imagePath) {
-        this.imagePath = imagePath;
+    public void setImageUri(Uri imageUri) {
+        this.imageUri = imageUri;
     }
 
-    public String getImageName() {
-        return imageName;
+    public String getImageId() {
+        return imageId;
     }
 
-    public void setImageName(String imageName) {
-        this.imageName = imageName;
+    public void setImageId(String imageId) {
+        this.imageId = imageId;
     }
 
     public String getImageUniqueId() {
