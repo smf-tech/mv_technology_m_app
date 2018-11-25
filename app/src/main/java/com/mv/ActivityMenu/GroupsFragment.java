@@ -326,19 +326,21 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
     };
 
     private void setFilter(String s) {
-        List<Community> list = new ArrayList<>();
         communityList.clear();
         communityList.addAll(replicaCommunityList);
+
+        List<Community> list = new ArrayList<>();
         for (int i = 0; i < communityList.size(); i++) {
-            if (communityList.get(i).getName().toLowerCase().contains(s.toLowerCase())) {
+            if (communityList.get(i).getName() != null &&
+                    communityList.get(i).getName().toLowerCase().contains(s.toLowerCase())) {
                 list.add(communityList.get(i));
             }
         }
+
         communityList.clear();
         communityList.addAll(list);
         mAdapter.notifyDataSetChanged();
     }
-
 
     public void onLayoutGroupClick(int position) {
         if (Constants.shareUri != null) {

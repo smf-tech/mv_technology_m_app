@@ -251,41 +251,42 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
     }
 
     private void getDistrict() {
+        if (mStateList.size() > mSelectState && mSelectState > -1) {
+            Utills.showProgressDialog(this, getString(R.string.loding_district), getString(R.string.progress_please_wait));
+            ServiceRequest apiService = ApiClient.getClient().create(ServiceRequest.class);
 
-        Utills.showProgressDialog(this, getString(R.string.loding_district), getString(R.string.progress_please_wait));
+            apiService.getDistrict(mStateList.get(mSelectState)).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Utills.hideProgressDialog();
+                    try {
+                        if (response.body() != null) {
+                            String data = response.body().string();
+                            if (data.length() > 0) {
+                                mListDistrict.clear();
+                                mListDistrict.add("Select");
 
-        ServiceRequest apiService =
-                ApiClient.getClient().create(ServiceRequest.class);
-        apiService.getDistrict(mStateList.get(mSelectState)).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
-                try {
-                    if (response.body() != null) {
-                        String data = response.body().string();
-                        if (data.length() > 0) {
-                            JSONArray jsonArray = new JSONArray(response.body().string());
-                            mListDistrict.clear();
-                            mListDistrict.add("Select");
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                mListDistrict.add(jsonArray.getString(i));
+                                JSONArray jsonArray = new JSONArray(response.body().string());
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    mListDistrict.add(jsonArray.getString(i));
+                                }
+                                setSpinnerAdapter(mListDistrict, district_adapter,
+                                        binding.spinnerDistrict, selectedDisrict);
                             }
-                            setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
                         }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-            }
 
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Utills.hideProgressDialog();
-
-            }
-        });
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Utills.hideProgressDialog();
+                }
+            });
+        }
     }
 
     private void getTaluka() {
