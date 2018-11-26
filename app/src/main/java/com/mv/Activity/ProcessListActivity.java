@@ -90,20 +90,20 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         binding.rvProcess.setLayoutManager(layoutManager);
         binding.rvProcess.setItemAnimator(new DefaultItemAnimator());
 
-        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                if (Utills.isConnected(ProcessListActivity.this)){
-                    pageNo ++;
-                    getAllProcess(pageNo);
-                } else {
-                    Toast.makeText(ProcessListActivity.this,
-                            "No Internet connection", Toast.LENGTH_SHORT).show();
-                }
-            }
-        };
-
-        binding.rvProcess.addOnScrollListener(scrollListener);
+//        EndlessRecyclerViewScrollListener scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
+//            @Override
+//            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+//                if (Utills.isConnected(ProcessListActivity.this)){
+//                    pageNo ++;
+//                    getAllProcess(pageNo);
+//                } else {
+//                    Toast.makeText(ProcessListActivity.this,
+//                            "No Internet connection", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        };
+//
+//        binding.rvProcess.addOnScrollListener(scrollListener);
     }
 
     @Override
@@ -214,6 +214,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                         String data = response.body().string();
                         if (data.length() > 0) {
                             AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().deleteTask("false", processId);
+                            resultList = new ArrayList<>();
+                            resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(processId, Constants.TASK_ANSWER);
                             idList = new ArrayList<>();
 
                             for (int k = 0; k < resultList.size(); k++) {
