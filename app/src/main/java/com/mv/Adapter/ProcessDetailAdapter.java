@@ -200,7 +200,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                         if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.TASK_PICK_LIST)) {
                             if (!isMachineSelected) {
                                 myList = structureFilterPickList(taskList.get(getAdapterPosition()));
-                            }else{
+                            } else {
                                 myList = machineFilterPickList();
                             }
 
@@ -277,13 +277,14 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         Log.d("position", "" + position);
         Task task = taskList.get(position);
-        if (!preferenceHelper.getBoolean(Constants.IS_EDITABLE)) {
+
+        if (task.getId() != null && !preferenceHelper.getBoolean(Constants.IS_EDITABLE)) {
             holder.questionResponse.setEnabled(false);
             holder.spinnerResponse.setEnabled(false);
             holder.llLocation.setEnabled(false);
-            holder.date.setEnabled(false);
             holder.checkBox.setEnabled(false);
             holder.llDate.setEnabled(false);
+            holder.llPhoto.setEnabled(false);
         }
 
         ArrayAdapter<String> dimen_adapter;
@@ -438,7 +439,11 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     if (task.getIsEditable__c().equals("false")) {
                         holder.llLocation.setEnabled(false);
                     } else {
-                        holder.llLocation.setEnabled(true);
+                        if (task.getId() != null && !preferenceHelper.getBoolean(Constants.IS_EDITABLE)) {
+                            holder.llLocation.setEnabled(false);
+                        } else {
+                            holder.llLocation.setEnabled(true);
+                        }
                     }
                 } else {
                     holder.llHeaderLay.setVisibility(View.GONE);
@@ -711,7 +716,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                             String taskResponse = tempTask.getTask_Response__c();
                             filterValues.put(filter, taskResponse.isEmpty() ? selectedStructure : taskResponse);
 //                            if (!tempTask.getaPIFieldName().equalsIgnoreCase("taskAnswer1__c")) {
-                                break;
+                            break;
 //                            }
                         }
                     }
