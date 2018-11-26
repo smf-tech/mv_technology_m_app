@@ -103,10 +103,10 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
         btnApprove.setOnClickListener(this);
         btnReject.setOnClickListener(this);
 
-        //by default pending status list will be loaded.
-        btnPending.setBackgroundResource(R.drawable.selected_btn_background);
-        btnApprove.setBackgroundResource(R.drawable.light_grey_btn_background);
-        btnReject.setBackgroundResource(R.drawable.light_grey_btn_background);
+//        //by default pending status list will be loaded.
+//        btnPending.setBackgroundResource(R.drawable.selected_btn_background);
+//        btnApprove.setBackgroundResource(R.drawable.light_grey_btn_background);
+//        btnReject.setBackgroundResource(R.drawable.light_grey_btn_background);
 
         mPendingAdapter = new ProcessListAdapter(pendingProcessList, ProcessListApproval.this, processName);
         mApprovedAdapter = new ProcessListAdapter(approvedProcessList, ProcessListApproval.this, processName);
@@ -131,6 +131,13 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
     protected void onResume() {
         super.onResume();
         setActionButtons();
+
+        if (Utills.isActionDone()) {
+            approvedProcessList.clear();
+            rejectedProcessList.clear();
+            pendingProcessList.clear();
+            Utills.setIsActionDone(false);
+        }
 
         if (approvedProcessList.isEmpty() && rejectedProcessList.isEmpty() && pendingProcessList.isEmpty()) {
             getAllProcessData();
@@ -354,15 +361,17 @@ public class ProcessListApproval extends AppCompatActivity implements View.OnCli
 
                     switch (status) {
                         case "Pending":
-                            binding.rvProcess.setAdapter(mPendingAdapter);
+                            mPendingAdapter.clearTaskList();
                             mPendingAdapter.notifyDataSetChanged();
                             break;
 
                         case "Approved":
+                            mApprovedAdapter.clearTaskList();
                             mApprovedAdapter.notifyDataSetChanged();
                             break;
 
                         case "Rejected":
+                            mRejectedAdapter.clearTaskList();
                             mRejectedAdapter.notifyDataSetChanged();
                             break;
                     }

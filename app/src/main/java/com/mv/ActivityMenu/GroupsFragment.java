@@ -326,51 +326,53 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
     };
 
     private void setFilter(String s) {
-        List<Community> list = new ArrayList<>();
         communityList.clear();
         communityList.addAll(replicaCommunityList);
+
+        List<Community> list = new ArrayList<>();
         for (int i = 0; i < communityList.size(); i++) {
-            if (communityList.get(i).getName().toLowerCase().contains(s.toLowerCase())) {
+            if (communityList.get(i).getName() != null &&
+                    communityList.get(i).getName().toLowerCase().contains(s.toLowerCase())) {
                 list.add(communityList.get(i));
             }
         }
+
         communityList.clear();
         communityList.addAll(list);
         mAdapter.notifyDataSetChanged();
     }
 
-
     public void onLayoutGroupClick(int position) {
-        if (Constants.shareUri != null) {
-            Intent intent;
-            if (communityList.get(position).getName().equalsIgnoreCase("HO Support")) {
-                preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Issue");
-                preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, BuildConfig.ISSUEID);
-                intent = new Intent(context, IssueTemplateActivity.class);
-                intent.putExtra("EDIT", false);
-                context.startActivity(intent);
+        if (position > -1) {
+            if (Constants.shareUri != null) {
+                Intent intent;
+                if (communityList.get(position).getName().equalsIgnoreCase("HO Support")) {
+                    preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Issue");
+                    preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, BuildConfig.ISSUEID);
+                    intent = new Intent(context, IssueTemplateActivity.class);
+                    intent.putExtra("EDIT", false);
+                    context.startActivity(intent);
+                } else {
+                    preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Report");
+                    preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, BuildConfig.REPORTID);
+                    intent = new Intent(context, ReportingTemplateActivity.class);
+                    intent.putExtra("EDIT", false);
+                    context.startActivity(intent);
+                }
             } else {
-                preferenceHelper.insertString(PreferenceHelper.TEMPLATENAME, "Report");
-                preferenceHelper.insertString(PreferenceHelper.TEMPLATEID, BuildConfig.REPORTID);
-                intent = new Intent(context, ReportingTemplateActivity.class);
-                intent.putExtra("EDIT", false);
-                context.startActivity(intent);
+                preferenceHelper.insertString(PreferenceHelper.COMMUNITYID, communityList.get(position).getId());
+                List<Community> list = new ArrayList<>();
+                list.addAll(communityList);
+                list.remove(position);
+                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                String json = gson.toJson(list);
+                Intent intent = new Intent(context, CommunityHomeActivity.class);
+                intent.putExtra(Constants.TITLE, communityList.get(position).getName());
+                //sending new intent to check user can post or not
+                intent.putExtra("CanPost", communityList.get(position).getCanPost());
+                intent.putExtra(Constants.LIST, json);
+                startActivity(intent);
             }
-        } else {
-            preferenceHelper.insertString(PreferenceHelper.COMMUNITYID, communityList.get(position).getId());
-            List<Community> list = new ArrayList<>();
-            list.addAll(communityList);
-            list.remove(position);
-            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-            String json = gson.toJson(list);
-            Intent intent = new Intent(context, CommunityHomeActivity.class);
-            intent.putExtra(Constants.TITLE, communityList.get(position).getName());
-            //sending new intent to check user can post or not
-            intent.putExtra("CanPost", communityList.get(position).getCanPost());
-            intent.putExtra(Constants.LIST, json);
-            startActivity(intent);
         }
-
     }
-
 }

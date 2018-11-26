@@ -599,7 +599,7 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
             Community community = AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao()
                     .getCommunityForMute(preferenceHelper.getString(PreferenceHelper.COMMUNITYID));
 
-            if (community.getMuteNotification() == null || community.getMuteNotification().equals("Mute")) {
+            if (community.getMuteNotification() != null || community.getMuteNotification().equals("Mute")) {
                 mute.setTitle("Mute");
             } else {
                 mute.setTitle("Unmute");

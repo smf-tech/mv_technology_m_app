@@ -673,6 +673,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
                         try {
+                            Utills.setIsActionDone(true);
                             Utills.showToast(getString(R.string.submitted_successfully), ProcessDeatailActivity.this);
                             finish();
                         } catch (Exception e) {

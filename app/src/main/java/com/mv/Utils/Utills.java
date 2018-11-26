@@ -78,6 +78,16 @@ public class Utills {
 
     private static Dialog pgDialog;
 
+    public static boolean isActionDone() {
+        return isActionDone;
+    }
+
+    public static void setIsActionDone(boolean isActionDone) {
+        Utills.isActionDone = isActionDone;
+    }
+
+    private static boolean isActionDone;
+
     public static void setupUI(View view, final Activity activity) {
 
         // Set up touch listener for non-text box views to hide keyboard.

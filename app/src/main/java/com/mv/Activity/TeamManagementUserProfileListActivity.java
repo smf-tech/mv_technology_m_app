@@ -297,6 +297,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         setActionButtons();
         getAllProcess();
     }
+
     private void setActionButtons() {
         switch (sortString) {
             case  "false":

@@ -316,13 +316,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             if (yourCountDownTimer != null) {
                 yourCountDownTimer.cancel();
-
             }
 
             binding.tvTimer.setVisibility(View.GONE);
             binding.tvResendOtp.setVisibility(View.GONE);
-
-
         } else {
             if (doubleBackToExitPressedOnce) {
                 super.onBackPressed();
@@ -357,13 +354,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         mIntentReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                String msg = intent.getStringExtra("get_msg");
-
                 //Process the sms format and extract body &amp; phoneNumber
-                msg = msg.replace("\n", "");
-                String body = msg.substring(msg.lastIndexOf(":") + 1, msg.length());
-                Log.d("OTP", body);
-                binding.edtOtp.setText(body);
+                String msg = intent.getStringExtra("get_msg");
+                if (msg != null && !msg.isEmpty()) {
+                    msg = msg.replace("\n", "");
+
+                    String body = msg.substring(msg.lastIndexOf(":") + 1, msg.length());
+                    Log.d("OTP", body);
+                    binding.edtOtp.setText(body);
+                }
 
                 if (yourCountDownTimer != null) {
                     yourCountDownTimer.cancel();
@@ -371,8 +370,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 binding.tvTimer.setVisibility(View.GONE);
                 binding.tvResendOtp.setVisibility(View.GONE);
-
-                //Add it to the list or do whatever you wish to
             }
         };
 

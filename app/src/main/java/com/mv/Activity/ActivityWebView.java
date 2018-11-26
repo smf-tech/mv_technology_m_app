@@ -81,14 +81,14 @@ public class ActivityWebView extends AppCompatActivity implements View.OnClickLi
     public class myWebClient extends WebViewClient {
         @Override
         public void onPageStarted(WebView view, String url, Bitmap favicon) {
-            // TODO Auto-generated method stub
             super.onPageStarted(view, url, favicon);
         }
 
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            // TODO Auto-generated method stub
-            progress.show();
+            if (progress != null && !progress.isShowing()) {
+                progress.show();
+            }
             view.loadUrl(url);
             return true;
 
@@ -96,10 +96,15 @@ public class ActivityWebView extends AppCompatActivity implements View.OnClickLi
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            // TODO Auto-generated method stub
             super.onPageFinished(view, url);
 
-            progress.dismiss();
+            try {
+                if (progress != null && progress.isShowing()) {
+                    progress.dismiss();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
