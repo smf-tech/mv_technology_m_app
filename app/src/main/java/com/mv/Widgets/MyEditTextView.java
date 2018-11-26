@@ -2,10 +2,11 @@ package com.mv.Widgets;
 
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
-public class MyEditTextView extends EditText {
+public class MyEditTextView extends AppCompatEditText {
 
     private Context context;
     private AttributeSet attrs;

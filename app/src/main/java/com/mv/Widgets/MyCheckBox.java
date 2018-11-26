@@ -3,13 +3,13 @@ package com.mv.Widgets;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.util.AttributeSet;
 import android.widget.CheckBox;
 
 import com.mv.R;
 
-
-public class MyCheckBox extends CheckBox {
+public class MyCheckBox extends AppCompatCheckBox {
     public MyCheckBox(Context context, AttributeSet attrs) {
         super(context, attrs);
 

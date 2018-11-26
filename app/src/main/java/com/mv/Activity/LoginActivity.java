@@ -506,7 +506,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                viewSlideOut.setVisibility(View.GONE);
+                viewSlideOut.setVisibility(View.INVISIBLE);
                 viewSlideIn.setFocusable(true);
 
                 slideIn(viewSlideIn, viewSlideOut, msg);
