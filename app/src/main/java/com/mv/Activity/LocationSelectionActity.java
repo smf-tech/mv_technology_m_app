@@ -247,48 +247,69 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     private void sendLocation() {
         switch (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL)) {
             case "State":
-                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
                 locationState = 1;
+                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem() != null ?
+                        binding.spinnerState.getSelectedItem().toString() : "");
                 break;
 
             case "District":
                 locationState = 2;
-                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
-                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
+                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem() != null ?
+                        binding.spinnerState.getSelectedItem().toString() : "");
+                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem() != null ?
+                        binding.spinnerDistrict.getSelectedItem().toString() : "");
                 break;
 
             case "Taluka":
                 locationState = 3;
-                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
-                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
-                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem().toString());
+                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem() != null ?
+                        binding.spinnerState.getSelectedItem().toString() : "");
+                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem() != null ?
+                        binding.spinnerDistrict.getSelectedItem().toString() : "");
+                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem() != null ?
+                        binding.spinnerTaluka.getSelectedItem().toString() : "");
                 break;
 
             case "Cluster":
                 locationState = 4;
-                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
-                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
-                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem().toString());
-                taskList.get(3).setTask_Response__c(binding.spinnerCluster.getSelectedItem().toString());
+                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem() != null ?
+                        binding.spinnerState.getSelectedItem().toString() : "");
+                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem() != null ?
+                        binding.spinnerDistrict.getSelectedItem().toString() : "");
+                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem() != null ?
+                        binding.spinnerTaluka.getSelectedItem().toString() : "");
+                taskList.get(3).setTask_Response__c(binding.spinnerCluster.getSelectedItem() != null ?
+                        binding.spinnerCluster.getSelectedItem().toString() : "");
                 break;
 
             case "Village":
                 locationState = 5;
-                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
-                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
-                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem().toString());
-                taskList.get(3).setTask_Response__c(binding.spinnerCluster.getSelectedItem().toString());
-                taskList.get(4).setTask_Response__c(binding.spinnerVillage.getSelectedItem().toString());
+                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem() != null ?
+                        binding.spinnerState.getSelectedItem().toString() : "");
+                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem() != null ?
+                        binding.spinnerDistrict.getSelectedItem().toString() : "");
+                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem() != null ?
+                        binding.spinnerTaluka.getSelectedItem().toString() : "");
+                taskList.get(3).setTask_Response__c(binding.spinnerCluster.getSelectedItem() != null ?
+                        binding.spinnerCluster.getSelectedItem().toString() : "");
+                taskList.get(4).setTask_Response__c(binding.spinnerVillage.getSelectedItem() != null ?
+                        binding.spinnerVillage.getSelectedItem().toString() : "");
                 break;
 
             case "School":
                 locationState = 6;
-                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
-                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
-                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem().toString());
-                taskList.get(3).setTask_Response__c(binding.spinnerCluster.getSelectedItem().toString());
-                taskList.get(4).setTask_Response__c(binding.spinnerVillage.getSelectedItem().toString());
-                taskList.get(5).setTask_Response__c(binding.spinnerSchoolName.getSelectedItem().toString());
+                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem() != null ?
+                        binding.spinnerState.getSelectedItem().toString() : "");
+                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem() != null ?
+                        binding.spinnerDistrict.getSelectedItem().toString() : "");
+                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem() != null ?
+                        binding.spinnerTaluka.getSelectedItem().toString() : "");
+                taskList.get(3).setTask_Response__c(binding.spinnerCluster.getSelectedItem() != null ?
+                        binding.spinnerCluster.getSelectedItem().toString() : "");
+                taskList.get(4).setTask_Response__c(binding.spinnerVillage.getSelectedItem() != null ?
+                        binding.spinnerVillage.getSelectedItem().toString() : "");
+                taskList.get(5).setTask_Response__c(binding.spinnerSchoolName.getSelectedItem() != null ?
+                        binding.spinnerSchoolName.getSelectedItem().toString() : "");
                 break;
         }
 
