@@ -198,7 +198,12 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                         taskList.get(getAdapterPosition()).setTask_Response__c("");
                     } else {
                         if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.TASK_PICK_LIST)) {
-                            myList = structureFilterPickList(taskList.get(getAdapterPosition()));
+                            if (!isMachineSelected) {
+                                myList = structureFilterPickList(taskList.get(getAdapterPosition()));
+                            }else{
+                                myList = machineFilterPickList();
+                            }
+
                             taskList.get(getAdapterPosition()).setTask_Response__c(myList.get(position));
                             if (!isMachineSelected) {
                                 selectedStructure = myList.get(position);
