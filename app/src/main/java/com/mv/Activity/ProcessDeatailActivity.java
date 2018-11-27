@@ -117,9 +117,9 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onBackPressed() {
-        if(taskList.get(0).getId() == null || taskList.get(0).getIsSave().equals("true")){
+        if (taskList.get(0).getId() == null || taskList.get(0).getIsSave().equals("true")) {
             showPopUp();
-        }else{
+        } else {
             finish();
         }
 
@@ -215,10 +215,10 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } else if (preferenceHelper.getString(Constants.PROCESS_TYPE).equals(Constants.MANGEMENT_PROCESS)) {
             approve.setVisibility(View.GONE);
             reject.setVisibility(View.GONE);
-            if(taskList.get(0).getId() != null && taskList.get(0).getIsSave().equals("false")){
+            if (taskList.get(0).getId() != null && taskList.get(0).getIsSave().equals("false")) {
                 submit.setVisibility(View.GONE);
                 save.setVisibility(View.GONE);
-            }else {
+            } else {
                 submit.setVisibility(View.VISIBLE);
                 save.setVisibility(View.VISIBLE);
             }
@@ -294,9 +294,9 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
-                if(taskList.get(0).getId() == null || taskList.get(0).getIsSave().equals("true")){
+                if (taskList.get(0).getId() == null || taskList.get(0).getIsSave().equals("true")) {
                     showPopUp();
-                }else{
+                } else {
                     finish();
                 }
                 break;
@@ -489,7 +489,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                                 if (object.getString("Task_Type").equalsIgnoreCase(Constants.IMAGE)) {
                                     if (object.has("Answer")) {
                                         if (object.getString("Answer").length() > 0) {
-                                            for(ImageData id : imageDataList) {
+                                            for (ImageData id : imageDataList) {
                                                 if (id.getPosition() == j) {
                                                     imageId = object.getString("Answer");
                                                     uniqueId = object.getString("Id");
