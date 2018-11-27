@@ -69,7 +69,6 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         TextView question, header, locHeader, locText, checkText, dateHeader, editHeader, imgTitle;
         ImageView imgAdd;
         int selectedPosition = 0;
-        boolean isMachineSelected = false;
 
         @SuppressLint("ClickableViewAccessibility")
         public MyViewHolder(View view) {
@@ -172,16 +171,19 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
             spinnerResponse.setOnTouchListener((v, event) -> {
                 if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.TASK_PICK_LIST)) {
-                    if (selectedStructure.isEmpty()) {
-                        filteredPickList = structureFilterPickList(taskList.get(getAdapterPosition()));
-                    } else {
-                        filteredPickList = machineFilterPickList();
-                    }
+                    filteredPickList = structureFilterPickList(taskList.get(getAdapterPosition()));
                     ArrayAdapter<String> dimen_adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, filteredPickList);
                     dimen_adapter.setDropDownViewResource(R.layout.spinnerlayout);
                     spinnerResponse.setPrompt(taskList.get(getAdapterPosition()).getTask_Text___Lan_c());
                     spinnerResponse.setAdapter(dimen_adapter);
-                    spinnerResponse.setSelection(selectedPosition);
+
+                    if (filteredPickList.size() > selectedPosition) {
+                        spinnerResponse.setSelection(selectedPosition);
+                    }
+
+                    if (taskList.get(getAdapterPosition()).getTask_Text__c().contains("Structure Code")) {
+                        selectedStructure = "";
+                    }
                 }
                 return false;
             });
@@ -190,26 +192,14 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             spinnerResponse.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                    if (!selectedStructure.isEmpty()) {
-                        isMachineSelected = true;
-                    }
-
                     if (position == 0) {
                         taskList.get(getAdapterPosition()).setTask_Response__c("");
                     } else {
                         if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.TASK_PICK_LIST)) {
-                            if (!isMachineSelected) {
-                                myList = structureFilterPickList(taskList.get(getAdapterPosition()));
-                            } else {
-                                myList = machineFilterPickList();
-                            }
-
+                            myList = structureFilterPickList(taskList.get(getAdapterPosition()));
                             taskList.get(getAdapterPosition()).setTask_Response__c(myList.get(position));
-                            if (!isMachineSelected) {
+                            if (taskList.get(getAdapterPosition()).getTask_Text__c().contains("Structure Code")) {
                                 selectedStructure = myList.get(position);
-                            } else {
-                                selectedStructure = "";
-                                isMachineSelected = false;
                             }
                         } else {
                             myList = new ArrayList<>(Arrays.asList(getColumnIndex(("Select," +
@@ -284,6 +274,8 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             holder.checkBox.setEnabled(false);
             holder.llDate.setEnabled(false);
             holder.llPhoto.setEnabled(false);
+            holder.date.setEnabled(false);
+            holder.imgAdd.setEnabled(false);
         }
 
         ArrayAdapter<String> dimen_adapter;
@@ -679,26 +671,6 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         }
     }
 
-    private ArrayList<String> machineFilterPickList() {
-        ArrayList<String> filterList = new ArrayList<>();
-        filterList.add("Select");
-        if (pickListArray != null) {
-            for (int i = 0; i < pickListArray.length(); i++) {
-                try {
-                    JSONObject pickListJsonObj = pickListArray.getJSONObject(i);
-                    if (pickListJsonObj.has("taskAnswer1__c")) {
-                        if (pickListJsonObj.getString("taskAnswer1__c").equalsIgnoreCase(selectedStructure)) {
-                            filterList.add(pickListJsonObj.getString("taskAnswer5__c"));
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-        return filterList;
-    }
-
     private ArrayList<String> structureFilterPickList(Task task) {
         ArrayList<String> filterList = new ArrayList<>();
         filterList.add("Select");
@@ -711,16 +683,10 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 for (String filter : filterArray) {
                     for (Task tempTask : taskList) {
                         String apiField = tempTask.getaPIFieldName();
-//                        if (apiField.equalsIgnoreCase("taskAnswer3__c")) {
-//                            apiField = "taskAnswer1__c";
-//                        }
-
                         if (apiField.equalsIgnoreCase(filter)) {
                             String taskResponse = tempTask.getTask_Response__c();
                             filterValues.put(filter, taskResponse.isEmpty() ? selectedStructure : taskResponse);
-//                            if (!tempTask.getaPIFieldName().equalsIgnoreCase("taskAnswer1__c")) {
                             break;
-//                            }
                         }
                     }
                 }
