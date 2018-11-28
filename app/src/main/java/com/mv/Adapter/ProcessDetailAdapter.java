@@ -694,6 +694,11 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     }
                 }
 
+                if (task.getTask_Text__c().contains("Machine Code") || task.getTask_Text__c().contains("Machine code")) {
+                    if (filterValues.containsKey("taskAnswer1__c")) {
+                        filterValues.put("taskAnswer1__c", selectedStructure);
+                    }
+                }
 
                 for (int i = 0; i < pickListArray.length(); i++) {
                     JSONObject pickListJsonObj = pickListArray.getJSONObject(i);
