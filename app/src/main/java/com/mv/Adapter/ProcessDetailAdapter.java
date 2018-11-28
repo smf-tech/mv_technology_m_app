@@ -181,7 +181,8 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                         spinnerResponse.setSelection(selectedPosition);
                     }
 
-                    if (taskList.get(getAdapterPosition()).getTask_Text__c().contains("Structure Code")) {
+                    if (taskList.get(getAdapterPosition()).getTask_Text__c().contains("Structure Code") ||
+                            taskList.get(getAdapterPosition()).getTask_Text__c().contains("Name of the Structure")) {
                         selectedStructure = "";
                     }
                 }
@@ -198,7 +199,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                         if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.TASK_PICK_LIST)) {
                             myList = structureFilterPickList(taskList.get(getAdapterPosition()));
                             taskList.get(getAdapterPosition()).setTask_Response__c(myList.get(position));
-                            if (taskList.get(getAdapterPosition()).getTask_Text__c().contains("Structure Code")) {
+
+                            if (taskList.get(getAdapterPosition()).getTask_Text__c().contains("Structure Code") ||
+                                    taskList.get(getAdapterPosition()).getTask_Text__c().contains("Name of the Structure")) {
                                 selectedStructure = myList.get(position);
                             }
                         } else {
@@ -696,7 +699,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     JSONObject pickListJsonObj = pickListArray.getJSONObject(i);
                     String referenceField = task.getReferenceField();
 
-                    if (pickListJsonObj.has(referenceField)) {
+                    if (pickListJsonObj.has(referenceField) && pickListJsonObj.get("taskId__c").equals(task.getMV_Task__c_Id())) {
                         for (String filter : filterArray) {
                             if (filterValues.get(filter).equalsIgnoreCase(pickListJsonObj.getString(filter))) {
                                 flag = true;

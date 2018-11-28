@@ -42,7 +42,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
     private Context mContext;
 
-    private int pageNo = 0;
+//    private int pageNo = 0;
     private ArrayList<String> idList;
     private ArrayList<Task> taskList = new ArrayList<>();
     private List<TaskContainerModel> resultList = new ArrayList<>();
@@ -121,7 +121,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
     public void getAllProcessData() {
         if (Utills.isConnected(this))
-            getAllProcess(0);
+            getAllProcess();
         else {
             //offline show in process list only type is answer(exclude question)
             resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(processId, Constants.TASK_ANSWER);
@@ -194,13 +194,13 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         finish();
     }
 
-    private void getAllProcess(int pageNo) {
+    private void getAllProcess() {
         Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
         ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.GetprocessAnswerDataUrl + "?processId=" + processId + "&UserId="
                 + User.getCurrentUser(this).getMvUser().getId()
-                + "&language=" + preferenceHelper.getString(Constants.LANGUAGE) + "&pageNo=" + pageNo;
+                + "&language=" + preferenceHelper.getString(Constants.LANGUAGE);
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -211,7 +211,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                         String data = response.body().string();
                         if (data.length() > 0) {
                             AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().deleteTask("false", processId);
-                            resultList = new ArrayList<>();
                             resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(processId, Constants.TASK_ANSWER);
                             idList = new ArrayList<>();
 
@@ -350,13 +349,19 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 }
                             }
 
-                            mAdapter = new ProcessListAdapter(resultList, ProcessListActivity.this, processName);
-                            binding.rvProcess.setAdapter(mAdapter);
+//                            if (mAdapter != null) {
+//                                mAdapter.notifyDataSetChanged();
+//                            } else {
+                                mAdapter = new ProcessListAdapter(resultList, ProcessListActivity.this, processName);
+                                binding.rvProcess.setAdapter(mAdapter);
+//                            }
                         }
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
