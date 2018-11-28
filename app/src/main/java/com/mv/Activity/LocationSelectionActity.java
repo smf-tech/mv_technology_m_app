@@ -153,6 +153,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
                 binding.spinnerSchoolName.setVisibility(View.GONE);
                 binding.tvSchool.setVisibility(View.GONE);
+
                 break;
 
             case "District":
@@ -170,6 +171,8 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
                 binding.spinnerSchoolName.setVisibility(View.GONE);
                 binding.tvSchool.setVisibility(View.GONE);
+
+                binding.spinnerState.setEnabled(false);
                 break;
 
             case "Taluka":
@@ -184,6 +187,9 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                 binding.tvSchool.setVisibility(View.GONE);
                 selectedSpinner = binding.spinnerTaluka;
                 selectedLocation = "Taluka";
+
+                binding.spinnerState.setEnabled(false);
+                binding.spinnerDistrict.setEnabled(false);
                 break;
 
             case "Cluster":
@@ -195,6 +201,10 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                 binding.tvSchool.setVisibility(View.GONE);
                 selectedSpinner = binding.spinnerCluster;
                 selectedLocation = "Cluster";
+
+                binding.spinnerState.setEnabled(false);
+                binding.spinnerDistrict.setEnabled(false);
+                binding.spinnerTaluka.setEnabled(false);
                 break;
 
             case "Village":
@@ -203,12 +213,23 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                 binding.tvSchool.setVisibility(View.GONE);
                 selectedSpinner = binding.spinnerVillage;
                 selectedLocation = "Village";
+
+                binding.spinnerState.setEnabled(false);
+                binding.spinnerDistrict.setEnabled(false);
+                binding.spinnerTaluka.setEnabled(false);
+                binding.spinnerCluster.setEnabled(false);
                 break;
 
             case "School":
                 selectedLocation = "School";
                 locationState = 6;
                 selectedSpinner = binding.spinnerSchoolName;
+
+                binding.spinnerState.setEnabled(false);
+                binding.spinnerDistrict.setEnabled(false);
+                binding.spinnerTaluka.setEnabled(false);
+                binding.spinnerCluster.setEnabled(false);
+                binding.spinnerVillage.setEnabled(false);
                 break;
         }
     }
