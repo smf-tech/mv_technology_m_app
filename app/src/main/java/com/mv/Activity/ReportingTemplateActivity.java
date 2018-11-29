@@ -389,7 +389,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         if (!Utills.isMediaPermissionGranted(this)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA,
-                        Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         Constants.MEDIA_PERMISSION_REQUEST);
             }
         } else {
@@ -578,13 +578,21 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                         e.printStackTrace();
                     }
                 } else if (outputUri != null) {
-                    jsonObject1.put("contentType", "Video");
-                    jsonObject1.put("isAttachmentPresent", "true");
-                    imgStr = getVideoString(outputUri);
+                    try {
+                        jsonObject1.put("contentType", "Video");
+                        jsonObject1.put("isAttachmentPresent", "true");
+                        imgStr = getVideoString(outputUri);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else if (audioUri != null) {
-                    jsonObject1.put("contentType", "Audio");
-                    jsonObject1.put("isAttachmentPresent", "true");
-                    imgStr = getVideoString(audioUri);
+                    try {
+                        jsonObject1.put("contentType", "Audio");
+                        jsonObject1.put("isAttachmentPresent", "true");
+                        imgStr = getVideoString(audioUri);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else if (pdfUri != null) {
                     jsonObject1.put("contentType", "Pdf");
                     jsonObject1.put("isAttachmentPresent", "true");
@@ -1096,7 +1104,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

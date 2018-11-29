@@ -355,7 +355,7 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         if (!Utills.isMediaPermissionGranted(this)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA,
-                        Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         Constants.MEDIA_PERMISSION_REQUEST);
             }
         } else {
@@ -532,13 +532,21 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                         e.printStackTrace();
                     }
                 } else if (outputUri != null) {
-                    jsonObject1.put("contentType", "Video");
-                    jsonObject1.put("isAttachmentPresent", "true");
-                    imgStr = getVideoString(outputUri);
+                    try {
+                        jsonObject1.put("contentType", "Video");
+                        jsonObject1.put("isAttachmentPresent", "true");
+                        imgStr = getVideoString(outputUri);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else if (audioUri != null) {
-                    jsonObject1.put("contentType", "Audio");
-                    jsonObject1.put("isAttachmentPresent", "true");
-                    imgStr = getVideoString(audioUri);
+                    try {
+                        jsonObject1.put("contentType", "Audio");
+                        jsonObject1.put("isAttachmentPresent", "true");
+                        imgStr = getVideoString(audioUri);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 JSONArray jsonArrayAttachment = new JSONArray();

@@ -225,7 +225,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
                     dates, getResources().getDrawable(R.drawable.circle_background)));
         }
 
-        if (!gps.canGetLocation()) {
+        if (gps != null && !gps.canGetLocation()) {
             gps.showSettingsAlert();
         }
     }
@@ -328,7 +328,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         if (checkInClickable == 1) {
             Utills.showToast("Already Check In", AttendanceActivity.this);
             return;
-        } else if (!gps.canGetLocation()) {
+        } else if (gps != null && !gps.canGetLocation()) {
             gps.showSettingsAlert();
             return;
         } else if (0.0 == location.getLongitude() && 0.0 == location.getLatitude()) {
@@ -347,7 +347,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
             e.printStackTrace();
         }
 
-        if (dates.contains(day)) {
+        if (dates.contains(day) && attendanceList.size() > dates.indexOf(day)) {
             attendance = attendanceList.get(dates.indexOf(day));
             isPresent = true;
         } else {
@@ -536,7 +536,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
         } else if (checkOutClickable == 2) {
             Utills.showToast("Please First Check In and then try to Check Out...", AttendanceActivity.this);
             return;
-        } else if (!gps.canGetLocation()) {
+        } else if (gps != null && !gps.canGetLocation()) {
             gps.showSettingsAlert();
             return;
         } else if (0.0 == location.getLongitude() && 0.0 == location.getLatitude()) {
@@ -764,7 +764,7 @@ public class AttendanceActivity extends AppCompatActivity implements View.OnClic
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100) {
-            if (!gps.canGetLocation()) {
+            if (gps != null && !gps.canGetLocation()) {
                 gps.showSettingsAlert();
             }
         }

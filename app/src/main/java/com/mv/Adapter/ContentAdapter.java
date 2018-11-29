@@ -810,42 +810,44 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             });
 
             picture.setOnClickListener(v -> {
-                if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) {
-                    if (mDataList.get(getAdapterPosition()).getAttachmentId() != null) {
-                        Utills.showImagewithheaderZoomDialog(v.getContext(),
-                                getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                                        + "/services/data/v36.0/sobjects/Attachment/"
-                                        + mDataList.get(getAdapterPosition()).getAttachmentId() + "/Body"));
-                    }
-                } else if (mDataList.get(getAdapterPosition()).getId() != null &&
-                        mDataList.get(getAdapterPosition()).getContentType() != null) {
-
-                    if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("image")) {
-                        Utills.showImageZoomInDialog(v.getContext(), mDataList.get(getAdapterPosition()).getId());
-                    } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("pdf")) {
-                        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                                + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".pdf";
-
-                        if (!(new File(filePath).exists())) {
-                            Utills.showToast("Unable to open PDF file. Please download it.", mContext);
-                            return;
+                if (getAdapterPosition() > -1 && mDataList.size() > getAdapterPosition()) {
+                    if (mDataList.get(getAdapterPosition()).getIsAttachmentPresent().equalsIgnoreCase("false")) {
+                        if (mDataList.get(getAdapterPosition()).getAttachmentId() != null) {
+                            Utills.showImagewithheaderZoomDialog(v.getContext(),
+                                    getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                                            + "/services/data/v36.0/sobjects/Attachment/"
+                                            + mDataList.get(getAdapterPosition()).getAttachmentId() + "/Body"));
                         }
+                    } else if (mDataList.get(getAdapterPosition()).getId() != null &&
+                            mDataList.get(getAdapterPosition()).getContentType() != null) {
 
-                        File pdfFile = new File(filePath);
-                        Uri outputUri = FileProvider.getUriForFile(mContext,
-                                mContext.getPackageName() + ".fileprovider", pdfFile);
+                        if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("image")) {
+                            Utills.showImageZoomInDialog(v.getContext(), mDataList.get(getAdapterPosition()).getId());
+                        } else if (mDataList.get(getAdapterPosition()).getContentType().equalsIgnoreCase("pdf")) {
+                            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+                                    + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getTitle() + ".pdf";
 
-                        Intent intent = new Intent();
-                        intent.setAction(Intent.ACTION_VIEW);
-                        intent.setDataAndType(outputUri, "application/pdf");
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                            if (!(new File(filePath).exists())) {
+                                Utills.showToast("Unable to open PDF file. Please download it.", mContext);
+                                return;
+                            }
 
-                        PackageManager packageManager = mContext.getPackageManager();
-                        if (intent.resolveActivity(packageManager) != null) {
-                            mContext.startActivity(intent);
-                        } else {
-                            Utills.showToast("No Application available to open PDF file", mContext);
+                            File pdfFile = new File(filePath);
+                            Uri outputUri = FileProvider.getUriForFile(mContext,
+                                    mContext.getPackageName() + ".fileprovider", pdfFile);
+
+                            Intent intent = new Intent();
+                            intent.setAction(Intent.ACTION_VIEW);
+                            intent.setDataAndType(outputUri, "application/pdf");
+                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                            PackageManager packageManager = mContext.getPackageManager();
+                            if (intent.resolveActivity(packageManager) != null) {
+                                mContext.startActivity(intent);
+                            } else {
+                                Utills.showToast("No Application available to open PDF file", mContext);
+                            }
                         }
                     }
                 }

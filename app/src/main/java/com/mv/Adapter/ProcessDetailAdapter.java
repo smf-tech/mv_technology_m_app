@@ -782,7 +782,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
         for (int i = 0; i < items.length; i++) {
             String item = items[i];
-            if (selectedItems.contains(item)) {
+            if (selectedItems != null && selectedItems.contains(item)) {
                 mSelection[i] = true;
             }
         }
