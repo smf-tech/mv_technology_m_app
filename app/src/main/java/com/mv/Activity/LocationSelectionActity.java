@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.mv.Model.Task;
+import com.mv.Model.User;
+import com.mv.Model.UserInfo;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
@@ -171,8 +173,6 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
                     binding.spinnerSchoolName.setVisibility(View.GONE);
                     binding.tvSchool.setVisibility(View.GONE);
-
-                    binding.spinnerState.setEnabled(false);
                     break;
 
                 case "Taluka":
@@ -187,9 +187,6 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                     binding.tvSchool.setVisibility(View.GONE);
                     selectedSpinner = binding.spinnerTaluka;
                     selectedLocation = "Taluka";
-
-                    binding.spinnerState.setEnabled(false);
-                    binding.spinnerDistrict.setEnabled(false);
                     break;
 
                 case "Cluster":
@@ -201,10 +198,6 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                     binding.tvSchool.setVisibility(View.GONE);
                     selectedSpinner = binding.spinnerCluster;
                     selectedLocation = "Cluster";
-
-                    binding.spinnerState.setEnabled(false);
-                    binding.spinnerDistrict.setEnabled(false);
-                    binding.spinnerTaluka.setEnabled(false);
                     break;
 
                 case "Village":
@@ -213,26 +206,71 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                     binding.tvSchool.setVisibility(View.GONE);
                     selectedSpinner = binding.spinnerVillage;
                     selectedLocation = "Village";
-
-                    binding.spinnerState.setEnabled(false);
-                    binding.spinnerDistrict.setEnabled(false);
-                    binding.spinnerTaluka.setEnabled(false);
-                    binding.spinnerCluster.setEnabled(false);
                     break;
 
                 case "School":
                     selectedLocation = "School";
                     locationState = 6;
                     selectedSpinner = binding.spinnerSchoolName;
-
-                    binding.spinnerState.setEnabled(false);
-                    binding.spinnerDistrict.setEnabled(false);
-                    binding.spinnerTaluka.setEnabled(false);
-                    binding.spinnerCluster.setEnabled(false);
-                    binding.spinnerVillage.setEnabled(false);
                     break;
             }
         }
+
+        switch (getUserLevel()) {
+            case "State":
+                break;
+
+            case "District":
+                binding.spinnerState.setEnabled(false);
+                break;
+
+            case "Taluka":
+                binding.spinnerState.setEnabled(false);
+                binding.spinnerDistrict.setEnabled(false);
+                break;
+
+            case "Cluster":
+                binding.spinnerState.setEnabled(false);
+                binding.spinnerDistrict.setEnabled(false);
+                binding.spinnerTaluka.setEnabled(false);
+                break;
+
+            case "Village":
+                binding.spinnerState.setEnabled(false);
+                binding.spinnerDistrict.setEnabled(false);
+                binding.spinnerTaluka.setEnabled(false);
+                binding.spinnerCluster.setEnabled(false);
+                break;
+
+            case "School":
+                binding.spinnerState.setEnabled(false);
+                binding.spinnerDistrict.setEnabled(false);
+                binding.spinnerTaluka.setEnabled(false);
+                binding.spinnerCluster.setEnabled(false);
+                binding.spinnerVillage.setEnabled(false);
+                break;
+        }
+    }
+
+    private String getUserLevel() {
+        UserInfo mvUser = User.getCurrentUser(getApplicationContext()).getMvUser();
+        if (mvUser != null) {
+            if (mvUser.getState().equalsIgnoreCase("Select")) {
+                return "State";
+            } else if (mvUser.getDistrict().equalsIgnoreCase("Select")) {
+                return "District";
+            } else if (mvUser.getTaluka().equalsIgnoreCase("Select")) {
+                return "Taluka";
+            } else if (mvUser.getCluster().equalsIgnoreCase("Select")) {
+                return "Cluster";
+            } else if (mvUser.getVillage().equalsIgnoreCase("Select")) {
+                return "Village";
+            } else if (mvUser.getSchool_Name().equalsIgnoreCase("Select")) {
+                return "School";
+            }
+        }
+
+        return "";
     }
 
     private void setActionbar() {
