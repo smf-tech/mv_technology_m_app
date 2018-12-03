@@ -254,7 +254,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
     private String getUserLevel() {
         UserInfo mvUser = User.getCurrentUser(getApplicationContext()).getMvUser();
-        if (mvUser != null) {
+        /*if (mvUser != null) {
             if (mvUser.getState().equalsIgnoreCase("Select")) {
                 return "State";
             } else if (mvUser.getDistrict().equalsIgnoreCase("Select")) {
@@ -268,7 +268,7 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
             } else if (mvUser.getSchool_Name().equalsIgnoreCase("Select")) {
                 return "School";
             }
-        }
+        }*/
 
         return "";
     }
