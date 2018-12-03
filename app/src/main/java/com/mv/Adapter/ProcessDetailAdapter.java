@@ -56,7 +56,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
     private JSONArray pickListArray;
 
     private boolean[] mSelection = null;
-    private String value;
+    private String value = "";
     public static String state, village, taluka;
     private String selectedStructure = "";
 
@@ -373,6 +373,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.spinnerResponse.setAdapter(dimen_adapter);
 
                 if (filteredPickList.indexOf(task.getTask_Response__c().trim()) >= 0) {
+                    selectedStructure = task.getTask_Response__c().trim();
                     holder.spinnerResponse.setSelection(filteredPickList.indexOf(task.getTask_Response__c().trim()));
                 } else {
                     filteredPickList.add(0, task.getTask_Response__c());
@@ -780,10 +781,12 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         mSelection = new boolean[items.length];
         Arrays.fill(mSelection, false);
 
+        value = "";
         for (int i = 0; i < items.length; i++) {
             String item = items[i];
             if (selectedItems != null && selectedItems.contains(item)) {
                 mSelection[i] = true;
+                value = value.concat(item + ",");
             }
         }
 
