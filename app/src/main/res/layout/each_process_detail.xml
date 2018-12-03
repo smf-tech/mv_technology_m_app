@@ -42,7 +42,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:inputType="textPersonName|textCapSentences"
+                android:inputType="textPersonName|textCapSentences|textMultiLine"
                 android:textColor="@color/black"
                 android:hint="@string/please_enter_text"
                 android:textSize="@dimen/medium_text" />
@@ -89,7 +89,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:inputType="textPersonName|textCapSentences"
+                android:inputType="textPersonName|textCapSentences|textMultiLine"
                 android:textColor="@color/black"
                 android:textSize="@dimen/medium_text" />
         </android.support.design.widget.TextInputLayout>

@@ -312,7 +312,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                         holder.questionResponse.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
                         break;
                 }
-                holder.questionResponse.setSingleLine(true);
+                holder.questionResponse.setSingleLine(false);
                 break;
 
             case Constants.TASK_SELECTION:
