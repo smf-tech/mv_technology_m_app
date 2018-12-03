@@ -123,7 +123,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } else {
             finish();
         }
-
     }
 
     private void saveToDB() {
@@ -224,7 +223,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 save.setVisibility(View.VISIBLE);
             }
         }
-
 
         ImageView img_add = (ImageView) findViewById(R.id.img_add);
         img_add.setOnClickListener(this);

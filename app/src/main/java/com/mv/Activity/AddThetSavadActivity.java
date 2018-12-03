@@ -341,7 +341,7 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
         if (!Utills.isMediaPermissionGranted(this)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA,
-                                Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         Constants.MEDIA_PERMISSION_REQUEST);
             }
         } else {

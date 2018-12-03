@@ -389,7 +389,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         if (!Utills.isMediaPermissionGranted(this)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.CAMERA,
-                                Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         Constants.MEDIA_PERMISSION_REQUEST);
             }
         } else {
@@ -487,6 +487,9 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             startActivityForResult(intent, Constants.CHOOSE_VIDEO_FROM_CAMERA);
         } catch (ActivityNotFoundException anfe) {
             String errorMessage = "Whoops - your device doesn't support capturing images!";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            String errorMessage = getString(R.string.error_something_went_wrong);
             Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
         }
     }
