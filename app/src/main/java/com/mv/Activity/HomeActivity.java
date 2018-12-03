@@ -1322,8 +1322,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 break;
 
             case R.id.action_add_school:
-//                String role = User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
-                if ((User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationAllow__c().equals("true"))) {
+                if (User.getCurrentUser(getApplicationContext()).getRolePermssion() != null &&
+                        User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationAllow__c().equals("true")) {
                     Intent openClass = new Intent(HomeActivity.this, AddSchoolActivity.class);
                     startActivity(openClass);
                 } else {

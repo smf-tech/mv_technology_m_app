@@ -310,7 +310,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
                         mDataList.get(getAdapterPosition()).getAttachmentId().equalsIgnoreCase("null")) {
 
                     Intent i = new Intent(Intent.ACTION_SEND);
-                    i.setType("image*//**//*");
+                    i.setType("text/plain");
                     i.putExtra(Intent.EXTRA_TEXT, "Title : " + mDataList.get(getAdapterPosition()).getTitle()
                             + "\n\nDescription : " + mDataList.get(getAdapterPosition()).getDescription());
                     Utills.hideProgressDialog();

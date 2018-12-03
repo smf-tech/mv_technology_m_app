@@ -194,7 +194,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
     }
 
     private void getAllProcess() {
-        Utills.showProgressDialog(context, "Loading Users", getString(R.string.progress_please_wait));
+        Utills.showProgressDialog(context, "Loading...", getString(R.string.progress_please_wait));
         ServiceRequest apiService = ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
