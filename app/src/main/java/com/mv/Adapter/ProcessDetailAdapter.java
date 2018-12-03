@@ -302,17 +302,19 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 switch (task.getValidation()) {
                     case "Alphabets":
                         holder.questionResponse.setInputType(InputType.TYPE_CLASS_TEXT);
+                        holder.questionResponse.setSingleLine(false);
                         break;
 
                     case "Number":
                         holder.questionResponse.setInputType(InputType.TYPE_CLASS_NUMBER);
+                        holder.questionResponse.setSingleLine(true);
                         break;
 
                     case "Decimal":
                         holder.questionResponse.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                        holder.questionResponse.setSingleLine(true);
                         break;
                 }
-                holder.questionResponse.setSingleLine(false);
                 break;
 
             case Constants.TASK_SELECTION:
