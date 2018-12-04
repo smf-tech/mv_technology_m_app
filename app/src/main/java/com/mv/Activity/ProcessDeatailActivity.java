@@ -71,10 +71,12 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     private PreferenceHelper preferenceHelper;
     private ArrayList<Task> taskList = new ArrayList<>();
+    private ArrayList<ImageData> imageDataList = new ArrayList<>();
     private String pickListApiFieldNames;
     private GPSTracker gps;
     private Activity context;
 
+    private Button submit;
     private ProcessDetailAdapter adapter;
     private RecyclerView rvProcessDetail;
 
@@ -85,7 +87,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private String id = "";
     private String imageId, uniqueId = "";
     private int imagePosition;
-    private ArrayList<ImageData> imageDataList = new ArrayList<>();
 
     private Uri outputUri = null;
     private Uri finalUri = null;
@@ -122,7 +123,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } else {
             finish();
         }
-
     }
 
     private void saveToDB() {
@@ -195,7 +195,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         rvProcessDetail.setAdapter(adapter);
         timestamp = String.valueOf(Calendar.getInstance().getTimeInMillis());
 
-        Button submit = (Button) findViewById(R.id.btn_submit);
+        submit = (Button) findViewById(R.id.btn_submit);
         submit.setOnClickListener(this);
 
         Button save = (Button) findViewById(R.id.btn_save);
@@ -223,7 +223,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 save.setVisibility(View.VISIBLE);
             }
         }
-
 
         ImageView img_add = (ImageView) findViewById(R.id.img_add);
         img_add.setOnClickListener(this);
@@ -444,7 +443,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         e.printStackTrace();
                     }
                 }
-
             }
         }
 
@@ -453,13 +451,16 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 callApiForSubmit(taskList);
             } else {
                 Utills.showToast(getString(R.string.error_no_internet), this);
+                submit.setEnabled(true);
             }
         } else {
             Utills.showToast(msg, context);
+            submit.setEnabled(true);
         }
     }
 
     private void callApiForSubmit(ArrayList<Task> temp) {
+        submit.setEnabled(false);
         try {
             Utills.showProgressDialog(context);
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
@@ -480,68 +481,76 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Utills.hideProgressDialog();
                     try {
-                        JSONObject response1 = new JSONObject(response.body().string());
-                        JSONArray resultArray = response1.getJSONArray("Records");
+                        if (response.isSuccess() && response.body() != null) {
+                            JSONObject response1 = new JSONObject(response.body().string());
+                            JSONArray resultArray = response1.getJSONArray("Records");
 
-                        for (int j = 0; j < resultArray.length(); j++) {
-                            JSONObject object = resultArray.getJSONObject(j);
-                            if (object.has("Task_Type")) {
-                                if (object.getString("Task_Type").equalsIgnoreCase(Constants.IMAGE)) {
-                                    if (object.has("Answer")) {
-                                        if (object.getString("Answer").length() > 0) {
-                                            for (ImageData id : imageDataList) {
-                                                if (id.getPosition() == j) {
-                                                    imageId = object.getString("Answer");
-                                                    uniqueId = object.getString("Id");
-                                                    id.setImageId(imageId);
-                                                    id.setImageUniqueId(uniqueId);
+                            for (int j = 0; j < resultArray.length(); j++) {
+                                JSONObject object = resultArray.getJSONObject(j);
+                                if (object.has("Task_Type")) {
+                                    if (object.getString("Task_Type").equalsIgnoreCase(Constants.IMAGE)) {
+                                        if (object.has("Answer")) {
+                                            if (object.getString("Answer").length() > 0) {
+                                                for (ImageData id : imageDataList) {
+                                                    if (id.getPosition() == j) {
+                                                        imageId = object.getString("Answer");
+                                                        uniqueId = object.getString("Id");
+                                                        id.setImageId(imageId);
+                                                        id.setImageUniqueId(uniqueId);
+                                                    }
                                                 }
                                             }
                                         }
                                     }
                                 }
                             }
-                        }
 
-                        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                        String json = gson.toJson(taskList);
+                            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                            String json = gson.toJson(taskList);
 
-                        TaskContainerModel taskContainerModel = new TaskContainerModel();
-                        taskContainerModel.setTaskListString(json);
-                        taskContainerModel.setTaskType(Constants.TASK_ANSWER);
-                        taskContainerModel.setUnique_Id(preferenceHelper.getString(Constants.UNIQUE));
-                        taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
-                        taskContainerModel.setMV_Process__c(taskList.get(0).getMV_Process__c());
+                            TaskContainerModel taskContainerModel = new TaskContainerModel();
+                            taskContainerModel.setTaskListString(json);
+                            taskContainerModel.setTaskType(Constants.TASK_ANSWER);
+                            taskContainerModel.setUnique_Id(preferenceHelper.getString(Constants.UNIQUE));
+                            taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
+                            taskContainerModel.setMV_Process__c(taskList.get(0).getMV_Process__c());
 
-                        AppDatabase.getAppDatabase(context).userDao().deleteSingleTask(
-                                preferenceHelper.getString(Constants.UNIQUE), taskContainerModel.getMV_Process__c());
+                            AppDatabase.getAppDatabase(context).userDao().deleteSingleTask(
+                                    preferenceHelper.getString(Constants.UNIQUE), taskContainerModel.getMV_Process__c());
 
 
-                        if (imageDataList.size() > 0) {
-                            sendImage(imageDataList.get(0));
+                            if (imageDataList.size() > 0) {
+                                sendImage(imageDataList.get(0));
+                            } else {
+                                submit.setEnabled(true);
+                                finish();
+                            }
                         } else {
-                            finish();
+                            Utills.hideProgressDialog();
+                            submit.setEnabled(true);
+                            Utills.showToast(getString(R.string.error_something_went_wrong), context);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
+                        submit.setEnabled(true);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Utills.hideProgressDialog();
+                    submit.setEnabled(true);
                     Utills.showToast(getString(R.string.error_something_went_wrong), context);
                 }
             });
         } catch (JSONException e) {
             e.printStackTrace();
+            submit.setEnabled(true);
         }
     }
 
     private void sendImage(ImageData imgData) {
         try {
-
-
             JSONObject object2 = new JSONObject();
             object2.put("id", imgData.getImageId());
             object2.put("type", "png");

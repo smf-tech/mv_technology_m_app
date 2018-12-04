@@ -56,7 +56,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
     private JSONArray pickListArray;
 
     private boolean[] mSelection = null;
-    private String value;
+    private String value = "";
     public static String state, village, taluka;
     private String selectedStructure = "";
 
@@ -302,17 +302,19 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 switch (task.getValidation()) {
                     case "Alphabets":
                         holder.questionResponse.setInputType(InputType.TYPE_CLASS_TEXT);
+                        holder.questionResponse.setSingleLine(false);
                         break;
 
                     case "Number":
                         holder.questionResponse.setInputType(InputType.TYPE_CLASS_NUMBER);
+                        holder.questionResponse.setSingleLine(true);
                         break;
 
                     case "Decimal":
                         holder.questionResponse.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                        holder.questionResponse.setSingleLine(true);
                         break;
                 }
-                holder.questionResponse.setSingleLine(true);
                 break;
 
             case Constants.TASK_SELECTION:
@@ -373,6 +375,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.spinnerResponse.setAdapter(dimen_adapter);
 
                 if (filteredPickList.indexOf(task.getTask_Response__c().trim()) >= 0) {
+                    selectedStructure = task.getTask_Response__c().trim();
                     holder.spinnerResponse.setSelection(filteredPickList.indexOf(task.getTask_Response__c().trim()));
                 } else {
                     filteredPickList.add(0, task.getTask_Response__c());
@@ -694,6 +697,11 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     }
                 }
 
+                if (task.getTask_Text__c().contains("Machine Code") || task.getTask_Text__c().contains("Machine code")) {
+                    if (filterValues.containsKey("taskAnswer1__c")) {
+                        filterValues.put("taskAnswer1__c", selectedStructure);
+                    }
+                }
 
                 for (int i = 0; i < pickListArray.length(); i++) {
                     JSONObject pickListJsonObj = pickListArray.getJSONObject(i);
@@ -775,10 +783,12 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         mSelection = new boolean[items.length];
         Arrays.fill(mSelection, false);
 
+        value = "";
         for (int i = 0; i < items.length; i++) {
             String item = items[i];
-            if (selectedItems.contains(item)) {
+            if (selectedItems != null && selectedItems.contains(item)) {
                 mSelection[i] = true;
+                value = value.concat(item + ",");
             }
         }
 

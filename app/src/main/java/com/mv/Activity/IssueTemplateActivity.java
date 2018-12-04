@@ -532,13 +532,21 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
                         e.printStackTrace();
                     }
                 } else if (outputUri != null) {
-                    jsonObject1.put("contentType", "Video");
-                    jsonObject1.put("isAttachmentPresent", "true");
-                    imgStr = getVideoString(outputUri);
+                    try {
+                        jsonObject1.put("contentType", "Video");
+                        jsonObject1.put("isAttachmentPresent", "true");
+                        imgStr = getVideoString(outputUri);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else if (audioUri != null) {
-                    jsonObject1.put("contentType", "Audio");
-                    jsonObject1.put("isAttachmentPresent", "true");
-                    imgStr = getVideoString(audioUri);
+                    try {
+                        jsonObject1.put("contentType", "Audio");
+                        jsonObject1.put("isAttachmentPresent", "true");
+                        imgStr = getVideoString(audioUri);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 JSONArray jsonArrayAttachment = new JSONArray();
@@ -944,17 +952,25 @@ public class IssueTemplateActivity extends AppCompatActivity implements View.OnC
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
-            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture_crop.jpg";
-            File imageFile = new File(imageFilePath);
-            finalUri = Uri.fromFile(imageFile);
-            Crop.of(outputUri, finalUri).start(this);
-        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
-                outputUri = data.getData();
+            try {
                 String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture_crop.jpg";
                 File imageFile = new File(imageFilePath);
                 finalUri = Uri.fromFile(imageFile);
                 Crop.of(outputUri, finalUri).start(this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
+            try {
+                if (data != null) {
+                    outputUri = data.getData();
+                    String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture_crop.jpg";
+                    File imageFile = new File(imageFilePath);
+                    finalUri = Uri.fromFile(imageFile);
+                    Crop.of(outputUri, finalUri).start(this);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             if (checkSizeExceed(finalUri.getPath())) {

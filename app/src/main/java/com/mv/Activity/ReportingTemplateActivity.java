@@ -488,6 +488,9 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
         } catch (ActivityNotFoundException anfe) {
             String errorMessage = "Whoops - your device doesn't support capturing images!";
             Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            String errorMessage = getString(R.string.error_something_went_wrong);
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -578,13 +581,21 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                         e.printStackTrace();
                     }
                 } else if (outputUri != null) {
-                    jsonObject1.put("contentType", "Video");
-                    jsonObject1.put("isAttachmentPresent", "true");
-                    imgStr = getVideoString(outputUri);
+                    try {
+                        jsonObject1.put("contentType", "Video");
+                        jsonObject1.put("isAttachmentPresent", "true");
+                        imgStr = getVideoString(outputUri);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else if (audioUri != null) {
-                    jsonObject1.put("contentType", "Audio");
-                    jsonObject1.put("isAttachmentPresent", "true");
-                    imgStr = getVideoString(audioUri);
+                    try {
+                        jsonObject1.put("contentType", "Audio");
+                        jsonObject1.put("isAttachmentPresent", "true");
+                        imgStr = getVideoString(audioUri);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 } else if (pdfUri != null) {
                     jsonObject1.put("contentType", "Pdf");
                     jsonObject1.put("isAttachmentPresent", "true");
@@ -1025,17 +1036,25 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
                 }
             }
         } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
-            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture_crop.jpg";
-            File imageFile = new File(imageFilePath);
-            finalUri = Uri.fromFile(imageFile);
-            Crop.of(outputUri, finalUri).start(this);
-        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
-                outputUri = data.getData();
+             try {
                 String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture_crop.jpg";
                 File imageFile = new File(imageFilePath);
                 finalUri = Uri.fromFile(imageFile);
                 Crop.of(outputUri, finalUri).start(this);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
+             try {
+                if (data != null) {
+                    outputUri = data.getData();
+                    String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture_crop.jpg";
+                    File imageFile = new File(imageFilePath);
+                    finalUri = Uri.fromFile(imageFile);
+                    Crop.of(outputUri, finalUri).start(this);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             if (checkSizeExceed(outputUri.getPath())) {
@@ -1096,7 +1115,7 @@ public class ReportingTemplateActivity extends AppCompatActivity implements View
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
