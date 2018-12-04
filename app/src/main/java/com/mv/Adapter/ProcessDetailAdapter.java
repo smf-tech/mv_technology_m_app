@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
@@ -26,24 +27,37 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mv.Activity.LocationSelectionActity;
 import com.mv.Activity.ProcessDeatailActivity;
+import com.mv.Model.Asset;
 import com.mv.Model.Task;
 import com.mv.R;
+import com.mv.Retrofit.ApiClient;
+import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
+import com.mv.Utils.Utills;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdapter.MyViewHolder> {
 
@@ -642,6 +656,42 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.date.setTag(position);
                 holder.date.setFocusable(false);
                 holder.date.setClickable(true);
+                break;
+
+            case Constants.TASK_MV_USER:
+                holder.llEditText.setVisibility(View.VISIBLE);
+                holder.llLayout.setVisibility(View.GONE);
+                holder.llHeaderLay.setVisibility(View.GONE);
+                holder.llLocation.setVisibility(View.GONE);
+                holder.llCheck.setVisibility(View.GONE);
+                holder.llDate.setVisibility(View.GONE);
+
+                if (task.getIs_Response_Mnadetory__c()) {
+                    holder.editHeader.setText(String.format("* %s", task.getTask_Text___Lan_c()));
+                } else {
+                    holder.editHeader.setText(task.getTask_Text___Lan_c());
+                }
+
+                if(task.getTask_Response__c()!=null && task.getTask_Response__c().length()>0 && task.getTask_Response__c().contains("(")){
+                    holder.questionResponse.setText(task.getTask_Response__c().substring(0,task.getTask_Response__c().indexOf("(")));
+                } else {
+                    holder.questionResponse.setText(task.getTask_Response__c());
+                }
+                holder.questionResponse.setInputType(InputType.TYPE_CLASS_NUMBER);
+//                switch (task.getValidation()) {
+//                    case "Alphabets":
+//                        holder.questionResponse.setInputType(InputType.TYPE_CLASS_TEXT);
+//                        break;
+//
+//                    case "Number":
+//                        holder.questionResponse.setInputType(InputType.TYPE_CLASS_NUMBER);
+//                        break;
+//
+//                    case "Decimal":
+//                        holder.questionResponse.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+//                        break;
+//                }
+                holder.questionResponse.setSingleLine(true);
                 break;
 
             case Constants.IMAGE:

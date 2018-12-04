@@ -305,4 +305,6 @@
     <string name="location_not_found">वर्तमान स्थान उपलब्ध नाही, कृपया पुन्हा प्रयत्न करा</string>
     <string name="title_activity_maps">नकाशा</string>
     <string name="todo">TODO</string>
+    <string name="enter_moblie_no">मोबाइल नंबर प्रविष्ट करा</string>
+    <string name="error_no_user">वैध दाखल करा</string>
 </resources>
