@@ -38,13 +38,17 @@ public class SliderAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup view, int position) {
         View myImageLayout = inflater.inflate(R.layout.slide, view, false);
-        ImageView myImage = myImageLayout
-                .findViewById(R.id.image);
-      //  myImage.setImageResource(images.get(position));
-        Glide.with(context)
-                .load(Constants.IMAGEURL + images.get(position) + ".png")
-                .placeholder(context.getResources().getDrawable(R.drawable.a))
-                .into(myImage);
+        ImageView myImage = myImageLayout.findViewById(R.id.image);
+
+        try {
+            Glide.with(context)
+                    .load(Constants.IMAGEURL + images.get(position) + ".png")
+                    .placeholder(context.getResources().getDrawable(R.drawable.a))
+                    .into(myImage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         view.addView(myImageLayout, 0);
         return myImageLayout;
     }

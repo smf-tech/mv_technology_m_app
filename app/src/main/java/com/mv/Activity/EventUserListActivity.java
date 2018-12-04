@@ -200,7 +200,11 @@ public class EventUserListActivity extends AppCompatActivity implements View.OnC
                 getTaluka();
             else {
                 mListTaluka.clear();
-                mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, mListDistrict.get(mSelectDistrict));
+                String district = "";
+                if (mListDistrict.size() > mSelectDistrict && mSelectDistrict > -1) {
+                    district = mListDistrict.get(mSelectDistrict);
+                }
+                mListTaluka = AppDatabase.getAppDatabase(context).userDao().getTaluka(selectedState, district);
                 mListTaluka.removeAll(Collections.singleton(null));
             }
 

@@ -1697,8 +1697,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
      * Intent to open gallery
      * */
     private void choosePhotoFromGallery() {
-        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
+        try {
+            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
+        } catch (ActivityNotFoundException e) {
+            String errorMessage = "Problem in taking photo from gallery, please use camera to take photo.";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

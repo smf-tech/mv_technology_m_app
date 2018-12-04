@@ -21,6 +21,7 @@ import com.mv.Model.Task;
 import com.mv.Model.TaskContainerModel;
 import com.mv.Model.Template;
 import com.mv.Model.User;
+import com.mv.Model.UserInfo;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
@@ -153,7 +154,7 @@ public class ProgrammeManagmentFragment extends AppCompatActivity implements Vie
         ServiceRequest apiService = ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + "/services/apexrest/getallprocessandtaskNew"
-                + "?userId=" + User.getCurrentUser(this).getMvUser().getId()
+                + "?userId=" + (User.getCurrentUser(this).getMvUser() != null ? User.getCurrentUser(this).getMvUser().getId() : "")
                 + "&language=" + preferenceHelper.getString(Constants.LANGUAGE);
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
@@ -202,7 +203,7 @@ public class ProgrammeManagmentFragment extends AppCompatActivity implements Vie
                                 taskContainerModel = new TaskContainerModel();
                                 taskList = new ArrayList<>();
 
-                                User user = User.getCurrentUser(getApplicationContext());
+                                UserInfo mvUser = User.getCurrentUser(getApplicationContext()).getMvUser();
                                 StringBuilder sb = new StringBuilder();
                                 String prefix = "";
 
@@ -250,27 +251,27 @@ public class ProgrammeManagmentFragment extends AppCompatActivity implements Vie
 
                                         switch (resultJsonObj.getString("locationLevel")) {
                                             case "State":
-                                                taskList.setTask_Response__c(user.getMvUser().getState());
+                                                taskList.setTask_Response__c(mvUser != null ? mvUser.getState() : "");
                                                 break;
 
                                             case "District":
-                                                taskList.setTask_Response__c(user.getMvUser().getDistrict());
+                                                taskList.setTask_Response__c(mvUser != null ? mvUser.getDistrict() : "");
                                                 break;
 
                                             case "Taluka":
-                                                taskList.setTask_Response__c(user.getMvUser().getTaluka());
+                                                taskList.setTask_Response__c(mvUser != null ? mvUser.getTaluka() : "");
                                                 break;
 
                                             case "Cluster":
-                                                taskList.setTask_Response__c(user.getMvUser().getCluster());
+                                                taskList.setTask_Response__c(mvUser != null ? mvUser.getCluster() : "");
                                                 break;
 
                                             case "Village":
-                                                taskList.setTask_Response__c(user.getMvUser().getVillage());
+                                                taskList.setTask_Response__c(mvUser != null ? mvUser.getVillage() : "");
                                                 break;
 
                                             case "School":
-                                                taskList.setTask_Response__c(user.getMvUser().getSchool_Name());
+                                                taskList.setTask_Response__c(mvUser != null ? mvUser.getSchool_Name() : "");
                                                 break;
                                         }
 

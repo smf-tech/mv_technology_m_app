@@ -494,17 +494,25 @@ public class BroadCastActivity extends AppCompatActivity implements View.OnClick
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == Activity.RESULT_OK) {
-            String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture_crop.jpg";
-            File imageFile = new File(imageFilePath);
-            FinalUri = Uri.fromFile(imageFile);
-            Crop.of(outputUri, FinalUri).asSquare().start(this);
-        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
-            if (data != null) {
-                outputUri = data.getData();
+            try {
                 String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture_crop.jpg";
                 File imageFile = new File(imageFilePath);
                 FinalUri = Uri.fromFile(imageFile);
                 Crop.of(outputUri, FinalUri).asSquare().start(this);
+            } catch (Exception e) {
+                Log.e("Crop Exc", e.getMessage());
+            }
+        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
+             try {
+                if (data != null) {
+                    outputUri = data.getData();
+                    String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/picture_crop.jpg";
+                    File imageFile = new File(imageFilePath);
+                    FinalUri = Uri.fromFile(imageFile);
+                    Crop.of(outputUri, FinalUri).asSquare().start(this);
+                }
+            } catch (Exception e) {
+                Log.e("Crop Exc", e.getMessage());
             }
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             Glide.with(this)
