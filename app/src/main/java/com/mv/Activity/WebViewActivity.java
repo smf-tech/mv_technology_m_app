@@ -1,6 +1,7 @@
 package com.mv.Activity;
 
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -71,6 +72,7 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
         img_logout.setOnClickListener(this);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void init() {
         if(getIntent().getExtras()!=null) {
             setActionbar(getIntent().getExtras().getString(Constants.TITLE));
@@ -117,6 +119,7 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
         return super.onKeyDown(keyCode, event);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void startWebView(String url) {
 
         webView.setWebChromeClient(new WebChromeClient());

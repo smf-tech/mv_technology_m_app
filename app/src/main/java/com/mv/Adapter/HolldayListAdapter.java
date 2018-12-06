@@ -44,7 +44,6 @@ public class HolldayListAdapter extends RecyclerView.Adapter<HolldayListAdapter.
 
     public HolldayListAdapter(Activity context, List<HolidayListModel> moviesList) {
         this.calenderlsList = moviesList;
-        Activity mContext = context;
         PreferenceHelper preferenceHelper = new PreferenceHelper(context);
 
     }

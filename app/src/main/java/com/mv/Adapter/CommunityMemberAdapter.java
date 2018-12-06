@@ -24,12 +24,6 @@ public class CommunityMemberAdapter extends RecyclerView.Adapter<CommunityMember
     private ArrayList<String> CommunityMemberList;
 
     public CommunityMemberAdapter(Context context, ArrayList<String> CommunityMemberList) {
-        Resources resources = context.getResources();
-
-        TypedArray a = resources.obtainTypedArray(R.array.places_picture);
-        Context mContext = context;
-
-        PreferenceHelper preferenceHelper = new PreferenceHelper(mContext);
         this.CommunityMemberList = CommunityMemberList;
     }
 

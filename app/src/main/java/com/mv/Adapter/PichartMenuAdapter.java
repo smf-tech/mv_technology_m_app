@@ -40,7 +40,6 @@ public class PichartMenuAdapter extends RecyclerView.Adapter<PichartMenuAdapter.
 
     public PichartMenuAdapter(List<PieEntry> moviesList, List<Integer> colorList, Activity context) {
         this.teplateList = moviesList;
-        Activity mContext = context;
         this.colorList = colorList;
         PreferenceHelper preferenceHelper = new PreferenceHelper(context);
     }

@@ -165,11 +165,11 @@ public class GPSTracker extends Service implements LocationListener {
      */
     public boolean canGetLocation() {
         // getting GPS status
-        isGPSEnabled = locationManager
+        isGPSEnabled = locationManager != null && locationManager
                 .isProviderEnabled(LocationManager.GPS_PROVIDER);
 
         // getting network status
-        isNetworkEnabled = locationManager
+        isNetworkEnabled = locationManager != null && locationManager
                 .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
         this.canGetLocation = isGPSEnabled || isNetworkEnabled;

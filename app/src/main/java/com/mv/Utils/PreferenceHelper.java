@@ -35,8 +35,7 @@ public class PreferenceHelper {
     public static final String SalesforcePassword = "SalesforcePassword";
 
     public PreferenceHelper(Context cntx) {
-        Context context = cntx;
-        pref = context.getSharedPreferences(PREFER_NAME, Context.MODE_PRIVATE);
+        pref = cntx.getSharedPreferences(PREFER_NAME, Context.MODE_PRIVATE);
         editor = pref.edit();
     }
 

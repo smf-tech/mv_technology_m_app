@@ -90,7 +90,7 @@ public class ExpandableProcessListAdapter extends BaseExpandableListAdapter {
             if (template.getTargated_Date__c() != null) {
                 txt_targeted_date.setText(String.format("Target Date : %s", template.getTargated_Date__c()));
             } else {
-                txt_targeted_date.setText(String.format("Target Date : N/A"));
+                txt_targeted_date.setText("Target Date : N/A");
             }
 
             txt_targeted_count.setText(String.format("Total Count : %s", template.getAnswerCount()));

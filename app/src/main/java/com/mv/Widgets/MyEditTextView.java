@@ -27,7 +27,6 @@ public class MyEditTextView extends AppCompatEditText {
         super(context, attrs, defStyle);
         this.context = context;
         this.attrs = attrs;
-        int defStyle1 = defStyle;
      //   init();
     }
 

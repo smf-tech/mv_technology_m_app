@@ -80,8 +80,6 @@ public class OverallReportAdapter extends RecyclerView.Adapter<OverallReportAdap
 
     public OverallReportAdapter(List<OverAllModel> moviesList, Activity context) {
         this.teplateList = moviesList;
-        Activity mContext = context;
-        PreferenceHelper preferenceHelper = new PreferenceHelper(context);
     }
 
     @Override

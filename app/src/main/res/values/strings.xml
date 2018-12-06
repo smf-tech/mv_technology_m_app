@@ -1,4 +1,4 @@
-<resources xmlns:https="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Sujalam Suphalam</string>
     <string name="progress_loading">Loding</string>
     <string name="progress_please_wait">Please wait</string>

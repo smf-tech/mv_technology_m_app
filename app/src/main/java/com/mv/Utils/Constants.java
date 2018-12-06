@@ -246,6 +246,7 @@ public class Constants {
 
     public static String playStoreLink = "https://play.google.com/store/apps/details?id=com.bjs.ss&hl=en";
 
+    @SuppressWarnings("RegExpRedundantEscape")
     public static final Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
             + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);

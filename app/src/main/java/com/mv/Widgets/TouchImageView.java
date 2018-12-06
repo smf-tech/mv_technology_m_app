@@ -732,14 +732,8 @@ public class TouchImageView extends AppCompatImageView {
         matrix.getValues(m);
         float x = m[Matrix.MTRANS_X];
 
-        if (getImageWidth() < viewWidth) {
-            return false;
-
-        } else if (x >= -1 && direction < 0) {
-            return false;
-
-        } else return !(Math.abs(x) + viewWidth + 1 >= getImageWidth()) || direction <= 0;
-
+        return !(getImageWidth() < viewWidth) && (!(x >= -1) || direction >= 0) && (!(Math.abs(x)
+                + viewWidth + 1 >= getImageWidth()) || direction <= 0);
     }
 
     /**

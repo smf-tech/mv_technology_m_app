@@ -41,7 +41,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.MyViewHolder
 
     public GroupAdapter(List<Community> moviesList, Context context, GroupsFragment fragment) {
         this.communitiesList = moviesList;
-        Context mContext = context;
         this.fragment = fragment;
     }
 

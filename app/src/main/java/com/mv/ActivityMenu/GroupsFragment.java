@@ -346,14 +346,14 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
                 }
             } else {
                 preferenceHelper.insertString(PreferenceHelper.COMMUNITYID, communityList.get(position).getId());
-                List<Community> list = new ArrayList<>();
-                list.addAll(communityList);
+                List<Community> list = new ArrayList<>(communityList);
                 list.remove(position);
+
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 String json = gson.toJson(list);
+
                 Intent intent = new Intent(context, CommunityHomeActivity.class);
                 intent.putExtra(Constants.TITLE, communityList.get(position).getName());
-                //sending new intent to check user can post or not
                 intent.putExtra("CanPost", communityList.get(position).getCanPost());
                 intent.putExtra(Constants.LIST, json);
                 startActivity(intent);

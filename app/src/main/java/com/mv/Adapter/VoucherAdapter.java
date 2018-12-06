@@ -100,12 +100,16 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
 
             //registering popup with OnMenuItemClickListener
             popup.setOnMenuItemClickListener(item -> {
-                if (item.getItemId()==R.id.edit) {
-                    mActivity.editVoucher(voucher);
-                } else if (item.getItemId()==R.id.delete) {
-                    showLogoutPopUp(position);
-                } else if (item.getItemId()==R.id.send_mail) {
-                    sendEmail(voucher.getId());
+                switch (item.getItemId()) {
+                    case R.id.edit:
+                        mActivity.editVoucher(voucher);
+                        break;
+                    case R.id.delete:
+                        showLogoutPopUp(position);
+                        break;
+                    case R.id.send_mail:
+                        sendEmail(voucher.getId());
+                        break;
                 }
                 return true;
             });
