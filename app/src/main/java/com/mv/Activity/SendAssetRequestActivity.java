@@ -100,15 +100,17 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
         edit_text_tentative_return_date.setOnClickListener(this);
         btn_send_request.setOnClickListener(this);
         setActionbar(getResources().getString(R.string.asset_request_screen));
-        if (!getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
-            isAdd = false;
-            mAsset = (Asset) getIntent().getSerializableExtra(Constants.Asset_management);
-            edit_text_issue_date.setText(mAsset.getExpectedIssueDate());
-            edit_text_remarks.setText(mAsset.getRemark());
-            edit_text_tentative_return_date.setText(mAsset.getTentativeReturnDate());
-//            id = mAsset.getAssetAllocationId();
-        } else {
-            isAdd = true;
+
+        if (getIntent().getExtras() != null) {
+            if (!Constants.ACTION_ADD.equalsIgnoreCase(getIntent().getExtras().getString(Constants.ACTION))) {
+                isAdd = false;
+                mAsset = (Asset) getIntent().getSerializableExtra(Constants.Asset_management);
+                edit_text_issue_date.setText(mAsset.getExpectedIssueDate());
+                edit_text_remarks.setText(mAsset.getRemark());
+                edit_text_tentative_return_date.setText(mAsset.getTentativeReturnDate());
+            } else {
+                isAdd = true;
+            }
         }
     }
 

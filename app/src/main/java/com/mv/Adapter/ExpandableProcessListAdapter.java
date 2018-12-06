@@ -65,37 +65,39 @@ public class ExpandableProcessListAdapter extends BaseExpandableListAdapter {
         TextView txtCommunityName, txt_targeted_date, txt_targeted_count, expectedCount, submittedCount;
         LinearLayout layout;
 
-        txtCommunityName = convertView.findViewById(R.id.txtTemplateName);
-        txt_targeted_date = convertView.findViewById(R.id.txt_traget_date);
-        expectedCount = convertView.findViewById(R.id.txt_expected_count);
-        submittedCount = convertView.findViewById(R.id.txt_submmited_date);
-        txt_targeted_count = convertView.findViewById(R.id.txt_traget_count);
-        layout = convertView.findViewById(R.id.layoutTemplate);
-        layout.setOnClickListener(view -> {
+        if (convertView != null) {
+            txtCommunityName = convertView.findViewById(R.id.txtTemplateName);
+            txt_targeted_date = convertView.findViewById(R.id.txt_traget_date);
+            expectedCount = convertView.findViewById(R.id.txt_expected_count);
+            submittedCount = convertView.findViewById(R.id.txt_submmited_date);
+            txt_targeted_count = convertView.findViewById(R.id.txt_traget_count);
+            layout = convertView.findViewById(R.id.layoutTemplate);
 
-            preferenceHelper.insertBoolean(Constants.IS_EDITABLE, template.getIs_Editable__c());
-            preferenceHelper.insertBoolean(Constants.IS_LOCATION, template.getLocation());
-            preferenceHelper.insertBoolean(Constants.IS_MULTIPLE, template.getIs_Multiple_Entry_Allowed__c());
-            preferenceHelper.insertString(Constants.STATE_LOCATION_LEVEL, template.getLocationLevel());
+            layout.setOnClickListener(view -> {
+                preferenceHelper.insertBoolean(Constants.IS_EDITABLE, template.getIs_Editable__c());
+                preferenceHelper.insertBoolean(Constants.IS_LOCATION, template.getLocation());
+                preferenceHelper.insertBoolean(Constants.IS_MULTIPLE, template.getIs_Multiple_Entry_Allowed__c());
+                preferenceHelper.insertString(Constants.STATE_LOCATION_LEVEL, template.getLocationLevel());
 
-            Intent openClass = new Intent(_context, ProcessListActivity.class);
-            openClass.putExtra(Constants.PROCESS_ID, template.getId());
-            openClass.putExtra(Constants.PROCESS_NAME, template.getName());
-            _context.startActivity(openClass);
-            _context.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                Intent openClass = new Intent(_context, ProcessListActivity.class);
+                openClass.putExtra(Constants.PROCESS_ID, template.getId());
+                openClass.putExtra(Constants.PROCESS_NAME, template.getName());
+                _context.startActivity(openClass);
+                _context.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+            });
 
-        });
+            txtCommunityName.setText(template.getName());
+            if (template.getTargated_Date__c() != null) {
+                txt_targeted_date.setText(String.format("Target Date : %s", template.getTargated_Date__c()));
+            } else {
+                txt_targeted_date.setText(String.format("Target Date : N/A"));
+            }
 
+            txt_targeted_count.setText(String.format("Total Count : %s", template.getAnswerCount()));
+            submittedCount.setText(String.format("Submitted Count : %s", template.getSubmittedCount()));
+            expectedCount.setText(String.format("Expected Count : %s", template.getExpectedCount()));
+        }
 
-        txtCommunityName.setText(template.getName());
-        if (template.getTargated_Date__c() != null)
-            txt_targeted_date.setText("Target Date : " + template.getTargated_Date__c());
-        else
-            txt_targeted_date.setText("Target Date : " + "N/A");
-
-        txt_targeted_count.setText("Total Count : " + template.getAnswerCount());
-        submittedCount.setText("Submitted Count : " + template.getSubmittedCount());
-        expectedCount.setText("Expected Count : " + template.getExpectedCount());
         return convertView;
     }
 
@@ -125,25 +127,27 @@ public class ExpandableProcessListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded,
-                             View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
+
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
         }
-        ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
 
-        if (isExpanded) {
-            imgGroup.setImageResource(R.drawable.downarrow);
-        } else {
-            imgGroup.setImageResource(R.drawable.rightarrow);
+        if (convertView != null) {
+            ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
+
+            if (isExpanded) {
+                imgGroup.setImageResource(R.drawable.downarrow);
+            } else {
+                imgGroup.setImageResource(R.drawable.rightarrow);
+            }
+
+            String headerTitle = (String) getGroup(groupPosition);
+            TextView txtName = convertView .findViewById(R.id.txtName);
+            txtName.setText(headerTitle);
         }
-        TextView txtName = convertView
-                .findViewById(R.id.txtName);
-        // date.setTypeface(null, Typeface.BOLD);
-        txtName.setText(headerTitle);
         return convertView;
     }
 

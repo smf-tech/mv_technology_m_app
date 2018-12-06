@@ -89,11 +89,14 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
                 android.R.layout.simple_spinner_item, projectList);
         project_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerProject.setAdapter(project_adapter);
-        if (Utills.isConnected(this))
-            getProject();
-        if (getIntent().getExtras()!=null && getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
-            isAdd = true;
 
+        if (Utills.isConnected(this)) {
+            getProject();
+        }
+
+        if (getIntent().getExtras() != null &&
+                Constants.ACTION_ADD.equalsIgnoreCase(getIntent().getExtras().getString(Constants.ACTION))) {
+            isAdd = true;
         } else {
             isAdd = false;
             mVoucher = (Voucher) getIntent().getSerializableExtra(Constants.VOUCHER);

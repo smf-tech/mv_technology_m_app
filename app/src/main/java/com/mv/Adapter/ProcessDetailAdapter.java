@@ -546,9 +546,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     holder.dateHeader.setText(task.getTask_Text___Lan_c());
                 }
 
-                if (task.getTask_Response__c() != null && task.getTask_Response__c().length() > 0
-                        && taskList.size() > position && position > -1) {
-
+                if (task.getTask_Response__c() != null && task.getTask_Response__c().length() > 0 && taskList.size() > position) {
                     String answerStr = "";
                     ArrayList<String> myList1 = new ArrayList<>(Arrays.asList(getColumnIndex(
                             (taskList.get(position).getPicklist_Value__c()).split(","))));
