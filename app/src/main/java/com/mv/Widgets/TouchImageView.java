@@ -510,6 +510,7 @@ public class TouchImageView extends AppCompatImageView {
         return matchViewHeight * normalizedScale;
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         Drawable drawable = getDrawable();

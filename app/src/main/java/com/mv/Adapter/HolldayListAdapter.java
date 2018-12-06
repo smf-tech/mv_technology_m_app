@@ -65,17 +65,12 @@ public class HolldayListAdapter extends RecyclerView.Adapter<HolldayListAdapter.
         holder.index.setText("" + (position + 1));
         holder.title.setVisibility(View.VISIBLE);
         holder.delete.setVisibility(View.GONE);
-        calenderlsList.get(position);
         holder.detail.setText(calenderlsList.get(position).getHoliday_Date__c());
         holder.title.setText(calenderlsList.get(position).getName());
-
-
     }
 
     @Override
     public int getItemCount() {
         return calenderlsList.size();
     }
-
-
 }

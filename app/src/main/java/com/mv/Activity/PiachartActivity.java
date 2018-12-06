@@ -784,7 +784,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         file = new File(Environment.getExternalStorageDirectory() +
                 "/capturedscreenandroid.jpg");
         try {
-            file.createNewFile();
+            boolean newFile = file.createNewFile();
+            System.out.print("New file created ->" + newFile);
             FileOutputStream outputStream = new FileOutputStream(file);
             outputStream.write(bytes.toByteArray());
             outputStream.close();

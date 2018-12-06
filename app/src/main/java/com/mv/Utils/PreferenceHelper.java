@@ -2,6 +2,7 @@ package com.mv.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.util.Map;
 
@@ -89,6 +90,7 @@ public class PreferenceHelper {
                     || prefToReset.getKey().equalsIgnoreCase(PreferenceHelper.FIRSTTIME_V_2_7)
                     || prefToReset.getKey().equalsIgnoreCase(Constants.LANGUAGE)
                     ) {
+                Log.i("Helper", "If_clearPreference");
             } else {
                 editor.remove(prefToReset.getKey()).commit();
             }

@@ -197,7 +197,8 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
             }
         }
 
-        fileOrDirectory.delete();
+        boolean delete = fileOrDirectory.delete();
+        System.out.print("File deleted ->" + delete);
     }
 
     private void showNoFilePresentPopUp() {

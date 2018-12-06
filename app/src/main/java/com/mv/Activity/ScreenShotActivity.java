@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -54,7 +55,8 @@ public class ScreenShotActivity extends AppCompatActivity {
         File file = new File(Environment.getExternalStorageDirectory() +
                 "/capturedscreenandroid.jpg");
         try {
-            file.createNewFile();
+            boolean newFile = file.createNewFile();
+            System.out.print("New file created ->" + newFile);
             FileOutputStream outputStream = new FileOutputStream(file);
             outputStream.write(bytes.toByteArray());
             outputStream.close();

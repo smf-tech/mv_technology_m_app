@@ -153,7 +153,7 @@ public class UserInfo {
     }
 
     public void setMultipleTaluka(String MultipleTaluka) {
-        MultipleTaluka = MultipleTaluka;
+        this.MultipleTaluka = MultipleTaluka;
     }
 
     public String getBirth_Day__c() {

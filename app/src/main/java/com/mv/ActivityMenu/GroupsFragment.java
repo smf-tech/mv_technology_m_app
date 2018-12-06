@@ -159,28 +159,13 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
     }
 
     private void getAllCommunities(boolean isTimePresent, boolean isDialogShow) {
-        if (isDialogShow)
+        if (isDialogShow) {
             Utills.showProgressDialog(context, "Loading Communities", getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
-        String url = "";
-//        if (isTimePresent)
-//            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-//                    + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(context).getMvUser().getId()
-//                    + "&timestamp=" + communityList.get(0).getTime();
-//        else
-            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(context).getMvUser().getId();
+        }
 
-        /*if (isTimePresent)
-            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/\n" +
-                    "MVGetCommunitiesNew?userId=" + User.getCurrentUser(context).getMvUser().getId()
-                    + "&timestamp=" + communityList.get(0).getTime();
-        else
-            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/\n" +
-                    "MVGetCommunitiesNew?userId=" + User.getCurrentUser(context).getMvUser().getId();*/
+        ServiceRequest apiService = ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                    + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(context).getMvUser().getId();
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
