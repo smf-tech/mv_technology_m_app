@@ -28,20 +28,18 @@ import java.util.List;
  */
 
 public class ExpandableAttendanceApprovalListAdapter extends BaseExpandableListAdapter {
-    private PreferenceHelper preferenceHelper;
     private AttendanceApprovalActivity _context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, ArrayList<AttendanceApproval>> _listDataChild;
-    private AttendanceApprovalActivity _activity;
 
     public ExpandableAttendanceApprovalListAdapter(Activity context, ArrayList<String> listDataHeader,
                                          HashMap<String, ArrayList<AttendanceApproval>> listChildData, String tabName) {
         this._context = (AttendanceApprovalActivity) context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
-        this._activity = (AttendanceApprovalActivity) context;
-        preferenceHelper = new PreferenceHelper(context);
+        AttendanceApprovalActivity _activity = (AttendanceApprovalActivity) context;
+        PreferenceHelper preferenceHelper = new PreferenceHelper(context);
     }
 
     @Override

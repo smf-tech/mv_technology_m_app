@@ -26,15 +26,13 @@ import java.util.List;
 public class AttendanceAdapter extends RecyclerView.Adapter<AttendanceAdapter.ViewHolder>{
 
     private final Context mContext;
-    private PreferenceHelper preferenceHelper;
-    private AttendanceApproval2Activity mActivity;
     private List<AttendanceApproval> mDataList;
 
     public AttendanceAdapter(Context context, List<AttendanceApproval> chatList) {
         Resources resources = context.getResources();
-        mActivity = (AttendanceApproval2Activity) context;
+        AttendanceApproval2Activity mActivity = (AttendanceApproval2Activity) context;
         mContext = context;
-        preferenceHelper = new PreferenceHelper(mContext);
+        PreferenceHelper preferenceHelper = new PreferenceHelper(mContext);
         this.mDataList = chatList;
     }
     @Override

@@ -31,7 +31,6 @@ import java.util.List;
  */
 
 public class ExpandableAssetListAdapter extends BaseExpandableListAdapter {
-    private PreferenceHelper preferenceHelper;
     private AssetAllocatedListActivity _context;
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
@@ -44,7 +43,7 @@ public class ExpandableAssetListAdapter extends BaseExpandableListAdapter {
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
         this._activity = (AssetAllocatedListActivity) context;
-        preferenceHelper = new PreferenceHelper(context);
+        PreferenceHelper preferenceHelper = new PreferenceHelper(context);
     }
 
     @Override

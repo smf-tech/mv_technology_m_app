@@ -40,7 +40,7 @@
                 android:layout_marginRight="7dp"
                 android:background="@drawable/circle_background_red"
                 android:textColor="@color/white"
-                android:textSize="10sp"
+                android:textSize="12sp"
                 android:text="8"/>
         </RelativeLayout>
 

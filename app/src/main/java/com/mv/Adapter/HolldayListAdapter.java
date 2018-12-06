@@ -18,8 +18,6 @@ import java.util.List;
 public class HolldayListAdapter extends RecyclerView.Adapter<HolldayListAdapter.MyViewHolder> {
 
     private List<HolidayListModel> calenderlsList;
-    private Activity mContext;
-    private PreferenceHelper preferenceHelper;
     private int position;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -46,8 +44,8 @@ public class HolldayListAdapter extends RecyclerView.Adapter<HolldayListAdapter.
 
     public HolldayListAdapter(Activity context, List<HolidayListModel> moviesList) {
         this.calenderlsList = moviesList;
-        this.mContext = context;
-        preferenceHelper = new PreferenceHelper(context);
+        Activity mContext = context;
+        PreferenceHelper preferenceHelper = new PreferenceHelper(context);
 
     }
 

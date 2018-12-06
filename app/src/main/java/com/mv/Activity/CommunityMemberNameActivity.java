@@ -41,8 +41,6 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
     private CommunityMemberNameActivity binding;
     private RecyclerView recyclerView;
     private TextView toolbar_title, textNoData;
-    private ImageView img_back, img_logout;
-    private EditText edit_text_email;
     private String Member_count = "";
 
 
@@ -75,13 +73,13 @@ public class CommunityMemberNameActivity extends AppCompatActivity implements Vi
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         toolbar_title.setText(title);
-        img_back = (ImageView) findViewById(R.id.img_back);
+        ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
-        img_logout = (ImageView) findViewById(R.id.img_logout);
+        ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.INVISIBLE);
         textNoData = (TextView) findViewById(R.id.textNoData);
-        edit_text_email = (EditText) findViewById(R.id.edit_text_email);
+        EditText edit_text_email = (EditText) findViewById(R.id.edit_text_email);
         edit_text_email.addTextChangedListener(watch);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(CommunityMemberNameActivity.this));

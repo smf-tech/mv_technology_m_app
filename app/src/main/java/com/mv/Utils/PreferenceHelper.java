@@ -14,7 +14,6 @@ public class PreferenceHelper {
     private static final String PREFER_NAME = "MV";
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
-    private Context context;
     public static final String TEMPLATENAME = "templatename";
     public static final String TEMPLATEID = "templateid";
     public static final String COMMUNITYID = "communityid";
@@ -36,7 +35,7 @@ public class PreferenceHelper {
     public static final String SalesforcePassword = "SalesforcePassword";
 
     public PreferenceHelper(Context cntx) {
-        this.context = cntx;
+        Context context = cntx;
         pref = context.getSharedPreferences(PREFER_NAME, Context.MODE_PRIVATE);
         editor = pref.edit();
     }

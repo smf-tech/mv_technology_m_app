@@ -38,7 +38,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String TAG = "MyFirebaseMsgService";
     private PreferenceHelper preferenceHelper;
     private String mId = "";
-    private List<String> allTab = new ArrayList<>();
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -49,7 +48,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             try {
                 preferenceHelper = new PreferenceHelper(getApplicationContext());
                 mId = remoteMessage.getData().get("Id");
-                allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().split(";")));
+                List<String> allTab = Arrays.asList(getColumnIdex(User.getCurrentUser(getApplicationContext()).getMvUser().getTabNameApproved().split(";")));
 
                 if (preferenceHelper != null) {
                     if (preferenceHelper.getBoolean(PreferenceHelper.NOTIFICATION)) {

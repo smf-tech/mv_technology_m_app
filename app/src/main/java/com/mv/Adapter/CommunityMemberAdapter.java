@@ -21,17 +21,15 @@ import java.util.ArrayList;
 public class CommunityMemberAdapter extends RecyclerView.Adapter<CommunityMemberAdapter.ViewHolder> {
     private static final int LENGTH = 7;
 
-    private final Context mContext;
     private ArrayList<String> CommunityMemberList;
-    private PreferenceHelper preferenceHelper;
 
     public CommunityMemberAdapter(Context context, ArrayList<String> CommunityMemberList) {
         Resources resources = context.getResources();
 
         TypedArray a = resources.obtainTypedArray(R.array.places_picture);
-        mContext = context;
+        Context mContext = context;
 
-        preferenceHelper = new PreferenceHelper(mContext);
+        PreferenceHelper preferenceHelper = new PreferenceHelper(mContext);
         this.CommunityMemberList = CommunityMemberList;
     }
 

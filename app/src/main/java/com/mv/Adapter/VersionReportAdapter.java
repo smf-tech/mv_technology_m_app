@@ -20,7 +20,7 @@ import java.util.List;
 public class VersionReportAdapter extends RecyclerView.Adapter<VersionReportAdapter.MyViewHolder> {
 
     private List<Template> teplateList;
-    private Activity mContext;
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView txtUserName,txtVersionNumber;
         public LinearLayout layout;
@@ -35,7 +35,7 @@ public class VersionReportAdapter extends RecyclerView.Adapter<VersionReportAdap
 
     public VersionReportAdapter(List<Template> moviesList, Activity context) {
         this.teplateList = moviesList;
-        this.mContext = context;
+        Activity mContext = context;
     }
 
     @Override

@@ -18,9 +18,7 @@ import java.io.FileOutputStream;
 
 public class ScreenShotActivity extends AppCompatActivity {
 
-    private TextView textView;
     private ImageView imageView;
-    private Bitmap mbitmap;
     private Button captureScreenShot;
 
     @Override
@@ -29,7 +27,7 @@ public class ScreenShotActivity extends AppCompatActivity {
         setContentView(R.layout.activity_screen_shot);
 
 
-        textView = (TextView) findViewById(R.id.textView);
+        TextView textView = (TextView) findViewById(R.id.textView);
         textView.setText("Your ScreenShot Image:");
 
         captureScreenShot = (Button) findViewById(R.id.capture_screen_shot);
@@ -38,7 +36,7 @@ public class ScreenShotActivity extends AppCompatActivity {
     }
 
     public void screenShot(View view) {
-        mbitmap = getBitmapOFRootView(captureScreenShot);
+        Bitmap mbitmap = getBitmapOFRootView(captureScreenShot);
         imageView.setImageBitmap(mbitmap);
         createImage(mbitmap);
     }

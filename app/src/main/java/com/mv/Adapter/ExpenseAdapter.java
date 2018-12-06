@@ -28,14 +28,13 @@ import java.util.List;
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ViewHolder> {
 
     private Context mContext;
-    private Resources resources;
     private List<Expense> mDataList;
     private ExpenseListActivity mActivity;
     private UserExpenseListActivity mUserExpenseListActivity;
 
     public ExpenseAdapter(Context context, List<Expense> list) {
         mContext = context;
-        resources = context.getResources();
+        Resources resources = context.getResources();
         mDataList = list;
         if (context instanceof ExpenseListActivity)
             mActivity = (ExpenseListActivity) context;
