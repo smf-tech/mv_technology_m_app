@@ -35,10 +35,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by Rohit Gujar on 08-03-2018.
- */
-
 public class SalaryListActivity extends AppCompatActivity implements View.OnClickListener {
 
     private ImageView img_back, img_list, img_logout;
