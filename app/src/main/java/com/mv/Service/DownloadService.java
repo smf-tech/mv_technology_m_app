@@ -11,6 +11,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.mv.Activity.CommunityHomeActivity;
+import com.mv.Activity.SalaryDetailActivity;
 import com.mv.ActivityMenu.ThetSavandFragment;
 import com.mv.ActivityMenu.TrainingFragment;
 import com.mv.Model.Download;
@@ -162,6 +163,8 @@ public class DownloadService extends IntentService {
 
             } else if (fragment_flag.equalsIgnoreCase("My_Community")) {
                 intent = new Intent(CommunityHomeActivity.MESSAGE_PROGRESS);
+            } else if (fragment_flag.equalsIgnoreCase("Salary_Detail_Activity")){
+                intent = new Intent(SalaryDetailActivity.MESSAGE_PROGRESS);
             }
             intent.putExtra("download", download);
 

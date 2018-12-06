@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">मूल्यवर्धन 2.0</string>
-
+    <string name="org_name">SHANTILAL MUTTHA FOUNDATION</string>
+    <string name="org_address">Mutha Chambers II, Level 8, 106/I-A S.B. Marg Pune 411016</string>
     <string name="progress_please_wait">कृपया प्रतीक्षा</string>
     <string name="error_something_went_wrong">कुछ गया गलत, कृपया पुन: प्रयास करें</string>
     <string name="error_no_internet">कृपया अपना इंटरनेट जांचे</string>

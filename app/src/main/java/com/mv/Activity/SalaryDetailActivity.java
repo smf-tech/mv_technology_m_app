@@ -1,25 +1,45 @@
 package com.mv.Activity;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.mv.Model.DownloadContent;
 import com.mv.Model.Salary;
 import com.mv.Model.User;
 import com.mv.R;
+import com.mv.Retrofit.ApiClient;
+import com.mv.Retrofit.AppDatabase;
+import com.mv.Retrofit.ServiceRequest;
+import com.mv.Service.DownloadService;
 import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
+import com.mv.Utils.Utills;
 import com.mv.databinding.ActivitySalaryDetailBinding;
 
-/**
- * Created by Rohit Gujar on 08-03-2018.
- */
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SalaryDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -29,6 +49,7 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
     private PreferenceHelper preferenceHelper;
     private ActivitySalaryDetailBinding binding;
     private Salary salary;
+    public static final String MESSAGE_PROGRESS = "message_progress";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +65,7 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
 
     private void initView() {
 
+        binding.txtPayslipTitle.setText("Payslip for the Month of "+salary.getMonth());
         binding.txtTelephone.setText(salary.getTelephone_Expense__c());
         binding.txtNetSalary.setText(salary.getNet_Salary__c());
 
@@ -102,6 +124,11 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
             case R.id.img_back:
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                break;
+
+            case R.id.img_logout:
+              //  startDownload();
+                break;
         }
     }
 
@@ -132,12 +159,45 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
         img_list.setVisibility(View.GONE);
         img_list.setOnClickListener(this);
         img_logout = (ImageView) findViewById(R.id.img_logout);
+        img_logout.setImageResource(R.drawable.download_file);
         img_logout.setVisibility(View.GONE);
+     //   img_logout.setOnClickListener(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+    }
+
+    public void startDownload(DownloadContent content) {
+        Utills.showToast("Downloading Started...", SalaryDetailActivity.this);
+        Intent intent = new Intent(SalaryDetailActivity.this, DownloadService.class);
+        intent.putExtra("URL", content.getUrl());
+        intent.putExtra("fragment_flag", "Salary_Detail_Activity");
+        if (content.getFileType().equalsIgnoreCase("pdf")) {
+            intent.putExtra("FILENAME", content.getName() + ".pdf");
+            intent.putExtra("FILETYPE", "pdf");
+        }
+        startService(intent);
+    }
+
+    /*Get the the intent from download service for checking file is completely downloaded or not*/
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction() != null && intent.getAction().equals(MESSAGE_PROGRESS)) {
+//                if (adapter != null)
+//                    adapter.notifyDataSetChanged();
+            }
+        }
+    };
+
+    /*Register receiver*/
+    private void registerReceiver() {
+        LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(SalaryDetailActivity.this);
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(MESSAGE_PROGRESS);
+        bManager.registerReceiver(broadcastReceiver, intentFilter);
     }
 
 
