@@ -1,5 +1,6 @@
 package com.mv.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -476,6 +477,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private boolean isDatesAreValid(String startDate, String endDate) {
         try {
             DateFormat formatter;
@@ -1448,6 +1450,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         return "" + i;
     }
 
+    @SuppressLint("SimpleDateFormat")
     private static List<Date> getDates(String dateString1, String dateString2) {
         ArrayList<Date> dates = new ArrayList<>();
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");

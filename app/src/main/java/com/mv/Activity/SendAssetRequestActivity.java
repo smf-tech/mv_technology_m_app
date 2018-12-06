@@ -1,6 +1,7 @@
 package com.mv.Activity;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -303,6 +304,7 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
         return false;
     }
 
+    @SuppressLint("SimpleDateFormat")
     private boolean isDatesAreValid(String startDate, String endDate) {
         try {
             DateFormat formatter;

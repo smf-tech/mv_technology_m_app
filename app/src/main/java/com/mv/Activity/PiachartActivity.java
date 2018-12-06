@@ -766,7 +766,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    private void screenShot(View view) {
+    public void screenShot(View view) {
         mbitmap = getBitmapOFRootView(view);
         createImage(mbitmap);
     }

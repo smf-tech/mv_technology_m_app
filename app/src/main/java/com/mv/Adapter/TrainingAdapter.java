@@ -94,7 +94,6 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
                         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getName() + ".mp3";
                         Intent intent = new Intent();
                         intent.setAction(Intent.ACTION_VIEW);
-                        File file = new File("/sdcard/test.mp3");
                         intent.setDataAndType(Uri.fromFile(new File(filePath)), "audio/*");
                         PackageManager packageManager = mContext.getPackageManager();
                         if (intent.resolveActivity(packageManager) != null) {

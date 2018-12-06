@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.mv.Model.OverAllModel;
 import com.mv.R;
-import com.mv.Utils.PreferenceHelper;
 
 import java.util.List;
 

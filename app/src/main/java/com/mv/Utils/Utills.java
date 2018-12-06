@@ -114,6 +114,7 @@ public class Utills {
                 Settings.Secure.ANDROID_ID);
     }
 
+    @SuppressLint("SimpleDateFormat")
     public static String getCurrentDate() {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -125,6 +126,7 @@ public class Utills {
      *
      * @return
      */
+    @SuppressLint("SimpleDateFormat")
     public static String getDateForAPI() {
         Calendar c = Calendar.getInstance();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM");
@@ -215,6 +217,7 @@ public class Utills {
     }
 
     //get number of days between two dates
+    @SuppressLint("SimpleDateFormat")
     public static String getNumberofDaysBetweenTwoDates(String FirstDate, String SecondDate) {
         SimpleDateFormat myFormat = new SimpleDateFormat("yyyy-MM-dd");
         float daysBetween = 0;
@@ -241,6 +244,7 @@ public class Utills {
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     public static String getDate(long milliSeconds, String dateFormat) {
         // Create a DateFormatter object for displaying date in specified format.
         SimpleDateFormat formatter = new SimpleDateFormat(dateFormat);

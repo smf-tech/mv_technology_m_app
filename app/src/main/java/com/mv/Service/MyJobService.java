@@ -1,5 +1,6 @@
 package com.mv.Service;
 
+import android.annotation.SuppressLint;
 import android.location.Geocoder;
 import android.location.Location;
 import android.util.Log;
@@ -53,6 +54,7 @@ public class MyJobService extends JobService {
         return false; // Answers the question: "Should this job be retried?"
     }
 
+    @SuppressLint("SimpleDateFormat")
     private void GetMapParameters(String latitude, String longitude) {
 
         try {
