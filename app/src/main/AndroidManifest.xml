@@ -21,7 +21,7 @@
         android:name=".Mulyavardhan"
         android:allowBackup="true"
         android:hardwareAccelerated="false"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/app_logo"
         android:label="@string/appNameConfig"
         android:largeHeap="true"
         android:supportsRtl="true"

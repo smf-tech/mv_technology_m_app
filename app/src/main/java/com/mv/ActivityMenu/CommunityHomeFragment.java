@@ -175,7 +175,7 @@ public class CommunityHomeFragment extends AppCompatActivity implements View.OnC
                                         }
                                     }
                                     if (isPresent) {
-                                        chatList.set(j, temp.get(i));
+                                        chatList.set(j, temp.size() > 0 ? temp.get(i) : null);
                                         AppDatabase.getAppDatabase(context).userDao().updateContent(temp.get(i));
 
 

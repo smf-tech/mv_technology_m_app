@@ -1,5 +1,6 @@
 package com.mv.Adapter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
@@ -21,19 +22,16 @@ import java.util.List;
 
 public class HorizontalCalenderAdapter extends RecyclerView.Adapter<HorizontalCalenderAdapter.ViewHolder> {
 
-    private Context mContext;
     private TrainingCalender trainingCalender;
-    private Resources resources;
     private DateFormat dateFormat;
     private DateFormat dayFormat;
-    private int row_index;
     private List<Date> dateList;
     private List<Date> eventDateList;
     private int CurrentDate;
+    private int row_index;
 
+    @SuppressLint("SimpleDateFormat")
     public HorizontalCalenderAdapter(Activity context, List<Date> processAllLis, int currentDate, List<Date> eventDate) {
-        mContext = context;
-        resources = context.getResources();
         trainingCalender = (TrainingCalender) context;
         this.dateList = processAllLis;
         dateFormat = new SimpleDateFormat("dd");
@@ -41,7 +39,6 @@ public class HorizontalCalenderAdapter extends RecyclerView.Adapter<HorizontalCa
         this.CurrentDate = currentDate;
         this.eventDateList = eventDate;
     }
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -52,53 +49,44 @@ public class HorizontalCalenderAdapter extends RecyclerView.Adapter<HorizontalCa
         return new ViewHolder(itemLayoutView);
     }
 
-
     @Override
     public int getItemCount() {
         return dateList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-
         TextView day, date;
         LinearLayout layoutMain;
 
         public ViewHolder(View itemLayoutView) {
-
             super(itemLayoutView);
+
             layoutMain = itemLayoutView.findViewById(R.id.layout_main);
-            day = itemLayoutView.findViewById(R.id.hv_day);
             layoutMain.setOnClickListener(v -> {
-                trainingCalender.selectDate(dateList.get(getAdapterPosition()));
+                if (dateList.size() > getAdapterPosition()) {
+                    trainingCalender.selectDate(dateList.get(getAdapterPosition()));
+                }
                 trainingCalender.binding.fabAddBroadcast.show();
                 row_index = getAdapterPosition();
                 notifyDataSetChanged();
 
             });
+
             date = itemLayoutView.findViewById(R.id.hv_date);
-
-
+            day = itemLayoutView.findViewById(R.id.hv_day);
         }
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-
-
         holder.date.setText(dateFormat.format(dateList.get(position)));
         holder.day.setText(dayFormat.format(dateList.get(position)));
+
         if (row_index == position) {
             holder.layoutMain.setBackgroundColor(Color.parseColor("#22B1B0"));
             holder.date.setTextColor(Color.parseColor("#ffffff"));
             holder.day.setTextColor(Color.parseColor("#ffffff"));
-        }
-        /*if(CurrentDate==position)
-        {
-            holder.layoutMain.setBackgroundColor(Color.parseColor("#DD4E42"));
-            holder.date.setTextColor(Color.parseColor("#ffffff"));
-            holder.day.setTextColor(Color.parseColor("#ffffff"));
-        }*/
-        else {
+        } else {
             if (CurrentDate == position) {
                 holder.layoutMain.setBackgroundColor(Color.parseColor("#DD4E42"));
                 holder.date.setTextColor(Color.parseColor("#ffffff"));
@@ -116,7 +104,4 @@ public class HorizontalCalenderAdapter extends RecyclerView.Adapter<HorizontalCa
             }
         }
     }
-
-
 }
-

@@ -62,13 +62,15 @@ public class DownloadService extends IntentService {
         StorezipFileLocation = StorezipFileLocation + fileName;
 
         notificationBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.app_logo)
                 .setContentTitle("Download")
                 .setContentText("Downloading " + fileName)
                 .setAutoCancel(true);
-        notificationManager.notify(getID(), notificationBuilder.build());
-        initDownload();
 
+        if (notificationManager != null) {
+            notificationManager.notify(getID(), notificationBuilder.build());
+        }
+        initDownload();
     }
 
     private final static AtomicInteger c = new AtomicInteger(0);
@@ -150,7 +152,10 @@ public class DownloadService extends IntentService {
         sendIntent(download);
         notificationBuilder.setProgress(100, download.getProgress(), false);
         notificationBuilder.setContentText("Downloading file " + download.getCurrentFileSize() + "/" + totalFileSize + " MB");
-        notificationManager.notify(0, notificationBuilder.build());
+
+        if (notificationManager != null) {
+            notificationManager.notify(0, notificationBuilder.build());
+        }
     }
 
     private void sendIntent(Download download) {
@@ -170,19 +175,22 @@ public class DownloadService extends IntentService {
 
             LocalBroadcastManager.getInstance(DownloadService.this).sendBroadcast(intent);
         }
-
     }
 
     private void onDownloadComplete() {
-        Download download = new Download();
-        download.setProgress(100);
-        sendIntent(download);
-        notificationManager.cancel(0);
-        notificationBuilder.setProgress(0, 0, false);
-        notificationBuilder.setContentText(fileName + " downloaded");
-        notificationManager.notify(0, notificationBuilder.build());
-        if (filetype.equalsIgnoreCase("zip"))
-            startUnZipping();
+        if (notificationManager != null) {
+            Download download = new Download();
+            download.setProgress(100);
+            sendIntent(download);
+            notificationManager.cancel(0);
+            notificationBuilder.setProgress(0, 0, false);
+            notificationBuilder.setContentText(fileName + " downloaded");
+            notificationManager.notify(0, notificationBuilder.build());
+
+            if (filetype.equalsIgnoreCase("zip")) {
+                startUnZipping();
+            }
+        }
     }
 
     private void startUnZipping() {
@@ -239,7 +247,8 @@ public class DownloadService extends IntentService {
 
     @Override
     public void onTaskRemoved(Intent rootIntent) {
-        notificationManager.cancel(0);
+        if (notificationManager != null) {
+            notificationManager.cancel(0);
+        }
     }
-
 }

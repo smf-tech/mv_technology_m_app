@@ -107,6 +107,7 @@ public class Constants {
     public static final String EVENT_DESCRIPTION = "Event Description";
     public static final String IMAGE = "Image";
     public static final String TASK_PICK_LIST = "Picklist Reference";
+    public static final String TASK_MV_USER = "MV_User";
 
     public static final String State = "State";
     public static final String DISTRICT = "District";
@@ -241,7 +242,7 @@ public class Constants {
     public static String RoleList = "RoleList";
     public static String Approval = "Approval";
     public static String SendData = "SendData";
-    public static String AccountTeamCode;
+    public static String AccountTeamCode = "";
     public static final String PUSH_NOTIFICATION = "pushNotification";
 
     public static String playStoreLink = "https://play.google.com/store/apps/details?id=com.mv&hl=en";

@@ -36,6 +36,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mv.Adapter.ProcessDetailAdapter;
+import com.mv.Model.Asset;
+import com.mv.Model.ImageData;
 import com.mv.Model.Task;
 import com.mv.Model.TaskContainerModel;
 import com.mv.Model.User;
@@ -55,6 +57,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -70,10 +73,12 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     private PreferenceHelper preferenceHelper;
     private ArrayList<Task> taskList = new ArrayList<>();
+    private ArrayList<ImageData> imageDataList = new ArrayList<>();
     private String pickListApiFieldNames;
     private GPSTracker gps;
     private Activity context;
 
+    private Button submit;
     private ProcessDetailAdapter adapter;
     private RecyclerView rvProcessDetail;
 
@@ -83,9 +88,10 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private String msg;
     private String id = "";
     private String imageId, uniqueId = "";
+    private int imagePosition;
 
     private Uri outputUri = null;
-    private Uri FinalUri = null;
+    private Uri finalUri = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +120,11 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onBackPressed() {
-        showPopUp();
+        if (taskList.get(0).getId() == null || taskList.get(0).getIsSave().equals("true")) {
+            showPopUp();
+        } else {
+            finish();
+        }
     }
 
     private void saveToDB() {
@@ -187,7 +197,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         rvProcessDetail.setAdapter(adapter);
         timestamp = String.valueOf(Calendar.getInstance().getTimeInMillis());
 
-        Button submit = (Button) findViewById(R.id.btn_submit);
+        submit = (Button) findViewById(R.id.btn_submit);
         submit.setOnClickListener(this);
 
         Button save = (Button) findViewById(R.id.btn_save);
@@ -207,8 +217,13 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } else if (preferenceHelper.getString(Constants.PROCESS_TYPE).equals(Constants.MANGEMENT_PROCESS)) {
             approve.setVisibility(View.GONE);
             reject.setVisibility(View.GONE);
-            submit.setVisibility(View.VISIBLE);
-            save.setVisibility(View.VISIBLE);
+            if (taskList.get(0).getId() != null && taskList.get(0).getIsSave().equals("false")) {
+                submit.setVisibility(View.GONE);
+                save.setVisibility(View.GONE);
+            } else {
+                submit.setVisibility(View.VISIBLE);
+                save.setVisibility(View.VISIBLE);
+            }
         }
 
         ImageView img_add = (ImageView) findViewById(R.id.img_add);
@@ -228,8 +243,9 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         img_logout.setOnClickListener(this);
     }
 
-    public void sendToCamera(String imgName) {
+    public void sendToCamera(String imgName, int position) {
         imageName = imgName;
+        imagePosition = position;
 
         if (!Utills.isMediaPermissionGranted(this)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -279,7 +295,11 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
-                showPopUp();
+                if (taskList.get(0).getId() == null || taskList.get(0).getIsSave().equals("true")) {
+                    showPopUp();
+                } else {
+                    finish();
+                }
                 break;
 
             case R.id.btn_submit:
@@ -389,35 +409,66 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 break;
             }
 
-            if (taskList.get(i).getValidationRule() != null &&
-                    taskList.get(i).getValidationRule().equals("Range")) {
-
+            if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Range")) {
                 double val;
-                if (taskList.get(i).getTask_Response__c() == null ||
-                        taskList.get(i).getTask_Response__c().equals("")) {
+                if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
                     mandatoryFlag = true;
-                    msg = "please check " + taskList.get(i).getTask_Text__c();
+                    msg = "please enter " + taskList.get(i).getTask_Text__c();
                     break;
                 } else {
                     try {
                         val = Double.parseDouble(taskList.get(i).getTask_Response__c());
+                        if (Double.parseDouble(taskList.get(i).getMaxRange()) < val) {
+                            mandatoryFlag = true;
+                            msg = "please enter " + taskList.get(i).getTask_Text__c() + " value less than " + taskList.get(i).getMaxRange();
+                            break;
+                        } else if (Double.parseDouble(taskList.get(i).getMinRange()) > val) {
+                            mandatoryFlag = true;
+                            msg = "please enter " + taskList.get(i).getTask_Text__c() + " value grater than " + taskList.get(i).getMaxRange();
+                            break;
+                        }
                     } catch (NumberFormatException nfe) {
                         mandatoryFlag = true;
                         msg = "please check " + taskList.get(i).getTask_Text__c();
                         break;
                     }
                 }
-
-                if (Double.parseDouble(taskList.get(i).getMaxRange()) < val ||
-                        Double.parseDouble(taskList.get(i).getMinRange()) > val) {
+            } else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Limit")) {
+                double val;
+                if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
                     mandatoryFlag = true;
-                    msg = "please check " + taskList.get(i).getTask_Text__c();
+                    msg = "please enter " + taskList.get(i).getTask_Text__c();
                     break;
+                } else {
+                    try {
+                        val = Double.parseDouble(taskList.get(i).getTask_Response__c());
+                        if (Double.parseDouble(taskList.get(i).getLimitValue()) < val) {
+                            mandatoryFlag = true;
+                            msg = "please enter " + taskList.get(i).getTask_Text__c() + " value less than " + taskList.get(i).getMaxRange();
+                            break;
+                        }
+                    } catch (NumberFormatException nfe) {
+                        mandatoryFlag = true;
+                        msg = "please check " + taskList.get(i).getTask_Text__c();
+                        break;
+                    }
+                }
+            } else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Length")) {
+                if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
+                    mandatoryFlag = true;
+                    msg = "please enter " + taskList.get(i).getTask_Text__c();
+                    break;
+                } else {
+                        if (Integer.parseInt(taskList.get(i).getLimitValue()) != taskList.get(i).getTask_Response__c().length()) {
+                            mandatoryFlag = true;
+                            msg = "please enter valid " + taskList.get(i).getTask_Text__c();
+                            break;
+                        }
                 }
             }
 
             if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.IMAGE)) {
-                if (FinalUri != null) {
+                if (finalUri != null) {
                     try {
                         /* */
                         taskList.get(i).setTask_Response__c("true");
@@ -425,22 +476,83 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         e.printStackTrace();
                     }
                 }
-
             }
         }
 
         if (!mandatoryFlag) {
             if (Utills.isConnected(this)) {
-                callApiForSubmit(taskList);
+                boolean hasMVUser= false;
+                for(int i = 0; i < taskList.size(); i++){
+                    if(taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER)){
+                        GetUSerName(taskList.get(i).getTask_Response__c(), i);
+                        hasMVUser=true;
+                        break;
+                    }
+                }
+                if(!hasMVUser){
+                    callApiForSubmit(taskList);
+                }
             } else {
                 Utills.showToast(getString(R.string.error_no_internet), this);
+                submit.setEnabled(true);
             }
         } else {
             Utills.showToast(msg, context);
+            submit.setEnabled(true);
         }
     }
 
+    private void GetUSerName(String number, int position) {
+        Utills.showProgressDialog(this, "Sending", this.getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        String url;
+
+
+        url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetUserThroughMobileNo + "?mobileNo=" + number.trim();
+
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                String data;
+                try {
+                    if (response.body() != null) {
+                        data = response.body().string();
+                        if (data.length() > 0) {
+                            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                            Asset asset = gson.fromJson(data, Asset.class);
+                            String Id = asset.getAsset_id();
+                            String Fname = asset.getName();
+                            String Lname = asset.getLast_Name__c();
+                            if(Lname!=null)
+                                taskList.get(position).setTask_Response__c(Fname + " " + Lname + "(" + Id+ ")");
+                            else {
+                                taskList.get(position).setTask_Response__c(Fname + "(" + Id+ ")");
+                            }
+                            callApiForSubmit(taskList);
+//                            notifyItemChanged(position);
+                        }
+                    } else {
+                        Toast.makeText(ProcessDeatailActivity.this,ProcessDeatailActivity.this.getResources()
+                                .getString(R.string.error_no_user)+" "+taskList.get(position).getTask_Text___Lan_c(),Toast.LENGTH_SHORT).show();
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(ProcessDeatailActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private void callApiForSubmit(ArrayList<Task> temp) {
+        submit.setEnabled(false);
         try {
             Utills.showProgressDialog(context);
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
@@ -461,66 +573,96 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Utills.hideProgressDialog();
                     try {
-                        JSONObject response1 = new JSONObject(response.body().string());
-                        JSONArray resultArray = response1.getJSONArray("Records");
-                        boolean isImagePresent = false;
+                        if (response.isSuccess() && response.body() != null) {
+                            JSONObject response1 = new JSONObject(response.body().string());
+                            JSONArray resultArray = response1.getJSONArray("Records");
 
-                        for (int j = 0; j < resultArray.length(); j++) {
-                            JSONObject object = resultArray.getJSONObject(j);
-                            if (object.has("Task_Type")) {
-                                if (object.getString("Task_Type").equalsIgnoreCase(Constants.IMAGE)) {
-                                    if (object.has("Answer")) {
-                                        if (object.getString("Answer").length() > 0) {
-                                            isImagePresent = true;
-                                            imageId = object.getString("Answer");
-                                            uniqueId = object.getString("Id");
+                            for (int j = 0; j < resultArray.length(); j++) {
+                                JSONObject object = resultArray.getJSONObject(j);
+                                if (object.has("Task_Type")) {
+                                    if (object.getString("Task_Type").equalsIgnoreCase(Constants.IMAGE)) {
+                                        if (object.has("Answer")) {
+                                            if (object.getString("Answer").length() > 0) {
+                                                for (ImageData id : imageDataList) {
+                                                    if (id.getPosition() == j) {
+                                                        imageId = object.getString("Answer");
+                                                        uniqueId = object.getString("Id");
+                                                        id.setImageId(imageId);
+                                                        id.setImageUniqueId(uniqueId);
+                                                    }
+                                                }
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
 
-                        Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                        String json = gson.toJson(taskList);
+                            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                            String json = gson.toJson(taskList);
 
-                        TaskContainerModel taskContainerModel = new TaskContainerModel();
-                        taskContainerModel.setTaskListString(json);
-                        taskContainerModel.setTaskType(Constants.TASK_ANSWER);
-                        taskContainerModel.setUnique_Id(preferenceHelper.getString(Constants.UNIQUE));
-                        taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
-                        taskContainerModel.setMV_Process__c(taskList.get(0).getMV_Process__c());
+                            TaskContainerModel taskContainerModel = new TaskContainerModel();
+                            taskContainerModel.setTaskListString(json);
+                            taskContainerModel.setTaskType(Constants.TASK_ANSWER);
+                            taskContainerModel.setUnique_Id(preferenceHelper.getString(Constants.UNIQUE));
+                            taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
+                            taskContainerModel.setMV_Process__c(taskList.get(0).getMV_Process__c());
 
-                        AppDatabase.getAppDatabase(context).userDao().deleteSingleTask(
-                                preferenceHelper.getString(Constants.UNIQUE), taskContainerModel.getMV_Process__c());
+                            AppDatabase.getAppDatabase(context).userDao().deleteSingleTask(
+                                    preferenceHelper.getString(Constants.UNIQUE), taskContainerModel.getMV_Process__c());
 
-                        if (isImagePresent && FinalUri != null) {
-                            JSONObject object2 = new JSONObject();
-                            object2.put("id", imageId);
-                            object2.put("type", "png");
 
-                            InputStream iStream = getContentResolver().openInputStream(FinalUri);
-                            if (iStream != null) {
-                                object2.put("img", Base64.encodeToString(Utills.getBytes(iStream), 0));
+                            if (imageDataList.size() > 0) {
+                                sendImage(imageDataList.get(0));
+                            } else {
+                                submit.setEnabled(true);
+                                finish();
                             }
-
-                            JSONArray array1 = new JSONArray();
-                            array1.put(object2);
-                            sendImageToServer(array1);
                         } else {
-                            finish();
+                            Utills.hideProgressDialog();
+                            submit.setEnabled(true);
+                            Utills.showToast(getString(R.string.error_something_went_wrong), context);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
+                        submit.setEnabled(true);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
                     Utills.hideProgressDialog();
+                    submit.setEnabled(true);
                     Utills.showToast(getString(R.string.error_something_went_wrong), context);
                 }
             });
         } catch (JSONException e) {
+            e.printStackTrace();
+            submit.setEnabled(true);
+        }
+    }
+
+    private void sendImage(ImageData imgData) {
+        try {
+            JSONObject object2 = new JSONObject();
+            object2.put("id", imgData.getImageId());
+            object2.put("type", "png");
+
+            InputStream iStream = getContentResolver().openInputStream(imgData.getImageUri());
+            if (iStream != null) {
+                object2.put("img", Base64.encodeToString(Utills.getBytes(iStream), 0));
+            }
+
+            JSONArray array1 = new JSONArray();
+            array1.put(object2);
+
+            // Remove uploaded image
+            if (imageDataList.size() > 0) {
+                imageDataList.remove(0);
+            }
+
+            // Upload image to server
+            sendImageToServer(array1);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -540,8 +682,12 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     JSONObject object = new JSONObject(str);
                     if (object.has("status")) {
                         if (object.getString("status").equalsIgnoreCase("1")) {
-                            finish();
-                            overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                            if (!imageDataList.isEmpty()) {
+                                sendImage(imageDataList.get(0));
+                            } else {
+                                finish();
+                                overridePendingTransition(R.anim.left_in, R.anim.right_out);
+                            }
                         }
                     }
                 } catch (Exception e) {
@@ -598,15 +744,21 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             try {
                 String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imageName + ".jpg";
                 File imageFile = new File(imageFilePath);
-                FinalUri = Uri.fromFile(imageFile);
-                Crop.of(outputUri, FinalUri).start(this);
+                finalUri = Uri.fromFile(imageFile);
+                Crop.of(outputUri, finalUri).start(this);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
-            if (FinalUri != null) {
+            if (finalUri != null) {
                 outputUri = null;
             }
+
+            ImageData id = new ImageData();
+            id.setPosition(imagePosition);
+            id.setImageUri(finalUri);
+            imageDataList.add(id);
+
             adapter.notifyDataSetChanged();
         } else if (resultCode == RESULT_OK) {
             taskList = data.getParcelableArrayListExtra(Constants.PROCESS_ID);

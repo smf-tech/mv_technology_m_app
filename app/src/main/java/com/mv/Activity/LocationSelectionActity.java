@@ -14,6 +14,8 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.mv.Model.Task;
+import com.mv.Model.User;
+import com.mv.Model.UserInfo;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
@@ -134,83 +136,141 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
         setSpinnerAdapter(mListVillage, binding.spinnerVillage, selectedVillage);
         setSpinnerAdapter(mListSchoolName, binding.spinnerSchoolName, selectedSchool);
 
-        switch (locationType) {
+        if (locationType!=null && !locationType.isEmpty()) {
+            switch (locationType) {
+                case "State":
+                    locationState = 1;
+                    binding.spinnerDistrict.setVisibility(View.GONE);
+                    binding.tvDistrict.setVisibility(View.GONE);
+
+                    binding.spinnerTaluka.setVisibility(View.GONE);
+                    binding.tvTaluka.setVisibility(View.GONE);
+
+                    binding.spinnerCluster.setVisibility(View.GONE);
+                    binding.tvCluster.setVisibility(View.GONE);
+
+                    binding.spinnerVillage.setVisibility(View.GONE);
+                    binding.tvVillage.setVisibility(View.GONE);
+                    selectedSpinner = binding.spinnerState;
+                    selectedLocation = "State";
+
+                    binding.spinnerSchoolName.setVisibility(View.GONE);
+                    binding.tvSchool.setVisibility(View.GONE);
+                    break;
+
+                case "District":
+                    locationState = 2;
+                    binding.spinnerTaluka.setVisibility(View.GONE);
+                    binding.tvTaluka.setVisibility(View.GONE);
+
+                    binding.spinnerCluster.setVisibility(View.GONE);
+                    binding.tvCluster.setVisibility(View.GONE);
+
+                    binding.spinnerVillage.setVisibility(View.GONE);
+                    binding.tvVillage.setVisibility(View.GONE);
+                    selectedSpinner = binding.spinnerDistrict;
+                    selectedLocation = "District";
+
+                    binding.spinnerSchoolName.setVisibility(View.GONE);
+                    binding.tvSchool.setVisibility(View.GONE);
+                    break;
+
+                case "Taluka":
+                    locationState = 3;
+                    binding.spinnerCluster.setVisibility(View.GONE);
+                    binding.tvCluster.setVisibility(View.GONE);
+
+                    binding.spinnerVillage.setVisibility(View.GONE);
+                    binding.tvVillage.setVisibility(View.GONE);
+
+                    binding.spinnerSchoolName.setVisibility(View.GONE);
+                    binding.tvSchool.setVisibility(View.GONE);
+                    selectedSpinner = binding.spinnerTaluka;
+                    selectedLocation = "Taluka";
+                    break;
+
+                case "Cluster":
+                    locationState = 4;
+                    binding.spinnerVillage.setVisibility(View.GONE);
+                    binding.tvVillage.setVisibility(View.GONE);
+
+                    binding.spinnerSchoolName.setVisibility(View.GONE);
+                    binding.tvSchool.setVisibility(View.GONE);
+                    selectedSpinner = binding.spinnerCluster;
+                    selectedLocation = "Cluster";
+                    break;
+
+                case "Village":
+                    locationState = 5;
+                    binding.spinnerSchoolName.setVisibility(View.GONE);
+                    binding.tvSchool.setVisibility(View.GONE);
+                    selectedSpinner = binding.spinnerVillage;
+                    selectedLocation = "Village";
+                    break;
+
+                case "School":
+                    selectedLocation = "School";
+                    locationState = 6;
+                    selectedSpinner = binding.spinnerSchoolName;
+                    break;
+            }
+        }
+
+        switch (getUserLevel()) {
             case "State":
-                locationState = 1;
-                binding.spinnerDistrict.setVisibility(View.GONE);
-                binding.tvDistrict.setVisibility(View.GONE);
-
-                binding.spinnerTaluka.setVisibility(View.GONE);
-                binding.tvTaluka.setVisibility(View.GONE);
-
-                binding.spinnerCluster.setVisibility(View.GONE);
-                binding.tvCluster.setVisibility(View.GONE);
-
-                binding.spinnerVillage.setVisibility(View.GONE);
-                binding.tvVillage.setVisibility(View.GONE);
-                selectedSpinner = binding.spinnerState;
-                selectedLocation = "State";
-
-                binding.spinnerSchoolName.setVisibility(View.GONE);
-                binding.tvSchool.setVisibility(View.GONE);
                 break;
 
             case "District":
-                locationState = 2;
-                binding.spinnerTaluka.setVisibility(View.GONE);
-                binding.tvTaluka.setVisibility(View.GONE);
-
-                binding.spinnerCluster.setVisibility(View.GONE);
-                binding.tvCluster.setVisibility(View.GONE);
-
-                binding.spinnerVillage.setVisibility(View.GONE);
-                binding.tvVillage.setVisibility(View.GONE);
-                selectedSpinner = binding.spinnerDistrict;
-                selectedLocation = "District";
-
-                binding.spinnerSchoolName.setVisibility(View.GONE);
-                binding.tvSchool.setVisibility(View.GONE);
+                binding.spinnerState.setEnabled(false);
                 break;
 
             case "Taluka":
-                locationState = 3;
-                binding.spinnerCluster.setVisibility(View.GONE);
-                binding.tvCluster.setVisibility(View.GONE);
-
-                binding.spinnerVillage.setVisibility(View.GONE);
-                binding.tvVillage.setVisibility(View.GONE);
-
-                binding.spinnerSchoolName.setVisibility(View.GONE);
-                binding.tvSchool.setVisibility(View.GONE);
-                selectedSpinner = binding.spinnerTaluka;
-                selectedLocation = "Taluka";
+                binding.spinnerState.setEnabled(false);
+                binding.spinnerDistrict.setEnabled(false);
                 break;
 
             case "Cluster":
-                locationState = 4;
-                binding.spinnerVillage.setVisibility(View.GONE);
-                binding.tvVillage.setVisibility(View.GONE);
-
-                binding.spinnerSchoolName.setVisibility(View.GONE);
-                binding.tvSchool.setVisibility(View.GONE);
-                selectedSpinner = binding.spinnerCluster;
-                selectedLocation = "Cluster";
+                binding.spinnerState.setEnabled(false);
+                binding.spinnerDistrict.setEnabled(false);
+                binding.spinnerTaluka.setEnabled(false);
                 break;
 
             case "Village":
-                locationState = 5;
-                binding.spinnerSchoolName.setVisibility(View.GONE);
-                binding.tvSchool.setVisibility(View.GONE);
-                selectedSpinner = binding.spinnerVillage;
-                selectedLocation = "Village";
+                binding.spinnerState.setEnabled(false);
+                binding.spinnerDistrict.setEnabled(false);
+                binding.spinnerTaluka.setEnabled(false);
+                binding.spinnerCluster.setEnabled(false);
                 break;
 
             case "School":
-                selectedLocation = "School";
-                locationState = 6;
-                selectedSpinner = binding.spinnerSchoolName;
+                binding.spinnerState.setEnabled(false);
+                binding.spinnerDistrict.setEnabled(false);
+                binding.spinnerTaluka.setEnabled(false);
+                binding.spinnerCluster.setEnabled(false);
+                binding.spinnerVillage.setEnabled(false);
                 break;
         }
+    }
+
+    private String getUserLevel() {
+        UserInfo mvUser = User.getCurrentUser(getApplicationContext()).getMvUser();
+        /*if (mvUser != null) {
+            if (mvUser.getState().equalsIgnoreCase("Select")) {
+                return "State";
+            } else if (mvUser.getDistrict().equalsIgnoreCase("Select")) {
+                return "District";
+            } else if (mvUser.getTaluka().equalsIgnoreCase("Select")) {
+                return "Taluka";
+            } else if (mvUser.getCluster().equalsIgnoreCase("Select")) {
+                return "Cluster";
+            } else if (mvUser.getVillage().equalsIgnoreCase("Select")) {
+                return "Village";
+            } else if (mvUser.getSchool_Name().equalsIgnoreCase("Select")) {
+                return "School";
+            }
+        }*/
+
+        return "";
     }
 
     private void setActionbar() {
@@ -247,48 +307,69 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
     private void sendLocation() {
         switch (preferenceHelper.getString(Constants.STATE_LOCATION_LEVEL)) {
             case "State":
-                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
                 locationState = 1;
+                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem() != null ?
+                        binding.spinnerState.getSelectedItem().toString() : "");
                 break;
 
             case "District":
                 locationState = 2;
-                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
-                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
+                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem() != null ?
+                        binding.spinnerState.getSelectedItem().toString() : "");
+                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem() != null ?
+                        binding.spinnerDistrict.getSelectedItem().toString() : "");
                 break;
 
             case "Taluka":
                 locationState = 3;
-                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
-                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
-                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem().toString());
+                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem() != null ?
+                        binding.spinnerState.getSelectedItem().toString() : "");
+                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem() != null ?
+                        binding.spinnerDistrict.getSelectedItem().toString() : "");
+                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem() != null ?
+                        binding.spinnerTaluka.getSelectedItem().toString() : "");
                 break;
 
             case "Cluster":
                 locationState = 4;
-                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
-                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
-                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem().toString());
-                taskList.get(3).setTask_Response__c(binding.spinnerCluster.getSelectedItem().toString());
+                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem() != null ?
+                        binding.spinnerState.getSelectedItem().toString() : "");
+                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem() != null ?
+                        binding.spinnerDistrict.getSelectedItem().toString() : "");
+                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem() != null ?
+                        binding.spinnerTaluka.getSelectedItem().toString() : "");
+                taskList.get(3).setTask_Response__c(binding.spinnerCluster.getSelectedItem() != null ?
+                        binding.spinnerCluster.getSelectedItem().toString() : "");
                 break;
 
             case "Village":
                 locationState = 5;
-                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
-                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
-                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem().toString());
-                taskList.get(3).setTask_Response__c(binding.spinnerCluster.getSelectedItem().toString());
-                taskList.get(4).setTask_Response__c(binding.spinnerVillage.getSelectedItem().toString());
+                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem() != null ?
+                        binding.spinnerState.getSelectedItem().toString() : "");
+                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem() != null ?
+                        binding.spinnerDistrict.getSelectedItem().toString() : "");
+                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem() != null ?
+                        binding.spinnerTaluka.getSelectedItem().toString() : "");
+                taskList.get(3).setTask_Response__c(binding.spinnerCluster.getSelectedItem() != null ?
+                        binding.spinnerCluster.getSelectedItem().toString() : "");
+                taskList.get(4).setTask_Response__c(binding.spinnerVillage.getSelectedItem() != null ?
+                        binding.spinnerVillage.getSelectedItem().toString() : "");
                 break;
 
             case "School":
                 locationState = 6;
-                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
-                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem().toString());
-                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem().toString());
-                taskList.get(3).setTask_Response__c(binding.spinnerCluster.getSelectedItem().toString());
-                taskList.get(4).setTask_Response__c(binding.spinnerVillage.getSelectedItem().toString());
-                taskList.get(5).setTask_Response__c(binding.spinnerSchoolName.getSelectedItem().toString());
+                taskList.get(0).setTask_Response__c(binding.spinnerState.getSelectedItem() != null ?
+                        binding.spinnerState.getSelectedItem().toString() : "");
+                taskList.get(1).setTask_Response__c(binding.spinnerDistrict.getSelectedItem() != null ?
+                        binding.spinnerDistrict.getSelectedItem().toString() : "");
+                taskList.get(2).setTask_Response__c(binding.spinnerTaluka.getSelectedItem() != null ?
+                        binding.spinnerTaluka.getSelectedItem().toString() : "");
+                taskList.get(3).setTask_Response__c(binding.spinnerCluster.getSelectedItem() != null ?
+                        binding.spinnerCluster.getSelectedItem().toString() : "");
+                taskList.get(4).setTask_Response__c(binding.spinnerVillage.getSelectedItem() != null ?
+                        binding.spinnerVillage.getSelectedItem().toString() : "");
+                taskList.get(5).setTask_Response__c(binding.spinnerSchoolName.getSelectedItem() != null ?
+                        binding.spinnerSchoolName.getSelectedItem().toString() : "");
                 break;
         }
 
@@ -463,12 +544,12 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                     if (binding.spinnerVillage.isShown()) {
                         mListVillage.clear();
 
-                        String district = mListDistrict.size() > mSelectDistrict ?
-                                mListDistrict.get(mSelectDistrict) : mListDistrict.get(mListDistrict.size() - 1);
-                        String taluka = mListTaluka.size() > mSelectTaluka ?
-                                mListTaluka.get(mSelectTaluka) : mListTaluka.get(mListTaluka.size() - 1);
-                        String cluster = mListCluster.size() > mSelectCluster ?
-                                mListCluster.get(mSelectCluster) : mListCluster.get(mListCluster.size() - 1);
+                        String district = mSelectDistrict > -1 ? (mListDistrict.size() > mSelectDistrict ?
+                                mListDistrict.get(mSelectDistrict) : mListDistrict.get(mListDistrict.size() - 1)) : "";
+                        String taluka = mSelectTaluka > -1 ? (mListTaluka.size() > mSelectTaluka ?
+                                mListTaluka.get(mSelectTaluka) : mListTaluka.get(mListTaluka.size() - 1)) : "";
+                        String cluster = mSelectCluster > -1 ? (mListCluster.size() > mSelectCluster ?
+                                mListCluster.get(mSelectCluster) : mListCluster.get(mListCluster.size() - 1)) : "";
 
                         mListVillage = AppDatabase.getAppDatabase(context).userDao()
                                 .getVillage(selectedState, district, taluka, cluster);

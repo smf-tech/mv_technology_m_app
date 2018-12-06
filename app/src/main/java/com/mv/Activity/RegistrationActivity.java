@@ -828,7 +828,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
             JSONObject jsonObject2 = new JSONObject();
             try {
-                jsonObject2.put("Id", User.getCurrentUser(RegistrationActivity.this).getMvUser().getId());
+                jsonObject2.put("Id",
+                        User.getCurrentUser(RegistrationActivity.this).getMvUser() != null ?
+                                User.getCurrentUser(RegistrationActivity.this).getMvUser().getId() : "");
                 jsonObject2.put("Name", edit_text_name.getText().toString().trim());
                 jsonObject2.put("User_Email__c", edit_text_email.getText().toString().trim());
                 jsonObject2.put("User_Mobile_No__c", edit_text_mobile_number.getText().toString().trim());
@@ -1695,8 +1697,13 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
      * Intent to open gallery
      * */
     private void choosePhotoFromGallery() {
-        Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
+        try {
+            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
+        } catch (ActivityNotFoundException e) {
+            String errorMessage = "Problem in taking photo from gallery, please use camera to take photo.";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

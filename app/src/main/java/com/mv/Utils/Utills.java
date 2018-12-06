@@ -182,31 +182,34 @@ public class Utills {
      * @param cntxt
      */
     public static void showProgressDialog(Context cntxt) {
-        if (pgDialog == null && cntxt != null) {
-            Log.i("Dialog", "Show");
-            pgDialog = new Dialog(cntxt);
-            pgDialog.setContentView(R.layout.custome_progress_dialog);
+        try {
+            if (pgDialog == null && cntxt != null) {
+                Log.i("Dialog", "Show");
+                pgDialog = new Dialog(cntxt);
+                pgDialog.setContentView(R.layout.custome_progress_dialog);
 
-            if (pgDialog.getWindow() != null) {
-                pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                if (pgDialog.getWindow() != null) {
+                    pgDialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+                }
+
+                TextView text = pgDialog.findViewById(R.id.tv_progress);
+                text.setText(cntxt.getString(R.string.progress_please_wait));
+                ImageView proImg = pgDialog.findViewById(R.id.img_progress);
+                proImg.setBackgroundResource(R.drawable.progress_dialog);
+                AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
+                rocketAnimation.start();
+
+                pgDialog.setCancelable(false);
+                if (!pgDialog.isShowing()) {
+                    pgDialog.show();
+                }
+
+                Window window = pgDialog.getWindow();
+                window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
             }
-
-            TextView text = pgDialog.findViewById(R.id.tv_progress);
-            text.setText(cntxt.getString(R.string.progress_please_wait));
-            ImageView proImg = pgDialog.findViewById(R.id.img_progress);
-            proImg.setBackgroundResource(R.drawable.progress_dialog);
-            AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
-            rocketAnimation.start();
-
-            pgDialog.setCancelable(false);
-            if (!pgDialog.isShowing()) {
-                pgDialog.show();
-            }
-
-            Window window = pgDialog.getWindow();
-            window.setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        } catch (Exception e) {
+            Log.e("Show Dialog Ex.", e.getMessage());
         }
-
     }
 
     //get number of days between two dates

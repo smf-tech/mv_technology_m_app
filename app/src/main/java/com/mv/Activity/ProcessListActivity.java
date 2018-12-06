@@ -359,6 +359,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 
