@@ -9,7 +9,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
-import android.widget.ImageView;
 
 public class TouchImageView1 extends AppCompatImageView {
 
@@ -24,7 +23,6 @@ public class TouchImageView1 extends AppCompatImageView {
     // Remember some things for zooming
     private PointF last = new PointF();
     private PointF start = new PointF();
-    private float minScale = 1f;
     private float maxScale = 3f;
     private float[] m;
 
@@ -34,12 +32,9 @@ public class TouchImageView1 extends AppCompatImageView {
     private float saveScale = 1f;
     private float origWidth;
     private float origHeight;
-    private int oldMeasuredWidth;
     private int oldMeasuredHeight;
 
     private ScaleGestureDetector mScaleDetector;
-
-    private Context context;
 
     public TouchImageView1(Context context) {
         super(context);
@@ -53,7 +48,7 @@ public class TouchImageView1 extends AppCompatImageView {
 
     private void sharedConstructing(Context context) {
         super.setClickable(true);
-        this.context = context;
+        Context context1 = context;
         mScaleDetector = new ScaleGestureDetector(context, new ScaleListener());
         matrix = new Matrix();
         m = new float[9];
@@ -121,6 +116,7 @@ public class TouchImageView1 extends AppCompatImageView {
             float mScaleFactor = detector.getScaleFactor();
             float origScale = saveScale;
             saveScale *= mScaleFactor;
+            float minScale = 1f;
             if (saveScale > maxScale) {
                 saveScale = maxScale;
                 mScaleFactor = maxScale / origScale;
@@ -193,7 +189,7 @@ public class TouchImageView1 extends AppCompatImageView {
                 || viewWidth == 0 || viewHeight == 0)
             return;
         oldMeasuredHeight = viewHeight;
-        oldMeasuredWidth = viewWidth;
+        int oldMeasuredWidth = viewWidth;
 
         if (saveScale == 1) {
             // Fit to screen.

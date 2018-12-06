@@ -51,9 +51,6 @@ public class UserInfo {
     @SerializedName("User_Taluka__c")
     @Expose
     private String Taluka = "";
-    @SerializedName("User_Multiple_Taluka__c")
-    @Expose
-    private String MultipleTaluka = "";
     @SerializedName("Birth_Day__c")
     @Expose
     private String Birth_Day__c;
@@ -149,7 +146,8 @@ public class UserInfo {
     private String User_Address__c;
 
     public String getMultipleTaluka() {
-        return MultipleTaluka;
+        String multipleTaluka = "";
+        return multipleTaluka;
     }
 
     public void setMultipleTaluka(String MultipleTaluka) {

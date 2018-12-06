@@ -38,13 +38,12 @@ import java.util.List;
 public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHolder> {
 
     private Context mContext;
-    private Resources resources;
     private ArrayList<DownloadContent> mDataList;
     private TrainingFragment trainingFragment;
 
     public TrainingAdapter(Context context, TrainingFragment fragment, ArrayList<DownloadContent> list) {
         mContext = context;
-        resources = context.getResources();
+        Resources resources = context.getResources();
         mDataList = list;
         trainingFragment = fragment;
     }

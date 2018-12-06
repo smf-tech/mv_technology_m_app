@@ -21,9 +21,7 @@ import java.util.List;
 public class PichartMenuAdapter extends RecyclerView.Adapter<PichartMenuAdapter.MyViewHolder> {
 
     private List<PieEntry> teplateList;
-    private Activity mContext;
 
-    private PreferenceHelper preferenceHelper;
     private List<Integer> colorList;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -42,9 +40,9 @@ public class PichartMenuAdapter extends RecyclerView.Adapter<PichartMenuAdapter.
 
     public PichartMenuAdapter(List<PieEntry> moviesList, List<Integer> colorList, Activity context) {
         this.teplateList = moviesList;
-        this.mContext = context;
+        Activity mContext = context;
         this.colorList = colorList;
-        preferenceHelper = new PreferenceHelper(context);
+        PreferenceHelper preferenceHelper = new PreferenceHelper(context);
     }
 
     @Override

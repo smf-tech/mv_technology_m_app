@@ -36,7 +36,6 @@ import retrofit2.Response;
 
 public class MyJobService extends JobService {
     private PreferenceHelper preferenceHelper;
-    private FusedLocationProviderClient mFusedLocationClient;
     private Location mLastLocation;
 
     @Override
@@ -117,7 +116,7 @@ public class MyJobService extends JobService {
     }
 
     private void getAddress() {
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
+        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
 
         mFusedLocationClient.getLastLocation()
 
@@ -134,7 +133,6 @@ public class MyJobService extends JobService {
                     GetMapParameters(latitude, longitude);
                     if (!Geocoder.isPresent()) {
                         //Toast.makeText(getApplicationContext(),"No geocoder available",Toast.LENGTH_SHORT).show();
-                        return;
                     }
 
                     // If the user pressed the fetch address button before we had the location,

@@ -28,9 +28,7 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
     private String path;
     private int mTrainingSelect;
     private ProgressDialog progress;
-    private ImageView img_back, img_list, img_logout;
-    private TextView toolbar_title;
-    private RelativeLayout mToolBar;
+    private ImageView img_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,13 +60,13 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void setActionbar(String Title) {
-        mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         toolbar_title.setText(Title);
-        img_back = (ImageView) findViewById(R.id.img_back);
+        ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
-        img_logout = (ImageView) findViewById(R.id.img_logout);
+        ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }

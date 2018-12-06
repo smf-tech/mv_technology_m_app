@@ -34,14 +34,13 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
     private List<String> _listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, ArrayList<LeavesModel>> _listDataChild;
-    private LeaveApprovalActivity _activity;
 
     public ExpandableApprovalListAdapter(Activity context, ArrayList<String> listDataHeader,
                                          HashMap<String, ArrayList<LeavesModel>> listChildData, String tabName) {
         this._context = (LeaveApprovalActivity) context;
         this._listDataHeader = listDataHeader;
         this._listDataChild = listChildData;
-        this._activity = (LeaveApprovalActivity) context;
+        LeaveApprovalActivity _activity = (LeaveApprovalActivity) context;
         preferenceHelper = new PreferenceHelper(context);
     }
 
