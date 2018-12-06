@@ -159,28 +159,13 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
     }
 
     private void getAllCommunities(boolean isTimePresent, boolean isDialogShow) {
-        if (isDialogShow)
+        if (isDialogShow) {
             Utills.showProgressDialog(context, "Loading Communities", getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
-        String url = "";
-//        if (isTimePresent)
-//            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-//                    + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(context).getMvUser().getId()
-//                    + "&timestamp=" + communityList.get(0).getTime();
-//        else
-            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(context).getMvUser().getId();
+        }
 
-        /*if (isTimePresent)
-            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/\n" +
-                    "MVGetCommunitiesNew?userId=" + User.getCurrentUser(context).getMvUser().getId()
-                    + "&timestamp=" + communityList.get(0).getTime();
-        else
-            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                    + "/services/apexrest/\n" +
-                    "MVGetCommunitiesNew?userId=" + User.getCurrentUser(context).getMvUser().getId();*/
+        ServiceRequest apiService = ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                    + "/services/apexrest/MV_GetCommunities_c?userId=" + User.getCurrentUser(context).getMvUser().getId();
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -361,14 +346,14 @@ public class GroupsFragment extends AppCompatActivity implements View.OnClickLis
                 }
             } else {
                 preferenceHelper.insertString(PreferenceHelper.COMMUNITYID, communityList.get(position).getId());
-                List<Community> list = new ArrayList<>();
-                list.addAll(communityList);
+                List<Community> list = new ArrayList<>(communityList);
                 list.remove(position);
+
                 Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                 String json = gson.toJson(list);
+
                 Intent intent = new Intent(context, CommunityHomeActivity.class);
                 intent.putExtra(Constants.TITLE, communityList.get(position).getName());
-                //sending new intent to check user can post or not
                 intent.putExtra("CanPost", communityList.get(position).getCanPost());
                 intent.putExtra(Constants.LIST, json);
                 startActivity(intent);

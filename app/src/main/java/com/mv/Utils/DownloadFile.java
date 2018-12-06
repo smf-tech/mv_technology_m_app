@@ -85,8 +85,10 @@ public class DownloadFile {
                         8192);
                 StorezipFileLocation = StorezipFileLocation + fileName;
                 // String file = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/download.zip";
-                if (new File(StorezipFileLocation).exists())
-                    new File(StorezipFileLocation).delete();
+                if (new File(StorezipFileLocation).exists()) {
+                    boolean delete = new File(StorezipFileLocation).delete();
+                    System.out.print("File deleted ->" + delete);
+                }
                 // Output stream
                 OutputStream output = new FileOutputStream(StorezipFileLocation);
 

@@ -4,13 +4,11 @@ package com.mv.Widgets;
 import android.content.Context;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
-import android.widget.EditText;
 
 public class MyEditTextView extends AppCompatEditText {
 
     private Context context;
     private AttributeSet attrs;
-    private int defStyle;
 
     public MyEditTextView(Context context) {
         super(context);
@@ -29,7 +27,6 @@ public class MyEditTextView extends AppCompatEditText {
         super(context, attrs, defStyle);
         this.context = context;
         this.attrs = attrs;
-        this.defStyle = defStyle;
      //   init();
     }
 

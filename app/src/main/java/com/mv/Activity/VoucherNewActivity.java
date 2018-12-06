@@ -1,5 +1,6 @@
 package com.mv.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -89,11 +90,14 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
                 android.R.layout.simple_spinner_item, projectList);
         project_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerProject.setAdapter(project_adapter);
-        if (Utills.isConnected(this))
-            getProject();
-        if (getIntent().getExtras()!=null && getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
-            isAdd = true;
 
+        if (Utills.isConnected(this)) {
+            getProject();
+        }
+
+        if (getIntent().getExtras() != null &&
+                Constants.ACTION_ADD.equalsIgnoreCase(getIntent().getExtras().getString(Constants.ACTION))) {
+            isAdd = true;
         } else {
             isAdd = false;
             mVoucher = (Voucher) getIntent().getSerializableExtra(Constants.VOUCHER);
@@ -117,6 +121,7 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
 
     }
 
+    @SuppressLint("SimpleDateFormat")
     private String getCurrentDate() {
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
         Calendar c = Calendar.getInstance();
@@ -318,6 +323,7 @@ public class VoucherNewActivity extends AppCompatActivity implements View.OnClic
         return true;
     }
 
+    @SuppressLint("SimpleDateFormat")
     private boolean isDatesAreValid(String startDate, String endDate) {
         try {
             DateFormat formatter;

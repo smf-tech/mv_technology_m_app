@@ -1,6 +1,7 @@
 package com.mv.Activity;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -51,10 +52,7 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
     private Spinner spinner_Assetname;
     private TextInputLayout input_quantity, input_tentative_return_date, input_stock;
     private EditText edit_text_stock, edit_text_quantity, edit_text_remarks, edit_text_issue_date, edit_text_tentative_return_date;
-    private ImageView img_back, img_list, img_logout;
-    private TextView toolbar_title;
-    private RelativeLayout mToolBar;
-    private Button btn_send_request;
+    private ImageView img_list;
     private PreferenceHelper preferenceHelper;
     private List<Asset> assetList = new ArrayList<>();
     private ArrayList<String> assetnameList = new ArrayList<>();
@@ -98,31 +96,33 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
         edit_text_stock = (EditText) findViewById(R.id.edit_text_stock);
         input_tentative_return_date = (TextInputLayout) findViewById(R.id.input_tentative_return_date);
         spinner_Assetname = (Spinner) findViewById(R.id.spinner_Assetname);
-        btn_send_request = (Button) findViewById(R.id.btn_send_request);
+        Button btn_send_request = (Button) findViewById(R.id.btn_send_request);
         edit_text_issue_date.setOnClickListener(this);
         edit_text_tentative_return_date.setOnClickListener(this);
         btn_send_request.setOnClickListener(this);
         setActionbar(getResources().getString(R.string.asset_request_screen));
-        if (!getIntent().getExtras().getString(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_ADD)) {
-            isAdd = false;
-            mAsset = (Asset) getIntent().getSerializableExtra(Constants.Asset_management);
-            edit_text_issue_date.setText(mAsset.getExpectedIssueDate());
-            edit_text_remarks.setText(mAsset.getRemark());
-            edit_text_tentative_return_date.setText(mAsset.getTentativeReturnDate());
-//            id = mAsset.getAssetAllocationId();
-        } else {
-            isAdd = true;
+
+        if (getIntent().getExtras() != null) {
+            if (!Constants.ACTION_ADD.equalsIgnoreCase(getIntent().getExtras().getString(Constants.ACTION))) {
+                isAdd = false;
+                mAsset = (Asset) getIntent().getSerializableExtra(Constants.Asset_management);
+                edit_text_issue_date.setText(mAsset.getExpectedIssueDate());
+                edit_text_remarks.setText(mAsset.getRemark());
+                edit_text_tentative_return_date.setText(mAsset.getTentativeReturnDate());
+            } else {
+                isAdd = true;
+            }
         }
     }
 
     private void setActionbar(String Title) {
-        mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         toolbar_title.setText(Title);
-        img_back = (ImageView) findViewById(R.id.img_back);
+        ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
-        img_logout = (ImageView) findViewById(R.id.img_logout);
+        ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
@@ -304,6 +304,7 @@ public class SendAssetRequestActivity extends AppCompatActivity implements View.
         return false;
     }
 
+    @SuppressLint("SimpleDateFormat")
     private boolean isDatesAreValid(String startDate, String endDate) {
         try {
             DateFormat formatter;

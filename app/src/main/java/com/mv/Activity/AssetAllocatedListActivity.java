@@ -46,12 +46,9 @@ import retrofit2.Response;
 
 public class AssetAllocatedListActivity extends AppCompatActivity implements View.OnClickListener {
     private FloatingActionButton fab_send_asset;
-    private ImageView img_back, img_list, img_logout;
-    private TextView toolbar_title;
-    private RelativeLayout mToolBar;
+    private ImageView img_list;
     private RecyclerView recycler_view;
     private PreferenceHelper preferenceHelper;
-    private EditText editTextEmail;
     private List<Asset> assetList = new ArrayList<>();
     private AssetAdapter adapter;
     RecyclerView.LayoutManager mLayoutManager;
@@ -88,7 +85,7 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
 
         preferenceHelper = new PreferenceHelper(this);
 
-        editTextEmail = (EditText) findViewById(R.id.edit_text_email);
+        EditText editTextEmail = (EditText) findViewById(R.id.edit_text_email);
         editTextEmail.addTextChangedListener(watch);
 
         evAsset = (ExpandableListView) findViewById(R.id.ev_asset);
@@ -161,14 +158,14 @@ public class AssetAllocatedListActivity extends AppCompatActivity implements Vie
         if (str.contains("\n")) {
             str = str.replace("\n", " ");
         }
-        mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         recycler_view = (RecyclerView) findViewById(R.id.recycler_view);
-        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         toolbar_title.setText(str);
-        img_back = (ImageView) findViewById(R.id.img_back);
+        ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
-        img_logout = (ImageView) findViewById(R.id.img_logout);
+        ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }

@@ -38,13 +38,12 @@ import java.util.List;
 public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHolder> {
 
     private Context mContext;
-    private Resources resources;
     private ArrayList<DownloadContent> mDataList;
     private TrainingFragment trainingFragment;
 
     public TrainingAdapter(Context context, TrainingFragment fragment, ArrayList<DownloadContent> list) {
         mContext = context;
-        resources = context.getResources();
+        Resources resources = context.getResources();
         mDataList = list;
         trainingFragment = fragment;
     }
@@ -95,7 +94,6 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
                         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + mDataList.get(getAdapterPosition()).getName() + ".mp3";
                         Intent intent = new Intent();
                         intent.setAction(Intent.ACTION_VIEW);
-                        File file = new File("/sdcard/test.mp3");
                         intent.setDataAndType(Uri.fromFile(new File(filePath)), "audio/*");
                         PackageManager packageManager = mContext.getPackageManager();
                         if (intent.resolveActivity(packageManager) != null) {
@@ -197,7 +195,8 @@ public class TrainingAdapter extends RecyclerView.Adapter<TrainingAdapter.ViewHo
             }
         }
 
-        fileOrDirectory.delete();
+        boolean delete = fileOrDirectory.delete();
+        System.out.print("File deleted ->" + delete);
     }
 
     private void showNoFilePresentPopUp() {

@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.mv.Adapter.IndicatortaskAdapter;
+import com.mv.Adapter.IndicatorTaskAdapter;
 import com.mv.Model.DashaBoardListModel;
 import com.mv.R;
 import com.mv.Utils.Constants;
@@ -31,7 +31,7 @@ public class IndicatorTask extends AppCompatActivity implements View.OnClickList
     //private ActivityProgrammeManagmentBinding binding;
     private PreferenceHelper preferenceHelper;
 
-    private IndicatortaskAdapter mAdapter;
+    private IndicatorTaskAdapter mAdapter;
 
 
     @Override
@@ -46,13 +46,13 @@ public class IndicatorTask extends AppCompatActivity implements View.OnClickList
 
     private void initViews() {
 
-        if(getIntent().getExtras().getParcelable(Constants.PROCESS_ID)!=null)
-          dashaBoardListModel = getIntent().getExtras().getParcelable(Constants.PROCESS_ID);
-
+        if (getIntent().getExtras() != null) {
+            dashaBoardListModel = getIntent().getExtras().getParcelable(Constants.PROCESS_ID);
+        }
         preferenceHelper = new PreferenceHelper(this);
         setActionbar(dashaBoardListModel.getName());
         binding.swiperefresh.setOnRefreshListener(this);
-        mAdapter = new IndicatortaskAdapter(dashaBoardListModel, IndicatorTask.this);
+        mAdapter = new IndicatorTaskAdapter(dashaBoardListModel, IndicatorTask.this);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());

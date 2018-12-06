@@ -49,7 +49,6 @@ import retrofit2.Response;
 public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHolder> {
 
     private Context mContext;
-    private Resources resources;
     private List<Voucher> mDataList;
     private VoucherListActivity mActivity;
     private PopupMenu popup;
@@ -57,7 +56,7 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
 
     public VoucherAdapter(Context context, List<Voucher> list) {
         mContext = context;
-        resources = context.getResources();
+        Resources resources = context.getResources();
         mDataList = list;
         mActivity = (VoucherListActivity) context;
         preferenceHelper = new PreferenceHelper(mContext);
@@ -101,12 +100,16 @@ public class VoucherAdapter extends RecyclerView.Adapter<VoucherAdapter.ViewHold
 
             //registering popup with OnMenuItemClickListener
             popup.setOnMenuItemClickListener(item -> {
-                if (item.getItemId()==R.id.edit) {
-                    mActivity.editVoucher(voucher);
-                } else if (item.getItemId()==R.id.delete) {
-                    showLogoutPopUp(position);
-                } else if (item.getItemId()==R.id.send_mail) {
-                    sendEmail(voucher.getId());
+                switch (item.getItemId()) {
+                    case R.id.edit:
+                        mActivity.editVoucher(voucher);
+                        break;
+                    case R.id.delete:
+                        showLogoutPopUp(position);
+                        break;
+                    case R.id.send_mail:
+                        sendEmail(voucher.getId());
+                        break;
                 }
                 return true;
             });

@@ -1,5 +1,6 @@
 package com.mv.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -298,6 +299,7 @@ public class VoucherListActivity extends AppCompatActivity implements View.OnCli
 
     }
 
+    @SuppressLint("SimpleDateFormat")
     private Date ConvertStringToDate(String stringDate){
         Date parsedDate  = null;
         try {

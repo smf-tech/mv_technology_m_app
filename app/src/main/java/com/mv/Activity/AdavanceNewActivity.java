@@ -1,5 +1,6 @@
 package com.mv.Activity;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -154,6 +155,7 @@ public class AdavanceNewActivity extends AppCompatActivity implements View.OnCli
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private String getCurrentDate() {
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
         Calendar c = Calendar.getInstance();

@@ -18,8 +18,6 @@ import java.util.List;
 public class HolldayListAdapter extends RecyclerView.Adapter<HolldayListAdapter.MyViewHolder> {
 
     private List<HolidayListModel> calenderlsList;
-    private Activity mContext;
-    private PreferenceHelper preferenceHelper;
     private int position;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -46,8 +44,7 @@ public class HolldayListAdapter extends RecyclerView.Adapter<HolldayListAdapter.
 
     public HolldayListAdapter(Activity context, List<HolidayListModel> moviesList) {
         this.calenderlsList = moviesList;
-        this.mContext = context;
-        preferenceHelper = new PreferenceHelper(context);
+        PreferenceHelper preferenceHelper = new PreferenceHelper(context);
 
     }
 
@@ -65,17 +62,12 @@ public class HolldayListAdapter extends RecyclerView.Adapter<HolldayListAdapter.
         holder.index.setText("" + (position + 1));
         holder.title.setVisibility(View.VISIBLE);
         holder.delete.setVisibility(View.GONE);
-        calenderlsList.get(position);
         holder.detail.setText(calenderlsList.get(position).getHoliday_Date__c());
         holder.title.setText(calenderlsList.get(position).getName());
-
-
     }
 
     @Override
     public int getItemCount() {
         return calenderlsList.size();
     }
-
-
 }

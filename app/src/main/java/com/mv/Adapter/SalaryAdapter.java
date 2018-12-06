@@ -27,13 +27,12 @@ import java.util.List;
 public class SalaryAdapter extends RecyclerView.Adapter<SalaryAdapter.ViewHolder> {
 
     private Context mContext;
-    private Resources resources;
     private List<Salary> mDataList;
 
 
     public SalaryAdapter(Context context, List<Salary> list) {
         mContext = context;
-        resources = context.getResources();
+        Resources resources = context.getResources();
         mDataList = list;
     }
 
