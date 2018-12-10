@@ -290,7 +290,7 @@
     <string name="loading_process">Loading Process</string>
 
     <string name="asset_username">Name</string>
-    <string name="are_you_really">Are you really want exit</string>
+    <string name="are_you_really">क्या आप वास्तव में बाहर निकलना चाहते हैं</string>
     <string name="attendance">उपस्थिति</string>
     <string name="checkin">Check In</string>
     <string name="checkout">Check Out</string>
@@ -301,7 +301,7 @@
     <string name="birth_date">जन्म तारीख</string>
     <string name="Please_select_birthdate">जन्म तिथि का चयन करें</string>
     <string name="work_location">Work Location</string>
-    <string name="please_refresh_location">Please Refresh Location</string>
+    <string name="please_refresh_location">कृपया स्थान ताज़ा करें</string>
     <string name="asset_request_screen">मालमत्तेची विनंती</string>
     <string name="enter_title">शीर्षक दर्ज करें</string>
     <string name="enter_start_date">प्रारंभ तिथि दर्ज करें</string>
@@ -326,8 +326,8 @@
     <string name="compoff_leave_approoval" >कॉम्प ऑफ अनुरोध सफलतापूर्वक सबमिट किया गया</string>
 
     <string name="select_code">Select Code</string>
-    <string name="alreadyPresent">Mobile Number Already Present</string>
-    <string name="alreadyPresentDetail">Mobile Number is already present. Please check your Mobile Number</string>
+    <string name="alreadyPresent">मोबाइल नंबर पहले से मौजूद है</string>
+    <string name="alreadyPresentDetail">मोबाइल नंबर पहले से मौजूद है। कृपया अपना मोबाइल नंबर देखें</string>
     <string name="text_pdf">PDF</string>
     <string name="all_plans">सभी योजनाएं</string>
     <string name="my_plans">मेरी योजनाएँ</string>
@@ -338,9 +338,12 @@
     <string name="valid_advance">स्वीकृत अग्रिम राशि अनुरोधित अग्रिम राशि से अधिक नहीं होनी चाहिए।</string>
     <string name="title_notification">अधिसूचना</string>
     <string name="asset_status">Status</string>
-    <string name="Please_select_project">Please select Project</string>
+    <string name="Please_select_project">कृपया परियोजना का चयन करें</string>
     <string name="location_not_found">वर्तमान स्थान उपलब्ध नहीं है, कृपया पुनः प्रयास करें</string>
     <string name="title_activity_maps">नक्शा</string>
     <string name="todo">TODO</string>
     <string name="structure">स्टक्चर</string>
+
+    <string name="enter_moblie_no">कृपया मोबाइल नंबर दर्ज करें</string>
+    <string name="error_no_user">कृपया मान्य मोबाईल नंबर पदर्ज करें</string>
 </resources>
