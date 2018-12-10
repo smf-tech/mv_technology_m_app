@@ -446,16 +446,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     }
                 }
             }
-//            if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.IMAGE)) {
-//                if (finalUri != null) {
-//                    try {
-//                        /* */
-//                        taskList.get(i).setTask_Response__c("true");
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
         }
 
         if (!mandatoryFlag) {
@@ -481,7 +471,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
     }
 
-    private void GetUSerName(String number, int position) {
+    public void GetUSerName(String number, int position) {
         Utills.showProgressDialog(this, "Sending", this.getString(R.string.progress_please_wait));
         ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
