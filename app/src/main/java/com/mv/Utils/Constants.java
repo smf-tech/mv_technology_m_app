@@ -108,6 +108,7 @@ public class Constants {
     public static final String IMAGE = "Image";
     public static final String TASK_PICK_LIST = "Picklist Reference";
     public static final String TASK_MV_USER = "MV_User";
+    public static final String TASK_MV_USER_ANSWER= "MV_User_Answer";
 
     public static final String State = "State";
     public static final String DISTRICT = "District";
