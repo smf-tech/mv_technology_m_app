@@ -216,8 +216,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
     }
 
     public void onAddClick() {
-        ArrayList<HolidayListModel> tem = new ArrayList<>();
-        tem.addAll(new ArrayList<>());
+        ArrayList<HolidayListModel> tem = new ArrayList<>(new ArrayList<>());
         Intent intent = new Intent(mContext, LeaveDetailActivity.class);
         intent.putParcelableArrayListExtra(Constants.PROCESS_ID, tem);
         mContext.startActivity(intent);
