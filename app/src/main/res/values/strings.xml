@@ -321,6 +321,5 @@
     <string name="location_not_found">Current location is not available, Please try again</string>
     <string name="title_activity_maps">Map</string>
     <string name="todo">TODO</string>
-    <string name="enter_moblie_no">Enter mobile number</string>
-    <string name="error_no_user">Enter valid</string>
+    <string name="enter_moblie_no">Please enter registered mobile number</string>
 </resources>

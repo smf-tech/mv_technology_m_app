@@ -120,11 +120,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onBackPressed() {
-        if (taskList.get(0).getId() == null || taskList.get(0).getIsSave().equals("true")) {
             showPopUp();
-        } else {
-            finish();
-        }
     }
 
     private void saveToDB() {
@@ -217,13 +213,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } else if (preferenceHelper.getString(Constants.PROCESS_TYPE).equals(Constants.MANGEMENT_PROCESS)) {
             approve.setVisibility(View.GONE);
             reject.setVisibility(View.GONE);
-            if (taskList.get(0).getId() != null && taskList.get(0).getIsSave().equals("false")) {
-                submit.setVisibility(View.GONE);
-                save.setVisibility(View.GONE);
-            } else {
-                submit.setVisibility(View.VISIBLE);
-                save.setVisibility(View.VISIBLE);
-            }
+            submit.setVisibility(View.VISIBLE);
+            save.setVisibility(View.VISIBLE);
         }
 
         ImageView img_add = (ImageView) findViewById(R.id.img_add);
@@ -239,7 +230,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         img_back.setOnClickListener(this);
 
         ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
-        img_logout.setVisibility(View.GONE);
+        img_logout.setVisibility(View.VISIBLE);
         img_logout.setOnClickListener(this);
     }
 
@@ -295,11 +286,14 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
-                if (taskList.get(0).getId() == null || taskList.get(0).getIsSave().equals("true")) {
                     showPopUp();
-                } else {
-                    finish();
-                }
+                break;
+
+            case R.id.img_logout:
+                Intent intent = new Intent(this, CommentActivity.class);
+                intent.putExtra(Constants.ID, taskList.get(0).getId());
+                intent.putExtra("intentFrom","ProcessDeatailActivity");
+                this.startActivity(intent);
                 break;
 
             case R.id.btn_submit:
@@ -433,7 +427,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         break;
                     }
                 }
-            } else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Limit")) {
+            } /*else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Limit")) {
                 double val;
                 if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
                     mandatoryFlag = true;
@@ -444,7 +438,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         val = Double.parseDouble(taskList.get(i).getTask_Response__c());
                         if (Double.parseDouble(taskList.get(i).getLimitValue()) < val) {
                             mandatoryFlag = true;
-                            msg = "please enter " + taskList.get(i).getTask_Text__c() + " value less than " + taskList.get(i).getMaxRange();
+                            msg = "please enter " + taskList.get(i).getTask_Text__c() + " value less than " + taskList.get(i).getLimitValue();
                             break;
                         }
                     } catch (NumberFormatException nfe) {
@@ -453,24 +447,23 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         break;
                     }
                 }
-            } else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Length")) {
+            }*/ else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Length")) {
                 if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
                     mandatoryFlag = true;
                     msg = "please enter " + taskList.get(i).getTask_Text__c();
                     break;
                 } else {
-                        if (Integer.parseInt(taskList.get(i).getLimitValue()) != taskList.get(i).getTask_Response__c().length()) {
-                            mandatoryFlag = true;
-                            msg = "please enter valid " + taskList.get(i).getTask_Text__c();
-                            break;
-                        }
+                    if (Integer.parseInt(taskList.get(i).getLimitValue()) != taskList.get(i).getTask_Response__c().length()) {
+                        mandatoryFlag = true;
+                        msg = "please enter valid " + taskList.get(i).getTask_Text__c();
+                        break;
+                    }
                 }
             }
 
             if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.IMAGE)) {
                 if (finalUri != null) {
                     try {
-                        /* */
                         taskList.get(i).setTask_Response__c("true");
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -502,13 +495,10 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
     }
 
-    private void GetUSerName(String number, int position) {
+    public void GetUSerName(String number, int position) {
         Utills.showProgressDialog(this, "Sending", this.getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url;
-
-
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.GetUserThroughMobileNo + "?mobileNo=" + number.trim();
 
@@ -526,19 +516,22 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                             String Id = asset.getAsset_id();
                             String Fname = asset.getName();
                             String Lname = asset.getLast_Name__c();
-                            if(Lname!=null)
-                                taskList.get(position).setTask_Response__c(Fname + " " + Lname + "(" + Id+ ")");
-                            else {
-                                taskList.get(position).setTask_Response__c(Fname + "(" + Id+ ")");
+                            for(int i=0;i<taskList.size();i++){
+                                if(taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
+                                    if (Lname != null)
+                                        taskList.get(i).setTask_Response__c(Fname + " " + Lname + "(" + Id + ")");
+                                    else {
+                                        taskList.get(i).setTask_Response__c(Fname + "(" + Id + ")");
+                                    }
+                                }
                             }
                             callApiForSubmit(taskList);
 //                            notifyItemChanged(position);
                         }
                     } else {
                         Toast.makeText(ProcessDeatailActivity.this,ProcessDeatailActivity.this.getResources()
-                                .getString(R.string.error_no_user)+" "+taskList.get(position).getTask_Text___Lan_c(),Toast.LENGTH_SHORT).show();
+                                .getString(R.string.enter_moblie_no),Toast.LENGTH_SHORT).show();
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -793,6 +786,10 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         Utills.hideProgressDialog();
                         try {
                             Utills.setIsActionDone(true);
+                        // call for another api which will save rejection comment in commentList.
+                            if(processStatus.equals("Rejected")){
+                                sendComment();
+                            }
                             Utills.showToast(getString(R.string.submitted_successfully), ProcessDeatailActivity.this);
                             finish();
                         } catch (Exception e) {
@@ -815,6 +812,59 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } else {
             Utills.showToast(getString(R.string.error_no_internet), ProcessDeatailActivity.this);
         }
+    }
+
+    private void sendComment() {
+        if (Utills.isConnected(this)) {
+            try {
+
+                Utills.showProgressDialog(this);
+                JSONObject jsonObject = new JSONObject();
+                JSONArray jsonArray = new JSONArray();
+                JSONObject jsonObject1 = new JSONObject();
+
+                jsonObject1.put("Comment__c", comment);
+                jsonObject1.put("MV_User__c", User.getCurrentUser(this).getMvUser().getId());
+                jsonObject1.put("ProcessAnswer__c", taskList.get(0).getId());
+
+                jsonArray.put(jsonObject1);
+                jsonObject.put("listOfComments", jsonArray);
+
+                String   url = preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertProcessAnswerComments";
+
+                ServiceRequest apiService =
+                        ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+                JsonParser jsonParser = new JsonParser();
+                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
+                apiService.sendDataToSalesforce(url, gsonObject).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Utills.hideProgressDialog();
+                        try {
+                            Utills.showToast(getString(R.string.comment_add), getApplicationContext());
+                            Utills.hideSoftKeyboard(ProcessDeatailActivity.this);
+                        } catch (Exception e) {
+                            Utills.hideProgressDialog();
+                            Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Utills.hideProgressDialog();
+                        Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Utills.hideProgressDialog();
+                Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+
+            }
+        } else {
+            Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
+        }
+
     }
 
     @Override

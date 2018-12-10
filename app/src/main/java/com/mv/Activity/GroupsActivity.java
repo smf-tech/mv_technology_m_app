@@ -222,13 +222,13 @@ public class GroupsActivity extends AppCompatActivity implements View.OnClickLis
 
     public void onLayoutGroupClick(int position) {
         preferenceHelper.insertString(PreferenceHelper.COMMUNITYID, communityList.get(position).getId());
-        List<Community> list = new ArrayList<>();
-        list.addAll(communityList);
+        List<Community> list = new ArrayList<>(communityList);
         list.remove(position);
+
         Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
         String json = gson.toJson(list);
-        Intent intent;
-        intent = new Intent(this, CommunityHomeActivity.class);
+
+        Intent intent = new Intent(this, CommunityHomeActivity.class);
         intent.putExtra(Constants.TITLE, communityList.get(position).getName());
         intent.putExtra(Constants.LIST, json);
         startActivity(intent);

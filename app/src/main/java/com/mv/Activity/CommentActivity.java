@@ -50,6 +50,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     private ArrayList<Comment> commentList = new ArrayList<>();
     private CommentAdapter adapter;
     private String conetentId;
+    private String intentActivity = "";
     private PreferenceHelper preferenceHelper;
     private TextView textNoData;
     public String HoSupportCommunity = "";
@@ -99,6 +100,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         binding.imgSend.setOnClickListener(this);
         if(getIntent().getExtras()!=null) {
             conetentId = getIntent().getExtras().getString(Constants.ID);
+            intentActivity = getIntent().getExtras().getString("intentFrom");
         }
 
         if (Utills.isConnected(this)) {
@@ -113,8 +115,14 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
             Utills.showProgressDialog(this, getString(R.string.loading_comment), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getComments?contentId=" + conetentId + "&userId=" + User.getCurrentUser(this).getMvUser().getId();
+        String url ="";
+        if(intentActivity.equals("ProcessDeatailActivity")){
+            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                    + "/services/apexrest/getProcessAnswerComments?ProcessAnswerId=" + conetentId;
+        }else{
+            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                    + "/services/apexrest/getComments?contentId=" + conetentId + "&userId=" + User.getCurrentUser(this).getMvUser().getId();
+        }
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -223,10 +231,18 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
 
                 if(commentId!=null)
                     jsonObject1.put("Id", commentId);
-                jsonObject1.put("MV_Content__c", conetentId);
+
                 jsonObject1.put("Comment__c", binding.edtComment.getText().toString().trim());
                 jsonObject1.put("MV_User__c", User.getCurrentUser(this).getMvUser().getId());
 
+                String url ="";
+                if(intentActivity.equals("ProcessDeatailActivity")){
+                    url = preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertProcessAnswerComments";
+                    jsonObject1.put("ProcessAnswer__c", conetentId);
+                }else{
+                    url = preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertComments";
+                    jsonObject1.put("MV_Content__c", conetentId);
+                }
                 jsonArray.put(jsonObject1);
                 jsonObject.put("listOfComments", jsonArray);
 
@@ -234,11 +250,12 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                         ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
                 JsonParser jsonParser = new JsonParser();
                 JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
-                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertComments", gsonObject).enqueue(new Callback<ResponseBody>() {
+                apiService.sendDataToSalesforce(url, gsonObject).enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Utills.hideProgressDialog();
                         try {
+                           // JSONArray jsonArray = new JSONArray(response.body().string());
                             if (Utills.isConnected(CommentActivity.this)) {
                                 getComments(true);
                             }
@@ -292,11 +309,17 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
 //
 //                    jsonObject1.put("commentId", id);
 
+            String url ="";
+            if(intentActivity.equals("ProcessDeatailActivity")){
+                url = preferenceHelper.getString(PreferenceHelper.InstanceUrl) +"/services/apexrest/DeleteProcessAnswerComment/"+id;
+            }else{
+                url = preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/WS_DeleteComments?commentId="+id;
+            }
             ServiceRequest apiService =
                     ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
             JsonParser jsonParser = new JsonParser();
 //                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject1.toString());
-            apiService.getSalesForceData(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/WS_DeleteComments?commentId="+id).enqueue(new Callback<ResponseBody>() {
+            apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
                 @Override
                 public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                     Utills.hideProgressDialog();

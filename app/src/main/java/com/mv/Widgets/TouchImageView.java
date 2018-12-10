@@ -403,7 +403,9 @@ public class TouchImageView extends AppCompatImageView {
 
     private void setZoom(TouchImageView img) {
         PointF center = img.getScrollPosition();
-        setZoom(img.getCurrentZoom(), center.x, center.y, img.getScaleType());
+        if (center != null) {
+            setZoom(img.getCurrentZoom(), center.x, center.y, img.getScaleType());
+        }
     }
 
     /**
@@ -510,6 +512,7 @@ public class TouchImageView extends AppCompatImageView {
         return matchViewHeight * normalizedScale;
     }
 
+    @SuppressWarnings("SuspiciousNameCombination")
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         Drawable drawable = getDrawable();
@@ -729,14 +732,8 @@ public class TouchImageView extends AppCompatImageView {
         matrix.getValues(m);
         float x = m[Matrix.MTRANS_X];
 
-        if (getImageWidth() < viewWidth) {
-            return false;
-
-        } else if (x >= -1 && direction < 0) {
-            return false;
-
-        } else return !(Math.abs(x) + viewWidth + 1 >= getImageWidth()) || direction <= 0;
-
+        return !(getImageWidth() < viewWidth) && (!(x >= -1) || direction >= 0) && (!(Math.abs(x)
+                + viewWidth + 1 >= getImageWidth()) || direction <= 0);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.mv.Activity;
 
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -28,9 +29,7 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
     private String path;
     private int mTrainingSelect;
     private ProgressDialog progress;
-    private ImageView img_back, img_list, img_logout;
-    private TextView toolbar_title;
-    private RelativeLayout mToolBar;
+    private ImageView img_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,17 +61,18 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void setActionbar(String Title) {
-        mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         toolbar_title.setText(Title);
-        img_back = (ImageView) findViewById(R.id.img_back);
+        ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
-        img_logout = (ImageView) findViewById(R.id.img_logout);
+        ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void init() {
         if(getIntent().getExtras()!=null) {
             setActionbar(getIntent().getExtras().getString(Constants.TITLE));
@@ -119,6 +119,7 @@ public class WebViewActivity extends AppCompatActivity implements View.OnClickLi
         return super.onKeyDown(keyCode, event);
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void startWebView(String url) {
 
         webView.setWebChromeClient(new WebChromeClient());

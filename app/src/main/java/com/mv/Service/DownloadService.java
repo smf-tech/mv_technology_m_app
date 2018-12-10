@@ -111,8 +111,10 @@ public class DownloadService extends IntentService {
             InputStream bis = new BufferedInputStream(body.byteStream(), 1024 * 8);
             File outputFile = new File(StorezipFileLocation);
             Log.i("outputFile", outputFile.getAbsolutePath());
-            if (outputFile.exists())
-                outputFile.delete();
+            if (outputFile.exists()) {
+                boolean delete = outputFile.delete();
+                System.out.print("File deleted ->" + delete);
+            }
             OutputStream output = new FileOutputStream(outputFile);
             long total = 0;
             long startTime = System.currentTimeMillis();

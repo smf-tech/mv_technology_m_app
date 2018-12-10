@@ -219,18 +219,12 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
 
     /*getTheatSawandContent api is called here.*/
     private void getAllChats(boolean isTimePresent, boolean isDialogShow, boolean isPrevious) {
-        if (isDialogShow)
+        if (isDialogShow) {
             Utills.showProgressDialog(ThetSavandFragment.this, "Loading Chats", getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
-        String url = "";
-//        if (isTimePresent)
-//            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-//                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId()
-//                    + "&timestamp=" + AppDatabase.getAppDatabase(context).userDao().getThetSavandChats().get(0).getTime();
-//        else
-//            url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-//                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId();
+        }
+
+        String url;
+        ServiceRequest apiService = ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
 
         //pagination functionality code
         if (isTimePresent &&  AppDatabase.getAppDatabase(context).userDao().getThetSavandChats().size() > 0) {

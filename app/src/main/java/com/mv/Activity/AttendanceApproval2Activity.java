@@ -42,11 +42,9 @@ public class AttendanceApproval2Activity extends AppCompatActivity implements Vi
     private AttendanceAdapter adapter;
     private List<AttendanceApproval> attendanceList = new ArrayList<>();
     private List<AttendanceApproval> attendanceSortedList = new ArrayList<>();
-    private TextView textNoData;
     private PreferenceHelper preferenceHelper;
     private LinearLayout sortLayout;
     private String proceesId;
-    private EditText edittextsort;
     private Activity mContext;
     private RecyclerView recyclerView;
     private Button btn_pending;
@@ -65,12 +63,12 @@ public class AttendanceApproval2Activity extends AppCompatActivity implements Vi
         preferenceHelper = new PreferenceHelper(this);
         preferenceHelper.insertString(Constants.PROCESS_ID, proceesId);
         preferenceHelper.insertString(Constants.PROCESS_TYPE, Constants.MANGEMENT_PROCESS);
-        textNoData = (TextView) findViewById(R.id.textNoData);
+        TextView textNoData = (TextView) findViewById(R.id.textNoData);
         setActionbar( getString(R.string.attendance_approoval));
         recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
-        edittextsort = (EditText)findViewById(R.id.edit_text_email);
+        EditText edittextsort = (EditText) findViewById(R.id.edit_text_email);
         sortLayout = (LinearLayout)findViewById(R.id.sort_layout);
         edittextsort.addTextChangedListener(watch);
         btn_pending = (Button) findViewById(R.id.btn_pending);

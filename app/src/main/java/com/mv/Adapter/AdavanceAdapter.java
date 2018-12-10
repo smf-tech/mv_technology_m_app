@@ -27,14 +27,13 @@ import java.util.List;
 public class AdavanceAdapter extends RecyclerView.Adapter<AdavanceAdapter.ViewHolder> {
 
     private Context mContext;
-    private Resources resources;
     private List<Adavance> mDataList;
     private AdavanceListActivity mActivity;
     private UserAdavanceListActivity userAdavanceListActivity;
 
     public AdavanceAdapter(Context context, List<Adavance> list) {
         mContext = context;
-        resources = context.getResources();
+        Resources resources = context.getResources();
         mDataList = list;
         if (context instanceof AdavanceListActivity)
             mActivity = (AdavanceListActivity) context;
