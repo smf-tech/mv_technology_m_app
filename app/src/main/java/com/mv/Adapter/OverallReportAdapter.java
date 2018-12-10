@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.mv.Model.OverAllModel;
 import com.mv.R;
-import com.mv.Utils.PreferenceHelper;
 
 import java.util.List;
 
@@ -23,9 +22,6 @@ import java.util.List;
 public class OverallReportAdapter extends RecyclerView.Adapter<OverallReportAdapter.MyViewHolder> {
 
     private List<OverAllModel> teplateList;
-    private Activity mContext;
-
-    private PreferenceHelper preferenceHelper;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView txtCommunityName,txt_targeted_date,txt_targeted_count;
@@ -83,8 +79,6 @@ public class OverallReportAdapter extends RecyclerView.Adapter<OverallReportAdap
 
     public OverallReportAdapter(List<OverAllModel> moviesList, Activity context) {
         this.teplateList = moviesList;
-        this.mContext = context;
-        preferenceHelper = new PreferenceHelper(context);
     }
 
     @Override

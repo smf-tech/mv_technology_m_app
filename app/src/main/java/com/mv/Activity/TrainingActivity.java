@@ -19,9 +19,6 @@ import com.mv.R;
 
 public class TrainingActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ImageView img_back, img_list;
-    private TextView toolbar_title;
-    private RelativeLayout mToolBar;
     private RecyclerView recyclerView;
     private TrainingAdapter adapter;
 
@@ -57,13 +54,13 @@ public class TrainingActivity extends AppCompatActivity implements View.OnClickL
      * @param Title
      */
     private void setActionbar(String Title) {
-        mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         toolbar_title.setText(Title);
-        img_back = (ImageView) findViewById(R.id.img_back);
+        ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
-        img_list = (ImageView) findViewById(R.id.img_list);
+        ImageView img_list = (ImageView) findViewById(R.id.img_list);
         img_list.setVisibility(View.INVISIBLE);
         img_list.setOnClickListener(this);
     }

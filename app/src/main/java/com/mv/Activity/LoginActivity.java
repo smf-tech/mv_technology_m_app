@@ -222,15 +222,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             .putBoolean("firstrun", false).apply();
 
                     ListView lw = ((AlertDialog) dialog).getListView();
-                    if (lw.getCheckedItemPosition() == 0) {
-                        LocaleManager.setNewLocale(getApplicationContext(), Constants.LANGUAGE_ENGLISH);
-                        preferenceHelper.insertString(Constants.LANGUAGE, Constants.LANGUAGE_ENGLISH);
-                    } else if (lw.getCheckedItemPosition() == 1) {
-                        LocaleManager.setNewLocale(getApplicationContext(), Constants.LANGUAGE_MARATHI);
-                        preferenceHelper.insertString(Constants.LANGUAGE, Constants.LANGUAGE_MARATHI);
-                    } else {
-                        LocaleManager.setNewLocale(getApplicationContext(), Constants.LANGUAGE_HINDI);
-                        preferenceHelper.insertString(Constants.LANGUAGE, Constants.LANGUAGE_HINDI);
+                    switch (lw.getCheckedItemPosition()) {
+                        case 0:
+                            LocaleManager.setNewLocale(getApplicationContext(), Constants.LANGUAGE_ENGLISH);
+                            preferenceHelper.insertString(Constants.LANGUAGE, Constants.LANGUAGE_ENGLISH);
+                            break;
+
+                        case 1:
+                            LocaleManager.setNewLocale(getApplicationContext(), Constants.LANGUAGE_MARATHI);
+                            preferenceHelper.insertString(Constants.LANGUAGE, Constants.LANGUAGE_MARATHI);
+                            break;
+
+                        default:
+                            LocaleManager.setNewLocale(getApplicationContext(), Constants.LANGUAGE_HINDI);
+                            preferenceHelper.insertString(Constants.LANGUAGE, Constants.LANGUAGE_HINDI);
+                            break;
                     }
 
                     dialog.dismiss();

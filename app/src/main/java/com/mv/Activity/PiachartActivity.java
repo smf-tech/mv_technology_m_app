@@ -118,12 +118,11 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         selectedRoleList = new ArrayList<>(Arrays.asList(getColumnIdex((roleList).split(";"))));
 
 
-        if(getIntent().getExtras()!=null) {
+        if (getIntent().getExtras() != null) {
             title = getIntent().getExtras().getString(Constants.TITLE);
+            locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
         }
-//        dateFrom = getIntent().getExtras().getString("DateFrom");
-//        dateTo = getIntent().getExtras().getString("DateTo");
-        locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
+
         if (locationModel == null) {
             locationModel = new LocationModel();
             locationModel.setState(User.getCurrentUser(getApplicationContext()).getMvUser().getState());
@@ -767,7 +766,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
-    private void screenShot(View view) {
+    public void screenShot(View view) {
         mbitmap = getBitmapOFRootView(view);
         createImage(mbitmap);
     }
@@ -784,7 +783,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         file = new File(Environment.getExternalStorageDirectory() +
                 "/capturedscreenandroid.jpg");
         try {
-            file.createNewFile();
+            boolean newFile = file.createNewFile();
+            System.out.print("New file created ->" + newFile);
             FileOutputStream outputStream = new FileOutputStream(file);
             outputStream.write(bytes.toByteArray());
             outputStream.close();
@@ -862,26 +862,20 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                     JSONObject jsonObject1 = new JSONObject(json);
 
                     JSONArray jsonArrayAttchment = new JSONArray();
-                    if (Uri.fromFile(file) != null) {
 
+                    if (Uri.fromFile(file) != null) {
                         try {
                             jsonObject1.put("isAttachmentPresent", "true");
                             jsonObject1.put("isAttachmentPresent", "true");
                             InputStream iStream = getContentResolver().openInputStream(Uri.fromFile(file));
-                            img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
-                      /*  JSONObject jsonObjectAttachment = new JSONObject();
-                        jsonObjectAttachment.put("Body", img_str);
-                        jsonObjectAttachment.put("Name", content.getTitle());
-                        jsonObjectAttachment.put("ContentType", "image/png");
-                        jsonArrayAttchment.put(jsonObjectAttachment);*/
+                            if (iStream != null) {
+                                img_str = Base64.encodeToString(Utills.getBytes(iStream), 0);
+                            }
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
-                /*JSONObject jsonObjectAttachment = new JSONObject();
-                jsonArrayAttchment.put(jsonObjectAttachment);*/
                     jsonObject1.put("attachments", jsonArrayAttchment);
-
                     jsonArray.put(jsonObject1);
                 }
                 jsonObject.put("listVisitsData", jsonArray);

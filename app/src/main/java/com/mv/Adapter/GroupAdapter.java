@@ -20,7 +20,6 @@ import java.util.List;
 public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.MyViewHolder> {
 
     private List<Community> communitiesList;
-    private Context mContext;
     private GroupsFragment fragment;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -42,7 +41,6 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.MyViewHolder
 
     public GroupAdapter(List<Community> moviesList, Context context, GroupsFragment fragment) {
         this.communitiesList = moviesList;
-        this.mContext = context;
         this.fragment = fragment;
     }
 

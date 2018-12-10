@@ -42,21 +42,7 @@ public class AssetApprovalActivity extends AppCompatActivity implements View.OnC
     private Asset asset;
     private PreferenceHelper preferenceHelper;
     private AssetApprovalActivity _context;
-    private EditText edit_text_name;
-    private EditText edit_text_assetname;
-    private EditText edit_text_modelno;
-    private EditText edit_text_issue_date;
-    private EditText edit_text_specification;
-    private EditText edit_text_code;
-    private EditText edit_asset_status;
-    private EditText asset_reject_remark;
-    private Button accept;
-    private Button reject;
-    private ImageView img_back, img_list, img_logout;
-    private TextView toolbar_title;
-    private RelativeLayout mToolBar,rel_Asset_Name;
-    private TextInputLayout input_specification,asset_reject_ly;
-    private Spinner spinner_assetstaus;
+    private ImageView img_list;
     private String asset_status;
     private List<String> asset_statuslist = new ArrayList<>();
 
@@ -74,24 +60,24 @@ public class AssetApprovalActivity extends AppCompatActivity implements View.OnC
 
     private void InitViews() {
         setActionbar(getString(R.string.asset_approval));
-        if(getIntent().getExtras().getSerializable("Assets")!=null){
+        if (getIntent().getExtras() != null) {
             asset = (Asset) getIntent().getExtras().getSerializable("Assets");
         }
 
         asset_statuslist = Arrays.asList(getResources().getStringArray(R.array.array_of_asset_status));
 
-        edit_text_name = (EditText) findViewById(R.id.edit_text_name);
-        edit_text_assetname = (EditText) findViewById(R.id.edit_text_assetname);
-        edit_text_modelno = (EditText) findViewById(R.id.edit_text_modelno);
-        edit_text_issue_date = (EditText) findViewById(R.id.edit_text_issue_date);
-        input_specification = (TextInputLayout) findViewById(R.id.input_specification);
-        edit_text_specification = (EditText) findViewById(R.id.edit_text_specification);
-        edit_text_code = (EditText) findViewById(R.id.edit_text_code);
-        edit_asset_status = (EditText) findViewById(R.id.edit_asset_status);
-        rel_Asset_Name = (RelativeLayout) findViewById(R.id.rel_AssetName);
-        spinner_assetstaus = (Spinner) findViewById(R.id.spinner_assetstaus);
-        reject = (Button) findViewById(R.id.reject);
-        accept = (Button) findViewById(R.id.accept);
+        EditText edit_text_name = (EditText) findViewById(R.id.edit_text_name);
+        EditText edit_text_assetname = (EditText) findViewById(R.id.edit_text_assetname);
+        EditText edit_text_modelno = (EditText) findViewById(R.id.edit_text_modelno);
+        EditText edit_text_issue_date = (EditText) findViewById(R.id.edit_text_issue_date);
+        TextInputLayout input_specification = (TextInputLayout) findViewById(R.id.input_specification);
+        EditText edit_text_specification = (EditText) findViewById(R.id.edit_text_specification);
+        EditText edit_text_code = (EditText) findViewById(R.id.edit_text_code);
+        EditText edit_asset_status = (EditText) findViewById(R.id.edit_asset_status);
+        RelativeLayout rel_Asset_Name = (RelativeLayout) findViewById(R.id.rel_AssetName);
+        Spinner spinner_assetstaus = (Spinner) findViewById(R.id.spinner_assetstaus);
+        Button reject = (Button) findViewById(R.id.reject);
+        Button accept = (Button) findViewById(R.id.accept);
         accept.setOnClickListener(this);
         reject.setOnClickListener(this);
         edit_asset_status.setText(asset.getAllocationStatus());
@@ -103,8 +89,8 @@ public class AssetApprovalActivity extends AppCompatActivity implements View.OnC
         edit_text_code.setText(asset.getCode());
 
         if(asset.getAllocationStatus().equalsIgnoreCase("Rejected")) {
-            asset_reject_ly = (TextInputLayout) findViewById(R.id.asset_reject_ly);
-            asset_reject_remark = (EditText) findViewById(R.id.asset_reject_remark);
+            TextInputLayout asset_reject_ly = (TextInputLayout) findViewById(R.id.asset_reject_ly);
+            EditText asset_reject_remark = (EditText) findViewById(R.id.asset_reject_remark);
             asset_reject_ly.setVisibility(View.VISIBLE);
             asset_reject_remark.setText(asset.getRemark());
         }
@@ -131,13 +117,13 @@ public class AssetApprovalActivity extends AppCompatActivity implements View.OnC
     }
 
     private void setActionbar(String Title) {
-        mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         toolbar_title.setText(Title);
-        img_back = (ImageView) findViewById(R.id.img_back);
+        ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
-        img_logout = (ImageView) findViewById(R.id.img_logout);
+        ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }

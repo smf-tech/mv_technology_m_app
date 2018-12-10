@@ -215,13 +215,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             reject.setVisibility(View.GONE);
             submit.setVisibility(View.VISIBLE);
             save.setVisibility(View.VISIBLE);
-//            if (taskList.get(0).getId() != null && taskList.get(0).getIsSave().equals("false")) {
-//                submit.setVisibility(View.GONE);
-//                save.setVisibility(View.GONE);
-//            } else {
-//                submit.setVisibility(View.VISIBLE);
-//                save.setVisibility(View.VISIBLE);
-//            }
         }
 
         ImageView img_add = (ImageView) findViewById(R.id.img_add);
@@ -434,7 +427,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         break;
                     }
                 }
-            } else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Limit")) {
+            } /*else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Limit")) {
                 double val;
                 if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
                     mandatoryFlag = true;
@@ -445,7 +438,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         val = Double.parseDouble(taskList.get(i).getTask_Response__c());
                         if (Double.parseDouble(taskList.get(i).getLimitValue()) < val) {
                             mandatoryFlag = true;
-                            msg = "please enter " + taskList.get(i).getTask_Text__c() + " value less than " + taskList.get(i).getMaxRange();
+                            msg = "please enter " + taskList.get(i).getTask_Text__c() + " value less than " + taskList.get(i).getLimitValue();
                             break;
                         }
                     } catch (NumberFormatException nfe) {
@@ -454,24 +447,23 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         break;
                     }
                 }
-            } else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Length")) {
+            }*/ else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Length")) {
                 if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
                     mandatoryFlag = true;
                     msg = "please enter " + taskList.get(i).getTask_Text__c();
                     break;
                 } else {
-                        if (Integer.parseInt(taskList.get(i).getLimitValue()) != taskList.get(i).getTask_Response__c().length()) {
-                            mandatoryFlag = true;
-                            msg = "please enter valid " + taskList.get(i).getTask_Text__c();
-                            break;
-                        }
+                    if (Integer.parseInt(taskList.get(i).getLimitValue()) != taskList.get(i).getTask_Response__c().length()) {
+                        mandatoryFlag = true;
+                        msg = "please enter valid " + taskList.get(i).getTask_Text__c();
+                        break;
+                    }
                 }
             }
 
             if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.IMAGE)) {
                 if (finalUri != null) {
                     try {
-                        /* */
                         taskList.get(i).setTask_Response__c("true");
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -503,13 +495,10 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
     }
 
-    private void GetUSerName(String number, int position) {
+    public void GetUSerName(String number, int position) {
         Utills.showProgressDialog(this, "Sending", this.getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url;
-
-
         url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.GetUserThroughMobileNo + "?mobileNo=" + number.trim();
 
@@ -527,19 +516,22 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                             String Id = asset.getAsset_id();
                             String Fname = asset.getName();
                             String Lname = asset.getLast_Name__c();
-                            if(Lname!=null)
-                                taskList.get(position).setTask_Response__c(Fname + " " + Lname + "(" + Id+ ")");
-                            else {
-                                taskList.get(position).setTask_Response__c(Fname + "(" + Id+ ")");
+                            for(int i=0;i<taskList.size();i++){
+                                if(taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
+                                    if (Lname != null)
+                                        taskList.get(i).setTask_Response__c(Fname + " " + Lname + "(" + Id + ")");
+                                    else {
+                                        taskList.get(i).setTask_Response__c(Fname + "(" + Id + ")");
+                                    }
+                                }
                             }
                             callApiForSubmit(taskList);
 //                            notifyItemChanged(position);
                         }
                     } else {
                         Toast.makeText(ProcessDeatailActivity.this,ProcessDeatailActivity.this.getResources()
-                                .getString(R.string.error_no_user)+" "+taskList.get(position).getTask_Text___Lan_c(),Toast.LENGTH_SHORT).show();
+                                .getString(R.string.enter_moblie_no),Toast.LENGTH_SHORT).show();
                     }
-
                 } catch (IOException e) {
                     e.printStackTrace();
                 }

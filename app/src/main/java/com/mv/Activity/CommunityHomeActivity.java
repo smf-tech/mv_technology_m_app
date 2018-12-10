@@ -607,25 +607,31 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
 
             //registering popup with OnMenuItemClickListener
             popup.setOnMenuItemClickListener(item -> {
-                if (item.getItemId() == R.id.mn_filter) {
-                    if (title != null && title.equalsIgnoreCase("HO Support")) {
-                        HoSupportFilter();
-                    } else {
-                        OtherFilter();
-                    }
-                } else if (item.getItemId() == R.id.mn_mumbers) {
-                    Intent intent = new Intent(getApplicationContext(), CommunityMemberNameActivity.class);
-                    startActivity(intent);
-                } else if (item.getItemId() == R.id.mn_mute) {
-                    if (community.getMuteNotification() == null || community.getMuteNotification().equals("Mute")) {
-                        community.setMuteNotification("Unmute");
-                        AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().updateCommunityForMute(community);
-                        Toast.makeText(CommunityHomeActivity.this, "You have select Mute for this community.", Toast.LENGTH_LONG).show();
-                    } else {
-                        community.setMuteNotification("Mute");
-                        Toast.makeText(CommunityHomeActivity.this, "You have select Unmute this community.", Toast.LENGTH_LONG).show();
-                        AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().updateCommunityForMute(community);
-                    }
+                switch (item.getItemId()) {
+                    case R.id.mn_filter:
+                        if (title != null && title.equalsIgnoreCase("HO Support")) {
+                            HoSupportFilter();
+                        } else {
+                            OtherFilter();
+                        }
+                        break;
+
+                    case R.id.mn_mumbers:
+                        Intent intent = new Intent(getApplicationContext(), CommunityMemberNameActivity.class);
+                        startActivity(intent);
+                        break;
+
+                    case R.id.mn_mute:
+                        if (community.getMuteNotification() == null || community.getMuteNotification().equals("Mute")) {
+                            community.setMuteNotification("Unmute");
+                            AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().updateCommunityForMute(community);
+                            Toast.makeText(CommunityHomeActivity.this, "You have select Mute for this community.", Toast.LENGTH_LONG).show();
+                        } else {
+                            community.setMuteNotification("Mute");
+                            Toast.makeText(CommunityHomeActivity.this, "You have select Unmute this community.", Toast.LENGTH_LONG).show();
+                            AppDatabase.getAppDatabase(CommunityHomeActivity.this).userDao().updateCommunityForMute(community);
+                        }
+                        break;
                 }
                 return true;
             });
@@ -833,28 +839,37 @@ public class CommunityHomeActivity extends AppCompatActivity implements View.OnC
         if (filterType == null || filterType.length() == 0) {
             allPost();
         } else {
-            if (filterFlag == 0) {
-                List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this)
-                        .userDao().getAllChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filterType);
-                chatList.addAll(contentList);
+            switch (filterFlag) {
+                case 0: {
+                    List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this)
+                            .userDao().getAllChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID), filterType);
+                    chatList.addAll(contentList);
+                    break;
+                }
 
-            } else if (filterFlag == 1) {
-                List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this)
-                        .userDao().getMyChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),
-                                User.getCurrentUser(getApplicationContext()).getMvUser().getId(), filterType);
-                chatList.addAll(contentList);
+                case 1: {
+                    List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this)
+                            .userDao().getMyChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),
+                                    User.getCurrentUser(getApplicationContext()).getMvUser().getId(), filterType);
+                    chatList.addAll(contentList);
+                    break;
+                }
 
-            } else if (filterFlag == 2) {
-                List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this)
-                        .userDao().getMyLocationChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),
-                                filterType, User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
-                chatList.addAll(contentList);
+                case 2: {
+                    List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this)
+                            .userDao().getMyLocationChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),
+                                    filterType, User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
+                    chatList.addAll(contentList);
+                    break;
+                }
 
-            } else if (filterFlag == 3) {
-                List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this)
-                        .userDao().getOtherChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),
-                                filterType, User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
-                chatList.addAll(contentList);
+                case 3: {
+                    List<Content> contentList = AppDatabase.getAppDatabase(CommunityHomeActivity.this)
+                            .userDao().getOtherChatsfilter(preferenceHelper.getString(PreferenceHelper.COMMUNITYID),
+                                    filterType, User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
+                    chatList.addAll(contentList);
+                    break;
+                }
             }
         }
 

@@ -47,25 +47,16 @@ import retrofit2.Response;
 
 public class AssetAllocation_Activity extends AppCompatActivity implements View.OnClickListener {
     private Spinner spinner_stock;
-    private EditText edit_text_username;
-    private EditText edit_text_assetname;
     private EditText edit_text_no;
     private EditText edit_text_name;
-    private EditText edit_asset_status;
-    private Button btn_allocate_asset;
-    private Button btn_reject_asset;
     private PreferenceHelper preferenceHelper;
     private Asset asset;
     private ArrayList<String> stocklist = new ArrayList<>();
     private ArrayAdapter<String> stock_adapter;
     private String stock_id;
     private String asset_id;
-    private ImageView img_back, img_list, img_logout;
-    private TextView toolbar_title;
-    private RelativeLayout mToolBar;
+    private ImageView img_list;
     TextInputLayout input_no, input_name;
-    private LinearLayout lnr_asset_manager;
-    private LinearLayout lnr_user;
     private String Fname;
     private String Lname;
     private String Id;
@@ -82,15 +73,15 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
         preferenceHelper = new PreferenceHelper(this);
 
         spinner_stock = (Spinner) findViewById(R.id.spinner_stock);
-        edit_text_username = (EditText) findViewById(R.id.edit_text_username);
-        edit_text_assetname = (EditText) findViewById(R.id.edit_text_assetname);
-        btn_allocate_asset = (Button) findViewById(R.id.btn_allocate_asset);
-        btn_reject_asset = (Button) findViewById(R.id.btn_reject_asset);
+        EditText edit_text_username = (EditText) findViewById(R.id.edit_text_username);
+        EditText edit_text_assetname = (EditText) findViewById(R.id.edit_text_assetname);
+        Button btn_allocate_asset = (Button) findViewById(R.id.btn_allocate_asset);
+        Button btn_reject_asset = (Button) findViewById(R.id.btn_reject_asset);
         edit_text_no = (EditText) findViewById(R.id.edit_text_no);
         edit_text_name = (EditText) findViewById(R.id.edit_text_name);
-        edit_asset_status = (EditText) findViewById(R.id.edit_asset_status);
-        lnr_user = (LinearLayout) findViewById(R.id.lnr_user);
-        lnr_asset_manager = (LinearLayout) findViewById(R.id.lnr_asset_manager);
+        EditText edit_asset_status = (EditText) findViewById(R.id.edit_asset_status);
+        LinearLayout lnr_user = (LinearLayout) findViewById(R.id.lnr_user);
+        LinearLayout lnr_asset_manager = (LinearLayout) findViewById(R.id.lnr_asset_manager);
         btn_allocate_asset.setOnClickListener(this);
         btn_reject_asset.setOnClickListener(this);
         edit_text_no.addTextChangedListener(watch);
@@ -120,13 +111,13 @@ public class AssetAllocation_Activity extends AppCompatActivity implements View.
     }
 
     private void setActionbar(String Title) {
-        mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         toolbar_title.setText(Title);
-        img_back = (ImageView) findViewById(R.id.img_back);
+        ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
-        img_logout = (ImageView) findViewById(R.id.img_logout);
+        ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
     }

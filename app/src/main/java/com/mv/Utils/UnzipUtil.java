@@ -53,7 +53,8 @@ public class UnzipUtil {
     private void dirChecker(String dir) {
         File f = new File(location + dir);
         if (!f.isDirectory()) {
-            f.mkdirs();
+            boolean mkdirs = f.mkdirs();
+            System.out.print("New directory created ->" + mkdirs);
         }
     }
 }
