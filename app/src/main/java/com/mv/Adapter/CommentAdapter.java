@@ -2,8 +2,6 @@ package com.mv.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -25,26 +23,16 @@ import com.mv.Utils.PreferenceHelper;
 
 import java.util.ArrayList;
 
-
-/**
- * Created by acer on 6/7/2016.
- */
-
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHolder> {
-    private static final int LENGTH = 7;
 
     private final Context mContext;
     private CommentActivity mActivity;
     private ArrayList<Comment> mDataList;
     private PreferenceHelper preferenceHelper;
     private PopupMenu popup;
-    private int mPosition;
 
     public CommentAdapter(Context context, ArrayList<Comment> chatList) {
-        Resources resources = context.getResources();
         mActivity = (CommentActivity) context;
-
-        TypedArray a = resources.obtainTypedArray(R.array.places_picture);
         mContext = context;
 
         preferenceHelper = new PreferenceHelper(mContext);
@@ -77,28 +65,30 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             holder.userImage.setImageResource(R.drawable.app_logo);
         } else {
             Glide.with(mContext)
-                    .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(position).getUserUrl() + "/Body"))
+                    .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                            + "/services/data/v36.0/sobjects/Attachment/" + mDataList.get(position).getUserUrl() + "/Body"))
                     .placeholder(mContext.getResources().getDrawable(R.drawable.app_logo))
                     .into(holder.userImage);
         }
+
         holder.txt_username.setText(mDataList.get(position).getUserName());
         holder.txt_comment.setText(mDataList.get(position).getComment());
         holder.txt_time.setText(mDataList.get(position).getTime());
 
         //added for comment edit,delete option
-        String id=mDataList.get(position).getUserId();
-        if(mDataList.get(position).getUserId()!=null && mDataList.get(position).getUserId().equals(User.getCurrentUser(mActivity).getMvUser().getId()))
+        if (mDataList.get(position).getUserId() != null &&
+                mDataList.get(position).getUserId().equals(User.getCurrentUser(mActivity).getMvUser().getId())) {
             holder.imgMore.setVisibility(View.VISIBLE);
-        else
+        } else {
             holder.imgMore.setVisibility(View.GONE);
+        }
+
         holder.imgMore.setOnClickListener(view -> {
-            popup = new PopupMenu(mContext, holder.imgMore);
             //Inflating the Popup using xml file
+            popup = new PopupMenu(mContext, holder.imgMore);
             popup.getMenuInflater().inflate(R.menu.poupup_menu, popup.getMenu());
-            //   popup.getMenu().getItem(R.id.spam).setVisible(true);
+
             MenuItem spam = popup.getMenu().findItem(R.id.spam);
-            MenuItem edit = popup.getMenu().findItem(R.id.edit);
-            MenuItem delete = popup.getMenu().findItem(R.id.delete);
             MenuItem status = popup.getMenu().findItem(R.id.status);
             spam.setVisible(false);
             status.setVisible(false);
@@ -107,17 +97,17 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             popup.setOnMenuItemClickListener(item -> {
                 if (item.getTitle().toString().equalsIgnoreCase("Delete")) {
                     showDeleteDialog(position);
-
                 } else if (item.getTitle().toString().equalsIgnoreCase("Edit")) {
-                    mActivity.editComment(mDataList.get(position).getId(),mDataList.get(position).getComment());
+                    mActivity.editComment(mDataList.get(position).getId(), mDataList.get(position).getComment());
                 }
                 return true;
             });
             popup.show();
         });
-
     }
+
     //delete comment dialog box
+    @SuppressWarnings("deprecation")
     private void showDeleteDialog(int position) {
         final AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
 
@@ -132,6 +122,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
 
         // Setting CANCEL Button
         alertDialog.setButton2(mContext.getString(R.string.cancel), (dialog, which) -> alertDialog.dismiss());
+
         // Setting OK Button
         alertDialog.setButton(mContext.getString(R.string.ok), (dialog, which) -> mActivity.deleteComment(mDataList.get(position).getId()));
 
@@ -139,15 +130,12 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
         alertDialog.show();
     }
 
-
     private GlideUrl getUrlWithHeaders(String url) {
-//
         return new GlideUrl(url, new LazyHeaders.Builder()
                 .addHeader("Authorization", "OAuth " + preferenceHelper.getString(PreferenceHelper.AccessToken))
                 .addHeader("Content-Type", "image/png")
                 .build());
     }
-
 
     @Override
     public int getItemCount() {
@@ -157,7 +145,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView txt_username, txt_comment, txt_time;
-        public ImageView userImage,imgMore;
+        public ImageView userImage, imgMore;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
@@ -167,10 +155,5 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.ViewHold
             userImage = itemLayoutView.findViewById(R.id.userImage);
             imgMore = itemLayoutView.findViewById(R.id.imgMore);
         }
-
-
     }
-
-
 }
-
