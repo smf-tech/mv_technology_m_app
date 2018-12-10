@@ -337,6 +337,7 @@
             android:background="@drawable/grey_box"
             android:gravity="center_vertical"
             android:orientation="horizontal"
+            android:baselineAligned="false"
             android:weightSum="10">
 
 

@@ -120,7 +120,11 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onBackPressed() {
+        if (taskList.get(0).getId() == null || taskList.get(0).getIsSave().equals("true")) {
             showPopUp();
+        } else {
+            finish();
+        }
     }
 
     private void saveToDB() {
@@ -213,8 +217,13 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } else if (preferenceHelper.getString(Constants.PROCESS_TYPE).equals(Constants.MANGEMENT_PROCESS)) {
             approve.setVisibility(View.GONE);
             reject.setVisibility(View.GONE);
-            submit.setVisibility(View.VISIBLE);
-            save.setVisibility(View.VISIBLE);
+            if (taskList.get(0).getId() != null && taskList.get(0).getIsSave().equals("false")) {
+                submit.setVisibility(View.GONE);
+                save.setVisibility(View.GONE);
+            } else {
+                submit.setVisibility(View.VISIBLE);
+                save.setVisibility(View.VISIBLE);
+            }
         }
 
         ImageView img_add = (ImageView) findViewById(R.id.img_add);
@@ -287,7 +296,11 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
+                if (taskList.get(0).getId() == null || taskList.get(0).getIsSave().equals("true")) {
                     showPopUp();
+                } else {
+                    finish();
+                }
                 break;
 
             case R.id.img_logout:
@@ -428,27 +441,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         break;
                     }
                 }
-            } /*else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Limit")) {
-                double val;
-                if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
-                    mandatoryFlag = true;
-                    msg = "please enter " + taskList.get(i).getTask_Text__c();
-                    break;
-                } else {
-                    try {
-                        val = Double.parseDouble(taskList.get(i).getTask_Response__c());
-                        if (Double.parseDouble(taskList.get(i).getLimitValue()) < val) {
-                            mandatoryFlag = true;
-                            msg = "please enter " + taskList.get(i).getTask_Text__c() + " value less than " + taskList.get(i).getLimitValue();
-                            break;
-                        }
-                    } catch (NumberFormatException nfe) {
-                        mandatoryFlag = true;
-                        msg = "please check " + taskList.get(i).getTask_Text__c();
-                        break;
-                    }
-                }
-            }*/ else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Length")) {
+            } else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Length")) {
                 if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
                     mandatoryFlag = true;
                     msg = "please enter " + taskList.get(i).getTask_Text__c();
@@ -499,8 +492,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     public void GetUSerName(String number, int position) {
         Utills.showProgressDialog(this, "Sending", this.getString(R.string.progress_please_wait));
         ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url;
-        url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.GetUserThroughMobileNo + "?mobileNo=" + number.trim();
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
