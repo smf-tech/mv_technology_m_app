@@ -351,7 +351,6 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
 
                 mListVillage.clear();
                 mListSchoolName.clear();
-
                 mListVillage.add("Select");
                 mListSchoolName.add("Select");
                 break;
@@ -469,7 +468,6 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
     private void getVillage() {
         Utills.showProgressDialog(this, getString(R.string.loding_village), getString(R.string.progress_please_wait));
         ServiceRequest apiService = ApiClient.getClient().create(ServiceRequest.class);
-
         apiService.getVillage(User.getCurrentUser(IndicatorLocationSelectionActivity.this).getMvUser().getState(),
                 mListDistrict.get(mSelectDistrict), mListTaluka.get(mSelectTaluka),
                 mListCluster.get(mSelectCluster)).enqueue(new Callback<ResponseBody>() {
@@ -558,6 +556,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 mStateList.add(jsonArray.getString(i));
                             }
+
                             setSpinnerAdapter(mStateList, stateAdapter, binding.spinnerState,
                                     User.getCurrentUser(getApplicationContext()).getMvUser().getState());
                         }
