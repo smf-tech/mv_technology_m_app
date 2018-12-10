@@ -446,16 +446,16 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     }
                 }
             }
-
-            if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.IMAGE)) {
-                if (finalUri != null) {
-                    try {
-                        taskList.get(i).setTask_Response__c("true");
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+//            if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.IMAGE)) {
+//                if (finalUri != null) {
+//                    try {
+//                        /* */
+//                        taskList.get(i).setTask_Response__c("true");
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
         }
 
         if (!mandatoryFlag) {
