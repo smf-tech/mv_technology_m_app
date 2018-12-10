@@ -119,7 +119,8 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         mListVillage.add("Select");
         mListSchoolName.add("Select");
 
-        mStateList = new ArrayList<>(Arrays.asList(getColumnIdex((User.getCurrentUser(getApplicationContext()).getMvUser().getState()).split(","))));
+        mStateList = new ArrayList<>(Arrays.asList(getColumnIdex((
+                User.getCurrentUser(getApplicationContext()).getMvUser().getState()).split(","))));
         mStateList.add(0, "Select");
 
         stateAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mStateList);
