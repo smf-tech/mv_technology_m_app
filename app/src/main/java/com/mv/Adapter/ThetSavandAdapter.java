@@ -444,6 +444,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
             layout_comment.setOnClickListener(view -> {
                 Intent intent = new Intent(mContext, CommentActivity.class);
                 intent.putExtra(Constants.ID, mDataList.get(getAdapterPosition()).getId());
+                intent.putExtra("intentFrom","ThetSavandFragment");
                 mContext.startActivity(intent);
             });
 

@@ -102,6 +102,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
             case R.id.layout_comment:
                 Intent intent = new Intent(this, CommentActivity.class);
                 intent.putExtra(Constants.ID, mContent.getId());
+                intent.putExtra("intentFrom","CommunityDetailsActivity");
                 startActivity(intent);
                 break;
 

@@ -299,6 +299,7 @@ public class FragmentContentAdapter extends RecyclerView.Adapter<FragmentContent
             layout_comment.setOnClickListener(view -> {
                 Intent intent = new Intent(mContext, CommentActivity.class);
                 intent.putExtra(Constants.ID, mDataList.get(getAdapterPosition()).getId());
+                intent.putExtra("intentFrom","CommunityHomeFragment");
                 mContext.startActivity(intent);
             });
 

@@ -120,11 +120,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onBackPressed() {
-        if (taskList.get(0).getId() == null || taskList.get(0).getIsSave().equals("true")) {
             showPopUp();
-        } else {
-            finish();
-        }
     }
 
     private void saveToDB() {
@@ -217,13 +213,15 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } else if (preferenceHelper.getString(Constants.PROCESS_TYPE).equals(Constants.MANGEMENT_PROCESS)) {
             approve.setVisibility(View.GONE);
             reject.setVisibility(View.GONE);
-            if (taskList.get(0).getId() != null && taskList.get(0).getIsSave().equals("false")) {
-                submit.setVisibility(View.GONE);
-                save.setVisibility(View.GONE);
-            } else {
-                submit.setVisibility(View.VISIBLE);
-                save.setVisibility(View.VISIBLE);
-            }
+            submit.setVisibility(View.VISIBLE);
+            save.setVisibility(View.VISIBLE);
+//            if (taskList.get(0).getId() != null && taskList.get(0).getIsSave().equals("false")) {
+//                submit.setVisibility(View.GONE);
+//                save.setVisibility(View.GONE);
+//            } else {
+//                submit.setVisibility(View.VISIBLE);
+//                save.setVisibility(View.VISIBLE);
+//            }
         }
 
         ImageView img_add = (ImageView) findViewById(R.id.img_add);
@@ -239,7 +237,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         img_back.setOnClickListener(this);
 
         ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
-        img_logout.setVisibility(View.GONE);
+        img_logout.setVisibility(View.VISIBLE);
         img_logout.setOnClickListener(this);
     }
 
@@ -295,11 +293,14 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
-                if (taskList.get(0).getId() == null || taskList.get(0).getIsSave().equals("true")) {
                     showPopUp();
-                } else {
-                    finish();
-                }
+                break;
+
+            case R.id.img_logout:
+                Intent intent = new Intent(this, CommentActivity.class);
+                intent.putExtra(Constants.ID, taskList.get(0).getId());
+                intent.putExtra("intentFrom","ProcessDeatailActivity");
+                this.startActivity(intent);
                 break;
 
             case R.id.btn_submit:
@@ -793,6 +794,10 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         Utills.hideProgressDialog();
                         try {
                             Utills.setIsActionDone(true);
+                        // call for another api which will save rejection comment in commentList.
+                            if(processStatus.equals("Rejected")){
+                                sendComment();
+                            }
                             Utills.showToast(getString(R.string.submitted_successfully), ProcessDeatailActivity.this);
                             finish();
                         } catch (Exception e) {
@@ -815,6 +820,59 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } else {
             Utills.showToast(getString(R.string.error_no_internet), ProcessDeatailActivity.this);
         }
+    }
+
+    private void sendComment() {
+        if (Utills.isConnected(this)) {
+            try {
+
+                Utills.showProgressDialog(this);
+                JSONObject jsonObject = new JSONObject();
+                JSONArray jsonArray = new JSONArray();
+                JSONObject jsonObject1 = new JSONObject();
+
+                jsonObject1.put("Comment__c", comment);
+                jsonObject1.put("MV_User__c", User.getCurrentUser(this).getMvUser().getId());
+                jsonObject1.put("ProcessAnswer__c", taskList.get(0).getId());
+
+                jsonArray.put(jsonObject1);
+                jsonObject.put("listOfComments", jsonArray);
+
+                String   url = preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertProcessAnswerComments";
+
+                ServiceRequest apiService =
+                        ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+                JsonParser jsonParser = new JsonParser();
+                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
+                apiService.sendDataToSalesforce(url, gsonObject).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Utills.hideProgressDialog();
+                        try {
+                            Utills.showToast(getString(R.string.comment_add), getApplicationContext());
+                            Utills.hideSoftKeyboard(ProcessDeatailActivity.this);
+                        } catch (Exception e) {
+                            Utills.hideProgressDialog();
+                            Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Utills.hideProgressDialog();
+                        Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Utills.hideProgressDialog();
+                Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+
+            }
+        } else {
+            Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
+        }
+
     }
 
     @Override

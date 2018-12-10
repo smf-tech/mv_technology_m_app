@@ -649,6 +649,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
             layout_comment.setOnClickListener(view -> {
                 Intent intent = new Intent(mContext, CommentActivity.class);
                 intent.putExtra(Constants.ID, mDataList.get(getAdapterPosition()).getId());
+                intent.putExtra("intentFrom","CommunityHomeActivity");
                 mContext.startActivity(intent);
             });
 
