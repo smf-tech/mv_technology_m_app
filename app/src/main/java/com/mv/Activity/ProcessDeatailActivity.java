@@ -427,27 +427,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         break;
                     }
                 }
-            } /*else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Limit")) {
-                double val;
-                if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
-                    mandatoryFlag = true;
-                    msg = "please enter " + taskList.get(i).getTask_Text__c();
-                    break;
-                } else {
-                    try {
-                        val = Double.parseDouble(taskList.get(i).getTask_Response__c());
-                        if (Double.parseDouble(taskList.get(i).getLimitValue()) < val) {
-                            mandatoryFlag = true;
-                            msg = "please enter " + taskList.get(i).getTask_Text__c() + " value less than " + taskList.get(i).getLimitValue();
-                            break;
-                        }
-                    } catch (NumberFormatException nfe) {
-                        mandatoryFlag = true;
-                        msg = "please check " + taskList.get(i).getTask_Text__c();
-                        break;
-                    }
-                }
-            }*/ else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Length")) {
+            } else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Length")) {
                 if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
                     mandatoryFlag = true;
                     msg = "please enter " + taskList.get(i).getTask_Text__c();
@@ -457,16 +437,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         mandatoryFlag = true;
                         msg = "please enter valid " + taskList.get(i).getTask_Text__c();
                         break;
-                    }
-                }
-            }
-
-            if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.IMAGE)) {
-                if (finalUri != null) {
-                    try {
-                        taskList.get(i).setTask_Response__c("true");
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
                 }
             }

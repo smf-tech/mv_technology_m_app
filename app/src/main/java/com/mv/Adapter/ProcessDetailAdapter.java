@@ -254,7 +254,8 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             });
 
             imgAdd.setOnClickListener(v -> {
-                String imgName = taskList.get(getAdapterPosition()).getMV_Task__c_Id();
+                Long tsLong = System.currentTimeMillis()/1000;
+                String imgName = tsLong.toString();
                 taskList.get(getAdapterPosition()).setTask_Response__c(imgName);
                 activity.sendToCamera(imgName, getAdapterPosition());
             });
