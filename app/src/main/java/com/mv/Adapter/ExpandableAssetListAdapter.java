@@ -75,87 +75,91 @@ public class ExpandableAssetListAdapter extends BaseExpandableListAdapter {
         LinearLayout imgLayout;
         ImageView imgEdit, imgDelete;
 
+        if (convertView != null) {
+            imgEdit = convertView.findViewById(R.id.imgEdit);
+            imgDelete = convertView.findViewById(R.id.imgDelete);
+            cardView = convertView.findViewById(R.id.cardView);
+            txt_asset_name = convertView.findViewById(R.id.txt_asset_name);
+            tvProjectDateTitle = convertView.findViewById(R.id.tvProjectDateTitle);
+            txt_asset_id = convertView.findViewById(R.id.txt_asset_id);
+            txt_asset_issue_date = convertView.findViewById(R.id.txt_asset_issue_date);
+            view1 = convertView.findViewById(R.id.view1);
+            imgLayout = convertView.findViewById(R.id.imgLayout);
 
-        imgEdit = convertView.findViewById(R.id.imgEdit);
-        imgDelete = convertView.findViewById(R.id.imgDelete);
-        cardView = convertView.findViewById(R.id.cardView);
-        txt_asset_name = convertView.findViewById(R.id.txt_asset_name);
-        tvProjectDateTitle = convertView.findViewById(R.id.tvProjectDateTitle);
-        txt_asset_id = convertView.findViewById(R.id.txt_asset_id);
-        txt_asset_issue_date = convertView.findViewById(R.id.txt_asset_issue_date);
-        view1 = convertView.findViewById(R.id.view1);
-        imgLayout = convertView.findViewById(R.id.imgLayout);
-        cardView.setOnClickListener(view -> {
-            if (asset.getAllocationStatus().equalsIgnoreCase("Requested")
+            cardView.setOnClickListener(view -> {
+                if (asset.getAllocationStatus().equalsIgnoreCase("Requested")
                         && User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
                     Intent intent = new Intent(_context, AssetAllocation_Activity.class);
                     intent.putExtra("Assets", asset);
                     _context.startActivity(intent);
-            }else if (asset.getAllocationStatus().equalsIgnoreCase("Allocated")) {
-                Intent intent = new Intent(_context, AssetApprovalActivity.class);
-                intent.putExtra("Assets", asset);
-                _context.startActivity(intent);
-            } else if (asset.getAllocationStatus().equalsIgnoreCase("Accepted")) {
-                if(User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")){
+                } else if (asset.getAllocationStatus().equalsIgnoreCase("Allocated")) {
                     Intent intent = new Intent(_context, AssetApprovalActivity.class);
                     intent.putExtra("Assets", asset);
                     _context.startActivity(intent);
-                }else {
-                    Intent intent = new Intent(_context, AssetAllocation_Activity.class);
+                } else if (asset.getAllocationStatus().equalsIgnoreCase("Accepted")) {
+                    if (User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager")) {
+                        Intent intent = new Intent(_context, AssetApprovalActivity.class);
+                        intent.putExtra("Assets", asset);
+                        _context.startActivity(intent);
+                    } else {
+                        Intent intent = new Intent(_context, AssetAllocation_Activity.class);
+                        intent.putExtra("Assets", asset);
+                        _context.startActivity(intent);
+                    }
+                } else if (asset.getAllocationStatus().equalsIgnoreCase("Rejected")) {
+                    Intent intent = new Intent(_context, AssetApprovalActivity.class);
+                    intent.putExtra("Assets", asset);
+                    _context.startActivity(intent);
+                } else if (asset.getAllocationStatus().equalsIgnoreCase("Released")) {
+                    Intent intent = new Intent(_context, AssetApprovalActivity.class);
                     intent.putExtra("Assets", asset);
                     _context.startActivity(intent);
                 }
+            });
+
+            imgDelete.setOnClickListener(view -> {
+                if (_activity != null)
+                    showLogoutPopUp(asset);
+            });
+
+            imgEdit.setOnClickListener(view -> {
+                if (_activity != null) {
+                    _activity.editExpense(asset);
                 }
-            else if (asset.getAllocationStatus().equalsIgnoreCase("Rejected")) {
-                Intent intent = new Intent(_context, AssetApprovalActivity.class);
-                intent.putExtra("Assets", asset);
-                _context.startActivity(intent);
+
+            });
+
+            if (asset.getAssetModel().equalsIgnoreCase("null")) {
+                tvProjectDateTitle.setVisibility(View.GONE);
+                txt_asset_id.setVisibility(View.GONE);
+            } else {
+                txt_asset_id.setText(asset.getCode());
+                txt_asset_id.setVisibility(View.VISIBLE);
+                tvProjectDateTitle.setVisibility(View.VISIBLE);
             }
-            else if (asset.getAllocationStatus().equalsIgnoreCase("Released")) {
-                Intent intent = new Intent(_context, AssetApprovalActivity.class);
-                intent.putExtra("Assets", asset);
-                _context.startActivity(intent);
+
+            txt_asset_issue_date.setText(asset.getExpectedIssueDate());
+            txt_asset_name.setText(asset.getUsername());
+
+            if (asset.getAllocationStatus().equalsIgnoreCase("Requested")) {
+                view1.setBackgroundColor(_context.getResources().getColor(R.color.purple));
+            } else if (asset.getAllocationStatus().equalsIgnoreCase("Accepted")) {
+                view1.setBackgroundColor(_context.getResources().getColor(R.color.green));
+            } else if (asset.getAllocationStatus().equalsIgnoreCase("Allocated")) {
+                view1.setBackgroundColor(_context.getResources().getColor(R.color.orrange2));
+            } else if (asset.getAllocationStatus().equalsIgnoreCase("Rejected")) {
+                view1.setBackgroundColor(_context.getResources().getColor(R.color.red));
+            } else if (asset.getAllocationStatus().equalsIgnoreCase("Released")) {
+                view1.setBackgroundColor(_context.getResources().getColor(R.color.blue));
             }
-        });
-        imgDelete.setOnClickListener(view -> {
-            if (_activity != null)
-                showLogoutPopUp(asset);
-        });
-        imgEdit.setOnClickListener(view -> {
-            if (_activity != null)
-                _activity.editExpense(asset);
 
-        });
-
-        if (asset.getAssetModel().equalsIgnoreCase("null")) {
-            tvProjectDateTitle.setVisibility(View.GONE);
-            txt_asset_id.setVisibility(View.GONE);
-        } else {
-            txt_asset_id.setText(asset.getCode());
-            txt_asset_id.setVisibility(View.VISIBLE);
-            tvProjectDateTitle.setVisibility(View.VISIBLE);
+            if (asset.getAllocationStatus().equalsIgnoreCase("Requested")
+                    && !(User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager"))) {
+                imgLayout.setVisibility(View.VISIBLE);
+            } else {
+                imgLayout.setVisibility(View.GONE);
+            }
         }
-        txt_asset_issue_date.setText(asset.getExpectedIssueDate());
-        txt_asset_name.setText(asset.getUsername());
-        if (asset.getAllocationStatus().equalsIgnoreCase("Requested")) {
-            view1.setBackgroundColor(_context.getResources().getColor(R.color.purple));
-            //     Intent intent = new Intent(_context)
-        } else if (asset.getAllocationStatus().equalsIgnoreCase("Accepted")) {
-            view1.setBackgroundColor(_context.getResources().getColor(R.color.green));
-        } else if (asset.getAllocationStatus().equalsIgnoreCase("Allocated")) {
-            view1.setBackgroundColor(_context.getResources().getColor(R.color.orrange2));
-        } else if (asset.getAllocationStatus().equalsIgnoreCase("Rejected")) {
-            view1.setBackgroundColor(_context.getResources().getColor(R.color.red));
-        } else if (asset.getAllocationStatus().equalsIgnoreCase("Released")) {
-            view1.setBackgroundColor(_context.getResources().getColor(R.color.blue));
-        }
-        if (asset.getAllocationStatus().equalsIgnoreCase("Requested")
-                && !(User.getCurrentUser(_context).getMvUser().getRoll().equalsIgnoreCase("Asset Manager"))) {
-            imgLayout.setVisibility(View.VISIBLE);
-        } else {
-            imgLayout.setVisibility(View.GONE);
-        }
-
         return convertView;
     }
 
@@ -213,23 +217,26 @@ public class ExpandableAssetListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
         }
-        ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
 
-        if (isExpanded) {
-            imgGroup.setImageResource(R.drawable.downarrow);
-        } else {
-            imgGroup.setImageResource(R.drawable.rightarrow);
+        if (convertView != null) {
+
+            ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
+            if (isExpanded) {
+                imgGroup.setImageResource(R.drawable.downarrow);
+            } else {
+                imgGroup.setImageResource(R.drawable.rightarrow);
+            }
+
+            String headerTitle = (String) getGroup(groupPosition);
+            TextView txtName = convertView.findViewById(R.id.txtName);
+            txtName.setText(headerTitle);
         }
-        TextView txtName = convertView
-                .findViewById(R.id.txtName);
-        // date.setTypeface(null, Typeface.BOLD);
-        txtName.setText(headerTitle);
+
         return convertView;
     }
 

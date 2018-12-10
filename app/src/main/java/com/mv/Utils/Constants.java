@@ -107,6 +107,8 @@ public class Constants {
     public static final String EVENT_DESCRIPTION = "Event Description";
     public static final String IMAGE = "Image";
     public static final String TASK_PICK_LIST = "Picklist Reference";
+    public static final String TASK_MV_USER = "MV_User";
+    public static final String TASK_MV_USER_ANSWER = "MV_User_Answer";
 
     public static final String State = "State";
     public static final String DISTRICT = "District";
@@ -246,6 +248,7 @@ public class Constants {
 
     public static String playStoreLink = "https://play.google.com/store/apps/details?id=com.bjs.ss&hl=en";
 
+    @SuppressWarnings("RegExpRedundantEscape")
     public static final Pattern urlPattern = Pattern.compile("(?:^|[\\W])((ht|f)tp(s?):\\/\\/|www\\.)"
             + "(([\\w\\-]+\\.){1,}?([\\w\\-.~]+\\/?)*"
             + "[\\p{Alnum}.,%_=?&#\\-+()\\[\\]\\*$~@!:/{};']*)", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE | Pattern.DOTALL);

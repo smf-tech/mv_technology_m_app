@@ -2,6 +2,7 @@ package com.mv.Utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import java.util.Map;
 
@@ -34,8 +35,7 @@ public class PreferenceHelper {
     public static final String SalesforcePassword = "SalesforcePassword";
 
     public PreferenceHelper(Context cntx) {
-        Context context = cntx;
-        pref = context.getSharedPreferences(PREFER_NAME, Context.MODE_PRIVATE);
+        pref = cntx.getSharedPreferences(PREFER_NAME, Context.MODE_PRIVATE);
         editor = pref.edit();
     }
 
@@ -88,6 +88,7 @@ public class PreferenceHelper {
                     || prefToReset.getKey().equalsIgnoreCase(PreferenceHelper.FIRSTTIME_V_2_7)
                     || prefToReset.getKey().equalsIgnoreCase(Constants.LANGUAGE)
                     ) {
+                Log.i("Helper", "If_clearPreference");
             } else {
                 editor.remove(prefToReset.getKey()).commit();
             }

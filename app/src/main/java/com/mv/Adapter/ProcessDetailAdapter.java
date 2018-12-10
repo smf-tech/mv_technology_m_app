@@ -26,24 +26,37 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mv.Activity.LocationSelectionActity;
 import com.mv.Activity.ProcessDeatailActivity;
+import com.mv.Model.Asset;
 import com.mv.Model.Task;
 import com.mv.R;
+import com.mv.Retrofit.ApiClient;
+import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
+import com.mv.Utils.Utills;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdapter.MyViewHolder> {
 
@@ -162,6 +175,13 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     Log.d("positionEdit", "" + getAdapterPosition());
                     taskList.get(getAdapterPosition()).setTask_Response__c(s.toString());
                     ((ProcessDeatailActivity) mContext).saveDataToList(taskList.get(getAdapterPosition()), getAdapterPosition());
+                    if (taskList.get(getAdapterPosition()).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER) && s.length() == 10) {
+                        if (Utills.isConnected(mContext)) {
+                            GetUSerName(s.toString(), getAdapterPosition());
+                        } else {
+                            Utills.showToast(mContext.getString(R.string.error_no_internet), mContext);
+                        }
+                    }
                 }
 
                 @Override
@@ -546,9 +566,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     holder.dateHeader.setText(task.getTask_Text___Lan_c());
                 }
 
-                if (task.getTask_Response__c() != null && task.getTask_Response__c().length() > 0
-                        && taskList.size() > position && position > -1) {
-
+                if (task.getTask_Response__c() != null && task.getTask_Response__c().length() > 0 && taskList.size() > position) {
                     String answerStr = "";
                     ArrayList<String> myList1 = new ArrayList<>(Arrays.asList(getColumnIndex(
                             (taskList.get(position).getPicklist_Value__c()).split(","))));
@@ -640,6 +658,50 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.date.setTag(position);
                 holder.date.setFocusable(false);
                 holder.date.setClickable(true);
+                break;
+
+            case Constants.TASK_MV_USER:
+                holder.llEditText.setVisibility(View.VISIBLE);
+                holder.llLayout.setVisibility(View.GONE);
+                holder.llHeaderLay.setVisibility(View.GONE);
+                holder.llLocation.setVisibility(View.GONE);
+                holder.llCheck.setVisibility(View.GONE);
+                holder.llDate.setVisibility(View.GONE);
+
+                if (task.getIs_Response_Mnadetory__c()) {
+                    holder.editHeader.setText(String.format("* %s", task.getTask_Text___Lan_c()));
+                } else {
+                    holder.editHeader.setText(task.getTask_Text___Lan_c());
+                }
+                holder.questionResponse.setText(task.getTask_Response__c());
+                holder.questionResponse.setInputType(InputType.TYPE_CLASS_NUMBER);
+                holder.questionResponse.setSingleLine(true);
+                break;
+
+            case Constants.TASK_MV_USER_ANSWER:
+                holder.llEditText.setVisibility(View.VISIBLE);
+                holder.llLayout.setVisibility(View.GONE);
+                holder.llHeaderLay.setVisibility(View.GONE);
+                holder.llLocation.setVisibility(View.GONE);
+                holder.llCheck.setVisibility(View.GONE);
+                holder.llDate.setVisibility(View.GONE);
+
+                if (task.getIs_Response_Mnadetory__c()) {
+                    holder.editHeader.setText(String.format("* %s", task.getTask_Text___Lan_c()));
+                } else {
+                    holder.editHeader.setText(task.getTask_Text___Lan_c());
+                }
+                if(task.getTask_Response__c()!=null && task.getTask_Response__c().length()>0 && task.getTask_Response__c().contains("(")){
+                    holder.questionResponse.setText(task.getTask_Response__c().substring(0,task.getTask_Response__c().indexOf("(")));
+                } else {
+                    holder.questionResponse.setText(task.getTask_Response__c());
+                }
+                holder.questionResponse.setInputType(InputType.TYPE_CLASS_NUMBER);
+                holder.questionResponse.setSingleLine(true);
+                holder.questionResponse.setHint("");
+                if (task.getIsEditable__c().equals("false")) {
+                    holder.questionResponse.setEnabled(false);
+                }
                 break;
 
             case Constants.IMAGE:
@@ -749,6 +811,62 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
     @Override
     public int getItemViewType(int position) {
         return position;
+    }
+
+    public void GetUSerName(String number, int position) {
+        Utills.showProgressDialog(mContext, "Sending", mContext.getString(R.string.progress_please_wait));
+        ServiceRequest apiService = ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
+        String url;
+        url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetUserThroughMobileNo + "?mobileNo=" + number.trim();
+
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                String data;
+                try {
+                    if (response.body() != null) {
+                        data = response.body().string();
+                        if (data.length() > 0) {
+                            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                            Asset asset = gson.fromJson(data, Asset.class);
+                            String Id = asset.getAsset_id();
+                            String Fname = asset.getName();
+                            String Lname = asset.getLast_Name__c();
+                            for(int i=0;i<taskList.size();i++){
+                                if(taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
+                                    if (Lname != null)
+                                        taskList.get(i).setTask_Response__c(Fname + " " + Lname + "(" + Id + ")");
+                                    else {
+                                        taskList.get(i).setTask_Response__c(Fname + "(" + Id + ")");
+                                    }
+                                    notifyItemChanged(i);
+                                }
+                            }
+
+                        }
+                    } else {
+                        Toast.makeText(mContext,mContext.getResources()
+                                .getString(R.string.enter_moblie_no),Toast.LENGTH_SHORT).show();
+                        for(int i=0;i<taskList.size();i++){
+                            if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
+                                taskList.get(i).setTask_Response__c("");
+                                notifyItemChanged(i);
+                            }
+                        }
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(mContext,"Something went wrong",Toast.LENGTH_SHORT).show();
+                Utills.hideProgressDialog();
+            }
+        });
     }
 
     public void showDateDialog(Context context, final int Position, String CalendarType) {

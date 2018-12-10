@@ -1,4 +1,4 @@
-<resources xmlns:https="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Sujalam Suphalam</string>
     <string name="progress_loading">Loding</string>
     <string name="progress_please_wait">Please wait</string>
@@ -356,4 +356,6 @@
     <string name="title_activity_maps">Map</string>
     <string name="todo">TODO</string>
     <string name="structure">Structure</string>
+	<string name="enter_moblie_no">Enter mobile number</string>
+    <string name="error_no_user">Enter valid</string>
 </resources>

@@ -29,7 +29,7 @@ public class ActivityImageView extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_image_view);
         binding.setActivity(this);
 
-        if(getIntent().getExtras().getString(Constants.ID)!=null){
+        if (getIntent().getExtras() != null) {
             Id = getIntent().getExtras().getString(Constants.ID);
         }
 

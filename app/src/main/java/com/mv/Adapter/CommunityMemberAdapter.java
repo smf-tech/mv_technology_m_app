@@ -1,8 +1,6 @@
 package com.mv.Adapter;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mv.R;
-import com.mv.Utils.PreferenceHelper;
 
 import java.util.ArrayList;
 
@@ -24,12 +21,6 @@ public class CommunityMemberAdapter extends RecyclerView.Adapter<CommunityMember
     private ArrayList<String> CommunityMemberList;
 
     public CommunityMemberAdapter(Context context, ArrayList<String> CommunityMemberList) {
-        Resources resources = context.getResources();
-
-        TypedArray a = resources.obtainTypedArray(R.array.places_picture);
-        Context mContext = context;
-
-        PreferenceHelper preferenceHelper = new PreferenceHelper(mContext);
         this.CommunityMemberList = CommunityMemberList;
     }
 

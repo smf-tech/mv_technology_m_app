@@ -1,10 +1,10 @@
 package com.mv.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -13,12 +13,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -279,51 +277,45 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         mStateList = AppDatabase.getAppDatabase(context).userDao().getState();
         mStateList.add(0, "Select");
         setSpinnerAdapter(mStateList, state_adapter, binding.spinnerState, selectedState);
-        //  mStateList.add(User.getCurrentUser(getApplicationContext()).getState());
-//        ArrayList<String> catagory = new ArrayList<>();
-//        catagory.add("Select");
-//        catagory.add("Training Observation");
-//        catagory.add("Classroom Observation");
-//        catagory.add("School Visit");
-//        catagory.add("School and Classroom Observation");
-//        catagory.add("Training");
-//        if (User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.State)) {
-//
-//        } else
-        if (User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.DISTRICT)) {
-            binding.spinnerState.setEnabled(false);
 
-        } else if (User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.TALUKA)) {
-            binding.spinnerState.setEnabled(false);
-            binding.spinnerDistrict.setEnabled(false);
+        switch (User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c()) {
+            case Constants.DISTRICT:
+                binding.spinnerState.setEnabled(false);
+                break;
 
-        } else if (User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.CLUSTER)) {
-            binding.spinnerState.setEnabled(false);
-            binding.spinnerDistrict.setEnabled(false);
-            binding.spinnerTaluka.setEnabled(false);
+            case Constants.TALUKA:
+                binding.spinnerState.setEnabled(false);
+                binding.spinnerDistrict.setEnabled(false);
+                break;
 
-        } else if (User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.VILlAGE)) {
-            binding.spinnerState.setEnabled(false);
-            binding.spinnerDistrict.setEnabled(false);
-            binding.spinnerTaluka.setEnabled(false);
-            binding.spinnerCluster.setEnabled(false);
+            case Constants.CLUSTER:
+                binding.spinnerState.setEnabled(false);
+                binding.spinnerDistrict.setEnabled(false);
+                binding.spinnerTaluka.setEnabled(false);
+                break;
 
-        } else if (User.getCurrentUser(getApplicationContext()).getMvUser().getRole_Juridiction__c().equals(Constants.SCHOOL)) {
-            binding.spinnerState.setEnabled(false);
-            binding.spinnerDistrict.setEnabled(false);
-            binding.spinnerTaluka.setEnabled(false);
-            binding.spinnerCluster.setEnabled(false);
-            binding.spinnerVillage.setEnabled(false);
+            case Constants.VILlAGE:
+                binding.spinnerState.setEnabled(false);
+                binding.spinnerDistrict.setEnabled(false);
+                binding.spinnerTaluka.setEnabled(false);
+                binding.spinnerCluster.setEnabled(false);
+                break;
+
+            case Constants.SCHOOL:
+                binding.spinnerState.setEnabled(false);
+                binding.spinnerDistrict.setEnabled(false);
+                binding.spinnerTaluka.setEnabled(false);
+                binding.spinnerCluster.setEnabled(false);
+                binding.spinnerVillage.setEnabled(false);
+                break;
         }
-        // setSpinnerAdapter(catagory, catagory_adapter, binding.spinnerCatogory, "");
+
         setSpinnerAdapter(mListDistrict, district_adapter, binding.spinnerDistrict, selectedDisrict);
         setSpinnerAdapter(mListTaluka, taluka_adapter, binding.spinnerTaluka, selectedTaluka);
         setSpinnerAdapter(mListCluster, cluster_adapter, binding.spinnerCluster, selectedCluster);
         setSpinnerAdapter(mListVillage, village_adapter, binding.spinnerVillage, selectedVillage);
         setSpinnerAdapter(mListSchoolName, school_adapter, binding.spinnerSchoolName, selectedSchool);
         setSpinnerAdapter(mListOrganization, organization_adapter, binding.spinnerOrganization, selectedOrganization);
-
-
     }
 
 
@@ -485,6 +477,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private boolean isDatesAreValid(String startDate, String endDate) {
         try {
             DateFormat formatter;
@@ -1457,6 +1450,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         return "" + i;
     }
 
+    @SuppressLint("SimpleDateFormat")
     private static List<Date> getDates(String dateString1, String dateString2) {
         ArrayList<Date> dates = new ArrayList<>();
         DateFormat df1 = new SimpleDateFormat("yyyy-MM-dd");

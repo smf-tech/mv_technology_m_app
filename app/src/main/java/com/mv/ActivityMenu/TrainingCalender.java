@@ -1,5 +1,6 @@
 package com.mv.ActivityMenu;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -84,6 +85,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
     private boolean isAllPlans;
     private ArrayAdapter<String> district_adapter, taluka_adapter;
 
+    @SuppressLint("SimpleDateFormat")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -252,6 +254,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
 
     }
 
+    @SuppressLint("SimpleDateFormat")
     public void selectDate(Date date) {
         selectDated = date;
         CalendarDay day = CalendarDay.from(date);
@@ -332,6 +335,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
         }
     }
 
+    @SuppressLint("SimpleDateFormat")
     private void getAllProcess(String monthYear) {
         Utills.showProgressDialog(context, "Loading Process", getString(R.string.progress_please_wait));
         ServiceRequest apiService = ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
@@ -483,6 +487,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
         return dates;
     }
 
+    @SuppressLint("SimpleDateFormat")
     private String getCurrentDate() {
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
         Calendar c = Calendar.getInstance();
@@ -513,6 +518,7 @@ public class TrainingCalender extends AppCompatActivity implements OnDateSelecte
 
     }
 
+    @SuppressLint("SimpleDateFormat")
     private List<Date> getDates(String dateString1, String dateString2) {
         LocaleManager.setNewLocale(this, Constants.LANGUAGE_ENGLISH);
         Log.d("Start Date", dateString1);

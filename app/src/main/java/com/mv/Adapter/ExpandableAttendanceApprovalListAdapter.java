@@ -65,29 +65,29 @@ public class ExpandableAttendanceApprovalListAdapter extends BaseExpandableListA
             convertView = infalInflater != null ? infalInflater.inflate(R.layout.each_child_leave_application, null) : null;
         }
 
-        ImageView imgDownload, imgshare;
         TextView txtCount, txtName;
         RelativeLayout layoutMain;
 
-        layoutMain = convertView.findViewById(R.id.layoutMain);
+        if (convertView != null) {
+            layoutMain = convertView.findViewById(R.id.layoutMain);
+            txtCount = convertView.findViewById(R.id.txtCount);
 
-        txtCount = convertView.findViewById(R.id.txtCount);
-
-        layoutMain.setOnClickListener(v -> {
-
-                Intent intent=new Intent(_context, AttendanceApproveDetailActivity.class);
-                intent.putExtra(Constants.Attendance ,attendance_approval);
+            layoutMain.setOnClickListener(v -> {
+                Intent intent = new Intent(_context, AttendanceApproveDetailActivity.class);
+                intent.putExtra(Constants.Attendance, attendance_approval);
                 _context.startActivity(intent);
-        });
+            });
 
-        txtName = convertView.findViewById(R.id.txtName);
+            txtName = convertView.findViewById(R.id.txtName);
+            txtCount.setVisibility(View.GONE);
 
-        txtCount.setVisibility(View.GONE);
-        if(attendance_approval.getUser_Name__c()!=null)
-            txtName.setText(attendance_approval.getUser_Name__c()+"("+attendance_approval.getAttendanceDateC()+")");
-        else
-            txtName.setText(attendance_approval.getAttendanceDateC());
-
+            if (attendance_approval.getUser_Name__c() != null) {
+                txtName.setText(String.format("%s(%s)", attendance_approval.getUser_Name__c(),
+                        attendance_approval.getAttendanceDateC()));
+            } else {
+                txtName.setText(attendance_approval.getAttendanceDateC());
+            }
+        }
         return convertView;
     }
 
@@ -118,23 +118,24 @@ public class ExpandableAttendanceApprovalListAdapter extends BaseExpandableListA
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
         }
-        ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
 
-        if (isExpanded) {
-            imgGroup.setImageResource(R.drawable.downarrow);
-        } else {
-            imgGroup.setImageResource(R.drawable.rightarrow);
+        if (convertView != null) {
+            ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
+            if (isExpanded) {
+                imgGroup.setImageResource(R.drawable.downarrow);
+            } else {
+                imgGroup.setImageResource(R.drawable.rightarrow);
+            }
+
+            String headerTitle = (String) getGroup(groupPosition);
+            TextView txtName = convertView.findViewById(R.id.txtName);
+            txtName.setText(headerTitle);
         }
-        TextView txtName = convertView
-                .findViewById(R.id.txtName);
-        // date.setTypeface(null, Typeface.BOLD);
-        txtName.setText(headerTitle);
         return convertView;
     }
 

@@ -36,6 +36,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mv.Adapter.ProcessDetailAdapter;
+import com.mv.Model.Asset;
 import com.mv.Model.ImageData;
 import com.mv.Model.Task;
 import com.mv.Model.TaskContainerModel;
@@ -56,6 +57,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -407,33 +409,43 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 break;
             }
 
-            if (taskList.get(i).getValidationRule() != null &&
-                    taskList.get(i).getValidationRule().equals("Range")) {
-
+            if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Range")) {
                 double val;
-                if (taskList.get(i).getTask_Response__c() == null ||
-                        taskList.get(i).getTask_Response__c().equals("")) {
+                if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
                     mandatoryFlag = true;
-                    msg = "please check " + taskList.get(i).getTask_Text__c();
+                    msg = "please enter " + taskList.get(i).getTask_Text__c();
                     break;
                 } else {
                     try {
                         val = Double.parseDouble(taskList.get(i).getTask_Response__c());
+                        if (Double.parseDouble(taskList.get(i).getMaxRange()) < val) {
+                            mandatoryFlag = true;
+                            msg = "please enter " + taskList.get(i).getTask_Text__c() + " value less than " + taskList.get(i).getMaxRange();
+                            break;
+                        } else if (Double.parseDouble(taskList.get(i).getMinRange()) > val) {
+                            mandatoryFlag = true;
+                            msg = "please enter " + taskList.get(i).getTask_Text__c() + " value grater than " + taskList.get(i).getMaxRange();
+                            break;
+                        }
                     } catch (NumberFormatException nfe) {
                         mandatoryFlag = true;
                         msg = "please check " + taskList.get(i).getTask_Text__c();
                         break;
                     }
                 }
-
-                if (Double.parseDouble(taskList.get(i).getMaxRange()) < val ||
-                        Double.parseDouble(taskList.get(i).getMinRange()) > val) {
+            } else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Length")) {
+                if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
                     mandatoryFlag = true;
-                    msg = "please check " + taskList.get(i).getTask_Text__c();
+                    msg = "please enter " + taskList.get(i).getTask_Text__c();
                     break;
+                } else {
+                    if (Integer.parseInt(taskList.get(i).getLimitValue()) != taskList.get(i).getTask_Response__c().length()) {
+                        mandatoryFlag = true;
+                        msg = "please enter valid " + taskList.get(i).getTask_Text__c();
+                        break;
+                    }
                 }
             }
-
 //            if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.IMAGE)) {
 //                if (finalUri != null) {
 //                    try {
@@ -448,7 +460,17 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
         if (!mandatoryFlag) {
             if (Utills.isConnected(this)) {
-                callApiForSubmit(taskList);
+                boolean hasMVUser= false;
+                for(int i = 0; i < taskList.size(); i++){
+                    if(taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER)){
+                        GetUSerName(taskList.get(i).getTask_Response__c(), i);
+                        hasMVUser=true;
+                        break;
+                    }
+                }
+                if(!hasMVUser){
+                    callApiForSubmit(taskList);
+                }
             } else {
                 Utills.showToast(getString(R.string.error_no_internet), this);
                 submit.setEnabled(true);
@@ -457,6 +479,54 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             Utills.showToast(msg, context);
             submit.setEnabled(true);
         }
+    }
+
+    private void GetUSerName(String number, int position) {
+        Utills.showProgressDialog(this, "Sending", this.getString(R.string.progress_please_wait));
+        ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetUserThroughMobileNo + "?mobileNo=" + number.trim();
+
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                String data;
+                try {
+                    if (response.body() != null) {
+                        data = response.body().string();
+                        if (data.length() > 0) {
+                            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                            Asset asset = gson.fromJson(data, Asset.class);
+                            String Id = asset.getAsset_id();
+                            String Fname = asset.getName();
+                            String Lname = asset.getLast_Name__c();
+                            for(int i=0;i<taskList.size();i++){
+                                if(taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
+                                    if (Lname != null)
+                                        taskList.get(i).setTask_Response__c(Fname + " " + Lname + "(" + Id + ")");
+                                    else {
+                                        taskList.get(i).setTask_Response__c(Fname + "(" + Id + ")");
+                                    }
+                                }
+                            }
+                            callApiForSubmit(taskList);
+//                            notifyItemChanged(position);
+                        }
+                    } else {
+                        Toast.makeText(ProcessDeatailActivity.this,ProcessDeatailActivity.this.getResources()
+                                .getString(R.string.enter_moblie_no),Toast.LENGTH_SHORT).show();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(ProcessDeatailActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void callApiForSubmit(ArrayList<Task> temp) {

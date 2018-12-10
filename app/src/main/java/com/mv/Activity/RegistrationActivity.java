@@ -512,12 +512,16 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         RadioGroup radioGroup = (RadioGroup) findViewById(R.id.gender_group);
         radioGroup.setOnCheckedChangeListener((radioGroup1, checkedId) -> {
-            if (checkedId == R.id.gender_male) {
-                mGenderSelect = "Male";
-            } else if (checkedId == R.id.gender_female) {
-                mGenderSelect = "Female";
-            } else if (checkedId == R.id.gender_other) {
-                mGenderSelect = "Other";
+            switch (checkedId) {
+                case R.id.gender_male:
+                    mGenderSelect = "Male";
+                    break;
+                case R.id.gender_female:
+                    mGenderSelect = "Female";
+                    break;
+                case R.id.gender_other:
+                    mGenderSelect = "Other";
+                    break;
             }
         });
 

@@ -6,19 +6,12 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.mv.Adapter.ExpandableApprovalListAdapter;
 import com.mv.Model.HolidayListModel;
-import com.mv.Model.LeaveCountModel;
 import com.mv.Model.LeavesModel;
 import com.mv.Model.User;
 import com.mv.R;
@@ -38,34 +31,21 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-
 public class LeaveApprovalActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private Activity mContext;
     private ActivityLeaveApprovalBinding binding;
-    private ImageView img_back, img_list, img_logout;
-    private TextView toolbar_title;
-    private RelativeLayout mToolBar;
-    ArrayList<String> idList;
     private PreferenceHelper preferenceHelper;
+    private ExpandableApprovalListAdapter adapter;
+
     private ArrayList<String> headerList;
     private HashMap<String, ArrayList<LeavesModel>> childList;
-    ArrayList<LeavesModel> leaveList = new ArrayList<>();
-    private String proceesId;
-    String Processname;
-    private String tabName;
-    private Activity mContext;
-    private List<HolidayListModel> holidayListModels = new ArrayList<>();
-    private LeaveCountModel leaveCountModel = new LeaveCountModel();
-    private TextView textNoData;
-
-    private ExpandableApprovalListAdapter adapter;
     private String url = "";
 
     @Override
@@ -73,19 +53,17 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
         super.onCreate(savedInstanceState);
         mContext = this;
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_leave_approval);
         binding.setProcesslist(this);
-        headerList = new ArrayList<>();
+
         childList = new HashMap<>();
+        headerList = new ArrayList<>();
         headerList.add(getString(R.string.pending));
         headerList.add(getString(R.string.reject));
         headerList.add(getString(R.string.approve));
 
-/*        proceesId = getIntent().getExtras().getString(Constants.PROCESS_ID);
-        Processname = getIntent().getExtras().getString(Constants.PROCESS_NAME);*/
         initViews();
-
-        // getLeaveBalanceCount();
     }
 
     @Override
@@ -95,6 +73,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
 
     private void initViews() {
         preferenceHelper = new PreferenceHelper(this);
+
         //storing process Id to preference to use later
         if (preferenceHelper.getString(Constants.Leave).equals(Constants.Leave_Approve)) {
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -107,43 +86,39 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
             binding.fabAddProcess.setVisibility(View.VISIBLE);
         }
 
-        preferenceHelper.insertString(Constants.PROCESS_ID, proceesId);
+        preferenceHelper.insertString(Constants.PROCESS_ID, "");
         preferenceHelper.insertString(Constants.PROCESS_TYPE, Constants.MANGEMENT_PROCESS);
-        textNoData = (TextView) findViewById(R.id.textNoData);
         setActionbar(getString(R.string.leave));
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
-/*        binding.rvProcess.setLayoutManager(mLayoutManager);
-        binding.rvProcess.setItemAnimator(new DefaultItemAnimator());*/
-        adapter = new ExpandableApprovalListAdapter(mContext, headerList, childList,tabName);
+
+        adapter = new ExpandableApprovalListAdapter(mContext, headerList, childList, "");
         binding.rvProcess.setAdapter(adapter);
     }
 
-    private void setActionbar(String Title) {
-        String str = Title;
+    private void setActionbar(String title) {
+        String str = title;
         if (str.contains("\n")) {
             str = str.replace("\n", " ");
         }
-        LinearLayout layoutList = (LinearLayout) findViewById(R.id.layoutList);
 
-        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
         TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         toolbar_title.setText(str);
+
         ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
+
         ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setImageResource(R.drawable.ic_action_calender);
-        img_logout.setOnClickListener(this);
     }
-
 
     public void deleteLeave(final String id) {
         Utills.showProgressDialog(mContext, "Loading ", mContext.getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
+        ServiceRequest apiService = ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/deleteLeave?leaveId=" + id + "&userId=" + User.getCurrentUser(mContext).getMvUser().getId();
+                + "/services/apexrest/deleteLeave?leaveId=" + id
+                + "&userId=" + User.getCurrentUser(mContext).getMvUser().getId();
+
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -157,6 +132,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                             ArrayList<LeavesModel> pendingList = new ArrayList<>();
                             ArrayList<LeavesModel> approveList = new ArrayList<>();
                             ArrayList<LeavesModel> rejectList = new ArrayList<>();
+
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject data = jsonArray.getJSONObject(i);
 
@@ -164,35 +140,45 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                                 leavesModel.setId(data.getString("Id"));
                                 leavesModel.setFromDate(data.getString("From__c"));
                                 leavesModel.setToDate(data.getString("To__c"));
+
                                 if (data.has("Reason__c")) {
                                     leavesModel.setReason(data.getString("Reason__c"));
                                 }
+
                                 leavesModel.setTypeOfLeaves(data.getString("Leave_Type__c"));
                                 leavesModel.setStatus(data.getString("Status__c"));
+
                                 if (data.has("isHalfDay__c")) {
                                     leavesModel.setHalfDayLeave(data.getBoolean("isHalfDay__c"));
                                 } else {
                                     leavesModel.setHalfDayLeave(false);
                                 }
+
                                 leavesModel.setRequested_User__c(data.getString("Requested_User__c"));
-                                if (data.has("Requested_User_Name__c"))
+
+                                if (data.has("Requested_User_Name__c")) {
                                     leavesModel.setRequested_User_Name__c(data.getString("Requested_User_Name__c"));
-                                if (data.has("Comment__c"))
+                                }
+                                if (data.has("Comment__c")) {
                                     leavesModel.setComment(data.getString("Comment__c"));
-                                if (leavesModel.getStatus().equals(Constants.LeaveStatusApprove))
+                                }
+                                if (leavesModel.getStatus().equals(Constants.LeaveStatusApprove)) {
                                     approveList.add(leavesModel);
-                                if (leavesModel.getStatus().equals(Constants.LeaveStatusPending))
+                                }
+                                if (leavesModel.getStatus().equals(Constants.LeaveStatusPending)) {
                                     pendingList.add(leavesModel);
-                                if (leavesModel.getStatus().equals(Constants.LeaveStatusRejected))
+                                }
+                                if (leavesModel.getStatus().equals(Constants.LeaveStatusRejected)) {
                                     rejectList.add(leavesModel);
+                                }
                             }
+
                             childList.put(getString(R.string.pending), pendingList);
                             childList.put(getString(R.string.reject), rejectList);
                             childList.put(getString(R.string.approve), approveList);
-                            adapter = new ExpandableApprovalListAdapter(mContext, headerList, childList, tabName);
+
+                            adapter = new ExpandableApprovalListAdapter(mContext, headerList, childList, "");
                             binding.rvProcess.setAdapter(adapter);
-
-
                         }
                     }
                 } catch (JSONException e) {
@@ -205,7 +191,6 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utills.hideProgressDialog();
-
             }
         });
     }
@@ -213,13 +198,12 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onResume() {
         super.onResume();
-        if (Utills.isConnected(this))
+        if (Utills.isConnected(this)) {
             getAllProcess();
-        else
+        } else {
             Utills.showToast(getString(R.string.error_no_internet), mContext);
-
+        }
     }
-
 
     @Override
     public void onClick(View view) {
@@ -232,25 +216,20 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
     }
 
     public void onAddClick() {
-        ArrayList<HolidayListModel> tem = new ArrayList<>();
-        tem.addAll(holidayListModels);
+        ArrayList<HolidayListModel> tem = new ArrayList<>(new ArrayList<>());
         Intent intent = new Intent(mContext, LeaveDetailActivity.class);
         intent.putParcelableArrayListExtra(Constants.PROCESS_ID, tem);
         mContext.startActivity(intent);
-
     }
 
     @Override
     public void onBackPressed() {
-        // Utills.openActivity(mContext, HomeActivity.class);
         finish();
     }
 
     private void getAllProcess() {
-
         Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -265,6 +244,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                             ArrayList<LeavesModel> pendingList = new ArrayList<>();
                             ArrayList<LeavesModel> approveList = new ArrayList<>();
                             ArrayList<LeavesModel> rejectList = new ArrayList<>();
+
                             for (int i = 0; i < jsonArray.length(); i++) {
                                 JSONObject data = jsonArray.getJSONObject(i);
 
@@ -272,39 +252,50 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                                 leavesModel.setId(data.getString("Id"));
                                 leavesModel.setFromDate(data.getString("From__c"));
                                 leavesModel.setToDate(data.getString("To__c"));
+
                                 if (data.has("Reason__c")) {
                                     leavesModel.setReason(data.getString("Reason__c"));
                                 }
                                 leavesModel.setTypeOfLeaves(data.getString("Leave_Type__c"));
                                 leavesModel.setStatus(data.getString("Status__c"));
-                                if (data.has("Comment__c"))
+
+                                if (data.has("Comment__c")) {
                                     leavesModel.setComment(data.getString("Comment__c"));
+                                }
                                 leavesModel.setRequested_User__c(data.getString("Requested_User__c"));
-                                if (data.has("Requested_User_Name__c"))
+
+                                if (data.has("Requested_User_Name__c")) {
                                     leavesModel.setRequested_User_Name__c(data.getString("Requested_User_Name__c"));
+                                }
+
                                 if (data.has("isHalfDay__c")) {
                                     leavesModel.setHalfDayLeave(data.getBoolean("isHalfDay__c"));
                                 } else {
                                     leavesModel.setHalfDayLeave(false);
                                 }
-                                if (leavesModel.getStatus().equals(Constants.LeaveStatusApprove))
+
+                                if (leavesModel.getStatus().equals(Constants.LeaveStatusApprove)) {
                                     approveList.add(leavesModel);
-                                if (leavesModel.getStatus().equals(Constants.LeaveStatusPending))
+                                }
+                                if (leavesModel.getStatus().equals(Constants.LeaveStatusPending)) {
                                     pendingList.add(leavesModel);
-                                if (leavesModel.getStatus().equals(Constants.LeaveStatusRejected))
+                                }
+                                if (leavesModel.getStatus().equals(Constants.LeaveStatusRejected)) {
                                     rejectList.add(leavesModel);
+                                }
                             }
+
                             AppDatabase.getAppDatabase(LeaveApprovalActivity.this).userDao().deleteAllLeaves();
                             AppDatabase.getAppDatabase(LeaveApprovalActivity.this).userDao().insertLeaves(pendingList);
                             AppDatabase.getAppDatabase(LeaveApprovalActivity.this).userDao().insertLeaves(rejectList);
                             AppDatabase.getAppDatabase(LeaveApprovalActivity.this).userDao().insertLeaves(approveList);
+
                             childList.put(getString(R.string.pending), pendingList);
                             childList.put(getString(R.string.reject), rejectList);
                             childList.put(getString(R.string.approve), approveList);
-                            adapter = new ExpandableApprovalListAdapter(mContext, headerList, childList, tabName);
+
+                            adapter = new ExpandableApprovalListAdapter(mContext, headerList, childList, "");
                             binding.rvProcess.setAdapter(adapter);
-
-
                         }
                     }
                 } catch (JSONException e) {
@@ -317,36 +308,6 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utills.hideProgressDialog();
-
-            }
-        });
-    }
-
-    private void getLeaveBalanceCount() {
-        Utills.showProgressDialog(mContext, "Loading Process", getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
-        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getTotalLeaveAndBalanace?userId=" + User.getCurrentUser(mContext).getMvUser().getId();
-        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                Utills.hideProgressDialog();
-                try {
-                    String data = response.body().string();
-                    Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-                    leaveCountModel = gson.fromJson(data, LeaveCountModel.class);
-
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Utills.hideProgressDialog();
-
             }
         });
     }

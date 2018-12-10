@@ -934,6 +934,7 @@
                     android:layout_weight="2"
                     android:background="@drawable/grey_box"
                     android:orientation="horizontal"
+                    android:baselineAligned="false"
                     android:padding="5dp">
 
                     <LinearLayout

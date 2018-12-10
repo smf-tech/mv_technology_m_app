@@ -60,7 +60,7 @@ public class AssetApprovalActivity extends AppCompatActivity implements View.OnC
 
     private void InitViews() {
         setActionbar(getString(R.string.asset_approval));
-        if(getIntent().getExtras().getSerializable("Assets")!=null){
+        if (getIntent().getExtras() != null) {
             asset = (Asset) getIntent().getExtras().getSerializable("Assets");
         }
 

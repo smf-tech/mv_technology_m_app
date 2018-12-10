@@ -35,7 +35,6 @@ public class VersionReportAdapter extends RecyclerView.Adapter<VersionReportAdap
 
     public VersionReportAdapter(List<Template> moviesList, Activity context) {
         this.teplateList = moviesList;
-        Activity mContext = context;
     }
 
     @Override

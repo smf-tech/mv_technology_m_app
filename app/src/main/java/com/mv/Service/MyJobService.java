@@ -1,5 +1,6 @@
 package com.mv.Service;
 
+import android.annotation.SuppressLint;
 import android.location.Geocoder;
 import android.location.Location;
 import android.util.Log;
@@ -53,6 +54,7 @@ public class MyJobService extends JobService {
         return false; // Answers the question: "Should this job be retried?"
     }
 
+    @SuppressLint("SimpleDateFormat")
     private void GetMapParameters(String latitude, String longitude) {
 
         try {
@@ -132,7 +134,7 @@ public class MyJobService extends JobService {
 
                     GetMapParameters(latitude, longitude);
                     if (!Geocoder.isPresent()) {
-                        //Toast.makeText(getApplicationContext(),"No geocoder available",Toast.LENGTH_SHORT).show();
+                        System.out.print("No geocoder available");
                     }
 
                     // If the user pressed the fetch address button before we had the location,

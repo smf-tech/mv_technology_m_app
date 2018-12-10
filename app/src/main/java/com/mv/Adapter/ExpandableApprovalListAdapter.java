@@ -67,54 +67,49 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater != null ? infalInflater.inflate(R.layout.each_child_leave_application, null) : null;
         }
 
-        ImageView imgDownload, imgshare;
         TextView txtCount, txtName;
         RelativeLayout layoutMain;
 
-        layoutMain = convertView.findViewById(R.id.layoutMain);
+        if (convertView != null) {
+            layoutMain = convertView.findViewById(R.id.layoutMain);
+            txtCount = convertView.findViewById(R.id.txtCount);
 
-        txtCount = convertView.findViewById(R.id.txtCount);
-
-        layoutMain.setOnClickListener(v -> {
-                Intent intent=new Intent(_context, LeaveDetailActivity.class);
-                intent.putExtra(Constants.Leave ,leavesModel);
+            layoutMain.setOnClickListener(v -> {
+                Intent intent = new Intent(_context, LeaveDetailActivity.class);
+                intent.putExtra(Constants.Leave, leavesModel);
                 _context.startActivity(intent);
-        });
-        imgDownload = convertView.findViewById(R.id.imgDownload);
-     if(groupPosition==0&&!preferenceHelper.getString(Constants.Leave).equals(Constants.Leave_Approve))
-     {
+            });
 
-         imgDownload.setVisibility(View.VISIBLE);
-         imgDownload.setOnClickListener(view -> showDeleteDialog(leavesModel.getId()));
-     }
-     else
-     {
-         imgDownload.setVisibility(View.GONE);
-     }
+            ImageView imgDownload = convertView.findViewById(R.id.imgDownload);
+            if (groupPosition == 0 && !preferenceHelper.getString(Constants.Leave).equals(Constants.Leave_Approve)) {
+                imgDownload.setVisibility(View.VISIBLE);
+                imgDownload.setOnClickListener(view -> showDeleteDialog(leavesModel.getId()));
+            } else {
+                imgDownload.setVisibility(View.GONE);
+            }
 
+            txtName = convertView.findViewById(R.id.txtName);
+            txtCount.setVisibility(View.GONE);
 
-
-     //   imgshare = convertView.findViewById(R.id.imgshare);
-
-
-        txtName = convertView.findViewById(R.id.txtName);
-
-        txtCount.setVisibility(View.GONE);
-        if(leavesModel.getRequested_User_Name__c()!=null)
-        txtName.setText(leavesModel.getRequested_User_Name__c()+"("+leavesModel.getFromDate()+" : " +leavesModel.getToDate()+")");
-        else
-            txtName.setText(leavesModel.getFromDate()+" : " +leavesModel.getToDate()+ " : "+leavesModel.getTypeOfLeaves());
+            if (leavesModel.getRequested_User_Name__c() != null) {
+                txtName.setText(String.format("%s(%s : %s)", leavesModel.getRequested_User_Name__c(),
+                        leavesModel.getFromDate(), leavesModel.getToDate()));
+            } else {
+                txtName.setText(String.format("%s : %s : %s", leavesModel.getFromDate(),
+                        leavesModel.getToDate(), leavesModel.getTypeOfLeaves()));
+            }
+        }
 
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-    if(this._listDataChild.get(this._listDataHeader.get(groupPosition))!=null)
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .size();
-    else
-        return 0;
+        if (this._listDataChild.get(this._listDataHeader.get(groupPosition)) != null) {
+            return this._listDataChild.get(this._listDataHeader.get(groupPosition)).size();
+        } else {
+            return 0;
+        }
     }
 
 
@@ -137,28 +132,29 @@ public class ExpandableApprovalListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this._context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater != null ? infalInflater.inflate(R.layout.list_group, null) : null;
         }
-        ImageView imgGroup = null;
-        if (convertView != null) {
-            imgGroup = convertView.findViewById(R.id.imgGroup);
-        }
-        if (imgGroup != null) {
-            if (isExpanded) {
-                imgGroup.setImageResource(R.drawable.downarrow);
 
-            } else {
-                imgGroup.setImageResource(R.drawable.rightarrow);
+        if (convertView != null) {
+
+            ImageView imgGroup = convertView.findViewById(R.id.imgGroup);
+            if (imgGroup != null) {
+                if (isExpanded) {
+                    imgGroup.setImageResource(R.drawable.downarrow);
+                } else {
+                    imgGroup.setImageResource(R.drawable.rightarrow);
+                }
             }
+
+            String headerTitle = (String) getGroup(groupPosition);
+            TextView txtName = convertView.findViewById(R.id.txtName);
+            txtName.setText(headerTitle);
         }
-        TextView txtName = convertView
-                .findViewById(R.id.txtName);
-       // date.setTypeface(null, Typeface.BOLD);
-        txtName.setText(headerTitle);
+
         return convertView;
     }
 

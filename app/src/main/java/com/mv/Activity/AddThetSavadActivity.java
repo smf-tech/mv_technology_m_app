@@ -1028,16 +1028,23 @@ public class AddThetSavadActivity extends AppCompatActivity implements View.OnCl
     }
 
     public String getPath(Uri uri) {
-        String[] projection = {MediaStore.Video.Media.DATA};
-        Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-        if (cursor != null) {
-            // HERE YOU WILL GET A NULLPOINTER IF CURSOR IS NULL
-            // THIS CAN BE, IF YOU USED OI FILE MANAGER FOR PICKING THE MEDIA
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
-            cursor.moveToFirst();
-            return cursor.getString(column_index);
-        } else {
-            return null;
+        Cursor cursor = null;
+        try {
+            String[] projection = {MediaStore.Video.Media.DATA};
+            cursor = getContentResolver().query(uri, projection, null, null, null);
+            if (cursor != null) {
+                // HERE YOU WILL GET A NULLPOINTER IF CURSOR IS NULL
+                // THIS CAN BE, IF YOU USED OI FILE MANAGER FOR PICKING THE MEDIA
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA);
+                cursor.moveToFirst();
+                return cursor.getString(column_index);
+            } else {
+                return null;
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
         }
     }
 

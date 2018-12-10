@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.mv.Model.OverAllModel;
 import com.mv.R;
-import com.mv.Utils.PreferenceHelper;
 
 import java.util.List;
 
@@ -80,8 +79,6 @@ public class OverallReportAdapter extends RecyclerView.Adapter<OverallReportAdap
 
     public OverallReportAdapter(List<OverAllModel> moviesList, Activity context) {
         this.teplateList = moviesList;
-        Activity mContext = context;
-        PreferenceHelper preferenceHelper = new PreferenceHelper(context);
     }
 
     @Override
