@@ -155,9 +155,7 @@ public class MyReportActivity extends AppCompatActivity implements View.OnClickL
 
                         mAdapter.notifyDataSetChanged();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
             }
