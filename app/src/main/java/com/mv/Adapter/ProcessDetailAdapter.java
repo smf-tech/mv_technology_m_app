@@ -8,6 +8,7 @@ import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -35,6 +36,7 @@ import com.google.gson.GsonBuilder;
 import com.mv.Activity.LocationSelectionActity;
 import com.mv.Activity.ProcessDeatailActivity;
 import com.mv.Model.Asset;
+import com.mv.Model.ImageData;
 import com.mv.Model.Task;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -256,7 +258,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             });
 
             imgAdd.setOnClickListener(v -> {
-                Long tsLong = System.currentTimeMillis()/1000;
+                Long tsLong = System.currentTimeMillis();
                 String imgName = tsLong.toString();
                 taskList.get(getAdapterPosition()).setTask_Response__c(imgName);
                 activity.sendToCamera(imgName, getAdapterPosition());
@@ -744,6 +746,11 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
                     if (imageFile.exists()) {
                         holder.imgAdd.setImageBitmap(BitmapFactory.decodeFile(imageFile.getAbsolutePath()));
+                        Uri finalUri = Uri.fromFile(imageFile);
+                        ImageData id = new ImageData();
+                        id.setPosition(position);
+                        id.setImageUri(finalUri);
+                        ((ProcessDeatailActivity)mContext).imageDataList.add(id);
                     } else {
                         Glide.with(mContext)
                                 .load(Constants.IMAGEURL + taskList.get(position).getTask_Response__c() + ".png")

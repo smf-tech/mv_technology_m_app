@@ -73,7 +73,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     private PreferenceHelper preferenceHelper;
     private ArrayList<Task> taskList = new ArrayList<>();
-    private ArrayList<ImageData> imageDataList = new ArrayList<>();
+    public ArrayList<ImageData> imageDataList = new ArrayList<>();
     private String pickListApiFieldNames;
     private GPSTracker gps;
     private Activity context;
