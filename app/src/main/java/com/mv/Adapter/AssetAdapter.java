@@ -135,6 +135,7 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
 
     }
 
+    @SuppressWarnings("deprecation")
     private void showLogoutPopUp(final int postion) {
         final AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
 
@@ -154,10 +155,9 @@ public class AssetAdapter extends RecyclerView.Adapter<AssetAdapter.ViewHolder> 
               /*  listOfWrongQuestions.add(mPosition);
                 prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
         });
+
         // Setting OK Button
-        alertDialog.setButton(mContext.getString(android.R.string.ok), (dialog, which)-> {
-                activity.deleteExpense(assetList.get(postion));
-        });
+        alertDialog.setButton(mContext.getString(android.R.string.ok), (dialog, which)-> activity.deleteExpense(assetList.get(postion)));
 
         // Showing Alert Message
         alertDialog.show();

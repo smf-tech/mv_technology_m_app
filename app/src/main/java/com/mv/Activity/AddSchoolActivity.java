@@ -149,10 +149,8 @@ public class AddSchoolActivity extends AppCompatActivity implements View.OnClick
                 binding.spinnerSchoolName.setText("");
 
         });
-        binding.spinnerSchoolName.setOnItemClickListener((parent, view, position, id) ->{
-                selectedSchool = (String) parent.getItemAtPosition(position);
 
-        });
+        binding.spinnerSchoolName.setOnItemClickListener((parent, view, position, id) -> selectedSchool = (String) parent.getItemAtPosition(position));
         binding.btnSubmit.setOnClickListener(this);
 
         mStateList = new ArrayList<>();

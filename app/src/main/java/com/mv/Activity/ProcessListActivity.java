@@ -32,7 +32,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -342,11 +341,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 }
                             }
 
-                            Collections.sort(resultList, new Comparator<TaskContainerModel>() {
-                                public int compare(TaskContainerModel o1, TaskContainerModel o2) {
-                                    return o2.getTaskTimeStamp().compareTo(o1.getTaskTimeStamp());
-                                }
-                            });
+                            Collections.sort(resultList, (o1, o2) -> o2.getTaskTimeStamp().compareTo(o1.getTaskTimeStamp()));
 
                             AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().insertTask(resultList);
                             if (resultList.size() > 0) {
