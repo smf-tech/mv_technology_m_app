@@ -177,9 +177,7 @@ public class MyReportActivity extends AppCompatActivity implements View.OnClickL
                         mAdapter = new IndicatorListAdapter(context, processAllList);
                         binding.recyclerView.setAdapter(mAdapter);
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
             }

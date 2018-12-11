@@ -90,6 +90,7 @@ public class AdavanceAdapter extends RecyclerView.Adapter<AdavanceAdapter.ViewHo
         }
     }
 
+    @SuppressWarnings("deprecation")
     private void showLogoutPopUp(final int postion) {
         final AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
 
@@ -109,10 +110,9 @@ public class AdavanceAdapter extends RecyclerView.Adapter<AdavanceAdapter.ViewHo
           /*  listOfWrongQuestions.add(mPosition);
             prefObj.insertString( PreferenceHelper.WRONG_QUESTION_LIST_KEY_NAME, Utills.getStringFromList( listOfWrongQuestions ));*/
         });
+
         // Setting OK Button
-        alertDialog.setButton(mContext.getString(android.R.string.ok), (dialog, which) -> {
-                mActivity.deleteAdavance(mDataList.get(postion));
-        });
+        alertDialog.setButton(mContext.getString(android.R.string.ok), (dialog, which) -> mActivity.deleteAdavance(mDataList.get(postion)));
 
         // Showing Alert Message
         alertDialog.show();

@@ -2,7 +2,6 @@ package com.mv.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -435,9 +434,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
                 }
             });
 
-            layout_download_file.setOnClickListener(v -> {
-                startDownload(getAdapterPosition());
-            });
+            layout_download_file.setOnClickListener(v -> startDownload(getAdapterPosition()));
 
             imgMore = itemLayoutView.findViewById(R.id.imgMore);
 
@@ -555,11 +552,7 @@ public class ThetSavandAdapter extends RecyclerView.Adapter<ThetSavandAdapter.Vi
         alertDialog.setIcon(R.drawable.app_logo);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(mContext.getString(android.R.string.cancel), new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-                alertDialog.dismiss();
-            }
-        });
+        alertDialog.setButton2(mContext.getString(android.R.string.cancel), (dialog, which) -> alertDialog.dismiss());
 
         // Setting OK Button
         alertDialog.setButton(mContext.getString(android.R.string.ok), (dialog, which) -> DeletePost());

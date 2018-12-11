@@ -779,7 +779,8 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
                     if (pickListJsonObj.has(referenceField) && pickListJsonObj.get("taskId__c").equals(task.getMV_Task__c_Id())) {
                         for (String filter : filterArray) {
-                            if (filterValues.get(filter).equalsIgnoreCase(pickListJsonObj.getString(filter))) {
+                            String strFilter = filterValues.get(filter);
+                            if (strFilter != null && strFilter.equalsIgnoreCase(pickListJsonObj.getString(filter))) {
                                 flag = true;
                             } else {
                                 flag = false;

@@ -44,8 +44,12 @@ public class ExpandableAttendanceApprovalListAdapter extends BaseExpandableListA
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .get(childPosititon);
+        ArrayList<AttendanceApproval> attendanceApprovals = this._listDataChild.get(this._listDataHeader.get(groupPosition));
+        if (attendanceApprovals != null && !attendanceApprovals.isEmpty()) {
+            return attendanceApprovals.get(childPosititon);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -93,11 +97,12 @@ public class ExpandableAttendanceApprovalListAdapter extends BaseExpandableListA
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if(this._listDataChild.get(this._listDataHeader.get(groupPosition))!=null)
-            return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                    .size();
-        else
+        ArrayList<AttendanceApproval> attendanceApprovals = this._listDataChild.get(this._listDataHeader.get(groupPosition));
+        if (attendanceApprovals != null) {
+            return attendanceApprovals.size();
+        } else {
             return 0;
+        }
     }
 
     @Override

@@ -1095,9 +1095,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                         return;
                     }
                 })
-                .addOnFailureListener(this, e -> {
-                    Log.e("fail", "unable to connect");
-                });
+                .addOnFailureListener(this, e -> Log.e("fail", "unable to connect"));
     }
 
     @SuppressWarnings("deprecation")
