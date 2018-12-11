@@ -335,7 +335,6 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
         ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
-        img_logout.setOnClickListener(this);
     }
 
     private void getState() {
@@ -538,7 +537,6 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 }
 
                 setSpinnerAdapter(mListTaluka, binding.spinnerTaluka, selectedTaluka);
-                setSpinnerAdapter(mListTaluka, binding.spinnerTaluka, selectedTaluka);
                 setSpinnerAdapter(mListCluster, binding.spinnerCluster, selectedCluster);
                 setSpinnerAdapter(mListVillage, binding.spinnerVillage, selectedVillage);
                 setSpinnerAdapter(mListSchoolName, binding.spinnerSchoolName, selectedSchool);
@@ -697,9 +695,11 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
     }
 
     public void setSpinnerAdapter(List<String> itemList, ArrayAdapter<String> adapter, Spinner spinner, String selectedValue) {
+
     }
 
     public void setSpinnerAdapter(List<String> itemList, Spinner spinner, String selectedValue) {
+
     }
 
     @Override
@@ -976,7 +976,6 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
     private void getCalendeEventsProcess() {
         Utills.showProgressDialog(context, "Loading ", getString(R.string.progress_please_wait));
         ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl) + Constants.GetCalenderEventsProcess
                 + "?userId=" + User.getCurrentUser(CalenderFliterActivity.this).getMvUser().getId();
 
@@ -1003,6 +1002,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                                     prefix = ",";
                                     sb.append(jsonObject.getString("Name"));
                                 }
+
                                 processList.add(process);
                             }
 
@@ -1033,6 +1033,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
             if (resultCode == RESULT_OK) {
                 ArrayList<EventUser> selectedUser = data.getParcelableArrayListExtra(Constants.PROCESS_ID);
                 ArrayList<EventUser> calenderEventUserArrayList = data.getParcelableArrayListExtra(Constants.ALLUSER);
+
                 selectedRolename = data.getStringExtra("Role");
                 StringBuilder sb = new StringBuilder();
                 StringBuilder sbName = new StringBuilder();
@@ -1104,12 +1105,13 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                             sb.append(prefix);
                             prefix = ",";
                             sb.append(temp.get(i));
+                            //now original string is changed
                         }
                     }
 
                     selectedRolename = sb.toString();
                     binding.spinnerRole.setText(selectedRolename);
-                    selectedRole = new ArrayList<String>(Arrays.asList(getColumnIdex((selectedRolename).split(","))));
+                    selectedRole = new ArrayList<>(Arrays.asList(getColumnIdex((selectedRolename).split(","))));
 
                     Log.e("StringValue", selectedRolename);
 
@@ -1151,7 +1153,6 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                             prefix = ",";
                             sb.append(processList.get(i).getName());
                             roleId.append(processList.get(i).getMV_Process__c());
-                            //now original string is changed
                         }
                     }
 
@@ -1161,6 +1162,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
                 }).setNegativeButton(getString(R.string.cancel), (dialog1, id) -> {
                     //  Your code when user clicked on Cancel
                 }).create();
+
         dialog.show();
     }
 
@@ -1168,6 +1170,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
         if (Utills.isConnected(this)) {
             try {
                 Utills.showProgressDialog(context, "Loading ", getString(R.string.progress_please_wait));
+
                 JSONObject jsonObject1 = new JSONObject();
                 jsonObject1.put("Id", id);
                 jsonObject1.put("Cluster__c", selectedCluster);
@@ -1211,6 +1214,7 @@ public class CalenderFliterActivity extends AppCompatActivity implements View.On
 
                 JSONObject jsonObject = new JSONObject();
                 JSONArray jsonArray = new JSONArray();
+
                 jsonArray.put(jsonObject1);
                 jsonObject.put("listtaskanswerlist", jsonArray);
 
