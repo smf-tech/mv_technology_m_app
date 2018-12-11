@@ -1,30 +1,38 @@
 package com.mv.Activity;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.mv.Model.DownloadContent;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mv.Model.Salary;
 import com.mv.Model.User;
 import com.mv.R;
-import com.mv.Service.DownloadService;
+import com.mv.Retrofit.ApiClient;
+import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
+import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivitySalaryDetailBinding;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SalaryDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Salary salary;
+    private PreferenceHelper preferenceHelper;
     private ActivitySalaryDetailBinding binding;
     public static final String MESSAGE_PROGRESS = "message_progress";
 
@@ -38,6 +46,7 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
 
         salary = (Salary) getIntent().getSerializableExtra(Constants.SALARY);
         setActionbar("Month :- " + salary.getMonth());
+        preferenceHelper = new PreferenceHelper(this);
 
         initView();
     }
@@ -110,7 +119,7 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
                 break;
 
             case R.id.img_logout:
-                //  startDownload();
+                sendSalaryPDF_Email();
                 break;
         }
     }
@@ -142,8 +151,9 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
         img_list.setVisibility(View.GONE);
 
         ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
-        img_logout.setImageResource(R.drawable.download_file);
-        img_logout.setVisibility(View.GONE);
+        img_logout.setImageResource(R.drawable.downloadfile);
+        img_logout.setVisibility(View.VISIBLE);
+        img_logout.setOnClickListener(this);
     }
 
     @Override
@@ -151,36 +161,51 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
         super.onResume();
     }
 
-    public void startDownload(DownloadContent content) {
-        Utills.showToast("Downloading Started...", SalaryDetailActivity.this);
-        Intent intent = new Intent(SalaryDetailActivity.this, DownloadService.class);
-        intent.putExtra("URL", content.getUrl());
-        intent.putExtra("fragment_flag", "Salary_Detail_Activity");
+    private void sendSalaryPDF_Email() {
+        if (Utills.isConnected(this)) {
+            try {
+                Utills.showProgressDialog(this);
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("salaryId", salary.getId());
+                ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+                JsonParser jsonParser = new JsonParser();
+                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
 
-        if (content.getFileType().equalsIgnoreCase("pdf")) {
-            intent.putExtra("FILENAME", content.getName() + ".pdf");
-            intent.putExtra("FILETYPE", "pdf");
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                        + "/services/apexrest/SendSalarySlipPDFOverEmail", gsonObject).enqueue(new Callback<ResponseBody>() {
+
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Utills.hideProgressDialog();
+                        try {
+                            if (response.body() != null) {
+                                if (response.isSuccess()) {
+                                    String data = response.body().string();
+                                    if (data.length() > 0) {
+                                        JSONObject object = new JSONObject(data);
+                                        Utills.showToast(object.getString("Status"), SalaryDetailActivity.this);
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            Utills.hideProgressDialog();
+                            Utills.showToast(getResources().getString(R.string.error_something_went_wrong), SalaryDetailActivity.this);
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Utills.hideProgressDialog();
+                        Utills.showToast(getResources().getString(R.string.error_something_went_wrong), SalaryDetailActivity.this);
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Utills.hideProgressDialog();
+                Utills.showToast(getResources().getString(R.string.error_something_went_wrong), SalaryDetailActivity.this);
+            }
+        } else {
+            Utills.showToast(getResources().getString(R.string.error_no_internet), SalaryDetailActivity.this);
         }
-
-        startService(intent);
-    }
-
-    /*Get the the intent from download service for checking file is completely downloaded or not*/
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-//            if (intent.getAction() != null && intent.getAction().equals(MESSAGE_PROGRESS)) {
-//                if (adapter != null)
-//                    adapter.notifyDataSetChanged();
-//            }
-        }
-    };
-
-    /*Register receiver*/
-    private void registerReceiver() {
-        LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(SalaryDetailActivity.this);
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(MESSAGE_PROGRESS);
-        bManager.registerReceiver(broadcastReceiver, intentFilter);
     }
 }

@@ -240,7 +240,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
         ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.VISIBLE);
-        img_logout.setBackgroundResource(R.drawable.comment);
+        img_logout.setImageResource(R.drawable.comment_white);
         img_logout.setOnClickListener(this);
     }
 
