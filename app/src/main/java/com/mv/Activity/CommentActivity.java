@@ -116,7 +116,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
             Utills.showProgressDialog(this, getString(R.string.loading_comment), getString(R.string.progress_please_wait));
         ServiceRequest apiService =
                 ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
-        String url ="";
+        String url;
         if(intentActivity.equals("ProcessDeatailActivity")){
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/getProcessAnswerComments?ProcessAnswerId=" + conetentId;
@@ -241,7 +241,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                 jsonObject1.put("Comment__c", binding.edtComment.getText().toString().trim());
                 jsonObject1.put("MV_User__c", User.getCurrentUser(this).getMvUser().getId());
 
-                String url ="";
+                String url;
                 if(intentActivity.equals("ProcessDeatailActivity")){
                     url = preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertProcessAnswerComments";
                     jsonObject1.put("ProcessAnswer__c", conetentId);
@@ -315,7 +315,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
 //
 //                    jsonObject1.put("commentId", id);
 
-            String url ="";
+            String url;
             if(intentActivity.equals("ProcessDeatailActivity")){
                 url = preferenceHelper.getString(PreferenceHelper.InstanceUrl) +"/services/apexrest/DeleteProcessAnswerComment/"+id;
             }else{

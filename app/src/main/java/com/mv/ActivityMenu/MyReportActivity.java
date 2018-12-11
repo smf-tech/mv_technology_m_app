@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.mv.Adapter.IndicatorListAdapter;
@@ -41,18 +40,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-/**
- * Created by nanostuffs on 14-11-2017.
- */
-
 public class MyReportActivity extends AppCompatActivity implements View.OnClickListener {
+
+    private Activity context;
     private PreferenceHelper preferenceHelper;
     private List<DashaBoardListModel> processAllList = new ArrayList<>();
     private IndicatorListAdapter mAdapter;
     private ActivityNewTemplateBinding binding;
-    private RecyclerView.LayoutManager mLayoutManager;
-
-    private Activity context;
 
     @Override
     public void onResume() {
@@ -70,22 +64,24 @@ public class MyReportActivity extends AppCompatActivity implements View.OnClickL
         setActionbar(getString(R.string.indicator));
     }
 
-    private void setActionbar(String Title) {
-        String str = Title;
+    private void setActionbar(String title) {
+        String str = title;
         if (str.contains("\n")) {
             str = str.replace("\n", " ");
         }
+
         LinearLayout layoutList = (LinearLayout) findViewById(R.id.layoutList);
         layoutList.setVisibility(View.GONE);
-        RelativeLayout mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
+
         TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         toolbar_title.setText(str);
+
         ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
+
         ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
-        img_logout.setOnClickListener(this);
     }
 
     @Override
@@ -113,24 +109,26 @@ public class MyReportActivity extends AppCompatActivity implements View.OnClickL
         );
 
         mAdapter = new IndicatorListAdapter(context, processAllList);
-        mLayoutManager = new LinearLayoutManager(context);
+
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
         binding.recyclerView.setLayoutManager(mLayoutManager);
         binding.recyclerView.setItemAnimator(new DefaultItemAnimator());
         binding.recyclerView.setAdapter(mAdapter);
-        if (Utills.isConnected(context))
+
+        if (Utills.isConnected(context)) {
             getAllReportProcess();
-        else {
+        } else {
             Utills.showInternetPopUp(context);
         }
     }
 
-
     private void getAllReportProcess() {
         Utills.showProgressDialog(context, "Loading Process", getString(R.string.progress_please_wait));
-        ServiceRequest apiService =
-                ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
+        ServiceRequest apiService = ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + "/services/apexrest/getProcessDashBoardDatademo?userId=" + User.getCurrentUser(context).getMvUser().getId();
+                + "/services/apexrest/getProcessDashBoardDatademo?userId="
+                + User.getCurrentUser(context).getMvUser().getId();
+
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -140,7 +138,7 @@ public class MyReportActivity extends AppCompatActivity implements View.OnClickL
                     if (response.isSuccess()) {
                         JSONArray jsonArray = new JSONArray(response.body().string());
                         processAllList.clear();
-                        DashaBoardListModel processList ;
+                        DashaBoardListModel processList;
 
                         for (int i = 0; i < jsonArray.length(); i++) {
                             processList = new DashaBoardListModel();
@@ -149,6 +147,7 @@ public class MyReportActivity extends AppCompatActivity implements View.OnClickL
                             processList.setId(processObj.getString("Id"));
                             processList.setName(processObj.getString("Name"));
                             processList.setMultiple_Role__c(processObj.getString("Show_Role_In_Mobile_dashboard__c"));
+
                             JSONArray tasklist = jsonObject.getJSONArray("taskList");
                             for (int j = 0; j < tasklist.length(); j++) {
                                 Task task = new Task();
@@ -156,28 +155,29 @@ public class MyReportActivity extends AppCompatActivity implements View.OnClickL
                                 task.setTask_Text__c(tasklist.getJSONObject(j).getString("Task_Text__c"));
                                 task.setTask_type__c(tasklist.getJSONObject(j).getString("Task_type__c"));
                                 task.setSection_Name__c(tasklist.getJSONObject(j).getString("Section_Name__c"));
-                                if (tasklist.getJSONObject(j).has("Location_Level__c"))
-                                    task.setLocationLevel(tasklist.getJSONObject(j).getString("Location_Level__c"));
 
+                                if (tasklist.getJSONObject(j).has("Location_Level__c")) {
+                                    task.setLocationLevel(tasklist.getJSONObject(j).getString("Location_Level__c"));
+                                }
                                 task.setMV_Process__c(tasklist.getJSONObject(j).getString("MV_Process__c"));
                                 processList.getTasksList().add(task);
                             }
+
                             Task task = new Task();
                             task.setSection_Name__c("Overall Report");
-                            processList.getTasksList().add(0,task);
+                            processList.getTasksList().add(0, task);
 
                             processAllList.add(processList);
                         }
 
                         processList = new DashaBoardListModel();
                         processList.setName(getString(R.string.app_versio_report));
-                        processAllList.add(0,processList);
+                        processAllList.add(0, processList);
+
                         mAdapter = new IndicatorListAdapter(context, processAllList);
                         binding.recyclerView.setAdapter(mAdapter);
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -185,7 +185,6 @@ public class MyReportActivity extends AppCompatActivity implements View.OnClickL
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utills.hideProgressDialog();
-
             }
         });
     }

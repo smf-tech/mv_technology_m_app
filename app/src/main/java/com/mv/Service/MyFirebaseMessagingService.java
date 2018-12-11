@@ -59,10 +59,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                                 //check for the mute Notifications of cammunity
                                 boolean isNotify=true;
                                 List<Community> list = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities();
-                                for(int i=0;i<list.size();i++){
-                                    if(remoteMessage.getData().get("Title").contains(list.get(i).getName())&& list.get(i).getMuteNotification()!=null &&
-                                            list.get(i).getMuteNotification().equals("Unmute")){
-                                        isNotify=false;
+                                for (int i = 0; i < list.size(); i++) {
+                                    String title = remoteMessage.getData().get("Title");
+                                    if (title != null && title.contains(list.get(i).getName()) &&
+                                            list.get(i).getMuteNotification() != null &&
+                                            list.get(i).getMuteNotification().equals("Unmute")) {
+                                        isNotify = false;
                                         break;
                                     }
                                 }
@@ -85,10 +87,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                     //check for the mute Notifications of cammunity
                     boolean isNotify=true;
                     List<Community> list = AppDatabase.getAppDatabase(getApplicationContext()).userDao().getAllCommunities();
-                    for(int i=0;i<list.size();i++){
-                        if(remoteMessage.getData().get("Title").contains(list.get(i).getName()) && list.get(i).getMuteNotification()!=null &&
-                                list.get(i).getMuteNotification().equals("Unmute")){
-                            isNotify=false;
+                    for (int i = 0; i < list.size(); i++) {
+                        String title = remoteMessage.getData().get("Title");
+                        if (title != null && title.contains(list.get(i).getName()) &&
+                                list.get(i).getMuteNotification() != null &&
+                                list.get(i).getMuteNotification().equals("Unmute")) {
+                            isNotify = false;
                             break;
                         }
                     }
