@@ -47,7 +47,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return this.mListDataChild.get(this.mListDataHeader.get(groupPosition)).get(childPosition);
+        List<DownloadContent> downloadContents = this.mListDataChild.get(this.mListDataHeader.get(groupPosition));
+        if (downloadContents != null) {
+            return downloadContents.get(childPosition);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -249,7 +254,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.mListDataChild.get(this.mListDataHeader.get(groupPosition)).size();
+        List<DownloadContent> downloadContents = this.mListDataChild.get(this.mListDataHeader.get(groupPosition));
+        if (downloadContents != null) {
+            return downloadContents.size();
+        } else {
+            return 0;
+        }
     }
 
     private boolean isFileAvailable(DownloadContent downloadContent) {

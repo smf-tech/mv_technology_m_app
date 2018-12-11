@@ -10,62 +10,40 @@ import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.mv.Model.DownloadContent;
 import com.mv.Model.Salary;
 import com.mv.Model.User;
 import com.mv.R;
-import com.mv.Retrofit.ApiClient;
-import com.mv.Retrofit.AppDatabase;
-import com.mv.Retrofit.ServiceRequest;
 import com.mv.Service.DownloadService;
 import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
-import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivitySalaryDetailBinding;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 public class SalaryDetailActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ImageView img_back, img_list, img_logout;
-    private TextView toolbar_title;
-    private RelativeLayout mToolBar;
-    private PreferenceHelper preferenceHelper;
-    private ActivitySalaryDetailBinding binding;
     private Salary salary;
+    private ActivitySalaryDetailBinding binding;
     public static final String MESSAGE_PROGRESS = "message_progress";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_salary_detail);
         binding.setActivity(this);
-        salary = (Salary) getIntent().getSerializableExtra(Constants.SALARY);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
+
+        salary = (Salary) getIntent().getSerializableExtra(Constants.SALARY);
         setActionbar("Month :- " + salary.getMonth());
-        preferenceHelper = new PreferenceHelper(this);
+
         initView();
     }
 
     private void initView() {
-
-        binding.txtPayslipTitle.setText("Payslip for the Month of "+salary.getMonth());
+        binding.txtPayslipTitle.setText(String.format("Payslip for the Month of %s", salary.getMonth()));
         binding.txtTelephone.setText(salary.getTelephone_Expense__c());
         binding.txtNetSalary.setText(salary.getNet_Salary__c());
 
@@ -104,15 +82,20 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
         binding.txtTravelExp.setText(salary.getTravelling_Exp__c());
         binding.txtTeleExp.setText(salary.getTelephone_Expense__Allowance());
         binding.txtsecurityfund.setText(salary.getSecurity_Fund__Allowance());
-        if(salary.getSecurity_Fund__Allowance()==null)
+
+        if (salary.getSecurity_Fund__Allowance() == null) {
             binding.txtsecurityfund.setText("0.0");
-        else
-           binding.txtsecurityfund.setText(salary.getSecurity_Fund__Allowance());
+        } else {
+            binding.txtsecurityfund.setText(salary.getSecurity_Fund__Allowance());
+        }
+
         binding.txtAppointAllow.setText(salary.getAppontment_Allowance__c());
-        if(salary.getAny_other__c()==null)
+        if (salary.getAny_other__c() == null) {
             binding.txtAnyOthers.setText("0.0");
-         else
+        } else {
             binding.txtAnyOthers.setText(salary.getAny_other__c());
+        }
+
         binding.txtTotalreimbursement.setText(salary.getTotal_Reimbursement__c());
         binding.txtNetBankAmount.setText(salary.getTotal_Amount_to_Bank_Net_Salary_Reimbur__c());
         binding.txtLeaveDeductionAmt.setText(salary.getTotal_Leave_Deduction__c());
@@ -127,11 +110,10 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
                 break;
 
             case R.id.img_logout:
-              //  startDownload();
+                //  startDownload();
                 break;
         }
     }
-
 
     @Override
     public void onBackPressed() {
@@ -144,24 +126,24 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
         super.attachBaseContext(LocaleManager.setLocale(base));
     }
 
-    private void setActionbar(String Title) {
-
-        mToolBar = (RelativeLayout) findViewById(R.id.toolbar);
-        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
-        String str = Title;
-        if (Title != null && Title.contains("\n"))
-            str = Title.replace("\n", " ");
+    private void setActionbar(String title) {
+        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        String str = title;
+        if (title != null && title.contains("\n")) {
+            str = title.replace("\n", " ");
+        }
         toolbar_title.setText(str);
-        img_back = (ImageView) findViewById(R.id.img_back);
+
+        ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
-        img_list = (ImageView) findViewById(R.id.img_list);
+
+        ImageView img_list = (ImageView) findViewById(R.id.img_list);
         img_list.setVisibility(View.GONE);
-        img_list.setOnClickListener(this);
-        img_logout = (ImageView) findViewById(R.id.img_logout);
+
+        ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setImageResource(R.drawable.download_file);
         img_logout.setVisibility(View.GONE);
-     //   img_logout.setOnClickListener(this);
     }
 
     @Override
@@ -174,10 +156,12 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
         Intent intent = new Intent(SalaryDetailActivity.this, DownloadService.class);
         intent.putExtra("URL", content.getUrl());
         intent.putExtra("fragment_flag", "Salary_Detail_Activity");
+
         if (content.getFileType().equalsIgnoreCase("pdf")) {
             intent.putExtra("FILENAME", content.getName() + ".pdf");
             intent.putExtra("FILETYPE", "pdf");
         }
+
         startService(intent);
     }
 
@@ -185,10 +169,10 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() != null && intent.getAction().equals(MESSAGE_PROGRESS)) {
+//            if (intent.getAction() != null && intent.getAction().equals(MESSAGE_PROGRESS)) {
 //                if (adapter != null)
 //                    adapter.notifyDataSetChanged();
-            }
+//            }
         }
     };
 
@@ -199,6 +183,4 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
         intentFilter.addAction(MESSAGE_PROGRESS);
         bManager.registerReceiver(broadcastReceiver, intentFilter);
     }
-
-
 }

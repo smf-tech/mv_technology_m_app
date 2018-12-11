@@ -254,7 +254,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             });
 
             imgAdd.setOnClickListener(v -> {
-                Long tsLong = System.currentTimeMillis()/1000;
+                Long tsLong = System.currentTimeMillis() / 1000;
                 String imgName = tsLong.toString();
                 taskList.get(getAdapterPosition()).setTask_Response__c(imgName);
                 activity.sendToCamera(imgName, getAdapterPosition());
@@ -692,14 +692,17 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 } else {
                     holder.editHeader.setText(task.getTask_Text___Lan_c());
                 }
-                if(task.getTask_Response__c()!=null && task.getTask_Response__c().length()>0 && task.getTask_Response__c().contains("(")){
-                    holder.questionResponse.setText(task.getTask_Response__c().substring(0,task.getTask_Response__c().indexOf("(")));
+
+                if (task.getTask_Response__c() != null && task.getTask_Response__c().length() > 0 && task.getTask_Response__c().contains("(")) {
+                    holder.questionResponse.setText(task.getTask_Response__c().substring(0, task.getTask_Response__c().indexOf("(")));
                 } else {
                     holder.questionResponse.setText(task.getTask_Response__c());
                 }
+
                 holder.questionResponse.setInputType(InputType.TYPE_CLASS_NUMBER);
                 holder.questionResponse.setSingleLine(true);
                 holder.questionResponse.setHint("");
+
                 if (task.getIsEditable__c().equals("false")) {
                     holder.questionResponse.setEnabled(false);
                 }
@@ -772,7 +775,8 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
                     if (pickListJsonObj.has(referenceField) && pickListJsonObj.get("taskId__c").equals(task.getMV_Task__c_Id())) {
                         for (String filter : filterArray) {
-                            if (filterValues.get(filter).equalsIgnoreCase(pickListJsonObj.getString(filter))) {
+                            String strFilter = filterValues.get(filter);
+                            if (strFilter != null && strFilter.equalsIgnoreCase(pickListJsonObj.getString(filter))) {
                                 flag = true;
                             } else {
                                 flag = false;
@@ -835,8 +839,8 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                             String Id = asset.getAsset_id();
                             String Fname = asset.getName();
                             String Lname = asset.getLast_Name__c();
-                            for(int i=0;i<taskList.size();i++){
-                                if(taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
+                            for (int i = 0; i < taskList.size(); i++) {
+                                if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
                                     if (Lname != null)
                                         taskList.get(i).setTask_Response__c(Fname + " " + Lname + "(" + Id + ")");
                                     else {
@@ -848,9 +852,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
                         }
                     } else {
-                        Toast.makeText(mContext,mContext.getResources()
-                                .getString(R.string.enter_moblie_no),Toast.LENGTH_SHORT).show();
-                        for(int i=0;i<taskList.size();i++){
+                        Toast.makeText(mContext, mContext.getResources()
+                                .getString(R.string.enter_moblie_no), Toast.LENGTH_SHORT).show();
+                        for (int i = 0; i < taskList.size(); i++) {
                             if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
                                 taskList.get(i).setTask_Response__c("");
                                 notifyItemChanged(i);
@@ -864,7 +868,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(mContext,"Something went wrong",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Something went wrong", Toast.LENGTH_SHORT).show();
                 Utills.hideProgressDialog();
             }
         });
