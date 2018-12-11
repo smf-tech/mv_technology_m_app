@@ -39,7 +39,8 @@
                     android:id="@+id/payslipLogo"
                     android:layout_width="130dp"
                     android:layout_height="60dp"
-                    android:src="@drawable/payslip_logo"/>
+                    android:src="@drawable/payslip_logo"
+                    android:contentDescription="@string/todo" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
