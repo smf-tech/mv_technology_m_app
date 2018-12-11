@@ -11,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -39,6 +40,7 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
+import com.mv.Utils.DecimalDigitsInputFilter;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 
@@ -58,7 +60,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdapter.MyViewHolder> {
+public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdapter.MyViewHolder>  {
 
     private ArrayList<Task> taskList;
     private Activity mContext;
@@ -329,11 +331,31 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     case "Number":
                         holder.questionResponse.setInputType(InputType.TYPE_CLASS_NUMBER);
                         holder.questionResponse.setSingleLine(true);
+
+                        if (task.getValidationRule() != null && task.getValidationRule().equals("Length")) {
+                            InputFilter[] filterArray = new InputFilter[1];
+                            filterArray[0] = new InputFilter.LengthFilter(Integer.parseInt(task.getLimitValue()));
+                            holder.questionResponse.setFilters(filterArray);
+                        }
                         break;
 
                     case "Decimal":
-                        holder.questionResponse.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                        holder.questionResponse.setRawInputType(InputType.TYPE_CLASS_NUMBER |
+                                InputType.TYPE_NUMBER_FLAG_DECIMAL);
                         holder.questionResponse.setSingleLine(true);
+
+                        if (task.getValidationRule() != null && task.getValidationRule().equals("Length")) {
+                            holder.questionResponse.setFilters(new InputFilter[]{
+                                    new DecimalDigitsInputFilter(Integer.parseInt(task.getLimitValue()), 2)});
+                        }
+                        break;
+
+                    case "Text":
+                        if (task.getValidationRule() != null && task.getValidationRule().equals("Range")) {
+                            InputFilter[] filterArray = new InputFilter[1];
+                            filterArray[0] = new InputFilter.LengthFilter(Integer.parseInt(task.getMaxRange()));
+                            holder.questionResponse.setFilters(filterArray);
+                        }
                         break;
                 }
                 break;
