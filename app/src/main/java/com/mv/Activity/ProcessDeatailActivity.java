@@ -73,7 +73,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     private PreferenceHelper preferenceHelper;
     private ArrayList<Task> taskList = new ArrayList<>();
-    private ArrayList<ImageData> imageDataList = new ArrayList<>();
+    public ArrayList<ImageData> imageDataList = new ArrayList<>();
     private String pickListApiFieldNames;
     private GPSTracker gps;
     private Activity context;
@@ -306,7 +306,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             case R.id.img_logout:
                 Intent intent = new Intent(this, CommentActivity.class);
                 intent.putExtra(Constants.ID, taskList.get(0).getId());
-                intent.putExtra("intentFrom","ProcessDeatailActivity");
+                intent.putExtra("intentFrom", "ProcessDeatailActivity");
                 this.startActivity(intent);
                 break;
 
@@ -410,47 +410,48 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 taskList.get(i).setId(null);
             }
 
-            if (taskList.get(i).getIs_Response_Mnadetory__c() &&
-                    taskList.get(i).getTask_Response__c().equals("")) {
-                mandatoryFlag = true;
-                msg = "please check " + taskList.get(i).getTask_Text__c();
-                break;
-            }
-
-            if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Range")) {
-                double val;
-                if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
+            if (taskList.get(i).getIs_Response_Mnadetory__c()) {
+                if (taskList.get(i).getTask_Response__c().equals("")) {
                     mandatoryFlag = true;
-                    msg = "please enter " + taskList.get(i).getTask_Text__c();
+                    msg = "please check " + taskList.get(i).getTask_Text__c();
                     break;
                 } else {
-                    try {
-                        val = Double.parseDouble(taskList.get(i).getTask_Response__c());
-                        if (Double.parseDouble(taskList.get(i).getMaxRange()) < val) {
+                    if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Range")) {
+                        double val;
+                        if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
                             mandatoryFlag = true;
-                            msg = "please enter " + taskList.get(i).getTask_Text__c() + " value less than " + taskList.get(i).getMaxRange();
+                            msg = "please enter " + taskList.get(i).getTask_Text__c();
                             break;
-                        } else if (Double.parseDouble(taskList.get(i).getMinRange()) > val) {
-                            mandatoryFlag = true;
-                            msg = "please enter " + taskList.get(i).getTask_Text__c() + " value grater than " + taskList.get(i).getMaxRange();
-                            break;
+                        } else {
+                            try {
+                                val = Double.parseDouble(taskList.get(i).getTask_Response__c());
+                                if (Double.parseDouble(taskList.get(i).getMaxRange()) < val) {
+                                    mandatoryFlag = true;
+                                    msg = "please enter " + taskList.get(i).getTask_Text__c() + " value less than " + taskList.get(i).getMaxRange();
+                                    break;
+                                } else if (Double.parseDouble(taskList.get(i).getMinRange()) > val) {
+                                    mandatoryFlag = true;
+                                    msg = "please enter " + taskList.get(i).getTask_Text__c() + " value grater than " + taskList.get(i).getMaxRange();
+                                    break;
+                                }
+                            } catch (NumberFormatException nfe) {
+                                mandatoryFlag = true;
+                                msg = "please check " + taskList.get(i).getTask_Text__c();
+                                break;
+                            }
                         }
-                    } catch (NumberFormatException nfe) {
-                        mandatoryFlag = true;
-                        msg = "please check " + taskList.get(i).getTask_Text__c();
-                        break;
-                    }
-                }
-            } else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Length")) {
-                if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
-                    mandatoryFlag = true;
-                    msg = "please enter " + taskList.get(i).getTask_Text__c();
-                    break;
-                } else {
-                    if (Integer.parseInt(taskList.get(i).getLimitValue()) != taskList.get(i).getTask_Response__c().length()) {
-                        mandatoryFlag = true;
-                        msg = "please enter valid " + taskList.get(i).getTask_Text__c();
-                        break;
+                    } else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Length")) {
+                        if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
+                            mandatoryFlag = true;
+                            msg = "please enter " + taskList.get(i).getTask_Text__c();
+                            break;
+                        } else {
+                            if (Integer.parseInt(taskList.get(i).getLimitValue()) != taskList.get(i).getTask_Response__c().length()) {
+                                mandatoryFlag = true;
+                                msg = "please enter valid " + taskList.get(i).getTask_Text__c();
+                                break;
+                            }
+                        }
                     }
                 }
             }
@@ -458,15 +459,19 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
         if (!mandatoryFlag) {
             if (Utills.isConnected(this)) {
-                boolean hasMVUser= false;
-                for(int i = 0; i < taskList.size(); i++){
-                    if(taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER)){
-                        GetUSerName(taskList.get(i).getTask_Response__c(), i);
-                        hasMVUser=true;
+                boolean hasMVUser = false;
+                for (int i = 0; i < taskList.size(); i++) {
+                    if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER)) {
+                        if(taskList.get(i).getTask_Response__c()!=null && taskList.get(i).getTask_Response__c().length()>0){
+                            GetUSerName(taskList.get(i).getTask_Response__c(), i);
+                            hasMVUser = true;
+                        } else {
+                            hasMVUser = false;
+                        }
                         break;
                     }
                 }
-                if(!hasMVUser){
+                if (!hasMVUser) {
                     callApiForSubmit(taskList);
                 }
             } else {
@@ -499,8 +504,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                             String Id = asset.getAsset_id();
                             String Fname = asset.getName();
                             String Lname = asset.getLast_Name__c();
-                            for(int i=0;i<taskList.size();i++){
-                                if(taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
+                            for (int i = 0; i < taskList.size(); i++) {
+                                if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
                                     if (Lname != null)
                                         taskList.get(i).setTask_Response__c(Fname + " " + Lname + "(" + Id + ")");
                                     else {
@@ -512,8 +517,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 //                            notifyItemChanged(position);
                         }
                     } else {
-                        Toast.makeText(ProcessDeatailActivity.this,ProcessDeatailActivity.this.getResources()
-                                .getString(R.string.enter_moblie_no),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProcessDeatailActivity.this, ProcessDeatailActivity.this.getResources()
+                                .getString(R.string.enter_moblie_no), Toast.LENGTH_SHORT).show();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -522,7 +527,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(ProcessDeatailActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProcessDeatailActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -769,8 +774,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         Utills.hideProgressDialog();
                         try {
                             Utills.setIsActionDone(true);
-                        // call for another api which will save rejection comment in commentList.
-                            if(processStatus.equals("Rejected")){
+                            // call for another api which will save rejection comment in commentList.
+                            if (processStatus.equals("Rejected")) {
                                 sendComment();
                             }
                             Utills.showToast(getString(R.string.submitted_successfully), ProcessDeatailActivity.this);
@@ -813,7 +818,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 jsonArray.put(jsonObject1);
                 jsonObject.put("listOfComments", jsonArray);
 
-                String   url = preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertProcessAnswerComments";
+                String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/InsertProcessAnswerComments";
 
                 ServiceRequest apiService =
                         ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
