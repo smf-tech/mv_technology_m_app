@@ -342,6 +342,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 }
                             }
 
+                            Collections.sort(resultList, (o1, o2) -> o2.getTaskTimeStamp().compareTo(o1.getTaskTimeStamp()));
+
                             AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().insertTask(resultList);
                             if (resultList.size() > 0) {
                                 if (preferenceHelper.getBoolean(Constants.IS_MULTIPLE)) {

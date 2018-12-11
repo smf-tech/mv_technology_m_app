@@ -349,7 +349,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         img_logout.setImageResource(R.drawable.share_report);
         llSpinner = (LinearLayout) findViewById(R.id.llrole_lay);
 
-        img_logout.setOnClickListener(v -> screenShot(v));
+        img_logout.setOnClickListener(this::screenShot);
 
     }
 

@@ -136,9 +136,7 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
         alertDialog.setIcon(R.drawable.app_logo);
 
         // Setting CANCEL Button
-        alertDialog.setButton2(context.getString(android.R.string.cancel), (dialog, which) -> {
-            alertDialog.dismiss();
-        });
+        alertDialog.setButton2(context.getString(android.R.string.cancel), (dialog, which) -> alertDialog.dismiss());
 
         // Setting OK Button
         alertDialog.setButton(context.getString(android.R.string.ok), (dialog, which) -> activity.deleteAdavance(adavance));
