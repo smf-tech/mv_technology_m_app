@@ -25,7 +25,8 @@
                 android:layout_width="@dimen/avator_size"
                 android:layout_height="@dimen/avator_size"
                 android:scaleType="centerCrop"
-                android:src="@drawable/logomulya" />
+                android:src="@drawable/logomulya"
+                android:contentDescription="@string/todo" />
 
             <com.mv.Widgets.MyTextView
                 android:id="@+id/txt_username"
@@ -76,7 +77,8 @@
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/ic_more_vert_black_24dp"
-                android:visibility="gone" />
+                android:visibility="gone"
+                android:contentDescription="@string/todo" />
         </RelativeLayout>
 
     </LinearLayout>

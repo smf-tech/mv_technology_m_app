@@ -162,7 +162,8 @@
                     android:id="@+id/imgDelete"
                     android:layout_width="25dp"
                     android:layout_height="25dp"
-                    android:src="@drawable/form_delete" />
+                    android:src="@drawable/form_delete"
+                    android:contentDescription="@string/todo" />
             </LinearLayout>
         </RelativeLayout>
 
