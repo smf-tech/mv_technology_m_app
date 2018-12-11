@@ -313,6 +313,10 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                         }
                                     }
 
+                                    if (jsonArray.getJSONObject(i).has("FormCommentCount")) {
+                                        processList.setFormCommentCount(jsonArray.getJSONObject(i).getString("FormCommentCount"));
+                                    }
+
                                     processList.setValidation(jsonArray.getJSONObject(i).getString("Validation_on_text"));
                                     processList.setIsSave(Constants.PROCESS_STATE_SUBMIT);
                                     taskList.add(processList);
@@ -326,6 +330,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
                                 taskContainerModel.setHeaderPosition(sb.toString());
                                 taskContainerModel.setTaskTimeStamp(taskList.get(0).getTimestamp__c());
+                                taskContainerModel.setFormCommentCount(taskList.get(0).getFormCommentCount());
 
                                 //task is with answer
                                 taskContainerModel.setTaskType(Constants.TASK_ANSWER);

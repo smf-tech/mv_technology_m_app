@@ -125,7 +125,6 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         ArrayList<Task> tasks = gson.fromJson(resultList.get(position).getTaskListString(), listType);
         taskArrayList.add(tasks);
 
-        Log.d("pos", String.valueOf(position));
         if (resultList.get(position).getHeaderPosition().equals("")) {
             if (tasks.get(0).getTimestamp__c() != null && !tasks.get(0).getTimestamp__c().equals("null")) {
                 holder.txtCommunityName.setText(Utills.getDate(
@@ -144,6 +143,9 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                 } else {
                     holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                 }
+            }
+            if(Integer.parseInt(resultList.get(position).getFormCommentCount())>Integer.parseInt(resultList.get(position).getFormReadCommentCount())){
+                holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
             }
 
             if (!resultList.get(position).getIsDeleteAllow()) {

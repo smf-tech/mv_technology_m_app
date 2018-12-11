@@ -17,6 +17,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mv.Adapter.CommentAdapter;
 import com.mv.Model.Comment;
+import com.mv.Model.TaskContainerModel;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
@@ -139,6 +140,11 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     } else {
                         textNoData.setVisibility(View.VISIBLE);
                     }
+                    //save count of read comments in form db
+                    TaskContainerModel taskContainerModel = new TaskContainerModel();
+                    taskContainerModel.setUnique_Id(conetentId);
+                    taskContainerModel.setFormReadCommentCount(String.valueOf(temp.size()));
+
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();

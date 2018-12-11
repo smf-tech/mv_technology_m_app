@@ -120,4 +120,28 @@ public class TaskContainerModel {
 
     @ColumnInfo(name = "taskTimeStamp")
     private String taskTimeStamp;
+
+    @ColumnInfo(name = "FormCommentCount")
+    @SerializedName("FormCommentCount")
+    private String FormCommentCount;
+
+    public String getFormCommentCount() {
+        return FormCommentCount;
+    }
+
+    public void setFormCommentCount(String formCommentCount) {
+        FormCommentCount = formCommentCount;
+    }
+
+    @ColumnInfo(name = "FormReadCommentCount")
+    @SerializedName("FormReadCommentCount")
+    private String FormReadCommentCount;
+
+    public String getFormReadCommentCount() {
+        return FormReadCommentCount;
+    }
+
+    public void setFormReadCommentCount(String formReadCommentCount) {
+        FormReadCommentCount = formReadCommentCount;
+    }
 }

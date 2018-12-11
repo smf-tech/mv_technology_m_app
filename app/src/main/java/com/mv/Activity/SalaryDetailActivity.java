@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.mv.Model.DownloadContent;
 import com.mv.Model.Salary;
 import com.mv.Model.User;
@@ -31,6 +33,7 @@ import com.mv.databinding.ActivitySalaryDetailBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -127,7 +130,7 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
                 break;
 
             case R.id.img_logout:
-              //  startDownload();
+                sendSalaryPDF_Email();
                 break;
         }
     }
@@ -159,9 +162,9 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
         img_list.setVisibility(View.GONE);
         img_list.setOnClickListener(this);
         img_logout = (ImageView) findViewById(R.id.img_logout);
-        img_logout.setImageResource(R.drawable.download_file);
-        img_logout.setVisibility(View.GONE);
-     //   img_logout.setOnClickListener(this);
+        img_logout.setImageResource(R.drawable.downloadfile);
+        img_logout.setVisibility(View.VISIBLE);
+        img_logout.setOnClickListener(this);
     }
 
     @Override
@@ -169,36 +172,49 @@ public class SalaryDetailActivity extends AppCompatActivity implements View.OnCl
         super.onResume();
     }
 
-    public void startDownload(DownloadContent content) {
-        Utills.showToast("Downloading Started...", SalaryDetailActivity.this);
-        Intent intent = new Intent(SalaryDetailActivity.this, DownloadService.class);
-        intent.putExtra("URL", content.getUrl());
-        intent.putExtra("fragment_flag", "Salary_Detail_Activity");
-        if (content.getFileType().equalsIgnoreCase("pdf")) {
-            intent.putExtra("FILENAME", content.getName() + ".pdf");
-            intent.putExtra("FILETYPE", "pdf");
-        }
-        startService(intent);
-    }
-
-    /*Get the the intent from download service for checking file is completely downloaded or not*/
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() != null && intent.getAction().equals(MESSAGE_PROGRESS)) {
-//                if (adapter != null)
-//                    adapter.notifyDataSetChanged();
+    private void sendSalaryPDF_Email(){
+        if (Utills.isConnected(this)) {
+            try {
+                Utills.showProgressDialog(this);
+                JSONObject jsonObject = new JSONObject();
+                jsonObject.put("salaryId", salary.getId());
+                ServiceRequest apiService =
+                        ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+                JsonParser jsonParser = new JsonParser();
+                JsonObject gsonObject = (JsonObject) jsonParser.parse(jsonObject.toString());
+                apiService.sendDataToSalesforce(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/apexrest/SendSalarySlipPDFOverEmail", gsonObject).enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        Utills.hideProgressDialog();
+                        try {
+                            if (response.body() != null) {
+                                if (response.isSuccess()) {
+                                    String data = response.body().string();
+                                    if (data.length() > 0) {
+                                        JSONObject object = new JSONObject(data);
+                                        Utills.showToast(object.getString("Status"), SalaryDetailActivity.this);
+                                    }
+                                }
+                            }
+                        } catch (Exception e) {
+                            Utills.hideProgressDialog();
+                            Utills.showToast(getResources().getString(R.string.error_something_went_wrong), SalaryDetailActivity.this);
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Utills.hideProgressDialog();
+                        Utills.showToast(getResources().getString(R.string.error_something_went_wrong), SalaryDetailActivity.this);
+                    }
+                });
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Utills.hideProgressDialog();
+                Utills.showToast(getResources().getString(R.string.error_something_went_wrong), SalaryDetailActivity.this);
             }
+        } else {
+            Utills.showToast(getResources().getString(R.string.error_no_internet), SalaryDetailActivity.this);
         }
-    };
-
-    /*Register receiver*/
-    private void registerReceiver() {
-        LocalBroadcastManager bManager = LocalBroadcastManager.getInstance(SalaryDetailActivity.this);
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(MESSAGE_PROGRESS);
-        bManager.registerReceiver(broadcastReceiver, intentFilter);
     }
-
 
 }

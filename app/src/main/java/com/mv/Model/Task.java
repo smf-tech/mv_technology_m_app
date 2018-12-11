@@ -444,6 +444,17 @@ public class Task implements Parcelable {
         Task_type__c = task_type__c;
     }
 
+    @ColumnInfo(name = "FormCommentCount")
+    @SerializedName("FormCommentCount")
+    private String FormCommentCount;
+
+    public String getFormCommentCount() {
+        return FormCommentCount;
+    }
+
+    public void setFormCommentCount(String formCommentCount) {
+        FormCommentCount = formCommentCount;
+    }
 
     public Task() {
     }
