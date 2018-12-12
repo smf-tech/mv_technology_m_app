@@ -346,9 +346,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                                 InputType.TYPE_NUMBER_FLAG_DECIMAL);
                         holder.questionResponse.setSingleLine(true);
 
-                        if (task.getValidationRule() != null && task.getValidationRule().equals("Length")) {
+                        if (task.getValidationRule() != null && task.getValidationRule().equals("Range")) {
                             holder.questionResponse.setFilters(new InputFilter[]{
-                                    new DecimalDigitsInputFilter(Integer.parseInt(task.getLimitValue()), 2)});
+                                    new DecimalDigitsInputFilter(task.getMaxRange().length(), 2)});
                         }
                         break;
 

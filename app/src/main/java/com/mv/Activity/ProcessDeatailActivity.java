@@ -450,15 +450,15 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
         if (!mandatoryFlag) {
             if (Utills.isConnected(this)) {
-                boolean hasMVUser= false;
-                for(int i = 0; i < taskList.size(); i++){
-                    if(taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER)){
-                        GetUSerName(taskList.get(i).getTask_Response__c(), i);
-                        hasMVUser=true;
+                boolean hasMVUser = false;
+                for (int i = 0; i < taskList.size(); i++) {
+                    if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER)) {
+                        getUserName(taskList.get(i).getTask_Response__c(), i);
+                        hasMVUser = true;
                         break;
                     }
                 }
-                if(!hasMVUser){
+                if (!hasMVUser) {
                     callApiForSubmit(taskList);
                 }
             } else {
@@ -471,7 +471,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
     }
 
-    public void GetUSerName(String number, int position) {
+    private void getUserName(String number, int position) {
         Utills.showProgressDialog(this, "Sending", this.getString(R.string.progress_please_wait));
         ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -481,31 +481,31 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
-                String data;
                 try {
                     if (response.body() != null) {
-                        data = response.body().string();
+                        String data = response.body().string();
                         if (data.length() > 0) {
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             Asset asset = gson.fromJson(data, Asset.class);
                             String Id = asset.getAsset_id();
-                            String Fname = asset.getName();
-                            String Lname = asset.getLast_Name__c();
-                            for(int i=0;i<taskList.size();i++){
-                                if(taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
-                                    if (Lname != null)
-                                        taskList.get(i).setTask_Response__c(Fname + " " + Lname + "(" + Id + ")");
+                            String firstName = asset.getName();
+                            String lastName = asset.getLast_Name__c();
+
+                            for (int i = 0; i < taskList.size(); i++) {
+                                if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
+                                    if (lastName != null)
+                                        taskList.get(i).setTask_Response__c(firstName + " " + lastName + "(" + Id + ")");
                                     else {
-                                        taskList.get(i).setTask_Response__c(Fname + "(" + Id + ")");
+                                        taskList.get(i).setTask_Response__c(firstName + "(" + Id + ")");
                                     }
                                 }
                             }
+
                             callApiForSubmit(taskList);
-//                            notifyItemChanged(position);
                         }
                     } else {
-                        Toast.makeText(ProcessDeatailActivity.this,ProcessDeatailActivity.this.getResources()
-                                .getString(R.string.enter_moblie_no),Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProcessDeatailActivity.this, ProcessDeatailActivity.this.getResources()
+                                .getString(R.string.enter_moblie_no), Toast.LENGTH_SHORT).show();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -514,7 +514,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(ProcessDeatailActivity.this,"Something went wrong",Toast.LENGTH_SHORT).show();
+                Toast.makeText(ProcessDeatailActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
     }
