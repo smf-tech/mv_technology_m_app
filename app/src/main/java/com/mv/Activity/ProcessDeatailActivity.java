@@ -402,11 +402,16 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 taskList.get(i).setId(null);
             }
 
-            if (taskList.get(i).getIs_Response_Mnadetory__c() &&
-                    taskList.get(i).getTask_Response__c().equals("")) {
-                mandatoryFlag = true;
-                msg = "please check " + taskList.get(i).getTask_Text__c();
-                break;
+            if (taskList.get(i).getIs_Response_Mnadetory__c()){
+                if(taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.CHECK_BOX) && taskList.get(i).getTask_Response__c().equals("false")){
+                    mandatoryFlag = true;
+                    msg = "please check " + taskList.get(i).getTask_Text__c();
+                    break;
+                } else if(taskList.get(i).getTask_Response__c().equals("")) {
+                    mandatoryFlag = true;
+                    msg = "please check " + taskList.get(i).getTask_Text__c();
+                    break;
+                }
             }
 
             if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Range")) {
