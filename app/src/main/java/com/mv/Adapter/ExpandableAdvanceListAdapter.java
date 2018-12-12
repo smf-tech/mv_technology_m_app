@@ -41,7 +41,12 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this.listDataChild.get(this.listDataHeader.get(groupPosition)).get(childPosititon);
+        ArrayList<Adavance> advances = this.listDataChild.get(this.listDataHeader.get(groupPosition));
+        if (advances != null && !advances.isEmpty()) {
+            return advances.get(childPosititon);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -147,8 +152,9 @@ public class ExpandableAdvanceListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if (this.listDataChild.get(this.listDataHeader.get(groupPosition)) != null) {
-            return this.listDataChild.get(this.listDataHeader.get(groupPosition)).size();
+        ArrayList<Adavance> advances = this.listDataChild.get(this.listDataHeader.get(groupPosition));
+        if (advances != null) {
+            return advances.size();
         } else {
             return 0;
         }

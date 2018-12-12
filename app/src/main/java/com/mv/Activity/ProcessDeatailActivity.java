@@ -402,52 +402,52 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 taskList.get(i).setId(null);
             }
 
-            if (taskList.get(i).getIs_Response_Mnadetory__c()){
+            if (taskList.get(i).getIs_Response_Mnadetory__c()) {
                 if(taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.CHECK_BOX) && taskList.get(i).getTask_Response__c().equals("false")){
                     mandatoryFlag = true;
                     msg = "please check " + taskList.get(i).getTask_Text__c();
                     break;
-                } else if(taskList.get(i).getTask_Response__c().equals("")) {
+                } else if (taskList.get(i).getTask_Response__c().equals("")) {
                     mandatoryFlag = true;
                     msg = "please check " + taskList.get(i).getTask_Text__c();
                     break;
-                }
-            }
-
-            if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Range")) {
-                double val;
-                if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
-                    mandatoryFlag = true;
-                    msg = "please enter " + taskList.get(i).getTask_Text__c();
-                    break;
                 } else {
-                    try {
-                        val = Double.parseDouble(taskList.get(i).getTask_Response__c());
-                        if (Double.parseDouble(taskList.get(i).getMaxRange()) < val) {
+                    if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Range")) {
+                        double val;
+                        if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
                             mandatoryFlag = true;
-                            msg = "please enter " + taskList.get(i).getTask_Text__c() + " value less than " + taskList.get(i).getMaxRange();
+                            msg = "please enter " + taskList.get(i).getTask_Text__c();
                             break;
-                        } else if (Double.parseDouble(taskList.get(i).getMinRange()) > val) {
-                            mandatoryFlag = true;
-                            msg = "please enter " + taskList.get(i).getTask_Text__c() + " value grater than " + taskList.get(i).getMaxRange();
-                            break;
+                        } else {
+                            try {
+                                val = Double.parseDouble(taskList.get(i).getTask_Response__c());
+                                if (Double.parseDouble(taskList.get(i).getMaxRange()) < val) {
+                                    mandatoryFlag = true;
+                                    msg = "please enter " + taskList.get(i).getTask_Text__c() + " value less than " + taskList.get(i).getMaxRange();
+                                    break;
+                                } else if (Double.parseDouble(taskList.get(i).getMinRange()) > val) {
+                                    mandatoryFlag = true;
+                                    msg = "please enter " + taskList.get(i).getTask_Text__c() + " value grater than " + taskList.get(i).getMaxRange();
+                                    break;
+                                }
+                            } catch (NumberFormatException nfe) {
+                                mandatoryFlag = true;
+                                msg = "please check " + taskList.get(i).getTask_Text__c();
+                                break;
+                            }
                         }
-                    } catch (NumberFormatException nfe) {
-                        mandatoryFlag = true;
-                        msg = "please check " + taskList.get(i).getTask_Text__c();
-                        break;
-                    }
-                }
-            } else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Length")) {
-                if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
-                    mandatoryFlag = true;
-                    msg = "please enter " + taskList.get(i).getTask_Text__c();
-                    break;
-                } else {
-                    if (Integer.parseInt(taskList.get(i).getLimitValue()) != taskList.get(i).getTask_Response__c().length()) {
-                        mandatoryFlag = true;
-                        msg = "please enter valid " + taskList.get(i).getTask_Text__c();
-                        break;
+                    } else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Length")) {
+                        if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
+                            mandatoryFlag = true;
+                            msg = "please enter " + taskList.get(i).getTask_Text__c();
+                            break;
+                        } else {
+                            if (Integer.parseInt(taskList.get(i).getLimitValue()) != taskList.get(i).getTask_Response__c().length()) {
+                                mandatoryFlag = true;
+                                msg = "please enter valid " + taskList.get(i).getTask_Text__c();
+                                break;
+                            }
+                        }
                     }
                 }
             }
@@ -458,8 +458,12 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 boolean hasMVUser = false;
                 for (int i = 0; i < taskList.size(); i++) {
                     if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER)) {
-                        getUserName(taskList.get(i).getTask_Response__c(), i);
-                        hasMVUser = true;
+                        if(taskList.get(i).getTask_Response__c()!=null && taskList.get(i).getTask_Response__c().length()>0){
+                            getUserName(taskList.get(i).getTask_Response__c(), i);
+                            hasMVUser = true;
+                        } else {
+                            hasMVUser = false;
+                        }
                         break;
                     }
                 }
