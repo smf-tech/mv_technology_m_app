@@ -12,6 +12,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -41,6 +42,7 @@ import com.mv.R;
 import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
+import com.mv.Utils.DecimalDigitsInputFilter;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 
@@ -331,11 +333,31 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     case "Number":
                         holder.questionResponse.setInputType(InputType.TYPE_CLASS_NUMBER);
                         holder.questionResponse.setSingleLine(true);
+
+                        if (task.getValidationRule() != null && task.getValidationRule().equals("Length")) {
+                            InputFilter[] filterArray = new InputFilter[1];
+                            filterArray[0] = new InputFilter.LengthFilter(Integer.parseInt(task.getLimitValue()));
+                            holder.questionResponse.setFilters(filterArray);
+                        }
                         break;
 
                     case "Decimal":
-                        holder.questionResponse.setRawInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                        holder.questionResponse.setRawInputType(InputType.TYPE_CLASS_NUMBER |
+                                InputType.TYPE_NUMBER_FLAG_DECIMAL);
                         holder.questionResponse.setSingleLine(true);
+
+                        if (task.getValidationRule() != null && task.getValidationRule().equals("Range")) {
+                            holder.questionResponse.setFilters(new InputFilter[]{
+                                    new DecimalDigitsInputFilter(task.getMaxRange().length(), 2)});
+                        }
+                        break;
+
+                    case "Text":
+                        if (task.getValidationRule() != null && task.getValidationRule().equals("Range")) {
+                            InputFilter[] filterArray = new InputFilter[1];
+                            filterArray[0] = new InputFilter.LengthFilter(Integer.parseInt(task.getMaxRange()));
+                            holder.questionResponse.setFilters(filterArray);
+                        }
                         break;
                 }
                 break;
