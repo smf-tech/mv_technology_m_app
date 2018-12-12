@@ -83,6 +83,19 @@ public class Task implements Parcelable {
     @ColumnInfo(name = "aPIFieldName")
     private String aPIFieldName;
 
+    @SerializedName("isExactLength")
+    @Expose
+    @ColumnInfo(name = "isExactLength")
+    private Boolean isExactLength;
+
+    public Boolean isExactLength() {
+        return isExactLength;
+    }
+
+    public void setIsExactLength(Boolean isExactLength) {
+        this.isExactLength = isExactLength;
+    }
+
     public String getaPIFieldName() {
         return aPIFieldName;
     }
@@ -487,6 +500,7 @@ public class Task implements Parcelable {
         dest.writeString(this.filterFields);
         dest.writeString(this.referenceField);
         dest.writeString(this.aPIFieldName);
+        dest.writeValue(this.isExactLength);
      //   dest.writeValue(this.IsDeleteAllow);
     }
 
@@ -523,6 +537,7 @@ public class Task implements Parcelable {
         this.filterFields = in.readString();
         this.referenceField = in.readString();
         this.aPIFieldName = in.readString();
+        this.isExactLength = (Boolean) in.readValue(Boolean.class.getClassLoader());
       //  this.IsDeleteAllow = (Boolean) in.readValue(Boolean.class.getClassLoader());
     }
 

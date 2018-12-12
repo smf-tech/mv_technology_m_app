@@ -427,7 +427,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                                     break;
                                 } else if (Double.parseDouble(taskList.get(i).getMinRange()) > val) {
                                     mandatoryFlag = true;
-                                    msg = "please enter " + taskList.get(i).getTask_Text__c() + " value grater than " + taskList.get(i).getMaxRange();
+                                    msg = "please enter " + taskList.get(i).getTask_Text__c() + " value grater than " + taskList.get(i).getMinRange();
                                     break;
                                 }
                             } catch (NumberFormatException nfe) {
@@ -442,7 +442,13 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                             msg = "please enter " + taskList.get(i).getTask_Text__c();
                             break;
                         } else {
-                            if (Integer.parseInt(taskList.get(i).getLimitValue()) != taskList.get(i).getTask_Response__c().length()) {
+                            if (taskList.get(i).isExactLength()) {
+                                if (Integer.parseInt(taskList.get(i).getLimitValue()) != taskList.get(i).getTask_Response__c().length()) {
+                                    mandatoryFlag = true;
+                                    msg = "please enter valid " + taskList.get(i).getTask_Text__c();
+                                    break;
+                                }
+                            } else if (Integer.parseInt(taskList.get(i).getLimitValue()) < taskList.get(i).getTask_Response__c().length()) {
                                 mandatoryFlag = true;
                                 msg = "please enter valid " + taskList.get(i).getTask_Text__c();
                                 break;
