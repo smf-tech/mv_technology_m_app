@@ -40,8 +40,12 @@ public class ExpandableProcessListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                .get(childPosititon);
+        List<Template> templates = this._listDataChild.get(this._listDataHeader.get(groupPosition));
+        if (templates != null) {
+            return templates.get(childPosititon);
+        } else {
+            return null;
+        }
     }
 
     @Override
@@ -103,13 +107,13 @@ public class ExpandableProcessListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if (this._listDataChild.get(this._listDataHeader.get(groupPosition)) != null)
-            return this._listDataChild.get(this._listDataHeader.get(groupPosition))
-                    .size();
-        else
+        List<Template> templates = this._listDataChild.get(this._listDataHeader.get(groupPosition));
+        if (templates != null) {
+            return templates.size();
+        } else {
             return 0;
+        }
     }
-
 
     @Override
     public Object getGroup(int groupPosition) {

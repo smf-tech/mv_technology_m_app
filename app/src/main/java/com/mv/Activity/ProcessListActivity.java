@@ -498,6 +498,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     processList.setaPIFieldName(resultJsonObj.getString("aPIFieldName"));
                                 }
 
+                                processList.setIsExactLength(resultJsonObj.getBoolean("isExactLength"));
                                 processList.setMV_Process__c(resultJsonObj.getString("mVProcess"));
                                 processList.setTask_Text__c(resultJsonObj.getString("taskText"));
                                 processList.setTask_type__c(resultJsonObj.getString("tasktype"));

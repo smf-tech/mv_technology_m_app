@@ -64,7 +64,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdapter.MyViewHolder>  {
+public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdapter.MyViewHolder> {
 
     private ArrayList<Task> taskList;
     private Activity mContext;
@@ -353,6 +353,11 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     case "Alphabets":
                         holder.questionResponse.setInputType(InputType.TYPE_CLASS_TEXT);
                         holder.questionResponse.setSingleLine(false);
+                        if (task.getValidationRule() != null && task.getValidationRule().equals("Length")) {
+                            InputFilter[] filterArray = new InputFilter[1];
+                            filterArray[0] = new InputFilter.LengthFilter(Integer.parseInt(task.getLimitValue()));
+                            holder.questionResponse.setFilters(filterArray);
+                        }
                         break;
 
                     case "Number":
@@ -371,9 +376,10 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                                 InputType.TYPE_NUMBER_FLAG_DECIMAL);
                         holder.questionResponse.setSingleLine(true);
 
-                        if (task.getValidationRule() != null && task.getValidationRule().equals("Length")) {
+                        if (task.getValidationRule() != null && task.getValidationRule().equals("Range")) {
                             holder.questionResponse.setFilters(new InputFilter[]{
-                                    new DecimalDigitsInputFilter(Integer.parseInt(task.getLimitValue()), 2)});
+                                    new DecimalDigitsInputFilter(task.getMaxRange().length(),
+                                            2, Constants.INPUT_DECIMAL_RANGE)});
                         }
                         break;
 
@@ -382,6 +388,10 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                             InputFilter[] filterArray = new InputFilter[1];
                             filterArray[0] = new InputFilter.LengthFilter(Integer.parseInt(task.getMaxRange()));
                             holder.questionResponse.setFilters(filterArray);
+                        } else if (task.getValidationRule() != null && task.getValidationRule().equals("Length")) {
+                            holder.questionResponse.setFilters(new InputFilter[]{
+                                    new DecimalDigitsInputFilter(Integer.parseInt(task.getLimitValue()),
+                                            2, Constants.INPUT_TEXT_LENGTH)});
                         }
                         break;
                 }
@@ -826,7 +836,8 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
                     if (pickListJsonObj.has(referenceField) && pickListJsonObj.get("taskId__c").equals(task.getMV_Task__c_Id())) {
                         for (String filter : filterArray) {
-                            if (filterValues.get(filter).equalsIgnoreCase(pickListJsonObj.getString(filter))) {
+                            String strFilter = filterValues.get(filter);
+                            if (strFilter != null && strFilter.equalsIgnoreCase(pickListJsonObj.getString(filter))) {
                                 flag = true;
                             } else {
                                 flag = false;
