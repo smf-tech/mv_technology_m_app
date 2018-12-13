@@ -181,7 +181,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     ((ProcessDeatailActivity) mContext).saveDataToList(taskList.get(getAdapterPosition()), getAdapterPosition());
                     if (taskList.get(getAdapterPosition()).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER) && s.length() == 10) {
                         if (Utills.isConnected(mContext)) {
-                            GetUSerName(s.toString(), getAdapterPosition());
+                            getUserName(s.toString(), getAdapterPosition());
                         } else {
                             Utills.showToast(mContext.getString(R.string.error_no_internet), mContext);
                         }
@@ -726,8 +726,8 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 } else {
                     holder.editHeader.setText(task.getTask_Text___Lan_c());
                 }
-                if(task.getTask_Response__c()!=null && task.getTask_Response__c().length()>0 && task.getTask_Response__c().contains("(")){
-                    holder.questionResponse.setText(task.getTask_Response__c().substring(0,task.getTask_Response__c().indexOf("(")));
+                if (task.getTask_Response__c() != null && task.getTask_Response__c().length() > 0 && task.getTask_Response__c().contains("(")) {
+                    holder.questionResponse.setText(task.getTask_Response__c().substring(0, task.getTask_Response__c().indexOf("(")));
                 } else {
                     holder.questionResponse.setText(task.getTask_Response__c());
                 }
@@ -760,7 +760,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                         ImageData id = new ImageData();
                         id.setPosition(position);
                         id.setImageUri(finalUri);
-                        ((ProcessDeatailActivity)mContext).imageDataList.add(id);
+                        ((ProcessDeatailActivity) mContext).imageDataList.add(id);
                     } else {
                         Glide.with(mContext)
                                 .load(Constants.IMAGEURL + taskList.get(position).getTask_Response__c() + ".png")
@@ -854,33 +854,32 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         return position;
     }
 
-    public void GetUSerName(String number, int position) {
+    private void getUserName(String number, int position) {
         Utills.showProgressDialog(mContext, "Sending", mContext.getString(R.string.progress_please_wait));
         ServiceRequest apiService = ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
-        String url;
-        url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.GetUserThroughMobileNo + "?mobileNo=" + number.trim();
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
-                String data;
                 try {
                     if (response.body() != null) {
-                        data = response.body().string();
+                        String data = response.body().string();
                         if (data.length() > 0) {
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             Asset asset = gson.fromJson(data, Asset.class);
-                            String Id = asset.getAsset_id();
-                            String Fname = asset.getName();
-                            String Lname = asset.getLast_Name__c();
-                            for(int i=0;i<taskList.size();i++){
-                                if(taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
-                                    if (Lname != null)
-                                        taskList.get(i).setTask_Response__c(Fname + " " + Lname + "(" + Id + ")");
+                            String id = asset.getAsset_id();
+                            String firstName = asset.getName();
+                            String lastName = asset.getLast_Name__c();
+
+                            for (int i = 0; i < taskList.size(); i++) {
+                                if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
+                                    if (lastName != null)
+                                        taskList.get(i).setTask_Response__c(firstName + " " + lastName + "(" + id + ")");
                                     else {
-                                        taskList.get(i).setTask_Response__c(Fname + "(" + Id + ")");
+                                        taskList.get(i).setTask_Response__c(firstName + "(" + id + ")");
                                     }
                                     notifyItemChanged(i);
                                 }
@@ -888,9 +887,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
                         }
                     } else {
-                        Toast.makeText(mContext,mContext.getResources()
-                                .getString(R.string.enter_moblie_no),Toast.LENGTH_SHORT).show();
-                        for(int i=0;i<taskList.size();i++){
+                        Toast.makeText(mContext, mContext.getResources()
+                                .getString(R.string.enter_moblie_no), Toast.LENGTH_SHORT).show();
+                        for (int i = 0; i < taskList.size(); i++) {
                             if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
                                 taskList.get(i).setTask_Response__c("");
                                 notifyItemChanged(i);
@@ -904,7 +903,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(mContext,"Something went wrong",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Something went wrong", Toast.LENGTH_SHORT).show();
                 Utills.hideProgressDialog();
             }
         });

@@ -360,10 +360,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 //                            }
                         }
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -537,9 +533,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                             }
                         }
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
             }
