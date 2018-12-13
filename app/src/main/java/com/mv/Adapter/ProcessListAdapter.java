@@ -103,6 +103,11 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
 
         listType = new TypeToken<ArrayList<Task>>() {
         }.getType();
+
+        for(int i=0;i<resultList.size();i++){
+            ArrayList<Task> tasks = gson.fromJson(resultList.get(i).getTaskListString(), listType);
+            taskArrayList.add(tasks);
+        }
     }
 
     @Override
@@ -122,23 +127,20 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
 
-        ArrayList<Task> tasks = gson.fromJson(resultList.get(position).getTaskListString(), listType);
-        taskArrayList.add(tasks);
-
         if (resultList.get(position).getHeaderPosition().equals("")) {
-            if (tasks.get(0).getTimestamp__c() != null && !tasks.get(0).getTimestamp__c().equals("null")) {
+            if (taskArrayList.get(position).get(0).getTimestamp__c() != null && !taskArrayList.get(position).get(0).getTimestamp__c().equals("null")) {
                 holder.txtCommunityName.setText(Utills.getDate(
-                        Long.valueOf(tasks.get(0).getTimestamp__c()), "dd/MM/yyyy hh:mm:ss.SSS"));
+                        Long.valueOf(taskArrayList.get(position).get(0).getTimestamp__c()), "dd/MM/yyyy hh:mm:ss.SSS"));
             }
         } else {
             holder.txtCommunityName.setText(resultList.get(position).getHeaderPosition());
         }
 
-        if (tasks.get(0).getIsSave().equals("false")) {
-            if (tasks.get(0).getIsApproved__c().equals("false")) {
+        if (taskArrayList.get(position).get(0).getIsSave().equals("false")) {
+            if (taskArrayList.get(position).get(0).getIsApproved__c().equals("false")) {
                 holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.orange));
             } else {
-                if (tasks.get(0).getStatus__c() != null && tasks.get(0).getStatus__c().equalsIgnoreCase("Expected")) {
+                if (taskArrayList.get(position).get(0).getStatus__c() != null && taskArrayList.get(position).get(0).getStatus__c().equalsIgnoreCase("Expected")) {
                     holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.purple));
                 } else {
                     holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
@@ -192,6 +194,7 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                                 resultList.get(position).getMV_Process__c());
                         // Removed entry from local db
                         resultList.remove(position);
+                        taskArrayList.remove(position);
                         notifyDataSetChanged();
                     }
                 }
