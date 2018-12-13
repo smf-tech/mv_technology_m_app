@@ -3,14 +3,28 @@ package com.mv.Utils;
 import android.text.InputFilter;
 import android.text.Spanned;
 
+import java.util.regex.Pattern;
+
 public class DecimalDigitsInputFilter implements InputFilter {
 
-    private int maxDigitsBeforeDecimalPoint;
-    private int maxDigitsAfterDecimalPoint;
+    private String pattern;
+//    private int maxDigitsBeforeDecimalPoint;
+//    private int maxDigitsAfterDecimalPoint;
 
-    public DecimalDigitsInputFilter(int digitsBeforeZero, int digitsAfterZero) {
-        maxDigitsBeforeDecimalPoint = digitsBeforeZero;
-        maxDigitsAfterDecimalPoint = digitsAfterZero;
+    public DecimalDigitsInputFilter(int digitsBeforeZero, int digitsAfterZero, int type) {
+
+//        maxDigitsBeforeDecimalPoint = digitsBeforeZero;
+//        maxDigitsAfterDecimalPoint = digitsAfterZero;
+
+        switch (type) {
+            case Constants.INPUT_DECIMAL_RANGE:
+                pattern = "(([1-9]{1})([0-9]{0," + (digitsBeforeZero - 1) + "})?)?(\\.[0-9]{0," + digitsAfterZero + "})?";
+                break;
+
+            case Constants.INPUT_TEXT_LENGTH:
+                pattern = "(([a-zA-Z 0-9]{0," + (digitsBeforeZero) + "})?)?";
+                break;
+        }
     }
 
     @Override
@@ -18,9 +32,7 @@ public class DecimalDigitsInputFilter implements InputFilter {
         StringBuilder builder = new StringBuilder(dest);
         builder.replace(dstart, dend, source.subSequence(start, end).toString());
 
-        if (!builder.toString().matches(
-                "(([1-9]{1})([0-9]{0," + (maxDigitsBeforeDecimalPoint - 1) + "})?)?(\\.[0-9]{0," + maxDigitsAfterDecimalPoint + "})?")) {
-
+        if (!builder.toString().matches(pattern)) {
             if (source.length() == 0) {
                 return dest.subSequence(dstart, dend);
             }

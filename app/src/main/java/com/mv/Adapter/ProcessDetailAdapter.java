@@ -36,6 +36,7 @@ import com.google.gson.GsonBuilder;
 import com.mv.Activity.LocationSelectionActity;
 import com.mv.Activity.ProcessDeatailActivity;
 import com.mv.Model.Asset;
+import com.mv.Model.Comment;
 import com.mv.Model.ImageData;
 import com.mv.Model.Task;
 import com.mv.R;
@@ -348,7 +349,8 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
                         if (task.getValidationRule() != null && task.getValidationRule().equals("Range")) {
                             holder.questionResponse.setFilters(new InputFilter[]{
-                                    new DecimalDigitsInputFilter(task.getMaxRange().length(), 2)});
+                                    new DecimalDigitsInputFilter(task.getMaxRange().length(),
+                                            2, Constants.INPUT_DECIMAL_RANGE)});
                         }
                         break;
 
@@ -357,6 +359,10 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                             InputFilter[] filterArray = new InputFilter[1];
                             filterArray[0] = new InputFilter.LengthFilter(Integer.parseInt(task.getMaxRange()));
                             holder.questionResponse.setFilters(filterArray);
+                        } else if (task.getValidationRule() != null && task.getValidationRule().equals("Length")) {
+                            holder.questionResponse.setFilters(new InputFilter[]{
+                                    new DecimalDigitsInputFilter(Integer.parseInt(task.getLimitValue()),
+                                            0, Constants.INPUT_TEXT_LENGTH)});
                         }
                         break;
                 }

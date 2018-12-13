@@ -232,6 +232,9 @@ public class Constants {
     public static final int MEDIA_PERMISSION_REQUEST = 1;
     public static final int PHONE_PERMISSION_REQUEST = 2;
 
+    public static final int INPUT_DECIMAL_RANGE = 0;
+    public static final int INPUT_TEXT_LENGTH = 1;
+
     ArrayList<Asset> requestedList = new ArrayList<>();
     ArrayList<Asset> acceptedList = new ArrayList<>();
     ArrayList<Asset> allocatedList = new ArrayList<>();
