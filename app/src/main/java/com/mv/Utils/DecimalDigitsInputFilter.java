@@ -8,14 +8,8 @@ import java.util.regex.Pattern;
 public class DecimalDigitsInputFilter implements InputFilter {
 
     private String pattern;
-//    private int maxDigitsBeforeDecimalPoint;
-//    private int maxDigitsAfterDecimalPoint;
 
     public DecimalDigitsInputFilter(int digitsBeforeZero, int digitsAfterZero, int type) {
-
-//        maxDigitsBeforeDecimalPoint = digitsBeforeZero;
-//        maxDigitsAfterDecimalPoint = digitsAfterZero;
-
         switch (type) {
             case Constants.INPUT_DECIMAL_RANGE:
                 pattern = "(([1-9]{1})([0-9]{0," + (digitsBeforeZero - 1) + "})?)?(\\.[0-9]{0," + digitsAfterZero + "})?";

@@ -442,7 +442,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     processList.setIsEditable__c(resultJsonObj.getString("isEditable"));
                                 }
 
-                                processList.setExactLength("" + resultJsonObj.getBoolean("isExactLength"));
                                 processList.setPicklist_Value_Lan__c(resultJsonObj.getString("lanPicklistValue"));
                                 if (resultJsonObj.has("Process_Answer_Status__c")) {
                                     processList.setProcess_Answer_Status__c(resultJsonObj.getString("Process_Answer_Status__c"));
@@ -500,6 +499,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     processList.setaPIFieldName(resultJsonObj.getString("aPIFieldName"));
                                 }
 
+                                processList.setIsExactLength(resultJsonObj.getBoolean("isExactLength"));
                                 processList.setMV_Process__c(resultJsonObj.getString("mVProcess"));
                                 processList.setTask_Text__c(resultJsonObj.getString("taskText"));
                                 processList.setTask_type__c(resultJsonObj.getString("tasktype"));

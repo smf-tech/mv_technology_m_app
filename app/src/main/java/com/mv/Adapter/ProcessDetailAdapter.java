@@ -329,6 +329,11 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     case "Alphabets":
                         holder.questionResponse.setInputType(InputType.TYPE_CLASS_TEXT);
                         holder.questionResponse.setSingleLine(false);
+                        if (task.getValidationRule() != null && task.getValidationRule().equals("Length")) {
+                            InputFilter[] filterArray = new InputFilter[1];
+                            filterArray[0] = new InputFilter.LengthFilter(Integer.parseInt(task.getLimitValue()));
+                            holder.questionResponse.setFilters(filterArray);
+                        }
                         break;
 
                     case "Number":
@@ -362,7 +367,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                         } else if (task.getValidationRule() != null && task.getValidationRule().equals("Length")) {
                             holder.questionResponse.setFilters(new InputFilter[]{
                                     new DecimalDigitsInputFilter(Integer.parseInt(task.getLimitValue()),
-                                            0, Constants.INPUT_TEXT_LENGTH)});
+                                            2, Constants.INPUT_TEXT_LENGTH)});
                         }
                         break;
                 }
