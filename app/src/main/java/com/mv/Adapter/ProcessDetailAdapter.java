@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -258,10 +260,33 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             });
 
             imgAdd.setOnClickListener(v -> {
-                Long tsLong = System.currentTimeMillis();
-                String imgName = tsLong.toString();
-                taskList.get(getAdapterPosition()).setTask_Response__c(imgName);
-                activity.sendToCamera(imgName, getAdapterPosition());
+                if (taskList.get(getAdapterPosition()).getId() != null && !preferenceHelper.getBoolean(Constants.IS_EDITABLE)) {
+                    final Dialog dialog = new Dialog(activity);
+                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                    dialog.setContentView(R.layout.dialog_full_image);
+
+                    ImageView ivColse = (ImageView) dialog.findViewById(R.id.iv_close);
+                    ivColse.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialog.dismiss();
+                        }
+                    });
+
+                    ImageView ivImage = (ImageView) dialog.findViewById(R.id.iv_image);
+                    Glide.with(mContext)
+                            .load(Constants.IMAGEURL + taskList.get(getAdapterPosition()).getTask_Response__c() + ".png")
+                            .placeholder(mContext.getResources().getDrawable(R.drawable.ic_add_photo))
+                            .into(ivImage);
+                    dialog.show();
+                    Window window = dialog.getWindow();
+                    window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                } else {
+                    Long tsLong = System.currentTimeMillis();
+                    String imgName = tsLong.toString();
+                    taskList.get(getAdapterPosition()).setTask_Response__c(imgName);
+                    activity.sendToCamera(imgName, getAdapterPosition());
+                }
             });
         }
     }
@@ -303,7 +328,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             holder.llDate.setEnabled(false);
             holder.llPhoto.setEnabled(false);
             holder.date.setEnabled(false);
-            holder.imgAdd.setEnabled(false);
+//            holder.imgAdd.setEnabled(false);
         }
 
         ArrayAdapter<String> dimen_adapter;
