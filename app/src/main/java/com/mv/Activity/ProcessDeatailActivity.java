@@ -258,6 +258,31 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
     }
 
+    public void sendToGallery(String imgName, int position) {
+        imageName = imgName;
+        imagePosition = position;
+
+        if (!Utills.isMediaPermissionGranted(this)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.CAMERA,
+                                Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        Constants.MEDIA_PERMISSION_REQUEST);
+            }
+        } else {
+            choosePhotoFromGallery();
+        }
+    }
+
+    private void choosePhotoFromGallery() {
+        try {
+            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
+        } catch (ActivityNotFoundException e) {
+            String errorMessage = "Problem in taking photo from gallery, please use camera to take photo.";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void showPictureDialog() {
         try {
             //use standard intent to capture an image
@@ -733,6 +758,18 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 Crop.of(outputUri, finalUri).start(this);
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                try {
+                    outputUri = data.getData();
+                    String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imageName + ".jpg";
+                    File imageFile = new File(imageFilePath);
+                    finalUri = Uri.fromFile(imageFile);
+                    Crop.of(outputUri, finalUri).asSquare().start(this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             if (finalUri != null) {

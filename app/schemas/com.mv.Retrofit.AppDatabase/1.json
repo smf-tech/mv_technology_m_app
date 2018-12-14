@@ -1,13 +1,8 @@
 {
   "formatVersion": 1,
   "database": {
-<<<<<<< Updated upstream:app/schemas/com.mv.Retrofit.AppDatabase/1.json
     "version": 1,
     "identityHash": "e7c3887fad54290e89cf7d7e01033be3",
-=======
-    "version": 39,
-    "identityHash": "796f38df88cead08eb5528fada3dd4a6",
->>>>>>> Stashed changes:app/schemas/com.mv.Retrofit.AppDatabase/39.json
     "entities": [
       {
         "tableName": "table_community",
@@ -368,7 +363,7 @@
       },
       {
         "tableName": "table_container",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` TEXT, `taskListString` TEXT, `isSave` TEXT, `proAnsListString` TEXT, `MV_Process__c` TEXT, `TaskType` TEXT, `headerPosition` TEXT, `IsAllowDelete` INTEGER, `taskTimeStamp` TEXT, `FormCommentCount` TEXT, `FormReadCommentCount` TEXT, PRIMARY KEY(`unique_Id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` TEXT, `taskListString` TEXT, `isSave` TEXT, `proAnsListString` TEXT, `MV_Process__c` TEXT, `TaskType` TEXT, `headerPosition` TEXT, `IsAllowDelete` INTEGER, `taskTimeStamp` TEXT, PRIMARY KEY(`unique_Id`))",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -413,16 +408,6 @@
           {
             "fieldPath": "taskTimeStamp",
             "columnName": "taskTimeStamp",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "FormCommentCount",
-            "columnName": "FormCommentCount",
-            "affinity": "TEXT"
-          },
-          {
-            "fieldPath": "FormReadCommentCount",
-            "columnName": "FormReadCommentCount",
             "affinity": "TEXT"
           }
         ],
@@ -1412,7 +1397,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"796f38df88cead08eb5528fada3dd4a6\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e7c3887fad54290e89cf7d7e01033be3\")"
     ]
   }
 }

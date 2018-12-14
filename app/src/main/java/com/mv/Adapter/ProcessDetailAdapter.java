@@ -262,7 +262,11 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 Long tsLong = System.currentTimeMillis();
                 String imgName = tsLong.toString();
                 taskList.get(getAdapterPosition()).setTask_Response__c(imgName);
-                activity.sendToCamera(imgName, getAdapterPosition());
+                if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.GALLERY)) {
+                    activity.sendToGallery(imgName ,getAdapterPosition());
+                } else {
+                    activity.sendToCamera(imgName, getAdapterPosition());
+                }
             });
         }
     }
@@ -741,6 +745,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 break;
 
             case Constants.IMAGE:
+            case Constants.GALLERY:
                 holder.llHeaderLay.setVisibility(View.GONE);
                 holder.llEditText.setVisibility(View.GONE);
                 holder.llLocation.setVisibility(View.GONE);
