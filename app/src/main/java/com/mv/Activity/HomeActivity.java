@@ -949,7 +949,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (User.getCurrentUser(getApplicationContext()).getMvUser() != null) {
             if (User.getCurrentUser(getApplicationContext()).getMvUser().getApproval_role() != null) {
                 if (!User.getCurrentUser(getApplicationContext()).getMvUser().getApprover_Comment__c().equals("")) {
-                    message = getString(R.string.approve_profile) + "\n" + User.getCurrentUser(getApplicationContext()).getMvUser().getApprover_Comment__c();
+                    message = getString(R.string.approve_profile) + "\nRemark:" + User.getCurrentUser(getApplicationContext()).getMvUser().getApprover_Comment__c();
                 } else {
                     message = getString(R.string.approve_profile) + "\n" + User.getCurrentUser(getApplicationContext()).getMvUser().getApproval_role() + " " + getString(R.string.approve_profile2);
                 }

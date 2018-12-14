@@ -24,25 +24,25 @@ public interface ServiceRequest {
 
 
     @FormUrlEncoded
-    @POST("")
+    @POST()
     Call<ResponseBody> loginSalesforce(@Url String url, @Field("username") String mUsername, @Field("password") String mPassword,
                                        @Field("client_secret") String mClientSecret, @Field("client_id") String ClientId,
                                        @Field("grant_type") String mGrantType, @Field("response_type") String mResponseType);
 
-    @GET("")
+    @GET()
     @Streaming
     Call<ResponseBody> downloadFile(@Url String url);
 
-    @GET("")
+    @GET()
     Call<ResponseBody> getSalesForceData(@Url String url);
 
-    @POST("")
+    @POST()
     Call<ResponseBody> sendDataToSalesforce(@Url String url, @Body JsonObject object);
 
-    @DELETE("")
+    @DELETE()
     Call<ResponseBody> deleteDataFromSalesforce(@Url String url);
 
-    @POST("")
+    @POST()
     Call<ResponseBody> sendImageToSalesforce(@Url String url, @Body JsonArray jsonArray);
 
     @FormUrlEncoded
@@ -81,11 +81,11 @@ public interface ServiceRequest {
     Call<ResponseBody> submitLocation(@Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster, @Field("village") String mVillage, @Field("school_name") String mSchool);
 
     @FormUrlEncoded
-    @POST("")
+    @POST()
     Call<ResponseBody> getLoacationData(@Url String url, @Field("state") String mState, @Field("district") String mDistrict, @Field("taluka") String mTaluka, @Field("cluster") String mCluster, @Field("village") String mVillage);
 
     @FormUrlEncoded
-    @POST("")
+    @POST()
     Call<ResponseBody> getMapContent(@Url String url, @Field("id") String mId, @Field("lat") String mlat, @Field("lon") String mlon);
 
     @POST("s3/s3_upload_api.php")
