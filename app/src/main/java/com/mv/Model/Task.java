@@ -498,6 +498,7 @@ public class Task implements Parcelable {
         dest.writeString(this.filterFields);
         dest.writeString(this.referenceField);
         dest.writeString(this.aPIFieldName);
+        dest.writeString(this.FormCommentCount);
      //   dest.writeValue(this.IsDeleteAllow);
     }
 
@@ -534,6 +535,7 @@ public class Task implements Parcelable {
         this.filterFields = in.readString();
         this.referenceField = in.readString();
         this.aPIFieldName = in.readString();
+        this.FormCommentCount = in.readString();
       //  this.IsDeleteAllow = (Boolean) in.readValue(Boolean.class.getClassLoader());
     }
 

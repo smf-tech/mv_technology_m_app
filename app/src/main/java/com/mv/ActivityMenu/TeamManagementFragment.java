@@ -40,14 +40,12 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
     private ActivityNewTemplateBinding binding;
     private RecyclerView.LayoutManager mLayoutManager;
     private TextView textNoData;
-
     private Activity context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-        Log.d("cycled", "onCreate: B");
         binding = DataBindingUtil.setContentView(this, R.layout.activity_new_template);
         binding.setVariable(BR.vm, new ParentViewModel());
     }
@@ -56,7 +54,6 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
     public void onResume() {
         super.onResume();
         initViews();
-        Log.d("cycled", "onResume: B");
     }
 
     private void setActionbar(String Title) {
@@ -125,29 +122,24 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
 
     @Override
     protected void onStart() {
-        Log.d("cycled", "onStart:B ");
         super.onStart();
     }
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("cycled", "onPause: B");
     }
     @Override
     protected void onStop() {
-        Log.d("cycled", "onStop: B");
         super.onStop();
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("cycled", "onDestroy: B");
 
     }
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d("cycled", "onRestart: B");
     }
 
     private void showPopUp() {

@@ -214,6 +214,9 @@ public interface UserDao {
     @Query("SELECT * FROM " + Constants.TABLE_CONTAINER + " where MV_Process__c = :processId AND  TaskType = :questionType ORDER BY taskTimeStamp DESC")
     List<TaskContainerModel> getTask(String processId, String questionType);
 
+    @Query("SELECT * FROM " + Constants.TABLE_CONTAINER + " where unique_Id = :uniqueId ")
+    TaskContainerModel getTaskByUniqueId(String uniqueId);
+
     @Query("SELECT count(*) FROM " + Constants.TABLE_CONTAINER + " where TaskType = :questionType AND  isSave = :isSave")
     int getOfflineTaskCount(String questionType, String isSave);
 

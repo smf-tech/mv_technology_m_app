@@ -300,6 +300,10 @@ public class ProgrammeManagmentFragment extends AppCompatActivity implements Vie
                                         taskList.setaPIFieldName(resultJsonObj.getString("aPIFieldName"));
                                     }
 
+                                    if (resultJsonObj.has("FormCommentCount")) {
+                                        taskList.setFormCommentCount(resultJsonObj.getString("FormCommentCount"));
+                                    }
+
                                     ProgrammeManagmentFragment.this.taskList.add(taskList);
                                 }
 
@@ -312,6 +316,7 @@ public class ProgrammeManagmentFragment extends AppCompatActivity implements Vie
                                 taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
                                 taskContainerModel.setHeaderPosition(sb.toString());
                                 taskContainerModel.setIsSave(Constants.PROCESS_STATE_SAVE);
+                                taskContainerModel.setFormCommentCount(taskList.get(0).getFormCommentCount());
 
                                 //task without answer
                                 taskContainerModel.setTaskType(Constants.TASK_QUESTION);
