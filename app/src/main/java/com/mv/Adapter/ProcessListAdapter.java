@@ -144,8 +144,10 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                     holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                 }
             }
-            if(Integer.parseInt(resultList.get(position).getFormCommentCount())>Integer.parseInt(resultList.get(position).getFormReadCommentCount())){
-                holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
+            if(resultList.get(position).getFormCommentCount()!= null && resultList.get(position).getFormReadCommentCount()!= null ) {
+                if (Integer.parseInt(resultList.get(position).getFormCommentCount()) > Integer.parseInt(resultList.get(position).getFormReadCommentCount())) {
+                    holder.textViewColor.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
+                }
             }
 
             if (!resultList.get(position).getIsDeleteAllow()) {
