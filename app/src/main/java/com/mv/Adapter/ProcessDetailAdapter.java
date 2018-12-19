@@ -36,7 +36,6 @@ import com.google.gson.GsonBuilder;
 import com.mv.Activity.LocationSelectionActity;
 import com.mv.Activity.ProcessDeatailActivity;
 import com.mv.Model.Asset;
-import com.mv.Model.Comment;
 import com.mv.Model.ImageData;
 import com.mv.Model.Task;
 import com.mv.R;
@@ -196,13 +195,33 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
             spinnerResponse.setOnTouchListener((v, event) -> {
                 if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.TASK_PICK_LIST)) {
-                    filteredPickList = structureFilterPickList(taskList.get(getAdapterPosition()));
-                    ArrayAdapter<String> dimen_adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, filteredPickList);
+                    String[] filterArray = taskList.get(getAdapterPosition()).getFilterFields().split(",");
+                    String filterValue = filterArray[filterArray.length - 1];
+
+                    boolean isTaskLocation = false;
+                    Task task = null;
+                    for (Task t : taskList) {
+                        if (t.getTask_type__c().equalsIgnoreCase("Task Location") ||
+                                t.getTask_type__c().equalsIgnoreCase("Picklist Reference")) {
+                            if (t.getaPIFieldName().equalsIgnoreCase(filterValue)) {
+                                isTaskLocation = true;
+                                task = t;
+                            }
+                        }
+                    }
+
+                    if (isTaskLocation && task.getLocationLevel() != null) {
+                        myList = getStructureFilterPickListFromTaskLocation(taskList.get(getAdapterPosition()), task.getLocationLevel(), task.getTask_Response__c());
+                    } else {
+                        myList = getStructureFilterPickListFromLocation(taskList.get(getAdapterPosition()));
+                    }
+
+                    ArrayAdapter<String> dimen_adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, myList);
                     dimen_adapter.setDropDownViewResource(R.layout.spinnerlayout);
                     spinnerResponse.setPrompt(taskList.get(getAdapterPosition()).getTask_Text___Lan_c());
                     spinnerResponse.setAdapter(dimen_adapter);
 
-                    if (filteredPickList.size() > selectedPosition) {
+                    if (myList.size() > selectedPosition) {
                         spinnerResponse.setSelection(selectedPosition);
                     }
 
@@ -222,7 +241,11 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                         taskList.get(getAdapterPosition()).setTask_Response__c("");
                     } else {
                         if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.TASK_PICK_LIST)) {
-                            myList = structureFilterPickList(taskList.get(getAdapterPosition()));
+//                            if () {
+//
+//                            } else {
+//                                myList = getStructureFilterPickListFromLocation(taskList.get(getAdapterPosition()));
+//                            }
                             taskList.get(getAdapterPosition()).setTask_Response__c(myList.get(position));
 
                             if (taskList.get(getAdapterPosition()).getTask_Text__c().contains("Structure Code") ||
@@ -426,7 +449,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llDate.setVisibility(View.GONE);
                 holder.llLayout.setVisibility(View.VISIBLE);
 
-                filteredPickList = structureFilterPickList(task);
+                filteredPickList = getStructureFilterPickListFromLocation(task);
 
                 dimen_adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, filteredPickList);
                 dimen_adapter.setDropDownViewResource(R.layout.spinnerlayout);
@@ -785,7 +808,96 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         }
     }
 
-    private ArrayList<String> structureFilterPickList(Task task) {
+    private ArrayList<String> getStructureFilterPickListFromTaskLocation(Task task, String taskLocation, String taskResponse) {
+        ArrayList<String> filterList = new ArrayList<>();
+        filterList.add("Select");
+        try {
+            if (task != null) {
+                  if (taskLocation.equalsIgnoreCase("School")) {
+                    if (pickListArray != null) {
+                        HashMap<String, String> filterValues = new HashMap<>();
+                        filterValues.put("taskAnswer1__c", taskResponse);
+
+                        for (int i = 0; i < pickListArray.length(); i++) {
+                            JSONObject pickListJsonObj = pickListArray.getJSONObject(i);
+                            String referenceField = task.getReferenceField();
+
+                            if (pickListJsonObj.has(referenceField) && pickListJsonObj.get("taskId__c").equals(task.getMV_Task__c_Id())) {
+                                if (pickListJsonObj.getString("taskAnswer1__c").equals(filterValues.get("taskAnswer1__c"))) {
+                                    filterList.add(pickListJsonObj.getString(referenceField));
+                                }
+                            }
+                        }
+                    }
+                }else {
+                    if (pickListArray != null) {
+                        HashMap<String, String> filterValues = new HashMap<>();
+                        String[] filterArray = task.getFilterFields().split(",");
+                        String[] locationArray = taskResponse.split(",");
+                        boolean flag = false;
+
+//                        for (String filter : filterArray) {
+//                            for (Task tempTask : taskList) {
+//                                String apiField = tempTask.getaPIFieldName();
+//                                if (apiField.equalsIgnoreCase(filter)) {
+//                                    filterValues.put(filter, taskResponse);
+//                                    break;
+//                                }
+//                            }
+//                        }
+
+                        for(String filter : filterArray){
+                            if(filter.equalsIgnoreCase("State__c")){
+                                filterValues.put(filter, locationArray[0]);
+                            }else if(filter.equalsIgnoreCase("District__c")){
+                                filterValues.put(filter, locationArray[1]);
+                            }else if(filter.equalsIgnoreCase("Taluka__c")){
+                                filterValues.put(filter, locationArray[2]);
+                            }else if(filter.equalsIgnoreCase("Village__c")){
+                                filterValues.put(filter, locationArray[3]);
+                            }
+                        }
+
+
+                        for (int i = 0; i < pickListArray.length(); i++) {
+                            JSONObject pickListJsonObj = pickListArray.getJSONObject(i);
+                            String referenceField = task.getReferenceField();
+
+//                            if (pickListJsonObj.has(referenceField) && pickListJsonObj.get("taskId__c").equals(task.getMV_Task__c_Id())) {
+//                                if (pickListJsonObj.getString("Village__c").equals(filterValues.get("Village__c"))) {
+//                                    filterList.add(pickListJsonObj.getString(referenceField));
+//                                }
+//                            }
+
+                            if (pickListJsonObj.has(referenceField) && pickListJsonObj.get("taskId__c").equals(task.getMV_Task__c_Id())) {
+                                for (String filter : filterArray) {
+                                    String strFilter = filterValues.get(filter);
+                                    if(filterValues.containsKey(filter)) {
+                                        if (strFilter != null && strFilter.equalsIgnoreCase(pickListJsonObj.getString(filter))) {
+                                            flag = true;
+                                        } else {
+                                            flag = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (flag) {
+                                    filterList.add(pickListJsonObj.getString(referenceField));
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return filterList;
+    }
+
+    private ArrayList<String> getStructureFilterPickListFromLocation(Task task) {
         ArrayList<String> filterList = new ArrayList<>();
         filterList.add("Select");
         try {
