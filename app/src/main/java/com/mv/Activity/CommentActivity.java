@@ -1,5 +1,6 @@
 package com.mv.Activity;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -7,6 +8,8 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,6 +24,7 @@ import com.mv.Model.TaskContainerModel;
 import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Retrofit.ApiClient;
+import com.mv.Retrofit.AppDatabase;
 import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.Constants;
 import com.mv.Utils.LocaleManager;
@@ -56,10 +60,12 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
     private TextView textNoData;
     public String HoSupportCommunity = "";
     private String commentId;
+    private Activity context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_comment);
         binding.setActivity(this);
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
@@ -140,11 +146,14 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     } else {
                         textNoData.setVisibility(View.VISIBLE);
                     }
-                    //save count of read comments in form db
-                    TaskContainerModel taskContainerModel = new TaskContainerModel();
-                    taskContainerModel.setUnique_Id(conetentId);
-                    taskContainerModel.setFormReadCommentCount(String.valueOf(temp.size()));
-
+                    //save count of read comments count in form db
+                    if(preferenceHelper.getString(Constants.PROCESS_TYPE).equals(Constants.MANGEMENT_PROCESS) && temp.size() != 0) {
+                        TaskContainerModel taskContainerModel;
+                        taskContainerModel = AppDatabase.getAppDatabase(CommentActivity.this).userDao().getTaskByUniqueId(preferenceHelper.getString(Constants.UNIQUE));
+                        //        TaskContainerModel taskContainerModel = resultList.get(0);
+                            taskContainerModel.setFormReadCommentCount(String.valueOf(temp.size()));
+                        AppDatabase.getAppDatabase(context).userDao().updateTask(taskContainerModel);
+                    }
                     adapter.notifyDataSetChanged();
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -223,6 +232,10 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
         this.commentId = commentId;
         binding.edtComment.setText(commentData);
         binding.imgClear.setVisibility(View.VISIBLE);
+//        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+//        imm.showSoftInput(binding.edtComment, InputMethodManager.SHOW_IMPLICIT);
+        // Request focus and show soft keyboard automatically
+     //   getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
     //to delete the comment
 
