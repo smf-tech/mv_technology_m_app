@@ -348,6 +348,11 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
                                 if (!idList.contains(taskContainerModel.getUnique_Id())) {
                                     resultList.add(taskContainerModel);
+                                } else {
+                                    taskContainerModel.setFormReadCommentCount(resultList.get(idList.
+                                            indexOf(taskContainerModel.getUnique_Id())).getFormReadCommentCount());
+                                    resultList.remove(idList.indexOf(taskContainerModel.getUnique_Id()));
+                                    resultList.add(taskContainerModel);
                                 }
                             }
 
