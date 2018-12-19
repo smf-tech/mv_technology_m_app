@@ -146,13 +146,7 @@ public class CommentActivity extends AppCompatActivity implements View.OnClickLi
                     } else {
                         textNoData.setVisibility(View.VISIBLE);
                     }
-                    //save count of read comments in form db
-                   // TaskContainerModel taskContainerModel = new TaskContainerModel();
-                   // taskContainerModel.setUnique_Id(conetentId);
-                   // taskContainerModel.setUnique_Id(preferenceHelper.getString(Constants.UNIQUE));
-                   // taskContainerModel.setFormReadCommentCount(String.valueOf(temp.size()));
-                   // AppDatabase.getAppDatabase(context).userDao().updateFormReadCommentCount(preferenceHelper.getString(Constants.UNIQUE), String.valueOf(temp.size()));
-                    // List<TaskContainerModel> resultList = new ArrayList<>();
+                    //save count of read comments count in form db
                     if(preferenceHelper.getString(Constants.PROCESS_TYPE).equals(Constants.MANGEMENT_PROCESS) && temp.size() != 0) {
                         TaskContainerModel taskContainerModel;
                         taskContainerModel = AppDatabase.getAppDatabase(CommentActivity.this).userDao().getTaskByUniqueId(preferenceHelper.getString(Constants.UNIQUE));
