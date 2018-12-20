@@ -59,10 +59,12 @@ import com.mv.ActivityMenu.CommunityHomeFragment;
 import com.mv.ActivityMenu.GroupsFragment;
 import com.mv.ActivityMenu.MyReportActivity;
 import com.mv.ActivityMenu.ProgrammeManagmentFragment;
+import com.mv.ActivityMenu.TableauReportActivity;
 import com.mv.ActivityMenu.TeamManagementFragment;
 import com.mv.ActivityMenu.ThetSavandFragment;
 import com.mv.ActivityMenu.TrainingCalender;
 import com.mv.Adapter.HomeAdapter;
+import com.mv.Adapter.TableauReportsListAdapter;
 import com.mv.Model.Attendance;
 import com.mv.Model.HolidayListModel;
 import com.mv.Model.HomeModel;
@@ -620,6 +622,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 homeModel.setMenuName(getString(R.string.attendance));
                 homeModel.setMenuIcon(R.drawable.ic_about_us);
                 homeModel.setDestination(AttendanceActivity.class);
+                break;
+
+            case Constants.Tableau_Reports:
+                homeModel.setMenuName(getString(R.string.tableau_reports));
+                homeModel.setMenuIcon(R.drawable.ic_reports);
+                homeModel.setDestination(TableauReportActivity.class);
                 break;
         }
         return homeModel;

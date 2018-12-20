@@ -152,6 +152,7 @@ public class Constants {
     public static final String Account_Section = "Account Section";
     public static final String Asset_management = "Asset management";
     public static final String Attendance = "Attendance";
+    public static final String Tableau_Reports = "Tableau Reports";
     public static final String IMAGEURL = "http://mvappimages.s3.us-east-2.amazonaws.com/images/";
 //    public static final String IMAGEURL = "http://mobileapp.mulyavardhan.org/images/";
     public static final String InsertContentUrl = "/services/apexrest/insertContent";
