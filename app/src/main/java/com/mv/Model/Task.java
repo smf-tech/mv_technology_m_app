@@ -538,7 +538,6 @@ public class Task implements Parcelable {
         this.referenceField = in.readString();
         this.aPIFieldName = in.readString();
         this.isExactLength = (Boolean) in.readValue(Boolean.class.getClassLoader());
-      //  this.IsDeleteAllow = (Boolean) in.readValue(Boolean.class.getClassLoader());
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {

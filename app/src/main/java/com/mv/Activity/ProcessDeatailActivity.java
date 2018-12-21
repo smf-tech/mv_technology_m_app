@@ -258,6 +258,31 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
     }
 
+    public void sendToGallery(String imgName, int position) {
+        imageName = imgName;
+        imagePosition = position;
+
+        if (!Utills.isMediaPermissionGranted(this)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.CAMERA,
+                                Manifest.permission.RECORD_AUDIO, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        Constants.MEDIA_PERMISSION_REQUEST);
+            }
+        } else {
+            choosePhotoFromGallery();
+        }
+    }
+
+    private void choosePhotoFromGallery() {
+        try {
+            Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(i, Constants.CHOOSE_IMAGE_FROM_GALLERY);
+        } catch (ActivityNotFoundException e) {
+            String errorMessage = "Problem in taking photo from gallery, please use camera to take photo.";
+            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
+        }
+    }
+
     private void showPictureDialog() {
         try {
             //use standard intent to capture an image
@@ -411,48 +436,50 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     mandatoryFlag = true;
                     msg = "please check " + taskList.get(i).getTask_Text__c();
                     break;
-                } else {
-                    if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Range")) {
-                        double val;
-                        if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
-                            mandatoryFlag = true;
-                            msg = "please enter " + taskList.get(i).getTask_Text__c();
-                            break;
-                        } else {
-                            try {
-                                val = Double.parseDouble(taskList.get(i).getTask_Response__c());
-                                if (Double.parseDouble(taskList.get(i).getMaxRange()) < val) {
-                                    mandatoryFlag = true;
-                                    msg = "please enter " + taskList.get(i).getTask_Text__c() + " value less than " + taskList.get(i).getMaxRange();
-                                    break;
-                                } else if (Double.parseDouble(taskList.get(i).getMinRange()) > val) {
-                                    mandatoryFlag = true;
-                                    msg = "please enter " + taskList.get(i).getTask_Text__c() + " value grater than " + taskList.get(i).getMinRange();
-                                    break;
-                                }
-                            } catch (NumberFormatException nfe) {
+                }
+            }
+
+            if(taskList.get(i).getTask_Response__c()!=null && taskList.get(i).getTask_Response__c().length()>0) {
+                if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Range")) {
+                    double val;
+                    if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
+                        mandatoryFlag = true;
+                        msg = "please enter " + taskList.get(i).getTask_Text__c();
+                        break;
+                    } else {
+                        try {
+                            val = Double.parseDouble(taskList.get(i).getTask_Response__c());
+                            if (Double.parseDouble(taskList.get(i).getMaxRange()) < val) {
                                 mandatoryFlag = true;
-                                msg = "please check " + taskList.get(i).getTask_Text__c();
+                                msg = "please enter " + taskList.get(i).getTask_Text__c() + " value less than " + taskList.get(i).getMaxRange();
+                                break;
+                            } else if (Double.parseDouble(taskList.get(i).getMinRange()) > val) {
+                                mandatoryFlag = true;
+                                msg = "please enter " + taskList.get(i).getTask_Text__c() + " value grater than " + taskList.get(i).getMinRange();
                                 break;
                             }
-                        }
-                    } else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Length")) {
-                        if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
+                        } catch (NumberFormatException nfe) {
                             mandatoryFlag = true;
-                            msg = "please enter " + taskList.get(i).getTask_Text__c();
+                            msg = "please check " + taskList.get(i).getTask_Text__c();
                             break;
-                        } else {
-                            if (taskList.get(i).isExactLength()) {
-                                if (Integer.parseInt(taskList.get(i).getLimitValue()) != taskList.get(i).getTask_Response__c().length()) {
-                                    mandatoryFlag = true;
-                                    msg = "please enter valid " + taskList.get(i).getTask_Text__c();
-                                    break;
-                                }
-                            } else if (Integer.parseInt(taskList.get(i).getLimitValue()) < taskList.get(i).getTask_Response__c().length()) {
+                        }
+                    }
+                } else if (taskList.get(i).getValidationRule() != null && taskList.get(i).getValidationRule().equals("Length")) {
+                    if (taskList.get(i).getTask_Response__c() == null || taskList.get(i).getTask_Response__c().equals("")) {
+                        mandatoryFlag = true;
+                        msg = "please enter " + taskList.get(i).getTask_Text__c();
+                        break;
+                    } else {
+                        if (taskList.get(i).isExactLength()) {
+                            if (Integer.parseInt(taskList.get(i).getLimitValue()) != taskList.get(i).getTask_Response__c().length()) {
                                 mandatoryFlag = true;
                                 msg = "please enter valid " + taskList.get(i).getTask_Text__c();
                                 break;
                             }
+                        } else if (Integer.parseInt(taskList.get(i).getLimitValue()) < taskList.get(i).getTask_Response__c().length()) {
+                            mandatoryFlag = true;
+                            msg = "please enter valid " + taskList.get(i).getTask_Text__c();
+                            break;
                         }
                     }
                 }
@@ -502,16 +529,16 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         if (data.length() > 0) {
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             Asset asset = gson.fromJson(data, Asset.class);
-                            String Id = asset.getAsset_id();
+                            String id = asset.getAsset_id();
                             String firstName = asset.getName();
                             String lastName = asset.getLast_Name__c();
 
                             for (int i = 0; i < taskList.size(); i++) {
                                 if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
                                     if (lastName != null)
-                                        taskList.get(i).setTask_Response__c(firstName + " " + lastName + "(" + Id + ")");
+                                        taskList.get(i).setTask_Response__c(firstName + " " + lastName + "(" + id + ")");
                                     else {
-                                        taskList.get(i).setTask_Response__c(firstName + "(" + Id + ")");
+                                        taskList.get(i).setTask_Response__c(firstName + "(" + id + ")");
                                     }
                                 }
                             }
@@ -731,6 +758,18 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 Crop.of(outputUri, finalUri).start(this);
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+        } else if (requestCode == Constants.CHOOSE_IMAGE_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
+            if (data != null) {
+                try {
+                    outputUri = data.getData();
+                    String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imageName + ".jpg";
+                    File imageFile = new File(imageFilePath);
+                    finalUri = Uri.fromFile(imageFile);
+                    Crop.of(outputUri, finalUri).asSquare().start(this);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
             if (finalUri != null) {

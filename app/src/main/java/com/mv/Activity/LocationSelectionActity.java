@@ -382,7 +382,33 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
 
     private void sendLocationTask() {
         msg = "";
-        taskList.get(position).setTask_Response__c(selectedSpinner.getSelectedItem().toString());
+        switch (locationType) {
+            case "State":
+                taskList.get(position).setTask_Response__c(binding.spinnerState.getSelectedItem().toString());
+                break;
+            case "District":
+                taskList.get(position).setTask_Response__c(binding.spinnerState.getSelectedItem().toString() + "," +
+                        binding.spinnerDistrict.getSelectedItem().toString());
+                break;
+            case "Taluka":
+                taskList.get(position).setTask_Response__c(binding.spinnerState.getSelectedItem().toString() + "," +
+                        binding.spinnerDistrict.getSelectedItem().toString()
+                        + "," + binding.spinnerTaluka.getSelectedItem().toString());
+                break;
+            case "Village":
+                taskList.get(position).setTask_Response__c(binding.spinnerState.getSelectedItem().toString() + "," +
+                        binding.spinnerDistrict.getSelectedItem().toString()
+                        + "," + binding.spinnerTaluka.getSelectedItem().toString() + "," + binding.spinnerVillage.getSelectedItem().toString());
+                break;
+            case "School":
+                taskList.get(position).setTask_Response__c(binding.spinnerState.getSelectedItem().toString() + "," +
+                        binding.spinnerDistrict.getSelectedItem().toString()
+                        + "," + binding.spinnerTaluka.getSelectedItem().toString() + "," +
+                        binding.spinnerVillage.getSelectedItem().toString() + "," + binding.spinnerSchoolName.getSelectedItem().toString());
+
+        }
+
+     //   taskList.get(position).setTask_Response__c(selectedSpinner.getSelectedItem().toString());
         for (int i = 0; i < locationState; i++) {
             if (taskList.get(i).getTask_Response__c().equals("Select")) {
                 msg = "Please Select " + taskList.get(i).getTask_Text__c();

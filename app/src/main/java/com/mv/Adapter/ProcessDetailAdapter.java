@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -21,7 +20,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
@@ -183,7 +181,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     ((ProcessDeatailActivity) mContext).saveDataToList(taskList.get(getAdapterPosition()), getAdapterPosition());
                     if (taskList.get(getAdapterPosition()).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER) && s.length() == 10) {
                         if (Utills.isConnected(mContext)) {
-                            GetUSerName(s.toString(), getAdapterPosition());
+                            getUserName(s.toString(), getAdapterPosition());
                         } else {
                             Utills.showToast(mContext.getString(R.string.error_no_internet), mContext);
                         }
@@ -197,13 +195,33 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
             spinnerResponse.setOnTouchListener((v, event) -> {
                 if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.TASK_PICK_LIST)) {
-                    filteredPickList = structureFilterPickList(taskList.get(getAdapterPosition()));
-                    ArrayAdapter<String> dimen_adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, filteredPickList);
+                    String[] filterArray = taskList.get(getAdapterPosition()).getFilterFields().split(",");
+                    String filterValue = filterArray[filterArray.length - 1];
+
+                    boolean isTaskLocation = false;
+                    Task task = null;
+                    for (Task t : taskList) {
+                        if (t.getTask_type__c().equalsIgnoreCase("Task Location") ||
+                                t.getTask_type__c().equalsIgnoreCase("Picklist Reference")) {
+                            if (t.getaPIFieldName().equalsIgnoreCase(filterValue)) {
+                                isTaskLocation = true;
+                                task = t;
+                            }
+                        }
+                    }
+
+                    if (isTaskLocation && task.getLocationLevel() != null) {
+                        myList = getStructureFilterPickListFromTaskLocation(taskList.get(getAdapterPosition()), task.getLocationLevel(), task.getTask_Response__c());
+                    } else {
+                        myList = getStructureFilterPickListFromLocation(taskList.get(getAdapterPosition()));
+                    }
+
+                    ArrayAdapter<String> dimen_adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, myList);
                     dimen_adapter.setDropDownViewResource(R.layout.spinnerlayout);
                     spinnerResponse.setPrompt(taskList.get(getAdapterPosition()).getTask_Text___Lan_c());
                     spinnerResponse.setAdapter(dimen_adapter);
 
-                    if (filteredPickList.size() > selectedPosition) {
+                    if (myList.size() > selectedPosition) {
                         spinnerResponse.setSelection(selectedPosition);
                     }
 
@@ -223,7 +241,11 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                         taskList.get(getAdapterPosition()).setTask_Response__c("");
                     } else {
                         if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.TASK_PICK_LIST)) {
-                            myList = structureFilterPickList(taskList.get(getAdapterPosition()));
+//                            if () {
+//
+//                            } else {
+//                                myList = getStructureFilterPickListFromLocation(taskList.get(getAdapterPosition()));
+//                            }
                             taskList.get(getAdapterPosition()).setTask_Response__c(myList.get(position));
 
                             if (taskList.get(getAdapterPosition()).getTask_Text__c().contains("Structure Code") ||
@@ -260,31 +282,12 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             });
 
             imgAdd.setOnClickListener(v -> {
-                if (taskList.get(getAdapterPosition()).getId() != null && !preferenceHelper.getBoolean(Constants.IS_EDITABLE)) {
-                    final Dialog dialog = new Dialog(activity);
-                    dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    dialog.setContentView(R.layout.dialog_full_image);
-
-                    ImageView ivColse = (ImageView) dialog.findViewById(R.id.iv_close);
-                    ivColse.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                        }
-                    });
-
-                    ImageView ivImage = (ImageView) dialog.findViewById(R.id.iv_image);
-                    Glide.with(mContext)
-                            .load(Constants.IMAGEURL + taskList.get(getAdapterPosition()).getTask_Response__c() + ".png")
-                            .placeholder(mContext.getResources().getDrawable(R.drawable.ic_add_photo))
-                            .into(ivImage);
-                    dialog.show();
-                    Window window = dialog.getWindow();
-                    window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                Long tsLong = System.currentTimeMillis();
+                String imgName = tsLong.toString();
+                taskList.get(getAdapterPosition()).setTask_Response__c(imgName);
+                if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.GALLERY)) {
+                    activity.sendToGallery(imgName ,getAdapterPosition());
                 } else {
-                    Long tsLong = System.currentTimeMillis();
-                    String imgName = tsLong.toString();
-                    taskList.get(getAdapterPosition()).setTask_Response__c(imgName);
                     activity.sendToCamera(imgName, getAdapterPosition());
                 }
             });
@@ -328,7 +331,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             holder.llDate.setEnabled(false);
             holder.llPhoto.setEnabled(false);
             holder.date.setEnabled(false);
-//            holder.imgAdd.setEnabled(false);
+            holder.imgAdd.setEnabled(false);
         }
 
         ArrayAdapter<String> dimen_adapter;
@@ -446,7 +449,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 holder.llDate.setVisibility(View.GONE);
                 holder.llLayout.setVisibility(View.VISIBLE);
 
-                filteredPickList = structureFilterPickList(task);
+                filteredPickList = getStructureFilterPickListFromLocation(task);
 
                 dimen_adapter = new ArrayAdapter<>(mContext, android.R.layout.simple_spinner_item, filteredPickList);
                 dimen_adapter.setDropDownViewResource(R.layout.spinnerlayout);
@@ -751,8 +754,8 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 } else {
                     holder.editHeader.setText(task.getTask_Text___Lan_c());
                 }
-                if(task.getTask_Response__c()!=null && task.getTask_Response__c().length()>0 && task.getTask_Response__c().contains("(")){
-                    holder.questionResponse.setText(task.getTask_Response__c().substring(0,task.getTask_Response__c().indexOf("(")));
+                if (task.getTask_Response__c() != null && task.getTask_Response__c().length() > 0 && task.getTask_Response__c().contains("(")) {
+                    holder.questionResponse.setText(task.getTask_Response__c().substring(0, task.getTask_Response__c().indexOf("(")));
                 } else {
                     holder.questionResponse.setText(task.getTask_Response__c());
                 }
@@ -765,6 +768,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 break;
 
             case Constants.IMAGE:
+            case Constants.GALLERY:
                 holder.llHeaderLay.setVisibility(View.GONE);
                 holder.llEditText.setVisibility(View.GONE);
                 holder.llLocation.setVisibility(View.GONE);
@@ -785,7 +789,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                         ImageData id = new ImageData();
                         id.setPosition(position);
                         id.setImageUri(finalUri);
-                        ((ProcessDeatailActivity)mContext).imageDataList.add(id);
+                        ((ProcessDeatailActivity) mContext).imageDataList.add(id);
                     } else {
                         Glide.with(mContext)
                                 .load(Constants.IMAGEURL + taskList.get(position).getTask_Response__c() + ".png")
@@ -804,7 +808,96 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         }
     }
 
-    private ArrayList<String> structureFilterPickList(Task task) {
+    private ArrayList<String> getStructureFilterPickListFromTaskLocation(Task task, String taskLocation, String taskResponse) {
+        ArrayList<String> filterList = new ArrayList<>();
+        filterList.add("Select");
+        try {
+            if (task != null) {
+                  if (taskLocation.equalsIgnoreCase("School")) {
+                    if (pickListArray != null) {
+                        HashMap<String, String> filterValues = new HashMap<>();
+                        filterValues.put("taskAnswer1__c", taskResponse);
+
+                        for (int i = 0; i < pickListArray.length(); i++) {
+                            JSONObject pickListJsonObj = pickListArray.getJSONObject(i);
+                            String referenceField = task.getReferenceField();
+
+                            if (pickListJsonObj.has(referenceField) && pickListJsonObj.get("taskId__c").equals(task.getMV_Task__c_Id())) {
+                                if (pickListJsonObj.getString("taskAnswer1__c").equals(filterValues.get("taskAnswer1__c"))) {
+                                    filterList.add(pickListJsonObj.getString(referenceField));
+                                }
+                            }
+                        }
+                    }
+                }else {
+                    if (pickListArray != null) {
+                        HashMap<String, String> filterValues = new HashMap<>();
+                        String[] filterArray = task.getFilterFields().split(",");
+                        String[] locationArray = taskResponse.split(",");
+                        boolean flag = false;
+
+//                        for (String filter : filterArray) {
+//                            for (Task tempTask : taskList) {
+//                                String apiField = tempTask.getaPIFieldName();
+//                                if (apiField.equalsIgnoreCase(filter)) {
+//                                    filterValues.put(filter, taskResponse);
+//                                    break;
+//                                }
+//                            }
+//                        }
+
+                        for(String filter : filterArray){
+                            if(filter.equalsIgnoreCase("State__c")){
+                                filterValues.put(filter, locationArray[0]);
+                            }else if(filter.equalsIgnoreCase("District__c")){
+                                filterValues.put(filter, locationArray[1]);
+                            }else if(filter.equalsIgnoreCase("Taluka__c")){
+                                filterValues.put(filter, locationArray[2]);
+                            }else if(filter.equalsIgnoreCase("Village__c")){
+                                filterValues.put(filter, locationArray[3]);
+                            }
+                        }
+
+
+                        for (int i = 0; i < pickListArray.length(); i++) {
+                            JSONObject pickListJsonObj = pickListArray.getJSONObject(i);
+                            String referenceField = task.getReferenceField();
+
+//                            if (pickListJsonObj.has(referenceField) && pickListJsonObj.get("taskId__c").equals(task.getMV_Task__c_Id())) {
+//                                if (pickListJsonObj.getString("Village__c").equals(filterValues.get("Village__c"))) {
+//                                    filterList.add(pickListJsonObj.getString(referenceField));
+//                                }
+//                            }
+
+                            if (pickListJsonObj.has(referenceField) && pickListJsonObj.get("taskId__c").equals(task.getMV_Task__c_Id())) {
+                                for (String filter : filterArray) {
+                                    String strFilter = filterValues.get(filter);
+                                    if(filterValues.containsKey(filter)) {
+                                        if (strFilter != null && strFilter.equalsIgnoreCase(pickListJsonObj.getString(filter))) {
+                                            flag = true;
+                                        } else {
+                                            flag = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                                if (flag) {
+                                    filterList.add(pickListJsonObj.getString(referenceField));
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return filterList;
+    }
+
+    private ArrayList<String> getStructureFilterPickListFromLocation(Task task) {
         ArrayList<String> filterList = new ArrayList<>();
         filterList.add("Select");
         try {
@@ -879,33 +972,32 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
         return position;
     }
 
-    public void GetUSerName(String number, int position) {
+    private void getUserName(String number, int position) {
         Utills.showProgressDialog(mContext, "Sending", mContext.getString(R.string.progress_please_wait));
         ServiceRequest apiService = ApiClient.getClientWitHeader(mContext).create(ServiceRequest.class);
-        String url;
-        url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.GetUserThroughMobileNo + "?mobileNo=" + number.trim();
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
-                String data;
                 try {
                     if (response.body() != null) {
-                        data = response.body().string();
+                        String data = response.body().string();
                         if (data.length() > 0) {
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             Asset asset = gson.fromJson(data, Asset.class);
-                            String Id = asset.getAsset_id();
-                            String Fname = asset.getName();
-                            String Lname = asset.getLast_Name__c();
-                            for(int i=0;i<taskList.size();i++){
-                                if(taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
-                                    if (Lname != null)
-                                        taskList.get(i).setTask_Response__c(Fname + " " + Lname + "(" + Id + ")");
+                            String id = asset.getAsset_id();
+                            String firstName = asset.getName();
+                            String lastName = asset.getLast_Name__c();
+
+                            for (int i = 0; i < taskList.size(); i++) {
+                                if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
+                                    if (lastName != null)
+                                        taskList.get(i).setTask_Response__c(firstName + " " + lastName + "(" + id + ")");
                                     else {
-                                        taskList.get(i).setTask_Response__c(Fname + "(" + Id + ")");
+                                        taskList.get(i).setTask_Response__c(firstName + "(" + id + ")");
                                     }
                                     notifyItemChanged(i);
                                 }
@@ -913,9 +1005,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
                         }
                     } else {
-                        Toast.makeText(mContext,mContext.getResources()
-                                .getString(R.string.enter_moblie_no),Toast.LENGTH_SHORT).show();
-                        for(int i=0;i<taskList.size();i++){
+                        Toast.makeText(mContext, mContext.getResources()
+                                .getString(R.string.enter_moblie_no), Toast.LENGTH_SHORT).show();
+                        for (int i = 0; i < taskList.size(); i++) {
                             if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_MV_USER_ANSWER)) {
                                 taskList.get(i).setTask_Response__c("");
                                 notifyItemChanged(i);
@@ -929,7 +1021,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(mContext,"Something went wrong",Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Something went wrong", Toast.LENGTH_SHORT).show();
                 Utills.hideProgressDialog();
             }
         });

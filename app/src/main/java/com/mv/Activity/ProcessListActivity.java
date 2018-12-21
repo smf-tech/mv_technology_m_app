@@ -284,6 +284,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     processList.setUnique_Id__c(jsonArray.getJSONObject(i).getString("Unique_Idd"));
                                     processList.setMTUser__c(jsonArray.getJSONObject(i).getString("MV_User"));
                                     processList.setIsApproved__c(jsonArray.getJSONObject(i).getString("IsApproved"));
+//                                    processList.setExcatLength("" + jsonArray.getJSONObject(i).getBoolean("isExcatLength"));
 
                                     if (jsonArray.getJSONObject(i).has("status")) {
                                         processList.setStatus__c(jsonArray.getJSONObject(i).getString("status"));
@@ -360,10 +361,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 //                            }
                         }
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -537,9 +534,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                             }
                         }
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
             }

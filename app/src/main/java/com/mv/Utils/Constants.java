@@ -106,6 +106,7 @@ public class Constants {
     public static final String EVENT_DATE = "Event Date";
     public static final String EVENT_DESCRIPTION = "Event Description";
     public static final String IMAGE = "Image";
+    public static final String GALLERY = "Gallery";
     public static final String TASK_PICK_LIST = "Picklist Reference";
     public static final String TASK_MV_USER = "MV_User";
     public static final String TASK_MV_USER_ANSWER = "MV_User_Answer";
