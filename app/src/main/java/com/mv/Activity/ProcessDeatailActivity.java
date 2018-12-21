@@ -217,7 +217,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } else if (preferenceHelper.getString(Constants.PROCESS_TYPE).equals(Constants.MANGEMENT_PROCESS)) {
             approve.setVisibility(View.GONE);
             reject.setVisibility(View.GONE);
-            if (taskList.get(0).getId() != null && taskList.get(0).getIsSave().equals("false")) {
+            if (taskList.get(0).getId() != null && !preferenceHelper.getBoolean(Constants.IS_EDITABLE)) {
                 submit.setVisibility(View.GONE);
                 save.setVisibility(View.GONE);
             } else {
