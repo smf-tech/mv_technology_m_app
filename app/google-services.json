@@ -1,102 +1,27 @@
 {
   "project_info": {
-    "project_number": "104752819252",
-    "firebase_url": "https://mulyavardhan-75bb9.firebaseio.com",
-    "project_id": "mulyavardhan-75bb9",
-    "storage_bucket": "mulyavardhan-75bb9.appspot.com"
+    "project_number": "491062401562",
+    "firebase_url": "https://sujalam-suphalam.firebaseio.com",
+    "project_id": "sujalam-suphalam",
+    "storage_bucket": "sujalam-suphalam.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:104752819252:android:0a74835f09dcb0e0",
-        "android_client_info": {
-          "package_name": "com.mv"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "104752819252-mssqelaov91sfqj0gm5e6j1tag70pcdr.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.mv",
-            "certificate_hash": "ff23e78f8d363d0e56c84d1d752f805fe75de2f3"
-          }
-        },
-        {
-          "client_id": "104752819252-2pv6go1liuor68ik2lhgo88chfcgoeb2.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC2sn_fBU-DaiXiGHomIkG5O3DzDBGjrFw"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "104752819252-2pv6go1liuor68ik2lhgo88chfcgoeb2.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:104752819252:android:98cdff3d8d0c86be",
-        "android_client_info": {
-          "package_name": "com.mv.debug"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "104752819252-2pv6go1liuor68ik2lhgo88chfcgoeb2.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC2sn_fBU-DaiXiGHomIkG5O3DzDBGjrFw"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:104752819252:android:9899c10ab9b64a8d",
+        "mobilesdk_app_id": "1:491062401562:android:e3b4073e209453f8",
         "android_client_info": {
           "package_name": "com.bjs.ss"
         }
       },
       "oauth_client": [
         {
-          "client_id": "104752819252-2pv6go1liuor68ik2lhgo88chfcgoeb2.apps.googleusercontent.com",
+          "client_id": "491062401562-2uo0oggt3nclqe7qtcadjajdkmk67h3m.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC2sn_fBU-DaiXiGHomIkG5O3DzDBGjrFw"
+          "current_key": "AIzaSyDja2KVUl5PH-a4usvhu743lsGEdXjbQks"
         }
       ],
       "services": {
@@ -114,20 +39,20 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:104752819252:android:aebc71ad6be4d43d",
+        "mobilesdk_app_id": "1:491062401562:android:c0bd6201cc98f674",
         "android_client_info": {
-          "package_name": "com.bjs.ss.debug"
+          "package_name": "com.bjs.sujalamSuphalam"
         }
       },
       "oauth_client": [
         {
-          "client_id": "104752819252-2pv6go1liuor68ik2lhgo88chfcgoeb2.apps.googleusercontent.com",
+          "client_id": "491062401562-2uo0oggt3nclqe7qtcadjajdkmk67h3m.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyC2sn_fBU-DaiXiGHomIkG5O3DzDBGjrFw"
+          "current_key": "AIzaSyDja2KVUl5PH-a4usvhu743lsGEdXjbQks"
         }
       ],
       "services": {
