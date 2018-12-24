@@ -114,7 +114,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("cycled", "onCreate: A");
 
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         ActivityHome1Binding binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
@@ -188,8 +187,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             }
         }
 
-        long deviceTime = System.currentTimeMillis();
-        Log.i("deviceTime", deviceTime + "");
+//        long deviceTime = System.currentTimeMillis();
+//        Log.i("deviceTime", deviceTime + "");
     }
 
     @Override
@@ -199,14 +198,12 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onStart() {
-        Log.d("cycled", "onStart:A ");
         super.onStart();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("cycled", "onResume: A");
 
         if (User.getCurrentUser(getApplicationContext()).getRolePermssion() != null &&
                 User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationTrackingAllow__c() != null &&
@@ -349,19 +346,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("cycled", "onPause: A");
     }
 
     @Override
     protected void onStop() {
-        Log.d("cycled", "onStop: A");
         super.onStop();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("cycled", "onDestroy: A");
         if (alertLocationDialog != null) {
             alertLocationDialog.dismiss();
         }
@@ -374,7 +368,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d("cycled", "onRestart: A");
     }
 
     private void sendData() {

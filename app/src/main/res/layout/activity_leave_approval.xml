@@ -19,7 +19,7 @@
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
 
-        <ExpandableListView
+        <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_process"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -28,6 +28,43 @@
             android:layout_marginRight="15dp"
             android:layout_marginTop="15dp"
             android:scrollbars="vertical" />
+        <LinearLayout
+            android:id="@+id/lnr_filter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+            <com.mv.Widgets.MyFontButton
+                android:id="@+id/btn_pending"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/selected_btn_background"
+                android:text="@string/pending"
+                android:textColor="@color/white"
+                android:textSize="@dimen/small_text" />
+            <com.mv.Widgets.MyFontButton
+                android:id="@+id/btn_approve"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/light_grey_btn_background"
+                android:layout_weight="1"
+                android:text="@string/Approve"
+                android:textColor="@color/white"
+                android:textSize="@dimen/small_text" />
+
+            <com.mv.Widgets.MyFontButton
+                android:id="@+id/btn_reject"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/light_grey_btn_background"
+                android:text="@string/Reject"
+                android:textColor="@color/white"
+                android:textSize="@dimen/small_text" />
+
+        </LinearLayout>
+
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab_add_process"
             android:layout_width="wrap_content"
