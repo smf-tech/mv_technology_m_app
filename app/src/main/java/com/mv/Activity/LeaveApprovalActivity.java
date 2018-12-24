@@ -8,9 +8,13 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.mv.Adapter.ExpandableApprovalListAdapter;
@@ -58,6 +62,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
     ArrayList<LeavesModel> rejectList = new ArrayList<>();
     private LeaveAdapter adapter;
     private RecyclerView recyclerView;
+    private LinearLayout sortLayout;
     private Button btn_pending;
     private Button btn_approve;
     private Button btn_reject;
@@ -72,6 +77,9 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_leave_approval);
         binding.setProcesslist(this);
+        EditText editTextSort = (EditText) findViewById(R.id.edit_text_email);
+        sortLayout = (LinearLayout)findViewById(R.id.sort_layout);
+        editTextSort.addTextChangedListener(watch);
         recyclerView = (RecyclerView) findViewById(R.id.rv_process);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -98,11 +106,13 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + Constants.GetApproveLeave + "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
             binding.fabAddProcess.setVisibility(View.GONE);
+            sortLayout.setVisibility(View.VISIBLE);
 
         } else {
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + Constants.GetAllMyLeave + "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
             binding.fabAddProcess.setVisibility(View.VISIBLE);
+            sortLayout.setVisibility(View.GONE);
         }
 
         preferenceHelper.insertString(Constants.PROCESS_ID, "");
@@ -382,6 +392,54 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
 //            adapter = new LeaveAdapter(mContext, rejectList);
 //        }
         adapter = new LeaveAdapter(mContext, leaveSortedList);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        if(preferenceHelper.getString(Constants.Leave).equals(Constants.Leave_Approve) && leaveSortedList.size()==0) {
+            Utills.showToast("No data available.",this);
+            sortLayout.setVisibility(View.GONE);
+        }
+//        else{
+//            sortLayout.setVisibility(View.VISIBLE);
+//        }
+    }
+
+    //added this code for sorting vouchers by username
+    private TextWatcher watch = new TextWatcher() {
+
+        @Override
+        public void afterTextChanged(Editable arg0) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+                                      int arg3) {
+            // TODO Auto-generated method stub
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int a, int b, int c) {
+            // TODO Auto-generated method stub
+            setFilter(s.toString());
+
+        }
+    };
+    private void setFilter(String s) {
+        List<LeavesModel> list = new ArrayList<>();
+//        attendanceSortedList.clear();
+//        for (int i = 0; i < attendanceList.size(); i++) {
+//            attendanceSortedList.add(attendanceList.get(i));
+//        }
+        list.clear();
+        for (int i = 0; i < leaveSortedList.size(); i++) {
+            if (leaveSortedList.get(i).getRequested_User__c()!=null && leaveSortedList.get(i).getRequested_User_Name__c().toLowerCase().contains(s.toLowerCase())) {
+                list.add(leaveSortedList.get(i));
+            }
+        }
+
+        adapter = new LeaveAdapter(mContext, list);
         recyclerView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
