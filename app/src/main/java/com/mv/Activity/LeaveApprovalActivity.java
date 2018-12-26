@@ -1,6 +1,8 @@
 package com.mv.Activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -10,12 +12,14 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mv.Adapter.ExpandableApprovalListAdapter;
 import com.mv.Adapter.LeaveAdapter;
@@ -37,7 +41,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -57,6 +64,7 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
 //    private HashMap<String, ArrayList<LeavesModel>> childList;
     private List<LeavesModel> leaveList = new ArrayList<>();
     private List<LeavesModel> leaveSortedList = new ArrayList<>();
+    private ArrayList<LeavesModel> leaveDateFliter = new ArrayList<>();
     ArrayList<LeavesModel> pendingList = new ArrayList<>();
     ArrayList<LeavesModel> approveList = new ArrayList<>();
     ArrayList<LeavesModel> rejectList = new ArrayList<>();
@@ -107,6 +115,10 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                     + Constants.GetApproveLeave + "?userId=" + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
             binding.fabAddProcess.setVisibility(View.GONE);
             sortLayout.setVisibility(View.VISIBLE);
+            binding.calendarSortButton.setOnClickListener(this);
+            binding.sortButton.setOnClickListener(this);
+            binding.txtDateFrom.setOnClickListener(this);
+            binding.txtDateTo.setOnClickListener(this);
 
         } else {
             url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -278,7 +290,43 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
                 btn_reject.setBackgroundResource(R.drawable.selected_btn_background);
                 setRecyclerView(sortString);
                 break;
+            case R.id.calendar_sort_button:
+                if(binding.leaveDateFilterLayout.getVisibility()==View.GONE)
+                    binding.leaveDateFilterLayout.setVisibility(View.VISIBLE);
+                else if(binding.leaveDateFilterLayout.getVisibility()==View.VISIBLE)
+                    binding.leaveDateFilterLayout.setVisibility(View.GONE);
+                break;
+            case R.id.txtDateFrom:
+                showDateDialog(binding.txtDateFrom);
+                break;
+            case R.id.txtDateTo:
+                showDateDialog(binding.txtDateTo);
+                break;
+            case R.id.sort_button:
+                if(binding.txtDateFrom.getText().toString().trim().length()>0 && binding.txtDateTo.getText().toString().trim().length()>0)
+                    FilterVouchers_withDate(binding.txtDateFrom.getText().toString().trim(),binding.txtDateTo.getText().toString().trim());
+                else
+                    Utills.showToast("Enter proper date range.", LeaveApprovalActivity.this);
+
+                break;
         }
+    }
+
+    //adding date picker dialog for voucher date filteration
+    private void showDateDialog(TextView textView) {
+        final Calendar c = Calendar.getInstance();
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog dpd = new DatePickerDialog(this,
+                (view, year, monthOfYear, dayOfMonth) -> textView.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth)), mYear, mMonth, mDay);
+        dpd.show();
+    }
+    //returns two digit number of month
+    private static String getTwoDigit(int i) {
+        if (i < 10)
+            return "0" + i;
+        return "" + i;
     }
 
     public void onAddClick() {
@@ -286,6 +334,46 @@ public class LeaveApprovalActivity extends AppCompatActivity implements View.OnC
         Intent intent = new Intent(mContext, LeaveDetailActivity.class);
         intent.putParcelableArrayListExtra(Constants.PROCESS_ID, tem);
         mContext.startActivity(intent);
+    }
+
+    //compare voucher-date in between from and to dates
+    private void FilterVouchers_withDate(String fromDate, String toDate) {
+        //firstly convert string to date and check if dates are valid
+        Date datefrom = ConvertStringToDate(fromDate);
+        Date dateto = ConvertStringToDate(toDate);
+        leaveDateFliter.clear();
+        if (datefrom.before(dateto)||datefrom.equals(dateto)) {
+            for (LeavesModel l : leaveList) {
+                Date leaveDate = ConvertStringToDate(l.getFromDate());
+                if (datefrom.compareTo(leaveDate) * leaveDate.compareTo(dateto) >= 0) {
+                    leaveDateFliter.add(l);
+                }
+            }
+            if(leaveDateFliter.size()>0) {
+                adapter = new LeaveAdapter(LeaveApprovalActivity.this, leaveDateFliter);
+                binding.rvProcess.setAdapter(adapter);
+            }else{
+                Toast.makeText(this, "No Leave available.",Toast.LENGTH_LONG).show();
+            }
+        }else{
+            Toast.makeText(this, R.string.text_proper_date, Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    private Date ConvertStringToDate(String stringDate){
+        Date parsedDate  = null;
+        try {
+            if(stringDate!=null) {
+                parsedDate = new SimpleDateFormat("yyyy-MM-dd").parse(stringDate);
+                System.out.println(parsedDate);
+                return parsedDate;
+            }
+        }catch (Exception e){
+            Log.e("Exception", "exception", e);
+        }
+        return parsedDate;
     }
 
     @Override

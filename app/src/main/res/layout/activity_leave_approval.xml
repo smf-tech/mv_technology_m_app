@@ -8,7 +8,7 @@
             type="com.mv.Activity.LeaveApprovalActivity" />
     </data>
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/layout_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -18,7 +18,10 @@
         <include
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
         <LinearLayout
             android:id="@+id/sort_layout"
             android:layout_width="match_parent"
@@ -64,15 +67,99 @@
                 android:layout_weight="1"
                 android:background="@drawable/calendar_icon" />
         </LinearLayout>
+        <LinearLayout
+            android:id="@+id/leave_date_filter_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="0dp"
+            android:visibility="gone"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/lighter_grey_box"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="From Date"
+                    android:textSize="@dimen/small_text" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/medium_grey" />
+
+                <TextView
+                    android:id="@+id/txtDateFrom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text=""
+                    android:textSize="@dimen/medium_text" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/lighter_grey_box"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="To Date"
+                    android:textSize="@dimen/small_text" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/medium_grey" />
+
+                <TextView
+                    android:id="@+id/txtDateTo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text=""
+                    android:textSize="@dimen/medium_text" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/sort_button"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@drawable/right_arrow" />
+        </LinearLayout>
+        </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_process"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
-            android:layout_below="@+id/sort_layout"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:scrollbars="vertical" />
 
         <LinearLayout
@@ -133,6 +220,6 @@
             android:text="No Data Available"
             android:textColor="@color/dark_grey"
             android:textSize="@dimen/large_text" />
-
-    </RelativeLayout>
+       </RelativeLayout>
+    </LinearLayout>
 </layout>
