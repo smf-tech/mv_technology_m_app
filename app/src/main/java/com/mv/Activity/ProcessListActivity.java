@@ -352,7 +352,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     taskContainerModel.setFormReadCommentCount(resultList.get(idList.
                                             indexOf(taskContainerModel.getUnique_Id())).getFormReadCommentCount());
                                     resultList.remove(idList.indexOf(taskContainerModel.getUnique_Id()));
-                                    resultList.add(taskContainerModel);
+                                    resultList.add(idList.indexOf(taskContainerModel.getUnique_Id()),taskContainerModel);
                                 }
                             }
 

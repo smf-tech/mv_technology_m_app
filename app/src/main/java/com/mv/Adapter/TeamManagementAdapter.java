@@ -49,7 +49,6 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
             textViewColor = view.findViewById(R.id.temp_color);
             layout.setOnClickListener(view1 -> {
 
-
                 if (mContext instanceof TeamManagementFragment) {
                     switch (getAdapterPosition()) {
                         case 0: {

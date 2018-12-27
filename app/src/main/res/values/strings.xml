@@ -275,6 +275,7 @@
     <string name="asset_username">Name</string>
     <string name="are_you_really">Do you want save data ?</string>
     <string name="attendance">Attendance</string>
+    <string name="tableau_reports">Tableau Reports</string>
     <string name="checkin">Check In</string>
     <string name="checkout">Check Out</string>
     <string name="month">Month</string>
