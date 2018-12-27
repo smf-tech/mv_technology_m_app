@@ -47,7 +47,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
 
     private ActivityReportLocationSelectionBinding binding;
     private Activity context;
-    private LocationModel locationModel;
+    private LocationModel locationModel,locationOld;
     private Task task;
 
     private int mSelectState = 1;
@@ -84,6 +84,9 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         if (getIntent().getExtras() != null) {
             title = getIntent().getExtras().getString(Constants.TITLE);
             processId = getIntent().getExtras().getString(Constants.PROCESS_ID);
+            binding.editFromDate.setText(getIntent().getExtras().getString("FromDate"));
+            binding.editToDate.setText(getIntent().getExtras().getString("ToDate"));
+            locationOld = getIntent().getExtras().getParcelable(Constants.LOCATION);
         }
 
         locationModel = new LocationModel();
@@ -106,8 +109,11 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         binding.spinnerSchoolName.setOnItemSelectedListener(this);
         binding.btnSubmit.setOnClickListener(this);
         binding.editMultiselectTaluka.setOnClickListener(this);
-        binding.editMultiselectTaluka.setText(User.getCurrentUser(context).getMvUser().getTaluka());
+//        binding.editMultiselectTaluka.setText(User.getCurrentUser(context).getMvUser().getTaluka());
+        binding.editMultiselectTaluka.setText(locationOld.getTaluka());
         binding.lyState.setOnClickListener(this);
+        binding.editFromDate.setOnClickListener(this);
+        binding.editToDate.setOnClickListener(this);
 
         mListDistrict = new ArrayList<>();
         mListTaluka = new ArrayList<>();
@@ -116,14 +122,14 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         mListSchoolName = new ArrayList<>();
 
         mStateList = new ArrayList<>();
-        mListDistrict.add(User.getCurrentUser(context).getMvUser().getDistrict());
+//        mListDistrict.add(User.getCurrentUser(context).getMvUser().getDistrict());
+        mListDistrict.add(locationOld.getDistrict());
         mListTaluka.add("Select");
         mListCluster.add("Select");
         mListVillage.add("Select");
         mListSchoolName.add("Select");
 
-        mStateList = new ArrayList<>(Arrays.asList(getColumnIdex((
-                User.getCurrentUser(getApplicationContext()).getMvUser().getState()).split(","))));
+        mStateList = new ArrayList<>(Arrays.asList(getColumnIdex((User.getCurrentUser(getApplicationContext()).getMvUser().getState()).split(","))));
         mStateList.add(0, "Select");
 
         stateAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mStateList);
@@ -196,13 +202,17 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
-
             case R.id.btn_submit:
                 sendLocation();
                 break;
-
             case R.id.edit_multiselect_taluka:
                 showMultiselectDialog((ArrayList<String>) mListTaluka);
+                break;
+            case R.id.edit_from_date:
+                showDateDialog(IndicatorLocationSelectionActivity.this,"from");
+                break;
+            case R.id.edit_to_date:
+                showDateDialog(IndicatorLocationSelectionActivity.this,"to");
                 break;
         }
     }
@@ -216,6 +226,8 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                     intent.putExtra(Constants.INDICATOR_TASK, task);
                     intent.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
                     intent.putExtra(Constants.LOCATION, locationModel);
+                    intent.putExtra("FromDate", binding.editFromDate.getText().toString());
+                    intent.putExtra("ToDate", binding.editToDate.getText().toString());
                     startActivity(intent);
                     finish();
                     break;
@@ -268,8 +280,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                     if (Utills.isConnected(this)) {
                         getDistrict();
                     } else {
-                        mListDistrict = AppDatabase.getAppDatabase(context).userDao()
-                                .getDistrict(User.getCurrentUser(context).getMvUser().getState());
+                        mListDistrict = AppDatabase.getAppDatabase(context).userDao().getDistrict(User.getCurrentUser(context).getMvUser().getState());
                         mListDistrict.add(0, "Select");
                         districtAdapter = new ArrayAdapter<>(this,
                                 android.R.layout.simple_spinner_item, mListDistrict);
@@ -557,8 +568,11 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                                 mStateList.add(jsonArray.getString(i));
                             }
 
+//                            setSpinnerAdapter(mStateList, stateAdapter, binding.spinnerState,
+//                                    User.getCurrentUser(getApplicationContext()).getMvUser().getState());
                             setSpinnerAdapter(mStateList, stateAdapter, binding.spinnerState,
-                                    User.getCurrentUser(getApplicationContext()).getMvUser().getState());
+                                    locationOld.getState());
+
                         }
                     }
                 } catch (JSONException e) {
@@ -595,8 +609,11 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                                 mListDistrict.add(jsonArray.getString(i));
                             }
 
+
+//                            setSpinnerAdapter(mListDistrict, districtAdapter, binding.spinnerDistrict,
+//                                    User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
                             setSpinnerAdapter(mListDistrict, districtAdapter, binding.spinnerDistrict,
-                                    User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
+                                    locationOld.getDistrict());
 
                             if (mListDistrict.contains(User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict())) {
                                 binding.editMultiselectTaluka.setText(User.getCurrentUser(context).getMvUser().getTaluka());
@@ -645,10 +662,12 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                                     User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
 
                             if (mListTaluka.contains(User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka())) {
-                                binding.editMultiselectTaluka.setText(User.getCurrentUser(context).getMvUser().getTaluka());
+//                                binding.editMultiselectTaluka.setText(User.getCurrentUser(context).getMvUser().getTaluka());
+                                binding.editMultiselectTaluka.setText(locationOld.getTaluka());
                             } else {
                                 locationModel.setTaluka("Select");
                                 binding.editMultiselectTaluka.setText("Select");
+                                binding.editMultiselectTaluka.setText(locationOld.getTaluka());
                             }
                         }
                     }
@@ -666,5 +685,23 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
 
     @Override
     public void onNothingSelected(AdapterView<?> adapterView) {
+    }
+
+    public void showDateDialog(Context context, String date) {
+        final Calendar c = Calendar.getInstance();
+        final int mYear = c.get(Calendar.YEAR);
+        final int mMonth = c.get(Calendar.MONTH);
+        final int mDay = c.get(Calendar.DAY_OF_MONTH);
+        DatePickerDialog dpd = new DatePickerDialog(context,
+                (view, year, monthOfYear, dayOfMonth) -> {
+                    if (date.equalsIgnoreCase("from")){
+                        binding.editFromDate.setText(getTwoDigit(dayOfMonth) + "/" + getTwoDigit(monthOfYear + 1) + "/" + year);
+                    } else {
+                        binding.editToDate.setText(getTwoDigit(dayOfMonth) + "/" + getTwoDigit(monthOfYear + 1) + "/" + year);
+                    }
+
+                }, mYear, mMonth, mDay);
+        dpd.getDatePicker().setMaxDate(System.currentTimeMillis() - 10000);
+        dpd.show();
     }
 }

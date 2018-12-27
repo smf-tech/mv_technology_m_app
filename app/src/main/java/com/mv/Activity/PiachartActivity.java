@@ -101,7 +101,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     private LinearLayout llSpinner;
     private LocationModel locationModel;
     private Activity context;
-    private String title;//dateFrom,dateTo;
+    private String title,fromDate,toDate;
     private String img_str;
     public static String selectedRole;
     private ArrayList<String> selectedRoleList = new ArrayList<>();
@@ -121,6 +121,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         if (getIntent().getExtras() != null) {
             title = getIntent().getExtras().getString(Constants.TITLE);
             locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
+            fromDate=getIntent().getExtras().getString("FromDate");
+            toDate=getIntent().getExtras().getString("ToDate");
         }
 
         if (locationModel == null) {
@@ -128,6 +130,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
             locationModel.setState(User.getCurrentUser(getApplicationContext()).getMvUser().getState());
             locationModel.setDistrict(User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
             locationModel.setTaluka(User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
+            fromDate="";
+            toDate="";
         }
         initPicahrtView();
         if (task == null) {
@@ -574,6 +578,9 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 openClass.putExtra(Constants.INDICATOR_TASK, task);
                 openClass.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
                 openClass.putExtra(Constants.PROCESS_ID, "");
+                openClass.putExtra(Constants.LOCATION, locationModel);
+                openClass.putExtra("FromDate", fromDate);
+                openClass.putExtra("ToDate", toDate);
                 startActivity(openClass);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
