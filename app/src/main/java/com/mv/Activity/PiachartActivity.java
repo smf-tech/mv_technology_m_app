@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -68,6 +69,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -130,8 +133,16 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
             locationModel.setState(User.getCurrentUser(getApplicationContext()).getMvUser().getState());
             locationModel.setDistrict(User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
             locationModel.setTaluka(User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
-            fromDate="";
-            toDate="";
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MONTH, -1);
+            Date dateFrom = calendar.getTime();
+            CharSequence tof  = DateFormat.format("yyyy-MM-dd", dateFrom.getTime());
+            fromDate=tof.toString();
+
+            Date dateTo = new Date();
+            CharSequence tot  = DateFormat.format("yyyy-MM-dd", dateTo.getTime());
+            toDate=tot.toString();
         }
         initPicahrtView();
         if (task == null) {
@@ -667,8 +678,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 jsonObject.put("taluka", locationModel.getTaluka());
                 jsonObject.put("tskId", task.getId());
                 jsonObject.put("role", role);
-//                jsonObject.put("datefrom", dateFrom);
-//                jsonObject.put("dateto", dateTo);
+                jsonObject.put("dateFrom", fromDate);
+                jsonObject.put("dateTo", toDate);
 
                 ServiceRequest apiService =
                         ApiClient.getClientWitHeader(this).create(ServiceRequest.class);

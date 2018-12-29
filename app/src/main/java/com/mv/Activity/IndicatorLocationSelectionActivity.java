@@ -248,6 +248,8 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                     intent.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
                     intent.putExtra(Constants.LOCATION, locationModel);
                     intent.putExtra(Constants.PROCESS_ID, processId);
+                    intent.putExtra("FromDate", binding.editFromDate.getText().toString());
+                    intent.putExtra("ToDate", binding.editToDate.getText().toString());
                     startActivity(intent);
                     finish();
                     break;
@@ -333,6 +335,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                     }
                 } else {
                     locationModel.setDistrict("Select");
+                    binding.editMultiselectTaluka.setText("Select");
                     mListTaluka.clear();
                     mListTaluka.add("Select");
                 }
@@ -616,7 +619,8 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                                     locationOld.getDistrict());
 
                             if (mListDistrict.contains(User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict())) {
-                                binding.editMultiselectTaluka.setText(User.getCurrentUser(context).getMvUser().getTaluka());
+//                                binding.editMultiselectTaluka.setText(User.getCurrentUser(context).getMvUser().getTaluka());
+                                binding.editMultiselectTaluka.setText(locationOld.getTaluka());
                             } else {
                                 locationModel.setTaluka("Select");
                                 binding.editMultiselectTaluka.setText("Select");
@@ -695,9 +699,9 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         DatePickerDialog dpd = new DatePickerDialog(context,
                 (view, year, monthOfYear, dayOfMonth) -> {
                     if (date.equalsIgnoreCase("from")){
-                        binding.editFromDate.setText(getTwoDigit(dayOfMonth) + "/" + getTwoDigit(monthOfYear + 1) + "/" + year);
+                        binding.editFromDate.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
                     } else {
-                        binding.editToDate.setText(getTwoDigit(dayOfMonth) + "/" + getTwoDigit(monthOfYear + 1) + "/" + year);
+                        binding.editToDate.setText(year + "-" + getTwoDigit(monthOfYear + 1) + "-" + getTwoDigit(dayOfMonth));
                     }
 
                 }, mYear, mMonth, mDay);
