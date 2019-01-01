@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -36,6 +37,8 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -58,7 +61,7 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
 
     private List<String> temp;
     private String title;
-    private String processId;
+    private String processId,fromDate,toDate;
     private int totalExpectedCount;
     private int totalSubmitedCount;
     private Task task;
@@ -81,6 +84,8 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
             title = getIntent().getExtras().getString(Constants.TITLE);
             processId = getIntent().getExtras().getString(Constants.PROCESS_ID);
             locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
+            fromDate=getIntent().getExtras().getString("FromDate");
+            toDate=getIntent().getExtras().getString("ToDate");
         }
 
         selectedRoleList = new ArrayList<>(Arrays.asList(getColumnIdex((roleList).split(";"))));
@@ -89,6 +94,15 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
             locationModel.setState(User.getCurrentUser(getApplicationContext()).getMvUser().getState());
             locationModel.setDistrict(User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
             locationModel.setTaluka(User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MONTH, -1);
+            Date dateFrom = calendar.getTime();
+            CharSequence tof  = DateFormat.format("yyyy-MM-dd", dateFrom.getTime());
+            fromDate=tof.toString();
+
+            Date dateTo = new Date();
+            CharSequence tot  = DateFormat.format("yyyy-MM-dd", dateTo.getTime());
+            toDate=tot.toString();
         }
 
         //here data must be an instance of the class MarsDataProvider
@@ -139,7 +153,9 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
 
             String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/getDashboardExpectedCount1?state=" + locationModel.getState()
-                    + "&district=" + locationModel.getDistrict() + "&taluka=" + locationModel.getTaluka() + "&role=" + role + "&processId=" + processId;
+                    + "&district=" + locationModel.getDistrict() + "&taluka=" + locationModel.getTaluka()
+                    + "&role=" + role + "&processId=" + processId + "&dateFrom=" + fromDate +"&dateTo="+ toDate
+                    +"&cluster="+ locationModel.getCluster();
             ServiceRequest apiService =
                     ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
             apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
@@ -204,6 +220,9 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
                 openClass.putExtra(Constants.INDICATOR_TASK, task);
                 openClass.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
                 openClass.putExtra(Constants.PROCESS_ID, processId);
+                openClass.putExtra(Constants.LOCATION, locationModel);
+                openClass.putExtra("FromDate", fromDate);
+                openClass.putExtra("ToDate", toDate);
 
                 startActivity(openClass);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);

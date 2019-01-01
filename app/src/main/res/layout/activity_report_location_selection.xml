@@ -147,7 +147,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/cluster"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/medium_text" />
 
@@ -158,9 +158,8 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:background="@drawable/grey_box"
-
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
                     android:prompt="@string/cluster"
@@ -218,6 +217,64 @@
                     android:paddingTop="10dp"
                     android:prompt="@string/school_name"
                     android:spinnerMode="dialog" />
+
+                <com.mv.Widgets.MyTextView
+                    android:id="@+id/tv_from_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/from_date"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/medium_text" />
+
+                <com.mv.Widgets.MyEditTextView
+                    android:id="@+id/edit_from_date"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/lighter_grey_box"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:gravity="left|top"
+                    android:maxLines="3"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/medium_text" />
+
+                <com.mv.Widgets.MyTextView
+                    android:id="@+id/tv_to_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/to_date"
+                    android:textColor="@color/dark_grey"
+                    android:textSize="@dimen/medium_text" />
+
+                <com.mv.Widgets.MyEditTextView
+                    android:id="@+id/edit_to_date"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/lighter_grey_box"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="3dp"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingLeft="10dp"
+                    android:clickable="true"
+                    android:focusable="false"
+                    android:gravity="left|top"
+                    android:maxLines="3"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/medium_text" />
 
                 <LinearLayout
                     android:id="@+id/voucher_date_filter_layout"

@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.SpannableString;
 import android.text.TextWatcher;
+import android.text.format.DateFormat;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -68,6 +69,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -101,7 +104,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
     private LinearLayout llSpinner;
     private LocationModel locationModel;
     private Activity context;
-    private String title;//dateFrom,dateTo;
+    private String title,fromDate,toDate;
     private String img_str;
     public static String selectedRole;
     private ArrayList<String> selectedRoleList = new ArrayList<>();
@@ -121,6 +124,8 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
         if (getIntent().getExtras() != null) {
             title = getIntent().getExtras().getString(Constants.TITLE);
             locationModel = getIntent().getExtras().getParcelable(Constants.LOCATION);
+            fromDate=getIntent().getExtras().getString("FromDate");
+            toDate=getIntent().getExtras().getString("ToDate");
         }
 
         if (locationModel == null) {
@@ -128,6 +133,16 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
             locationModel.setState(User.getCurrentUser(getApplicationContext()).getMvUser().getState());
             locationModel.setDistrict(User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
             locationModel.setTaluka(User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
+
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.MONTH, -1);
+            Date dateFrom = calendar.getTime();
+            CharSequence tof  = DateFormat.format("yyyy-MM-dd", dateFrom.getTime());
+            fromDate=tof.toString();
+
+            Date dateTo = new Date();
+            CharSequence tot  = DateFormat.format("yyyy-MM-dd", dateTo.getTime());
+            toDate=tot.toString();
         }
         initPicahrtView();
         if (task == null) {
@@ -574,6 +589,9 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 openClass.putExtra(Constants.INDICATOR_TASK, task);
                 openClass.putExtra(Constants.INDICATOR_TASK_ROLE, roleList);
                 openClass.putExtra(Constants.PROCESS_ID, "");
+                openClass.putExtra(Constants.LOCATION, locationModel);
+                openClass.putExtra("FromDate", fromDate);
+                openClass.putExtra("ToDate", toDate);
                 startActivity(openClass);
                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
@@ -658,10 +676,11 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 jsonObject.put("state", locationModel.getState());
                 jsonObject.put("district", locationModel.getDistrict());
                 jsonObject.put("taluka", locationModel.getTaluka());
+                jsonObject.put("cluster", locationModel.getCluster());
                 jsonObject.put("tskId", task.getId());
                 jsonObject.put("role", role);
-//                jsonObject.put("datefrom", dateFrom);
-//                jsonObject.put("dateto", dateTo);
+                jsonObject.put("dateFrom", fromDate);
+                jsonObject.put("dateTo", toDate);
 
                 ServiceRequest apiService =
                         ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
