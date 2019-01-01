@@ -366,7 +366,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     binding.fabAddProcess.setVisibility(View.GONE);
                                 }
                             }
-
+                            resultList.clear();
+                            resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(processId, Constants.TASK_ANSWER);
                             mAdapter = new ProcessListAdapter(resultList, ProcessListActivity.this, processName);
                             binding.rvProcess.setAdapter(mAdapter);
                         }
