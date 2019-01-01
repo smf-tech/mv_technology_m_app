@@ -58,6 +58,10 @@ public class LeaveAdapter extends RecyclerView.Adapter<LeaveAdapter.ViewHolder>{
         else
             holder.txtName.setText(String.format("%s : %s : %s", leavesModel.getFromDate(),
                     leavesModel.getToDate(), leavesModel.getTypeOfLeaves()));
+        if(leavesModel.getStatus().equalsIgnoreCase("Rejected")||
+                leavesModel.getStatus().equalsIgnoreCase("Approved")){
+            holder.imgDownload.setVisibility(View.GONE);
+        }
 
     }
 

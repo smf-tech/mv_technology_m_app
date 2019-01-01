@@ -147,7 +147,7 @@
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="10dp"
                     android:text="@string/cluster"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/medium_text" />
 
@@ -158,9 +158,8 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="3dp"
-                    android:visibility="gone"
+                    android:visibility="visible"
                     android:background="@drawable/grey_box"
-
                     android:paddingBottom="10dp"
                     android:paddingTop="10dp"
                     android:prompt="@string/cluster"

@@ -154,7 +154,8 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
             String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                     + "/services/apexrest/getDashboardExpectedCount1?state=" + locationModel.getState()
                     + "&district=" + locationModel.getDistrict() + "&taluka=" + locationModel.getTaluka()
-                    + "&role=" + role + "&processId=" + processId + "&dateFrom=" + fromDate +"&dateTo="+ toDate;
+                    + "&role=" + role + "&processId=" + processId + "&dateFrom=" + fromDate +"&dateTo="+ toDate
+                    +"&cluster="+ locationModel.getCluster();
             ServiceRequest apiService =
                     ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
             apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {

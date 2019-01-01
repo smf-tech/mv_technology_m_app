@@ -676,6 +676,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                 jsonObject.put("state", locationModel.getState());
                 jsonObject.put("district", locationModel.getDistrict());
                 jsonObject.put("taluka", locationModel.getTaluka());
+                jsonObject.put("cluster", locationModel.getCluster());
                 jsonObject.put("tskId", task.getId());
                 jsonObject.put("role", role);
                 jsonObject.put("dateFrom", fromDate);

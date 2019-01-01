@@ -59,6 +59,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
     private List<String> mListDistrict, mListTaluka, mListCluster, mListVillage, mListSchoolName, mStateList;
 
     private ArrayAdapter<String> districtAdapter;
+    private ArrayAdapter<String> clusterAdapter;
     private ArrayAdapter<String> talukaAdapter;
     private ArrayAdapter<String> stateAdapter;
 
@@ -90,9 +91,9 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         }
 
         locationModel = new LocationModel();
-        locationModel.setState("");
-        locationModel.setDistrict("");
-        locationModel.setTaluka("");
+        locationModel.setState("Select");
+        locationModel.setDistrict("Select");
+        locationModel.setTaluka("Select");
 
         initViews();
     }
@@ -143,6 +144,10 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         talukaAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mListTaluka);
         talukaAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerTaluka.setAdapter(talukaAdapter);
+
+        clusterAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, mListCluster);
+        clusterAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerCluster.setAdapter(clusterAdapter);
 
         if (Utills.isConnected(this)) {
             getState();
@@ -372,8 +377,9 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
             case R.id.spinner_cluster:
                 mSelectCluster = i;
                 if (mSelectCluster != 0) {
+                    locationModel.setCluster(adapterView.getItemAtPosition(i).toString());
                     if (Utills.isConnected(this)) {
-                        getVillage();
+//                        getVillage();
                     } else {
                         mListVillage.clear();
                         mListVillage = AppDatabase.getAppDatabase(context).userDao().getVillage(
@@ -383,6 +389,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                         mListVillage.add(0, "Select");
                     }
                 } else {
+                    locationModel.setCluster("Select");
                     mListVillage.clear();
                     mListVillage.add("Select");
                 }
@@ -455,6 +462,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                 })
                 .setPositiveButton(IndicatorLocationSelectionActivity.this.getString(R.string.ok), (dialog12, id) -> {
                     binding.editMultiselectTaluka.setText(value);
+                    getCluster();
                     locationModel.setTaluka(value);
                 }).setNegativeButton(IndicatorLocationSelectionActivity.this.getString(R.string.cancel), (dialog1, id) -> {
                     //  Your code when user clicked on Cancel
@@ -477,6 +485,44 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
             }
         }
         return sb.toString();
+    }
+
+    private void getCluster() {
+        Utills.showProgressDialog(this, getString(R.string.loding_cluster), getString(R.string.progress_please_wait));
+        ServiceRequest apiService = ApiClient.getClient().create(ServiceRequest.class);
+
+        apiService.getCluster(mStateList.get(mSelectState), mListDistrict.get(mSelectDistrict),
+                binding.editMultiselectTaluka.getText().toString()).enqueue(new Callback<ResponseBody>() {
+
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+                try {
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data.length() > 0) {
+                            mListCluster.clear();
+                            mListCluster.add("Select");
+
+                            JSONArray jsonArr = new JSONArray(data);
+                            for (int i = 0; i < jsonArr.length(); i++) {
+                                mListCluster.add(jsonArr.getString(i));
+                            }
+
+                            setSpinnerAdapter(mListCluster, clusterAdapter, binding.spinnerCluster,
+                                    (locationOld.getCluster()!=null)?locationOld.getCluster():"");
+                        }
+                    }
+                } catch (JSONException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+            }
+        });
     }
 
     private void getVillage() {
@@ -673,6 +719,7 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                                 binding.editMultiselectTaluka.setText("Select");
                                 binding.editMultiselectTaluka.setText(locationOld.getTaluka());
                             }
+                            getCluster();
                         }
                     }
                 } catch (JSONException | IOException e) {
