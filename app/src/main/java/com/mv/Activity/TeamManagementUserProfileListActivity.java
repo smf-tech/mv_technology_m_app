@@ -181,7 +181,7 @@ public class TeamManagementUserProfileListActivity extends AppCompatActivity imp
         mAdapter.notifyDataSetChanged();
 
         if (tempList.size() == 0) {
-            Utills.showToast("No data available.", this);
+//            Utills.showToast("No data available.", this);
             binding.inputEmail.setVisibility(View.GONE);
         } else {
             binding.inputEmail.setVisibility(View.VISIBLE);
