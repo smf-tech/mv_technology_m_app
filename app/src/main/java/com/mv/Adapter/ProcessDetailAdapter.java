@@ -249,11 +249,33 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                         taskList.get(getAdapterPosition()).setTask_Response__c("");
                     } else {
                         if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.TASK_PICK_LIST)) {
-//                            if () {
-//
+//                            if (isTaskLocation && taskList.get(getAdapterPosition()).getLocationLevel() != null) {
+//                                myList = getStructureFilterPickListFromTaskLocation(taskList.get(getAdapterPosition()),
+//                                        taskList.get(getAdapterPosition()).getLocationLevel(), taskList.get(getAdapterPosition()).getTask_Response__c());
 //                            } else {
 //                                myList = getStructureFilterPickListFromLocation(taskList.get(getAdapterPosition()));
 //                            }
+                            String[] filterArray = taskList.get(getAdapterPosition()).getFilterFields().split(",");
+                            String filterValue = filterArray[filterArray.length - 1];
+
+                            boolean isTaskLocation = false;
+                            Task task = null;
+                            for (Task t : taskList) {
+                                if (t.getTask_type__c().equalsIgnoreCase("Task Location") ||
+                                        t.getTask_type__c().equalsIgnoreCase("Picklist Reference")) {
+                                    if (t.getaPIFieldName().equalsIgnoreCase(filterValue)) {
+                                        isTaskLocation = true;
+                                        task = t;
+                                    }
+                                }
+                            }
+
+                            if (isTaskLocation && task.getLocationLevel() != null) {
+                                myList = getStructureFilterPickListFromTaskLocation(taskList.get(getAdapterPosition()), task.getLocationLevel(), task.getTask_Response__c());
+                            } else {
+                                myList = getStructureFilterPickListFromLocation(taskList.get(getAdapterPosition()));
+                            }
+
                             taskList.get(getAdapterPosition()).setTask_Response__c(myList.get(position));
 
                             if (taskList.get(getAdapterPosition()).getTask_Text__c().equalsIgnoreCase("Structure Code (To)") ||
