@@ -82,6 +82,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private ProcessDetailAdapter adapter;
     private RecyclerView rvProcessDetail;
 
+    public String selectedStructure = "";
     private String timestamp;
     private String processStatus, processName;
     private String comment, imageName;
@@ -89,6 +90,9 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private String id = "";
     private String imageId, uniqueId = "";
     private int imagePosition;
+    public int selectedFromStructurePosition = 0;
+    public int selectedFromMachinePosition = 0;
+    public int selectedToStructurePosition = 0;
 
     private Uri outputUri = null;
     private Uri finalUri = null;
@@ -241,6 +245,26 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
         img_logout.setOnClickListener(this);
+    }
+
+    public void showPictureDialog(String imgName, int position) {
+        android.support.v7.app.AlertDialog.Builder dialog = new android.support.v7.app.AlertDialog.Builder(this);
+        dialog.setTitle(getString(R.string.text_choosepicture));
+        String[] items = {getString(R.string.text_gallary), getString(R.string.text_camera)};
+
+        dialog.setItems(items, (dialog1, which) -> {
+            switch (which) {
+                case 0:
+                    sendToGallery(imgName, position);
+                    break;
+
+                case 1:
+                    sendToCamera(imgName, position);
+                    break;
+            }
+        });
+
+        dialog.show();
     }
 
     public void sendToCamera(String imgName, int position) {
