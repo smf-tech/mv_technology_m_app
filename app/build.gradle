@@ -41,7 +41,7 @@ android {
         applicationId "com.mv"
         minSdkVersion 19
         targetSdkVersion 26
-        versionCode 2
+        versionCode 3
         versionName "1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "BASEURL", "\"http://mobileapp.mulyavardhan.org/mv_gov/index.php/\""
