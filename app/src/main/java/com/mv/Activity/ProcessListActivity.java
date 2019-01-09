@@ -337,6 +337,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 taskContainerModel.setHeaderPosition(sb.toString());
                                 taskContainerModel.setTaskTimeStamp(taskList.get(0).getTimestamp__c());
                                 taskContainerModel.setFormCommentCount(taskList.get(0).getFormCommentCount());
+                                taskContainerModel.setHasApprovalPerson(taskList.get(0).getHasApprovalPerson());
                                 if(taskContainerModel.getFormReadCommentCount()==null){
                                     taskContainerModel.setFormReadCommentCount("0");
                                 }

@@ -321,6 +321,7 @@ public class ProgrammeManagmentFragment extends AppCompatActivity implements Vie
                                 taskContainerModel.setHeaderPosition(sb.toString());
                                 taskContainerModel.setIsSave(Constants.PROCESS_STATE_SAVE);
                                 taskContainerModel.setFormCommentCount(taskList.get(0).getFormCommentCount());
+                                taskContainerModel.setHasApprovalPerson(taskList.get(0).getHasApprovalPerson());
 
                                 //task without answer
                                 taskContainerModel.setTaskType(Constants.TASK_QUESTION);

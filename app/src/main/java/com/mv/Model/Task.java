@@ -456,15 +456,16 @@ public class Task implements Parcelable {
         FormCommentCount = formCommentCount;
     }
 
+    @ColumnInfo(name = "HasApprovalPerson")
     @SerializedName("HasApprovalPerson")
-    private String HasApprovalPerson;
+    private String HasApprovalPerson1;
 
     public String getHasApprovalPerson() {
-        return HasApprovalPerson;
+        return HasApprovalPerson1;
     }
 
     public void setHasApprovalPerson(String HasApprovalPerson) {
-        HasApprovalPerson = HasApprovalPerson;
+        HasApprovalPerson1 = HasApprovalPerson;
     }
 
     public Task() {
@@ -510,7 +511,7 @@ public class Task implements Parcelable {
         dest.writeString(this.referenceField);
         dest.writeString(this.aPIFieldName);
         dest.writeString(this.FormCommentCount);
-        dest.writeString(this.HasApprovalPerson);
+        dest.writeString(this.HasApprovalPerson1);
      //   dest.writeValue(this.IsDeleteAllow);
     }
 
@@ -548,7 +549,7 @@ public class Task implements Parcelable {
         this.referenceField = in.readString();
         this.aPIFieldName = in.readString();
         this.FormCommentCount = in.readString();
-        this.HasApprovalPerson = in.readString();
+        this.HasApprovalPerson1 = in.readString();
       //  this.IsDeleteAllow = (Boolean) in.readValue(Boolean.class.getClassLoader());
     }
 

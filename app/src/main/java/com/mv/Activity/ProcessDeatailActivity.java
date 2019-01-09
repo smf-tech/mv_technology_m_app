@@ -75,6 +75,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private ArrayList<Task> taskList = new ArrayList<>();
     public ArrayList<ImageData> imageDataList = new ArrayList<>();
     private String pickListApiFieldNames;
+    private String hasApprovalPerson;
     private GPSTracker gps;
     private Activity context;
 
@@ -113,6 +114,10 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
         if (getIntent().getStringExtra(Constants.PROCESS_NAME) != null) {
             processName = getIntent().getStringExtra(Constants.PROCESS_NAME);
+        }
+
+        if (getIntent().getStringExtra("HasApproval") != null) {
+            hasApprovalPerson = getIntent().getStringExtra("HasApproval");
         }
 
         initViews();
@@ -239,7 +244,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         img_back.setOnClickListener(this);
 
         ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
-        if(taskList.get(0).getHasApprovalPerson()!=null && taskList.get(0).getHasApprovalPerson().equalsIgnoreCase("Yes")){
+        if(hasApprovalPerson!=null && hasApprovalPerson.equalsIgnoreCase("Yes")){
             if(taskList.get(0).getId()!= null){
                 img_logout.setVisibility(View.VISIBLE);
             }else{

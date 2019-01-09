@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 40,
-    "identityHash": "796f38df88cead08eb5528fada3dd4a6",
+    "identityHash": "6619b8891640bd7f60a753caa5ac55d4",
     "entities": [
       {
         "tableName": "table_community",
@@ -363,7 +363,7 @@
       },
       {
         "tableName": "table_container",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` TEXT, `taskListString` TEXT, `isSave` TEXT, `proAnsListString` TEXT, `MV_Process__c` TEXT, `TaskType` TEXT, `headerPosition` TEXT, `IsAllowDelete` INTEGER, `taskTimeStamp` TEXT, `FormCommentCount` TEXT, `FormReadCommentCount` TEXT, PRIMARY KEY(`unique_Id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` TEXT, `taskListString` TEXT, `isSave` TEXT, `proAnsListString` TEXT, `MV_Process__c` TEXT, `TaskType` TEXT, `headerPosition` TEXT, `IsAllowDelete` INTEGER, `taskTimeStamp` TEXT, `FormCommentCount` TEXT, `FormReadCommentCount` TEXT, `HasApprovalPerson` TEXT, PRIMARY KEY(`unique_Id`))",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -418,6 +418,11 @@
           {
             "fieldPath": "FormReadCommentCount",
             "columnName": "FormReadCommentCount",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "HasApprovalPerson",
+            "columnName": "HasApprovalPerson",
             "affinity": "TEXT"
           }
         ],
@@ -1407,7 +1412,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"796f38df88cead08eb5528fada3dd4a6\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"6619b8891640bd7f60a753caa5ac55d4\")"
     ]
   }
 }

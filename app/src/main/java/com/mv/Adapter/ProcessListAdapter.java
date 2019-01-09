@@ -80,6 +80,7 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                     Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
                     openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskArrayList.get(getAdapterPosition()));
                     openClass.putExtra(Constants.PROCESS_NAME, processName);
+                    openClass.putExtra("HasApproval",resultList.get(0).getHasApprovalPerson());
 
                     String structureList = resultList.get(getAdapterPosition()).getProAnsListString();
                     openClass.putExtra(Constants.PICK_LIST_ID, structureList);

@@ -144,4 +144,18 @@ public class TaskContainerModel {
     public void setFormReadCommentCount(String formReadCommentCount) {
         FormReadCommentCount = formReadCommentCount;
     }
+
+    public String getHasApprovalPerson() {
+        return HasApprovalPerson;
+    }
+
+    public void setHasApprovalPerson(String hasApprovalPerson) {
+        HasApprovalPerson = hasApprovalPerson;
+    }
+
+    @ColumnInfo(name = "HasApprovalPerson")
+    @SerializedName("HasApprovalPerson")
+    private String HasApprovalPerson;
+
+
 }
