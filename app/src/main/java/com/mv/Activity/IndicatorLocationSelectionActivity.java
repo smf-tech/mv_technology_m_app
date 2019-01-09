@@ -92,9 +92,11 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
 
         locationModel = new LocationModel();
         locationModel.setState("Select");
-        locationModel.setDistrict("Select");
-        locationModel.setTaluka("Select");
-
+        if(locationOld.getTaluka()!=null && locationOld.getTaluka().equalsIgnoreCase("Select")){
+            locationModel.setTaluka("Select");
+        } else {
+            locationModel.setTaluka(locationOld.getTaluka());
+        }
         initViews();
     }
 
@@ -111,7 +113,13 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
         binding.btnSubmit.setOnClickListener(this);
         binding.editMultiselectTaluka.setOnClickListener(this);
 //        binding.editMultiselectTaluka.setText(User.getCurrentUser(context).getMvUser().getTaluka());
-        binding.editMultiselectTaluka.setText(locationOld.getTaluka());
+        if(locationOld.getTaluka()!=null){
+            binding.editMultiselectTaluka.setText(locationOld.getTaluka());
+        } else {
+            binding.editMultiselectTaluka.setText("Select");
+            locationOld.setTaluka("Select");
+        }
+
         binding.lyState.setOnClickListener(this);
         binding.editFromDate.setOnClickListener(this);
         binding.editToDate.setOnClickListener(this);
@@ -124,7 +132,13 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
 
         mStateList = new ArrayList<>();
 //        mListDistrict.add(User.getCurrentUser(context).getMvUser().getDistrict());
-        mListDistrict.add(locationOld.getDistrict());
+        if(locationOld.getDistrict()!=null){
+            mListDistrict.add(locationOld.getDistrict());
+        } else {
+            mListDistrict.add("Select");
+            locationOld.setDistrict("Select");
+        }
+
         mListTaluka.add("Select");
         mListCluster.add("Select");
         mListVillage.add("Select");
@@ -717,7 +731,6 @@ public class IndicatorLocationSelectionActivity extends AppCompatActivity implem
                             } else {
                                 locationModel.setTaluka("Select");
                                 binding.editMultiselectTaluka.setText("Select");
-                                binding.editMultiselectTaluka.setText(locationOld.getTaluka());
                             }
                             getCluster();
                         }

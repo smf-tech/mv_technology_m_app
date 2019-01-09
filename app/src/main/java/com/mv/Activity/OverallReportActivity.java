@@ -94,6 +94,7 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
             locationModel.setState(User.getCurrentUser(getApplicationContext()).getMvUser().getState());
             locationModel.setDistrict(User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
             locationModel.setTaluka(User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
+            locationModel.setCluster(User.getCurrentUser(getApplicationContext()).getMvUser().getCluster());
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.MONTH, -1);
             Date dateFrom = calendar.getTime();
