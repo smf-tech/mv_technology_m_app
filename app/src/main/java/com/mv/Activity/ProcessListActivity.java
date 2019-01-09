@@ -319,6 +319,10 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                         processList.setFormCommentCount(jsonArray.getJSONObject(i).getString("FormCommentCount"));
                                     }
 
+                                    if (jsonArray.getJSONObject(i).has("HasApprovalPerson")) {
+                                        processList.setHasApprovalPerson(jsonArray.getJSONObject(i).getString("HasApprovalPerson"));
+                                    }
+
                                     processList.setValidation(jsonArray.getJSONObject(i).getString("Validation_on_text"));
                                     processList.setIsSave(Constants.PROCESS_STATE_SUBMIT);
                                     taskList.add(processList);

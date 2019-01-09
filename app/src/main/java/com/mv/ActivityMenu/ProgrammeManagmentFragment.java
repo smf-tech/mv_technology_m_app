@@ -304,6 +304,10 @@ public class ProgrammeManagmentFragment extends AppCompatActivity implements Vie
                                         taskList.setFormCommentCount(resultJsonObj.getString("FormCommentCount"));
                                     }
 
+                                    if (resultJsonObj.has("HasApprovalPerson")) {
+                                        taskList.setHasApprovalPerson(resultJsonObj.getString("HasApprovalPerson"));
+                                    }
+
                                     ProgrammeManagmentFragment.this.taskList.add(taskList);
                                 }
 

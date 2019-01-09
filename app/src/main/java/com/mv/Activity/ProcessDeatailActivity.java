@@ -239,16 +239,21 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         img_back.setOnClickListener(this);
 
         ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
-        if(taskList.get(0).getId()!= null){
-            img_logout.setVisibility(View.VISIBLE);
+        if(taskList.get(0).getHasApprovalPerson()!=null && taskList.get(0).getHasApprovalPerson().equalsIgnoreCase("Yes")){
+            if(taskList.get(0).getId()!= null){
+                img_logout.setVisibility(View.VISIBLE);
+            }else{
+                img_logout.setVisibility(View.GONE);
+            }
+            if (taskList.get(0).getStatus__c() != null && taskList.get(0).getStatus__c().equalsIgnoreCase("Expected")) {
+                img_logout.setVisibility(View.GONE);
+            }
+            img_logout.setImageResource(R.drawable.comment_white);
+            img_logout.setOnClickListener(this);
         }else{
             img_logout.setVisibility(View.GONE);
         }
-        if (taskList.get(0).getStatus__c() != null && taskList.get(0).getStatus__c().equalsIgnoreCase("Expected")) {
-            img_logout.setVisibility(View.GONE);
-        }
-        img_logout.setImageResource(R.drawable.comment_white);
-        img_logout.setOnClickListener(this);
+
     }
 
     public void sendToCamera(String imgName, int position) {
