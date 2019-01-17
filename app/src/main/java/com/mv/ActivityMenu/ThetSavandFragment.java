@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -63,6 +64,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
     private PreferenceHelper preferenceHelper;
     private List<Content> chatList = new ArrayList<>();
     private ArrayList<Content> mypostlist = new ArrayList<>();
+    private ArrayList<Content> viewList = new ArrayList<>();
     private ThetSavandAdapter adapter;
 
     private Boolean mySelection = false;
@@ -77,6 +79,8 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
     private Activity context;
     private EndlessRecyclerViewScrollListener scrollListener;
     public static final String MESSAGE_PROGRESS = "message_progress";
+    private int pageNumber = 0;
+    private Parcelable recyclerViewState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +93,7 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         // Utills.setupUI(view.findViewById(R.id.layout_main), context);
         binding.swipeRefreshLayout.setOnRefreshListener(this);
         initViews();
-        getChats(true);
+//        getChats(true);
     }
 
     /*It is used for setting different languages like english , marathi*/
@@ -142,13 +146,20 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
                 // Add whatever code is needed to append new items to the bottom of the list
                 Log.i("page", "" + page);
                 Log.i("totalItemsCount", "" + totalItemsCount);
-                getAllChats(true, true, true);
+//                getAllChats(true, true, true);
+                // Save state
+                recyclerViewState = recyclerView.getLayoutManager().onSaveInstanceState();
+
+                pageNumber++;
+                getAllChats(pageNumber);
                 //loadNextDataFromApi(page);
             }
         };
         // Adds the scroll listener to RecyclerView
         recyclerView.addOnScrollListener(scrollListener);
 
+        adapter = new ThetSavandAdapter(context, fragment, viewList);
+        recyclerView.setAdapter(adapter);
          /*Display the post of only registered users */
         btn_mypost.setOnClickListener(v -> {
             mypostlist.clear();
@@ -162,7 +173,9 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
                 }
             }
             mySelection = true;
-            adapter = new ThetSavandAdapter(context, fragment, mypostlist);
+            viewList.clear();
+            viewList.addAll(mypostlist);
+            adapter = new ThetSavandAdapter(context, fragment, viewList);
             recyclerView.setAdapter(adapter);
         });
         /*Display all posts*/
@@ -172,7 +185,9 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
             mySelection = false;
             btn_allposts.setBackground(getResources().getDrawable(R.drawable.selected_btn_background));
             btn_mypost.setBackground(getResources().getDrawable(R.drawable.light_grey_btn_background));
-            adapter = new ThetSavandAdapter(context, fragment, chatList);
+            viewList.clear();
+            viewList.addAll(chatList);
+            adapter = new ThetSavandAdapter(context, fragment, viewList);
             recyclerView.setAdapter(adapter);
         });
 
@@ -192,9 +207,10 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
         chatList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true, false);
 
         if (chatList.size() == 0) {
-            if (Utills.isConnected(context))
-                getAllChats(false, isDialogShow,false);
-            else
+            if (Utills.isConnected(context)){
+//                getAllChats(false, isDialogShow,false);
+                getAllChats(0);
+            } else
                 showPopUp();
         } else {
 
@@ -205,8 +221,8 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
                 adapter = new ThetSavandAdapter(context, this, chatList);
                 recyclerView.setAdapter(adapter);
             }
-            if (Utills.isConnected(context))
-                getAllChats(true, isDialogShow,false);
+//            if (Utills.isConnected(context))
+//                getAllChats(true, isDialogShow,false);
         }
     }
 
@@ -292,6 +308,102 @@ public class ThetSavandFragment extends AppCompatActivity implements View.OnClic
                                 } else {
                                     adapter = new ThetSavandAdapter(context, fragment, ActivePost);
                                     recyclerView.setAdapter(adapter);
+                                }
+                                textNoData.setVisibility(View.GONE);
+                            }
+                        } else {
+                            textNoData.setVisibility(View.VISIBLE);
+                        }
+                    }
+                    Utills.hideProgressDialog();
+                    binding.swipeRefreshLayout.setRefreshing(false);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Utills.hideProgressDialog();
+                    binding.swipeRefreshLayout.setRefreshing(false);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Utills.hideProgressDialog();
+                    binding.swipeRefreshLayout.setRefreshing(false);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Utills.hideProgressDialog();
+                    binding.swipeRefreshLayout.setRefreshing(false);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+                binding.swipeRefreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
+    private void getAllChats(int pageNo) {
+        Utills.showProgressDialog(ThetSavandFragment.this, "Loading Chats", getString(R.string.progress_please_wait));
+
+        String url;
+        ServiceRequest apiService = ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
+
+        url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                    + "/services/apexrest/getTheatSawandContent?userId=" + User.getCurrentUser(this).getMvUser().getId()
+                    + "&pageNo=" + pageNo;
+
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                try {
+                    if (response.body() != null) {
+                        String str = response.body().string();
+                        if (str.length() > 0) {
+                            JSONArray jsonArray = new JSONArray(str);
+                            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                            List<Content> temp = Arrays.asList(gson.fromJson(jsonArray.toString(), Content[].class));
+                            List<Content> contentList = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true, false);
+                            if ((temp.size() != 0) || (contentList.size() != 0)) {
+                                for (int i = 0; i < temp.size(); i++) {
+                                    int j;
+                                    boolean isPresent = false;
+                                    for (j = 0; j < contentList.size(); j++) {
+                                        if (contentList.get(j).getId().equalsIgnoreCase(temp.get(i).getId())) {
+                                            temp.get(i).setUnique_Id(contentList.get(j).getUnique_Id());
+                                            isPresent = true;
+                                            break;
+                                        }
+                                    }
+                                    if (isPresent) {
+                                        chatList.set(j, temp.get(i));
+                                        AppDatabase.getAppDatabase(context).userDao().updateContent(temp.get(i));
+                                    } else {
+                                        chatList.add(0, temp.get(i));
+                                        AppDatabase.getAppDatabase(context).userDao().insertChats(temp.get(i));
+                                    }
+                                }
+                                List<Content> ActivePost = AppDatabase.getAppDatabase(context).userDao().getThetSavandChats(true, false);
+
+                                mypostlist.clear();
+
+                                for (int i = 0; i < ActivePost.size(); i++) {
+
+                                    if (ActivePost.get(i).getUser_id() != null && (ActivePost.get(i).getUser_id().equals(User.getCurrentUser(context).getMvUser().getId()))) {
+                                        mypostlist.add(ActivePost.get(i));
+                                    }
+                                }
+
+                                if (mySelection) {
+                                    viewList.clear();
+                                    viewList.addAll(ActivePost);
+                                    adapter.notifyDataSetChanged();
+//                                    adapter = new ThetSavandAdapter(context, fragment, mypostlist);
+//                                    recyclerView.setAdapter(adapter);
+                                } else {
+                                    viewList.clear();
+                                    viewList.addAll(ActivePost);
+                                    adapter.notifyDataSetChanged();
+//                                    adapter = new ThetSavandAdapter(context, fragment, ActivePost);
+//                                    recyclerView.setAdapter(adapter);
                                 }
                                 textNoData.setVisibility(View.GONE);
                             }

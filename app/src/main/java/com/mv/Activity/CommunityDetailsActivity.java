@@ -637,6 +637,7 @@ public class CommunityDetailsActivity extends AppCompatActivity implements View.
                     }
                 })
                 .setPositiveButton("Ok", (dialog12, id) -> {
+                    buildSelectedItemString(items);
                     sendShareRecord(mContent.getId());
                     Log.i("value", "value");
                 })

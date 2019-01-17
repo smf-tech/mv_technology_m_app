@@ -35,11 +35,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -95,15 +97,17 @@ public class OverallReportActivity extends AppCompatActivity implements View.OnC
             locationModel.setDistrict(User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
             locationModel.setTaluka(User.getCurrentUser(getApplicationContext()).getMvUser().getTaluka());
             locationModel.setCluster(User.getCurrentUser(getApplicationContext()).getMvUser().getCluster());
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.MONTH, -1);
-            Date dateFrom = calendar.getTime();
-            CharSequence tof  = DateFormat.format("yyyy-MM-dd", dateFrom.getTime());
-            fromDate=tof.toString();
+            try {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
+                Calendar calendar = Calendar.getInstance();
+                calendar.add(Calendar.MONTH, -1);
+                Date dateFrom = calendar.getTime();
+                fromDate=formatter.format(dateFrom.getTime());
 
-            Date dateTo = new Date();
-            CharSequence tot  = DateFormat.format("yyyy-MM-dd", dateTo.getTime());
-            toDate=tot.toString();
+                Date dateTo = new Date();
+                toDate=formatter.format(dateTo.getTime());
+            } catch(Exception e) {
+            }
         }
 
         //here data must be an instance of the class MarsDataProvider

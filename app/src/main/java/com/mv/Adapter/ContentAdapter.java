@@ -532,6 +532,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                     }
                 })
                 .setPositiveButton(mContext.getString(R.string.ok), (dialog12, id) -> {
+                    buildSelectedItemString(items);
                     sendShareRecord(mDataList.get(position).getId());
                     Log.i("value", "value");
                 })
@@ -542,7 +543,7 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
         dialog.show();
     }
 
-    private String buildSelectedItemString(String[] items) {
+    private void buildSelectedItemString(String[] items) {
         StringBuilder sb = new StringBuilder();
         boolean foundOne = false;
         jsonArrayAttachment = new JSONArray();
@@ -556,7 +557,6 @@ public class ContentAdapter extends RecyclerView.Adapter<ContentAdapter.ViewHold
                 sb.append(i);
             }
         }
-        return sb.toString();
     }
 
     /*It calls sharedRecords api. ContentId is id of particular posts. */
