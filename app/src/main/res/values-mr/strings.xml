@@ -17,6 +17,7 @@
     <string name="progress_loading">लोडिंग</string>
     <string name="progress_please_wait">कृपया थांबा</string>
     <string name="error_something_went_wrong">काहीतरी चूक झाली, कृपया पुन्हा प्रयत्न करा</string>
+    <string name="not_Submitted_Slow_Interenet">खराब इंटरनेट कनेक्शनमुळे फॉर्म सबमिट केला जाऊ शकत नाही.फॉर्म सेव्ह केला गेला आहे.</string>
 
     <string name="attendance_rejection_reason">उपस्थिती नाकारण्याची कारणे प्रदान करा.</string>
 
