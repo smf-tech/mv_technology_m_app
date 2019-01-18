@@ -6,6 +6,7 @@
     <string name="progress_please_wait">Please wait</string>
     <string name="error_something_went_wrong">Something went wrong, Please try again</string>
     <string name="error_no_internet">Please check your internet connection</string>
+    <string name="not_Submitted_Slow_Interenet">Please check your internet connection</string>
 
     <string name="attendance_rejection_reason">Please provide reason for attendance rejection.</string>
 
