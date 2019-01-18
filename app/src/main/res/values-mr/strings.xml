@@ -199,8 +199,8 @@
     <string name="update_data_string">आपण डेटा अद्ययावत करू इच्छित असल्याची आपल्याला खात्री आहे?</string>
     <string name="app_versio_report">APP Version Report</string>
     <string name="next_login">लॉगइन करा</string>
-    <string name="from_date">From Date</string>
-    <string name="to_date">To Date</string>
+    <string name="from_date">या तारखेपासून</string>
+    <string name="to_date">या तारखेपर्यंत</string>
     <string name="reason">कारण</string>
     <string name="type_of_leaves">Type Of Leaves</string>
     <string name="pending">प्रलंबित</string>
