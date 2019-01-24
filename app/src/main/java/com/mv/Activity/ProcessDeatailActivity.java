@@ -75,6 +75,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private ArrayList<Task> taskList = new ArrayList<>();
     public ArrayList<ImageData> imageDataList = new ArrayList<>();
     private String pickListApiFieldNames;
+    private String hasApprovalPerson;
     private GPSTracker gps;
     private Activity context;
 
@@ -92,6 +93,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     private Uri outputUri = null;
     private Uri finalUri = null;
+    TaskContainerModel taskContainerModel = new TaskContainerModel();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +115,10 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
         if (getIntent().getStringExtra(Constants.PROCESS_NAME) != null) {
             processName = getIntent().getStringExtra(Constants.PROCESS_NAME);
+        }
+
+        if (getIntent().getStringExtra("HasApproval") != null) {
+            hasApprovalPerson = getIntent().getStringExtra("HasApproval");
         }
 
         initViews();
@@ -239,16 +245,21 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         img_back.setOnClickListener(this);
 
         ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
-        if(taskList.get(0).getId()!= null){
-            img_logout.setVisibility(View.VISIBLE);
+        if(hasApprovalPerson!=null && hasApprovalPerson.equalsIgnoreCase("Yes")){
+            if(taskList.get(0).getId()!= null){
+                img_logout.setVisibility(View.VISIBLE);
+            }else{
+                img_logout.setVisibility(View.GONE);
+            }
+            if (taskList.get(0).getStatus__c() != null && taskList.get(0).getStatus__c().equalsIgnoreCase("Expected")) {
+                img_logout.setVisibility(View.GONE);
+            }
+            img_logout.setImageResource(R.drawable.comment_white);
+            img_logout.setOnClickListener(this);
         }else{
             img_logout.setVisibility(View.GONE);
         }
-        if (taskList.get(0).getStatus__c() != null && taskList.get(0).getStatus__c().equalsIgnoreCase("Expected")) {
-            img_logout.setVisibility(View.GONE);
-        }
-        img_logout.setImageResource(R.drawable.comment_white);
-        img_logout.setOnClickListener(this);
+
     }
 
     public void sendToCamera(String imgName, int position) {
@@ -593,20 +604,21 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
                             String json = gson.toJson(taskList);
 
-                            TaskContainerModel taskContainerModel = new TaskContainerModel();
                             taskContainerModel.setTaskListString(json);
                             taskContainerModel.setTaskType(Constants.TASK_ANSWER);
                             taskContainerModel.setUnique_Id(preferenceHelper.getString(Constants.UNIQUE));
                             taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
                             taskContainerModel.setMV_Process__c(taskList.get(0).getMV_Process__c());
 
-                            AppDatabase.getAppDatabase(context).userDao().deleteSingleTask(
-                                    preferenceHelper.getString(Constants.UNIQUE), taskContainerModel.getMV_Process__c());
+//                            AppDatabase.getAppDatabase(context).userDao().deleteSingleTask(
+//                                    preferenceHelper.getString(Constants.UNIQUE), taskContainerModel.getMV_Process__c());
 
 
                             if (imageDataList.size() > 0) {
                                 sendImage(imageDataList.get(0));
                             } else {
+                                AppDatabase.getAppDatabase(context).userDao().deleteSingleTask(
+                                        preferenceHelper.getString(Constants.UNIQUE), taskContainerModel.getMV_Process__c());
                                 submit.setEnabled(true);
                                 finish();
                             }
@@ -618,6 +630,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     } catch (Exception e) {
                         e.printStackTrace();
                         submit.setEnabled(true);
+                        Utills.showToast(getString(R.string.error_something_went_wrong), context);
                     }
                 }
 
@@ -631,6 +644,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } catch (JSONException e) {
             e.printStackTrace();
             submit.setEnabled(true);
+            Utills.showToast(getString(R.string.error_something_went_wrong), context);
         }
     }
 
@@ -678,6 +692,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                             if (!imageDataList.isEmpty()) {
                                 sendImage(imageDataList.get(0));
                             } else {
+                                AppDatabase.getAppDatabase(context).userDao().deleteSingleTask(
+                                        preferenceHelper.getString(Constants.UNIQUE), taskContainerModel.getMV_Process__c());
                                 finish();
                                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                             }
@@ -685,22 +701,22 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     }
                 } catch (Exception e) {
                     deleteSalesForceData();
-                    Utills.hideProgressDialog();
-                    Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                //    Utills.hideProgressDialog();
+                //    Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 deleteSalesForceData();
-                Utills.hideProgressDialog();
-                Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+             //   Utills.hideProgressDialog();
+             //   Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
             }
         });
     }
 
     private void deleteSalesForceData() {
-        Utills.showProgressDialog(this);
+    //    Utills.showProgressDialog(this);
 
         ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
         apiService.getSalesForceData(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
@@ -710,10 +726,14 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Utills.hideProgressDialog();
                 try {
-                    Utills.showToast("Please try again...", getApplicationContext());
+                    saveToDB();
+                    Utills.showToast(getString(R.string.not_Submitted_Slow_Interenet), getApplicationContext());
+                    finish();
                 } catch (Exception e) {
                     Utills.hideProgressDialog();
-                    Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                //    Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                    Utills.showToast(getString(R.string.not_Submitted_Slow_Interenet), getApplicationContext());
+                    finish();
                 }
             }
 
@@ -721,6 +741,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Utills.hideProgressDialog();
                 Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                finish();
             }
         });
     }

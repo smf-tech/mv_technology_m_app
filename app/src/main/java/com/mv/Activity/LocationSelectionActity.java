@@ -493,7 +493,14 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                     setSpinnerAdapter(mListTaluka, binding.spinnerTaluka, selectedTaluka);
                 }
 
-                setSpinnerAdapter(mListTaluka, binding.spinnerTaluka, selectedTaluka);
+                mListCluster.clear();
+                mListVillage.clear();
+                mListSchoolName.clear();
+                mListCluster.add("Select");
+                mListVillage.add("Select");
+                mListSchoolName.add("Select");
+                mSelectCluster = 0;
+                mSelectVillage = 0;
                 setSpinnerAdapter(mListCluster, binding.spinnerCluster, selectedCluster);
                 setSpinnerAdapter(mListVillage, binding.spinnerVillage, selectedVillage);
                 setSpinnerAdapter(mListSchoolName, binding.spinnerSchoolName, selectedSchool);
@@ -532,6 +539,11 @@ public class LocationSelectionActity extends AppCompatActivity implements View.O
                     setSpinnerAdapter(mListCluster, binding.spinnerCluster, selectedCluster);
                 }
 
+                mListVillage.clear();
+                mListSchoolName.clear();
+                mListVillage.add("Select");
+                mListSchoolName.add("Select");
+                mSelectVillage = 0;
                 setSpinnerAdapter(mListVillage, binding.spinnerVillage, selectedVillage);
                 setSpinnerAdapter(mListSchoolName, binding.spinnerSchoolName, selectedSchool);
                 break;

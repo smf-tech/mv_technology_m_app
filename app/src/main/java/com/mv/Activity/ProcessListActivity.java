@@ -319,6 +319,10 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                         processList.setFormCommentCount(jsonArray.getJSONObject(i).getString("FormCommentCount"));
                                     }
 
+                                    if (jsonArray.getJSONObject(i).has("HasApprovalPerson")) {
+                                        processList.setHasApprovalPerson(jsonArray.getJSONObject(i).getString("HasApprovalPerson"));
+                                    }
+
                                     processList.setValidation(jsonArray.getJSONObject(i).getString("Validation_on_text"));
                                     processList.setIsSave(Constants.PROCESS_STATE_SUBMIT);
                                     taskList.add(processList);
@@ -333,6 +337,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 taskContainerModel.setHeaderPosition(sb.toString());
                                 taskContainerModel.setTaskTimeStamp(taskList.get(0).getTimestamp__c());
                                 taskContainerModel.setFormCommentCount(taskList.get(0).getFormCommentCount());
+                                taskContainerModel.setHasApprovalPerson(taskList.get(0).getHasApprovalPerson());
                                 if(taskContainerModel.getFormReadCommentCount()==null){
                                     taskContainerModel.setFormReadCommentCount("0");
                                 }

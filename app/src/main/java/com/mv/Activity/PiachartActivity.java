@@ -756,6 +756,7 @@ public class PiachartActivity extends AppCompatActivity implements View.OnClickL
                                     }
                                     mChart.setVisibility(View.GONE);
                                     binding.tvPiaNoDataAvailable.setVisibility(View.GONE);
+                                    binding.swipeRefreshLayout.setVisibility(View.VISIBLE);
                                     binding.piachartRecyclerView.setVisibility(View.VISIBLE);
                                     adapter = new PichartDescriptiveListAdapter(context, piaChartModelArrayList);
                                     rvPiaChartDeatail.setAdapter(adapter);

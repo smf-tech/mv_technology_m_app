@@ -12,21 +12,38 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.mv.Adapter.HolldayListAdapter;
 import com.mv.Model.HolidayListModel;
+import com.mv.Model.User;
 import com.mv.R;
+import com.mv.Retrofit.ApiClient;
 import com.mv.Retrofit.AppDatabase;
+import com.mv.Retrofit.ServiceRequest;
 import com.mv.Utils.LocaleManager;
+import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityHolidayListBinding;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class HolidayListActivity extends AppCompatActivity implements View.OnClickListener {
     private ActivityHolidayListBinding binding;
     private Activity context;
+    private PreferenceHelper preferenceHelper;
     private List<HolidayListModel> holidayListModels = new ArrayList<>();
 
     @Override
@@ -35,18 +52,10 @@ public class HolidayListActivity extends AppCompatActivity implements View.OnCli
         context = this;
         binding = DataBindingUtil.setContentView(this, R.layout.activity_holiday_list);
         binding.setClander(this);
+        preferenceHelper = new PreferenceHelper(this);
         binding.recyclerView.setHasFixedSize(true);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(context));
-        holidayListModels = AppDatabase.getAppDatabase(HolidayListActivity.this).userDao().getAllHolidayList();
-        List<HolidayListModel> temp = new ArrayList<>();
-        for (int i = 0; i < holidayListModels.size(); i++) {
-            if (!holidayListModels.get(i).getCategory__c().equals("Weekly Off")) {
-                temp.add(holidayListModels.get(i));
-            }
-
-        }
-        HolldayListAdapter holldayListAdapter = new HolldayListAdapter(context, temp);
-        binding.recyclerView.setAdapter(holldayListAdapter);
+        getHolidayList();
         setActionbar(getString(R.string.holiday_list));
         binding.swiperefresh.setOnRefreshListener(
                 () -> {
@@ -90,5 +99,60 @@ public class HolidayListActivity extends AppCompatActivity implements View.OnCli
                 break;
         }
     }
+    private void getHolidayList() {
+        if (User.getCurrentUser(getApplicationContext()).getMvUser() == null) {
+            return;
+        }
+
+        if (Utills.isConnected(HolidayListActivity.this)) {
+            Utills.showProgressDialog(HolidayListActivity.this, "Loading Holidays", getString(R.string.progress_please_wait));
+            ServiceRequest apiService =
+                    ApiClient.getClientWitHeader(HolidayListActivity.this).create(ServiceRequest.class);
+
+            String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                    + "/services/apexrest/getAllHolidays?userId="
+                    + User.getCurrentUser(getApplicationContext()).getMvUser().getId();
+
+            apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    Utills.hideProgressDialog();
+                    try {
+                        if (response.body() != null) {
+                            String data = response.body().string();
+                            if (data.length() > 0) {
+                                JSONArray jsonArray = new JSONArray(data);
+                                Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                                AppDatabase.getAppDatabase(HolidayListActivity.this).userDao().deleteHolidayList();
+
+                                List<HolidayListModel> holidayListModels = Arrays.asList(gson.fromJson(jsonArray.toString(), HolidayListModel[].class));
+                                AppDatabase.getAppDatabase(HolidayListActivity.this).userDao().insertAllHolidayList(holidayListModels);
+//                                holidayListModels = AppDatabase.getAppDatabase(HolidayListActivity.this).userDao().getAllHolidayList();
+                                List<HolidayListModel> temp = new ArrayList<>();
+                                for (int i = 0; i < holidayListModels.size(); i++) {
+                                    if (!holidayListModels.get(i).getCategory__c().equals("Weekly Off")) {
+                                        temp.add(holidayListModels.get(i));
+                                    }
+
+                                }
+                                HolldayListAdapter holldayListAdapter = new HolldayListAdapter(context, temp);
+                                binding.recyclerView.setAdapter(holldayListAdapter);
+                            }
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Utills.hideProgressDialog();
+                }
+            });
+        }
+    }
+
 
 }
