@@ -150,6 +150,10 @@
                         android:textSize="@dimen/medium_text" />
                 </android.support.design.widget.TextInputLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
                 <ImageView
                     android:id="@+id/addImage"
                     android:layout_width="150dp"
@@ -165,12 +169,24 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_below="@+id/addImage"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:gravity="center"
                     android:text="@string/addAttachment"
                     android:textColor="@color/dark_grey"
                     android:textSize="@dimen/large_text" />
+
+                <Button
+                    android:id="@+id/button3"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_alignTop="@+id/addImage"
+                    android:layout_toEndOf="@+id/addImage"
+                    android:background="@drawable/remove_image"
+                    android:onClick="@{()->activity.onRemoveImageClick()}"
+                    android:visibility="gone"/>
+            </RelativeLayout>
             </LinearLayout>
         </ScrollView>
 

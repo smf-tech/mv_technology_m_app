@@ -6,7 +6,7 @@
     <string name="progress_please_wait">Please wait</string>
     <string name="error_something_went_wrong">Something went wrong, Please try again</string>
     <string name="error_no_internet">Please check your internet connection</string>
-    <string name="not_Submitted_Slow_Interenet">Please check your internet connection</string>
+    <string name="not_Submitted_Slow_Interenet">Form can not be submitted.Form has been saved.</string>
 
     <string name="attendance_rejection_reason">Please provide reason for attendance rejection.</string>
 
@@ -71,6 +71,7 @@
     <string name="Approve">Approve</string>
     <string name="Reject">Reject</string>
     <string name="thet_savnd">\"Thet Sanvad\" with\nMr.Shantilal Muttha</string>
+    <string name="user_profile">Profile</string>
     <string name="update_profile">Update Profile</string>
     <string name="approve_profile"> You are not approved yet. </string>
     <string name="approve_profile2">will approve you.</string>
@@ -119,6 +120,7 @@
     <string name="digit"> digit </string>
     <string name="logout_string">Do you want to Logout? </string>
     <string name="delete_task_string">Do you want Delete? </string>
+    <string name="remove_image">Do you really want to remove? </string>
     <string name="class_observation">Class Observation</string>
     <string name="training_responsiblity">Training Responsibility </string>
     <string name="loading_comment">Loading Comments</string>

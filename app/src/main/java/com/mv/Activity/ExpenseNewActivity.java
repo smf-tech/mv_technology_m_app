@@ -111,6 +111,9 @@ public class ExpenseNewActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
+    public void onRemoveImageClick(){
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
         switch (requestCode) {

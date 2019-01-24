@@ -8,712 +8,737 @@
             type="com.mv.Activity.RegistrationActivity" />
     </data>
 
-    <LinearLayout
-
-        android:id="@+id/layout_main"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/app_bg"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
-
-        <ScrollView
+            layout="@layout/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="50dp"
+            android:layout_alignParentTop="true" />
+
+        <LinearLayout
+            android:id="@+id/layout_main"
+            android:layout_below="@id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:background="@drawable/app_bg"
-            android:fillViewport="true">
+            android:orientation="vertical">
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="@drawable/app_bg"
+                android:fillViewport="true">
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_username"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txt_view1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/lighter_grey_box"
-                    android:padding="10dp">
+                    android:layout_height="wrap_content">
 
-                    <com.mv.Widgets.MyEditTextView
-                        android:id="@+id/edit_text_name"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:hint="@string/name"
-                        android:inputType="text|textCapWords"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/medium_text" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
 
-                </android.support.design.widget.TextInputLayout>
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_username"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/lighter_grey_box"
+                            android:padding="10dp">
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_midle_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txt_view1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/lighter_grey_box"
-                    android:padding="10dp">
+                            <com.mv.Widgets.MyEditTextView
+                                android:id="@+id/edit_text_name"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:hint="@string/name"
+                                android:inputType="text|textCapWords"
+                                android:singleLine="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/medium_text" />
 
-                    <com.mv.Widgets.MyEditTextView
-                        android:id="@+id/edit_text_midle_name"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:hint="@string/middle_name"
-                        android:inputType="text|textCapWords"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/medium_text" />
-                </android.support.design.widget.TextInputLayout>
+                        </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_last_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txt_view1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/lighter_grey_box"
-                    android:padding="10dp">
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_midle_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/lighter_grey_box"
+                            android:padding="10dp">
 
-                    <com.mv.Widgets.MyEditTextView
-                        android:id="@+id/edit_text_last_name"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:hint="@string/last_name"
-                        android:inputType="text|textCapWords"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/medium_text" />
-                </android.support.design.widget.TextInputLayout>
+                            <com.mv.Widgets.MyEditTextView
+                                android:id="@+id/edit_text_midle_name"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:hint="@string/middle_name"
+                                android:inputType="text|textCapWords"
+                                android:singleLine="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/medium_text" />
+                        </android.support.design.widget.TextInputLayout>
 
-                <android.support.design.widget.TextInputLayout
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_last_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/lighter_grey_box"
+                            android:padding="10dp">
 
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txt_view1"
+                            <com.mv.Widgets.MyEditTextView
+                                android:id="@+id/edit_text_last_name"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:hint="@string/last_name"
+                                android:inputType="text|textCapWords"
+                                android:singleLine="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/medium_text" />
+                        </android.support.design.widget.TextInputLayout>
 
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/lighter_grey_box"
-                    android:padding="10dp">
+                        <android.support.design.widget.TextInputLayout
 
-                    <com.mv.Widgets.MyEditTextView
-                        android:id="@+id/birth_date"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:clickable="false"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:hint="@string/birth_date"
-                        android:inputType="textPersonName"
-                        android:textColor="@color/black"
-                        android:textIsSelectable="true"
-                        android:textSize="@dimen/medium_text" />
-                </android.support.design.widget.TextInputLayout>
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/lighter_grey_box"
+                            android:padding="10dp">
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_mobile_number"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txt_view1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/lighter_grey_box"
-                    android:padding="10dp">
+                            <com.mv.Widgets.MyEditTextView
+                                android:id="@+id/birth_date"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:clickable="false"
+                                android:editable="false"
+                                android:hint="@string/birth_date"
+                                android:inputType="textPersonName"
+                                android:textColor="@color/black"
+                                android:textIsSelectable="true"
+                                android:textSize="@dimen/medium_text" />
+                        </android.support.design.widget.TextInputLayout>
 
-                    <com.mv.Widgets.MyEditTextView
-                        android:id="@+id/edit_text_mobile_number"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:digits="0123456789"
-                        android:hint="@string/mobile_no"
-                        android:inputType="phone"
-                        android:maxLength="10"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/medium_text" />
-                </android.support.design.widget.TextInputLayout>
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_mobile_number"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/lighter_grey_box"
+                            android:padding="10dp">
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_email"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txt_view1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/lighter_grey_box"
-                    android:padding="10dp">
+                            <com.mv.Widgets.MyEditTextView
+                                android:id="@+id/edit_text_mobile_number"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:digits="0123456789"
+                                android:hint="@string/mobile_no"
+                                android:inputType="phone"
+                                android:maxLength="10"
+                                android:singleLine="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/medium_text" />
+                        </android.support.design.widget.TextInputLayout>
 
-                    <com.mv.Widgets.MyEditTextView
-                        android:id="@+id/edit_text_email"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:hint="@string/email"
-                        android:inputType="textEmailAddress"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/medium_text" />
-                </android.support.design.widget.TextInputLayout>
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_email"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/lighter_grey_box"
+                            android:padding="10dp">
 
-                <LinearLayout
-                    android:id="@+id/ll_work"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
+                            <com.mv.Widgets.MyEditTextView
+                                android:id="@+id/edit_text_email"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:hint="@string/email"
+                                android:inputType="textEmailAddress"
+                                android:singleLine="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/medium_text" />
+                        </android.support.design.widget.TextInputLayout>
 
-                    <android.support.design.widget.TextInputLayout
-                        android:id="@+id/input_refresh"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/txt_view1"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
+                        <LinearLayout
+                            android:id="@+id/ll_work"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="10">
 
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="8"
-                        android:background="@drawable/lighter_grey_box"
-                        android:padding="10dp">
+                            <android.support.design.widget.TextInputLayout
+                                android:id="@+id/input_refresh"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
 
-                        <com.mv.Widgets.MyEditTextView
-                            android:id="@+id/edit_text_refresh"
+                                android:layout_marginTop="10dp"
+                                android:layout_weight="8"
+                                android:background="@drawable/lighter_grey_box"
+                                android:padding="10dp">
+
+                                <com.mv.Widgets.MyEditTextView
+                                    android:id="@+id/edit_text_refresh"
+                                    android:layout_width="fill_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@null"
+                                    android:enabled="false"
+                                    android:hint="@string/work_location"
+                                    android:inputType="textEmailAddress"
+                                    android:singleLine="true"
+                                    android:textColor="@color/black"
+                                    android:textSize="@dimen/medium_text" />
+                            </android.support.design.widget.TextInputLayout>
+
+                            <ImageView
+                                android:id="@+id/btn_refresh_location"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginLeft="20dp"
+                                android:layout_marginRight="20dp"
+                                android:layout_marginTop="20dp"
+                                android:layout_weight="2"
+                                android:contentDescription="@string/todo"
+                                android:src="@drawable/ic_refresh" />
+                        </LinearLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_address"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/lighter_grey_box"
+                            android:padding="10dp">
+
+                            <com.mv.Widgets.MyEditTextView
+                                android:id="@+id/edit_text_address"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:editable="false"
+                                android:hint="Address"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/medium_text" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/layout_type"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/grey_box"
+                            android:padding="10dp">
+
+                            <com.mv.Widgets.MyTextView
+                                android:id="@+id/txt_view1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/gender"
+                                android:textColor="@color/dark_grey"
+                                android:textSize="@dimen/medium_text" />
+
+                            <RadioGroup
+                                android:id="@+id/gender_group"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="20dp"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/gender_male"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/male"
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                                <RadioButton
+                                    android:id="@+id/gender_female"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/female"
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+
+                                <RadioButton
+                                    android:id="@+id/gender_other"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="@string/other"
+                                    android:textColor="@color/dark_grey"
+                                    android:textSize="@dimen/medium_text" />
+                            </RadioGroup>
+                        </RelativeLayout>
+
+                        <com.mv.Widgets.MyTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/organization"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="@dimen/small_text" />
+
+                        <RelativeLayout
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:background="@null"
-                            android:enabled="false"
-                            android:hint="@string/work_location"
-                            android:inputType="textEmailAddress"
-                            android:singleLine="true"
-                            android:textColor="@color/black"
-                            android:textSize="@dimen/medium_text" />
-                    </android.support.design.widget.TextInputLayout>
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="3dp"
+                            android:background="@drawable/grey_box"
+                            android:paddingBottom="10dp">
 
-                    <ImageView
-                        android:id="@+id/btn_refresh_location"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_weight="2"
-                        android:src="@drawable/ic_refresh"
-                        android:contentDescription="@string/todo"/>
-                </LinearLayout>
+                            <Spinner
+                                android:id="@+id/spinner_organization"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="3dp"
+                                android:paddingBottom="10dp"
+                                android:paddingTop="10dp"
+                                android:prompt="@string/organization"
+                                android:spinnerMode="dialog" />
+                        </RelativeLayout>
 
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txt_view1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/lighter_grey_box"
-                    android:padding="10dp">
-
-                    <com.mv.Widgets.MyEditTextView
-                        android:id="@+id/edit_text_address"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:hint="Address"
-                        android:editable="false"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/medium_text" />
-                </android.support.design.widget.TextInputLayout>
-
-                <RelativeLayout
-                    android:id="@+id/layout_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/grey_box"
-                    android:padding="10dp">
-
-                    <com.mv.Widgets.MyTextView
-                        android:id="@+id/txt_view1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/gender"
-
-                        android:textColor="@color/dark_grey"
-                        android:textSize="@dimen/medium_text" />
-
-                    <RadioGroup
-                        android:id="@+id/gender_group"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/txt_view1"
-                        android:layout_marginTop="10dp"
-                        android:orientation="horizontal">
-
-                        <RadioButton
-                            android:id="@+id/gender_male"
+                        <com.mv.Widgets.MyTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/male"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/project"
                             android:textColor="@color/dark_grey"
-                            android:textSize="@dimen/medium_text" />
+                            android:textSize="@dimen/small_text" />
 
-                        <RadioButton
-                            android:id="@+id/gender_female"
+                        <RelativeLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="3dp"
+                            android:background="@drawable/grey_box"
+                            android:paddingBottom="10dp"
+                            android:visibility="gone">
+
+                            <Spinner
+                                android:id="@+id/spinner_project"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="3dp"
+                                android:paddingBottom="10dp"
+                                android:paddingTop="10dp"
+                                android:prompt="@string/project"
+                                android:spinnerMode="dialog" />
+                        </RelativeLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_multiselect_project"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="5dp"
+                            android:background="@drawable/lighter_grey_box"
+                            android:padding="10dp"
+                            android:visibility="visible">
+
+                            <com.mv.Widgets.MyEditTextView
+                                android:id="@+id/edit_multiselect_project"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:clickable="true"
+                                android:focusable="false"
+                                android:gravity="left|top"
+                                android:hint="@string/project"
+                                android:maxLines="3"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/medium_text" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <com.mv.Widgets.MyTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/female"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/mandatory_role"
                             android:textColor="@color/dark_grey"
-                            android:textSize="@dimen/medium_text" />
+                            android:textSize="@dimen/small_text" />
 
-                        <RadioButton
-                            android:id="@+id/gender_other"
+                        <RelativeLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="3dp"
+                            android:background="@drawable/grey_box"
+                            android:paddingBottom="10dp">
+
+                            <Spinner
+                                android:id="@+id/spinner_role"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="3dp"
+                                android:paddingBottom="10dp"
+                                android:paddingTop="10dp"
+                                android:prompt="@string/role"
+                                android:spinnerMode="dialog" />
+                        </RelativeLayout>
+
+
+                        <com.mv.Widgets.MyTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:text="@string/other"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/mandatory_state"
                             android:textColor="@color/dark_grey"
-                            android:textSize="@dimen/medium_text" />
-                    </RadioGroup>
-                </RelativeLayout>
+                            android:textSize="@dimen/small_text" />
 
-                <com.mv.Widgets.MyTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/organization"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/small_text" />
+                        <RelativeLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="3dp"
+                            android:background="@drawable/grey_box"
+                            android:paddingBottom="10dp">
 
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:background="@drawable/grey_box"
-                    android:paddingBottom="10dp">
+                            <Spinner
+                                android:id="@+id/spinner_state"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="3dp"
+                                android:paddingBottom="10dp"
+                                android:paddingTop="10dp"
+                                android:prompt="@string/state"
+                                android:spinnerMode="dialog" />
 
-                    <Spinner
-                        android:id="@+id/spinner_organization"
+
+                        </RelativeLayout>
+
+
+                        <com.mv.Widgets.MyTextView
+                            android:id="@+id/txt_district"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/disrict"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="@dimen/small_text" />
+
+                        <RelativeLayout
+                            android:id="@+id/rel_district"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="3dp"
+                            android:background="@drawable/grey_box"
+                            android:paddingBottom="10dp">
+
+                            <Spinner
+                                android:id="@+id/spinner_district"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="3dp"
+                                android:paddingBottom="10dp"
+                                android:paddingTop="10dp"
+                                android:prompt="@string/disrict"
+                                android:spinnerMode="dialog" />
+                        </RelativeLayout>
+
+                        <com.mv.Widgets.MyTextView
+                            android:id="@+id/txt_taluka"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/mandatory_taluka"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="@dimen/small_text" />
+
+                        <RelativeLayout
+                            android:id="@+id/rel_taluka"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="3dp"
+                            android:background="@drawable/grey_box"
+                            android:paddingBottom="10dp">
+
+                            <Spinner
+                                android:id="@+id/spinner_taluka"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="3dp"
+
+                                android:paddingBottom="10dp"
+                                android:paddingTop="10dp"
+                                android:prompt="@string/taluka"
+                                android:spinnerMode="dialog" />
+                        </RelativeLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_multiselect_taluka"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/lighter_grey_box"
+                            android:padding="10dp"
+                            android:visibility="gone">
+
+                            <com.mv.Widgets.MyEditTextView
+                                android:id="@+id/edit_multiselect_taluka"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:clickable="true"
+                                android:focusable="false"
+                                android:gravity="left|top"
+                                android:hint="@string/taluka"
+                                android:maxLines="3"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/medium_text" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <com.mv.Widgets.MyTextView
+                            android:id="@+id/txt_cluster"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/mandatory_cluster"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="@dimen/small_text" />
+
+                        <RelativeLayout
+                            android:id="@+id/rel_cluster"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="3dp"
+                            android:background="@drawable/grey_box"
+                            android:paddingBottom="10dp">
+
+                            <Spinner
+                                android:id="@+id/spinner_cluster"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="3dp"
+                                android:paddingBottom="10dp"
+                                android:paddingTop="10dp"
+                                android:prompt="@string/cluster"
+                                android:spinnerMode="dialog" />
+                        </RelativeLayout>
+
+                        <com.mv.Widgets.MyTextView
+                            android:id="@+id/txt_village"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/mandatory_village"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="@dimen/small_text" />
+
+                        <RelativeLayout
+                            android:id="@+id/rel_villgae"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="3dp"
+                            android:background="@drawable/grey_box"
+                            android:paddingBottom="10dp">
+
+                            <Spinner
+                                android:id="@+id/spinner_village"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="3dp"
+
+                                android:paddingBottom="10dp"
+                                android:paddingTop="10dp"
+                                android:prompt="@string/village"
+                                android:spinnerMode="dialog" />
+                        </RelativeLayout>
+
+                        <com.mv.Widgets.MyTextView
+                            android:id="@+id/txt_school"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:text="@string/mandatory_school_name"
+                            android:textColor="@color/dark_grey"
+                            android:textSize="@dimen/small_text" />
+
+                        <RelativeLayout
+                            android:id="@+id/rel_school_name"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="3dp"
+                            android:background="@drawable/grey_box"
+                            android:paddingBottom="10dp">
+
+                            <Spinner
+                                android:id="@+id/spinner_school_name"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="3dp"
+
+                                android:paddingBottom="10dp"
+                                android:paddingTop="10dp"
+                                android:prompt="@string/school_name"
+                                android:spinnerMode="dialog" />
+                        </RelativeLayout>
+
+                        <android.support.design.widget.TextInputLayout
+                            android:id="@+id/input_school_code"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/lighter_grey_box"
+                            android:padding="10dp"
+                            android:visibility="gone">
+
+                            <com.mv.Widgets.MyEditTextView
+                                android:id="@+id/edit_text_school_code"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:editable="false"
+                                android:focusable="false"
+                                android:hint="@string/school_code"
+                                android:inputType="text"
+                                android:singleLine="true"
+                                android:textColor="@color/black"
+                                android:textSize="@dimen/medium_text" />
+                        </android.support.design.widget.TextInputLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:gravity="center">
+
+                            <ImageView
+                                android:id="@+id/addImage"
+                                android:layout_width="150dp"
+                                android:layout_height="180dp"
+                                android:layout_gravity="center"
+                                android:layout_margin="10dp"
+                                android:contentDescription="@string/todo"
+                                android:onClick="@{()->activity.onAddImageClick()}"
+                                android:src="@drawable/mulya_bg" />
+
+                            <com.mv.Widgets.MyTextView
+                                android:id="@+id/addProfilePicText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@+id/addImage"
+                                android:layout_gravity="center"
+                                android:layout_margin="10dp"
+                                android:gravity="center"
+                                android:text="@string/profile_pic"
+                                android:textColor="@color/dark_grey"
+                                android:textSize="@dimen/large_text" />
+
+                            <Button
+                                android:id="@+id/removeImage"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_alignTop="@+id/addImage"
+                                android:layout_toEndOf="@+id/addImage"
+                                android:background="@drawable/remove_image"
+                                android:onClick="@{()->activity.onRemoveImageClick()}"
+                                android:visibility="gone" />
+
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/overlay"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="3dp"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:prompt="@string/organization"
-                        android:spinnerMode="dialog" />
+                        android:layout_height="1320dp"
+                        android:background="@color/tranparant_lighter_grey"
+                        android:clickable="false"/>
                 </RelativeLayout>
+            </ScrollView>
 
-                <com.mv.Widgets.MyTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/project"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/small_text" />
-
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:background="@drawable/grey_box"
-                    android:paddingBottom="10dp"
-                    android:visibility="gone">
-
-                    <Spinner
-                        android:id="@+id/spinner_project"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="3dp"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:prompt="@string/project"
-                        android:spinnerMode="dialog" />
-                </RelativeLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_multiselect_project"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:visibility="visible"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@drawable/lighter_grey_box"
-                    android:padding="10dp">
-
-                    <com.mv.Widgets.MyEditTextView
-                        android:id="@+id/edit_multiselect_project"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:gravity="left|top"
-                        android:hint="@string/project"
-                        android:maxLines="3"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/medium_text" />
-                </android.support.design.widget.TextInputLayout>
-
-                <com.mv.Widgets.MyTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/mandatory_role"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/small_text" />
-
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:background="@drawable/grey_box"
-                    android:paddingBottom="10dp">
-
-                    <Spinner
-                        android:id="@+id/spinner_role"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="3dp"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:prompt="@string/role"
-                        android:spinnerMode="dialog" />
-                </RelativeLayout>
-
-
-                <com.mv.Widgets.MyTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/mandatory_state"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/small_text" />
-
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:background="@drawable/grey_box"
-                    android:paddingBottom="10dp">
-
-                    <Spinner
-                        android:id="@+id/spinner_state"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="3dp"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:prompt="@string/state"
-                        android:spinnerMode="dialog" />
-
-
-                </RelativeLayout>
-
-
-                <com.mv.Widgets.MyTextView
-                    android:id="@+id/txt_district"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/disrict"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/small_text" />
-
-                <RelativeLayout
-                    android:id="@+id/rel_district"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:background="@drawable/grey_box"
-                    android:paddingBottom="10dp">
-
-                    <Spinner
-                        android:id="@+id/spinner_district"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="3dp"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:prompt="@string/disrict"
-                        android:spinnerMode="dialog" />
-                </RelativeLayout>
-
-                <com.mv.Widgets.MyTextView
-                    android:id="@+id/txt_taluka"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/mandatory_taluka"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/small_text" />
-
-                <RelativeLayout
-                    android:id="@+id/rel_taluka"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:background="@drawable/grey_box"
-                    android:paddingBottom="10dp">
-
-                    <Spinner
-                        android:id="@+id/spinner_taluka"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="3dp"
-
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:prompt="@string/taluka"
-                        android:spinnerMode="dialog" />
-                </RelativeLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_multiselect_taluka"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:visibility="gone"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/lighter_grey_box"
-                    android:padding="10dp">
-
-                    <com.mv.Widgets.MyEditTextView
-                        android:id="@+id/edit_multiselect_taluka"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:clickable="true"
-                        android:focusable="false"
-                        android:gravity="left|top"
-                        android:hint="@string/taluka"
-                        android:maxLines="3"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/medium_text" />
-                </android.support.design.widget.TextInputLayout>
-
-                <com.mv.Widgets.MyTextView
-                    android:id="@+id/txt_cluster"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/mandatory_cluster"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/small_text" />
-
-                <RelativeLayout
-                    android:id="@+id/rel_cluster"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:background="@drawable/grey_box"
-                    android:paddingBottom="10dp">
-
-                    <Spinner
-                        android:id="@+id/spinner_cluster"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="3dp"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:prompt="@string/cluster"
-                        android:spinnerMode="dialog" />
-                </RelativeLayout>
-
-                <com.mv.Widgets.MyTextView
-                    android:id="@+id/txt_village"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/mandatory_village"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/small_text" />
-
-                <RelativeLayout
-                    android:id="@+id/rel_villgae"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:background="@drawable/grey_box"
-                    android:paddingBottom="10dp">
-
-                    <Spinner
-                        android:id="@+id/spinner_village"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="3dp"
-
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:prompt="@string/village"
-                        android:spinnerMode="dialog" />
-                </RelativeLayout>
-
-                <com.mv.Widgets.MyTextView
-                    android:id="@+id/txt_school"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="@string/mandatory_school_name"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/small_text" />
-
-                <RelativeLayout
-                    android:id="@+id/rel_school_name"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="3dp"
-                    android:background="@drawable/grey_box"
-                    android:paddingBottom="10dp">
-
-                    <Spinner
-                        android:id="@+id/spinner_school_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="3dp"
-
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:prompt="@string/school_name"
-                        android:spinnerMode="dialog" />
-                </RelativeLayout>
-
-                <android.support.design.widget.TextInputLayout
-                    android:id="@+id/input_school_code"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/txt_view1"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/lighter_grey_box"
-                    android:padding="10dp"
-                    android:visibility="gone">
-
-                    <com.mv.Widgets.MyEditTextView
-                        android:id="@+id/edit_text_school_code"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@null"
-                        android:editable="false"
-                        android:focusable="false"
-                        android:hint="@string/school_code"
-                        android:inputType="text"
-                        android:singleLine="true"
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/medium_text" />
-                </android.support.design.widget.TextInputLayout>
-
-                <ImageView
-                    android:id="@+id/addImage"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="10dp"
-                    android:onClick="@{()->activity.onAddImageClick()}"
-                    android:src="@drawable/add"
-                    android:contentDescription="@string/todo"/>
-
-                <com.mv.Widgets.MyTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:gravity="center"
-                    android:text="@string/profile_pic"
-                    android:textColor="@color/dark_grey"
-                    android:textSize="@dimen/large_text" />
-            </LinearLayout>
-        </ScrollView>
-
-        <com.mv.Widgets.MyFontButton
-            android:id="@+id/btn_submit"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@color/colorPink"
-            android:text="@string/Submit"
-            android:textColor="#ffffff"
-            android:textSize="22sp" />
-    </LinearLayout>
+            <com.mv.Widgets.MyFontButton
+                android:id="@+id/btn_submit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="@color/colorPink"
+                android:text="@string/Submit"
+                android:textColor="#ffffff"
+                android:textSize="22sp"
+                android:visibility="gone"/>
+        </LinearLayout>
+    </RelativeLayout>
 </layout>

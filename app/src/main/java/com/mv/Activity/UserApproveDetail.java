@@ -155,9 +155,11 @@ public class UserApproveDetail extends AppCompatActivity implements View.OnClick
                         binding.txtDistrict.setVisibility(View.VISIBLE);
                     }
 
-                    if (mUser.getMvUser().getImageId() != null && !(mUser.getMvUser().getImageId().equalsIgnoreCase("null"))) {
+                    if (mUser.getMvUser().getImageId() != null && !(mUser.getMvUser().getImageId()
+                            .equalsIgnoreCase("null")) && !(mUser.getMvUser().getImageId().equalsIgnoreCase(""))) {
                         Glide.with(getApplicationContext())
-                                .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl) + "/services/data/v36.0/sobjects/Attachment/" + mUser.getMvUser().getImageId() + "/Body"))
+                                .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                                        + "/services/data/v36.0/sobjects/Attachment/" + mUser.getMvUser().getImageId() + "/Body"))
                                 .placeholder(getResources().getDrawable(R.drawable.mulya_bg))
                                 .into(binding.addImage);
 

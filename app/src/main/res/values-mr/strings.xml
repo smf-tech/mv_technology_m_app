@@ -16,7 +16,7 @@
     <string name="select_status"> स्थिती निवडा</string>
     <string name="progress_please_wait">कृपया थांबा</string>
     <string name="error_something_went_wrong">काहीतरी चूक झाली, कृपया पुन्हा प्रयत्न करा</string>
-    <string name="not_Submitted_Slow_Interenet">Please check your internet connection</string>
+    <string name="not_Submitted_Slow_Interenet">फॉर्म सबमिट केला जाऊ शकत नाही.फॉर्म सेव्ह केला गेला आहे.</string>
 
     <string name="attendance_rejection_reason">उपस्थिती नाकारण्याची कारणे प्रदान करा.</string>
 
@@ -53,6 +53,7 @@
     <string name="thet_savnd"> श्री  शांतिलाल  मुथ्था\nयांच्याशी \"थेट संवाद\" </string>
     <string name="cluster">क्लस्टर </string>
     <string name="mandatory_cluster">क्लस्टर *</string>
+    <string name="user_profile">प्रोफाइल</string>
     <string name="update_profile">प्रोफाइल अद्ययावत करा</string>
     <string name="village">गाव </string>
     <string name="mandatory_village">गाव *</string>

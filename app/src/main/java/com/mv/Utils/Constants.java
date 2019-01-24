@@ -185,6 +185,7 @@ public class Constants {
     public static final String GetUserSalaryData = "/services/apexrest/getUserSalaryData";
     public static final String GetUserAdavanceData = "/services/apexrest/getUserAdavanceData";
     public static final String GetAttendanceData = "/services/apexrest/getAttendance";
+    public static final String RemoveProfilePicture = "/services/apexrest/removeProfilePicture";
     public static final String GetUserVoucherData = "/services/apexrest/getUserVoucherData";
     public static final String DeleteAccountData = "/services/apexrest/DeleteAccountData";
     public static final String GetUserExpenseData = "/services/apexrest/getUserExpenseData";

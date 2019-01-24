@@ -6,7 +6,7 @@
     <string name="progress_please_wait">कृपया प्रतीक्षा</string>
     <string name="error_something_went_wrong">कुछ गया गलत, कृपया पुन: प्रयास करें</string>
     <string name="error_no_internet">कृपया अपना इंटरनेट जांचे</string>
-    <string name="not_Submitted_Slow_Interenet">Please check your internet connection</string>
+    <string name="not_Submitted_Slow_Interenet">फॉर्म सबमिट नहीं किया जा सकता है|फॉर्म सेव्ह किया है|</string>
     <string name="select_status"> Select Status</string>
     <string name="text_choosepicture">फोटो चुनें</string>
     <string name="text_choosevideo">वीडियो चुनें</string>
@@ -91,7 +91,7 @@
     <string name="profile_pic">प्रोफाइल फोटो जोड़ो</string>
     <string name="accept">स्वीकार करो</string>
     <string name="reject">अस्वीकार करो</string>
-
+    <string name="user_profile">प्रोफाइल</string>
     <string name="update_profile">अपडेट प्रोफाइल</string>
     <!--IssueTemplate Activity-->
     <string name="issue">मुद्दा प्रकार</string>

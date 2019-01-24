@@ -43,6 +43,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.mv.Utils.GlideCircleTransformation;
 import com.soundcloud.android.crop.Crop;
 import com.mv.Model.User;
 import com.mv.R;
@@ -85,6 +86,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private Uri outputUri = null;
     private Boolean isAdd;
     private GPSTracker gps;
+    TextView toolbar_title;
+    ImageView updateProfile;
 
     private EditText edit_text_midle_name;
     private EditText edit_text_last_name;
@@ -505,6 +508,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
      * initialize all views
      * */
     private void initViews() {
+        toolbar_title = (TextView) findViewById(R.id.toolbar_title);
+        binding.overlay.setOnClickListener(this);
         Utills.setupUI(findViewById(R.id.layout_main), this);
         preferenceHelper = new PreferenceHelper(this);
         binding.btnRefreshLocation.setOnClickListener(this);
@@ -653,8 +658,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
         if (getIntent() != null) {
             if (getIntent().getStringExtra(Constants.ACTION).equalsIgnoreCase(Constants.ACTION_EDIT)) {
-                setActionbar(getString(R.string.update_profile));
                 isAdd = false;
+                setActionbar(getString(R.string.user_profile));
 
                 if (User.getCurrentUser(this).getMvUser() != null) {
                     binding.editTextMidleName.setText(User.getCurrentUser(this).getMvUser().getMiddleName());
@@ -684,13 +689,22 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
                 if (User.getCurrentUser(this).getMvUser() != null &&
                         User.getCurrentUser(this).getMvUser().getImageId() != null &&
-                        !(User.getCurrentUser(this).getMvUser().getImageId().equalsIgnoreCase("null"))) {
+                        !(User.getCurrentUser(this).getMvUser().getImageId().equalsIgnoreCase("null")) &&
+                        !(User.getCurrentUser(this).getMvUser().getImageId().equalsIgnoreCase(""))) {
+
+                    binding.addProfilePicText.setVisibility(View.GONE);
+                    binding.removeImage.setVisibility(View.VISIBLE);
 
                     Glide.with(this)
                             .load(getUrlWithHeaders(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                                     + "/services/data/v36.0/sobjects/Attachment/"
                                     + User.getCurrentUser(this).getMvUser().getImageId() + "/Body"))
                             .placeholder(getResources().getDrawable(R.drawable.mulya_bg))
+                            .bitmapTransform(new GlideCircleTransformation(getApplicationContext()))
+                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE)
+                            .dontAnimate()
+                    //      .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
                             .into(binding.addImage);
                 }
 
@@ -703,6 +717,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             } else {
                 isAdd = true;
                 setActionbar(getString(R.string.Registration));
+                binding.overlay.setVisibility(View.GONE);
+                binding.btnSubmit.setVisibility(View.VISIBLE);
             }
         }
     }
@@ -721,12 +737,19 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
      * set actionbar to activity
      * */
     private void setActionbar(String Title) {
-        TextView toolbar_title = (TextView) findViewById(R.id.toolbar_title);
         toolbar_title.setText(Title);
 
         ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
+
+        if(!isAdd) {
+            ImageView edit_profile = (ImageView) findViewById(R.id.img_list);
+            edit_profile.setImageResource(0);
+            edit_profile.setImageResource(R.drawable.edit_button);
+            edit_profile.setVisibility(View.VISIBLE);
+            edit_profile.setOnClickListener(this);
+        }
 
         ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
         img_logout.setVisibility(View.GONE);
@@ -744,6 +767,12 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
 
+            case R.id.img_list:
+                binding.overlay.setVisibility(View.GONE);
+                binding.btnSubmit.setVisibility(View.VISIBLE);
+                toolbar_title.setText(R.string.update_profile);
+                break;
+
             case R.id.edit_multiselect_taluka:
                 showMultiSelectDialog(mListTaluka);
                 break;
@@ -754,6 +783,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
             case R.id.btn_submit:
                 sendData();
+                break;
+
+            case R.id.overlay:
                 break;
 
             case R.id.btn_refresh_location:
@@ -1743,6 +1775,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                     .load(FinalUri)
                     .skipMemoryCache(true)
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .bitmapTransform(new GlideCircleTransformation(getApplicationContext()))
+                    .dontAnimate()
+             //     .signature(new StringSignature(String.valueOf(System.currentTimeMillis())))
                     .into(binding.addImage);
         }
     }
@@ -1757,6 +1792,69 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         } else {
             showPictureDialog();
         }
+    }
+
+    public void onRemoveImageClick() {
+
+            final AlertDialog alertDialog = new AlertDialog.Builder(this).create();
+            // Setting Dialog Title
+            alertDialog.setTitle(getString(R.string.app_name));
+            // Setting Dialog Message
+            alertDialog.setMessage(getString(R.string.remove_image));
+            // Setting Icon to Dialog
+            alertDialog.setIcon(R.drawable.app_logo);
+            // Setting CANCEL Button
+            alertDialog.setButton2(getString(android.R.string.cancel), (dialog, which) -> alertDialog.dismiss());
+            // Setting OK Button
+            alertDialog.setButton(getString(android.R.string.ok), (dialog, which) -> {
+                RemoveImage();
+            });
+            // Showing Alert Message
+            alertDialog.show();
+
+    }
+
+    public void RemoveImage() {
+
+        Utills.showProgressDialog(this, "Processing...", getString(R.string.progress_please_wait));
+        ServiceRequest apiService =
+                ApiClient.getClientWitHeader(RegistrationActivity.this).create(ServiceRequest.class);
+
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.RemoveProfilePicture + "?userId=" + User.getCurrentUser(RegistrationActivity.this).getMvUser().getId();
+
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Utills.hideProgressDialog();
+            //    Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+                if (response != null && response.isSuccess()) {
+
+                    binding.addImage.setImageResource(0);
+                    binding.addImage.setImageResource(R.drawable.mulya_bg);
+
+                    User.getCurrentUser(RegistrationActivity.this).getMvUser().setImageId("");
+
+                    binding.addProfilePicText.setVisibility(View.VISIBLE);
+                    binding.removeImage.setVisibility(View.GONE);
+
+//                        String str = response.body().string();
+//                        if (str.length() > 0) {
+//
+//                            JSONArray jsonArray = new JSONArray(str);
+//                            if (jsonArray.length() > 0) {
+//                            }
+//                        }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+            }
+        });
+
     }
 
     @Override
