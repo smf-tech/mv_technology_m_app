@@ -90,6 +90,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private String id = "";
     private String imageId, uniqueId = "";
     private int imagePosition;
+    public int selectedTaskPosition = 0;
     public int selectedFromStructurePosition = 0;
     public int selectedFromMachinePosition = 0;
     public int selectedToStructurePosition = 0;
