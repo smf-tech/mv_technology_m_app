@@ -3,6 +3,7 @@ package com.mv.Activity;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -31,6 +33,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -873,6 +876,29 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } else {
             Utills.showToast(getString(R.string.error_no_internet), ProcessDeatailActivity.this);
         }
+    }
+
+    public void showDialogFullImage(String imageName){
+        final Dialog dialog = new Dialog(ProcessDeatailActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setCancelable(false);
+        dialog.setContentView(R.layout.dialog_full_image);
+
+        ImageView iv_image = (ImageView) dialog.findViewById(R.id.iv_image);
+        Glide.with(ProcessDeatailActivity.this)
+                .load(Constants.IMAGEURL + imageName + ".png")
+                .placeholder(ProcessDeatailActivity.this.getResources().getDrawable(R.drawable.ic_add_photo))
+                .into(iv_image);
+        ImageView iv_close = (ImageView) dialog.findViewById(R.id.iv_close);
+        iv_close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+
     }
 
     @Override
