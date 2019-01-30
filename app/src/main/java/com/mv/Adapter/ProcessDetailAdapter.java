@@ -320,15 +320,20 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             });
 
             imgAdd.setOnClickListener(v -> {
-                Long tsLong = System.currentTimeMillis();
-                String imgName = tsLong.toString();
-                taskList.get(getAdapterPosition()).setTask_Response__c(imgName);
-                if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.GALLERY)) {
-                    activity.sendToGallery(imgName, getAdapterPosition());
-                } else if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.CAMERA)) {
-                    activity.sendToCamera(imgName, getAdapterPosition());
+
+                if (taskList.get(getAdapterPosition()).getId() != null && !preferenceHelper.getBoolean(Constants.IS_EDITABLE)) {
+                    activity.showDialogFullImage(taskList.get(getAdapterPosition()).getTask_Response__c());
                 } else {
-                    activity.showPictureDialog(imgName, getAdapterPosition());
+                    Long tsLong = System.currentTimeMillis();
+                    String imgName = tsLong.toString();
+                    taskList.get(getAdapterPosition()).setTask_Response__c(imgName);
+                    if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.GALLERY)) {
+                        activity.sendToGallery(imgName, getAdapterPosition());
+                    } else if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.CAMERA)) {
+                        activity.sendToCamera(imgName, getAdapterPosition());
+                    } else {
+                        activity.showPictureDialog(imgName, getAdapterPosition());
+                    }
                 }
             });
         }
@@ -371,7 +376,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
             holder.llDate.setEnabled(false);
             holder.llPhoto.setEnabled(false);
             holder.date.setEnabled(false);
-            holder.imgAdd.setEnabled(false);
+//            holder.imgAdd.setEnabled(false);
         }
 
         ArrayAdapter<String> dimen_adapter;
