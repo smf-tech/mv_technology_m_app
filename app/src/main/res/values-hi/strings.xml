@@ -160,7 +160,7 @@
     <string name="Forward">फॉरवर्ड </string>
     <string name="issue_template">मुद्दा टेम्पलेट</string>
     <string name="broadcast_submit">प्रसारण सफलतापूर्वक सबमिट किया गया...</string>
-    <string name="fileNotPresent">फ़ाइल मौजूद नहीं है। कृपया डाउनलोड बटन दबाएं</string>
+    <string name="fileNotPresent">फ़ाइल डाउनलोड नहीं हुई है। कृपया डाउनलोड करें</string>
     <string name="Like">पसंद</string>
     <string name="no_data_available">कोई डेटा उपलब्ध नहीं है</string>
     <string name="Task_List">कार्य सूची</string>

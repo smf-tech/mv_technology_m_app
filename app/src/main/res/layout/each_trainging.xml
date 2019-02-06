@@ -43,6 +43,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
+            android:paddingLeft="@dimen/dimen_20dp"
             android:src="@drawable/download_file"
             android:visibility="gone"
             android:contentDescription="@string/todo"/>
@@ -54,6 +55,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="5dp"
+            android:paddingLeft="@dimen/dimen_20dp"
             android:src="@drawable/download"
             android:visibility="gone"
             android:contentDescription="@string/todo"/>

@@ -151,7 +151,7 @@
 
     <string name="issue_template">Issue Template</string>
     <string name="broadcast_submit">Broadcast submitted successfully...</string>
-    <string name="fileNotPresent">File is not present. Please Press Download Button</string>
+    <string name="fileNotPresent">File is not downloaded. Please Download.</string>
     <string name="no_data_available">No Data Available</string>
 
 

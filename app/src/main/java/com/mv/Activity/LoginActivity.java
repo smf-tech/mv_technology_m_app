@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
@@ -26,6 +27,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
+import com.google.android.gms.auth.api.phone.SmsRetriever;
+import com.google.android.gms.auth.api.phone.SmsRetrieverClient;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mv.Adapter.SliderAdapter;
@@ -83,8 +89,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (!Utills.isPhonePermissionGranted(this)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{Manifest.permission.CALL_PHONE,
-                        Manifest.permission.READ_PHONE_STATE, Manifest.permission.READ_SMS,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.PHONE_PERMISSION_REQUEST);
+                        Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        Constants.PHONE_PERMISSION_REQUEST);
             }
         }
 
@@ -105,32 +111,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Utills.showInternetPopUp(this);
             }
         } else if (binding.edtOtp.isShown() && isValidate(binding.edtOtp, 6, getString(R.string.password))) {
-            if (user.getMvUser().getPassword() != null) {
-                if (user.getMvUser().getPassword().trim().equals(binding.edtOtp.getText().toString().trim())) {
-                    preferenceHelper.insertString(PreferenceHelper.UserData, data);
-                    yourCountDownTimer.cancel();
-
-                    if (user.getMvUser().getRoll() != null && !(TextUtils.isEmpty(user.getMvUser().getRoll()))) {
-                        Utills.showToast(getString(R.string.login_successful), LoginActivity.this);
-                        Intent intent;
-                        intent = new Intent(LoginActivity.this, HomeActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        finish();
-                    } else {
-                        Intent intent;
-                        intent = new Intent(LoginActivity.this, RegistrationActivity.class);
-                        intent.putExtra(Constants.ACTION, Constants.ACTION_ADD);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                        finish();
-                    }
-                } else {
-                    binding.edtOtp.setError(getString(R.string.check_otp));
-                }
-            } else {
-                Utills.showToast(getString(R.string.error_no_internet), LoginActivity.this);
-            }
+            validateOTP();
         }
     }
 
@@ -279,6 +260,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 overridePendingTransition(R.anim.right_in, R.anim.left_out);
                                 finish();
                             } else {
+                                SMSRetrival();
                                 slideOut(binding.edtOtp, binding.edtUsername, getString(R.string.msg_manual_otp));
                                 setTimer();
                             }
@@ -295,6 +277,88 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 binding.tvTimer.setVisibility(View.GONE);
                 binding.tvResendOtp.setVisibility(View.VISIBLE);
                 Utills.showToast(getString(R.string.error_no_internet), LoginActivity.this);
+            }
+        });
+    }
+
+    private void validateOTP(){
+        if (user.getMvUser().getPassword() != null) {
+            if (user.getMvUser().getPassword().trim().equals(binding.edtOtp.getText().toString().trim())) {
+                preferenceHelper.insertString(PreferenceHelper.UserData, data);
+                yourCountDownTimer.cancel();
+
+                if (user.getMvUser().getRoll() != null && !(TextUtils.isEmpty(user.getMvUser().getRoll()))) {
+                    Utills.showToast(getString(R.string.login_successful), LoginActivity.this);
+                    Intent intent;
+                    intent = new Intent(LoginActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    finish();
+                } else {
+                    Intent intent;
+                    intent = new Intent(LoginActivity.this, RegistrationActivity.class);
+                    intent.putExtra(Constants.ACTION, Constants.ACTION_ADD);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                    finish();
+                }
+            } else {
+                binding.edtOtp.setError(getString(R.string.check_otp));
+            }
+        } else {
+            Utills.showToast(getString(R.string.error_no_internet), LoginActivity.this);
+        }
+    }
+
+    private void SMSRetrival(){
+        // Get an instance of SmsRetrieverClient, used to start listening for a matching
+        // SMS message.
+        SmsRetrieverClient client = SmsRetriever.getClient(this /* context */);
+
+        // Starts SmsRetriever, which waits for ONE matching SMS message until timeout
+        // (5 minutes). The matching SMS message will be sent via a Broadcast Intent with
+        // action SmsRetriever#SMS_RETRIEVED_ACTION.
+        Task<Void> task = client.startSmsRetriever();
+
+        // Listen for success/failure of the start Task. If in a background thread, this
+        // can be made blocking using Tasks.await(task, [timeout]);
+        task.addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                // Successfully started retriever, expect broadcast intent
+                // ...
+                IntentFilter intentFilter = new IntentFilter("SmsMessage.intent.MAIN");
+                mIntentReceiver = new BroadcastReceiver() {
+                    @Override
+                    public void onReceive(Context context, Intent intent) {
+                        //Process the sms format and extract body &amp; phoneNumber
+                        String msg = intent.getStringExtra("get_msg");
+                        if (msg != null && !msg.isEmpty()) {
+                            msg = msg.replace("\n", "");
+
+                            String body = msg.substring(msg.lastIndexOf(":") + 1, msg.length());
+                            body=body.substring(0,body.lastIndexOf(" "));
+                            Log.d("OTP", body);
+                            binding.edtOtp.setText(body);
+                            validateOTP();
+                        }
+                        if (yourCountDownTimer != null) {
+                            yourCountDownTimer.cancel();
+                        }
+                        binding.tvTimer.setVisibility(View.GONE);
+                        binding.tvResendOtp.setVisibility(View.GONE);
+                    }
+                };
+
+                LoginActivity.this.registerReceiver(mIntentReceiver, intentFilter);
+            }
+        });
+
+        task.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // Failed to start retriever, inspect Exception for more details
+                // ...
             }
         });
     }
@@ -356,36 +420,36 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             showDialog();
         }
 
-        IntentFilter intentFilter = new IntentFilter("SmsMessage.intent.MAIN");
-        mIntentReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                //Process the sms format and extract body &amp; phoneNumber
-                String msg = intent.getStringExtra("get_msg");
-                if (msg != null && !msg.isEmpty()) {
-                    msg = msg.replace("\n", "");
-
-                    String body = msg.substring(msg.lastIndexOf(":") + 1, msg.length());
-                    Log.d("OTP", body);
-                    binding.edtOtp.setText(body);
-                }
-
-                if (yourCountDownTimer != null) {
-                    yourCountDownTimer.cancel();
-                }
-
-                binding.tvTimer.setVisibility(View.GONE);
-                binding.tvResendOtp.setVisibility(View.GONE);
-            }
-        };
-
-        this.registerReceiver(mIntentReceiver, intentFilter);
+//        IntentFilter intentFilter = new IntentFilter("SmsMessage.intent.MAIN");
+//        mIntentReceiver = new BroadcastReceiver() {
+//            @Override
+//            public void onReceive(Context context, Intent intent) {
+//                //Process the sms format and extract body &amp; phoneNumber
+//                String msg = intent.getStringExtra("get_msg");
+//                if (msg != null && !msg.isEmpty()) {
+//                    msg = msg.replace("\n", "");
+//
+//                    String body = msg.substring(msg.lastIndexOf(":") + 1, msg.length());
+//                    Log.d("OTP", body);
+//                    binding.edtOtp.setText(body);
+//                }
+//
+//                if (yourCountDownTimer != null) {
+//                    yourCountDownTimer.cancel();
+//                }
+//
+//                binding.tvTimer.setVisibility(View.GONE);
+//                binding.tvResendOtp.setVisibility(View.GONE);
+//            }
+//        };
+//
+//        this.registerReceiver(mIntentReceiver, intentFilter);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(mIntentReceiver);
+//        unregisterReceiver(mIntentReceiver);
     }
 
     private boolean isValidate(EditText view, int charlimit, String errorMEssage) {
