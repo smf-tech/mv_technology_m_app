@@ -721,7 +721,7 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 } else {
                     holder.questionResponse.setText(task.getTask_Response__c());
                 }
-                holder.questionResponse.setInputType(InputType.TYPE_CLASS_NUMBER);
+//                holder.questionResponse.setInputType(InputType.TYPE_CLASS_NUMBER);
                 holder.questionResponse.setSingleLine(true);
                 holder.questionResponse.setHint("");
                 if (task.getIsEditable__c().equals("false")) {

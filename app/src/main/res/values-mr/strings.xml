@@ -145,7 +145,7 @@
     <string name="Share">शेअर</string>
     <string name="Like">पसंत</string>
 
-    <string name="fileNotPresent">फाईल उपलब्ध नाही. कृपया डाउनलोड बटण दाबा</string>
+    <string name="fileNotPresent">फाइल डाउनलोड झालेली नाही. कृपया डाउनलोड करा</string>
     <string name="no_data_available">माहिती उपलब्ध नाही.</string>
 
     <string name="Task_List">कार्य सूची</string>
