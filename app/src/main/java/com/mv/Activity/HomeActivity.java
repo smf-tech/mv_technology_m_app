@@ -626,17 +626,23 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onUpdateNeeded(final String updateUrl) {
-        AlertDialog dialog = new AlertDialog.Builder(this)
+    public void onUpdateNeeded(final String updateUrl,Boolean forcefulUpdate) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this)
                 .setTitle("New version available")
-                .setMessage("Please, update app to new version to continue reposting.")
                 .setPositiveButton("Update",
-                        (dialog1, which) -> redirectStore(updateUrl)).setNegativeButton("No, thanks",
-                        (dialog12, which) -> {
-                        })
-                .create();
-
-        dialog.show();
+                        (dialog1, which) -> redirectStore(updateUrl));
+         if(forcefulUpdate){
+             dialog.setMessage("You need to update app to latest version.");
+             dialog.setCancelable(false);
+         }else{
+             dialog.setMessage("Please, update app to latest version.");
+             dialog.setCancelable(true);
+             dialog.setNegativeButton("No, thanks",
+                     (dialog12, which) -> {
+                     });
+         }
+             dialog.create();
+             dialog.show();
     }
 
     private void redirectStore(String updateUrl) {
