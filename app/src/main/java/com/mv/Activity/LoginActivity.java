@@ -357,8 +357,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         task.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                // Failed to start retriever, inspect Exception for more details
-                // ...
+               // Failed to start retriever, inspect Exception for more details...
             }
         });
     }
