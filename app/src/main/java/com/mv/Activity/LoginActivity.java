@@ -236,7 +236,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.GetLoginOTP_url + "?mobileNo=" + binding.edtUsername.getText().toString().trim()
                 + "&notificationId=" + preferenceHelper.getString(PreferenceHelper.TOKEN)
-                + "&PhoneId=" + Utills.getDeviceId(LoginActivity.this);
+                + "&PhoneId=" + Utills.getDeviceId(LoginActivity.this)
+                + "&requestFrom=Mulyavardhan";
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -335,12 +336,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         String msg = intent.getStringExtra("get_msg");
                         if (msg != null && !msg.isEmpty()) {
                             msg = msg.replace("\n", "");
-
-                            String body = msg.substring(msg.lastIndexOf(":") + 1, msg.length());
-                            body=body.substring(0,body.lastIndexOf(" "));
-                            Log.d("OTP", body);
-                            binding.edtOtp.setText(body);
-                            validateOTP();
+                            String body="";
+                            if(msg.contains(":")){
+                                body = msg.substring(msg.lastIndexOf(":") + 1, msg.length());
+                                if(msg.contains(" ")){
+                                    body = body.substring(0,body.lastIndexOf(" "));
+                                    Log.d("OTP", body);
+                                    binding.edtOtp.setText(body);
+                                    validateOTP();
+                                }
+                            }
                         }
                         if (yourCountDownTimer != null) {
                             yourCountDownTimer.cancel();
@@ -357,8 +362,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         task.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                // Failed to start retriever, inspect Exception for more details
-                // ...
+               // Failed to start retriever, inspect Exception for more details...
             }
         });
     }
