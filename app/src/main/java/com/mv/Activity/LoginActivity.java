@@ -336,12 +336,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         String msg = intent.getStringExtra("get_msg");
                         if (msg != null && !msg.isEmpty()) {
                             msg = msg.replace("\n", "");
-
-                            String body = msg.substring(msg.lastIndexOf(":") + 1, msg.length());
-                            body=body.substring(0,body.lastIndexOf(" "));
-                            Log.d("OTP", body);
-                            binding.edtOtp.setText(body);
-                            validateOTP();
+                            String body="";
+                            if(msg.contains(":")){
+                                body = msg.substring(msg.lastIndexOf(":") + 1, msg.length());
+                                if(msg.contains(" ")){
+                                    body = body.substring(0,body.lastIndexOf(" "));
+                                    Log.d("OTP", body);
+                                    binding.edtOtp.setText(body);
+                                    validateOTP();
+                                }
+                            }
                         }
                         if (yourCountDownTimer != null) {
                             yourCountDownTimer.cancel();
