@@ -108,12 +108,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private int LocationFlag;
     private boolean doubleBackToExitPressedOnce = false;
+    private boolean isForcefulUpdate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("cycled", "onCreate: A");
-
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         ActivityHome1Binding binding = DataBindingUtil.setContentView(this, R.layout.activity_home1);
         binding.setActivity(this);
@@ -121,7 +120,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         preferenceHelper = new PreferenceHelper(this);
         alertDialogApproved = new AlertDialog.Builder(this).create();
 
-        ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
+        //ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.app_name);
@@ -196,107 +195,103 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onStart() {
-        Log.d("cycled", "onStart:A ");
-        super.onStart();
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
-        Log.d("cycled", "onResume: A");
+        // to check for latest version
+        ForceUpdateChecker.with(this).onUpdateNeeded(this).check();
+        if (!isForcefulUpdate) {
+            if (User.getCurrentUser(getApplicationContext()).getRolePermssion() != null &&
+                    User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationTrackingAllow__c() != null &&
+                    User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationTrackingAllow__c().equals("true")) {
 
-        if (User.getCurrentUser(getApplicationContext()).getRolePermssion() != null &&
-                User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationTrackingAllow__c() != null &&
-                User.getCurrentUser(getApplicationContext()).getRolePermssion().getIsLocationTrackingAllow__c().equals("true")) {
+                if (User.getCurrentUser(getApplicationContext()).getMvUser() != null &&
+                        User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null &&
+                        User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("true")) {
 
-            if (User.getCurrentUser(getApplicationContext()).getMvUser() != null &&
-                    User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null &&
-                    User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("true")) {
-
-                final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-                if (manager != null) {
-                    if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                        LocationGPSDialog();
-                        LocationFlag = 0;
-                    } else {
-                        if (alertLocationDialog != null && alertLocationDialog.isShowing())
-                            alertLocationDialog.dismiss();
-                        if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                            getAddress();
+                    final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                    if (manager != null) {
+                        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                            LocationGPSDialog();
+                            LocationFlag = 0;
                         } else {
-                            if (LocationFlag == 0) {
-                                if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                                    getAddress();
+                            if (alertLocationDialog != null && alertLocationDialog.isShowing())
+                                alertLocationDialog.dismiss();
+                            if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                                getAddress();
+                            } else {
+                                if (LocationFlag == 0) {
+                                    if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                                        getAddress();
+                                    }
                                 }
                             }
                         }
                     }
                 }
             }
-        }
 
-        if (User.getCurrentUser(this).getMvUser() != null) {
-            if (User.getCurrentUser(this).getMvUser().getUserMobileAppVersion() == null ||
-                    !User.getCurrentUser(this).getMvUser().getUserMobileAppVersion().equalsIgnoreCase(getAppVersion()) ||
-                    User.getCurrentUser(this).getMvUser().getPhoneId() == null ||
-                    !User.getCurrentUser(this).getMvUser().getPhoneId().equalsIgnoreCase(Utills.getDeviceId(HomeActivity.this))) {
+            if (User.getCurrentUser(this).getMvUser() != null) {
+                if (User.getCurrentUser(this).getMvUser().getUserMobileAppVersion() == null ||
+                        !User.getCurrentUser(this).getMvUser().getUserMobileAppVersion().equalsIgnoreCase(getAppVersion()) ||
+                        User.getCurrentUser(this).getMvUser().getPhoneId() == null ||
+                        !User.getCurrentUser(this).getMvUser().getPhoneId().equalsIgnoreCase(Utills.getDeviceId(HomeActivity.this))) {
 
-                if (Utills.isConnected(this)) {
-                    User.getCurrentUser(this).getMvUser().setPhoneId(Utills.getDeviceId(HomeActivity.this));
-                    User.getCurrentUser(this).getMvUser().setUserMobileAppVersion(getAppVersion());
-                    sendData();
-                } else {
-                    Utills.showToast(getString(R.string.error_no_internet), this);
-                }
-            }
-        }
-
-        if (AppDatabase.getAppDatabase(HomeActivity.this).userDao().getAllHolidayList().size() == 0) {
-            getHolidayList();
-        }
-
-        // add infos for the service which file to download and where to store
-        if (User.getCurrentUser(getApplicationContext()).getMvUser() != null) {
-            Intent intent = new Intent(this, LocationService.class);
-            intent.putExtra(Constants.State, User.getCurrentUser(getApplicationContext()).getMvUser().getState());
-            intent.putExtra(Constants.DISTRICT, User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
-            startService(intent);
-        }
-
-        // Send offline attendance to server
-        Attendance temp = AppDatabase.getAppDatabase(HomeActivity.this).userDao().getUnSynchAttendance();
-        if (Utills.isConnected(HomeActivity.this)) {
-            if (temp != null) {
-                Intent intentt = new Intent(HomeActivity.this, SendAttendance.class);
-                startService(intentt);
-            }
-            getAllLeaves();
-        }
-
-        int count = AppDatabase.getAppDatabase(this).userDao().getUnRearNotificationsCount("unread");
-        tvUnreadNotification.setText("" + count);
-        if (count > 0) {
-            tvUnreadNotification.setVisibility(View.VISIBLE);
-        }
-
-        // new push notification is received
-        BroadcastReceiver mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (Constants.PUSH_NOTIFICATION.equals(intent.getAction())) {
-                    int count = AppDatabase.getAppDatabase(HomeActivity.this).userDao().getUnRearNotificationsCount("unread");
-                    tvUnreadNotification.setText("" + count);
-
-                    if (count > 0) {
-                        tvUnreadNotification.setVisibility(View.VISIBLE);
+                    if (Utills.isConnected(this)) {
+                        User.getCurrentUser(this).getMvUser().setPhoneId(Utills.getDeviceId(HomeActivity.this));
+                        User.getCurrentUser(this).getMvUser().setUserMobileAppVersion(getAppVersion());
+                        sendData();
+                    } else {
+                        Utills.showToast(getString(R.string.error_no_internet), this);
                     }
                 }
             }
-        };
 
-        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
-                new IntentFilter(Constants.PUSH_NOTIFICATION));
+            if (AppDatabase.getAppDatabase(HomeActivity.this).userDao().getAllHolidayList().size() == 0) {
+                getHolidayList();
+            }
+
+            // add infos for the service which file to download and where to store
+            if (User.getCurrentUser(getApplicationContext()).getMvUser() != null) {
+                Intent intent = new Intent(this, LocationService.class);
+                intent.putExtra(Constants.State, User.getCurrentUser(getApplicationContext()).getMvUser().getState());
+                intent.putExtra(Constants.DISTRICT, User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict());
+                startService(intent);
+            }
+
+            // Send offline attendance to server
+            Attendance temp = AppDatabase.getAppDatabase(HomeActivity.this).userDao().getUnSynchAttendance();
+            if (Utills.isConnected(HomeActivity.this)) {
+                if (temp != null) {
+                    Intent intentt = new Intent(HomeActivity.this, SendAttendance.class);
+                    startService(intentt);
+                }
+                getAllLeaves();
+            }
+
+            int count = AppDatabase.getAppDatabase(this).userDao().getUnRearNotificationsCount("unread");
+            tvUnreadNotification.setText("" + count);
+            if (count > 0) {
+                tvUnreadNotification.setVisibility(View.VISIBLE);
+            }
+
+            // new push notification is received
+            BroadcastReceiver mRegistrationBroadcastReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    if (Constants.PUSH_NOTIFICATION.equals(intent.getAction())) {
+                        int count = AppDatabase.getAppDatabase(HomeActivity.this).userDao().getUnRearNotificationsCount("unread");
+                        tvUnreadNotification.setText("" + count);
+
+                        if (count > 0) {
+                            tvUnreadNotification.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }
+            };
+
+            LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
+                    new IntentFilter(Constants.PUSH_NOTIFICATION));
+        }
     }
 
     private void getHolidayList() {
@@ -345,21 +340,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d("cycled", "onPause: A");
-    }
-
-    @Override
-    protected void onStop() {
-        Log.d("cycled", "onStop: A");
-        super.onStop();
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("cycled", "onDestroy: A");
         if (alertLocationDialog != null) {
             alertLocationDialog.dismiss();
         }
@@ -367,12 +349,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (alertDialogApproved != null) {
             alertDialogApproved.dismiss();
         }
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d("cycled", "onRestart: A");
     }
 
     private void sendData() {
@@ -626,16 +602,23 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onUpdateNeeded(final String updateUrl) {
-        AlertDialog dialog = new AlertDialog.Builder(this)
+    public void onUpdateNeeded(final String updateUrl, Boolean isForcefulUpdate) {
+        this.isForcefulUpdate = isForcefulUpdate;
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this)
                 .setTitle("New version available")
-                .setMessage("Please, update app to new version to continue reposting.")
                 .setPositiveButton("Update",
-                        (dialog1, which) -> redirectStore(updateUrl)).setNegativeButton("No, thanks",
-                        (dialog12, which) -> {
-                        })
-                .create();
-
+                        (dialog1, which) -> redirectStore(updateUrl));
+        if (isForcefulUpdate) {
+            dialog.setMessage("You need to update app to latest version.");
+            dialog.setCancelable(false);
+        } else {
+            dialog.setMessage("Please, update app to latest version.");
+            dialog.setCancelable(true);
+            dialog.setNegativeButton("No, thanks",
+                    (dialog12, which) -> {
+                    });
+        }
+        dialog.create();
         dialog.show();
     }
 
