@@ -173,7 +173,7 @@ public class Constants {
     public static final String MapParametersUrl = "/services/apexrest/MapParameters";
     public static final String GetSessionDatademo_Url = "/services/apexrest/getSessionDatademo/";
     public static final String Upload_Url = "http://mobileapp.mulyavardhan.org/upload.php";
-    public static final String GetLoginOTP_url = "/services/apexrest/getLoginOTPNew";
+    public static final String GetLoginOTP_url = "/services/apexrest/getLoginOTPNewV2";
     public static final String GetchartDatademoNew = "/services/apexrest/getchartDatademoNew";
     public static final String GetDashboardDatademoUrl = "/services/apexrest/getDashboardDatademo";
     public static final String GetApprovalProcessUrl = "/services/apexrest/getApprovalProcess";

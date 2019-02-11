@@ -621,8 +621,10 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
             JSONArray jsonArray = new JSONArray(json);
             JSONObject jsonObject = new JSONObject();
-            jsonObject.put("formLat", location.getLatitude());
-            jsonObject.put("formLong", location.getLongitude());
+            if(location!=null){
+                jsonObject.put("formLat", location.getLatitude());
+                jsonObject.put("formLong", location.getLongitude());
+            }
             jsonObject.put("listtaskanswerlist", jsonArray);
 
             ServiceRequest apiService = ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
