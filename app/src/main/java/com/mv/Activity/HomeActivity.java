@@ -626,7 +626,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onUpdateNeeded(final String updateUrl) {
+    public void onUpdateNeeded(final String updateUrl, Boolean isForceUpdate) {
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle("New version available")
                 .setMessage("Please, update app to new version to continue reposting.")

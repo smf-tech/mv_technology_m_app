@@ -7,10 +7,6 @@ import android.util.Log;
 
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
-/**
- * Created by Rohit Gujar on 06-12-2017.
- */
-
 public class ForceUpdateChecker {
 
     private static final String TAG = ForceUpdateChecker.class.getSimpleName();
@@ -18,12 +14,13 @@ public class ForceUpdateChecker {
     public static final String KEY_UPDATE_REQUIRED = "SS_force_update_required";
     public static final String KEY_CURRENT_VERSION = "SS_force_update_current_version";
     public static final String KEY_UPDATE_URL = "SS_force_update_store_url";
+    public static final String KEY_MINIMUM_REQUIRED_VERSION = "ss_minimum_required_app_version";
 
     private OnUpdateNeededListener onUpdateNeededListener;
     private Context context;
 
     public interface OnUpdateNeededListener {
-        void onUpdateNeeded(String updateUrl);
+        void onUpdateNeeded(String updateUrl,Boolean isForcefulUpdate);
     }
 
     public static Builder with(@NonNull Context context) {
@@ -43,14 +40,21 @@ public class ForceUpdateChecker {
             String currentVersion = remoteConfig.getString(KEY_CURRENT_VERSION);
             String appVersion = getAppVersion(context);
             String updateUrl = remoteConfig.getString(KEY_UPDATE_URL);
-            float appV = 0, currentV = 0;
+            String minimumRequiredVersion = remoteConfig.getString(KEY_MINIMUM_REQUIRED_VERSION);
+            float appV = 0, currentV = 0, minimumV = 0;
             if (appVersion != null && appVersion.length() != 0)
                 appV = Float.parseFloat(appVersion);
             if (currentVersion != null && currentVersion.length() != 0)
                 currentV = Float.parseFloat(currentVersion);
+            if (minimumRequiredVersion != null && minimumRequiredVersion.length() != 0)
+                minimumV = Float.parseFloat(minimumRequiredVersion);
             if (appV < currentV
                     && onUpdateNeededListener != null) {
-                onUpdateNeededListener.onUpdateNeeded(updateUrl);
+                if(appV < minimumV){
+                    onUpdateNeededListener.onUpdateNeeded(updateUrl,true);
+                }else{
+                    onUpdateNeededListener.onUpdateNeeded(updateUrl,false);
+                }
             }
         }
     }
