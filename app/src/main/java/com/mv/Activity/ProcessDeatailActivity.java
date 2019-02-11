@@ -1,6 +1,7 @@
 package com.mv.Activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -9,10 +10,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Rect;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
@@ -34,6 +37,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.SettingsClient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -72,6 +81,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
+
 public class ProcessDeatailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private PreferenceHelper preferenceHelper;
@@ -79,6 +90,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     public ArrayList<ImageData> imageDataList = new ArrayList<>();
     private String pickListApiFieldNames;
     private GPSTracker gps;
+    private Location location;
     private Activity context;
 
     private Button submit;
@@ -101,6 +113,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private Uri outputUri = null;
     private Uri finalUri = null;
     TaskContainerModel taskContainerModel = new TaskContainerModel();
+    private long UPDATE_INTERVAL = 600 * 1000;  /* 10 secs */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,7 +136,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         if (getIntent().getStringExtra(Constants.PROCESS_NAME) != null) {
             processName = getIntent().getStringExtra(Constants.PROCESS_NAME);
         }
-
+        startLocationUpdates();
         initViews();
     }
 
@@ -237,6 +250,49 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
         ImageView img_add = (ImageView) findViewById(R.id.img_add);
         img_add.setOnClickListener(this);
+    }
+
+    // Trigger new location updates at interval
+    private void startLocationUpdates() {
+        if (!Utills.isLocationPermissionGranted(this)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.LOCATION_PERMISSION_REQUEST);
+            }
+        } else {
+            getLocationProviderClient();
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getLocationProviderClient() {
+        // Create the location request to start receiving updates
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+
+        // Create LocationSettingsRequest object using location request
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        LocationSettingsRequest locationSettingsRequest = builder.build();
+
+        // Check whether location settings are satisfied
+        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
+        settingsClient.checkLocationSettings(locationSettingsRequest);
+
+        // new Google API SDK v11 uses getFusedLocationProviderClient(this)
+        getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest, new LocationCallback() {
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        // do work here
+                        onLocationChanged(locationResult.getLastLocation());
+                    }
+                },
+                Looper.myLooper());
+    }
+
+    private void onLocationChanged(Location location) { this.location = location;
     }
 
     private void setActionbar(String Title) {
@@ -599,6 +655,10 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
             JSONArray jsonArray = new JSONArray(json);
             JSONObject jsonObject = new JSONObject();
+            if(location!=null){
+                jsonObject.put("formLat", location.getLatitude());
+                jsonObject.put("formLong", location.getLongitude());
+            }
             jsonObject.put("listtaskanswerlist", jsonArray);
 
             ServiceRequest apiService = ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
