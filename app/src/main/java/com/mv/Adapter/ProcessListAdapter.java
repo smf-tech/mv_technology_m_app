@@ -3,6 +3,8 @@ package com.mv.Adapter;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -23,6 +26,9 @@ import com.mv.Utils.Constants;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +87,8 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                     openClass.putExtra(Constants.PROCESS_NAME, processName);
 
                     String structureList = resultList.get(getAdapterPosition()).getProAnsListString();
-                    openClass.putExtra(Constants.PICK_LIST_ID, structureList);
+//                    openClass.putExtra(Constants.PICK_LIST_ID, structureList);
+                    generateFileOnSD(structureList);
 
                     mContext.startActivity(openClass);
                     mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
@@ -89,6 +96,25 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                     Utills.showToast("No Task Available ", mContext);
                 }
             });
+        }
+    }
+
+    public void generateFileOnSD(String sBody) {
+        try {
+            String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV";
+
+            File root = new File(filePath);
+            if (!root.exists()) {
+                root.mkdirs();
+            }
+            File gpxfile = new File(root, "ProAnsListString.txt");
+            FileWriter writer = new FileWriter(gpxfile);
+            writer.append(sBody);
+            writer.flush();
+            writer.close();
+            Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

@@ -164,30 +164,38 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     public void onAddClick() {
         //get latest question
         preferenceHelper.insertString(Constants.UNIQUE, "");
-        if (Utills.isConnected(this)) {
-            getAllTask();
-        } else {
-            //fill new forms
-            preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
 
-            //get  process list only type is question (exclude answer it would always 1 record for on process  )
-            TaskContainerModel taskContainerModel = AppDatabase.getAppDatabase(
-                    ProcessListActivity.this).userDao().getQuestion(processId, Constants.TASK_QUESTION);
+        preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
+        Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
+        openClass.putExtra(Constants.PROCESS_ID, processId);
+        openClass.putExtra(Constants.PROCESS_NAME, processName);
+        openClass.putExtra("newForm", "newForm");
+        startActivity(openClass);
 
-            if (taskContainerModel != null) {
-                Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
-                openClass.putExtra(Constants.PROCESS_ID, taskList);
-                openClass.putExtra(Constants.PROCESS_NAME, processName);
-                openClass.putParcelableArrayListExtra(Constants.PROCESS_ID,
-                        Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
-                openClass.putExtra(Constants.PICK_LIST_ID, taskContainerModel.getProAnsListString());
-
-                startActivity(openClass);
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
-            } else {
-                Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
-            }
-        }
+//        if (Utills.isConnected(this)) {
+//            getAllTask();
+//        } else {
+//            //fill new forms
+//            preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
+//
+//            //get  process list only type is question (exclude answer it would always 1 record for on process  )
+//            TaskContainerModel taskContainerModel = AppDatabase.getAppDatabase(
+//                    ProcessListActivity.this).userDao().getQuestion(processId, Constants.TASK_QUESTION);
+//
+//            if (taskContainerModel != null) {
+//                Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
+//                openClass.putExtra(Constants.PROCESS_ID, taskList);
+//                openClass.putExtra(Constants.PROCESS_NAME, processName);
+//                openClass.putParcelableArrayListExtra(Constants.PROCESS_ID,
+//                        Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
+//                openClass.putExtra(Constants.PICK_LIST_ID, taskContainerModel.getProAnsListString());
+//
+//                startActivity(openClass);
+//                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+//            } else {
+//                Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
+//            }
+//        }
     }
 
     @Override

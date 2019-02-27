@@ -68,7 +68,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -93,13 +95,13 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private Location location;
     private Activity context;
 
-    private Button submit;
+    private Button submit,save;
     private ProcessDetailAdapter adapter;
     private RecyclerView rvProcessDetail;
 
     public String selectedStructure = "";
     private String timestamp;
-    private String processStatus, processName;
+    private String processStatus, processName, processId;
     private String comment, imageName;
     private String msg;
     private String id = "";
@@ -125,19 +127,84 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         id = String.valueOf(Calendar.getInstance().getTimeInMillis());
 
-        if (getIntent().getSerializableExtra(Constants.PROCESS_ID) != null) {
-            taskList = getIntent().getParcelableArrayListExtra(Constants.PROCESS_ID);
-        }
+        submit = (Button) findViewById(R.id.btn_submit);
+        submit.setOnClickListener(this);
 
-        if (getIntent().getStringExtra(Constants.PICK_LIST_ID) != null) {
-            pickListApiFieldNames = getIntent().getStringExtra(Constants.PICK_LIST_ID);
-        }
+        save = (Button) findViewById(R.id.btn_save);
+        save.setOnClickListener(this);
+
+        taskList = new ArrayList<>();
 
         if (getIntent().getStringExtra(Constants.PROCESS_NAME) != null) {
             processName = getIntent().getStringExtra(Constants.PROCESS_NAME);
         }
+        if (getIntent().getStringExtra(Constants.PROCESS_ID) != null) {
+            processId=getIntent().getStringExtra(Constants.PROCESS_ID);
+        }
+        if (getIntent().getSerializableExtra("newForm") != null) {
+            if (Utills.isConnected(this)) {
+//                Utills.showProgressDialog(ProcessDeatailActivity.this);
+                Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
+                getAllTask();
+            } else {
+                //fill new forms
+                preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
+                //get  process list only type is question (exclude answer it would always 1 record for on process  )
+                TaskContainerModel taskContainerModel = AppDatabase.getAppDatabase(
+                        ProcessDeatailActivity.this).userDao().getQuestion(processId, Constants.TASK_QUESTION);
+
+                if (taskContainerModel != null) {
+
+                    taskList = Utills.convertStringToArrayList(taskContainerModel.getTaskListString());
+                    pickListApiFieldNames =  taskContainerModel.getProAnsListString();
+                    setAdapter();
+                } else {
+                    Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
+                }
+            }
+        } else {
+            if (getIntent().getSerializableExtra(Constants.PROCESS_ID) != null) {
+                taskList = getIntent().getParcelableArrayListExtra(Constants.PROCESS_ID);
+                if (taskList != null && taskList.get(0).getId() != null && taskList.get(0).getIsSave().equals("false")) {
+                    submit.setVisibility(View.GONE);
+                    save.setVisibility(View.GONE);
+                } else {
+                    submit.setVisibility(View.VISIBLE);
+                    save.setVisibility(View.VISIBLE);
+                }
+            }
+            if (getIntent().getStringExtra(Constants.PICK_LIST_ID) != null) {
+//                pickListApiFieldNames = getIntent().getStringExtra(Constants.PICK_LIST_ID);
+            }
+            pickListApiFieldNames = getProAnsList();
+            setAdapter();
+        }
+
         startLocationUpdates();
         initViews();
+    }
+
+    String getProAnsList(){
+//        File sdcard = Environment.getExternalStorageDirectory();
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV";
+        File file = new File(filePath,"ProAnsListString.txt");
+        StringBuilder text = new StringBuilder();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                text.append(line);
+                text.append('\n');
+            }
+            br.close();
+        }
+        catch (IOException e) {
+            Log.e("eeption",e.getMessage());
+            //You'll need to add proper error handling here
+        }
+
+        return(text.toString());
     }
 
     @Override
@@ -206,24 +273,199 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
     }
 
+    private void getAllTask() {
+        ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetprocessTaskUrl + "?Id=" + processId
+                + "&language=" + preferenceHelper.getString(Constants.LANGUAGE)
+                + "&userId=" + User.getCurrentUser(this).getMvUser().getId();
+
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                try {
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data.length() > 0) {
+                            JSONObject jsonObject = new JSONObject(data);
+                            JSONArray resultArray = jsonObject.getJSONArray("tsk");
+
+                            //list of task
+                            taskContainerModel = new TaskContainerModel();
+                            User user = User.getCurrentUser(getApplicationContext());
+                            StringBuilder sb = new StringBuilder();
+                            String prefix = "";
+
+                            for (int i = 0; i < resultArray.length(); i++) {
+                                JSONObject resultJsonObj = resultArray.getJSONObject(i);
+
+                                //task is each task detail
+                                Task processList = new Task();
+                                processList.setMV_Task__c_Id(resultJsonObj.getString("id"));
+                                processList.setName(resultJsonObj.getString("name"));
+                                processList.setIs_Completed__c(resultJsonObj.getBoolean("isCompleted"));
+
+                                processList.setIsHeader(resultJsonObj.getString("isHeader"));
+                                processList.setIs_Response_Mnadetory__c(resultJsonObj.getBoolean("isResponseMnadetory"));
+
+                                if (!resultJsonObj.getString("lanTsaskText").equals("null")) {
+                                    processList.setTask_Text___Lan_c(resultJsonObj.getString("lanTsaskText"));
+                                } else {
+                                    processList.setTask_Text___Lan_c(resultJsonObj.getString("taskText"));
+                                }
+
+                                if (resultJsonObj.has("status")) {
+                                    processList.setStatus__c(resultJsonObj.getString("status"));
+                                }
+                                if (resultJsonObj.has("ValidationRule")) {
+                                    processList.setValidationRule(resultJsonObj.getString("ValidationRule"));
+                                }
+                                if (resultJsonObj.has("MinRange")) {
+                                    processList.setMinRange(resultJsonObj.getString("MinRange"));
+                                }
+                                if (resultJsonObj.has("MaxRange")) {
+                                    processList.setMaxRange(resultJsonObj.getString("MaxRange"));
+                                }
+                                if (resultJsonObj.has("LimitValue")) {
+                                    processList.setLimitValue(resultJsonObj.getString("LimitValue"));
+                                }
+
+                                if (resultJsonObj.has("isEditable")) {
+                                    processList.setIsEditable__c(resultJsonObj.getString("isEditable"));
+                                }
+
+                                processList.setPicklist_Value_Lan__c(resultJsonObj.getString("lanPicklistValue"));
+                                if (resultJsonObj.has("Process_Answer_Status__c")) {
+                                    processList.setProcess_Answer_Status__c(resultJsonObj.getString("Process_Answer_Status__c"));
+                                }
+
+                                if (resultJsonObj.has("picklistValue")) {
+                                    processList.setPicklist_Value__c(resultJsonObj.getString("picklistValue"));
+                                }
+
+                                if (!resultJsonObj.getString("locationLevel").equals("null")) {
+                                    processList.setLocationLevel(resultJsonObj.getString("locationLevel"));
+
+                                    switch (resultJsonObj.getString("locationLevel")) {
+                                        case "State":
+                                            processList.setTask_Response__c(user.getMvUser().getState());
+                                            break;
+
+                                        case "District":
+                                            processList.setTask_Response__c(user.getMvUser().getDistrict());
+                                            break;
+
+                                        case "Taluka":
+                                            processList.setTask_Response__c(user.getMvUser().getTaluka());
+                                            break;
+
+                                        case "Cluster":
+                                            processList.setTask_Response__c(user.getMvUser().getCluster());
+                                            break;
+
+                                        case "Village":
+                                            processList.setTask_Response__c(user.getMvUser().getVillage());
+                                            break;
+
+                                        case "School":
+                                            processList.setTask_Response__c(user.getMvUser().getSchool_Name());
+                                            break;
+                                    }
+
+                                    if (resultJsonObj.getString("isHeader").equals("true")) {
+                                        if (!processList.getTask_Response__c().equals("Select")) {
+                                            sb.append(prefix);
+                                            prefix = " , ";
+                                            sb.append(processList.getTask_Response__c());
+                                        }
+                                    }
+                                }
+
+                                if (resultJsonObj.has("referenceField")) {
+                                    processList.setReferenceField(resultJsonObj.getString("referenceField"));
+                                }
+                                if (resultJsonObj.has("filterFields")) {
+                                    processList.setFilterFields(resultJsonObj.getString("filterFields"));
+                                }
+                                if (resultJsonObj.has("aPIFieldName")) {
+                                    processList.setaPIFieldName(resultJsonObj.getString("aPIFieldName"));
+                                }
+
+                                processList.setIsExactLength(resultJsonObj.getBoolean("isExactLength"));
+                                processList.setMV_Process__c(resultJsonObj.getString("mVProcess"));
+                                processList.setTask_Text__c(resultJsonObj.getString("taskText"));
+                                processList.setTask_type__c(resultJsonObj.getString("tasktype"));
+                                processList.setValidation(resultJsonObj.getString("validaytionOnText"));
+                                processList.setIsSave(Constants.PROCESS_STATE_SAVE);
+                                taskList.add(processList);
+                            }
+
+                            // each task list  convert to String and stored in process task filled
+                            taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
+                            taskContainerModel.setHeaderPosition(sb.toString());
+                            taskContainerModel.setIsSave(Constants.PROCESS_STATE_SAVE);
+
+                            //task without answer
+                            taskContainerModel.setTaskType(Constants.TASK_QUESTION);
+                            taskContainerModel.setMV_Process__c(processId);
+
+                            //delete old question
+                            AppDatabase.getAppDatabase(getApplicationContext())
+                                    .userDao().deleteQuestion(processId, Constants.TASK_QUESTION);
+
+                            //add new question
+                            AppDatabase.getAppDatabase(getApplicationContext()).userDao().insertTask(taskContainerModel);
+
+                            JSONArray pickListArray = jsonObject.getJSONArray("proAnsList");
+
+                            pickListApiFieldNames = pickListArray.toString();
+                            Utills.hideProgressDialog();
+                            setAdapter();
+//                            if (taskList.size() > 0) {
+//                                preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
+//                                Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
+//                                openClass.putExtra(Constants.PICK_LIST_ID, pickListArray.toString());
+//                                openClass.putExtra(Constants.PROCESS_NAME, processName);
+//                                openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskList);
+//                                startActivity(openClass);
+//                                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+//                            } else {
+//                                Utills.showToast(getString(R.string.No_Task), mContext);
+//                            }
+                        }
+                    }
+                } catch (JSONException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+                Utills.showToast(getString(R.string.No_Task), ProcessDeatailActivity.this);
+            }
+        });
+    }
+
+    void setAdapter(){
+        adapter = new ProcessDetailAdapter(this, taskList, pickListApiFieldNames);
+
+        rvProcessDetail = (RecyclerView) findViewById(R.id.rv_process_detail);
+        rvProcessDetail.setNestedScrollingEnabled(false);
+        rvProcessDetail.setHasFixedSize(true);
+        rvProcessDetail.setHasFixedSize(true);
+        rvProcessDetail.setLayoutManager(new LinearLayoutManager(this));
+        rvProcessDetail.setAdapter(adapter);
+    }
+
     private void initViews() {
         setActionbar(processName);
 
         gps = new GPSTracker(ProcessDeatailActivity.this);
-        rvProcessDetail = (RecyclerView) findViewById(R.id.rv_process_detail);
-        rvProcessDetail.setNestedScrollingEnabled(false);
-        rvProcessDetail.setHasFixedSize(true);
-        adapter = new ProcessDetailAdapter(this, taskList, pickListApiFieldNames);
-        rvProcessDetail.setHasFixedSize(true);
-        rvProcessDetail.setLayoutManager(new LinearLayoutManager(this));
-        rvProcessDetail.setAdapter(adapter);
+
         timestamp = String.valueOf(Calendar.getInstance().getTimeInMillis());
-
-        submit = (Button) findViewById(R.id.btn_submit);
-        submit.setOnClickListener(this);
-
-        Button save = (Button) findViewById(R.id.btn_save);
-        save.setOnClickListener(this);
 
         Button approve = (Button) findViewById(R.id.btn_approve);
         approve.setOnClickListener(this);
@@ -239,13 +481,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } else if (preferenceHelper.getString(Constants.PROCESS_TYPE).equals(Constants.MANGEMENT_PROCESS)) {
             approve.setVisibility(View.GONE);
             reject.setVisibility(View.GONE);
-            if (taskList.get(0).getId() != null && taskList.get(0).getIsSave().equals("false")) {
-                submit.setVisibility(View.GONE);
-                save.setVisibility(View.GONE);
-            } else {
-                submit.setVisibility(View.VISIBLE);
-                save.setVisibility(View.VISIBLE);
-            }
+
         }
 
         ImageView img_add = (ImageView) findViewById(R.id.img_add);
