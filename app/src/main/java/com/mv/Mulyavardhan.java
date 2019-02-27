@@ -29,7 +29,8 @@ public class Mulyavardhan extends Application {
 
         Map<String, Object> remoteConfigDefaults = new HashMap<>();
         remoteConfigDefaults.put(ForceUpdateChecker.KEY_UPDATE_REQUIRED, false);
-        remoteConfigDefaults.put(ForceUpdateChecker.KEY_CURRENT_VERSION, "1.6");
+        remoteConfigDefaults.put(ForceUpdateChecker.KEY_CURRENT_VERSION, "1.3");
+        remoteConfigDefaults.put(ForceUpdateChecker.KEY_MINIMUM_REQUIRED_VERSION, "1.3");
         remoteConfigDefaults.put(ForceUpdateChecker.KEY_UPDATE_URL, Constants.playStoreLink);
 
         firebaseRemoteConfig.setDefaults(remoteConfigDefaults);
