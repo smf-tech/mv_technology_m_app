@@ -112,7 +112,7 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
             writer.append(sBody);
             writer.flush();
             writer.close();
-            Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
         }
