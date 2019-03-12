@@ -834,7 +834,8 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     File imageFile = new File(imageFilePath);
 
                     if (imageFile.exists()) {
-                        holder.imgAdd.setImageBitmap(BitmapFactory.decodeFile(imageFile.getAbsolutePath()));
+                        Glide.with(mContext).load(imageFile).into(holder.imgAdd);
+//                        holder.imgAdd.setImageBitmap(BitmapFactory.decodeFile(imageFile.getAbsolutePath()));
                         Uri finalUri = Uri.fromFile(imageFile);
                         ImageData id = new ImageData();
                         id.setPosition(position);

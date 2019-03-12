@@ -493,10 +493,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         ImageView iv_logo = (ImageView) findViewById(R.id.iv_logo);
         iv_logo.startAnimation(textAnimation);
 
-        ImageView iv_home_animate = (ImageView) findViewById(R.id.iv_home_animate);
-        iv_home_animate.setBackgroundResource(R.drawable.home_progress);
-        AnimationDrawable rocketAnimation = (AnimationDrawable) iv_home_animate.getBackground();
-        rocketAnimation.start();
 
         GridLayoutManager mLayoutManager = new GridLayoutManager(getApplicationContext(), 3);
         mLayoutManager.setAutoMeasureEnabled(true);
