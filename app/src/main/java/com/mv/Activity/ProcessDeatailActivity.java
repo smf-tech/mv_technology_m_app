@@ -9,6 +9,8 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.location.Location;
 import android.net.Uri;
@@ -70,6 +72,9 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -116,6 +121,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private Uri finalUri = null;
     TaskContainerModel taskContainerModel = new TaskContainerModel();
     private long UPDATE_INTERVAL = 600 * 1000;  /* 10 secs */
+    File imageFile1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +149,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
         if (getIntent().getSerializableExtra("newForm") != null) {
             if (Utills.isConnected(this)) {
-//                Utills.showProgressDialog(ProcessDeatailActivity.this);
                 Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
                 getAllTask();
             } else {
@@ -174,7 +179,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 }
             }
             if (getIntent().getStringExtra(Constants.PICK_LIST_ID) != null) {
-//                pickListApiFieldNames = getIntent().getStringExtra(Constants.PICK_LIST_ID);
             }
             pickListApiFieldNames = getProAnsList();
             setAdapter();
@@ -185,7 +189,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     }
 
     String getProAnsList(){
-//        File sdcard = Environment.getExternalStorageDirectory();
         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV";
         File file = new File(filePath,"ProAnsListString.txt");
         StringBuilder text = new StringBuilder();
@@ -201,7 +204,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
         catch (IOException e) {
             Log.e("eeption",e.getMessage());
-            //You'll need to add proper error handling here
         }
 
         return(text.toString());
@@ -1041,8 +1043,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 deleteSalesForceData();
-            //    Utills.hideProgressDialog();
-            //    Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
             }
         });
     }
@@ -1089,8 +1089,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
                 String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imageName + ".jpg";
-                File imageFile = new File(imageFilePath);
-                finalUri = Uri.fromFile(imageFile);
+                imageFile1 = new File(imageFilePath);
+                finalUri = Uri.fromFile(imageFile1);
                 Crop.of(outputUri, finalUri).start(this);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -1100,9 +1100,9 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 try {
                     outputUri = data.getData();
                     String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imageName + ".jpg";
-                    File imageFile = new File(imageFilePath);
-                    finalUri = Uri.fromFile(imageFile);
-                    Crop.of(outputUri, finalUri).asSquare().start(this);
+                    imageFile1 = new File(imageFilePath);
+                    finalUri = Uri.fromFile(imageFile1);
+                    Crop.of(outputUri, finalUri).start(this);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -1111,7 +1111,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             if (finalUri != null) {
                 outputUri = null;
             }
-
+            decodeFile(imageFile1);
             ImageData id = new ImageData();
             id.setPosition(imagePosition);
             id.setImageUri(finalUri);
@@ -1217,5 +1217,57 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             }
         }
         return super.dispatchTouchEvent(event);
+    }
+
+    private Bitmap decodeFile(File f) {
+        Bitmap b = null;
+
+        //Decode image size
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inJustDecodeBounds = true;
+
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(f);
+            BitmapFactory.decodeStream(fis, null, o);
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int IMAGE_MAX_SIZE = 512;
+        int scale = 1;
+        if (o.outHeight > IMAGE_MAX_SIZE || o.outWidth > IMAGE_MAX_SIZE) {
+            scale = (int) Math.pow(2, (int) Math.ceil(Math.log(IMAGE_MAX_SIZE /
+                    (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
+        }
+
+        //Decode with inSampleSize
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+        o2.inSampleSize = scale;
+        try {
+            fis = new FileInputStream(f);
+            b = BitmapFactory.decodeStream(fis, null, o2);
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imageName + ".jpg";
+        imageFile1 = new File(imageFilePath);
+        try {
+            FileOutputStream out = new FileOutputStream(imageFile1);
+            b.compress(Bitmap.CompressFormat.PNG, 100, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return b;
     }
 }

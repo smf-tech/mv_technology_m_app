@@ -2,8 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/SS.iml" filepath="$PROJECT_DIR$/SS.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/smf_techplatform_android.iml" filepath="$PROJECT_DIR$/smf_techplatform_android.iml" />
+      <module fileurl="file://E:\SagarWorkspace\BJS\SS\smf_techplatform_android.iml" filepath="E:\SagarWorkspace\BJS\SS\smf_techplatform_android.iml" />
     </modules>
   </component>
 </project>
