@@ -246,13 +246,13 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if (position == 0) {
-                        taskList.get(getAdapterPosition()).setTask_Response__c("Select");
-//                        if(taskList.get(getAdapterPosition()).getTask_Response__c()!=null ||
-//                                taskList.get(getAdapterPosition()).getTask_Response__c()!="Select"){
-//                            // don't do anything
-//                        }else{
-//                            taskList.get(getAdapterPosition()).setTask_Response__c("Select");
-//                        }
+//                        taskList.get(getAdapterPosition()).setTask_Response__c("Select");
+                        if(taskList.get(getAdapterPosition()).getTask_Response__c()!=null ||
+                                taskList.get(getAdapterPosition()).getTask_Response__c()!="Select"){
+                            // don't do anything
+                        }else{
+                            taskList.get(getAdapterPosition()).setTask_Response__c("Select");
+                        }
                     } else {
                         if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.TASK_PICK_LIST)) {
 
