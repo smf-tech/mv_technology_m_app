@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Environment;
-import android.support.v4.content.FileProvider;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -87,7 +85,6 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                     openClass.putExtra(Constants.PROCESS_NAME, processName);
 
                     String structureList = resultList.get(getAdapterPosition()).getProAnsListString();
-//                    openClass.putExtra(Constants.PICK_LIST_ID, structureList);
                     generateFileOnSD(structureList);
 
                     mContext.startActivity(openClass);
@@ -112,7 +109,6 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
             writer.append(sBody);
             writer.flush();
             writer.close();
-//            Toast.makeText(mContext, "Saved", Toast.LENGTH_SHORT).show();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -225,7 +221,6 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                 }
             }
         });
-
         // Showing Alert Message
         alertDialog.show();
     }
