@@ -300,7 +300,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if (Utills.isConnected(HomeActivity.this)) {
-            Utills.showProgressDialog(HomeActivity.this, "Loading Holidays", getString(R.string.progress_please_wait));
+            Utills.showProgressDialog(HomeActivity.this, "Loading..", getString(R.string.progress_please_wait));
             ServiceRequest apiService =
                     ApiClient.getClientWitHeader(HomeActivity.this).create(ServiceRequest.class);
 
