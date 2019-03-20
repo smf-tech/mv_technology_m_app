@@ -13,7 +13,20 @@
           "package_name": "com.bjs.ss"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "491062401562-e2tumeqf35r9lp5idmbqh26uiq5hpflv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bjs.ss",
+            "certificate_hash": "e73bef6c79dcfff1179daddd45acf2ae0b0351b5"
+          }
+        },
+        {
+          "client_id": "491062401562-2uo0oggt3nclqe7qtcadjajdkmk67h3m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDja2KVUl5PH-a4usvhu743lsGEdXjbQks"
@@ -24,8 +37,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "491062401562-2uo0oggt3nclqe7qtcadjajdkmk67h3m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
@@ -34,12 +52,25 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:491062401562:android:e3b4073e209453f8",
+        "mobilesdk_app_id": "1:491062401562:android:f9ce812f730a55d5",
         "android_client_info": {
           "package_name": "com.bjs.ss.debug"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "491062401562-a5nr5ou07argvc052mi0kfkpmpcl4hkf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bjs.ss.debug",
+            "certificate_hash": "e73bef6c79dcfff1179daddd45acf2ae0b0351b5"
+          }
+        },
+        {
+          "client_id": "491062401562-2uo0oggt3nclqe7qtcadjajdkmk67h3m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDja2KVUl5PH-a4usvhu743lsGEdXjbQks"
@@ -50,8 +81,13 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "491062401562-2uo0oggt3nclqe7qtcadjajdkmk67h3m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2
@@ -65,7 +101,12 @@
           "package_name": "com.bjs.sujalamSuphalam"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "491062401562-2uo0oggt3nclqe7qtcadjajdkmk67h3m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDja2KVUl5PH-a4usvhu743lsGEdXjbQks"

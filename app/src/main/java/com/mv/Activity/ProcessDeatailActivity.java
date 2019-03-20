@@ -176,16 +176,16 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } else {
             if (getIntent().getSerializableExtra(Constants.PROCESS_ID) != null) {
                 taskList = getIntent().getParcelableArrayListExtra(Constants.PROCESS_ID);
-                if (taskList != null && taskList.get(0).getId() != null && taskList.get(0).getIsSave().equals("false")) {
-                    submit.setVisibility(View.GONE);
-                    save.setVisibility(View.GONE);
-                } else {
-                    submit.setVisibility(View.VISIBLE);
-                    save.setVisibility(View.VISIBLE);
-                }
+//                if (taskList != null && taskList.get(0).getId() != null && taskList.get(0).getIsSave().equals("false")) {
+//                    submit.setVisibility(View.GONE);
+//                    save.setVisibility(View.GONE);
+//                } else {
+//                    submit.setVisibility(View.VISIBLE);
+//                    save.setVisibility(View.VISIBLE);
+//                }
             }
-            if (getIntent().getStringExtra(Constants.PICK_LIST_ID) != null) {
-            }
+//            if (getIntent().getStringExtra(Constants.PICK_LIST_ID) != null) {
+//            }
             pickListApiFieldNames = getProAnsList();
             setAdapter();
         }
@@ -489,7 +489,13 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } else if (preferenceHelper.getString(Constants.PROCESS_TYPE).equals(Constants.MANGEMENT_PROCESS)) {
             approve.setVisibility(View.GONE);
             reject.setVisibility(View.GONE);
-
+            if (taskList != null && taskList.get(0).getId() != null && !preferenceHelper.getBoolean(Constants.IS_EDITABLE)) {
+                submit.setVisibility(View.GONE);
+                save.setVisibility(View.GONE);
+            } else {
+                submit.setVisibility(View.VISIBLE);
+                save.setVisibility(View.VISIBLE);
+            }
         }
 
         ImageView img_add = (ImageView) findViewById(R.id.img_add);
@@ -1348,6 +1354,11 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
         } catch (OutOfMemoryError exception) {
             exception.printStackTrace();
+            Utills.showToast("Something went wrong,Please try again.",this);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            Utills.showToast("Something went wrong,Please try again.",this);
         }
 
         float ratioX = actualWidth / (float) options.outWidth;
