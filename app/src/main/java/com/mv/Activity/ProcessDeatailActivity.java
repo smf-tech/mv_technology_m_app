@@ -183,6 +183,15 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 //                    submit.setVisibility(View.VISIBLE);
 //                    save.setVisibility(View.VISIBLE);
 //                }
+                if (taskList.size() > 0) {
+                    if (taskList != null && taskList.get(0).getId() != null && !preferenceHelper.getBoolean(Constants.IS_EDITABLE) && taskList.get(0).getIsSave().equals("false")) {
+                        submit.setVisibility(View.GONE);
+                        save.setVisibility(View.GONE);
+                    } else {
+                        submit.setVisibility(View.VISIBLE);
+                        save.setVisibility(View.VISIBLE);
+                    }
+                }
             }
 //            if (getIntent().getStringExtra(Constants.PICK_LIST_ID) != null) {
 //            }
@@ -431,7 +440,14 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                             pickListApiFieldNames = pickListArray.toString();
                             Utills.hideProgressDialog();
                             setAdapter();
-//                            if (taskList.size() > 0) {
+                            if (taskList.size() > 0) {
+                                if (taskList != null && taskList.get(0).getId() != null && !preferenceHelper.getBoolean(Constants.IS_EDITABLE) && taskList.get(0).getIsSave().equals("false")) {
+                                    submit.setVisibility(View.GONE);
+                                    save.setVisibility(View.GONE);
+                                } else {
+                                    submit.setVisibility(View.VISIBLE);
+                                    save.setVisibility(View.VISIBLE);
+                                }
 //                                preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
 //                                Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
 //                                openClass.putExtra(Constants.PICK_LIST_ID, pickListArray.toString());
@@ -439,9 +455,9 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 //                                openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskList);
 //                                startActivity(openClass);
 //                                overridePendingTransition(R.anim.right_in, R.anim.left_out);
-//                            } else {
-//                                Utills.showToast(getString(R.string.No_Task), mContext);
-//                            }
+                            } else {
+                                Utills.showToast(getString(R.string.No_Task), ProcessDeatailActivity.this);
+                            }
                         }
                     }
                 } catch (JSONException | IOException e) {
@@ -489,13 +505,13 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } else if (preferenceHelper.getString(Constants.PROCESS_TYPE).equals(Constants.MANGEMENT_PROCESS)) {
             approve.setVisibility(View.GONE);
             reject.setVisibility(View.GONE);
-            if (taskList != null && taskList.get(0).getId() != null && !preferenceHelper.getBoolean(Constants.IS_EDITABLE)) {
-                submit.setVisibility(View.GONE);
-                save.setVisibility(View.GONE);
-            } else {
-                submit.setVisibility(View.VISIBLE);
-                save.setVisibility(View.VISIBLE);
-            }
+//            if (taskList != null && taskList.get(0).getId() != null && !preferenceHelper.getBoolean(Constants.IS_EDITABLE)) {
+//                submit.setVisibility(View.GONE);
+//                save.setVisibility(View.GONE);
+//            } else {
+//                submit.setVisibility(View.VISIBLE);
+//                save.setVisibility(View.VISIBLE);
+//            }
         }
 
         ImageView img_add = (ImageView) findViewById(R.id.img_add);

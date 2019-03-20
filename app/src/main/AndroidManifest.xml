@@ -397,6 +397,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <meta-data
+            android:name="firebase_performance_logcat_enabled"
+            android:value="true" />
+
         <activity
             android:name=".Activity.MapsActivity"
             android:label="@string/title_activity_maps"/>
