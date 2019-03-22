@@ -188,6 +188,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         long deviceTime = System.currentTimeMillis();
         Log.i("deviceTime", deviceTime + "");
+        User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved();
         subscribedToFirebaseTopics();
     }
 
@@ -198,7 +199,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         userRoll =userRoll.replaceAll(" ","_");
         userDistrict =  userDistrict.replaceAll(" ","_");
         if(("SS_"+userRoll).equals(preferenceHelper.getString(PreferenceHelper.FirebaseTopicRoleWise))
-                || ("").equals(preferenceHelper.getString(PreferenceHelper.FirebaseTopicRoleWise))){
+                || preferenceHelper.getString(PreferenceHelper.FirebaseTopicRoleWise).equals("")){
             preferenceHelper.insertString(PreferenceHelper.FirebaseTopicRoleWise, "SS_"+userRoll);
             FirebaseMessaging.getInstance().subscribeToTopic("SS_"+userRoll);
         } else {
@@ -208,7 +209,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if(("SS_"+userDistrict).equals(preferenceHelper.getString(PreferenceHelper.FirebaseTopicDistrictWise))
-                || ("").equals(preferenceHelper.getString(PreferenceHelper.FirebaseTopicDistrictWise))){
+                || preferenceHelper.getString(PreferenceHelper.FirebaseTopicDistrictWise).equals("")){
             preferenceHelper.insertString(PreferenceHelper.FirebaseTopicDistrictWise, "SS_"+userDistrict);
             FirebaseMessaging.getInstance().subscribeToTopic("SS_"+userDistrict);
         } else {
@@ -218,7 +219,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         if(("SS_"+userDistrict+"_"+userRoll).equals(preferenceHelper.getString(PreferenceHelper.FirebaseTopicDistrictRoleWise))
-                || ("").equals(preferenceHelper.getString(PreferenceHelper.FirebaseTopicDistrictRoleWise))){
+                || preferenceHelper.getString(PreferenceHelper.FirebaseTopicDistrictRoleWise).equals("")){
             preferenceHelper.insertString(PreferenceHelper.FirebaseTopicDistrictRoleWise, "SS_"+userDistrict+"_"+userRoll);
             FirebaseMessaging.getInstance().subscribeToTopic("SS_"+userDistrict+"_"+userRoll);
         } else {
