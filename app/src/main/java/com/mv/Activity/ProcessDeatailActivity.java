@@ -1431,16 +1431,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
     }
 
-    public String getFilename() {
-        File file = new File(Environment.getExternalStorageDirectory().getPath(), "MyFolder/Images");
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        String uriSting = (file.getAbsolutePath() + "/" + System.currentTimeMillis() + ".jpg");
-        return uriSting;
-
-    }
-
     private String getRealPathFromURI(String contentURI) {
         Uri contentUri = Uri.parse(contentURI);
         Cursor cursor = getContentResolver().query(contentUri, null, null, null, null);
