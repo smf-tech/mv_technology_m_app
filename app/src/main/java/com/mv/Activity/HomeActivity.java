@@ -50,6 +50,7 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -187,6 +188,44 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         long deviceTime = System.currentTimeMillis();
         Log.i("deviceTime", deviceTime + "");
+        subscribedToFirebaseTopics();
+    }
+
+    private void subscribedToFirebaseTopics() {
+        FirebaseMessaging.getInstance().subscribeToTopic("SS_All");
+        String userRoll=User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
+        String userDistrict=User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict();
+        userRoll =userRoll.replaceAll(" ","_");
+        userDistrict =  userDistrict.replaceAll(" ","_");
+        if(("SS_"+userRoll).equals(preferenceHelper.getString(PreferenceHelper.FirebaseTopicRoleWise))
+                || ("").equals(preferenceHelper.getString(PreferenceHelper.FirebaseTopicRoleWise))){
+            preferenceHelper.insertString(PreferenceHelper.FirebaseTopicRoleWise, "SS_"+userRoll);
+            FirebaseMessaging.getInstance().subscribeToTopic("SS_"+userRoll);
+        } else {
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(preferenceHelper.getString(PreferenceHelper.FirebaseTopicRoleWise));
+            FirebaseMessaging.getInstance().subscribeToTopic("SS_"+userRoll);
+            preferenceHelper.insertString(PreferenceHelper.FirebaseTopicRoleWise, "SS_"+userRoll);
+        }
+
+        if(("SS_"+userDistrict).equals(preferenceHelper.getString(PreferenceHelper.FirebaseTopicDistrictWise))
+                || ("").equals(preferenceHelper.getString(PreferenceHelper.FirebaseTopicDistrictWise))){
+            preferenceHelper.insertString(PreferenceHelper.FirebaseTopicDistrictWise, "SS_"+userDistrict);
+            FirebaseMessaging.getInstance().subscribeToTopic("SS_"+userDistrict);
+        } else {
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(preferenceHelper.getString(PreferenceHelper.FirebaseTopicDistrictWise));
+            FirebaseMessaging.getInstance().subscribeToTopic("SS_"+userDistrict);
+            preferenceHelper.insertString(PreferenceHelper.FirebaseTopicDistrictWise, "SS_"+userDistrict);
+        }
+
+        if(("SS_"+userDistrict+"_"+userRoll).equals(preferenceHelper.getString(PreferenceHelper.FirebaseTopicDistrictRoleWise))
+                || ("").equals(preferenceHelper.getString(PreferenceHelper.FirebaseTopicDistrictRoleWise))){
+            preferenceHelper.insertString(PreferenceHelper.FirebaseTopicDistrictRoleWise, "SS_"+userDistrict+"_"+userRoll);
+            FirebaseMessaging.getInstance().subscribeToTopic("SS_"+userDistrict+"_"+userRoll);
+        } else {
+            FirebaseMessaging.getInstance().unsubscribeFromTopic(preferenceHelper.getString(PreferenceHelper.FirebaseTopicDistrictRoleWise));
+            FirebaseMessaging.getInstance().subscribeToTopic("SS_"+userDistrict+"_"+userRoll);
+            preferenceHelper.insertString(PreferenceHelper.FirebaseTopicDistrictRoleWise, "SS_"+userDistrict+"_"+userRoll);
+        }
     }
 
     @Override
