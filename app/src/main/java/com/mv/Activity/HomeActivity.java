@@ -185,11 +185,14 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 getUserData();
             }
         }
-
+        if (User.getCurrentUser(getApplicationContext()).getMvUser() != null &&
+                User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved() != null &&
+                User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved().equalsIgnoreCase("true")) {
+            subscribedToFirebaseTopics();
+        }
         long deviceTime = System.currentTimeMillis();
         Log.i("deviceTime", deviceTime + "");
-        User.getCurrentUser(getApplicationContext()).getMvUser().getIsApproved();
-        subscribedToFirebaseTopics();
+
     }
 
     private void subscribedToFirebaseTopics() {
