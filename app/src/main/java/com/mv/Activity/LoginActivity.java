@@ -89,7 +89,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (!Utills.isPhonePermissionGranted(this)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 requestPermissions(new String[]{
-                        Manifest.permission.READ_PHONE_STATE, Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         Constants.PHONE_PERMISSION_REQUEST);
             }
         }
