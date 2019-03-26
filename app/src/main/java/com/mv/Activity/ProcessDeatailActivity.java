@@ -267,6 +267,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         Long currentTime = System.currentTimeMillis();
         taskContainerModel.setTaskTimeStamp(currentTime.toString());
         taskContainerModel.setProAnsListString(pickListApiFieldNames);
+        taskContainerModel.setStatus("Pending");
 
         if (preferenceHelper.getBoolean(Constants.NEW_PROCESS)) {
             //if process is new  INSERT it with timestamp as id
@@ -772,6 +773,11 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
             if (preferenceHelper.getBoolean(Constants.NEW_PROCESS)) {
                 taskList.get(i).setId(null);
+            }else{
+                if(taskList.get(i).getId()==null || taskList.get(i).getId().equalsIgnoreCase("null")){
+                    taskList.remove(i);
+                    break;
+                }
             }
 
             if (taskList.get(i).getIs_Response_Mnadetory__c()) {

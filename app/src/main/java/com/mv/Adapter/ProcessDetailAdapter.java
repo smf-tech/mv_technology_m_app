@@ -528,6 +528,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 } else {
                     holder.editHeader.setText(task.getTask_Text___Lan_c());
                 }
+                if (task.getIsEditable__c().equals("false")) {
+                    holder.questionResponse.setEnabled(false);
+                }
 
                 holder.questionResponse.setLines(3);
                 holder.questionResponse.setGravity(Gravity.START);
