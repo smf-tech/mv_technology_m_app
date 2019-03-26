@@ -216,6 +216,7 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                         // Removed entry from local db
                         resultList.remove(position);
                         taskArrayList.remove(position);
+                        _context.refreshListview();
                         notifyDataSetChanged();
                     }
                 }

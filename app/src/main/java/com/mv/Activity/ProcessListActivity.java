@@ -47,7 +47,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     private ArrayList<String> idList;
     private ArrayList<Task> taskList = new ArrayList<>();
     private List<TaskContainerModel> resultList = new ArrayList<>();
-    private List<TaskContainerModel> tempList = new ArrayList<>();
+    public List<TaskContainerModel> tempList = new ArrayList<>();
 
     private PreferenceHelper preferenceHelper;
     private ProcessListAdapter mAdapter;
@@ -124,6 +124,13 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     //    binding.btnApprove.setBackgroundResource(R.drawable.light_grey_btn_background);
         binding.btnReject.setBackgroundResource(R.drawable.light_grey_btn_background);
 
+        resultList.clear();
+        resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(processId, Constants.TASK_ANSWER);
+        getAllProcessData();
+    }
+
+    public void refreshListview(){
+        tempList.clear();
         resultList.clear();
         resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(processId, Constants.TASK_ANSWER);
         getAllProcessData();
@@ -623,6 +630,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
                     // Removed entry from db
                     resultList.remove(position);
+                    tempList.remove(position);
                     mAdapter.notifyDataSetChanged();
                 }
 
