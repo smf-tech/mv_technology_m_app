@@ -147,7 +147,12 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-
+        if(taskArrayList.isEmpty()) {
+            for (int i = 0; i < resultList.size(); i++) {
+                ArrayList<Task> tasks = gson.fromJson(resultList.get(i).getTaskListString(), listType);
+                taskArrayList.add(tasks);
+            }
+        }
         if (resultList.get(position).getHeaderPosition().equals("")) {
             if (taskArrayList.get(position).get(0).getTimestamp__c() != null && !taskArrayList.get(position).get(0).getTimestamp__c().equals("null")) {
                 holder.txtCommunityName.setText(Utills.getDate(
