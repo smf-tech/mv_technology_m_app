@@ -129,11 +129,12 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         getAllProcessData();
     }
 
-    public void refreshListview(){
+    public void refreshListview(String status){
         tempList.clear();
         resultList.clear();
         resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(processId, Constants.TASK_ANSWER);
-        getAllProcessData();
+        setRecyclerView(status);
+    //    getAllProcessData();
     }
 
     public void getAllProcessData() {
@@ -437,7 +438,6 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         mAdapter = new ProcessListAdapter(tempList, ProcessListActivity.this, processName);
         binding.rvProcess.setAdapter(mAdapter);
         mAdapter.notifyDataSetChanged();
-
     }
 
     private void getAllTask() {
@@ -614,7 +614,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     }
 
     //Delete post from salesforece and from local database
-    public void deleteForm(TaskContainerModel tcm, int position) {
+    public void deleteForm(TaskContainerModel tcm, int position, String status) {
         if (Utills.isConnected(this)) {
             Utills.showProgressDialog(this);
 
@@ -629,9 +629,10 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                     AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(tcm.getUnique_Id(), tcm.getMV_Process__c());
 
                     // Removed entry from db
-                    resultList.remove(position);
-                    tempList.remove(position);
-                    mAdapter.notifyDataSetChanged();
+//                    resultList.remove(position);
+//                    tempList.remove(position);
+//                    mAdapter.notifyDataSetChanged();
+                    refreshListview(status);
                 }
 
                 @Override
