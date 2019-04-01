@@ -16,6 +16,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.media.ExifInterface;
 import android.net.Uri;
@@ -31,6 +32,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -44,6 +46,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -69,6 +72,7 @@ import com.mv.Utils.GPSTracker;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
+import com.mv.Widgets.TouchImageView;
 import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONArray;
@@ -1154,7 +1158,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 outputUri = null;
             }
         //    decodeFile(imageFile1);
-            compressImage(imageFilePath);
+        //    compressImage(imageFilePath);
             ImageData id = new ImageData();
             id.setPosition(imagePosition);
             id.setImageUri(finalUri);
@@ -1219,25 +1223,46 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     }
 
     public void showDialogFullImage(String imageName){
-        final Dialog dialog = new Dialog(ProcessDeatailActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.dialog_full_image);
 
-        ImageView iv_image = (ImageView) dialog.findViewById(R.id.iv_image);
-        Glide.with(ProcessDeatailActivity.this)
+//        final Dialog dialog = new Dialog(ProcessDeatailActivity.this);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        dialog.setCancelable(false);
+//        dialog.setContentView(R.layout.dialog_full_image);
+//
+//        ImageView iv_image = (ImageView) dialog.findViewById(R.id.iv_image);
+//        Glide.with(ProcessDeatailActivity.this)
+//                .load(Constants.IMAGEURL + imageName + ".png")
+//                .placeholder(ProcessDeatailActivity.this.getResources().getDrawable(R.drawable.ic_add_photo))
+//                .into(iv_image);
+//        ImageView iv_close = (ImageView) dialog.findViewById(R.id.iv_close);
+//        iv_close.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        dialog.show();
+
+        LayoutInflater inflater = LayoutInflater.from(context);
+        final View view = inflater.inflate(R.layout.image_zoom_dialog, null);
+        final ImageView close_dialog = view.findViewById(R.id.close_dialog);
+        TouchImageView img_post = view.findViewById(R.id.img_post);
+        Glide.with(context)
                 .load(Constants.IMAGEURL + imageName + ".png")
-                .placeholder(ProcessDeatailActivity.this.getResources().getDrawable(R.drawable.ic_add_photo))
-                .into(iv_image);
-        ImageView iv_close = (ImageView) dialog.findViewById(R.id.iv_close);
-        iv_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+                .placeholder(context.getResources().getDrawable(R.drawable.mulya_bg))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(img_post);
 
-        dialog.show();
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
+        alertDialog.setView(view);
+        AlertDialog alertD = alertDialog.create();
+
+        if (alertD.getWindow() != null) {
+            alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
+        close_dialog.setOnClickListener(v -> alertD.dismiss());
+        alertD.show();
 
     }
 
@@ -1427,7 +1452,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             out = new FileOutputStream(imageFilePath);
 
 //          write the compressed bitmap at the destination specified by filename.
-            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 30, out);
+            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
