@@ -163,7 +163,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 getAllTask();
             } else {
                 //fill new forms
-                preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
+             //   preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
                 //get  process list only type is question (exclude answer it would always 1 record for on process  )
                 TaskContainerModel taskContainerModel = AppDatabase.getAppDatabase(
                         ProcessDeatailActivity.this).userDao().getQuestion(processId, Constants.TASK_QUESTION);
@@ -777,8 +777,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
             if (preferenceHelper.getBoolean(Constants.NEW_PROCESS)) {
                 taskList.get(i).setId(null);
-            }else{
-                if(taskList.get(i).getId()==null || taskList.get(i).getId().equalsIgnoreCase("null")){
+            }else {
+                if (taskList.get(i).getId()!= null && taskList.get(i).getId().equalsIgnoreCase("Rejected_Comment")) {
                     taskList.remove(i);
                     break;
                 }
@@ -1249,7 +1249,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         final ImageView close_dialog = view.findViewById(R.id.close_dialog);
         TouchImageView img_post = view.findViewById(R.id.img_post);
         Glide.with(context)
-                .load(Constants.IMAGEURL + imageName + ".png")
+                .load(preferenceHelper.getString(preferenceHelper.FirebaseImageUrl) + imageName + ".png")
                 .placeholder(context.getResources().getDrawable(R.drawable.mulya_bg))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(img_post);
