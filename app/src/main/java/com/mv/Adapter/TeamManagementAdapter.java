@@ -62,7 +62,7 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                         }
 
                         case 1: {
-                            //redirect to user Approval Process List
+                            //redirect to process Approval Process List
                             Intent openClass = new Intent(mContext, ProcessApprovalActivity.class);
                             openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
                             mContext.startActivity(openClass);
@@ -71,7 +71,7 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                         }
 
                         case 2: {
-                            //redirect to user Approval Process List
+                            //redirect to Voucher List
                             Intent intent = new Intent(mContext, VoucherListActivity.class);
                             Constants.AccountTeamCode = "TeamManagement";//to identify the section
                             mContext.startActivity(intent);
@@ -79,7 +79,7 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                         }
 
                         case 3: {
-                            //redirect to user Approval Process List
+                            //redirect to Leave Approval List
                             Intent openClass = new Intent(mContext, LeaveApprovalActivity.class);
                             mContext.startActivity(openClass);
                             preferenceHelper.insertString(Constants.Leave, Constants.Leave_Approve);
@@ -98,7 +98,8 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                         }
 
                         //adding maps
-                        case 5: {// shows the tc on map
+                        case 5: {
+                            // shows user location on map
                             Intent intent = new Intent(mContext, MapsActivity.class);
                             mContext.startActivity(intent);
                             break;
