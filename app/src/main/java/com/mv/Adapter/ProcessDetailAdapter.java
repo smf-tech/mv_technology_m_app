@@ -845,6 +845,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                         id.setImageUri(finalUri);
                         ((ProcessDeatailActivity) mContext).imageDataList.add(id);
                     } else {
+                        if(preferenceHelper.getString(preferenceHelper.FirebaseImageUrl) == ""){
+                            preferenceHelper.insertString(PreferenceHelper.FirebaseImageUrl, "https://dcwn642pmzpls.cloudfront.net/");
+                        }
                         Glide.with(mContext)
                                 .load(preferenceHelper.getString(preferenceHelper.FirebaseImageUrl) + taskList.get(position).getTask_Response__c() + ".png")
                                 .placeholder(mContext.getResources().getDrawable(R.drawable.ic_add_photo))

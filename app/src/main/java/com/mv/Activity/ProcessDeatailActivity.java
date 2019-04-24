@@ -19,6 +19,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.media.ExifInterface;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -80,6 +81,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -1078,7 +1080,10 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         }
                     }
                 } catch (Exception e) {
-                    deleteSalesForceData();
+                  // check SS_firebase_delete_backend_form value....if its true, DELETE submitted form else DO NOT DELETE.
+                  if(preferenceHelper.getString(preferenceHelper.isDeleteBackendForm).equalsIgnoreCase("true")){
+                      deleteSalesForceData();
+                  }
                 //    Utills.hideProgressDialog();
                 //    Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
                 }
@@ -1086,7 +1091,12 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                deleteSalesForceData();
+                if(preferenceHelper.getString(preferenceHelper.isDeleteBackendForm).equalsIgnoreCase("true")) {
+                    deleteSalesForceData();
+                }
+                else{
+                    finish();
+                }
             }
         });
     }
@@ -1157,7 +1167,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             if (finalUri != null) {
                 outputUri = null;
             }
-        //    decodeFile(imageFile1);
+            decodeFile(imageFile1);
         //    compressImage(imageFilePath);
             ImageData id = new ImageData();
             id.setPosition(imagePosition);
@@ -1176,6 +1186,24 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
     }
 
+    public String saveImage(Bitmap myBitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        try {
+            FileOutputStream fo = new FileOutputStream(imageFile1);
+            fo.write(bytes.toByteArray());
+            MediaScannerConnection.scanFile(this,
+                    new String[]{imageFile1.getPath()},
+                    new String[]{"image/jpg"}, null);
+            fo.close();
+            Log.d("TAG", "File Saved::--->" + imageFile1.getAbsolutePath());
+
+            return imageFile1.getAbsolutePath();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return "";
+    }
     private void sendApprovedData() {
         if (Utills.isConnected(this)) {
             try {
@@ -1287,57 +1315,57 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         return super.dispatchTouchEvent(event);
     }
 
-//    private Bitmap decodeFile(File f) {
-//        Bitmap b = null;
-//
-//        //Decode image size
-//        BitmapFactory.Options o = new BitmapFactory.Options();
-//        o.inJustDecodeBounds = true;
-//
-//        FileInputStream fis = null;
-//        try {
-//            fis = new FileInputStream(f);
-//            BitmapFactory.decodeStream(fis, null, o);
-//            fis.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        int IMAGE_MAX_SIZE = 512;
-//        int scale = 1;
-//        if (o.outHeight > IMAGE_MAX_SIZE || o.outWidth > IMAGE_MAX_SIZE) {
-//            scale = (int) Math.pow(2, (int) Math.ceil(Math.log(IMAGE_MAX_SIZE /
-//                    (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
-//        }
-//
-//        //Decode with inSampleSize
-//        BitmapFactory.Options o2 = new BitmapFactory.Options();
-//        o2.inSampleSize = scale;
-//        try {
-//            fis = new FileInputStream(f);
-//            b = BitmapFactory.decodeStream(fis, null, o2);
-//            fis.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imageName + ".jpg";
-//        imageFile1 = new File(imageFilePath);
-//        try {
-//            FileOutputStream out = new FileOutputStream(imageFile1);
-//            b.compress(Bitmap.CompressFormat.PNG, 100, out);
-//            out.flush();
-//            out.close();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return b;
-//    }
+    private Bitmap decodeFile(File f) {
+        Bitmap b = null;
+
+        //Decode image size
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inJustDecodeBounds = true;
+
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(f);
+            BitmapFactory.decodeStream(fis, null, o);
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int IMAGE_MAX_SIZE = 1024;
+        int scale = 1;
+        if (o.outHeight > IMAGE_MAX_SIZE || o.outWidth > IMAGE_MAX_SIZE) {
+            scale = (int) Math.pow(2, (int) Math.ceil(Math.log(IMAGE_MAX_SIZE /
+                    (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
+        }
+
+        //Decode with inSampleSize
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+        o2.inSampleSize = scale;
+        try {
+            fis = new FileInputStream(f);
+            b = BitmapFactory.decodeStream(fis, null, o2);
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imageName + ".jpg";
+        imageFile1 = new File(imageFilePath);
+        try {
+            FileOutputStream out = new FileOutputStream(imageFile1);
+            b.compress(Bitmap.CompressFormat.PNG, 40, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return b;
+    }
 
     public String compressImage(String imageUri) {
 
