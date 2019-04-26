@@ -1083,9 +1083,9 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                   // check SS_firebase_delete_backend_form value....if its true, DELETE submitted form else DO NOT DELETE.
                   if(preferenceHelper.getString(preferenceHelper.isDeleteBackendForm).equalsIgnoreCase("true")){
                       deleteSalesForceData();
+                  }else{
+                      finish();
                   }
-                //    Utills.hideProgressDialog();
-                //    Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
                 }
             }
 
