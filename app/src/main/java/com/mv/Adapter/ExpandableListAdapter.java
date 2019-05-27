@@ -149,23 +149,24 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                         } else {
                             Utills.showToast("No Application available to open PDF file", mContext);
                         }
-                    } else if (content.getFileType().equalsIgnoreCase("ppt")) {
+                    } else if (content.getFileType().equalsIgnoreCase("epub")) {
                         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                                + "/MV/Zip/" + content.getName() + ".ppt";
-                        File pptFile = new File(filePath);
+                                + "/MV/Zip/" + content.getName() + ".epub";
+                        File epubFile = new File(filePath);
                         Uri outputUri = FileProvider.getUriForFile(mContext,
-                                mContext.getPackageName() + ".fileprovider", pptFile);
+                                mContext.getPackageName() + ".fileprovider", epubFile);
 
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.setDataAndType(outputUri, "application/epub+zip");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        intent.setDataAndType(outputUri, "application/vnd.ms-powerpoint");
 
-                        PackageManager pm = mContext.getPackageManager();
-                        List<ResolveInfo> list = pm.queryIntentActivities(intent, 0);
-                        if (list.size() > 0) {
+                        PackageManager packageManager = mContext.getPackageManager();
+                        if (intent.resolveActivity(packageManager) != null) {
                             mContext.startActivity(intent);
                         } else {
-                            Utills.showToast("No Application available to open PPT file", mContext);
+                            Utills.showToast("No Application available to open Epub file", mContext);
                         }
                     }
                 } else {
@@ -188,6 +189,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".pdf";
                 } else if (content.getFileType().equalsIgnoreCase("zip")) {
                     filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".zip";
+                }else if (content.getFileType().equalsIgnoreCase("epub")) {
+                    filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".epub";
                 }
 
                 File pptFile = new File(filePath);
@@ -278,6 +281,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 return new File(filePath).exists();
             } else if (downloadContent.getFileType().equalsIgnoreCase("ppt")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + downloadContent.getName() + ".ppt";
+                return new File(filePath).exists();
+            }else if (downloadContent.getFileType().equalsIgnoreCase("epub")) {
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + downloadContent.getName() + ".epub";
                 return new File(filePath).exists();
             }
         }

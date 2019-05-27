@@ -52,19 +52,19 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                 if (mContext instanceof TeamManagementFragment) {
                     switch (getAdapterPosition()) {
                         case 0: {
-                            //User Approval
-                            Intent openClass = new Intent(mContext, TeamManagementUserProfileListActivity.class);
+                            //redirect to Form Approval
+                            Intent openClass = new Intent(mContext, ProcessApprovalActivity.class);
                             openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
-                            openClass.putExtra(Constants.APPROVAL_TYPE, Constants.USER_APPROVAL);
                             mContext.startActivity(openClass);
                             mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
                             break;
                         }
 
                         case 1: {
-                            //redirect to user Approval Process List
-                            Intent openClass = new Intent(mContext, ProcessApprovalActivity.class);
+                            //redirect to User Approval
+                            Intent openClass = new Intent(mContext, TeamManagementUserProfileListActivity.class);
                             openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
+                            openClass.putExtra(Constants.APPROVAL_TYPE, Constants.USER_APPROVAL);
                             mContext.startActivity(openClass);
                             mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
                             break;
