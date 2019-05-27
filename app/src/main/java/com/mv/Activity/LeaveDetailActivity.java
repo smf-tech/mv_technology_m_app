@@ -118,13 +118,19 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 binding.spTypeOfCatagory.setSelection(category.indexOf(leavesModel.getTypeOfLeaves()));
                 binding.spTypeOfLeaves.setSelection(typeOfleaves.indexOf(leavesModel.getTypeOfLeaves()));
             }
-
+            if(leavesModel.isHalfDayLeave()){
+             halfDayCheck = "true";
+            }
             binding.inputHrFormDate.setText(leavesModel.getFromDate());
             binding.inputHrToDate.setText(leavesModel.getToDate());
             binding.etReason.setText(leavesModel.getReason());
-            binding.leavesCountText.setText(
-                    Utills.getNumberofDaysBetweenTwoDates(leavesModel.getFromDate(), leavesModel.getToDate()));
-
+            if(leavesModel.getFromDate().equals(leavesModel.getToDate()) && leavesModel.isHalfDayLeave()){
+                binding.leavesCountText.setText("0.5");
+                binding.inputHrToDate.setEnabled(false);
+            } else {
+                binding.leavesCountText.setText(
+                        Utills.getNumberofDaysBetweenTwoDates(leavesModel.getFromDate(), leavesModel.getToDate()));
+            }
             if (leavesModel.isHalfDayLeave()) {
                 binding.detailChk.setChecked(true);
             } else if (leavesModel.isHalfDayLeave()) {
@@ -160,7 +166,9 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
                 if (leavesModel.getStatus().equals(Constants.LeaveStatusPending)) {
                     binding.leaveRemark.setVisibility(View.GONE);
                     binding.inputHrFormDate.setEnabled(true);
-                    binding.inputHrToDate.setEnabled(true);
+                    if(leaveId != null && !leavesModel.isHalfDayLeave()){
+                        binding.inputHrToDate.setEnabled(true);
+                    }
                     binding.spTypeOfLeaves.setEnabled(true);
                     binding.etReason.setEnabled(true);
                     binding.detailChk.setEnabled(true);
@@ -494,8 +502,12 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
 
             if (isDatesAreValid(binding.inputHrFormDate.getText().toString().trim(),
                     binding.inputHrToDate.getText().toString().trim())) {
-                binding.leavesCountText.setText(Utills.getNumberofDaysBetweenTwoDates(
-                        binding.inputHrFormDate.getText().toString(), binding.inputHrToDate.getText().toString()));
+                if(leavesModel.getFromDate().equals(leavesModel.getToDate()) && halfDayCheck.equals("true")){
+                    binding.leavesCountText.setText("0.5");
+                } else{
+                    binding.leavesCountText.setText(Utills.getNumberofDaysBetweenTwoDates(
+                            binding.inputHrFormDate.getText().toString(), binding.inputHrToDate.getText().toString()));
+                }
             } else {
                 if (binding.inputHrToDate.getText().toString().length() > 0) {
                     Utills.showToast("Please enter proper range.", LeaveDetailActivity.this);

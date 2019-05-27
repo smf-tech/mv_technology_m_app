@@ -483,6 +483,11 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
             if (preferenceHelper.getBoolean(Constants.NEW_PROCESS)) {
                 taskList.get(i).setId(null);
+            }else {
+                if (taskList.get(i).getId()!= null && taskList.get(i).getId().equalsIgnoreCase("Rejected_Comment")) {
+                    taskList.remove(i);
+                    break;
+                }
             }
 
             if (taskList.get(i).getIs_Response_Mnadetory__c()) {

@@ -10,6 +10,8 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.mv.Utils.Constants;
 
+import java.io.Serializable;
+
 /**
  * Created by nanostuffs on 19-03-2018.
  */
@@ -173,6 +175,7 @@ public class LeavesModel implements Parcelable {
         dest.writeString(this.Requested_User_Name__c);
         dest.writeString(this.Requested_User__c);
         dest.writeString(this.mv_user);
+        dest.writeByte((byte)(this.isHalfDayLeave ? 1 : 0));
     }
 
     protected LeavesModel(Parcel in) {
@@ -186,6 +189,7 @@ public class LeavesModel implements Parcelable {
         this.Requested_User_Name__c = in.readString();
         this.Requested_User__c = in.readString();
         this.mv_user = in.readString();
+        this.isHalfDayLeave = in.readByte() !=0;
     }
 
     public static final Creator<LeavesModel> CREATOR = new Creator<LeavesModel>() {
