@@ -2,6 +2,7 @@ package com.mv.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -166,7 +167,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                         if (intent.resolveActivity(packageManager) != null) {
                             mContext.startActivity(intent);
                         } else {
-                            Utills.showToast("No Application available to open Epub file", mContext);
+                            showDialog();
                         }
                     }
                 } else {
@@ -221,6 +222,28 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             }
         }
         return convertView;
+    }
+
+    public void showDialog(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+        alertDialog.setTitle(mContext.getResources().getString(R.string.alert));
+        alertDialog.setMessage(mContext.getResources().getString(R.string.alert_message));
+        alertDialog.setPositiveButton(mContext.getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                final String appPackageName = mContext.getPackageName();
+                try {
+                    mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.faultexception.reader&hl=en" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.faultexception.reader&hl=en" + appPackageName)));
+                }
+            }
+        });
+        alertDialog.setNegativeButton(mContext.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
     }
 
     private void deleteRecursive(File fileOrDirectory) {
