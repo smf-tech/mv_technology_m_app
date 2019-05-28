@@ -196,6 +196,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void subscribedToFirebaseTopics() {
+        FirebaseMessaging.getInstance().subscribeToTopic("SS_Test");
         FirebaseMessaging.getInstance().subscribeToTopic("SS_All");
         String userRoll=User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
         String userDistrict=User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict();
@@ -322,18 +323,23 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 @Override
                 public void onReceive(Context context, Intent intent) {
                     if (Constants.PUSH_NOTIFICATION.equals(intent.getAction())) {
-                        int count = AppDatabase.getAppDatabase(HomeActivity.this).userDao().getUnRearNotificationsCount("unread");
-                        tvUnreadNotification.setText("" + count);
-
-                        if (count > 0) {
-                            tvUnreadNotification.setVisibility(View.VISIBLE);
-                        }
+                        notificationCount();
                     }
                 }
             };
 
             LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver,
                     new IntentFilter(Constants.PUSH_NOTIFICATION));
+            notificationCount();
+        }
+    }
+
+    public void notificationCount(){
+        int count = AppDatabase.getAppDatabase(HomeActivity.this).userDao().getUnRearNotificationsCount("unread");
+        tvUnreadNotification.setText("" + count);
+
+        if (count > 0) {
+            tvUnreadNotification.setVisibility(View.VISIBLE);
         }
     }
 
