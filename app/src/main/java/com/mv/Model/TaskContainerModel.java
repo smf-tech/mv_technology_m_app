@@ -17,6 +17,11 @@ public class TaskContainerModel {
     @ColumnInfo(name = "unique_Id")
     private String Unique_Id;
 
+    @ColumnInfo(name = "status__c")
+    @SerializedName("status__c")
+    @Expose
+    private String status;
+
     public String getUnique_Id() {
         return Unique_Id;
     }
@@ -120,4 +125,12 @@ public class TaskContainerModel {
 
     @ColumnInfo(name = "taskTimeStamp")
     private String taskTimeStamp;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

@@ -16,8 +16,10 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.media.ExifInterface;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,6 +33,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -44,6 +47,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -69,6 +73,7 @@ import com.mv.Utils.GPSTracker;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
+import com.mv.Widgets.TouchImageView;
 import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONArray;
@@ -76,6 +81,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -159,7 +165,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                 getAllTask();
             } else {
                 //fill new forms
-                preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
+             //   preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
                 //get  process list only type is question (exclude answer it would always 1 record for on process  )
                 TaskContainerModel taskContainerModel = AppDatabase.getAppDatabase(
                         ProcessDeatailActivity.this).userDao().getQuestion(processId, Constants.TASK_QUESTION);
@@ -267,6 +273,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         Long currentTime = System.currentTimeMillis();
         taskContainerModel.setTaskTimeStamp(currentTime.toString());
         taskContainerModel.setProAnsListString(pickListApiFieldNames);
+        taskContainerModel.setStatus("Pending");
 
         if (preferenceHelper.getBoolean(Constants.NEW_PROCESS)) {
             //if process is new  INSERT it with timestamp as id
@@ -772,6 +779,11 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
             if (preferenceHelper.getBoolean(Constants.NEW_PROCESS)) {
                 taskList.get(i).setId(null);
+            }else {
+                if (taskList.get(i).getId()!= null && taskList.get(i).getId().equalsIgnoreCase("Rejected_Comment")) {
+                    taskList.remove(i);
+                    break;
+                }
             }
 
             if (taskList.get(i).getIs_Response_Mnadetory__c()) {
@@ -1068,15 +1080,23 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         }
                     }
                 } catch (Exception e) {
-                    deleteSalesForceData();
-                //    Utills.hideProgressDialog();
-                //    Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                  // check SS_firebase_delete_backend_form value....if its true, DELETE submitted form else DO NOT DELETE.
+                  if(preferenceHelper.getString(preferenceHelper.isDeleteBackendForm).equalsIgnoreCase("true")){
+                      deleteSalesForceData();
+                  }else{
+                      finish();
+                  }
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                deleteSalesForceData();
+                if(preferenceHelper.getString(preferenceHelper.isDeleteBackendForm).equalsIgnoreCase("true")) {
+                    deleteSalesForceData();
+                }
+                else{
+                    finish();
+                }
             }
         });
     }
@@ -1147,8 +1167,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             if (finalUri != null) {
                 outputUri = null;
             }
-        //    decodeFile(imageFile1);
-            compressImage(imageFilePath);
+            decodeFile(imageFile1);
+        //    compressImage(imageFilePath);
             ImageData id = new ImageData();
             id.setPosition(imagePosition);
             id.setImageUri(finalUri);
@@ -1166,6 +1186,24 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
     }
 
+    public String saveImage(Bitmap myBitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        try {
+            FileOutputStream fo = new FileOutputStream(imageFile1);
+            fo.write(bytes.toByteArray());
+            MediaScannerConnection.scanFile(this,
+                    new String[]{imageFile1.getPath()},
+                    new String[]{"image/jpg"}, null);
+            fo.close();
+            Log.d("TAG", "File Saved::--->" + imageFile1.getAbsolutePath());
+
+            return imageFile1.getAbsolutePath();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return "";
+    }
     private void sendApprovedData() {
         if (Utills.isConnected(this)) {
             try {
@@ -1213,25 +1251,46 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     }
 
     public void showDialogFullImage(String imageName){
-        final Dialog dialog = new Dialog(ProcessDeatailActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.dialog_full_image);
 
-        ImageView iv_image = (ImageView) dialog.findViewById(R.id.iv_image);
-        Glide.with(ProcessDeatailActivity.this)
-                .load(Constants.IMAGEURL + imageName + ".png")
-                .placeholder(ProcessDeatailActivity.this.getResources().getDrawable(R.drawable.ic_add_photo))
-                .into(iv_image);
-        ImageView iv_close = (ImageView) dialog.findViewById(R.id.iv_close);
-        iv_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+//        final Dialog dialog = new Dialog(ProcessDeatailActivity.this);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        dialog.setCancelable(false);
+//        dialog.setContentView(R.layout.dialog_full_image);
+//
+//        ImageView iv_image = (ImageView) dialog.findViewById(R.id.iv_image);
+//        Glide.with(ProcessDeatailActivity.this)
+//                .load(Constants.IMAGEURL + imageName + ".png")
+//                .placeholder(ProcessDeatailActivity.this.getResources().getDrawable(R.drawable.ic_add_photo))
+//                .into(iv_image);
+//        ImageView iv_close = (ImageView) dialog.findViewById(R.id.iv_close);
+//        iv_close.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        dialog.show();
 
-        dialog.show();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        final View view = inflater.inflate(R.layout.image_zoom_dialog, null);
+        final ImageView close_dialog = view.findViewById(R.id.close_dialog);
+        TouchImageView img_post = view.findViewById(R.id.img_post);
+        Glide.with(context)
+                .load(preferenceHelper.getString(preferenceHelper.FirebaseImageUrl) + imageName + ".png")
+                .placeholder(context.getResources().getDrawable(R.drawable.mulya_bg))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(img_post);
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
+        alertDialog.setView(view);
+        AlertDialog alertD = alertDialog.create();
+
+        if (alertD.getWindow() != null) {
+            alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
+        close_dialog.setOnClickListener(v -> alertD.dismiss());
+        alertD.show();
 
     }
 
@@ -1256,57 +1315,57 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         return super.dispatchTouchEvent(event);
     }
 
-//    private Bitmap decodeFile(File f) {
-//        Bitmap b = null;
-//
-//        //Decode image size
-//        BitmapFactory.Options o = new BitmapFactory.Options();
-//        o.inJustDecodeBounds = true;
-//
-//        FileInputStream fis = null;
-//        try {
-//            fis = new FileInputStream(f);
-//            BitmapFactory.decodeStream(fis, null, o);
-//            fis.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        int IMAGE_MAX_SIZE = 512;
-//        int scale = 1;
-//        if (o.outHeight > IMAGE_MAX_SIZE || o.outWidth > IMAGE_MAX_SIZE) {
-//            scale = (int) Math.pow(2, (int) Math.ceil(Math.log(IMAGE_MAX_SIZE /
-//                    (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
-//        }
-//
-//        //Decode with inSampleSize
-//        BitmapFactory.Options o2 = new BitmapFactory.Options();
-//        o2.inSampleSize = scale;
-//        try {
-//            fis = new FileInputStream(f);
-//            b = BitmapFactory.decodeStream(fis, null, o2);
-//            fis.close();
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//
-//        String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imageName + ".jpg";
-//        imageFile1 = new File(imageFilePath);
-//        try {
-//            FileOutputStream out = new FileOutputStream(imageFile1);
-//            b.compress(Bitmap.CompressFormat.PNG, 100, out);
-//            out.flush();
-//            out.close();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return b;
-//    }
+    private Bitmap decodeFile(File f) {
+        Bitmap b = null;
+
+        //Decode image size
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inJustDecodeBounds = true;
+
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(f);
+            BitmapFactory.decodeStream(fis, null, o);
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int IMAGE_MAX_SIZE = 1024;
+        int scale = 1;
+        if (o.outHeight > IMAGE_MAX_SIZE || o.outWidth > IMAGE_MAX_SIZE) {
+            scale = (int) Math.pow(2, (int) Math.ceil(Math.log(IMAGE_MAX_SIZE /
+                    (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
+        }
+
+        //Decode with inSampleSize
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+        o2.inSampleSize = scale;
+        try {
+            fis = new FileInputStream(f);
+            b = BitmapFactory.decodeStream(fis, null, o2);
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imageName + ".jpg";
+        imageFile1 = new File(imageFilePath);
+        try {
+            FileOutputStream out = new FileOutputStream(imageFile1);
+            b.compress(Bitmap.CompressFormat.PNG, 40, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return b;
+    }
 
     public String compressImage(String imageUri) {
 
@@ -1421,7 +1480,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             out = new FileOutputStream(imageFilePath);
 
 //          write the compressed bitmap at the destination specified by filename.
-            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 30, out);
+            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

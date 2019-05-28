@@ -47,7 +47,6 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
-        Log.d("cycled", "onCreate: B");
         binding = DataBindingUtil.setContentView(this, R.layout.activity_new_template);
         binding.setVariable(BR.vm, new ParentViewModel());
     }
@@ -56,7 +55,6 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
     public void onResume() {
         super.onResume();
         initViews();
-        Log.d("cycled", "onResume: B");
     }
 
     private void setActionbar(String Title) {
@@ -100,8 +98,6 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
         menuList.add(getString(R.string.team_user_approval));
         menuList.add(getString(R.string.team_form_approval));
         menuList.add(getString(R.string.voucher_approoval));
-//        menuList.add(getString(R.string.expense_approval));
-//        menuList.add(getString(R.string.adavance_approval));
         menuList.add(getString(R.string.leave_approoval));
         menuList.add(getString(R.string.attendance_approoval));
         menuList.add(getString(R.string.map));
@@ -121,33 +117,6 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
         );
         binding.swiperefresh.setRefreshing(false);
 
-    }
-
-    @Override
-    protected void onStart() {
-        Log.d("cycled", "onStart:B ");
-        super.onStart();
-    }
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d("cycled", "onPause: B");
-    }
-    @Override
-    protected void onStop() {
-        Log.d("cycled", "onStop: B");
-        super.onStop();
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.d("cycled", "onDestroy: B");
-
-    }
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        Log.d("cycled", "onRestart: B");
     }
 
     private void showPopUp() {

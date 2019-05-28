@@ -35,6 +35,8 @@ public class PreferenceHelper {
     public static final String SalesforceUserId = "SalesforceUserId";
     public static final String SalesforceUsername = "SalesforceUsername";
     public static final String SalesforcePassword = "SalesforcePassword";
+    public static final String FirebaseImageUrl = "FirebaseImageUrl";
+    public static final String isDeleteBackendForm = "isDeleteBackendForm";
 
     public PreferenceHelper(Context cntx) {
         pref = cntx.getSharedPreferences(PREFER_NAME, Context.MODE_PRIVATE);

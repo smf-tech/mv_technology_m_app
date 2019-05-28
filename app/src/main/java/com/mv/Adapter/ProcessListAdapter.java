@@ -147,7 +147,12 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-
+        if(taskArrayList.isEmpty()) {
+            for (int i = 0; i < resultList.size(); i++) {
+                ArrayList<Task> tasks = gson.fromJson(resultList.get(i).getTaskListString(), listType);
+                taskArrayList.add(tasks);
+            }
+        }
         if (resultList.get(position).getHeaderPosition().equals("")) {
             if (taskArrayList.get(position).get(0).getTimestamp__c() != null && !taskArrayList.get(position).get(0).getTimestamp__c().equals("null")) {
                 holder.txtCommunityName.setText(Utills.getDate(
@@ -205,10 +210,11 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
         // Setting OK Button
         alertDialog.setButton(mContext.getString(android.R.string.ok), (dialog, which) -> {
             if (resultList != null && resultList.size() > 0) {
+                String status = resultList.get(position).getStatus();
                 if (mContext instanceof ProcessListActivity) {
                     _context = (ProcessListActivity) mContext;
                     if (resultList.get(position).getIsSave().equals("false")) {
-                        _context.deleteForm(resultList.get(position), position);
+                        _context.deleteForm(resultList.get(position), position, status);
                     } else {
                         AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(
                                 resultList.get(position).getUnique_Id(),
@@ -216,6 +222,7 @@ public class ProcessListAdapter extends RecyclerView.Adapter<ProcessListAdapter.
                         // Removed entry from local db
                         resultList.remove(position);
                         taskArrayList.remove(position);
+                        _context.refreshListview(status);
                         notifyDataSetChanged();
                     }
                 }
