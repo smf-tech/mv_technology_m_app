@@ -196,7 +196,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void subscribedToFirebaseTopics() {
-        FirebaseMessaging.getInstance().subscribeToTopic("SS_Test");
+//        FirebaseMessaging.getInstance().subscribeToTopic("SS_Test");
         FirebaseMessaging.getInstance().subscribeToTopic("SS_All");
         String userRoll=User.getCurrentUser(getApplicationContext()).getMvUser().getRoll();
         String userDistrict=User.getCurrentUser(getApplicationContext()).getMvUser().getDistrict();
