@@ -4,31 +4,51 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/dimen_15dp"
-    >
+    android:padding="@dimen/dimen_15dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="10">
+    <LinearLayout
+        android:id="@+id/row_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="9">
 
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:textStyle="bold"
-        android:text="Title"/>
+        android:textStyle="bold" />
     <TextView
         android:id="@+id/tv_Detels"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_title"
         android:textColor="@color/black"
-        android:textStyle="normal"
-        android:text="Detels"/>
+        android:textStyle="normal"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@+id/tv_Detels"
-        android:background="@color/light_grey"
-        android:layout_marginTop="@dimen/dimen_5dp"
-        />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/tv_Detels"
+            android:background="@color/light_grey"
+            android:layout_marginTop="@dimen/dimen_5dp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/row_img"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/form_delete"
+        android:padding="@dimen/dimen_7dp"/>
+    </LinearLayout>
 
 </RelativeLayout>
