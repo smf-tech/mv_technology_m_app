@@ -12,7 +12,8 @@
         android:title="@string/profile" />
     <item
         android:id="@+id/action_add_school"
-        android:title="@string/add_location" />
+        android:title="@string/add_location"
+        android:visible="false"/>
     <item
         android:id="@+id/action_update_user_data"
         android:title="@string/update_user_data" />
