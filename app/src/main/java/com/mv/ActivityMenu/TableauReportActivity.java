@@ -57,7 +57,7 @@ public class TableauReportActivity extends AppCompatActivity implements View.OnC
 
         context = this;
         setContentView(R.layout.activity_expandable_list);
-        setActionbar(getString(R.string.indicator));
+        setActionbar(getString(R.string.tableau_reports));
     }
 
     private void setActionbar(String title) {

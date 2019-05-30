@@ -50,6 +50,7 @@ import com.google.android.flexbox.FlexboxLayoutManager;
 import com.google.android.flexbox.JustifyContent;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -189,6 +190,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
 //        long deviceTime = System.currentTimeMillis();
 //        Log.i("deviceTime", deviceTime + "");
+//        FirebaseMessaging.getInstance().subscribeToTopic("MV_Test");
     }
 
     @Override

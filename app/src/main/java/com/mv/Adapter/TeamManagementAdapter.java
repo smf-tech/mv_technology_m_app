@@ -52,7 +52,16 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                 if (mContext instanceof TeamManagementFragment) {
                     switch (getAdapterPosition()) {
                         case 0: {
-                            //User Approval
+                            //redirect to Form Approval
+                            Intent openClass = new Intent(mContext, ProcessApprovalActivity.class);
+                            openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
+                            mContext.startActivity(openClass);
+                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                            break;
+                        }
+
+                        case 1: {
+                            //redirect to User Approval
                             Intent openClass = new Intent(mContext, TeamManagementUserProfileListActivity.class);
                             openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
                             openClass.putExtra(Constants.APPROVAL_TYPE, Constants.USER_APPROVAL);
@@ -61,17 +70,8 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                             break;
                         }
 
-                        case 1: {
-                            //redirect to process Approval Process List
-                            Intent openClass = new Intent(mContext, ProcessApprovalActivity.class);
-                            openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
-                            mContext.startActivity(openClass);
-                            mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
-                            break;
-                        }
-
                         case 2: {
-                            //redirect to Voucher List
+                            //redirect to user Approval Process List
                             Intent intent = new Intent(mContext, VoucherListActivity.class);
                             Constants.AccountTeamCode = "TeamManagement";//to identify the section
                             mContext.startActivity(intent);
@@ -79,7 +79,7 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                         }
 
                         case 3: {
-                            //redirect to Leave Approval List
+                            //redirect to user Approval Process List
                             Intent openClass = new Intent(mContext, LeaveApprovalActivity.class);
                             mContext.startActivity(openClass);
                             preferenceHelper.insertString(Constants.Leave, Constants.Leave_Approve);
@@ -98,8 +98,7 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                         }
 
                         //adding maps
-                        case 5: {
-                            // shows user location on map
+                        case 5: {// shows the tc on map
                             Intent intent = new Intent(mContext, MapsActivity.class);
                             mContext.startActivity(intent);
                             break;

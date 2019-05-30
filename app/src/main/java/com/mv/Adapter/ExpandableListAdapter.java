@@ -2,6 +2,7 @@ package com.mv.Adapter;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -149,23 +150,24 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                         } else {
                             Utills.showToast("No Application available to open PDF file", mContext);
                         }
-                    } else if (content.getFileType().equalsIgnoreCase("ppt")) {
+                    } else if (content.getFileType().equalsIgnoreCase("epub")) {
                         String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
-                                + "/MV/Zip/" + content.getName() + ".ppt";
-                        File pptFile = new File(filePath);
+                                + "/MV/Zip/" + content.getName() + ".epub";
+                        File epubFile = new File(filePath);
                         Uri outputUri = FileProvider.getUriForFile(mContext,
-                                mContext.getPackageName() + ".fileprovider", pptFile);
+                                mContext.getPackageName() + ".fileprovider", epubFile);
 
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.setDataAndType(outputUri, "application/epub+zip");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                        intent.setDataAndType(outputUri, "application/vnd.ms-powerpoint");
 
-                        PackageManager pm = mContext.getPackageManager();
-                        List<ResolveInfo> list = pm.queryIntentActivities(intent, 0);
-                        if (list.size() > 0) {
+                        PackageManager packageManager = mContext.getPackageManager();
+                        if (intent.resolveActivity(packageManager) != null) {
                             mContext.startActivity(intent);
                         } else {
-                            Utills.showToast("No Application available to open PPT file", mContext);
+                            showDialog();
                         }
                     }
                 } else {
@@ -188,6 +190,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".pdf";
                 } else if (content.getFileType().equalsIgnoreCase("zip")) {
                     filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".zip";
+                }else if (content.getFileType().equalsIgnoreCase("epub")) {
+                    filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + content.getName() + ".epub";
                 }
 
                 File pptFile = new File(filePath);
@@ -218,6 +222,28 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             }
         }
         return convertView;
+    }
+
+    public void showDialog(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(mContext);
+        alertDialog.setTitle(mContext.getResources().getString(R.string.alert));
+        alertDialog.setMessage(mContext.getResources().getString(R.string.alert_message));
+        alertDialog.setPositiveButton(mContext.getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                final String appPackageName = mContext.getPackageName();
+                try {
+                    mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.faultexception.reader&hl=en" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    mContext.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.faultexception.reader&hl=en" + appPackageName)));
+                }
+            }
+        });
+        alertDialog.setNegativeButton(mContext.getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
     }
 
     private void deleteRecursive(File fileOrDirectory) {
@@ -278,6 +304,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 return new File(filePath).exists();
             } else if (downloadContent.getFileType().equalsIgnoreCase("ppt")) {
                 String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + downloadContent.getName() + ".ppt";
+                return new File(filePath).exists();
+            }else if (downloadContent.getFileType().equalsIgnoreCase("epub")) {
+                String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/" + downloadContent.getName() + ".epub";
                 return new File(filePath).exists();
             }
         }

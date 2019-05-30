@@ -310,4 +310,8 @@
     <string name="title_activity_maps">नकाशा</string>
     <string name="todo">TODO</string>
     <string name="enter_moblie_no">कृपया नोंदणीकृत फोन नंबर प्रविष्ट करा</string>
+    <string name="alert">अलर्ट</string>
+    <string name="alert_message">एपब फाइल उघडण्यासाठी कोणताही अनुप्रयोग उपलब्ध नाही, आपण स्थापित करू इच्छिता?</string>
+    <string name="yes">हो</string>
+    <string name="no">नाही</string>
 </resources>

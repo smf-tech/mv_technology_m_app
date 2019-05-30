@@ -20,9 +20,11 @@ import com.mv.Adapter.TeamManagementAdapter;
 import com.mv.BR;
 import com.mv.Model.ParentViewModel;
 import com.mv.Model.Template;
+import com.mv.Model.User;
 import com.mv.R;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
+import com.mv.Utils.Utills;
 import com.mv.databinding.ActivityNewTemplateBinding;
 
 import java.util.ArrayList;
@@ -94,14 +96,17 @@ public class TeamManagementFragment extends AppCompatActivity implements View.On
         textNoData = (TextView) findViewById(R.id.textNoData);
         preferenceHelper = new PreferenceHelper(context);
         menuList = new ArrayList<>();
-        menuList.add(getString(R.string.team_user_approval));
         menuList.add(getString(R.string.team_form_approval));
-        menuList.add(getString(R.string.voucher_approoval));
+        if(!User.getCurrentUser(getApplicationContext()).getMvUser().getRoll().equalsIgnoreCase("CRC")){
+            menuList.add(getString(R.string.team_user_approval));
+            menuList.add(getString(R.string.voucher_approoval));
 //        menuList.add(getString(R.string.expense_approval));
 //        menuList.add(getString(R.string.adavance_approval));
-        menuList.add(getString(R.string.leave_approoval));
-        menuList.add(getString(R.string.attendance_approoval));
-        menuList.add(getString(R.string.map));
+            menuList.add(getString(R.string.leave_approoval));
+            menuList.add(getString(R.string.attendance_approoval));
+            menuList.add(getString(R.string.map));
+        }
+
         processAllList.clear();
         for (int i = 0; i < menuList.size(); i++) {
             Template processList = new Template();
