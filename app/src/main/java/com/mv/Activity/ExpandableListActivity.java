@@ -1,11 +1,17 @@
 package com.mv.Activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.v4.content.FileProvider;
 import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -31,6 +37,7 @@ import com.mv.Utils.Utills;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -102,8 +109,49 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
                 getData();
             }
         }
+//        temp();
     }
+    public void temp(){
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath()
+                + "/MV/Zip/Marathi.epub";
+        File epubFile = new File(filePath);
+        Uri outputUri = FileProvider.getUriForFile(this,
+                this.getPackageName() + ".fileprovider", epubFile);
 
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setDataAndType(outputUri, "application/epub+zip");
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+        PackageManager packageManager = this.getPackageManager();
+        if (intent.resolveActivity(packageManager) != null) {
+            this.startActivity(intent);
+        } else {
+            showDialog();
+        }
+    }
+    public void showDialog(){
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+        alertDialog.setTitle(getResources().getString(R.string.alert));
+        alertDialog.setMessage(getResources().getString(R.string.alert_message));
+        alertDialog.setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog,int which) {
+                final String appPackageName = getPackageName();
+                try {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.faultexception.reader&hl=en" + appPackageName)));
+                } catch (android.content.ActivityNotFoundException anfe) {
+                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.faultexception.reader&hl=en" + appPackageName)));
+                }
+            }
+        });
+        alertDialog.setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+        alertDialog.show();
+    }
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -199,7 +247,7 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
         }
     };
 
-    public void startDownload(DownloadContent content) {
+    public void startDownload(DownloadContent content,final int groupPosition, final int childPosition) {
         Utills.showToast("Downloading Started...", ExpandableListActivity.this);
         Intent intent = new Intent(ExpandableListActivity.this, DownloadService.class);
         intent.putExtra("URL", content.getUrl());
@@ -219,7 +267,11 @@ public class ExpandableListActivity extends Activity implements View.OnClickList
         } else if (content.getFileType().equalsIgnoreCase("ppt")) {
             intent.putExtra("FILENAME", content.getName() + ".ppt");
             intent.putExtra("FILETYPE", "ppt");
+        }else if (content.getFileType().equalsIgnoreCase("epub")) {
+            intent.putExtra("FILENAME", content.getName() + ".epub");
+            intent.putExtra("FILETYPE", "epub");
         }
+        listDataChild.get(listDataHeader.get(groupPosition)).get(childPosition).setDownloadFlag(1);
         startService(intent);
     }
 

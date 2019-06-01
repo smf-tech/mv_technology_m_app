@@ -176,7 +176,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             });
 
             imgDownload = convertView.findViewById(R.id.imgDownload);
-            imgDownload.setOnClickListener(view -> mActivity.startDownload(content));
+            imgDownload.setOnClickListener(view -> mActivity.startDownload(content,groupPosition,childPosition));
+            imgDownload.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(content.getDownloadFlag()!=1){
+                        mActivity.startDownload(content,groupPosition,childPosition);
+                    } else {
+                        Utills.showToast("Download is on going...", mActivity);
+                    }
+                }
+            });
             imgShare = convertView.findViewById(R.id.imgshare);
 
             imgShare.setOnClickListener(v -> {

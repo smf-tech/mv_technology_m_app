@@ -57,6 +57,19 @@ public class DownloadContent {
     @SerializedName("FileType__c")
     private String FileType;
 
+    @ColumnInfo(name = "DownloadFlag")
+    @Expose
+    @SerializedName("DownloadFlag")
+    private int downloadFlag;
+
+    public int getDownloadFlag() {
+        return downloadFlag;
+    }
+
+    public void setDownloadFlag(int downloadFlag) {
+        this.downloadFlag = downloadFlag;
+    }
+
     public String getLang() {
         return Lang;
     }

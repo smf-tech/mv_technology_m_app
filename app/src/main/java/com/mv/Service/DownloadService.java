@@ -1,9 +1,12 @@
 package com.mv.Service;
 
 import android.app.IntentService;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
@@ -25,6 +28,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Enumeration;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.zip.ZipEntry;
@@ -46,6 +51,7 @@ public class DownloadService extends IntentService {
     private String url, fragment_flag;
     private String StorezipFileLocation = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/";
     private String fileName;
+    private String tempFileName;
     private String DirectoryName = Environment.getExternalStorageDirectory() + "/MV/UnZip/";
     private String filetype;
     private Intent intent;
@@ -53,22 +59,37 @@ public class DownloadService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
 
-        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
+        int time = (int) (System.currentTimeMillis());
+        tempFileName =  new Timestamp(time).toString();
         url = intent.getStringExtra("URL");
         fileName = intent.getStringExtra("FILENAME");
         filetype = intent.getStringExtra("FILETYPE");
         fragment_flag = intent.getStringExtra("fragment_flag");
-        StorezipFileLocation = StorezipFileLocation + fileName;
+//        StorezipFileLocation = StorezipFileLocation + fileName;
+        StorezipFileLocation = StorezipFileLocation + tempFileName;
 
-        notificationBuilder = new NotificationCompat.Builder(this)
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "mv";
+            String description = "blod";
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel = new NotificationChannel("MV", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        notificationBuilder = new NotificationCompat.Builder(this,"MV")
                 .setSmallIcon(R.mipmap.app_logo)
                 .setContentTitle("Download")
                 .setContentText("Downloading " + fileName)
                 .setAutoCancel(true);
 
         if (notificationManager != null) {
-            notificationManager.notify(getID(), notificationBuilder.build());
+            notificationManager.notify(0, notificationBuilder.build());
         }
         initDownload();
     }
@@ -151,7 +172,7 @@ public class DownloadService extends IntentService {
 
     private void sendNotification(Download download) {
 
-        sendIntent(download);
+//        sendIntent(download);
         notificationBuilder.setProgress(100, download.getProgress(), false);
         notificationBuilder.setContentText("Downloading file " + download.getCurrentFileSize() + "/" + totalFileSize + " MB");
 
@@ -183,6 +204,13 @@ public class DownloadService extends IntentService {
         if (notificationManager != null) {
             Download download = new Download();
             download.setProgress(100);
+            File dir = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Zip/");
+            if(dir.exists()){
+                File from = new File(dir,tempFileName);
+                File to = new File(dir,fileName);
+                if(from.exists())
+                    from.renameTo(to);
+            }
             sendIntent(download);
             notificationManager.cancel(0);
             notificationBuilder.setProgress(0, 0, false);
@@ -226,16 +254,6 @@ public class DownloadService extends IntentService {
             createDir(outputFile.getParentFile());
         }
 
-//        BufferedInputStream inputStream = new BufferedInputStream(zipfile.getInputStream(entry));
-//        BufferedOutputStream outputStream = new BufferedOutputStream(new FileOutputStream(outputFile));
-
-//        try {
-//
-//        } finally {
-//            outputStream.flush();
-//            outputStream.close();
-//            inputStream.close();
-//        }
     }
 
     private void createDir(File dir) {
