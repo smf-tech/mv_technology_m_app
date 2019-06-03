@@ -54,7 +54,7 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                         case 0: {
                             //redirect to Form Approval
                             Intent openClass = new Intent(mContext, ProcessApprovalActivity.class);
-                            openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
+//                            openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
                             mContext.startActivity(openClass);
                             mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
                             break;
@@ -63,7 +63,7 @@ public class TeamManagementAdapter extends RecyclerView.Adapter<TeamManagementAd
                         case 1: {
                             //redirect to User Approval
                             Intent openClass = new Intent(mContext, TeamManagementUserProfileListActivity.class);
-                            openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
+//                            openClass.putExtra(Constants.ID, teplateList.get(getAdapterPosition()).getId());
                             openClass.putExtra(Constants.APPROVAL_TYPE, Constants.USER_APPROVAL);
                             mContext.startActivity(openClass);
                             mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);

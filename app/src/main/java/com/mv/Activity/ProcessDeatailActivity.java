@@ -302,6 +302,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         img_back.setOnClickListener(this);
 
         ImageView img_logout = (ImageView) findViewById(R.id.img_logout);
+        img_logout.setImageResource(R.drawable.comment_white);
+        img_logout.setOnClickListener(this);
         if(hasApprovalPerson!=null && hasApprovalPerson.equalsIgnoreCase("Yes")){
             if(taskList.get(0).getId()!= null){
                 img_logout.setVisibility(View.VISIBLE);
@@ -311,10 +313,11 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             if (taskList.get(0).getStatus__c() != null && taskList.get(0).getStatus__c().equalsIgnoreCase("Expected")) {
                 img_logout.setVisibility(View.GONE);
             }
-            img_logout.setImageResource(R.drawable.comment_white);
-            img_logout.setOnClickListener(this);
         }else{
             img_logout.setVisibility(View.GONE);
+        }
+        if (preferenceHelper.getString(Constants.PROCESS_TYPE).equals(Constants.APPROVAL_PROCESS)) {
+            img_logout.setVisibility(View.VISIBLE);
         }
 
     }

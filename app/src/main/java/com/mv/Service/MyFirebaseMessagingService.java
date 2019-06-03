@@ -22,7 +22,10 @@ import com.mv.Activity.CommunityHomeActivity;
 import com.mv.Activity.ExpandableListActivity;
 import com.mv.Activity.HomeActivity;
 import com.mv.Activity.LeaveApprovalActivity;
+import com.mv.Activity.ProcessApprovalActivity;
+import com.mv.Activity.SalaryListActivity;
 import com.mv.Activity.SplashScreenActivity;
+import com.mv.Activity.VoucherListActivity;
 import com.mv.ActivityMenu.GroupsFragment;
 import com.mv.ActivityMenu.ProgrammeManagmentFragment;
 import com.mv.ActivityMenu.TeamManagementFragment;
@@ -203,10 +206,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationIntent = new Intent(this, TrainingCalender.class);
                 break;
             case "Return Advance":
-                notificationIntent = new Intent(this, AccountSectionActivity.class);
+                notificationIntent = new Intent(this, VoucherListActivity.class);
                 break;
             case "Salary Deposite":
-                notificationIntent = new Intent(this, AccountSectionActivity.class);
+                notificationIntent = new Intent(this, SalaryListActivity.class);
                 break;
             case "Mulyavardhan Content":
                 notificationIntent = new Intent(this, ExpandableListActivity.class);
@@ -214,8 +217,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             case "Form":
                 notificationIntent = new Intent(this, ProgrammeManagmentFragment.class);
                 break;
+            case "Form Approval":
+                notificationIntent = new Intent(this, ProcessApprovalActivity.class);
+                break;
                 default :
-                    notificationIntent = new Intent(this, SplashScreenActivity.class);
+                    notificationIntent = new Intent(this, HomeActivity.class);
         }
 
         if (notificationIntent != null) {

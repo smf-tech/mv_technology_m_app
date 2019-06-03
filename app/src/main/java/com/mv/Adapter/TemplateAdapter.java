@@ -78,7 +78,6 @@ public class TemplateAdapter extends RecyclerView.Adapter<TemplateAdapter.MyView
         }
     }
 
-
     public TemplateAdapter(List<Template> moviesList, Activity context) {
         this.teplateList = moviesList;
         this.mContext = context;

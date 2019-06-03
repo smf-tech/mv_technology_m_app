@@ -59,7 +59,6 @@ public class ProcessApprovalActivity extends AppCompatActivity implements View.O
         initViews();
     }
 
-
     private void initViews() {
         //25023645110
         preferenceHelper = new PreferenceHelper(this);

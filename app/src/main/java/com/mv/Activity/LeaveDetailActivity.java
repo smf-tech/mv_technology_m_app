@@ -502,7 +502,7 @@ public class LeaveDetailActivity extends AppCompatActivity implements View.OnCli
 
             if (isDatesAreValid(binding.inputHrFormDate.getText().toString().trim(),
                     binding.inputHrToDate.getText().toString().trim())) {
-                if(leavesModel.getFromDate().equals(leavesModel.getToDate()) && halfDayCheck.equals("true")){
+                if(binding.inputHrFormDate.getText().toString().trim().equals(binding.inputHrToDate.getText().toString().trim()) && halfDayCheck.equals("true")){
                     binding.leavesCountText.setText("0.5");
                 } else{
                     binding.leavesCountText.setText(Utills.getNumberofDaysBetweenTwoDates(

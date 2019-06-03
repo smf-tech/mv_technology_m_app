@@ -52,8 +52,6 @@ public class ProgramMangementAdapter  extends RecyclerView.Adapter<ProgramMangem
                     ((TemplatesActivity) mContext).onLayoutTemplateClick(getAdapterPosition());
 
                 else if (mContext instanceof ProgrammeManagmentFragment) {
-
-
                     preferenceHelper.insertBoolean(Constants.IS_EDITABLE, teplateList.get(getAdapterPosition()).getIs_Editable__c());
                     preferenceHelper.insertBoolean(Constants.IS_LOCATION, teplateList.get(getAdapterPosition()).getLocation());
                     preferenceHelper.insertBoolean(Constants.IS_MULTIPLE, teplateList.get(getAdapterPosition()).getIs_Multiple_Entry_Allowed__c());
@@ -66,7 +64,6 @@ public class ProgramMangementAdapter  extends RecyclerView.Adapter<ProgramMangem
                     mContext.overridePendingTransition(R.anim.right_in, R.anim.left_out);
 
                 } else if (mContext instanceof IndicatorTrainingFeedBackTaskList) {
-
                     //my reports
                     Intent openClass = new Intent(mContext, PiachartActivity.class);
                     openClass.putExtra(Constants.TITLE, teplateList.get(getAdapterPosition()).getName());
