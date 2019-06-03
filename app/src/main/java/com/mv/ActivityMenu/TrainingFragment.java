@@ -222,6 +222,9 @@ public class TrainingFragment extends AppCompatActivity implements View.OnClickL
         } else if (mList.get(position).getFileType().equalsIgnoreCase("ppt")) {
             intent.putExtra("FILENAME", mList.get(position).getName() + ".ppt");
             intent.putExtra("FILETYPE", mList.get(position).getName() + "ppt");
+        }else if (mList.get(position).getFileType().equalsIgnoreCase("epub")) {
+            intent.putExtra("FILENAME", mList.get(position).getName() + ".epub");
+            intent.putExtra("FILETYPE", mList.get(position).getName() + "epub");
         }
         context.startService(intent);
     }
