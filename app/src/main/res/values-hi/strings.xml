@@ -313,7 +313,8 @@
     <string name="todo">TODO</string>
     <string name="enter_moblie_no">कृपया पंजीकृत मोबाइल नंबर दर्ज करें</string>
     <string name="alert">चेतावनी</string>
-    <string name="alert_message">एपब फ़ाइल खोलने के लिए कोई एप्लिकेशन उपलब्ध नहीं है, क्या आप इंस्टॉल करना चाहते हैं?</string>
+    <string name="alert_message">ईबुक फ़ाइल खोलने के लिए कोई एप्लिकेशन उपलब्ध नहीं है, क्या आप इंस्टॉल करना चाहते हैं?</string>
     <string name="yes">हाँ</string>
     <string name="no">नहीं</string>
+    <string name="download_ongoing_msg">कृपया कुछ समय तक प्रतीक्षा करें। डाउनलोड चल रहा है।</string>
 </resources>

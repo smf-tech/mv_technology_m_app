@@ -191,7 +191,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 notificationIntent = new Intent(this, ProgrammeManagmentFragment.class);
                 break;
             case "Leave":
-                notificationIntent = new Intent(this, LeaveApprovalActivity.class);
+                notificationIntent = new Intent(this, TeamManagementFragment.class);
                 break;
             case "User Approve":
                 notificationIntent = new Intent(this, TeamManagementFragment.class);

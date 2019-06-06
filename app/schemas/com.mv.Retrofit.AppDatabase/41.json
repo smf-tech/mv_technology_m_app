@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 41,
-    "identityHash": "6619b8891640bd7f60a753caa5ac55d4",
+    "identityHash": "967cbf14ffdaf1a44be8b103585ed04a",
     "entities": [
       {
         "tableName": "table_community",
@@ -645,7 +645,7 @@
       },
       {
         "tableName": "table_download_content",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Section` TEXT, `Lang` TEXT, `Name` TEXT, `URL__c` TEXT, `FileType__c` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`unique_Id` INTEGER PRIMARY KEY AUTOINCREMENT, `Id` TEXT, `Section` TEXT, `Lang` TEXT, `Name` TEXT, `URL__c` TEXT, `FileType__c` TEXT, `DownloadFlag` INTEGER)",
         "fields": [
           {
             "fieldPath": "Unique_Id",
@@ -681,6 +681,11 @@
             "fieldPath": "FileType",
             "columnName": "FileType__c",
             "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "downloadFlag",
+            "columnName": "DownloadFlag",
+            "affinity": "INTEGER"
           }
         ],
         "primaryKey": {
@@ -1412,7 +1417,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"6619b8891640bd7f60a753caa5ac55d4\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"967cbf14ffdaf1a44be8b103585ed04a\")"
     ]
   }
 }

@@ -327,7 +327,8 @@
     <string name="todo">TODO</string>
     <string name="enter_moblie_no">Please enter registered mobile number</string>
     <string name="alert">Alert</string>
-    <string name="alert_message">No Application available to open Epub file, Do you want to install?</string>
+    <string name="alert_message">No Application available to open Ebook file, Do you want to install?</string>
     <string name="yes">YES</string>
     <string name="no">NO</string>
+    <string name="download_ongoing_msg">Please wait for sometime.Download is on going.</string>
 </resources>

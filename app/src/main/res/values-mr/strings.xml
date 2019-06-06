@@ -311,7 +311,8 @@
     <string name="todo">TODO</string>
     <string name="enter_moblie_no">कृपया नोंदणीकृत फोन नंबर प्रविष्ट करा</string>
     <string name="alert">अलर्ट</string>
-    <string name="alert_message">एपब फाइल उघडण्यासाठी कोणताही अनुप्रयोग उपलब्ध नाही, आपण स्थापित करू इच्छिता?</string>
+    <string name="alert_message">ईबुक फाइल उघडण्यासाठी कोणताही एप्लिकेशन उपलब्ध नाही, आपण इंस्टॉल करू इच्छिता?</string>
     <string name="yes">हो</string>
     <string name="no">नाही</string>
+    <string name="download_ongoing_msg">कृपया थोडा वेळ प्रतीक्षा करा. डाउनलोड चालू आहे.</string>
 </resources>

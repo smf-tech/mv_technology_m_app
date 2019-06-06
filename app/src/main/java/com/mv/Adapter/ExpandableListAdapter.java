@@ -183,7 +183,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     if(content.getDownloadFlag()!=1){
                         mActivity.startDownload(content,groupPosition,childPosition);
                     } else {
-                        Utills.showToast("Download is on going...", mActivity);
+                        Utills.showToast(mActivity.getResources().getString(R.string.download_ongoing_msg), mActivity);
                     }
                 }
             });

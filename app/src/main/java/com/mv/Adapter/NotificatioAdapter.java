@@ -130,6 +130,9 @@ public class NotificatioAdapter extends RecyclerView.Adapter<NotificatioAdapter.
                     case "Leave":
                         notificationIntent = new Intent(activity, LeaveApprovalActivity.class);
                         break;
+                    case "Leave Approve":
+                        notificationIntent = new Intent(activity, TeamManagementFragment.class);
+                        break;
                     case "User Approve":
                         notificationIntent = new Intent(activity, TeamManagementFragment.class);
                         break;

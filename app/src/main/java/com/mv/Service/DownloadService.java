@@ -82,7 +82,7 @@ public class DownloadService extends IntentService {
             notificationManager.createNotificationChannel(channel);
         }
 
-        notificationBuilder = new NotificationCompat.Builder(this,"MV")
+        notificationBuilder = new NotificationCompat.Builder(this)
                 .setSmallIcon(R.mipmap.app_logo)
                 .setContentTitle("Download")
                 .setContentText("Downloading " + fileName)
