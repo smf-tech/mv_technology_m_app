@@ -18,6 +18,7 @@ import com.google.gson.GsonBuilder;
 import com.mv.Activity.AccountSectionActivity;
 import com.mv.Activity.AssetAllocatedListActivity;
 import com.mv.Activity.AttendanceActivity;
+import com.mv.Activity.AttendanceApproval2Activity;
 import com.mv.Activity.CommunityHomeActivity;
 import com.mv.Activity.ExpandableListActivity;
 import com.mv.Activity.HomeActivity;
@@ -193,6 +194,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             case "Leave":
                 notificationIntent = new Intent(this, TeamManagementFragment.class);
                 break;
+            case "Leave Approval":
+                notificationIntent = new Intent(this, TeamManagementFragment.class);
+                break;
             case "User Approve":
                 notificationIntent = new Intent(this, TeamManagementFragment.class);
                 break;
@@ -219,6 +223,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 break;
             case "Form Approval":
                 notificationIntent = new Intent(this, ProcessApprovalActivity.class);
+                break;
+            case "Attendance Approval":
+                notificationIntent = new Intent(this, AttendanceApproval2Activity.class);
                 break;
                 default :
                     notificationIntent = new Intent(this, HomeActivity.class);
