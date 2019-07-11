@@ -15,42 +15,90 @@
         android:background="@drawable/app_bg"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar" />
+        <RelativeLayout
+            android:id="@+id/rv_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/lnr_filter"
+            android:orientation="vertical">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_process"
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_process"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/toolbar"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="15dp"
+                android:scrollbars="vertical" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab_add_process"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
+                android:layout_gravity="bottom|end"
+                android:layout_marginBottom="@dimen/dimen_10dp"
+                android:layout_marginEnd="@dimen/dimen_10dp"
+                android:onClick="@{()->processlist.onAddClick()}"
+                android:src="@android:drawable/ic_input_add" />
+
+            <TextView
+                android:id="@+id/textNoData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="No Data Available"
+                android:textColor="@color/dark_grey"
+                android:textSize="@dimen/large_text"
+                android:visibility="gone" />
+        </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/lnr_filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/toolbar"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="15dp"
-            android:scrollbars="vertical" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab_add_process"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-
             android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="bottom|end"
-            android:layout_marginBottom="@dimen/dimen_10dp"
-            android:layout_marginEnd="@dimen/dimen_10dp"
-            android:onClick="@{()->processlist.onAddClick()}"
-            android:src="@android:drawable/ic_input_add" />
+            android:orientation="horizontal"
+            android:layout_weight="1">
 
-        <TextView
-            android:id="@+id/textNoData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:text="No Data Available"
-            android:textColor="@color/dark_grey"
-            android:textSize="@dimen/large_text"
-            android:visibility="gone" />
+            <com.mv.Widgets.MyFontButton
+                android:id="@+id/btn_pending"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/selected_btn_background"
+                android:text="@string/pending"
+                android:textColor="@color/white"
+                android:textSize="@dimen/small_text" />
 
+            <com.mv.Widgets.MyFontButton
+                android:id="@+id/btn_approve"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/light_grey_btn_background"
+                android:text="@string/Approve"
+                android:textColor="@color/white"
+                android:textSize="@dimen/small_text"
+                android:visibility="gone"/>
+
+            <com.mv.Widgets.MyFontButton
+                android:id="@+id/btn_reject"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/light_grey_btn_background"
+                android:text="@string/Reject"
+                android:textColor="@color/white"
+                android:textSize="@dimen/small_text" />
+
+
+        </LinearLayout>
     </RelativeLayout>
 </layout>

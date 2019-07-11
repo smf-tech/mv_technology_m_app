@@ -27,12 +27,16 @@ public class PreferenceHelper {
     public static final String NOTIFICATION = "notification";
     public static final String MOBILEAPPVERSION = "mobileappversion";
     public static final String UserData = "UserData";
-
+    public static final String FirebaseTopicRoleWise = "UserRoleWise";
+    public static final String FirebaseTopicDistrictWise = "UserDistrictWise";
+    public static final String FirebaseTopicDistrictRoleWise = "UserDistrictRoleWise";
     public static final String AccessToken = "AccessToken";
     public static final String InstanceUrl = "InstanceUrl";
     public static final String SalesforceUserId = "SalesforceUserId";
     public static final String SalesforceUsername = "SalesforceUsername";
     public static final String SalesforcePassword = "SalesforcePassword";
+    public static final String FirebaseImageUrl = "FirebaseImageUrl";
+    public static final String isDeleteBackendForm = "isDeleteBackendForm";
 
     public PreferenceHelper(Context cntx) {
         pref = cntx.getSharedPreferences(PREFER_NAME, Context.MODE_PRIVATE);

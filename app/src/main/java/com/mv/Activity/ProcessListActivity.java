@@ -47,12 +47,14 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     private ArrayList<String> idList;
     private ArrayList<Task> taskList = new ArrayList<>();
     private List<TaskContainerModel> resultList = new ArrayList<>();
+    public List<TaskContainerModel> tempList = new ArrayList<>();
 
     private PreferenceHelper preferenceHelper;
     private ProcessListAdapter mAdapter;
     private String processId, processName;
     private TaskContainerModel taskContainerModel;
     private ActivityProcessListBinding binding;
+    String sortString = "Pending";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,9 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_process_list);
         binding.setProcesslist(this);
+        binding.btnPending.setOnClickListener(this);
+        binding.btnApprove.setOnClickListener(this);
+        binding.btnReject.setOnClickListener(this);
 
         if (getIntent().getExtras() != null) {
             processId = getIntent().getExtras().getString(Constants.PROCESS_ID);
@@ -115,9 +120,21 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         LocationSelectionActity.selectedVillage = User.getCurrentUser(getApplicationContext()).getMvUser().getVillage();
         LocationSelectionActity.selectedSchool = User.getCurrentUser(getApplicationContext()).getMvUser().getSchool_Name();
 
+        binding.btnPending.setBackgroundResource(R.drawable.selected_btn_background);
+    //    binding.btnApprove.setBackgroundResource(R.drawable.light_grey_btn_background);
+        binding.btnReject.setBackgroundResource(R.drawable.light_grey_btn_background);
+
         resultList.clear();
         resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(processId, Constants.TASK_ANSWER);
         getAllProcessData();
+    }
+
+    public void refreshListview(String status){
+        tempList.clear();
+        resultList.clear();
+        resultList = AppDatabase.getAppDatabase(ProcessListActivity.this).userDao().getTask(processId, Constants.TASK_ANSWER);
+        setRecyclerView(status);
+    //    getAllProcessData();
     }
 
     public void getAllProcessData() {
@@ -133,9 +150,10 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                     binding.fabAddProcess.setVisibility(View.GONE);
                 }
             }
+            setRecyclerView("Pending");
 
-            mAdapter = new ProcessListAdapter(resultList, ProcessListActivity.this, processName);
-            binding.rvProcess.setAdapter(mAdapter);
+//            mAdapter = new ProcessListAdapter(resultList, ProcessListActivity.this, processName);
+//            binding.rvProcess.setAdapter(mAdapter);
         }
     }
 
@@ -158,36 +176,67 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                 finish();
                 overridePendingTransition(R.anim.left_in, R.anim.right_out);
                 break;
+            case R.id.btn_pending:
+                sortString = "Pending";
+                binding.btnPending.setBackgroundResource(R.drawable.selected_btn_background);
+            //    binding.btnApprove.setBackgroundResource(R.drawable.light_grey_btn_background);
+                binding.btnReject.setBackgroundResource(R.drawable.light_grey_btn_background);
+                setRecyclerView(sortString);
+                break;
+
+            case R.id.btn_approve:
+                sortString = "Approved";
+                binding.btnPending.setBackgroundResource(R.drawable.light_grey_btn_background);
+                binding.btnApprove.setBackgroundResource(R.drawable.selected_btn_background);
+                binding.btnReject.setBackgroundResource(R.drawable.light_grey_btn_background);
+                setRecyclerView(sortString);
+                break;
+
+            case R.id.btn_reject:
+                sortString = "Rejected";
+                binding.btnPending.setBackgroundResource(R.drawable.light_grey_btn_background);
+            //    binding.btnApprove.setBackgroundResource(R.drawable.light_grey_btn_background);
+                binding.btnReject.setBackgroundResource(R.drawable.selected_btn_background);
+                setRecyclerView(sortString);
+                break;
         }
     }
 
     public void onAddClick() {
         //get latest question
         preferenceHelper.insertString(Constants.UNIQUE, "");
-        if (Utills.isConnected(this)) {
-            getAllTask();
-        } else {
-            //fill new forms
-            preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
 
-            //get  process list only type is question (exclude answer it would always 1 record for on process  )
-            TaskContainerModel taskContainerModel = AppDatabase.getAppDatabase(
-                    ProcessListActivity.this).userDao().getQuestion(processId, Constants.TASK_QUESTION);
+        preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
+        Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
+        openClass.putExtra(Constants.PROCESS_ID, processId);
+        openClass.putExtra(Constants.PROCESS_NAME, processName);
+        openClass.putExtra("newForm", "newForm");
+        startActivity(openClass);
 
-            if (taskContainerModel != null) {
-                Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
-                openClass.putExtra(Constants.PROCESS_ID, taskList);
-                openClass.putExtra(Constants.PROCESS_NAME, processName);
-                openClass.putParcelableArrayListExtra(Constants.PROCESS_ID,
-                        Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
-                openClass.putExtra(Constants.PICK_LIST_ID, taskContainerModel.getProAnsListString());
-
-                startActivity(openClass);
-                overridePendingTransition(R.anim.right_in, R.anim.left_out);
-            } else {
-                Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
-            }
-        }
+//        if (Utills.isConnected(this)) {
+//            getAllTask();
+//        } else {
+//            //fill new forms
+//            preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
+//
+//            //get  process list only type is question (exclude answer it would always 1 record for on process  )
+//            TaskContainerModel taskContainerModel = AppDatabase.getAppDatabase(
+//                    ProcessListActivity.this).userDao().getQuestion(processId, Constants.TASK_QUESTION);
+//
+//            if (taskContainerModel != null) {
+//                Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
+//                openClass.putExtra(Constants.PROCESS_ID, taskList);
+//                openClass.putExtra(Constants.PROCESS_NAME, processName);
+//                openClass.putParcelableArrayListExtra(Constants.PROCESS_ID,
+//                        Utills.convertStringToArrayList(taskContainerModel.getTaskListString()));
+//                openClass.putExtra(Constants.PICK_LIST_ID, taskContainerModel.getProAnsListString());
+//
+//                startActivity(openClass);
+//                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+//            } else {
+//                Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
+//            }
+//        }
     }
 
     @Override
@@ -201,7 +250,8 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
         String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
                 + Constants.GetprocessAnswerDataUrl + "?processId=" + processId + "&UserId="
                 + User.getCurrentUser(this).getMvUser().getId()
-                + "&language=" + preferenceHelper.getString(Constants.LANGUAGE);
+                + "&language=" + preferenceHelper.getString(Constants.LANGUAGE)
+                + "&requestFrom=SS";
 
         apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -326,6 +376,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                 taskContainerModel.setIsSave(Constants.PROCESS_STATE_SUBMIT);
                                 taskContainerModel.setHeaderPosition(sb.toString());
                                 taskContainerModel.setTaskTimeStamp(taskList.get(0).getTimestamp__c());
+                                taskContainerModel.setStatus(taskList.get(0).getStatus());
 
                                 //task is with answer
                                 taskContainerModel.setTaskType(Constants.TASK_ANSWER);
@@ -352,12 +403,12 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                                     binding.fabAddProcess.setVisibility(View.GONE);
                                 }
                             }
-
+                            setRecyclerView("Pending");
 //                            if (mAdapter != null) {
 //                                mAdapter.notifyDataSetChanged();
 //                            } else {
-                                mAdapter = new ProcessListAdapter(resultList, ProcessListActivity.this, processName);
-                                binding.rvProcess.setAdapter(mAdapter);
+//                                mAdapter = new ProcessListAdapter(resultList, ProcessListActivity.this, processName);
+//                                binding.rvProcess.setAdapter(mAdapter);
 //                            }
                         }
                     }
@@ -371,6 +422,22 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                 Utills.hideProgressDialog();
             }
         });
+    }
+
+    private void setRecyclerView(String Status) {
+        tempList.clear();
+
+        for (int i = 0; i < resultList.size(); i++) {
+            if (resultList.get(i).getTaskListString() != null) {
+                if (resultList.get(i).getStatus().equals(Status)) {
+                    tempList.add(resultList.get(i));
+                }
+            }
+        }
+
+        mAdapter = new ProcessListAdapter(tempList, ProcessListActivity.this, processName);
+        binding.rvProcess.setAdapter(mAdapter);
+        mAdapter.notifyDataSetChanged();
     }
 
     private void getAllTask() {
@@ -547,7 +614,7 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
     }
 
     //Delete post from salesforece and from local database
-    public void deleteForm(TaskContainerModel tcm, int position) {
+    public void deleteForm(TaskContainerModel tcm, int position, String status) {
         if (Utills.isConnected(this)) {
             Utills.showProgressDialog(this);
 
@@ -562,8 +629,10 @@ public class ProcessListActivity extends AppCompatActivity implements View.OnCli
                     AppDatabase.getAppDatabase(mContext).userDao().deleteSingleTask(tcm.getUnique_Id(), tcm.getMV_Process__c());
 
                     // Removed entry from db
-                    resultList.remove(position);
-                    mAdapter.notifyDataSetChanged();
+//                    resultList.remove(position);
+//                    tempList.remove(position);
+//                    mAdapter.notifyDataSetChanged();
+                    refreshListview(status);
                 }
 
                 @Override

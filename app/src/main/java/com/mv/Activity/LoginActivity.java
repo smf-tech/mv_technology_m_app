@@ -88,8 +88,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (!Utills.isPhonePermissionGranted(this)) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.CALL_PHONE,
-                        Manifest.permission.READ_PHONE_STATE,
+                requestPermissions(new String[]{
                         Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.PHONE_PERMISSION_REQUEST);
             }
         }
@@ -352,12 +351,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         String msg = intent.getStringExtra("get_msg");
                         if (msg != null && !msg.isEmpty()) {
                             msg = msg.replace("\n", "");
-
-                            String body = msg.substring(msg.lastIndexOf(":") + 1, msg.length());
-                            body=body.substring(0,body.lastIndexOf(" "));
-                            Log.d("OTP", body);
-                            binding.edtOtp.setText(body);
-                            validateOTP();
+                            String body="";
+                            if(msg.contains(":")){
+                                body = msg.substring(msg.lastIndexOf(":") + 1, msg.length());
+                                if(msg.contains(" ")){
+                                    body = body.substring(0,body.lastIndexOf(" "));
+                                    Log.d("OTP", body);
+                                    binding.edtOtp.setText(body);
+                                    validateOTP();
+                                }
+                            }
                         }
                         if (yourCountDownTimer != null) {
                             yourCountDownTimer.cancel();

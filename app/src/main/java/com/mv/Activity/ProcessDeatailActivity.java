@@ -1,6 +1,7 @@
 package com.mv.Activity;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -8,11 +9,22 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
+import android.media.ExifInterface;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
@@ -21,6 +33,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -34,6 +47,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.SettingsClient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -53,13 +73,20 @@ import com.mv.Utils.GPSTracker;
 import com.mv.Utils.LocaleManager;
 import com.mv.Utils.PreferenceHelper;
 import com.mv.Utils.Utills;
+import com.mv.Widgets.TouchImageView;
 import com.soundcloud.android.crop.Crop;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -72,6 +99,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.google.android.gms.location.LocationServices.getFusedLocationProviderClient;
+
 public class ProcessDeatailActivity extends AppCompatActivity implements View.OnClickListener {
 
     private PreferenceHelper preferenceHelper;
@@ -79,15 +108,16 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     public ArrayList<ImageData> imageDataList = new ArrayList<>();
     private String pickListApiFieldNames;
     private GPSTracker gps;
+    private Location location;
     private Activity context;
 
-    private Button submit;
+    private Button submit,save;
     private ProcessDetailAdapter adapter;
     private RecyclerView rvProcessDetail;
 
     public String selectedStructure = "";
     private String timestamp;
-    private String processStatus, processName;
+    private String processStatus, processName, processId;
     private String comment, imageName;
     private String msg;
     private String id = "";
@@ -101,6 +131,9 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     private Uri outputUri = null;
     private Uri finalUri = null;
     TaskContainerModel taskContainerModel = new TaskContainerModel();
+    private long UPDATE_INTERVAL = 600 * 1000;  /* 10 secs */
+    File imageFile1;
+    String imageFilePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,24 +145,94 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         overridePendingTransition(R.anim.right_in, R.anim.left_out);
         id = String.valueOf(Calendar.getInstance().getTimeInMillis());
 
-        if (getIntent().getSerializableExtra(Constants.PROCESS_ID) != null) {
-            taskList = getIntent().getParcelableArrayListExtra(Constants.PROCESS_ID);
-        }
+        submit = (Button) findViewById(R.id.btn_submit);
+        submit.setOnClickListener(this);
 
-        if (getIntent().getStringExtra(Constants.PICK_LIST_ID) != null) {
-            pickListApiFieldNames = getIntent().getStringExtra(Constants.PICK_LIST_ID);
-        }
+        save = (Button) findViewById(R.id.btn_save);
+        save.setOnClickListener(this);
+
+        taskList = new ArrayList<>();
 
         if (getIntent().getStringExtra(Constants.PROCESS_NAME) != null) {
             processName = getIntent().getStringExtra(Constants.PROCESS_NAME);
         }
+        if (getIntent().getStringExtra(Constants.PROCESS_ID) != null) {
+            processId=getIntent().getStringExtra(Constants.PROCESS_ID);
+        }
+        if (getIntent().getSerializableExtra("newForm") != null) {
+            if (Utills.isConnected(this)) {
+                Utills.showProgressDialog(this, getString(R.string.Loading_Process), getString(R.string.progress_please_wait));
+                getAllTask();
+            } else {
+                //fill new forms
+             //   preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
+                //get  process list only type is question (exclude answer it would always 1 record for on process  )
+                TaskContainerModel taskContainerModel = AppDatabase.getAppDatabase(
+                        ProcessDeatailActivity.this).userDao().getQuestion(processId, Constants.TASK_QUESTION);
 
+                if (taskContainerModel != null) {
+
+                    taskList = Utills.convertStringToArrayList(taskContainerModel.getTaskListString());
+                    pickListApiFieldNames =  taskContainerModel.getProAnsListString();
+                    setAdapter();
+                } else {
+                    Utills.showToast(getString(R.string.error_no_internet), getApplicationContext());
+                }
+            }
+        } else {
+            if (getIntent().getSerializableExtra(Constants.PROCESS_ID) != null) {
+                taskList = getIntent().getParcelableArrayListExtra(Constants.PROCESS_ID);
+//                if (taskList != null && taskList.get(0).getId() != null && taskList.get(0).getIsSave().equals("false")) {
+//                    submit.setVisibility(View.GONE);
+//                    save.setVisibility(View.GONE);
+//                } else {
+//                    submit.setVisibility(View.VISIBLE);
+//                    save.setVisibility(View.VISIBLE);
+//                }
+                if (taskList.size() > 0) {
+                    if (taskList != null && taskList.get(0).getId() != null && !preferenceHelper.getBoolean(Constants.IS_EDITABLE) && taskList.get(0).getIsSave().equals("false")) {
+                        submit.setVisibility(View.GONE);
+                        save.setVisibility(View.GONE);
+                    } else {
+                        submit.setVisibility(View.VISIBLE);
+                        save.setVisibility(View.VISIBLE);
+                    }
+                }
+            }
+//            if (getIntent().getStringExtra(Constants.PICK_LIST_ID) != null) {
+//            }
+            pickListApiFieldNames = getProAnsList();
+            setAdapter();
+        }
+
+        startLocationUpdates();
         initViews();
+    }
+
+    String getProAnsList(){
+        String filePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV";
+        File file = new File(filePath,"ProAnsListString.txt");
+        StringBuilder text = new StringBuilder();
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                text.append(line);
+                text.append('\n');
+            }
+            br.close();
+        }
+        catch (IOException e) {
+            Log.e("exeption",e.getMessage());
+        }
+
+        return(text.toString());
     }
 
     @Override
     public void onBackPressed() {
-        if (taskList.get(0).getId() == null || taskList.get(0).getIsSave().equals("true")) {
+        if (taskList.size()>0 && (taskList.get(0).getId() == null || taskList.get(0).getIsSave().equals("true"))) {
             showPopUp();
         } else {
             finish();
@@ -170,6 +273,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         Long currentTime = System.currentTimeMillis();
         taskContainerModel.setTaskTimeStamp(currentTime.toString());
         taskContainerModel.setProAnsListString(pickListApiFieldNames);
+        taskContainerModel.setStatus("Pending");
 
         if (preferenceHelper.getBoolean(Constants.NEW_PROCESS)) {
             //if process is new  INSERT it with timestamp as id
@@ -193,24 +297,206 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
     }
 
+    private void getAllTask() {
+        ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+        String url = preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+                + Constants.GetprocessTaskUrl + "?Id=" + processId
+                + "&language=" + preferenceHelper.getString(Constants.LANGUAGE)
+                + "&userId=" + User.getCurrentUser(this).getMvUser().getId();
+
+        apiService.getSalesForceData(url).enqueue(new Callback<ResponseBody>() {
+
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                try {
+                    if (response.body() != null) {
+                        String data = response.body().string();
+                        if (data.length() > 0) {
+                            JSONObject jsonObject = new JSONObject(data);
+                            JSONArray resultArray = jsonObject.getJSONArray("tsk");
+
+                            //list of task
+                            taskContainerModel = new TaskContainerModel();
+                            User user = User.getCurrentUser(getApplicationContext());
+                            StringBuilder sb = new StringBuilder();
+                            String prefix = "";
+
+                            for (int i = 0; i < resultArray.length(); i++) {
+                                JSONObject resultJsonObj = resultArray.getJSONObject(i);
+
+                                //task is each task detail
+                                Task processList = new Task();
+                                processList.setMV_Task__c_Id(resultJsonObj.getString("id"));
+                                processList.setName(resultJsonObj.getString("name"));
+                                processList.setIs_Completed__c(resultJsonObj.getBoolean("isCompleted"));
+
+                                processList.setIsHeader(resultJsonObj.getString("isHeader"));
+                                processList.setIs_Response_Mnadetory__c(resultJsonObj.getBoolean("isResponseMnadetory"));
+
+                                if (!resultJsonObj.getString("lanTsaskText").equals("null")) {
+                                    processList.setTask_Text___Lan_c(resultJsonObj.getString("lanTsaskText"));
+                                } else {
+                                    processList.setTask_Text___Lan_c(resultJsonObj.getString("taskText"));
+                                }
+
+                                if (resultJsonObj.has("status")) {
+                                    processList.setStatus__c(resultJsonObj.getString("status"));
+                                }
+                                if (resultJsonObj.has("ValidationRule")) {
+                                    processList.setValidationRule(resultJsonObj.getString("ValidationRule"));
+                                }
+                                if (resultJsonObj.has("MinRange")) {
+                                    processList.setMinRange(resultJsonObj.getString("MinRange"));
+                                }
+                                if (resultJsonObj.has("MaxRange")) {
+                                    processList.setMaxRange(resultJsonObj.getString("MaxRange"));
+                                }
+                                if (resultJsonObj.has("LimitValue")) {
+                                    processList.setLimitValue(resultJsonObj.getString("LimitValue"));
+                                }
+
+                                if (resultJsonObj.has("isEditable")) {
+                                    processList.setIsEditable__c(resultJsonObj.getString("isEditable"));
+                                }
+
+                                processList.setPicklist_Value_Lan__c(resultJsonObj.getString("lanPicklistValue"));
+                                if (resultJsonObj.has("Process_Answer_Status__c")) {
+                                    processList.setProcess_Answer_Status__c(resultJsonObj.getString("Process_Answer_Status__c"));
+                                }
+
+                                if (resultJsonObj.has("picklistValue")) {
+                                    processList.setPicklist_Value__c(resultJsonObj.getString("picklistValue"));
+                                }
+
+                                if (!resultJsonObj.getString("locationLevel").equals("null")) {
+                                    processList.setLocationLevel(resultJsonObj.getString("locationLevel"));
+
+                                    switch (resultJsonObj.getString("locationLevel")) {
+                                        case "State":
+                                            processList.setTask_Response__c(user.getMvUser().getState());
+                                            break;
+
+                                        case "District":
+                                            processList.setTask_Response__c(user.getMvUser().getDistrict());
+                                            break;
+
+                                        case "Taluka":
+                                            processList.setTask_Response__c(user.getMvUser().getTaluka());
+                                            break;
+
+                                        case "Cluster":
+                                            processList.setTask_Response__c(user.getMvUser().getCluster());
+                                            break;
+
+                                        case "Village":
+                                            processList.setTask_Response__c(user.getMvUser().getVillage());
+                                            break;
+
+                                        case "School":
+                                            processList.setTask_Response__c(user.getMvUser().getSchool_Name());
+                                            break;
+                                    }
+
+                                    if (resultJsonObj.getString("isHeader").equals("true")) {
+                                        if (!processList.getTask_Response__c().equals("Select")) {
+                                            sb.append(prefix);
+                                            prefix = " , ";
+                                            sb.append(processList.getTask_Response__c());
+                                        }
+                                    }
+                                }
+
+                                if (resultJsonObj.has("referenceField")) {
+                                    processList.setReferenceField(resultJsonObj.getString("referenceField"));
+                                }
+                                if (resultJsonObj.has("filterFields")) {
+                                    processList.setFilterFields(resultJsonObj.getString("filterFields"));
+                                }
+                                if (resultJsonObj.has("aPIFieldName")) {
+                                    processList.setaPIFieldName(resultJsonObj.getString("aPIFieldName"));
+                                }
+
+                                processList.setIsExactLength(resultJsonObj.getBoolean("isExactLength"));
+                                processList.setMV_Process__c(resultJsonObj.getString("mVProcess"));
+                                processList.setTask_Text__c(resultJsonObj.getString("taskText"));
+                                processList.setTask_type__c(resultJsonObj.getString("tasktype"));
+                                processList.setValidation(resultJsonObj.getString("validaytionOnText"));
+                                processList.setIsSave(Constants.PROCESS_STATE_SAVE);
+                                taskList.add(processList);
+                            }
+
+                            // each task list  convert to String and stored in process task filled
+                            taskContainerModel.setTaskListString(Utills.convertArrayListToString(taskList));
+                            taskContainerModel.setHeaderPosition(sb.toString());
+                            taskContainerModel.setIsSave(Constants.PROCESS_STATE_SAVE);
+
+                            //task without answer
+                            taskContainerModel.setTaskType(Constants.TASK_QUESTION);
+                            taskContainerModel.setMV_Process__c(processId);
+
+                            //delete old question
+                            AppDatabase.getAppDatabase(getApplicationContext())
+                                    .userDao().deleteQuestion(processId, Constants.TASK_QUESTION);
+
+                            //add new question
+                            AppDatabase.getAppDatabase(getApplicationContext()).userDao().insertTask(taskContainerModel);
+
+                            JSONArray pickListArray = jsonObject.getJSONArray("proAnsList");
+
+                            pickListApiFieldNames = pickListArray.toString();
+                            Utills.hideProgressDialog();
+                            setAdapter();
+                            if (taskList.size() > 0) {
+                                if (taskList != null && taskList.get(0).getId() != null && !preferenceHelper.getBoolean(Constants.IS_EDITABLE) && taskList.get(0).getIsSave().equals("false")) {
+                                    submit.setVisibility(View.GONE);
+                                    save.setVisibility(View.GONE);
+                                } else {
+                                    submit.setVisibility(View.VISIBLE);
+                                    save.setVisibility(View.VISIBLE);
+                                }
+//                                preferenceHelper.insertBoolean(Constants.NEW_PROCESS, true);
+//                                Intent openClass = new Intent(mContext, ProcessDeatailActivity.class);
+//                                openClass.putExtra(Constants.PICK_LIST_ID, pickListArray.toString());
+//                                openClass.putExtra(Constants.PROCESS_NAME, processName);
+//                                openClass.putParcelableArrayListExtra(Constants.PROCESS_ID, taskList);
+//                                startActivity(openClass);
+//                                overridePendingTransition(R.anim.right_in, R.anim.left_out);
+                            } else {
+                                Utills.showToast(getString(R.string.No_Task), ProcessDeatailActivity.this);
+                            }
+                        }
+                    }
+                } catch (JSONException | IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Utills.hideProgressDialog();
+                Utills.showToast(getString(R.string.No_Task), ProcessDeatailActivity.this);
+            }
+        });
+    }
+
+    void setAdapter(){
+        adapter = new ProcessDetailAdapter(this, taskList, pickListApiFieldNames);
+
+        rvProcessDetail = (RecyclerView) findViewById(R.id.rv_process_detail);
+        rvProcessDetail.setNestedScrollingEnabled(false);
+        rvProcessDetail.setHasFixedSize(true);
+        rvProcessDetail.setHasFixedSize(true);
+        rvProcessDetail.setLayoutManager(new LinearLayoutManager(this));
+        rvProcessDetail.setAdapter(adapter);
+    }
+
     private void initViews() {
         setActionbar(processName);
 
         gps = new GPSTracker(ProcessDeatailActivity.this);
-        rvProcessDetail = (RecyclerView) findViewById(R.id.rv_process_detail);
-        rvProcessDetail.setNestedScrollingEnabled(false);
-        rvProcessDetail.setHasFixedSize(true);
-        adapter = new ProcessDetailAdapter(this, taskList, pickListApiFieldNames);
-        rvProcessDetail.setHasFixedSize(true);
-        rvProcessDetail.setLayoutManager(new LinearLayoutManager(this));
-        rvProcessDetail.setAdapter(adapter);
+
         timestamp = String.valueOf(Calendar.getInstance().getTimeInMillis());
-
-        submit = (Button) findViewById(R.id.btn_submit);
-        submit.setOnClickListener(this);
-
-        Button save = (Button) findViewById(R.id.btn_save);
-        save.setOnClickListener(this);
 
         Button approve = (Button) findViewById(R.id.btn_approve);
         approve.setOnClickListener(this);
@@ -226,17 +512,60 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         } else if (preferenceHelper.getString(Constants.PROCESS_TYPE).equals(Constants.MANGEMENT_PROCESS)) {
             approve.setVisibility(View.GONE);
             reject.setVisibility(View.GONE);
-            if (taskList.get(0).getId() != null && taskList.get(0).getIsSave().equals("false")) {
-                submit.setVisibility(View.GONE);
-                save.setVisibility(View.GONE);
-            } else {
-                submit.setVisibility(View.VISIBLE);
-                save.setVisibility(View.VISIBLE);
-            }
+//            if (taskList != null && taskList.get(0).getId() != null && !preferenceHelper.getBoolean(Constants.IS_EDITABLE)) {
+//                submit.setVisibility(View.GONE);
+//                save.setVisibility(View.GONE);
+//            } else {
+//                submit.setVisibility(View.VISIBLE);
+//                save.setVisibility(View.VISIBLE);
+//            }
         }
 
         ImageView img_add = (ImageView) findViewById(R.id.img_add);
         img_add.setOnClickListener(this);
+    }
+
+    // Trigger new location updates at interval
+    private void startLocationUpdates() {
+        if (!Utills.isLocationPermissionGranted(this)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE}, Constants.LOCATION_PERMISSION_REQUEST);
+            }
+        } else {
+            getLocationProviderClient();
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    private void getLocationProviderClient() {
+        // Create the location request to start receiving updates
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+
+        // Create LocationSettingsRequest object using location request
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder();
+        builder.addLocationRequest(mLocationRequest);
+        LocationSettingsRequest locationSettingsRequest = builder.build();
+
+        // Check whether location settings are satisfied
+        SettingsClient settingsClient = LocationServices.getSettingsClient(this);
+        settingsClient.checkLocationSettings(locationSettingsRequest);
+
+        // new Google API SDK v11 uses getFusedLocationProviderClient(this)
+        getFusedLocationProviderClient(this).requestLocationUpdates(mLocationRequest, new LocationCallback() {
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        // do work here
+                        onLocationChanged(locationResult.getLastLocation());
+                    }
+                },
+                Looper.myLooper());
+    }
+
+    private void onLocationChanged(Location location) { this.location = location;
     }
 
     private void setActionbar(String Title) {
@@ -349,11 +678,7 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.img_back:
-                if (taskList.get(0).getId() == null || taskList.get(0).getIsSave().equals("true")) {
-                    showPopUp();
-                } else {
-                    finish();
-                }
+                onBackPressed();
                 break;
 
             case R.id.btn_submit:
@@ -454,10 +779,25 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
             if (preferenceHelper.getBoolean(Constants.NEW_PROCESS)) {
                 taskList.get(i).setId(null);
+            }else {
+                if (taskList.get(i).getId()!= null && taskList.get(i).getId().equalsIgnoreCase("Rejected_Comment")) {
+                    taskList.remove(i);
+                    break;
+                }
             }
 
             if (taskList.get(i).getIs_Response_Mnadetory__c()) {
                 if(taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.CHECK_BOX) && taskList.get(i).getTask_Response__c().equals("false")){
+                    mandatoryFlag = true;
+                    msg = "please check " + taskList.get(i).getTask_Text__c();
+                    break;
+                } else if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_PICK_LIST)
+                        && taskList.get(i).getTask_Response__c().equals("Select")) {
+                    mandatoryFlag = true;
+                    msg = "please check " + taskList.get(i).getTask_Text__c();
+                    break;
+                } else if (taskList.get(i).getTask_type__c().equalsIgnoreCase(Constants.TASK_SELECTION)
+                        && taskList.get(i).getTask_Response__c().equals("Select")) {
                     mandatoryFlag = true;
                     msg = "please check " + taskList.get(i).getTask_Text__c();
                     break;
@@ -599,6 +939,10 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
 
             JSONArray jsonArray = new JSONArray(json);
             JSONObject jsonObject = new JSONObject();
+            if(location!=null){
+                jsonObject.put("formLat", location.getLatitude());
+                jsonObject.put("formLong", location.getLongitude());
+            }
             jsonObject.put("listtaskanswerlist", jsonArray);
 
             ServiceRequest apiService = ApiClient.getClientWitHeader(context).create(ServiceRequest.class);
@@ -736,17 +1080,23 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                         }
                     }
                 } catch (Exception e) {
-                    deleteSalesForceData();
-                //    Utills.hideProgressDialog();
-                //    Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                  // check SS_firebase_delete_backend_form value....if its true, DELETE submitted form else DO NOT DELETE.
+                  if(preferenceHelper.getString(preferenceHelper.isDeleteBackendForm).equalsIgnoreCase("true")){
+                      deleteSalesForceData();
+                  }else{
+                      finish();
+                  }
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                deleteSalesForceData();
-            //    Utills.hideProgressDialog();
-            //    Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
+                if(preferenceHelper.getString(preferenceHelper.isDeleteBackendForm).equalsIgnoreCase("true")) {
+                    deleteSalesForceData();
+                }
+                else{
+                    finish();
+                }
             }
         });
     }
@@ -755,8 +1105,11 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     //    Utills.showProgressDialog(this);
 
         ServiceRequest apiService = ApiClient.getClientWitHeader(this).create(ServiceRequest.class);
+//        apiService.getSalesForceData(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
+//                + Constants.DeleteTaskAnswerUrl + uniqueId).enqueue(new Callback<ResponseBody>() {
         apiService.getSalesForceData(preferenceHelper.getString(PreferenceHelper.InstanceUrl)
-                + Constants.DeleteTaskAnswerUrl + uniqueId).enqueue(new Callback<ResponseBody>() {
+                + "/services/apexrest/deleteProcessAnswer?processAnswerId="
+                + uniqueId).enqueue(new Callback<ResponseBody>() {
 
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -767,7 +1120,6 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
                     finish();
                 } catch (Exception e) {
                     Utills.hideProgressDialog();
-                //    Utills.showToast(getString(R.string.error_something_went_wrong), getApplicationContext());
                     Utills.showToast(getString(R.string.not_Submitted_Slow_Interenet), getApplicationContext());
                     finish();
                 }
@@ -792,9 +1144,9 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == Constants.CHOOSE_IMAGE_FROM_CAMERA && resultCode == RESULT_OK) {
             try {
-                String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imageName + ".jpg";
-                File imageFile = new File(imageFilePath);
-                finalUri = Uri.fromFile(imageFile);
+                imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imageName + ".jpg";
+                imageFile1 = new File(imageFilePath);
+                finalUri = Uri.fromFile(imageFile1);
                 Crop.of(outputUri, finalUri).start(this);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -803,10 +1155,10 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             if (data != null) {
                 try {
                     outputUri = data.getData();
-                    String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imageName + ".jpg";
-                    File imageFile = new File(imageFilePath);
-                    finalUri = Uri.fromFile(imageFile);
-                    Crop.of(outputUri, finalUri).asSquare().start(this);
+                    imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imageName + ".jpg";
+                    imageFile1 = new File(imageFilePath);
+                    finalUri = Uri.fromFile(imageFile1);
+                    Crop.of(outputUri, finalUri).start(this);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -815,7 +1167,8 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             if (finalUri != null) {
                 outputUri = null;
             }
-
+            decodeFile(imageFile1);
+        //    compressImage(imageFilePath);
             ImageData id = new ImageData();
             id.setPosition(imagePosition);
             id.setImageUri(finalUri);
@@ -833,6 +1186,24 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
         }
     }
 
+    public String saveImage(Bitmap myBitmap) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        try {
+            FileOutputStream fo = new FileOutputStream(imageFile1);
+            fo.write(bytes.toByteArray());
+            MediaScannerConnection.scanFile(this,
+                    new String[]{imageFile1.getPath()},
+                    new String[]{"image/jpg"}, null);
+            fo.close();
+            Log.d("TAG", "File Saved::--->" + imageFile1.getAbsolutePath());
+
+            return imageFile1.getAbsolutePath();
+        } catch (IOException e1) {
+            e1.printStackTrace();
+        }
+        return "";
+    }
     private void sendApprovedData() {
         if (Utills.isConnected(this)) {
             try {
@@ -880,25 +1251,46 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
     }
 
     public void showDialogFullImage(String imageName){
-        final Dialog dialog = new Dialog(ProcessDeatailActivity.this);
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setCancelable(false);
-        dialog.setContentView(R.layout.dialog_full_image);
 
-        ImageView iv_image = (ImageView) dialog.findViewById(R.id.iv_image);
-        Glide.with(ProcessDeatailActivity.this)
-                .load(Constants.IMAGEURL + imageName + ".png")
-                .placeholder(ProcessDeatailActivity.this.getResources().getDrawable(R.drawable.ic_add_photo))
-                .into(iv_image);
-        ImageView iv_close = (ImageView) dialog.findViewById(R.id.iv_close);
-        iv_close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+//        final Dialog dialog = new Dialog(ProcessDeatailActivity.this);
+//        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        dialog.setCancelable(false);
+//        dialog.setContentView(R.layout.dialog_full_image);
+//
+//        ImageView iv_image = (ImageView) dialog.findViewById(R.id.iv_image);
+//        Glide.with(ProcessDeatailActivity.this)
+//                .load(Constants.IMAGEURL + imageName + ".png")
+//                .placeholder(ProcessDeatailActivity.this.getResources().getDrawable(R.drawable.ic_add_photo))
+//                .into(iv_image);
+//        ImageView iv_close = (ImageView) dialog.findViewById(R.id.iv_close);
+//        iv_close.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                dialog.dismiss();
+//            }
+//        });
+//
+//        dialog.show();
 
-        dialog.show();
+        LayoutInflater inflater = LayoutInflater.from(context);
+        final View view = inflater.inflate(R.layout.image_zoom_dialog, null);
+        final ImageView close_dialog = view.findViewById(R.id.close_dialog);
+        TouchImageView img_post = view.findViewById(R.id.img_post);
+        Glide.with(context)
+                .load(preferenceHelper.getString(preferenceHelper.FirebaseImageUrl) + imageName + ".png")
+                .placeholder(context.getResources().getDrawable(R.drawable.mulya_bg))
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(img_post);
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(view.getContext());
+        alertDialog.setView(view);
+        AlertDialog alertD = alertDialog.create();
+
+        if (alertD.getWindow() != null) {
+            alertD.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        }
+        close_dialog.setOnClickListener(v -> alertD.dismiss());
+        alertD.show();
 
     }
 
@@ -921,5 +1313,211 @@ public class ProcessDeatailActivity extends AppCompatActivity implements View.On
             }
         }
         return super.dispatchTouchEvent(event);
+    }
+
+    private Bitmap decodeFile(File f) {
+        Bitmap b = null;
+
+        //Decode image size
+        BitmapFactory.Options o = new BitmapFactory.Options();
+        o.inJustDecodeBounds = true;
+
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(f);
+            BitmapFactory.decodeStream(fis, null, o);
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        int IMAGE_MAX_SIZE = 1024;
+        int scale = 1;
+        if (o.outHeight > IMAGE_MAX_SIZE || o.outWidth > IMAGE_MAX_SIZE) {
+            scale = (int) Math.pow(2, (int) Math.ceil(Math.log(IMAGE_MAX_SIZE /
+                    (double) Math.max(o.outHeight, o.outWidth)) / Math.log(0.5)));
+        }
+
+        //Decode with inSampleSize
+        BitmapFactory.Options o2 = new BitmapFactory.Options();
+        o2.inSampleSize = scale;
+        try {
+            fis = new FileInputStream(f);
+            b = BitmapFactory.decodeStream(fis, null, o2);
+            fis.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        String imageFilePath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/MV/Image/" + imageName + ".jpg";
+        imageFile1 = new File(imageFilePath);
+        try {
+            FileOutputStream out = new FileOutputStream(imageFile1);
+            b.compress(Bitmap.CompressFormat.PNG, 40, out);
+            out.flush();
+            out.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return b;
+    }
+
+    public String compressImage(String imageUri) {
+
+        String filePath = getRealPathFromURI(imageUri);
+        Bitmap scaledBitmap = null;
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+
+//      by setting this field as true, the actual bitmap pixels are not loaded in the memory. Just the bounds are loaded. If
+//      you try the use the bitmap here, you will get null.
+        options.inJustDecodeBounds = true;
+        Bitmap bmp = BitmapFactory.decodeFile(filePath, options);
+
+        int actualHeight = options.outHeight;
+        int actualWidth = options.outWidth;
+
+//      max Height and width values of the compressed image is taken as 816x612
+        try {
+            float maxHeight = 816.0f;
+            float maxWidth = 612.0f;
+            float imgRatio = actualWidth / actualHeight;
+            float maxRatio = maxWidth / maxHeight;
+//      width and height values are set maintaining the aspect ratio of the image
+            if (actualHeight > maxHeight || actualWidth > maxWidth) {
+                if (imgRatio < maxRatio) {
+                    imgRatio = maxHeight / actualHeight;
+                    actualWidth = (int) (imgRatio * actualWidth);
+                    actualHeight = (int) maxHeight;
+                } else if (imgRatio > maxRatio) {
+                    imgRatio = maxWidth / actualWidth;
+                    actualHeight = (int) (imgRatio * actualHeight);
+                    actualWidth = (int) maxWidth;
+                } else {
+                    actualHeight = (int) maxHeight;
+                    actualWidth = (int) maxWidth;
+                }
+            }
+        }catch (ArithmeticException e){
+            Utills.showToast("Please try again.", this);
+        }catch (Exception e){
+            Utills.showToast("Please try again.", this);
+        }
+//      setting inSampleSize value allows to load a scaled down version of the original image
+        options.inSampleSize = calculateInSampleSize(options, actualWidth, actualHeight);
+
+//      inJustDecodeBounds set to false to load the actual bitmap
+        options.inJustDecodeBounds = false;
+
+//      this options allow android to claim the bitmap memory if it runs low on memory
+        options.inPurgeable = true;
+        options.inInputShareable = true;
+        options.inTempStorage = new byte[16 * 1024];
+
+        try {
+//          load the bitmap from its path
+            bmp = BitmapFactory.decodeFile(filePath, options);
+        } catch (OutOfMemoryError exception) {
+            exception.printStackTrace();
+        }
+        try {
+            scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);
+        } catch (OutOfMemoryError exception) {
+            exception.printStackTrace();
+            Utills.showToast("Something went wrong,Please try again.",this);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            Utills.showToast("Something went wrong,Please try again.",this);
+        }
+
+        float ratioX = actualWidth / (float) options.outWidth;
+        float ratioY = actualHeight / (float) options.outHeight;
+        float middleX = actualWidth / 2.0f;
+        float middleY = actualHeight / 2.0f;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bmp, middleX - bmp.getWidth() / 2, middleY - bmp.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+//      check the rotation of the image and display it properly
+        ExifInterface exif;
+        try {
+            exif = new ExifInterface(filePath);
+
+            int orientation = exif.getAttributeInt(
+                    ExifInterface.TAG_ORIENTATION, 0);
+            Log.d("EXIF", "Exif: " + orientation);
+            Matrix matrix = new Matrix();
+            if (orientation == 6) {
+                matrix.postRotate(90);
+                Log.d("EXIF", "Exif: " + orientation);
+            } else if (orientation == 3) {
+                matrix.postRotate(180);
+                Log.d("EXIF", "Exif: " + orientation);
+            } else if (orientation == 8) {
+                matrix.postRotate(270);
+                Log.d("EXIF", "Exif: " + orientation);
+            }
+            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0,
+                    scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix,
+                    true);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        FileOutputStream out = null;
+    //    String filename = getFilename();
+        try {
+            out = new FileOutputStream(imageFilePath);
+
+//          write the compressed bitmap at the destination specified by filename.
+            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        return imageFilePath;
+
+    }
+
+    private String getRealPathFromURI(String contentURI) {
+        Uri contentUri = Uri.parse(contentURI);
+        Cursor cursor = getContentResolver().query(contentUri, null, null, null, null);
+        if (cursor == null) {
+            return contentUri.getPath();
+        } else {
+            cursor.moveToFirst();
+            int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            return cursor.getString(index);
+        }
+    }
+
+    public int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+        }
+        final float totalPixels = width * height;
+        final float totalReqPixelsCap = reqWidth * reqHeight * 2;
+        while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
+            inSampleSize++;
+        }
+
+        return inSampleSize;
     }
 }

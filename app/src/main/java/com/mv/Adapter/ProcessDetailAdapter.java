@@ -246,11 +246,12 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                 @Override
                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                     if (position == 0) {
+//                        taskList.get(getAdapterPosition()).setTask_Response__c("Select");
                         if(taskList.get(getAdapterPosition()).getTask_Response__c()!=null ||
                                 taskList.get(getAdapterPosition()).getTask_Response__c()!="Select"){
                             // don't do anything
                         }else{
-                            taskList.get(getAdapterPosition()).setTask_Response__c("");
+                            taskList.get(getAdapterPosition()).setTask_Response__c("Select");
                         }
                     } else {
                         if (taskList.get(getAdapterPosition()).getTask_type__c().equals(Constants.TASK_PICK_LIST)) {
@@ -526,6 +527,9 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     holder.editHeader.setText(String.format("* %s", task.getTask_Text___Lan_c()));
                 } else {
                     holder.editHeader.setText(task.getTask_Text___Lan_c());
+                }
+                if (task.getIsEditable__c().equals("false")) {
+                    holder.questionResponse.setEnabled(false);
                 }
 
                 holder.questionResponse.setLines(3);
@@ -833,15 +837,19 @@ public class ProcessDetailAdapter extends RecyclerView.Adapter<ProcessDetailAdap
                     File imageFile = new File(imageFilePath);
 
                     if (imageFile.exists()) {
-                        holder.imgAdd.setImageBitmap(BitmapFactory.decodeFile(imageFile.getAbsolutePath()));
+                        Glide.with(mContext).load(imageFile).into(holder.imgAdd);
+//                        holder.imgAdd.setImageBitmap(BitmapFactory.decodeFile(imageFile.getAbsolutePath()));
                         Uri finalUri = Uri.fromFile(imageFile);
                         ImageData id = new ImageData();
                         id.setPosition(position);
                         id.setImageUri(finalUri);
                         ((ProcessDeatailActivity) mContext).imageDataList.add(id);
                     } else {
+                        if(preferenceHelper.getString(preferenceHelper.FirebaseImageUrl) == ""){
+                            preferenceHelper.insertString(PreferenceHelper.FirebaseImageUrl, "https://dcwn642pmzpls.cloudfront.net/");
+                        }
                         Glide.with(mContext)
-                                .load(Constants.IMAGEURL + taskList.get(position).getTask_Response__c() + ".png")
+                                .load(preferenceHelper.getString(preferenceHelper.FirebaseImageUrl) + taskList.get(position).getTask_Response__c() + ".png")
                                 .placeholder(mContext.getResources().getDrawable(R.drawable.ic_add_photo))
                                 .into(holder.imgAdd);
                     }

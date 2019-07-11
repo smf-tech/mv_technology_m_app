@@ -198,10 +198,6 @@ public class Utills {
 
                 TextView text = pgDialog.findViewById(R.id.tv_progress);
                 text.setText(cntxt.getString(R.string.progress_please_wait));
-                ImageView proImg = pgDialog.findViewById(R.id.img_progress);
-                proImg.setBackgroundResource(R.drawable.progress_dialog);
-                AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
-                rocketAnimation.start();
 
                 pgDialog.setCancelable(false);
                 if (!pgDialog.isShowing()) {
@@ -272,10 +268,6 @@ public class Utills {
                 if (Title != null && !TextUtils.isEmpty(Title))
                     tv_desc.setVisibility(View.VISIBLE);
                 tv_desc.setText(Title);
-                ImageView proImg = pgDialog.findViewById(R.id.img_progress);
-                proImg.setBackgroundResource(R.drawable.progress_dialog);
-                AnimationDrawable rocketAnimation = (AnimationDrawable) proImg.getBackground();
-                rocketAnimation.start();
 
                 pgDialog.setCancelable(false);
                 if (!pgDialog.isShowing()) {
@@ -614,10 +606,7 @@ public class Utills {
 
     public static boolean isPhonePermissionGranted(Context mContext) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if ((mContext.checkSelfPermission(Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED &&
-                    mContext.checkSelfPermission(Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED &&
-                    mContext.checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) ||
-                    mContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (mContext.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
         }
