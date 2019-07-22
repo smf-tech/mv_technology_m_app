@@ -317,4 +317,5 @@
     <string name="yes">हाँ</string>
     <string name="no">नहीं</string>
     <string name="download_ongoing_msg">कृपया कुछ समय तक प्रतीक्षा करें। डाउनलोड चल रहा है।</string>
+    <string name="no_add_location_access_msg">आपके पास स्थान जोड़ने की पहुंच नहीं है।</string>
 </resources>

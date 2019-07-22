@@ -2,7 +2,7 @@
     <string name="app_name">Mulyavardhan 2.0</string>
     <string name="org_name">SHANTILAL MUTTHA FOUNDATION</string>
     <string name="org_address">Mutha Chambers II, Level 8, 106/I-A S.B. Marg Pune 411016</string>
-    <string name="progress_loading">Loding</string>
+    <string name="progress_loading">Loading</string>
     <string name="progress_please_wait">Please wait</string>
     <string name="error_something_went_wrong">Something went wrong, Please try again</string>
     <string name="error_no_internet">Please check your internet connection</string>
@@ -331,4 +331,5 @@
     <string name="yes">YES</string>
     <string name="no">NO</string>
     <string name="download_ongoing_msg">Please wait for sometime.Download is on going.</string>
+    <string name="no_add_location_access_msg">You do not have access to Add Location.</string>
 </resources>

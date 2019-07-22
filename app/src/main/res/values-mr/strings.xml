@@ -315,4 +315,5 @@
     <string name="yes">हो</string>
     <string name="no">नाही</string>
     <string name="download_ongoing_msg">कृपया थोडा वेळ प्रतीक्षा करा. डाउनलोड चालू आहे.</string>
+    <string name="no_add_location_access_msg">आपल्याकडे स्थान जोडण्यासाठी परवानगी नाही.</string>
 </resources>

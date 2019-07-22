@@ -1098,11 +1098,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     if (location == null) {
                         return;
                     }
-
                     mLastLocation = location;
                     getMapParameters(String.valueOf(mLastLocation.getLatitude()),
                             String.valueOf(mLastLocation.getLongitude()));
-
                     if (!Geocoder.isPresent()) {
                         return;
                     }
@@ -1284,10 +1282,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                                 } else {
                                     leavesModel.setHalfDayLeave(false);
                                 }
-
                                 leavesList.add(leavesModel);
                             }
-
                             AppDatabase.getAppDatabase(HomeActivity.this).userDao().deleteAllLeaves();
                             AppDatabase.getAppDatabase(HomeActivity.this).userDao().insertLeaves(leavesList);
                         }
@@ -1345,7 +1341,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                     Intent openClass = new Intent(HomeActivity.this, AddSchoolActivity.class);
                     startActivity(openClass);
                 } else {
-                    Utills.showToast("You don't have access to add location", HomeActivity.this);
+                    Utills.showToast(getString(R.string.no_add_location_access_msg), HomeActivity.this);
                 }
                 break;
 

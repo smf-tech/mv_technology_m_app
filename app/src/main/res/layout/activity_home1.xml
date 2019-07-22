@@ -31,7 +31,6 @@
             app:headerLayout="@layout/nav_header_main"
             app:menu="@menu/activity_main_actions">
 
-
         </android.support.design.widget.NavigationView>
     </android.support.v4.widget.DrawerLayout>
 
