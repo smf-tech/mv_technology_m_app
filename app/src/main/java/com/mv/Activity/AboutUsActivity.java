@@ -31,7 +31,6 @@ public class AboutUsActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         ((TextView) findViewById(R.id.toolbar_title)).setText(str);
-
         ImageView img_back = (ImageView) findViewById(R.id.img_back);
         img_back.setVisibility(View.VISIBLE);
         img_back.setOnClickListener(this);
